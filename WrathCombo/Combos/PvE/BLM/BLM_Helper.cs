@@ -14,6 +14,7 @@ internal partial class BLM
 {
     internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
     internal static BLMOpenerMaxLevel1 Opener1 = new();
+    internal static BLMOpenerLogicIC BLMOpenerIC = new();
 
     internal static uint CurMp => LocalPlayer.CurrentMp;
 
@@ -30,10 +31,10 @@ internal partial class BLM
         Math.Max(0, ((MaxPolyglot - Gauge.PolyglotStacks) * 30000) + (Gauge.EnochianTimer - 30000));
 
     internal static Status? ThunderDebuffST =>
-        FindEffect(ThunderList [OriginalHook(Thunder)], CurrentTarget, LocalPlayer?.GameObjectId);
+        FindEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget, LocalPlayer?.GameObjectId);
 
     internal static Status? ThunderDebuffAoE =>
-        FindEffect(ThunderList [OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
+        FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
 
     internal static bool CanSwiftF =>
         TraitLevelChecked(Traits.AspectMasteryIII) &&
@@ -45,6 +46,9 @@ internal partial class BLM
     {
         if (Opener1.LevelChecked)
             return Opener1;
+
+        if (IsEnabled(CustomComboPreset.BLM_ST_Instacast))
+            return BLMOpenerIC;
 
         return WrathOpener.Dummy;
     }
@@ -76,34 +80,120 @@ internal partial class BLM
         if (spells.Count < 1)
             return false;
 
-        uint firstSpell = spells [^1];
+        uint firstSpell = spells[^1];
 
         switch (firstSpell)
         {
             case Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2:
-            {
-                uint castedSpell = LocalPlayer.CastActionId;
-
-                if (castedSpell is Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2)
-                    return true;
-
-                if (spells.Count >= 2)
                 {
-                    uint secondSpell = spells [^2];
+                    uint castedSpell = LocalPlayer.CastActionId;
 
-                    switch (secondSpell)
+                    if (castedSpell is Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2)
+                        return true;
+
+                    if (spells.Count >= 2)
                     {
-                        case Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2:
-                            return true;
-                    }
-                }
+                        uint secondSpell = spells[^2];
 
-                break;
-            }
+                        switch (secondSpell)
+                        {
+                            case Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2:
+                                return true;
+                        }
+                    }
+
+                    break;
+                }
         }
 
         return false;
     }
+
+    internal class BLMOpenerLogicIC : WrathOpener
+    {
+        //I keep getting regular BLM opener instead of this one so I overwrote balance opener to match this
+        public override int MinOpenerLevel => 100;
+
+        public override int MaxOpenerLevel => 109;
+
+        public override List<uint> OpenerActions { get; set; } =
+        [
+            Fire3,
+            HighThunder,
+            Amplifier,
+            Despair,
+            LeyLines,
+            Manafont,
+            Xenoglossy,
+            Paradox,
+            Despair,
+            All.Swiftcast,
+            Transpose,
+            Blizzard3,
+            Paradox,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            Triplecast,
+            Blizzard3,
+            Blizzard4,
+            Transpose,
+            Paradox,
+            Fire3,
+            HighThunder,
+            LeyLines,
+            Despair,
+            Transpose,
+            Blizzard3,
+            Paradox,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            All.Swiftcast,
+            Blizzard3,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            HighThunder,
+            Triplecast,
+            Blizzard3,
+            Transpose
+        ];
+        internal override UserData? ContentCheckConfig => Config.BLM_ST_Pizza_Content;
+
+        public override bool HasCooldowns()
+        {
+            if (GetCooldown(Fire).BaseCooldownTotal < 2.50)
+                return false;
+
+            if (!ActionReady(Manafont))
+                return false;
+
+            if (GetRemainingCharges(Triplecast) < 2)
+                return false;
+
+            if (!ActionReady(All.Swiftcast))
+                return false;
+
+            if (!ActionReady(Amplifier))
+                return false;
+
+            if (Gauge.InUmbralIce)
+                return false;
+
+            return true;
+        }
+    }
+
     internal class BLMOpenerMaxLevel1 : WrathOpener
     {
         public override int MinOpenerLevel => 100;
@@ -114,36 +204,58 @@ internal partial class BLM
         [
             Fire3,
             HighThunder,
-            All.Swiftcast,
             Amplifier,
-            Fire4,
-            Fire4,
-            Xenoglossy,
-            Triplecast,
-            LeyLines,
-            Fire4,
-            Fire4,
             Despair,
+            LeyLines,
             Manafont,
-            Fire4,
-            Triplecast,
-            Fire4,
-            FlareStar,
-            Fire4,
-            HighThunder,
+            Xenoglossy,
             Paradox,
-            Fire4,
-            Fire4,
-            Fire4,
-            Despair
+            Despair,
+            All.Swiftcast,
+            Transpose,
+            Blizzard3,
+            Paradox,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            Triplecast,
+            Blizzard3,
+            Blizzard4,
+            Transpose,
+            Paradox,
+            Fire3,
+            HighThunder,
+            LeyLines,
+            Despair,
+            Transpose,
+            Blizzard3,
+            Paradox,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            All.Swiftcast,
+            Blizzard3,
+            Transpose,
+            Paradox,
+            Fire3,
+            Despair,
+            Transpose,
+            Paradox,
+            HighThunder,
+            Triplecast,
+            Blizzard3,
+            Transpose
         ];
         internal override UserData? ContentCheckConfig => Config.BLM_ST_Balance_Content;
 
         public override bool HasCooldowns()
         {
-            if (GetCooldown(Fire).BaseCooldownTotal > 2.45)
-                return false;
-
             if (!ActionReady(Manafont))
                 return false;
 

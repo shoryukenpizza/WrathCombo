@@ -456,6 +456,18 @@ public enum CustomComboPreset
         "Replaces Blizzard II with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     BLM_AoE_SimpleMode = 2002,
 
+    [AutoAction(false, false)]
+    [ReplaceSkill(BLM.Fire)]
+    [ConflictingCombos(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Instant Cast - Single Target",
+    "Replaces Fire with a full one-button single target rotation.", BLM.JobID)]
+    BLM_ST_Instacast = 2003,
+
+    [ParentCombo(BLM_ST_Instacast)]
+    [CustomComboInfo("IC Opener",
+    "Instacast Opener", BLM.JobID)]
+    BLM_ST_IC_Opener = 2004,
+
     #endregion
 
     #region Single Target - Advanced

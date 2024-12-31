@@ -202,6 +202,183 @@ internal static partial class BLM
         }
     }
 
+    internal class BLM_ST_Instacast : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_ST_Instacast;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is Fire)
+            {
+                if (IsEnabled(CustomComboPreset.BLM_ST_IC_Opener))
+                {
+                    if (Opener().FullOpener(ref actionID))
+                    {
+                        return actionID;
+                    }
+                }
+
+                if (IsEnabled(CustomComboPreset.BLM_Variant_Cure) &&
+                    IsEnabled(Variant.VariantCure) &&
+                    PlayerHealthPercentageHp() <= Config.BLM_VariantCure)
+                    return Variant.VariantCure;
+
+                if (IsEnabled(CustomComboPreset.BLM_Variant_Rampart) &&
+                    IsEnabled(Variant.VariantRampart) &&
+                    IsOffCooldown(Variant.VariantRampart) &&
+                    CanSpellWeave())
+                    return Variant.VariantRampart;
+
+                //Weaves
+                if (CanWeave())
+                {
+                    if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
+                        return LeyLines;
+                }
+                //Thunder needs to be controlled a bit because < 3 is not always ideal
+                //Must prioritize Triple usage over Thunder
+                if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+                    !HasEffect(Buffs.Triplecast) /*&& !HasEffect(All.Swiftcast)*/ &&
+                    (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
+                    return OriginalHook(Thunder);
+
+                if (Gauge.InAstralFire)
+                {
+                    if (CanWeave())
+                    {
+                        if (GetBuffStacks(Buffs.Triplecast) == 0 && !Gauge.IsParadoxActive)
+
+                        {
+                            if (IsOnCooldown(Manafont) && ActionReady(All.Swiftcast))
+                                return All.Swiftcast;
+                            if (IsOffCooldown(Manafont) && (GetCooldownRemainingTime(All.Swiftcast) <= 1 || ActionReady(All.Swiftcast)))
+
+                                return All.Swiftcast;
+                            if (JustUsed(Despair) && (GetCooldownRemainingTime(All.Swiftcast) <= 1 || ActionReady(All.Swiftcast)))
+
+                                return All.Swiftcast;
+                        }
+                    }
+
+                    if (ActionReady(Amplifier) && Gauge.PolyglotStacks == 2 && RemainingPolyglotCD >= 2500)
+                        return Amplifier;
+
+                    if (Gauge.IsParadoxActive && CurMp >= MP.FireI)
+                        return Paradox;
+
+                    if (HasEffect(Buffs.Firestarter))
+                        return Fire3;
+
+                    if (!HasEffect(Buffs.Firestarter) && !Gauge.IsParadoxActive && CurMp >= MP.Despair)
+                        return Despair;
+
+                    /*if (CurMp == 0 && LevelChecked(FlareStar) && Gauge.AstralSoulStacks == 6)
+                    {
+                        if (CanSpellWeave() && ActionReady(Triplecast) &&
+                            GetBuffStacks(Buffs.Triplecast) == 0 &&
+                            ActionReady(Triplecast))
+                            return Triplecast;
+
+                        if (CanSpellWeave() && ActionReady(All.Swiftcast) &&
+                            GetBuffStacks(Buffs.Triplecast) == 0)
+                            return All.Swiftcast;
+
+                        return FlareStar;
+                    }*/
+                    // May or may not implement Fire4 for delaying or more damage, but it's too much for brain rn
+                    /*if (LevelChecked(Fire4))
+                        if (GCDsInTimer > 1 && CurMp >= MP.FireI)
+                        {
+                            if (CanSpellWeave() && ActionReady(Triplecast) &&
+                                GetBuffStacks(Buffs.Triplecast) == 0 &&
+                                ActionReady(Triplecast))
+                                return Triplecast;
+
+                            if (HasEffect(Buffs.Thunderhead) && GCDsInTimer > 1 &&
+                                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
+                                return OriginalHook(Thunder);
+
+                            if (HasPolyglotStacks(Gauge) &&
+                                CanSpellWeave() && ActionReady(Triplecast) &&
+                                GetBuffStacks(Buffs.Triplecast) == 0 &&
+                                ActionReady(Triplecast))
+                                return Xenoglossy.LevelChecked()
+                                    ? Xenoglossy
+                                    : Foul;
+
+                            return Fire4;
+                        }*/
+
+                    if (Gauge.PolyglotStacks == MaxPolyglot &&
+                        (ActionReady(Amplifier) || RemainingPolyglotCD <= 2500))
+                        return Xenoglossy;
+
+                    if (CurMp == 0)
+                    {
+                        if (ActionReady(Manafont))
+                            return Manafont;
+                    }
+
+                    //Do we need this?
+                    /*if (ActionReady(Blizzard3) &&
+                        (ActionReady(All.Swiftcast) || HasEffect(Buffs.Triplecast)))
+                    {
+                        if (CanSpellWeave() && ActionReady(Transpose))
+                            return Transpose;
+
+                        if (HasEffect(Buffs.Thunderhead) &&
+                            (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
+                            return OriginalHook(Thunder);
+
+                        if (HasPolyglotStacks(Gauge))
+                            return LevelChecked(Xenoglossy)
+                                ? Xenoglossy
+                                : Foul;
+                    }*/
+                    return Transpose;
+                }
+
+                if (Gauge.InUmbralIce)
+                {
+                    if (ActionReady(Triplecast) && !HasEffect(All.Buffs.Swiftcast))
+                        return Triplecast;
+
+                    if (ActionReady(All.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                        return All.Swiftcast;
+
+                    if (ActionReady(Blizzard3) &&
+                       (GetBuffStacks(Buffs.Triplecast) > 0 || HasEffect(All.Buffs.Swiftcast)) &&
+                       !WasLastSpell(Blizzard3) && CurMp <= 1000)
+                        return Blizzard3;
+
+                    if (Gauge.IsParadoxActive)
+                        return Paradox;
+
+                    if (ActionReady(Blizzard4) && GetBuffStacks(Buffs.Triplecast) == 1)
+                        return Blizzard4;
+
+                    if (Gauge.PolyglotStacks == MaxPolyglot &&
+                        (ActionReady(Amplifier) || RemainingPolyglotCD <= 8000))
+                        return Xenoglossy;
+
+                    //Emergency UmbralSoul scenario
+                    if (!HasEffect(All.Buffs.Swiftcast) && GetBuffStacks(Buffs.Triplecast) == 0 &&
+                        GetCooldownChargeRemainingTime(Triplecast) >= 2.5 && GetRemainingCharges(Triplecast) == 0 &&
+                        GetCooldownRemainingTime(All.Swiftcast) >= 2.5 && CurMp < 1600)
+                        return UmbralSoul;
+
+                    if (HasPolyglotStacks(Gauge))
+                    {
+                        if (ActionReady(Transpose) && CurMp >= 1600)
+                            return Transpose;
+                    }
+
+                    return Transpose;
+                }
+            }
+            return actionID;
+        }
+    }
     internal class BLM_ST_AdvancedMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_ST_AdvancedMode;

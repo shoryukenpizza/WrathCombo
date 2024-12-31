@@ -26,7 +26,8 @@ internal partial class BLM
             BLM_AoE_UsePolyglotMoving_HoldCharges = new("BLM_AoE_UsePolyglotMoving_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 5),
-            BLM_ST_Balance_Content = new("BLM_ST_Balance_Content", 1);
+            BLM_ST_Balance_Content = new("BLM_ST_Balance_Content", 1),
+            BLM_ST_Pizza_Content = new("BLM_ST_Pizza_Content", 1);
 
         public static UserFloat
             BLM_ST_Triplecast_ChargeTime = new("BLM_ST_Triplecast_ChargeTime", 20),
@@ -46,6 +47,17 @@ internal partial class BLM
 
                     DrawBossOnlyChoice(BLM_ST_Balance_Content);
                     break;
+
+                case CustomComboPreset.BLM_ST_IC_Opener:
+                    if (Player.Job is ECommons.ExcelServices.Job.BLM && Player.Level == 100)
+                    {
+                        float gcd = CustomComboFunctions.GetCooldown(Fire3).BaseCooldownTotal;
+                        ImGuiEx.Text(gcd == 2.50f ? ImGuiColors.HealerGreen : ImGuiColors.DalamudRed, $"Your GCD is currently: {gcd}");
+                    }
+
+                    DrawBossOnlyChoice(BLM_ST_Pizza_Content);
+                    break;
+
                 case CustomComboPreset.BLM_Variant_Cure:
                     DrawSliderInt(1, 100, BLM_VariantCure, "HP% to be at or under", 200);
 
