@@ -14,6 +14,14 @@ internal partial class MCH
     internal static MCHOpenerMaxLevel Lvl100Standard = new();
     internal static MCHOpenerLvl90EarlyTools Lvl90EarlyTools = new();
     internal static MCHGauge Gauge = GetJobGauge<MCHGauge>();
+    internal static bool IsOverheated = Gauge.IsOverheated;
+    internal static bool RobotActive = Gauge.IsRobotActive;
+    
+    internal static int LastSummon => Gauge.LastSummonBatteryPower;
+    
+    internal static int HeatGauge => Gauge.Heat;
+    
+    internal static int BatteryGauge => Gauge.Battery;
 
     internal static int BSUsed => ActionWatching.CombatActions.Count(x => x == BarrelStabilizer);
 
@@ -60,7 +68,7 @@ internal partial class MCH
         !LevelChecked(Chainsaw) ||
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
-    internal static bool Battery => Gauge.Battery >= 100;
+    internal static bool Battery => BatteryGauge >= 100;
 
     internal static bool HasNotWeaved =>
         ActionWatching.GetAttackType(ActionWatching.LastAction) !=
@@ -73,11 +81,11 @@ internal partial class MCH
         return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
     }
 
-    internal static bool UseQueen(MCHGauge gauge)
+    internal static bool UseQueen()
     {
         if (!ActionWatching.HasDoubleWeaved() && !HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
-            !gauge.IsRobotActive && gauge.Battery >= 50)
+            !RobotActive && BatteryGauge >= 50)
         {
             if ((Config.MCH_ST_Adv_Turret_SubOption == 0 ||
                  Config.MCH_ST_Adv_Turret_SubOption == 1 && InBossEncounter() ||
@@ -87,21 +95,21 @@ internal partial class MCH
                 if (LevelChecked(BarrelStabilizer))
                 {
                     //1min
-                    if (BSUsed == 1 && gauge.Battery >= 90)
+                    if (BSUsed == 1 && BatteryGauge >= 90)
                         return true;
 
                     //even mins
-                    if (BSUsed >= 2 && gauge.Battery == 100)
+                    if (BSUsed >= 2 && BatteryGauge == 100)
                         return true;
 
                     //odd mins 1st queen
-                    if (BSUsed >= 2 && gauge.Battery is 50 && gauge.LastSummonBatteryPower is 100)
+                    if (BSUsed >= 2 && BatteryGauge is 50 && LastSummon is 100)
                         return true;
 
                     //odd mins 2nd queen
-                    if ((BSUsed % 3 is 2 && gauge.Battery >= 60 ||
-                         BSUsed % 3 is 0 && gauge.Battery >= 70 ||
-                         BSUsed % 3 is 1 && gauge.Battery >= 80) && gauge.LastSummonBatteryPower is 50)
+                    if ((BSUsed % 3 is 2 && BatteryGauge >= 60 ||
+                         BSUsed % 3 is 0 && BatteryGauge >= 70 ||
+                         BSUsed % 3 is 1 && BatteryGauge >= 80) && LastSummon is 50)
                         return true;
                 }
 
@@ -109,8 +117,8 @@ internal partial class MCH
                     return true;
             }
 
-            if (IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && !InBossEncounter() && gauge.Battery is 100 ||
-                Config.MCH_ST_Adv_Turret_SubOption == 1 && !InBossEncounter() && gauge.Battery >= Config.MCH_ST_TurretUsage)
+            if (IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && !InBossEncounter() && BatteryGauge is 100 ||
+                Config.MCH_ST_Adv_Turret_SubOption == 1 && !InBossEncounter() && BatteryGauge >= Config.MCH_ST_TurretUsage)
                 return true;
         }
 
@@ -136,9 +144,9 @@ internal partial class MCH
                   Config.MCH_ST_Adv_Excavator_SubOption == 1 && InBossEncounter())) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
                 (BSUsed is 1 ||
-                 BSUsed % 3 is 2 && Gauge.Battery <= 40 ||
-                 BSUsed % 3 is 0 && Gauge.Battery <= 50 ||
-                 BSUsed % 3 is 1 && Gauge.Battery <= 60 ||
+                 BSUsed % 3 is 2 && BatteryGauge <= 40 ||
+                 BSUsed % 3 is 0 && BatteryGauge <= 50 ||
+                 BSUsed % 3 is 1 && BatteryGauge <= 60 ||
                  GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
                 return true;
 
@@ -183,9 +191,9 @@ internal partial class MCH
               Config.MCH_ST_Adv_Excavator_SubOption == 1 && InBossEncounter())) &&
             LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
             (BSUsed is 1 ||
-             BSUsed % 3 is 2 && Gauge.Battery <= 40 ||
-             BSUsed % 3 is 0 && Gauge.Battery <= 50 ||
-             BSUsed % 3 is 1 && Gauge.Battery <= 60 ||
+             BSUsed % 3 is 2 && BatteryGauge <= 40 ||
+             BSUsed % 3 is 0 && BatteryGauge <= 50 ||
+             BSUsed % 3 is 1 && BatteryGauge <= 60 ||
              GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
         {
             actionID = Excavator;
