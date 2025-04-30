@@ -29,7 +29,7 @@ internal partial class RPR
 
     internal static bool UseEnshroud()
     {
-        if (LevelChecked(Enshroud) && (ShroudGauge >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
+        if (LevelChecked(Enshroud) && (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
             !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
             !HasStatusEffect(Buffs.PerfectioParata) && !HasStatusEffect(Buffs.Enshrouded))
         {
@@ -58,7 +58,7 @@ internal partial class RPR
 
             // Correction for 2 min windows 
             if (!HasStatusEffect(Buffs.ArcaneCircle) && !IsDebuffExpiring(5) &&
-                SoulGauge >= 90)
+                Soul >= 90)
                 return true;
         }
 
@@ -215,13 +215,13 @@ internal partial class RPR
 
     internal static RPRGauge Gauge = GetJobGauge<RPRGauge>();
 
-    internal static byte ShroudGauge => Gauge.Shroud;
+    internal static byte Shroud => Gauge.Shroud;
 
-    internal static byte SoulGauge => Gauge.Soul;
+    internal static byte Soul => Gauge.Soul;
 
-    internal static byte LemureGauge = Gauge.LemureShroud;
+    internal static byte Lemure => Gauge.LemureShroud;
 
-    internal static byte VoidGauge => Gauge.VoidShroud;
+    internal static byte Void => Gauge.VoidShroud;
 
     #endregion
 
