@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -9,42 +8,34 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MNK
 {
-    internal static MNKGauge Gauge = GetJobGauge<MNKGauge>();
     internal static MNKOpenerLogicSL MNKOpenerSL = new();
     internal static MNKOpenerLogicLL MNKOpenerLL = new();
 
     internal static float GCD => GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
-    internal static bool BothNadisOpen => Gauge.Nadi.ToString() == "Lunar, Solar";
+    internal static bool BothNadisOpen => Nadi.ToString() == "Lunar, Solar";
 
-    internal static bool SolarNadi => Gauge.Nadi == Nadi.Solar;
+    internal static bool SolarNadi => Nadi is Nadi.Solar;
 
-    internal static bool LunarNadi => Gauge.Nadi == Nadi.Lunar;
-
-    internal static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
-
-    internal static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
-
-    internal static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
-
+    internal static bool LunarNadi => Nadi is Nadi.Lunar;
 
     #region 1-2-3
 
     internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
         if (HasStatusEffect(Buffs.OpoOpoForm) || HasStatusEffect(Buffs.FormlessFist))
-            return Gauge.OpoOpoFury == 0 && LevelChecked(DragonKick)
+            return OpoOpoChakra == 0 && LevelChecked(DragonKick)
                 ? DragonKick
                 : OriginalHook(Bootshine);
 
         if (HasStatusEffect(Buffs.RaptorForm))
-            return Gauge.RaptorFury == 0 && LevelChecked(TwinSnakes)
+            return RaptorChakra == 0 && LevelChecked(TwinSnakes)
                 ? TwinSnakes
                 : OriginalHook(TrueStrike);
 
         if (HasStatusEffect(Buffs.CoeurlForm))
         {
-            if (Gauge.CoeurlFury == 0 && LevelChecked(Demolish))
+            if (CoeurlChakra == 0 && LevelChecked(Demolish))
             {
                 if (!OnTargetsRear() &&
                     TargetNeedsPositionals() &&
@@ -162,7 +153,7 @@ internal partial class MNK
 
             if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
             {
-                switch (Gauge.OpoOpoFury)
+                switch (OpoOpoChakra)
                 {
                     case 0:
                         actionID = DragonKick;
@@ -182,7 +173,7 @@ internal partial class MNK
             {
                 if (CoeurlChakra == 0)
                 {
-                    switch (Gauge.CoeurlFury)
+                    switch (CoeurlChakra)
                     {
                         case 0:
                             actionID = Demolish;
@@ -196,7 +187,7 @@ internal partial class MNK
 
                 if (RaptorChakra == 0)
                 {
-                    switch (Gauge.RaptorFury)
+                    switch (RaptorChakra)
                     {
                         case 0:
                             actionID = TwinSnakes;
@@ -210,7 +201,7 @@ internal partial class MNK
 
                 if (OpoOpoChakra == 0)
                 {
-                    switch (Gauge.OpoOpoFury)
+                    switch (OpoOpoChakra)
                     {
                         case 0:
                             actionID = DragonKick;
@@ -328,9 +319,9 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            Gauge.Nadi is Nadi.None &&
-            Gauge.RaptorFury is 0 &&
-            Gauge.CoeurlFury is 0;
+            Nadi is Nadi.None &&
+            RaptorChakra is 0 &&
+            CoeurlChakra is 0;
     }
 
     internal class MNKOpenerLogicLL : WrathOpener
@@ -370,10 +361,26 @@ internal partial class MNK
             IsOffCooldown(Brotherhood) &&
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            Gauge.Nadi is Nadi.None &&
-            Gauge.RaptorFury is 0 &&
-            Gauge.CoeurlFury is 0;
+            Nadi is Nadi.None &&
+            RaptorChakra is 0 &&
+            CoeurlChakra is 0;
     }
+
+    #endregion
+
+    #region Gauge
+
+    internal static MNKGauge Gauge = GetJobGauge<MNKGauge>();
+
+    internal static byte Chakra => Gauge.Chakra;
+
+    internal static BeastChakra OpoOpoChakra => BeastChakra.OpoOpo;
+
+    internal static BeastChakra RaptorChakra => BeastChakra.Raptor;
+
+    internal static BeastChakra CoeurlChakra => BeastChakra.Coeurl;
+
+    internal static Nadi Nadi => Gauge.Nadi;
 
     #endregion
 
