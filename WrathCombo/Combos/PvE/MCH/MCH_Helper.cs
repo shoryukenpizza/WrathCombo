@@ -16,12 +16,12 @@ internal partial class MCH
     internal static MCHGauge Gauge = GetJobGauge<MCHGauge>();
     internal static bool IsOverheated = Gauge.IsOverheated;
     internal static bool RobotActive = Gauge.IsRobotActive;
-    
-    internal static int LastSummon => Gauge.LastSummonBatteryPower;
-    
-    internal static int HeatGauge => Gauge.Heat;
-    
-    internal static int BatteryGauge => Gauge.Battery;
+
+    internal static byte LastSummon => Gauge.LastSummonBatteryPower;
+
+    internal static byte HeatGauge => Gauge.Heat;
+
+    internal static byte BatteryGauge => Gauge.Battery;
 
     internal static int BSUsed => ActionWatching.CombatActions.Count(x => x == BarrelStabilizer);
 
