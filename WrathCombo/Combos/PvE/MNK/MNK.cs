@@ -67,7 +67,7 @@ internal partial class MNK : Melee
 
             // GCDs
             if (HasStatusEffect(Buffs.FormlessFist))
-                return OpoOpoChakra == 0
+                return OpoOpo is 0
                     ? DragonKick
                     : OriginalHook(Bootshine);
 
@@ -191,7 +191,7 @@ internal partial class MNK : Melee
 
             // GCDs
             if (HasStatusEffect(Buffs.FormlessFist))
-                return OpoOpoChakra == 0
+                return OpoOpo is 0
                     ? DragonKick
                     : OriginalHook(Bootshine);
 
@@ -500,19 +500,19 @@ internal partial class MNK : Melee
         {
             if (IsEnabled(CustomComboPreset.MNK_BC_OPOOPO) &&
                 actionID is Bootshine or LeapingOpo)
-                return OpoOpoChakra == 0 && LevelChecked(DragonKick)
+                return OpoOpo is 0 && LevelChecked(DragonKick)
                     ? DragonKick
                     : OriginalHook(Bootshine);
 
             if (IsEnabled(CustomComboPreset.MNK_BC_RAPTOR) &&
                 actionID is TrueStrike or RisingRaptor)
-                return RaptorChakra == 0 && LevelChecked(TwinSnakes)
+                return Raptor is 0 && LevelChecked(TwinSnakes)
                     ? TwinSnakes
                     : OriginalHook(TrueStrike);
 
             if (IsEnabled(CustomComboPreset.MNK_BC_COEURL) &&
                 actionID is SnapPunch or PouncingCoeurl)
-                return CoeurlChakra == 0 && LevelChecked(Demolish)
+                return Coeurl is 0 && LevelChecked(Demolish)
                     ? Demolish
                     : OriginalHook(SnapPunch);
 
