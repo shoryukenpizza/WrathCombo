@@ -15,25 +15,14 @@ internal partial class MCH
     internal static MCHOpenerLvl90EarlyTools Lvl90EarlyTools = new();
 
     internal static int BSUsed => ActionWatching.CombatActions.Count(x => x == BarrelStabilizer);
-
-    internal static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;
-
+    
     internal static bool UseGaussRound => GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
 
     internal static bool UseRicochet => GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
-
-
     internal static bool HasNotWeaved =>
         ActionWatching.GetAttackType(ActionWatching.LastAction) !=
         ActionWatching.ActionAttackType.Ability;
-
-    internal static unsafe bool IsComboExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
-    }
 
     internal static bool UseQueen()
     {
@@ -195,7 +184,7 @@ internal partial class MCH
 
         return false;
     }
-
+    
     #region Reassembled
 
     internal static bool ReassembledExcavatorST =>
@@ -240,7 +229,20 @@ internal partial class MCH
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
     #endregion
-    
+       
+    #region Combos
+
+    internal static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;
+
+    internal static unsafe bool IsComboExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
+    }
+
+  #endregion
+
     #region Openers
 
     internal static WrathOpener Opener()
@@ -381,7 +383,7 @@ internal partial class MCH
     }
 
     #endregion
-    
+
     #region Gauge
 
     internal static MCHGauge Gauge = GetJobGauge<MCHGauge>();

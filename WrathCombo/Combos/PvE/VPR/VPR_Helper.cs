@@ -11,9 +11,7 @@ namespace WrathCombo.Combos.PvE;
 internal partial class VPR
 {
     internal static VPROpenerMaxLevel1 Opener1 = new();
-
-    internal static float GCD => GetCooldown(OriginalHook(ReavingFangs)).CooldownTotal;
-
+    
     internal static float IreCD => GetCooldownRemainingTime(SerpentsIre);
 
     internal static bool In5Y => HasBattleTarget() && GetTargetDistance() <= 5;
@@ -23,44 +21,7 @@ internal partial class VPR
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
     internal static bool HasRattlingCoilStack() => RattlingCoilStacks > 0;
-
-
-    #region Combos
-
-    internal static bool IsHoningExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return HasStatusEffect(Buffs.HonedSteel) && GetStatusEffectRemainingTime(Buffs.HonedSteel) < gcd ||
-               HasStatusEffect(Buffs.HonedReavers) && GetStatusEffectRemainingTime(Buffs.HonedReavers) < gcd;
-    }
-
-    internal static bool IsVenomExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return HasStatusEffect(Buffs.FlankstungVenom) && GetStatusEffectRemainingTime(Buffs.FlankstungVenom) < gcd ||
-               HasStatusEffect(Buffs.FlanksbaneVenom) && GetStatusEffectRemainingTime(Buffs.FlanksbaneVenom) < gcd ||
-               HasStatusEffect(Buffs.HindstungVenom) && GetStatusEffectRemainingTime(Buffs.HindstungVenom) < gcd ||
-               HasStatusEffect(Buffs.HindsbaneVenom) && GetStatusEffectRemainingTime(Buffs.HindsbaneVenom) < gcd;
-    }
-
-    internal static bool IsEmpowermentExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return GetStatusEffectRemainingTime(Buffs.Swiftscaled) < gcd || GetStatusEffectRemainingTime(Buffs.HuntersInstinct) < gcd;
-    }
-
-    internal static unsafe bool IsComboExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
-    }
-
-    #endregion
-
+    
     #region Awaken
 
     internal static bool UseReawaken()
@@ -216,6 +177,44 @@ internal partial class VPR
                 #endregion
         }
         return false;
+    }
+
+    #endregion
+    
+    #region Combos
+
+    internal static float GCD => GetCooldown(OriginalHook(ReavingFangs)).CooldownTotal;
+
+    internal static bool IsHoningExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return HasStatusEffect(Buffs.HonedSteel) && GetStatusEffectRemainingTime(Buffs.HonedSteel) < gcd ||
+               HasStatusEffect(Buffs.HonedReavers) && GetStatusEffectRemainingTime(Buffs.HonedReavers) < gcd;
+    }
+
+    internal static bool IsVenomExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return HasStatusEffect(Buffs.FlankstungVenom) && GetStatusEffectRemainingTime(Buffs.FlankstungVenom) < gcd ||
+               HasStatusEffect(Buffs.FlanksbaneVenom) && GetStatusEffectRemainingTime(Buffs.FlanksbaneVenom) < gcd ||
+               HasStatusEffect(Buffs.HindstungVenom) && GetStatusEffectRemainingTime(Buffs.HindstungVenom) < gcd ||
+               HasStatusEffect(Buffs.HindsbaneVenom) && GetStatusEffectRemainingTime(Buffs.HindsbaneVenom) < gcd;
+    }
+
+    internal static bool IsEmpowermentExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return GetStatusEffectRemainingTime(Buffs.Swiftscaled) < gcd || GetStatusEffectRemainingTime(Buffs.HuntersInstinct) < gcd;
+    }
+
+    internal static unsafe bool IsComboExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
     }
 
     #endregion

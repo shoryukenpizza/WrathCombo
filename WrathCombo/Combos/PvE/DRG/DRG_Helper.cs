@@ -46,9 +46,7 @@ internal partial class DRG
 
         return false;
     }
-
-
-
+    
     #region Animation Locks
 
     internal static readonly List<uint> FastLocks =

@@ -23,23 +23,7 @@ internal partial class SAM
     internal static bool DoubleMeikyo => TraitLevelChecked(Traits.EnhancedMeikyoShishui);
 
     internal static int SenCount => GetSenCount();
-
-    private static int GetSenCount()
-    {
-        int senCount = 0;
-
-        if (HasGetsu)
-            senCount++;
-
-        if (HasSetsu)
-            senCount++;
-
-        if (HasKa)
-            senCount++;
-
-        return senCount;
-    }
-
+    
     internal static bool UseMeikyo()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
@@ -194,6 +178,22 @@ internal partial class SAM
         return false;
     }
 
+    private static int GetSenCount()
+    {
+        int senCount = 0;
+
+        if (HasGetsu)
+            senCount++;
+
+        if (HasSetsu)
+            senCount++;
+
+        if (HasKa)
+            senCount++;
+
+        return senCount;
+    }
+
     #region Openers
 
     internal static WrathOpener Opener()
@@ -263,14 +263,12 @@ internal partial class SAM
     #region Gauge
 
     internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
+    
+    internal static bool HasGetsu => Gauge.HasGetsu;
 
-    internal static Sen Sen => Gauge.Sen;
+    internal static bool HasSetsu =>Gauge.HasSetsu;
 
-    internal static bool HasGetsu => Sen is Sen.Getsu;
-
-    internal static bool HasSetsu => Sen is Sen.Setsu;
-
-    internal static bool HasKa => Sen is Sen.Ka;
+    internal static bool HasKa => Gauge.HasKa;
 
     internal static byte Kenki => Gauge.Kenki;
 

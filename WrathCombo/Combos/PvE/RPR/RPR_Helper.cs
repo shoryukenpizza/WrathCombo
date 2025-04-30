@@ -11,22 +11,6 @@ internal partial class RPR
 {
     internal static RPROpenerMaxLevel1 Opener1 = new();
 
-    internal static float GCD => GetCooldown(Slice).CooldownTotal;
-
-    internal static unsafe bool IsComboExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
-    }
-
-    internal static bool IsDebuffExpiring(float times)
-    {
-        float gcd = GCD * times;
-
-        return HasStatusEffect(Debuffs.DeathsDesign, CurrentTarget) && GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < gcd;
-    }
-
     internal static bool UseEnshroud()
     {
         if (LevelChecked(Enshroud) && (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
@@ -144,6 +128,26 @@ internal partial class RPR
 
         return false;
     }
+
+    #region Combos
+
+    internal static float GCD => GetCooldown(Slice).CooldownTotal;
+
+    internal static unsafe bool IsComboExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return ActionManager.Instance()->Combo.Timer != 0 && ActionManager.Instance()->Combo.Timer < gcd;
+    }
+
+    internal static bool IsDebuffExpiring(float times)
+    {
+        float gcd = GCD * times;
+
+        return HasStatusEffect(Debuffs.DeathsDesign, CurrentTarget) && GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < gcd;
+    }
+
+    #endregion
 
     #region Openers
 
