@@ -12,8 +12,6 @@ internal partial class BLM
 {
     internal static BLMStandardOpener StandardOpener = new();
     internal static BLMFlareOpener FlareOpener = new();
-    internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
-
 
     internal static readonly Dictionary<uint, ushort>
         ThunderList = new()
@@ -25,24 +23,6 @@ internal partial class BLM
             { HighThunder, Debuffs.HighThunder },
             { HighThunder2, Debuffs.HighThunder2 }
         };
-
-    internal static bool FirePhase => Gauge.InAstralFire;
-
-    internal static byte AstralFireStacks => Gauge.AstralFireStacks;
-
-    internal static bool IcePhase => Gauge.InUmbralIce;
-
-    internal static byte UmbralIceStacks => Gauge.UmbralIceStacks;
-
-    internal static byte UmbralHearts => Gauge.UmbralHearts;
-
-    internal static bool ActiveParadox => Gauge.IsParadoxActive;
-
-    internal static int AstralSoulStacks => Gauge.AstralSoulStacks;
-
-    internal static byte PolyglotStacks => Gauge.PolyglotStacks;
-
-    internal static short EnochianTimer => Gauge.EnochianTimer;
 
     internal static uint CurMp => GetPartyMembers().First().CurrentMP;
 
@@ -204,6 +184,30 @@ internal partial class BLM
 
   #endregion
 
+    #region Gauge
+
+    internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
+
+    internal static bool FirePhase => Gauge.InAstralFire;
+
+    internal static byte AstralFireStacks => Gauge.AstralFireStacks;
+
+    internal static bool IcePhase => Gauge.InUmbralIce;
+
+    internal static byte UmbralIceStacks => Gauge.UmbralIceStacks;
+
+    internal static byte UmbralHearts => Gauge.UmbralHearts;
+
+    internal static bool ActiveParadox => Gauge.IsParadoxActive;
+
+    internal static int AstralSoulStacks => Gauge.AstralSoulStacks;
+
+    internal static byte PolyglotStacks => Gauge.PolyglotStacks;
+
+    internal static short EnochianTimer => Gauge.EnochianTimer;
+
+    #endregion
+
     #region ID's
 
     public const byte ClassID = 7;
@@ -283,8 +287,6 @@ internal partial class BLM
     internal static class MP
     {
         internal const int MaxMP = 10000;
-
-        internal const int AllMPSpells = 800; //"ALL MP" spell. Only caring about the absolute minimum.
 
         internal static int FireI => GetResourceCost(OriginalHook(Fire));
 

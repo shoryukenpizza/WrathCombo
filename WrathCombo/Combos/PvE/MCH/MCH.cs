@@ -128,7 +128,7 @@ internal partial class MCH : PhysicalRanged
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -290,7 +290,7 @@ internal partial class MCH : PhysicalRanged
                 {
                     if (ActionReady(GaussRound) &&
                         GetRemainingCharges(OriginalHook(GaussRound)) > Config.MCH_ST_GaussRicoPool &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -400,7 +400,7 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -545,7 +545,7 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -627,7 +627,7 @@ internal partial class MCH : PhysicalRanged
                 HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    (UseGauss || !LevelChecked(Ricochet)))
+                    (UseGaussRound || !LevelChecked(Ricochet)))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) && UseRicochet)
@@ -663,7 +663,7 @@ internal partial class MCH : PhysicalRanged
                 CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    UseGauss || !LevelChecked(Ricochet))
+                    UseGaussRound || !LevelChecked(Ricochet))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) && UseRicochet)
@@ -687,7 +687,7 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             if (ActionReady(GaussRound) &&
-                (UseGauss || !LevelChecked(Ricochet)))
+                (UseGaussRound || !LevelChecked(Ricochet)))
                 return OriginalHook(GaussRound);
 
             if (ActionReady(Ricochet) && UseRicochet)

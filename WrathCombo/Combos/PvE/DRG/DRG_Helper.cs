@@ -11,10 +11,6 @@ internal partial class DRG
 {
     internal static StandardOpenerLogic StandardOpener = new();
     internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
-    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
-    internal static bool LoTDActive = Gauge.IsLOTDActive;
-
-    internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
 
     internal static bool CanDRGWeave(uint oGCD)
     {
@@ -50,6 +46,8 @@ internal partial class DRG
 
         return false;
     }
+
+
 
     #region Animation Locks
 
@@ -185,6 +183,16 @@ internal partial class DRG
 
     #endregion
 
+    #region Gauge
+
+    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
+
+    internal static bool LoTDActive => Gauge.IsLOTDActive;
+
+    internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
+
+    #endregion
+
     #region ID's
 
     public const byte ClassID = 4;
@@ -246,12 +254,6 @@ internal partial class DRG
             ChaosThrust = 118,
             ChaoticSpring = 2719;
     }
-
-    public static class Traits
-    {
-        public const uint
-            EnhancedLifeSurge = 438;
-    }
-
+    
     #endregion
 }
