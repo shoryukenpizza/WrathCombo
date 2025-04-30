@@ -22,7 +22,7 @@ internal partial class MCH
 
     internal static bool UseRicochet => GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
-    internal static bool Battery => BatteryGauge >= 100;
+
 
     internal static bool HasNotWeaved =>
         ActionWatching.GetAttackType(ActionWatching.LastAction) !=
@@ -39,7 +39,7 @@ internal partial class MCH
     {
         if (!ActionWatching.HasDoubleWeaved() && !HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
-            !RobotActive && BatteryGauge >= 50)
+            !RobotActive && Battery >= 50)
         {
             if ((Config.MCH_ST_Adv_Turret_SubOption == 0 ||
                  Config.MCH_ST_Adv_Turret_SubOption == 1 && InBossEncounter() ||
@@ -49,21 +49,21 @@ internal partial class MCH
                 if (LevelChecked(BarrelStabilizer))
                 {
                     //1min
-                    if (BSUsed == 1 && BatteryGauge >= 90)
+                    if (BSUsed == 1 && Battery >= 90)
                         return true;
 
                     //even mins
-                    if (BSUsed >= 2 && BatteryGauge == 100)
+                    if (BSUsed >= 2 && Battery == 100)
                         return true;
 
                     //odd mins 1st queen
-                    if (BSUsed >= 2 && BatteryGauge is 50 && LastSummon is 100)
+                    if (BSUsed >= 2 && Battery is 50 && LastSummon is 100)
                         return true;
 
                     //odd mins 2nd queen
-                    if ((BSUsed % 3 is 2 && BatteryGauge >= 60 ||
-                         BSUsed % 3 is 0 && BatteryGauge >= 70 ||
-                         BSUsed % 3 is 1 && BatteryGauge >= 80) && LastSummon is 50)
+                    if ((BSUsed % 3 is 2 && Battery >= 60 ||
+                         BSUsed % 3 is 0 && Battery >= 70 ||
+                         BSUsed % 3 is 1 && Battery >= 80) && LastSummon is 50)
                         return true;
                 }
 
@@ -71,8 +71,8 @@ internal partial class MCH
                     return true;
             }
 
-            if (IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && !InBossEncounter() && BatteryGauge is 100 ||
-                Config.MCH_ST_Adv_Turret_SubOption == 1 && !InBossEncounter() && BatteryGauge >= Config.MCH_ST_TurretUsage)
+            if (IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && !InBossEncounter() && Battery is 100 ||
+                Config.MCH_ST_Adv_Turret_SubOption == 1 && !InBossEncounter() && Battery >= Config.MCH_ST_TurretUsage)
                 return true;
         }
 
@@ -98,20 +98,20 @@ internal partial class MCH
                   Config.MCH_ST_Adv_Excavator_SubOption == 1 && InBossEncounter())) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
                 (BSUsed is 1 ||
-                 BSUsed % 3 is 2 && BatteryGauge <= 40 ||
-                 BSUsed % 3 is 0 && BatteryGauge <= 50 ||
-                 BSUsed % 3 is 1 && BatteryGauge <= 60 ||
+                 BSUsed % 3 is 2 && Battery <= 40 ||
+                 BSUsed % 3 is 0 && Battery <= 50 ||
+                 BSUsed % 3 is 1 && Battery <= 60 ||
                  GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && Config.MCH_ST_Reassembled[1]) &&
-                !LevelChecked(Excavator) && ActionReady(Chainsaw) && !Battery)
+                !LevelChecked(Excavator) && ActionReady(Chainsaw) && !MaxBattery)
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && Config.MCH_ST_Reassembled[2]) &&
-                ActionReady(AirAnchor) && !Battery)
+                ActionReady(AirAnchor) && !MaxBattery)
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
@@ -145,9 +145,9 @@ internal partial class MCH
               Config.MCH_ST_Adv_Excavator_SubOption == 1 && InBossEncounter())) &&
             LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady) &&
             (BSUsed is 1 ||
-             BSUsed % 3 is 2 && BatteryGauge <= 40 ||
-             BSUsed % 3 is 0 && BatteryGauge <= 50 ||
-             BSUsed % 3 is 1 && BatteryGauge <= 60 ||
+             BSUsed % 3 is 2 && Battery <= 40 ||
+             BSUsed % 3 is 0 && Battery <= 50 ||
+             BSUsed % 3 is 1 && Battery <= 60 ||
              GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
         {
             actionID = Excavator;
@@ -157,7 +157,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_Chainsaw) && ReassembledChainsawST) &&
-            !Battery && !HasStatusEffect(Buffs.ExcavatorReady) && ActionReady(Chainsaw))
+            !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && ActionReady(Chainsaw))
         {
             actionID = Chainsaw;
 
@@ -166,7 +166,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
-            !Battery && ActionReady(AirAnchor))
+            !MaxBattery && ActionReady(AirAnchor))
         {
             actionID = AirAnchor;
 
@@ -185,7 +185,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor)) &&
-            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !Battery &&
+            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
             ActionReady(HotShot))
         {
             actionID = HotShot;
@@ -392,9 +392,11 @@ internal partial class MCH
 
     internal static byte LastSummon => Gauge.LastSummonBatteryPower;
 
-    internal static byte HeatGauge => Gauge.Heat;
+    internal static byte Heat => Gauge.Heat;
 
-    internal static byte BatteryGauge => Gauge.Battery;
+    internal static byte Battery => Gauge.Battery;
+
+    internal static bool MaxBattery => Battery >= 100;
 
     #endregion
 

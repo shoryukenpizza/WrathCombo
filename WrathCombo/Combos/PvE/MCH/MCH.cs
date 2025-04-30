@@ -76,7 +76,7 @@ internal partial class MCH : PhysicalRanged
                             return BarrelStabilizer;
 
                         // Hypercharge
-                        if ((HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+                        if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                             !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
@@ -229,7 +229,7 @@ internal partial class MCH : PhysicalRanged
 
                         // Hypercharge
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Hypercharge) &&
-                            (HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+                            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                             !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
@@ -369,11 +369,11 @@ internal partial class MCH : PhysicalRanged
                         !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
-                    if (BatteryGauge == 100)
+                    if (Battery == 100)
                         return OriginalHook(RookAutoturret);
 
                     // Hypercharge
-                    if ((HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
                         LevelChecked(AutoCrossbow) &&
                         (BioBlaster.LevelChecked() && GetCooldownRemainingTime(BioBlaster) > 10 ||
                          !BioBlaster.LevelChecked()) &&
@@ -497,12 +497,12 @@ internal partial class MCH : PhysicalRanged
                         return BarrelStabilizer;
 
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Queen) &&
-                        BatteryGauge >= Config.MCH_AoE_TurretUsage)
+                        Battery >= Config.MCH_AoE_TurretUsage)
                         return OriginalHook(RookAutoturret);
 
                     // Hypercharge
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Hypercharge) &&
-                        (HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                        (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
                         LevelChecked(AutoCrossbow) &&
                         (BioBlaster.LevelChecked() && GetCooldownRemainingTime(BioBlaster) > 10 ||
                          !BioBlaster.LevelChecked() || IsNotEnabled(CustomComboPreset.MCH_AoE_Adv_Bioblaster)) &&
@@ -618,7 +618,7 @@ internal partial class MCH : PhysicalRanged
                 return Wildfire;
 
             if (!IsOverheated && LevelChecked(Hypercharge) &&
-                (HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)))
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
                 return Hypercharge;
 
             if (IsEnabled(CustomComboPreset.MCH_Heatblast_GaussRound) &&
@@ -656,7 +656,7 @@ internal partial class MCH : PhysicalRanged
                 return BarrelStabilizer;
 
             if (!IsOverheated && LevelChecked(Hypercharge) &&
-                (HeatGauge >= 50 || HasStatusEffect(Buffs.Hypercharged)))
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
                 return Hypercharge;
 
             if (IsEnabled(CustomComboPreset.MCH_AutoCrossbow_GaussRound) &&
