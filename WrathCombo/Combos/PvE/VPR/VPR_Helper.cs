@@ -11,7 +11,7 @@ namespace WrathCombo.Combos.PvE;
 internal partial class VPR
 {
     internal static VPROpenerMaxLevel1 Opener1 = new();
-    
+
     internal static float IreCD => GetCooldownRemainingTime(SerpentsIre);
 
     internal static bool In5Y => HasBattleTarget() && GetTargetDistance() <= 5;
@@ -21,7 +21,7 @@ internal partial class VPR
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
     internal static bool HasRattlingCoilStack() => RattlingCoilStacks > 0;
-    
+
     #region Awaken
 
     internal static bool UseReawaken()
@@ -180,7 +180,7 @@ internal partial class VPR
     }
 
     #endregion
-    
+
     #region Combos
 
     internal static float GCD => GetCooldown(OriginalHook(ReavingFangs)).CooldownTotal;

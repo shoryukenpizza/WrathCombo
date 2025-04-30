@@ -15,7 +15,7 @@ internal partial class MCH
     internal static MCHOpenerLvl90EarlyTools Lvl90EarlyTools = new();
 
     internal static int BSUsed => ActionWatching.CombatActions.Count(x => x == BarrelStabilizer);
-    
+
     internal static bool UseGaussRound => GetRemainingCharges(OriginalHook(GaussRound)) >= GetRemainingCharges(OriginalHook(Ricochet));
 
     internal static bool UseRicochet => GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
@@ -184,7 +184,7 @@ internal partial class MCH
 
         return false;
     }
-    
+
     #region Reassembled
 
     internal static bool ReassembledExcavatorST =>
@@ -229,7 +229,7 @@ internal partial class MCH
         LevelChecked(Chainsaw) && GetCooldownRemainingTime(Chainsaw) >= 9;
 
     #endregion
-       
+
     #region Combos
 
     internal static float GCD => GetCooldown(OriginalHook(SplitShot)).CooldownTotal;

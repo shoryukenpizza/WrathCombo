@@ -46,7 +46,7 @@ internal partial class DRG
 
         return false;
     }
-    
+
     #region Animation Locks
 
     internal static readonly List<uint> FastLocks =
@@ -252,6 +252,6 @@ internal partial class DRG
             ChaosThrust = 118,
             ChaoticSpring = 2719;
     }
-    
+
     #endregion
 }

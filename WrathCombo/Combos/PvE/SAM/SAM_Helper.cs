@@ -23,7 +23,7 @@ internal partial class SAM
     internal static bool DoubleMeikyo => TraitLevelChecked(Traits.EnhancedMeikyoShishui);
 
     internal static int SenCount => GetSenCount();
-    
+
     internal static bool UseMeikyo()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
@@ -263,10 +263,10 @@ internal partial class SAM
     #region Gauge
 
     internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
-    
+
     internal static bool HasGetsu => Gauge.HasGetsu;
 
-    internal static bool HasSetsu =>Gauge.HasSetsu;
+    internal static bool HasSetsu => Gauge.HasSetsu;
 
     internal static bool HasKa => Gauge.HasKa;
 
