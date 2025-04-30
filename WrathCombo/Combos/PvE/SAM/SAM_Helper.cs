@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
+﻿using Dalamud.Game.ClientState.JobGauge.Enums;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM
 {
-    internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
     internal static SAMOpenerMaxLevel1 Opener1 = new();
 
     internal static bool RefreshFugetsu => GetStatusEffectRemainingTime(Buffs.Fugetsu) < GetStatusEffectRemainingTime(Buffs.Fuka);
@@ -28,13 +28,13 @@ internal partial class SAM
     {
         int senCount = 0;
 
-        if (Gauge.HasGetsu)
+        if (HasGetsu)
             senCount++;
 
-        if (Gauge.HasSetsu)
+        if (HasSetsu)
             senCount++;
 
-        if (Gauge.HasKa)
+        if (HasKa)
             senCount++;
 
         return senCount;
@@ -257,6 +257,28 @@ internal partial class SAM
             IsOffCooldown(Senei) &&
             IsOffCooldown(Ikishoten);
     }
+
+    #endregion
+
+    #region Gauge
+
+    internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
+
+    internal static Sen Sen => Gauge.Sen;
+
+    internal static bool HasGetsu => Sen is Sen.Getsu;
+
+    internal static bool HasSetsu => Sen is Sen.Setsu;
+
+    internal static bool HasKa => Sen is Sen.Ka;
+
+    internal static byte Kenki => Gauge.Kenki;
+
+    internal static byte MeditationStacks => Gauge.MeditationStacks;
+
+    internal static Kaeshi Kaeshi => Gauge.Kaeshi;
+
+    internal static bool NamikiriReady => Kaeshi is Kaeshi.Namikiri;
 
     #endregion
 
