@@ -9,9 +9,49 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
 {
-    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
     internal static StandardOpenerLogic StandardOpener = new();
     internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
+    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
+    internal static bool LoTDActive = Gauge.IsLOTDActive;
+
+    internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
+
+    internal static bool CanDRGWeave(uint oGCD)
+    {
+        float gcdTimer = GetCooldownRemainingTime(TrueThrust);
+
+        //GCD Ready - No Weave
+        if (IsOffCooldown(TrueThrust))
+            return false;
+
+        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
+            return true;
+
+        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f)
+            return true;
+
+        if (SlowLock == oGCD && gcdTimer >= 1.5f)
+            return true;
+
+        return false;
+    }
+
+    internal static bool UseLifeSurge()
+    {
+        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
+        {
+            if (LevelChecked(Drakesbane) && LoTDActive &&
+                (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
+                (JustUsed(WheelingThrust) ||
+                 JustUsed(FangAndClaw) ||
+                 JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
+                return true;
+        }
+
+        return false;
+    }
+
+    #region Animation Locks
 
     internal static readonly List<uint> FastLocks =
     [
@@ -41,6 +81,10 @@ internal partial class DRG
 
     internal static uint SlowLock => Stardiver;
 
+    #endregion
+
+    #region Openers
+
     internal static WrathOpener Opener()
     {
         if (StandardOpener.LevelChecked && Config.DRG_SelectedOpener == 0)
@@ -51,43 +95,6 @@ internal partial class DRG
 
         return WrathOpener.Dummy;
     }
-
-    internal static bool CanDRGWeave(uint oGCD)
-    {
-        float gcdTimer = GetCooldownRemainingTime(TrueThrust);
-
-        //GCD Ready - No Weave
-        if (IsOffCooldown(TrueThrust))
-            return false;
-
-        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
-            return true;
-
-        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f)
-            return true;
-
-        if (SlowLock == oGCD && gcdTimer >= 1.5f)
-            return true;
-
-        return false;
-    }
-
-    internal static bool UseLifeSurge()
-    {
-        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
-        {
-            if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
-                (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
-                (JustUsed(WheelingThrust) ||
-                 JustUsed(FangAndClaw) ||
-                 JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
-                return true;
-        }
-
-        return false;
-    }
-
-    #region Openers
 
     internal class StandardOpenerLogic : WrathOpener
     {
