@@ -103,7 +103,7 @@ internal partial class BLM : Caster
 
                 if (ActiveParadox && !HasStatusEffect(Buffs.Firestarter) &&
                     !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
-                    (AstralFireStacks< 3 ||
+                    (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
@@ -112,7 +112,7 @@ internal partial class BLM : Caster
                     return FlareStar;
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks< 3 ||
+                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
                     !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
                     !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Fire3;
@@ -221,11 +221,11 @@ internal partial class BLM : Caster
                         return Role.Swiftcast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
-                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
+                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
                         (GetRemainingCharges(Triplecast) is 2 && Config.BLM_ST_Triplecast_UseCharges == 1 ||
                          HasCharges(Triplecast) && Config.BLM_ST_Triplecast_UseCharges == 2) &&
-                        JustUsed(Despair) && !ActionReady(Manafont) &&
-                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines))
+                        JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
@@ -312,7 +312,7 @@ internal partial class BLM : Caster
                 if (ActiveParadox && !HasStatusEffect(Buffs.Firestarter) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast) &&
-                    (AstralFireStacks< 3 ||
+                    (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
@@ -322,7 +322,7 @@ internal partial class BLM : Caster
                     return FlareStar;
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks< 3 ||
+                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
                     !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
                     !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Fire3;
