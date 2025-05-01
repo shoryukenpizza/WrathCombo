@@ -55,7 +55,7 @@ internal partial class GNB : Tank
     public static Lv90SlowEarlyNM GNBLv90SlowEarlyNM = new();
     public static Lv100SlowEarlyNM GNBLv100SlowEarlyNM = new();
 
-    public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0));
+    public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
     private static WrathOpener GetOpener(bool isNormal)
     {
         if (FastGNB || MidGNB)
