@@ -833,7 +833,7 @@ internal partial class DRK
 
             var bloodGCDReady =
                 LevelChecked(Bloodspiller) &&
-                GetCooldownRemainingTime(Bloodspiller) < GCD;
+                GetCooldownRemainingTime(Bloodspiller) < GCD/2;
 
             if (!bloodGCDReady) return false;
 
