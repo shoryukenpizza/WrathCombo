@@ -403,7 +403,7 @@ internal partial class GNB : Tank
     internal static bool ShouldUseZone() => CanZone && CanWeave() && NMcd is < 57.5f and > 17f;
     internal static bool ShouldUseBowShock() => CanBow && CanWeave() && NMcd is < 57.5f and >= 40;
     internal static bool ShouldUseContinuation() => CanContinue && (HasStatusEffect(Buffs.ReadyToRip) || HasStatusEffect(Buffs.ReadyToTear) || HasStatusEffect(Buffs.ReadyToGouge) || 
-        (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) && (TraitLevelChecked(Traits.CartridgeChargeII) ? (SlowGNB ? NMcd is > 1.5f || CanDelayedWeave(0.6f, 0) : (FastGNB || MidGNB)) : !TraitLevelChecked(Traits.CartridgeChargeII))));
+        (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) && (LevelChecked(DoubleDown) ? (SlowGNB ? NMcd is > 1.5f || CanDelayedWeave(0.6f, 0) : (FastGNB || MidGNB)) : !LevelChecked(DoubleDown))));
     #endregion
 
     #region GCDs
