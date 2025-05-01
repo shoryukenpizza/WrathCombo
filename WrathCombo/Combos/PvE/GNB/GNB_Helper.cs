@@ -28,7 +28,7 @@ internal partial class GNB : Tank
     internal static bool CanBS => LevelChecked(BurstStrike) && Ammo > 0;
     internal static bool CanFC => LevelChecked(FatedCircle) && Ammo > 0;
     internal static bool CanGF => LevelChecked(GnashingFang) && GFcd < 0.6f && !HasStatusEffect(Buffs.ReadyToBlast) && GunStep == 0 && Ammo > 0;
-    internal static bool CanDD => TraitLevelChecked(Traits.CartridgeChargeII) && DDcd < 0.6f && Ammo > 0;
+    internal static bool CanDD => LevelChecked(DoubleDown) && DDcd < 0.6f && Ammo > 0;
     internal static bool CanBF => LevelChecked(Bloodfest) && BFcd < 0.6f;
     internal static bool CanZone => LevelChecked(DangerZone) && GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f;
     internal static bool CanSB => LevelChecked(SonicBreak) && HasBreak;
