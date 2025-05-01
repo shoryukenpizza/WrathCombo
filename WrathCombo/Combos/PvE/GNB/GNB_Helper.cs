@@ -55,7 +55,7 @@ internal partial class GNB : Tank
     public static Lv90SlowEarlyNM GNBLv90SlowEarlyNM = new();
     public static Lv100SlowEarlyNM GNBLv100SlowEarlyNM = new();
 
-    public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !TraitLevelChecked(Traits.CartridgeChargeII)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
+    public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0));
     private static WrathOpener GetOpener(bool isNormal)
     {
         if (FastGNB || MidGNB)
@@ -410,9 +410,9 @@ internal partial class GNB : Tank
     internal static bool ShouldUseLightningShot() => LevelChecked(LightningShot) && !InMeleeRange() && HasBattleTarget();
     internal static bool ShouldUseGnashingFang() => CanGF && (NMcd is > 17 and < 35 || JustUsed(NoMercy, 6f));
     internal static bool ShouldUseDoubleDown() => CanDD && HasNM && (IsOnCooldown(GnashingFang) || Ammo == 1);
-    internal static bool ShouldUseSonicBreak() => CanSB && ((IsOnCooldown(GnashingFang) || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !TraitLevelChecked(Traits.CartridgeChargeII)));
+    internal static bool ShouldUseSonicBreak() => CanSB && ((IsOnCooldown(GnashingFang) || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)));
     internal static bool ShouldUseReignOfBeasts() => CanReign && IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) && !HasStatusEffect(Buffs.ReadyToBreak) && GunStep == 0;
-    internal static bool ShouldUseBurstStrike() => (CanBS && HasNM && IsOnCooldown(GnashingFang) && (IsOnCooldown(DoubleDown) || (!TraitLevelChecked(Traits.CartridgeChargeII) && Ammo > 0)) && !HasReign && GunStep == 0);
+    internal static bool ShouldUseBurstStrike() => (CanBS && HasNM && IsOnCooldown(GnashingFang) && (IsOnCooldown(DoubleDown) || (!LevelChecked(DoubleDown) && Ammo > 0)) && !HasReign && GunStep == 0);
     #endregion
 
     #endregion
