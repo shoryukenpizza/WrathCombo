@@ -877,6 +877,8 @@ internal partial class DRK
 
             #endregion
 
+            if (HasStatusEffect(Buffs.Scorn)) return false;
+
             #region Blood Spending after Delirium Chain
 
             if ((flags.HasFlag(Combo.Simple) ||
