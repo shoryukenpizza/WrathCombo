@@ -183,7 +183,7 @@ internal partial class MCH : PhysicalRanged
 
             // Opener
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) &&
-                TargetIsHostile() && 
+                TargetIsHostile() &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
 

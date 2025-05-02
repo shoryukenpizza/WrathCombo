@@ -104,7 +104,7 @@ internal partial class MCH
                     break;
 
                 case CustomComboPreset.MCH_ST_Adv_Reassemble:
-                    DrawSliderInt(0, 1, MCH_ST_ReassemblePool, 
+                    DrawSliderInt(0, 1, MCH_ST_ReassemblePool,
                         "Number of Charges to Save for Manual Use");
 
                     DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {Excavator.ActionName()}", "", 5, 0);
@@ -146,7 +146,7 @@ internal partial class MCH
                     break;
 
                 case CustomComboPreset.MCH_AoE_Adv_Queen:
-                    DrawSliderInt(50, 100, MCH_AoE_TurretUsage, 
+                    DrawSliderInt(50, 100, MCH_AoE_TurretUsage,
                         "Battery threshold", sliderIncrement: 5);
 
                     break;
@@ -159,7 +159,7 @@ internal partial class MCH
 
                 //Variant
                 case CustomComboPreset.MCH_Variant_Cure:
-                    DrawSliderInt(1, 100, MCH_VariantCure, 
+                    DrawSliderInt(1, 100, MCH_VariantCure,
                         "HP% to be at or under", 200);
 
                     break;
