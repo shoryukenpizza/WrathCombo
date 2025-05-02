@@ -20,7 +20,7 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
-                if (ActionReady(Amplifier) && EnochianTimer >= 20000 &&
+                if (ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
                     !HasMaxPolyglotStacks)
                     return Amplifier;
 
@@ -58,7 +58,7 @@ internal partial class BLM : Caster
                 }
             }
 
-            if (HasMaxPolyglotStacks && EnochianTimer <= 5000)
+            if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
@@ -199,7 +199,7 @@ internal partial class BLM : Caster
             if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
-                    ActionReady(Amplifier) && EnochianTimer >= 20000 &&
+                    ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
                     !HasMaxPolyglotStacks)
                     return Amplifier;
 
@@ -254,7 +254,7 @@ internal partial class BLM : Caster
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                HasMaxPolyglotStacks && EnochianTimer <= 5000)
+                HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
@@ -411,7 +411,7 @@ internal partial class BLM : Caster
                 if (ActionReady(Transpose) && (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
-                if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
+                if (ActionReady(Amplifier) && PolyglotTimer >= 20000)
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
@@ -511,7 +511,7 @@ internal partial class BLM : Caster
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
-                    ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
+                    ActionReady(Amplifier) && PolyglotTimer >= 20000)
                     return Amplifier;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_LeyLines) &&
