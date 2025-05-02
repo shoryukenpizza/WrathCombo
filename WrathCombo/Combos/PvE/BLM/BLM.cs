@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM : Caster
@@ -100,13 +101,8 @@ internal partial class BLM : Caster
                 //        ? Xenoglossy
                 //        : Foul;
 
-                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
-                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
-                    return Fire3;
-
-                if (ActiveParadox &&
+                if (ActiveParadox && !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -115,6 +111,11 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
+                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
+                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
+                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                    return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
                     return FireSpam;
@@ -220,11 +221,11 @@ internal partial class BLM : Caster
                         return Role.Swiftcast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
-                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
-                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
+                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                         (GetRemainingCharges(Triplecast) is 2 && Config.BLM_ST_Triplecast_UseCharges == 1 ||
                          HasCharges(Triplecast) && Config.BLM_ST_Triplecast_UseCharges == 2) &&
-                        JustUsed(Despair) && !ActionReady(Manafont))
+                        JustUsed(Despair) && !ActionReady(Manafont) &&
+                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines))
                         return Triplecast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
@@ -308,13 +309,9 @@ internal partial class BLM : Caster
                 //        ? Xenoglossy
                 //        : Foul;
 
-                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
-                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
-                    return Fire3;
-
-                if (ActiveParadox &&
+                if (ActiveParadox && !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -323,6 +320,12 @@ internal partial class BLM : Caster
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
                     FlarestarReady)
                     return FlareStar;
+
+                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
+                     TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
+                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                    return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
                     return FireSpam;
