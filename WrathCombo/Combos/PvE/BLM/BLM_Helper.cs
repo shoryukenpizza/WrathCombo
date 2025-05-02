@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
@@ -39,7 +38,7 @@ internal partial class BLM
     internal static bool EndOfIcePhaseAoEMaxLevel => IcePhase && HasMaxUmbralHeartStacks && TraitLevelChecked(Traits.EnhancedAstralFire);
 
     internal static bool FlarestarReady => LevelChecked(FlareStar) && AstralSoulStacks is 6;
-    
+
     internal static Status? ThunderDebuffST => GetStatusEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget);
 
     internal static Status? ThunderDebuffAoE => GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
@@ -201,7 +200,7 @@ internal partial class BLM
     internal static int AstralSoulStacks => Gauge.AstralSoulStacks;
 
     internal static byte PolyglotStacks => Gauge.PolyglotStacks;
-    
+
     internal static short PolyglotTimer => Gauge.EnochianTimer;
 
     #endregion
