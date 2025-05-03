@@ -235,12 +235,6 @@ internal partial class AST
 
                 if (Config.AST_QuickTarget_Prio)
                 {
-                    PartyTargets.Shuffle();
-                }
-                else
-                {
-                    
-
                     PartyTargets.Sort((x, y) =>
                     {
                         Dictionary<byte, int> jobPriorities = new()
@@ -266,15 +260,16 @@ internal partial class AST
                             if (obj is not IBattleChara chara)
                                 return int.MaxValue;
 
-                            return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+                            return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : 99;
 
                         }
 
-
-
                         return GetPriority(x).CompareTo(GetPriority(y));
                     });
-
+                }
+                else
+                {
+                    PartyTargets.Shuffle();
                 }
 //End of AST Fixed prio
 
