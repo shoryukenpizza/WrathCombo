@@ -230,7 +230,36 @@ internal partial class AST
             //Grok is a scary SOB
             if (PartyTargets.Count > 0)
             {
-                PartyTargets.Shuffle();
+                //PartyTargets.Shuffle();
+
+                PartyTargets.Sort((x, y) =>
+{
+    Dictionary<byte, int> jobPriorities = new()
+    {
+        { PCT.JobID, 1 },
+        { SAM.JobID, 2 },
+        { RPR.JobID, 3 },
+        { VPR.JobID, 4 },
+        { MNK.JobID, 5 },
+        { NIN.JobID, 6 },
+        { DRG.JobID, 7 },
+        { BLM.JobID, 8 },
+        { RDM.JobID, 9 },
+        { SMN.JobID, 10 },
+        { MCH.JobID, 11 },
+        { BRD.JobID, 12 }
+    };
+
+    int GetPriority(IGameObject obj)
+    {
+        if (obj is not IBattleChara chara)
+            return int.MaxValue;
+
+        return jobPriorities.TryGetValue(chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+    }
+
+    return GetPriority(x).CompareTo(GetPriority(y));
+});
 
                 IGameObject? suitableDps = null;
                 IGameObject? unsuitableDps = null;
