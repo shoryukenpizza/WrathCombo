@@ -116,36 +116,6 @@ namespace WrathCombo.CustomComboNS.Functions
             };
         }
 
-        /// <summary>
-        /// Grabs the Mouse Over Target from Party List.
-        /// Returns Null if nothing found
-        /// </summary>
-        public static unsafe IGameObject? GetMouseOverHealTarget()
-        {
-            try
-            {
-                GameObject* uiTargetPtr = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
-                if (uiTargetPtr != null)
-                {
-                    var gameObjectId = uiTargetPtr->GetGameObjectId();
-                    if (gameObjectId.ObjectId != 0)
-                    {
-                        IGameObject? uiTarget = Svc.Objects.FirstOrDefault(x => x.GameObjectId == gameObjectId.ObjectId);
-                        if (uiTarget != null && HasFriendlyTarget(uiTarget))
-                        {
-                            return uiTarget;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Log();
-            }
-
-            return null;
-        }
-
         /// <summary> Grabs healable target. 
         /// Party UI Mouseover (optional) -> Soft Target -> Hard Target -> Player
         /// </summary>
@@ -154,7 +124,7 @@ namespace WrathCombo.CustomComboNS.Functions
             ITargetManager tm = Svc.Targets;
 
             // Check optional mouseover party UI target first
-            if (checkMOPartyUI && GetMouseOverHealTarget() is IGameObject uiTarget)
+            if (checkMOPartyUI && PartyTargetingService.UiMouseOverTarget is IGameObject uiTarget)
                 return uiTarget;
 
             // Check soft target
@@ -285,7 +255,7 @@ namespace WrathCombo.CustomComboNS.Functions
                 case TargetType.FocusTarget:
                     o = Svc.Targets.FocusTarget;
                     break;
-                case TargetType.UITarget:
+                case TargetType.UiMouseOverTarget:
                     return PartyTargetingService.UITarget;
                 case TargetType.FieldTarget:
                     o = Svc.Targets.MouseOverTarget;
@@ -326,7 +296,7 @@ namespace WrathCombo.CustomComboNS.Functions
             Target,
             SoftTarget,
             FocusTarget,
-            UITarget,
+            UiMouseOverTarget,
             FieldTarget,
             TargetsTarget,
             Self,

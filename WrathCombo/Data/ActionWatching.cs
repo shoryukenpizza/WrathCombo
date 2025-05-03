@@ -224,7 +224,7 @@ namespace WrathCombo.Data
                     break;
                 // UI Mousover Override
                 case 2:
-                    if (GetMouseOverHealTarget() is IGameObject mouseTarget)
+                    if (PartyTargetingService.UiMouseOverTarget is IGameObject mouseTarget)
                         targetObjectId = mouseTarget.GameObjectId;
                     break;
             }
