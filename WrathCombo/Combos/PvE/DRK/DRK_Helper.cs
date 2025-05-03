@@ -844,7 +844,8 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  IsSTEnabled(flags, Preset.DRK_ST_Sp_ScarletChain) ||
                  IsAoEEnabled(flags, Preset.DRK_AoE_Sp_ImpalementChain)) &&
-                HasStatusEffect(Buffs.EnhancedDelirium))
+                HasStatusEffect(Buffs.EnhancedDelirium) &&
+                GetStatusEffectStacks(Buffs.EnhancedDelirium) > 0)
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
                 else if (flags.HasFlag(Combo.AoE))
