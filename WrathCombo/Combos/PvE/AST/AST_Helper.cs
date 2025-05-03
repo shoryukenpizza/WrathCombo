@@ -230,40 +230,55 @@ internal partial class AST
             //Grok is a scary SOB
             if (PartyTargets.Count > 0)
             {
-                
-                //PartyTargets.Shuffle();
-                
-                PartyTargets.Sort((x, y) =>
-{
-    Dictionary<byte, int> jobPriorities = new()
-    {
-        { SAM.JobID, 1 },
-        { NIN.JobID, 2 },
-        { VPR.JobID, 3 },
-        { DRG.JobID, 4 },
-        { MNK.JobID, 5 },
-        { DRK.JobID, 6 },
-        { RPR.JobID, 7 },
-        { PCT.JobID, 8 },
-        { SMN.JobID, 9 },
-        { MCH.JobID, 10 },
-        { BRD.JobID, 11 },
-        { RDM.JobID, 12 },
-{ DNC.JobID, 13 },
-{ BLM.JobID, 14 }
-    };
 
-    int GetPriority(IGameObject obj)
-    {
-        if (obj is not IBattleChara chara)
-            return int.MaxValue;
+                //Start of AST Fixed Prio
 
-        return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+                if (Config.AST_QuickTarget_Prio)
+                {
+                    PartyTargets.Shuffle();
+                }
+                else
+                {
+                    
 
-    }
+                    PartyTargets.Sort((x, y) =>
+                    {
+                        Dictionary<byte, int> jobPriorities = new()
+                        {
+                        { SAM.JobID, 1 },
+                        { NIN.JobID, 2 },
+                        { VPR.JobID, 3 },
+                        { DRG.JobID, 4 },
+                        { MNK.JobID, 5 },
+                        { DRK.JobID, 6 },
+                        { RPR.JobID, 7 },
+                        { PCT.JobID, 8 },
+                        { SMN.JobID, 9 },
+                        { MCH.JobID, 10 },
+                        { BRD.JobID, 11 },
+                        { RDM.JobID, 12 },
+                        { DNC.JobID, 13 },
+                        { BLM.JobID, 14 }
+                        };
 
-    return GetPriority(x).CompareTo(GetPriority(y));
-});
+                        int GetPriority(IGameObject obj)
+                        {
+                            if (obj is not IBattleChara chara)
+                                return int.MaxValue;
+
+                            return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+
+                        }
+
+
+
+                        return GetPriority(x).CompareTo(GetPriority(y));
+                    });
+
+                }
+//End of AST Fixed prio
+
+
 
                 IGameObject? suitableDps = null;
                 IGameObject? unsuitableDps = null;
