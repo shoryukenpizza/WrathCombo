@@ -230,24 +230,27 @@ internal partial class AST
             //Grok is a scary SOB
             if (PartyTargets.Count > 0)
             {
+                
                 //PartyTargets.Shuffle();
-
+                
                 PartyTargets.Sort((x, y) =>
 {
     Dictionary<byte, int> jobPriorities = new()
     {
-        { PCT.JobID, 1 },
-        { SAM.JobID, 2 },
-        { RPR.JobID, 3 },
-        { VPR.JobID, 4 },
+        { SAM.JobID, 1 },
+        { NIN.JobID, 2 },
+        { VPR.JobID, 3 },
+        { DRG.JobID, 4 },
         { MNK.JobID, 5 },
-        { NIN.JobID, 6 },
-        { DRG.JobID, 7 },
-        { BLM.JobID, 8 },
-        { RDM.JobID, 9 },
-        { SMN.JobID, 10 },
-        { MCH.JobID, 11 },
-        { BRD.JobID, 12 }
+        { DRK.JobID, 6 },
+        { RPR.JobID, 7 },
+        { PCT.JobID, 8 },
+        { SMN.JobID, 9 },
+        { MCH.JobID, 10 },
+        { BRD.JobID, 11 },
+        { RDM.JobID, 12 },
+{ DNC.JobID, 13 },
+{ BLM.JobID, 14 }
     };
 
     int GetPriority(IGameObject obj)
@@ -255,7 +258,8 @@ internal partial class AST
         if (obj is not IBattleChara chara)
             return int.MaxValue;
 
-        return jobPriorities.TryGetValue(chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+        return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : int.MaxValue;
+
     }
 
     return GetPriority(x).CompareTo(GetPriority(y));

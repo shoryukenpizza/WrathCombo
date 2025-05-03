@@ -51,6 +51,8 @@ internal partial class AST
         public static UserFloat
             AST_ST_DPS_CombustUptime_Threshold = new("AST_ST_DPS_CombustUptime_Threshold");
 
+        
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
