@@ -90,16 +90,25 @@ internal partial class DRK : Tank
                 TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
 
+            var cdBossRequirement =
+                (int)Config.DRK_ST_CDsBossRequirement ==
+                (int)Config.BossRequirement.On;
+            var cdBossRequirementMet = !cdBossRequirement ||
+                                       (cdBossRequirement && InBossEncounter());
+            var disesteemOnly = true;
+
+            if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
+                IsEnabled(CustomComboPreset.DRK_ST_CD_Disesteem) &&
+                cdBossRequirementMet &&
+                TryGetAction<Cooldown>(comboFlags, ref newAction, disesteemOnly))
+                return newAction;
+
             if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
                 TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
 
-            var cdBossRequirement =
-                (int)Config.DRK_ST_CDsBossRequirement ==
-                (int)Config.BossRequirement.On;
             if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
-                ((cdBossRequirement && InBossEncounter()) ||
-                 !cdBossRequirement) &&
+                cdBossRequirementMet &&
                 TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
@@ -137,6 +146,9 @@ internal partial class DRK : Tank
                 return newAction;
 
             if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
+
+            if (TryGetAction<Cooldown>(comboFlags, ref newAction, true))
                 return newAction;
 
             if (TryGetAction<Spender>(comboFlags, ref newAction))
