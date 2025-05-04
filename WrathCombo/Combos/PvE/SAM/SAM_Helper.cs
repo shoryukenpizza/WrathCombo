@@ -79,7 +79,7 @@ internal partial class SAM
             }
 
             //Pre double meikyo
-            if (!DoubleMeikyo && GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+            if (!DoubleMeikyo && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                 return true;
         }
 
