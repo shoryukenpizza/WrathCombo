@@ -102,8 +102,7 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
-                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
                     return Fire3;
 
                 if (ActiveParadox &&
@@ -310,8 +309,7 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
-                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
                     return Fire3;
 
                 if (ActiveParadox &&
@@ -437,20 +435,17 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(Fire2) &&
-                    !TraitLevelChecked(Traits.EnhancedAstralFire) &&
-                    (TraitLevelChecked(Traits.UmbralHeart) && UmbralHearts > 1 || !TraitLevelChecked(Traits.UmbralHeart)))
+                if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Fire2);
 
                 if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    HasMaxUmbralHeartStacks &&
-                    !ActionReady(Manafont))
+                    HasMaxUmbralHeartStacks && !ActionReady(Manafont))
                     return Triplecast;
 
                 if (ActionReady(Flare))
                     return Flare;
 
-                if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Blizzard2);
 
                 if (ActionReady(Transpose))
@@ -459,16 +454,16 @@ internal partial class BLM : Caster
 
             if (IcePhase)
             {
-                if ((CurMp == MP.MaxMP || TraitLevelChecked(Traits.EnhancedAstralFire)) && HasMaxUmbralHeartStacks)
+                if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks)
                 {
-                    if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                    if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
                         return OriginalHook(Fire2);
 
                     if (ActionReady(Transpose))
                         return Transpose;
                 }
 
-                if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.EnhancedAstralFire)))
+                if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
                 {
                     if (HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
                         return Blizzard4;
@@ -533,8 +528,7 @@ internal partial class BLM : Caster
                 return OriginalHook(Thunder2);
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_ParadoxFiller) &&
-                ActiveParadox &&
-                EndOfIcePhaseAoEMaxLevel)
+                ActiveParadox && EndOfIcePhaseAoEMaxLevel)
                 return OriginalHook(Paradox);
 
             if (FirePhase)
@@ -542,9 +536,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(Fire2) &&
-                    !TraitLevelChecked(Traits.EnhancedAstralFire) &&
-                    (TraitLevelChecked(Traits.UmbralHeart) && UmbralHearts > 1 || !TraitLevelChecked(Traits.UmbralHeart)))
+                if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Fire2);
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Triplecast) &&
@@ -556,7 +548,8 @@ internal partial class BLM : Caster
                 if (ActionReady(Flare))
                     return Flare;
 
-                if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
+                    ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Blizzard2);
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
@@ -566,9 +559,10 @@ internal partial class BLM : Caster
 
             if (IcePhase)
             {
-                if ((CurMp == MP.MaxMP || TraitLevelChecked(Traits.EnhancedAstralFire)) && HasMaxUmbralHeartStacks)
+                if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks)
                 {
-                    if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                    if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
+                        ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
                         return OriginalHook(Fire2);
 
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
@@ -576,7 +570,7 @@ internal partial class BLM : Caster
                         return Transpose;
                 }
 
-                if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.EnhancedAstralFire)))
+                if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
                 {
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
                         HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
