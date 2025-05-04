@@ -950,7 +950,7 @@ internal partial class DRK
             var secondsBeforeBurst =
                 flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST)
                     ? Config.DRK_ST_BurstSoonThreshold
-                    : 30;
+                    : 20;
             var evenBurstSoon =
                 IsOnCooldown(LivingShadow) &&
                 GetCooldownRemainingTime(LivingShadow) < secondsBeforeBurst;
