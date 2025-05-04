@@ -93,7 +93,7 @@ internal partial class SAM
 
         if (LevelChecked(Iaijutsu))
         {
-            if ((Config.SAM_ST_CDs_IaijutsuOption[3] ||
+            if ((IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) && Config.SAM_ST_CDs_IaijutsuOption[3] ||
                  IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
                 (HasStatusEffect(Buffs.TsubameReady) &&
                  (SenCount is 3 ||
@@ -117,7 +117,7 @@ internal partial class SAM
                 return true;
             }
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_AdvancedMode) &&
+            if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
                 (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
                  IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) && !IsMoving()) &&
                 (Config.SAM_ST_CDs_IaijutsuOption[0] &&
