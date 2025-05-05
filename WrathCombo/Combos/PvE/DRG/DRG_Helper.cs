@@ -12,26 +12,6 @@ internal partial class DRG
     internal static StandardOpenerLogic StandardOpener = new();
     internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
 
-    internal static bool CanDRGWeave(uint oGCD)
-    {
-        float gcdTimer = GetCooldownRemainingTime(TrueThrust);
-
-        //GCD Ready - No Weave
-        if (IsOffCooldown(TrueThrust))
-            return false;
-
-        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
-            return true;
-
-        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f)
-            return true;
-
-        if (SlowLock == oGCD && gcdTimer >= 1.5f)
-            return true;
-
-        return false;
-    }
-
     internal static bool UseLifeSurge()
     {
         if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
@@ -76,6 +56,26 @@ internal partial class DRG
         : GetStatusEffect(Debuffs.ChaosThrust, CurrentTarget);
 
     internal static uint SlowLock => Stardiver;
+
+    internal static bool CanDRGWeave(uint oGCD)
+    {
+        float gcdTimer = GetCooldownRemainingTime(TrueThrust);
+
+        //GCD Ready - No Weave
+        if (IsOffCooldown(TrueThrust))
+            return false;
+
+        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
+            return true;
+
+        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f)
+            return true;
+
+        if (SlowLock == oGCD && gcdTimer >= 1.5f)
+            return true;
+
+        return false;
+    }
 
     #endregion
 
