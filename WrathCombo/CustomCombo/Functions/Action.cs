@@ -84,23 +84,23 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns></returns>
         public static int GetTraitLevel(uint id) => ActionWatching.GetTraitLevel(id);
 
-        /// <summary> Checks if the player can use an action based on level required and whether it has charges / is off cooldown. </summary>
+        /// <summary> Checks if the player can use an action based on the level required and whether it has charges / is off cooldown. </summary>
         /// <param name="id"> ID of the action. </param>
-        /// <returns> Non-charge actions have a charge value of 1 when off cooldown; otherwise 0. </returns>
+        /// <returns> Non-charge actions have a charge value of 1 when off cooldown; otherwise they have a value of 0. </returns>
         public static unsafe bool ActionReady(uint id)
         {
             uint hookedId = OriginalHook(id);
 
-            // Check 1: Cooldown (Non-Abilities)
-            bool isOffCooldown = GetCooldownRemainingTime(hookedId) <= RemainingGCD + 0.5f && ActionWatching.GetAttackType(hookedId) != ActionWatching.ActionAttackType.Ability;
-
-            // Check 2: Charges
+            // Check 1: Charges
             bool hasChargesLeft = HasCharges(hookedId);
+
+            // Check 2: Cooldown (Non-Abilities)
+            bool isOffCooldown = ActionWatching.GetAttackType(hookedId) != ActionWatching.ActionAttackType.Ability && GetCooldownRemainingTime(hookedId) <= RemainingGCD + 0.5f;
 
             // Check 3: Usable Flags
             bool isUsable = ActionManager.Instance()->GetActionStatus(ActionType.Action, hookedId, checkRecastActive: false, checkCastingActive: false) is 0 or 582 or 580;
 
-            return (isOffCooldown || hasChargesLeft) && isUsable;
+            return isUsable && (hasChargesLeft || isOffCooldown);
         }
 
         /// <summary> Checks if all passed actions are ready to be used. </summary>
