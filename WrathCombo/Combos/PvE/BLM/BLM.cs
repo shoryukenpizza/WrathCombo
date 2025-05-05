@@ -597,9 +597,9 @@ internal partial class BLM : Caster
                 : actionID;
     }
 
-    internal class BLM_Scathe_Xeno : CustomCombo
+    internal class BLM_ScatheXeno : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Scathe_Xeno;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_ScatheXeno;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Scathe && LevelChecked(Xenoglossy) && HasPolyglotStacks()
@@ -607,9 +607,9 @@ internal partial class BLM : Caster
                 : actionID;
     }
 
-    internal class BLM_Blizzard_1to3 : CustomCombo
+    internal class BLM_Blizzard1to3 : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Blizzard_1to3;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Blizzard1to3;
 
         protected override uint Invoke(uint actionID)
         {
@@ -627,9 +627,9 @@ internal partial class BLM : Caster
         }
     }
 
-    internal class BLM_Fire_1to3 : CustomCombo
+    internal class BLM_Fire1to3 : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Fire_1to3;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Fire1to3;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Fire &&
@@ -717,21 +717,30 @@ internal partial class BLM : Caster
                 : actionID;
     }
 
-    internal class BLM_Fire_4to3 : CustomCombo
+    internal class BLM_Fire4to3 : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Fire_4to3;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Fire4to3;
         protected override uint Invoke(uint actionID) =>
             actionID is Fire4 && !(FirePhase && LevelChecked(Fire4))
                 ? Fire3
                 : actionID;
     }
 
-    internal class BLM_Blizzard_4toDespair : CustomCombo
+    internal class BLM_Blizzard4toDespair : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Blizzard_4toDespair;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_Blizzard4toDespair;
         protected override uint Invoke(uint actionID) =>
             actionID is Blizzard4 && FirePhase && LevelChecked(Despair)
                 ? Despair
+                : actionID;
+    }
+
+    internal class BLM_AmplifierXeno : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_AmplifierXeno;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Amplifier && HasMaxPolyglotStacks
+                ? Xenoglossy
                 : actionID;
     }
 }
