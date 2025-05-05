@@ -32,15 +32,16 @@ internal partial class SAM
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
-            //if no opener/before lvl 100
-            if ((IsNotEnabled(CustomComboPreset.SAM_ST_Opener) || !LevelChecked(TendoSetsugekka) ||
-                 IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter()) &&
-                meikyoUsed < 2 && !HasStatusEffect(Buffs.MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
-                return true;
-
-            //double meikyo
-            if (DoubleMeikyo)
+            if (MaxLvL)
             {
+                //if no opener
+                if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter() ||
+                     IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
+                    meikyoUsed < 2 && !HasStatusEffect(Buffs.MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+                    return true;
+
+                //double meikyo
+
                 if (HasStatusEffect(Buffs.TsubameReady))
                 {
                     switch (gcd)
@@ -54,8 +55,7 @@ internal partial class SAM
 
                         //Odd windows
                         case >= 2.09f when
-                            (MaxLvL && GetCooldownRemainingTime(Senei) <= 10 ||
-                             !MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85) &&
+                            GetCooldownRemainingTime(Senei) <= 10 &&
                             (meikyoUsed % 7 is 1 && SenCount is 3 ||
                              meikyoUsed % 7 is 3 && SenCount is 2 ||
                              meikyoUsed % 7 is 5 && SenCount is 1):
@@ -66,8 +66,7 @@ internal partial class SAM
 
                         //Odd windows
                         case <= 2.08f when
-                            (!MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85 ||
-                             MaxLvL && GetCooldownRemainingTime(Senei) <= 5) && SenCount is 3:
+                            GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3:
 
                             return true;
                     }
@@ -78,8 +77,9 @@ internal partial class SAM
                     return true;
             }
 
-            //Pre double meikyo
-            if (!DoubleMeikyo && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+            //Pre Max Lvl
+            if (!MaxLvL && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady) &&
+                (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
                 return true;
         }
 
@@ -97,10 +97,8 @@ internal partial class SAM
                  IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
                 (HasStatusEffect(Buffs.TsubameReady) &&
                  (SenCount is 3 ||
-                  MaxLvL && GetCooldownRemainingTime(Senei) > 33 ||
-                  !MaxLvL && GetCooldownRemainingTime(Senei) is > 33 and < 45 ||
-                  !MaxLvL && GetCooldownRemainingTime(Senei) >= 85) ||
-                 HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady)))
+                  GetCooldownRemainingTime(Senei) > 33 ||
+                  HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady))))
             {
                 actionID = OriginalHook(TsubameGaeshi);
                 return true;
