@@ -102,29 +102,26 @@ internal partial class SAM
             }
 
             if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) && !IsMoving() &&
-                (SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                 (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
-                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
-                 SenCount is 2 && !LevelChecked(MidareSetsugekka) ||
-                 SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))
+                ((SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
+                  (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
+                   !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
+                 (SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
+                 (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
             {
                 actionID = OriginalHook(Iaijutsu);
                 return true;
             }
 
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
-                (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
-                 IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) && !IsMoving()) &&
-                (Config.SAM_ST_CDs_IaijutsuOption[0] &&
-                 SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
-                 (Config.SAM_ST_Higanbana_Suboption == 0 ||
-                  Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                 (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
-                  !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
-                 Config.SAM_ST_CDs_IaijutsuOption[1] &&
-                 SenCount is 2 && !LevelChecked(MidareSetsugekka) ||
-                 Config.SAM_ST_CDs_IaijutsuOption[2] &&
-                 SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))
+                (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) || IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) && !IsMoving()) &&
+                ((Config.SAM_ST_CDs_IaijutsuOption[0] &&
+                  SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
+                  (Config.SAM_ST_Higanbana_Suboption == 0 ||
+                   Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
+                  (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
+                   !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
+                 (Config.SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
+                 (Config.SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
             {
                 actionID = OriginalHook(Iaijutsu);
                 return true;
