@@ -5,6 +5,7 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
@@ -24,10 +25,10 @@ namespace WrathCombo.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
-        private static readonly Dictionary<uint, bool> NPCPositionals = new();
+        private static readonly Dictionary<uint, bool> NPCPositionals = [];
 
-        /// <summary> Gets the current target or null. </summary>
-        public static IGameObject? CurrentTarget => Svc.Targets.Target;
+        /// <summary> Gets the current target or null. Set on each combo invoke</summary>
+        public static IGameObject? CurrentTarget;
 
         /// <summary> Find if the player has a target. </summary>
         public static bool HasTarget() => CurrentTarget is not null;
@@ -35,32 +36,26 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Gets the distance from the target. </summary>
         public static float GetTargetDistance(IGameObject? optionalTarget = null, IGameObject? source = null)
         {
-            if (LocalPlayer is null)
-                return 0;
-
             IGameObject? chara = optionalTarget ?? CurrentTarget;
             if (chara is null) return 0;
 
-            IGameObject? sourceChara = source ?? LocalPlayer;
+            IGameObject? sourceChara = source ?? LocalPlayer!;
 
             if (chara.GameObjectId == sourceChara.GameObjectId)
                 return 0;
 
-            Vector2 position = new(chara.Position.X, chara.Position.Z);
-            Vector2 selfPosition = new(sourceChara.Position.X, sourceChara.Position.Z);
+            Vector2 position = chara.Position.ToVector2();
+            Vector2 selfPosition = sourceChara.Position.ToVector2();
 
             return Math.Max(0, Vector2.Distance(position, selfPosition) - chara.HitboxRadius - sourceChara.HitboxRadius);
         }
 
         public static float GetTargetHeightDifference(IGameObject? target = null, IGameObject? source = null)
         {
-            if (LocalPlayer is null)
-                return 0;
-
             IGameObject? chara = target ?? CurrentTarget;
             if (chara is null) return 0;
 
-            IGameObject? sourceChara = source ?? LocalPlayer;
+            IGameObject? sourceChara = source ?? LocalPlayer!;
 
             if (chara.GameObjectId == sourceChara.GameObjectId)
                 return 0;
@@ -95,26 +90,21 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static float EnemyHealthCurrentHp() => CurrentTarget is IBattleChara chara ? chara.CurrentHp : 0;
 
-        public static float PlayerHealthPercentageHp() => LocalPlayer is not null ? (float)LocalPlayer.CurrentHp / LocalPlayer.MaxHp * 100 : 0;
+        public static float PlayerHealthPercentageHp() =>
+            (float)LocalPlayer!.CurrentHp / LocalPlayer!.MaxHp * 100f;
 
         public static bool HasBattleTarget() => CurrentTarget is not null && CurrentTarget.IsHostile();
 
         /// <summary> Checks if the player is being targeted by a hostile target. </summary>
-        public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer?.GameObjectId);
+        public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer!.GameObjectId);
 
-        public static bool HasFriendlyTarget(IGameObject? OurTarget = null)
-        {
-            OurTarget ??= CurrentTarget;
-            if (OurTarget is null)
-                return false;
-
-            return OurTarget.ObjectKind switch
+        public static bool HasFriendlyTarget(IGameObject? OurTarget = null) =>
+            (OurTarget ?? CurrentTarget) switch //Determine Target
             {
-                ObjectKind.Player => true,
-                _ when OurTarget is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
-                _ => false
+                { ObjectKind: ObjectKind.Player } => true,
+                IBattleNpc { BattleNpcKind: not BattleNpcSubKind.Enemy and not BattleNpcSubKind.BattleNpcPart } => true,
+                _ => false //handles Our or Current were both null
             };
-        }
 
         /// <summary>
         /// Grabs the Mouse Over Target from Party List.
@@ -235,7 +225,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="distance">Optional distance to check</param>
         public static bool IsInRange(IGameObject? target, float distance = 25f)
         {
-            if (target == null || GetTargetDistance(target, LocalPlayer) >= distance)
+            if (target == null || GetTargetDistance(target, LocalPlayer!) >= distance)
                 return false;
 
             return true;
@@ -294,7 +284,7 @@ namespace WrathCombo.CustomComboNS.Functions
                     o = Svc.Targets.Target.TargetObject;
                     break;
                 case TargetType.Self:
-                    o = Svc.ClientState.LocalPlayer;
+                    o = LocalPlayer!;
                     break;
                 case TargetType.LastTarget:
                     return PartyTargetingService.GetGameObjectFromPronounID(1006);
@@ -348,12 +338,10 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns>Angle relative to target</returns>
         public static float AngleToTarget()
         {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return 0;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara { ObjectKind: ObjectKind.BattleNpc } chara)
                 return 0;
 
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(chara.Position, LocalPlayer!.Position) - chara.Rotation;
 
             double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
@@ -389,12 +377,10 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns>True or false.</returns>
         public static bool OnTargetsRear()
         {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return false;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara { ObjectKind: ObjectKind.BattleNpc } chara)
                 return false;
 
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(chara.Position, LocalPlayer.Position) - chara.Rotation;
 
             double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
@@ -416,13 +402,11 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns>True or false.</returns>
         public static bool OnTargetsFlank()
         {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return false;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
+            if (CurrentTarget is not IBattleChara { ObjectKind: ObjectKind.BattleNpc } chara)
                 return false;
 
 
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(chara.Position, LocalPlayer.Position) - chara.Rotation;
 
             double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
@@ -463,7 +447,7 @@ namespace WrathCombo.CustomComboNS.Functions
             }
         }
 
-        internal static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Svc.ClientState.LocalPlayer!, target);
+        internal static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, LocalPlayer!, target);
 
         public static unsafe bool EnemiesInRange(uint spellCheck)
         {
@@ -532,17 +516,17 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static bool HitboxInRect(IGameObject o, float direction, float lenFront, float halfWidth)
         {
-            Vector2 A = new Vector2(LocalPlayer.Position.X, LocalPlayer.Position.Z);
-            Vector2 d = new Vector2(MathF.Sin(direction), MathF.Cos(direction));
-            Vector2 n = new Vector2(d.Y, -d.X);
-            Vector2 P = new Vector2(o.Position.X, o.Position.Z);
+            Vector2 A = LocalPlayer.Position.ToVector2();
+            Vector2 d = new(MathF.Sin(direction), MathF.Cos(direction));
+            Vector2 n = new(d.Y, -d.X);
+            Vector2 P = new(o.Position.X, o.Position.Z);
             float R = o.HitboxRadius;
 
             Vector2 Q = A + d * (lenFront / 2);
             Vector2 P2 = P - Q;
-            Vector2 Ptrans = new Vector2(Vector2.Dot(P2, n), Vector2.Dot(P2, d));
-            Vector2 Pabs = new Vector2(Math.Abs(Ptrans.X), Math.Abs(Ptrans.Y));
-            Vector2 Pcorner = new Vector2(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - (lenFront / 2));
+            Vector2 Ptrans = new(Vector2.Dot(P2, n), Vector2.Dot(P2, d));
+            Vector2 Pabs = new(Math.Abs(Ptrans.X), Math.Abs(Ptrans.Y));
+            Vector2 Pcorner = new(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - (lenFront / 2));
 #if DEBUG
             if (Svc.GameGui.WorldToScreen(o.Position, out var screenCoords))
             {
@@ -600,7 +584,7 @@ namespace WrathCombo.CustomComboNS.Functions
                                                                  o.IsTargetable &&
                                                                  !TargetIsInvincible(o) &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
-                                                                 PointInCircle(o.Position - LocalPlayer.Position, effectRange + o.HitboxRadius));
+                                                                 PointInCircle(o.Position - LocalPlayer!.Position, effectRange + o.HitboxRadius));
         }
 
         // Ranged Circle Aoe 
@@ -619,21 +603,21 @@ namespace WrathCombo.CustomComboNS.Functions
         public static int CanConeAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
         {
             if (target is null) return 0;
-            float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+            float dir = PositionalMath.AngleXZ(LocalPlayer!.Position, target.Position);
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
                                                                  !TargetIsInvincible(o) &&
                                                                  GetTargetDistance(o) <= range &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
-                                                                 PointInCone(o.Position - LocalPlayer.Position, dir, 45f));
+                                                                 PointInCone(o.Position - LocalPlayer!.Position, dir, 45f));
         }
 
         // Line Aoe 
         public static int CanLineAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
         {
             if (target is null) return 0;
-            float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+            float dir = PositionalMath.AngleXZ(LocalPlayer!.Position, target.Position);
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
@@ -661,8 +645,8 @@ namespace WrathCombo.CustomComboNS.Functions
 
             direction = direction.Normalized;
 
-            Vector3 originVect = new Vector3(sourcePos.X, sourcePos.Y, sourcePos.Z);
-            Vector3 directionVect = new Vector3(direction.X, direction.Y, direction.Z);
+            Vector3 originVect = new(sourcePos.X, sourcePos.Y, sourcePos.Z);
+            Vector3 directionVect = new(direction.X, direction.Y, direction.Z);
 
             RaycastHit hit;
             int* flags = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
@@ -676,7 +660,7 @@ namespace WrathCombo.CustomComboNS.Functions
         private static bool IsBoss(IGameObject? target) =>
             target != null && Svc.Data.GetExcelSheet<BNpcBase>().HasRow(target.DataId) && Svc.Data.GetExcelSheet<BNpcBase>().GetRow(target.DataId).Rank is 2 or 6;
 
-        internal static bool TargetIsBoss() => IsBoss(LocalPlayer.TargetObject);
+        internal static bool TargetIsBoss() => IsBoss(LocalPlayer!.TargetObject);
 
         internal static bool TargetIsHostile() => HasTarget() && CurrentTarget.IsHostile();
 

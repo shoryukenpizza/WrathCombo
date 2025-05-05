@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
@@ -45,6 +46,14 @@ namespace WrathCombo.CustomComboNS
 
             if (!IsEnabled(Preset))
                 return false;
+
+            //Cache the LocalPlayer for the Combo
+            LocalPlayer = Player.Object;
+            if (LocalPlayer is null) return false; //Safeguard. LocalPlayer shouldn't be null at this point anyways.
+            if (Player.IsDead) return false; //Don't do combos while dead
+
+            //Cache the CurrentTarget for the Combo
+            CurrentTarget = Svc.Targets.Target;
 
             uint classJobID = LocalPlayer!.ClassJob.RowId;
 
