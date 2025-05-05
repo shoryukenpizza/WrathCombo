@@ -18,9 +18,7 @@ internal partial class SAM
 
     internal static bool RefreshFuka => GetStatusEffectRemainingTime(Buffs.Fuka) < GetStatusEffectRemainingTime(Buffs.Fugetsu);
 
-    internal static bool MaxLvL => TraitLevelChecked(Traits.EnhancedHissatsu);
-
-    internal static bool DoubleMeikyo => TraitLevelChecked(Traits.EnhancedMeikyoShishui);
+    internal static bool EnhancedSenei => TraitLevelChecked(Traits.EnhancedHissatsu);
 
     internal static int SenCount => GetSenCount();
 
@@ -32,7 +30,7 @@ internal partial class SAM
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
-            if (MaxLvL)
+            if (EnhancedSenei)
             {
                 //if no opener
                 if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter() ||
@@ -73,12 +71,12 @@ internal partial class SAM
                 }
 
                 // reset meikyo
-                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
+                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && JustUsed(Yukikaze))
                     return true;
             }
 
-            //Pre Max Lvl
-            if (!MaxLvL && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady) &&
+            //Pre 1 min Senei
+            if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady) &&
                 (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
                 return true;
         }
@@ -135,22 +133,6 @@ internal partial class SAM
         }
 
         return false;
-    }
-
-    private static int GetSenCount()
-    {
-        int senCount = 0;
-
-        if (HasGetsu)
-            senCount++;
-
-        if (HasSetsu)
-            senCount++;
-
-        if (HasKa)
-            senCount++;
-
-        return senCount;
     }
 
     #region Openers
@@ -236,6 +218,22 @@ internal partial class SAM
     internal static Kaeshi Kaeshi => Gauge.Kaeshi;
 
     internal static bool NamikiriReady => Kaeshi is Kaeshi.Namikiri;
+
+    private static int GetSenCount()
+    {
+        int senCount = 0;
+
+        if (HasGetsu)
+            senCount++;
+
+        if (HasSetsu)
+            senCount++;
+
+        if (HasKa)
+            senCount++;
+
+        return senCount;
+    }
 
     #endregion
 
