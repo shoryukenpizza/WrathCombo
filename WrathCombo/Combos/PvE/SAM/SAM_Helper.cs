@@ -27,7 +27,7 @@ internal partial class SAM
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
         int meikyoUsed = ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
 
-        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
+        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
             if (EnhancedSenei)
@@ -35,7 +35,7 @@ internal partial class SAM
                 //if no opener
                 if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter() ||
                      IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
-                    meikyoUsed < 2 && !HasStatusEffect(Buffs.MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+                    meikyoUsed < 2 && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
 
                 //double meikyo
@@ -71,13 +71,12 @@ internal partial class SAM
                 }
 
                 // reset meikyo
-                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && JustUsed(Yukikaze))
+                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
                     return true;
             }
 
-            //Pre 1 min Senei
-            if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady) &&
-                (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
+            //Pre Enhanced Senei
+            if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                 return true;
         }
 
