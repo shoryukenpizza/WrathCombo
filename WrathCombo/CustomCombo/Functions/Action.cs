@@ -91,16 +91,16 @@ namespace WrathCombo.CustomComboNS.Functions
         {
             uint hookedId = OriginalHook(id);
 
-            // Check 1: Charges
-            bool hasChargesLeft = HasCharges(hookedId);
+            // Check 1: Usable Flags (Requirement)
+            if (ActionManager.Instance()->GetActionStatus(ActionType.Action, hookedId, checkRecastActive: false, checkCastingActive: false) is not (0 or 582 or 580))
+                return false;
 
-            // Check 2: Cooldown (Non-Abilities)
-            bool isOffCooldown = ActionWatching.GetAttackType(hookedId) != ActionWatching.ActionAttackType.Ability && GetCooldownRemainingTime(hookedId) <= RemainingGCD + 0.5f;
+            // Check 2: Charges (Faster)
+            if (HasCharges(hookedId))
+                return true;
 
-            // Check 3: Usable Flags
-            bool isUsable = ActionManager.Instance()->GetActionStatus(ActionType.Action, hookedId, checkRecastActive: false, checkCastingActive: false) is 0 or 582 or 580;
-
-            return isUsable && (hasChargesLeft || isOffCooldown);
+            // Check 3: Cooldown (Slower)
+            return ActionWatching.GetAttackType(hookedId) != ActionWatching.ActionAttackType.Ability && GetCooldownRemainingTime(hookedId) <= RemainingGCD + 0.5f;
         }
 
         /// <summary> Checks if all passed actions are ready to be used. </summary>
