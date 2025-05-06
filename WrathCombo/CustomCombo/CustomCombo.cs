@@ -47,13 +47,8 @@ namespace WrathCombo.CustomComboNS
             if (!IsEnabled(Preset))
                 return false;
 
-            //Cache the LocalPlayer for the Combo
-            LocalPlayer = Player.Object;
-            if (LocalPlayer is null) return false; //Safeguard. LocalPlayer shouldn't be null at this point anyways.
+            if (Player.Object is null) return false; //Safeguard. LocalPlayer shouldn't be null at this point anyways.
             if (Player.IsDead) return false; //Don't do combos while dead
-
-            //Cache the CurrentTarget for the Combo
-            CurrentTarget = Svc.Targets.Target;
 
             uint classJobID = LocalPlayer!.ClassJob.RowId;
 
