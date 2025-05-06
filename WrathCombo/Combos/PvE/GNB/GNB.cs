@@ -712,14 +712,19 @@ internal partial class GNB : Tank
 
             if (Config.GNB_NM_Features_Weave == 0 && CanWeave() || Config.GNB_NM_Features_Weave == 1)
             {
-                if (IsEnabled(CustomComboPreset.GNB_NM_Continuation) && (ShouldUseContinuation() || LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze)))
+                var useZone = IsEnabled(CustomComboPreset.GNB_NM_Zone) && CanZone && NMcd is < 57.5f and > 17f;
+                var useBow = IsEnabled(CustomComboPreset.GNB_NM_BowShock) && CanBow && NMcd is < 57.5f and >= 40;
+                if (IsEnabled(CustomComboPreset.GNB_NM_Continuation) && CanContinue && 
+                    (HasStatusEffect(Buffs.ReadyToRip) || HasStatusEffect(Buffs.ReadyToTear) || HasStatusEffect(Buffs.ReadyToGouge) || (LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast) || (LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze)))))
                     return OriginalHook(Continuation);
-                if (IsEnabled(CustomComboPreset.GNB_NM_Bloodfest) && ShouldUseBloodfest())
+                if (IsEnabled(CustomComboPreset.GNB_NM_Bloodfest) && HasBattleTarget() && CanBF && Ammo == 0)
                     return Bloodfest;
-                if (IsEnabled(CustomComboPreset.GNB_NM_BowShock) && ShouldUseBowShock())
-                    return BowShock;
-                if (IsEnabled(CustomComboPreset.GNB_NM_Zone) && ShouldUseZone())
-                    return OriginalHook(DangerZone);
+                //with SKS, we want Zone first because it can drift really bad while Bow usually remains static
+                //without SKS, we don't really care since both usually remain static
+                if (SlowGNB ? useBow : useZone)
+                    return SlowGNB ? BowShock : OriginalHook(DangerZone);
+                if (SlowGNB ? useZone : useBow)
+                    return SlowGNB ? OriginalHook(DangerZone) : BowShock;
             }
 
             return actionID;
