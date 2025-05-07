@@ -42,7 +42,8 @@ internal partial class GNB : Tank
     internal static bool SlowGNB => GCDLength >= 2.4800f;
     internal static bool MidGNB => GCDLength is <= 2.4799f and >= 2.4500f;
     internal static bool FastGNB => GCDLength is <= 2.4499f;
-    internal static int StopNM => Config.GNB_AoE_NoMercyStop;
+    internal static int STStopNM => Config.GNB_ST_NoMercyStop;
+    internal static int AoEStopNM => Config.GNB_AoE_NoMercyStop;
     #endregion
 
     #region Openers

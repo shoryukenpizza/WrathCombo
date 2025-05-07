@@ -246,7 +246,7 @@ internal partial class GNB : Tank
             {
                 if (IsEnabled(CustomComboPreset.GNB_ST_Bloodfest) && ShouldUseBloodfest())
                     return Bloodfest;
-                if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && ShouldUseNoMercy() &&
+                if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && ShouldUseNoMercy() && GetTargetHPPercent() > STStopNM &&
                     (Config.GNB_ST_NoMercy_SubOption == 0 || Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
                     return NoMercy;
                 if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
@@ -511,7 +511,7 @@ internal partial class GNB : Tank
             {
                 if (CanWeave())
                 {
-                    if (IsEnabled(CustomComboPreset.GNB_AoE_NoMercy) && ActionReady(NoMercy) && GetTargetHPPercent() > StopNM)
+                    if (IsEnabled(CustomComboPreset.GNB_AoE_NoMercy) && ActionReady(NoMercy) && GetTargetHPPercent() > AoEStopNM)
                         return NoMercy;
                     if (IsEnabled(CustomComboPreset.GNB_AoE_BowShock) && ShouldUseBowShock())
                         return BowShock;
