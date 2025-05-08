@@ -342,125 +342,48 @@ namespace WrathCombo.CustomComboNS.Functions
             P8
         }
 
-        /// <summary>
-        /// Get angle to target.
-        /// </summary>
-        /// <returns>Angle relative to target</returns>
-        public static float AngleToTarget()
+        /// <summary> Gets the player's position relative to the target. </summary>
+        /// <returns> 1: Right Flank. <br/> 2: Rear. <br/> 3: Left Flank. <br/> 4: Front. </returns>
+        public static int AngleToTarget()
         {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return 0;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
-                return 0;
+            if (LocalPlayer is not { } player || CurrentTarget is not IBattleChara target || target.ObjectKind != ObjectKind.BattleNpc) return 0;
 
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(target.Position, player.Position) - target.Rotation;
+            float regionDegrees = (PositionalMath.ToDegrees(angle) + 360f) % 360f;
 
-            double regionDegrees = PositionalMath.Degrees(angle);
-            if (regionDegrees < 0)
+            return regionDegrees switch
             {
-                regionDegrees = 360 + regionDegrees;
-            }
-
-            if (regionDegrees is >= 45 and <= 135)
-            {
-                return 1;
-            }
-            
-            if (regionDegrees is >= 135 and <= 225)
-            {
-                return 2;
-            }
-            
-            if (regionDegrees is >= 225 and <= 315)
-            {
-                return 3;
-            }
-            
-            if (regionDegrees is >= 315 or <= 45)
-            {
-                return 4;
-            }
-            return 0;
+                >= 315f or <= 45f       => 4, // Front (0° ± 45°)
+                >= 45f and <= 135f      => 1, // Right Flank (90° ± 45°)
+                >= 135f and <= 225f     => 2, // Rear (180° ± 45°)
+                >= 225f and <= 315f     => 3, // Left Flank (270° ± 45°)
+                _                       => 0  // Fallback
+            };
         }
 
-        /// <summary>
-        /// Is player on target's rear.
-        /// </summary>
-        /// <returns>True or false.</returns>
-        public static bool OnTargetsRear()
-        {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return false;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
-                return false;
+        /// <summary> Is player on target's rear. </summary>
+        /// <returns> True or false. </returns>
+        public static bool OnTargetsRear() => AngleToTarget() is 2;
 
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+        /// <summary> Is player on target's flank. </summary>
+        /// <returns> True or false. </returns>
+        public static bool OnTargetsFlank() => AngleToTarget() is 1 or 3;
 
-            double regionDegrees = PositionalMath.Degrees(angle);
-            if (regionDegrees < 0)
-            {
-                regionDegrees = 360 + regionDegrees;
-            }
+        /// <summary> Is player on target's front. </summary>
+        /// <returns> True or false. </returns>
+        public static bool OnTargetsFront() => AngleToTarget() is 4;
 
-            if (regionDegrees is >= 135 and <= 225)
-            {
-                return true;
-            }
-            
-            return false;
-        }
-
-        /// <summary>
-        /// Is player on target's flank.
-        /// </summary>
-        /// <returns>True or false.</returns>
-        public static bool OnTargetsFlank()
-        {
-            if (CurrentTarget is null || LocalPlayer is null)
-                return false;
-            if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
-                return false;
-
-
-            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
-
-            double regionDegrees = PositionalMath.Degrees(angle);
-            if (regionDegrees < 0)
-            {
-                regionDegrees = 360 + regionDegrees;
-            }
-
-            // left flank
-            if (regionDegrees is >= 45 and <= 135)
-            {
-                return true;
-            }
-            
-            // right flank
-            if (regionDegrees is >= 225 and <= 315)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        // the following is all lifted from the excellent Resonant plugin
+        /// <summary> Performs positional calculations. Based on the excellent Resonant plugin. </summary>
         internal static class PositionalMath
         {
-            internal static float Radians(float degrees)
-            {
-                return (float)Math.PI * degrees / 180.0f;
-            }
+            public const float DegreesToRadians = MathF.PI / 180f;
+            public const float RadiansToDegrees = 180f / MathF.PI;
 
-            internal static double Degrees(float radians)
-            {
-                return (180 / Math.PI) * radians;
-            }
+            public static float ToRadians(float degrees) => degrees * DegreesToRadians;
 
-            internal static float AngleXZ(Vector3 a, Vector3 b)
-            {
-                return (float)Math.Atan2(b.X - a.X, b.Z - a.Z);
-            }
+            public static float ToDegrees(float radians) => radians * RadiansToDegrees;
+
+            public static float AngleXZ(Vector3 a, Vector3 b) => MathF.Atan2(b.X - a.X, b.Z - a.Z);
         }
 
         internal static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Svc.ClientState.LocalPlayer!, target);
