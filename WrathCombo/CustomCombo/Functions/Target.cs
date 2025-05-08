@@ -349,7 +349,7 @@ namespace WrathCombo.CustomComboNS.Functions
             if (LocalPlayer is not { } player || CurrentTarget is not IBattleChara target || target.ObjectKind != ObjectKind.BattleNpc) return 0;
 
             float angle = PositionalMath.AngleXZ(target.Position, player.Position) - target.Rotation;
-            float regionDegrees = (PositionalMath.ToDegrees(angle) + 360f) % 360f;
+            float regionDegrees = PositionalMath.ToDegrees(angle) + (angle < 0f ? 360f : 0f);
 
             return regionDegrees switch
             {
