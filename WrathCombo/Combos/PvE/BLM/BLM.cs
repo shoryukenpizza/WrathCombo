@@ -146,14 +146,16 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
-                    (JustUsed(Transpose, 5f) || JustUsed(Freeze)))
-                    return Blizzard3;
+                if (ActionReady(Blizzard3) && UmbralIceStacks < 3)
+                {
+                    if (JustUsed(Transpose, 5f) || JustUsed(Freeze))
+                        return Blizzard3;
 
-                if (HasPolyglotStacks())
-                    return LevelChecked(Xenoglossy)
-                        ? Xenoglossy
-                        : Foul;
+                    if (HasPolyglotStacks())
+                        return LevelChecked(Xenoglossy)
+                            ? Xenoglossy
+                            : Foul;
+                }
 
                 if (ActionReady(BlizzardSpam))
                     return BlizzardSpam;
@@ -350,15 +352,17 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
-                    JustUsed(Transpose, 5f) || JustUsed(Freeze))
-                    return Blizzard3;
-                
-                if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                    HasPolyglotStacks())
-                    return LevelChecked(Xenoglossy)
-                        ? Xenoglossy
-                        : Foul;
+                if (ActionReady(Blizzard3) && UmbralIceStacks < 3)
+                {
+                    if (JustUsed(Transpose, 5f) || JustUsed(Freeze))
+                        return Blizzard3;
+
+                    if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
+                        HasPolyglotStacks())
+                        return LevelChecked(Xenoglossy)
+                            ? Xenoglossy
+                            : Foul;
+                }
 
                 if (ActionReady(BlizzardSpam))
                     return BlizzardSpam;
