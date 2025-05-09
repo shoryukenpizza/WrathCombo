@@ -113,7 +113,7 @@ internal partial class BLM : Caster
 
                 if (FlarestarReady)
                     return FlareStar;
-                
+
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
                     return FireSpam;
 
@@ -145,7 +145,7 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 && 
+                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze)))
                     return Blizzard3;
 
@@ -344,7 +344,7 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 && 
+                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze)))
                     return Blizzard3;
 
