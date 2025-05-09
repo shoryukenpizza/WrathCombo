@@ -95,7 +95,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static float EnemyHealthCurrentHp() => CurrentTarget is IBattleChara chara ? chara.CurrentHp : 0;
 
-        public static float PlayerHealthPercentageHp() => LocalPlayer is not null ? (float)LocalPlayer.CurrentHp / LocalPlayer.MaxHp * 100 : 0;
+        public static float PlayerHealthPercentageHp() => LocalPlayer is { } player ? player.CurrentHp * 100f / player.MaxHp : 0f;
 
         public static bool HasBattleTarget() => CurrentTarget is not null && CurrentTarget.IsHostile();
 

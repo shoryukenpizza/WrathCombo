@@ -42,7 +42,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         /// <summary> Check if an action was just used. </summary>
         /// <param name="actionID"> Action ID to check. </param>
-        /// <param name="variance"> How long to check for. </param>
+        /// <param name="variance"> How far back to check for. </param>
         /// <returns> True or false. </returns>
         public static bool JustUsed(uint actionID, float variance = 3f)
         {
