@@ -146,7 +146,7 @@ internal partial class BLM : Caster
                 }
 
                 if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
-                    (JustUsed(Transpose, 5f) || JustUsed(Freeze)))
+                    (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
@@ -345,7 +345,7 @@ internal partial class BLM : Caster
                 }
 
                 if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
-                    (JustUsed(Transpose, 5f) || JustUsed(Freeze)))
+                    (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
