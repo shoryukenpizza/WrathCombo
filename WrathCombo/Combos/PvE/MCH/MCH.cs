@@ -491,6 +491,11 @@ internal partial class MCH : PhysicalRanged
             {
                 if (!ActionWatching.HasDoubleWeaved() && !Gauge.IsOverheated)
                 {
+                    if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_QueenOverdrive) &&
+                        Gauge.IsRobotActive && ActionReady(RookOverdrive) &&
+                        GetTargetHPPercent() <= Config.MCH_AoE_QueenOverDrive)
+                        return OriginalHook(RookOverdrive);
+                    
                     // BarrelStabilizer
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Stabilizer) &&
                         ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
