@@ -492,7 +492,7 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
-               UseThunderAoE())
+                UseThunderAoE())
                 return OriginalHook(Thunder2);
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_ParadoxFiller) &&
