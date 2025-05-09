@@ -63,7 +63,10 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (UseThunderST())
+            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                 ThunderDebuffST.RemainingTime <= 3 ||
+                 ThunderDebuffAoE.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -247,7 +250,13 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
-                UseThunderST())
+                HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+                (Config.BLM_ST_Thunder_SubOption == 0 ||
+                 Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
+                (GetTargetHPPercent() > Config.BLM_ST_Thunder_Threshold) &&
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                 ThunderDebuffST.RemainingTime <= 3 ||
+                 ThunderDebuffAoE.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -394,7 +403,11 @@ internal partial class BLM : Caster
                 HasPolyglotStacks())
                 return Foul;
 
-            if (UseThunderAoE())
+            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                (ThunderDebuffAoE is null && ThunderDebuffST is null ||
+                 ThunderDebuffAoE.RemainingTime <= 3 ||
+                 ThunderDebuffST.RemainingTime <= 3) &&
+                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
                 return OriginalHook(Thunder2);
 
             if (ActiveParadox &&
@@ -492,7 +505,12 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
-                UseThunderAoE())
+                HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                (GetTargetHPPercent() > Config.BLM_AoE_ThunderHP) &&
+                (ThunderDebuffAoE is null && ThunderDebuffST is null ||
+                 ThunderDebuffAoE.RemainingTime <= 3 ||
+                 ThunderDebuffST.RemainingTime <= 3) &&
+                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
                 return OriginalHook(Thunder2);
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_ParadoxFiller) &&
