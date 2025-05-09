@@ -53,6 +53,24 @@ internal partial class BLM
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
 
+    internal static bool UseThunderST() =>
+        HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+        ThunderDebuffAoE is null &&
+        (Config.BLM_ST_Thunder_SubOption == 0 ||
+         Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter() ||
+         IsEnabled(CustomComboPreset.BLM_ST_SimpleMode)) &&
+        (GetTargetHPPercent() > Config.BLM_ST_Thunder_Threshold ||
+         IsEnabled(CustomComboPreset.BLM_ST_SimpleMode)) &&
+        (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3);
+
+    internal static bool UseThunderAoE() =>
+        HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+        ThunderDebuffST is null &&
+        (GetTargetHPPercent() > Config.BLM_AoE_ThunderHP ||
+         IsEnabled(CustomComboPreset.BLM_AoE_SimpleMode)) &&
+        (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3) &&
+        (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel);
+
     #region Openers
 
     internal static WrathOpener Opener()

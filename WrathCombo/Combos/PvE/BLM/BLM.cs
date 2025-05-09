@@ -63,8 +63,7 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
-                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3))
+            if (UseThunderST())
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -248,11 +247,7 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
-                HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
-                (Config.BLM_ST_Thunder_SubOption == 0 ||
-                 Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
-                GetTargetHPPercent() > Config.BLM_ST_Thunder_Threshold &&
-                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3))
+                UseThunderST())
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -399,9 +394,7 @@ internal partial class BLM : Caster
                 HasPolyglotStacks())
                 return Foul;
 
-            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3) &&
-                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
+            if (UseThunderAoE())
                 return OriginalHook(Thunder2);
 
             if (ActiveParadox &&
@@ -499,10 +492,7 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
-                HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                GetTargetHPPercent() > Config.BLM_AoE_ThunderHP &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3) &&
-                (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
+               UseThunderAoE())
                 return OriginalHook(Thunder2);
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_ParadoxFiller) &&
