@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using static WrathCombo.Combos.PvE.VPR.Config;
 using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
@@ -62,7 +63,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, VPR_VariantCure))
                 return Variant.Cure;
 
             // Variant Rampart
@@ -215,7 +216,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, VPR_VariantCure))
                 return Variant.Cure;
 
             // Variant Rampart
@@ -233,8 +234,8 @@ internal partial class VPR : Melee
                 //Serpents Ire
                 if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsIre) && InCombat() &&
                     !CappedOnCoils && ActionReady(SerpentsIre) &&
-                    (Config.VPR_ST_SerpentsIre_SubOption == 0 ||
-                     Config.VPR_ST_SerpentsIre_SubOption == 1 && InBossEncounter()))
+                    (VPR_ST_SerpentsIre_SubOption == 0 ||
+                     VPR_ST_SerpentsIre_SubOption == 1 && InBossEncounter()))
                     return SerpentsIre;
 
                 // Death Rattle / Legacy Weaves
@@ -289,8 +290,8 @@ internal partial class VPR : Melee
             //Reawakend Usage
             if (IsEnabled(CustomComboPreset.VPR_ST_Reawaken) &&
                 UseReawaken() &&
-                (Config.VPR_ST_ReAwaken_SubOption == 0 ||
-                 Config.VPR_ST_ReAwaken_SubOption == 1 && InBossEncounter()))
+                (VPR_ST_ReAwaken_SubOption == 0 ||
+                 VPR_ST_ReAwaken_SubOption == 1 && InBossEncounter()))
                 return Reawaken;
 
             //Overcap protection
@@ -314,8 +315,8 @@ internal partial class VPR : Melee
             // Uncoiled Fury usage
             if (IsEnabled(CustomComboPreset.VPR_ST_UncoiledFury) && !IsComboExpiring(2) &&
                 ActionReady(UncoiledFury) && HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
-                (RattlingCoilStacks > Config.VPR_ST_UncoiledFury_HoldCharges ||
-                 GetTargetHPPercent() < Config.VPR_ST_UncoiledFury_Threshold && HasRattlingCoilStack()) &&
+                (RattlingCoilStacks > VPR_ST_UncoiledFury_HoldCharges ||
+                 GetTargetHPPercent() < VPR_ST_UncoiledFury_Threshold && HasRattlingCoilStack()) &&
                 !VicewinderReady && !HuntersCoilReady && !SwiftskinsCoilReady &&
                 !HasStatusEffect(Buffs.Reawakened) && !HasStatusEffect(Buffs.ReadyToReawaken) &&
                 !WasLastWeaponskill(Ouroboros) && !IsEmpowermentExpiring(3))
@@ -329,10 +330,10 @@ internal partial class VPR : Melee
             // healing
             if (IsEnabled(CustomComboPreset.VPR_ST_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.VPR_ST_SecondWind_Threshold))
+                if (Role.CanSecondWind(VPR_ST_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.VPR_ST_Bloodbath_Threshold))
+                if (Role.CanBloodBath(VPR_ST_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
 
@@ -398,7 +399,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, VPR_VariantCure))
                 return Variant.Cure;
 
             // Variant Rampart
@@ -534,7 +535,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             // Variant Cure
-            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, VPR_VariantCure))
                 return Variant.Cure;
 
             // Variant Rampart
@@ -592,7 +593,7 @@ internal partial class VPR : Melee
 
             //Reawakend Usage
             if (IsEnabled(CustomComboPreset.VPR_AoE_Reawaken) &&
-                GetTargetHPPercent() > Config.VPR_AoE_Reawaken_Usage &&
+                GetTargetHPPercent() > VPR_AoE_Reawaken_Usage &&
                 (HasStatusEffect(Buffs.ReadyToReawaken) || SerpentOffering >= 50) &&
                 LevelChecked(Reawaken) &&
                 HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
@@ -618,8 +619,8 @@ internal partial class VPR : Melee
             // Uncoiled Fury usage
             if (IsEnabled(CustomComboPreset.VPR_AoE_UncoiledFury) &&
                 ActionReady(UncoiledFury) &&
-                (RattlingCoilStacks > Config.VPR_AoE_UncoiledFury_HoldCharges ||
-                 GetTargetHPPercent() < Config.VPR_AoE_UncoiledFury_Threshold &&
+                (RattlingCoilStacks > VPR_AoE_UncoiledFury_HoldCharges ||
+                 GetTargetHPPercent() < VPR_AoE_UncoiledFury_Threshold &&
                  HasRattlingCoilStack()) &&
                 HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
                 !VicepitReady && !HuntersDenReady && !SwiftskinsDenReady &&
@@ -636,10 +637,10 @@ internal partial class VPR : Melee
             // healing
             if (IsEnabled(CustomComboPreset.VPR_AoE_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.VPR_AoE_SecondWind_Threshold))
+                if (Role.CanSecondWind(VPR_AoE_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.VPR_AoE_Bloodbath_Threshold))
+                if (Role.CanBloodBath(VPR_AoE_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
 
@@ -781,7 +782,7 @@ internal partial class VPR : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            int buttonChoice = Config.VPR_ReawakenLegacyButton;
+            int buttonChoice = VPR_ReawakenLegacyButton;
 
             switch (buttonChoice)
             {

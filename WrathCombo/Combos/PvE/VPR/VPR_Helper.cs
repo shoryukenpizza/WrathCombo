@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.VPR.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
 
@@ -32,7 +33,7 @@ internal partial class VPR
             !IsEmpowermentExpiring(6))
         {
             //Use whenever
-            if (SerpentOffering >= 50 && TargetIsBoss() && GetTargetHPPercent() < Config.VPR_ST_ReAwaken_Threshold)
+            if (SerpentOffering >= 50 && TargetIsBoss() && GetTargetHPPercent() < VPR_ST_ReAwaken_Threshold)
                 return true;
 
             //2min burst
@@ -51,7 +52,7 @@ internal partial class VPR
 
             //non boss encounters
             if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
-                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && Config.VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
+                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
                 SerpentOffering >= 50)
                 return true;
 
@@ -291,7 +292,7 @@ internal partial class VPR
             ([38], TwinbloodBite, () => HasStatusEffect(Buffs.SwiftskinsVenom))
         ];
 
-        internal override UserData ContentCheckConfig => Config.VPR_Balance_Content;
+        internal override UserData ContentCheckConfig => VPR_Balance_Content;
 
         public override bool HasCooldowns() =>
             IsOriginal(ReavingFangs) &&
