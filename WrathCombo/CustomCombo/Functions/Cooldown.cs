@@ -42,15 +42,13 @@ namespace WrathCombo.CustomComboNS.Functions
 
         /// <summary> Check if an action was just used. </summary>
         /// <param name="actionID"> Action ID to check. </param>
-        /// <param name="variance"> How long to check for. </param>
+        /// <param name="variance"> How far back to check for. </param>
         /// <returns> True or false. </returns>
         public static bool JustUsed(uint actionID, float variance = 3f)
         {
-            // Dictionary Check
             if (!ActionWatching.ActionTimestamps.TryGetValue(actionID, out long timestamp))
                 return false;
 
-            // Variance Comparison
             return (Environment.TickCount64 - timestamp) <= (long)(variance * 1000f);
         }
 
@@ -70,11 +68,9 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns></returns>
         public static bool JustUsedOn(uint actionID, ulong targetGameobjectId, float variance = 3f)
         {
-            // Dictionary Check
             if (!ActionWatching.UsedOnDict.TryGetValue((actionID, targetGameobjectId), out long timestamp))
                 return false;
 
-            // Variance Comparison
             return (Environment.TickCount64 - timestamp) <= (long)(variance * 1000f);
         }
 
