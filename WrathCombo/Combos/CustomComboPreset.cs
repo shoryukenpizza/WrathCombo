@@ -5141,7 +5141,7 @@ public enum CustomComboPreset
     SAM_ST_Shinten = 15008,
     
     [ParentCombo(SAM_ST_AdvancedMode)]
-    [CustomComboInfo("True North Feature", "Adds True North if Meikyo Shisui's buff is on you.", SAM.JobID)]
+    [CustomComboInfo("True North Feature", "Adds True North when you are not in the correct position for the enhanced potency bonus.", SAM.JobID)]
     SAM_ST_TrueNorth = 15099,
 
     [ParentCombo(SAM_ST_AdvancedMode)]

@@ -189,18 +189,19 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (Role.CanTrueNorth() && CanDelayedWeave())
-                    return Role.TrueNorth;
-
                 if (LevelChecked(Gekko) &&
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
-                    return Gekko;
+                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : Gekko;
 
                 if (LevelChecked(Kasha) &&
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
-                    return Kasha;
+                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                        ? Role.TrueNorth
+                        : Kasha;
 
                 if (LevelChecked(Yukikaze) && !HasSetsu)
                     return Yukikaze;
@@ -380,21 +381,23 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                    Role.CanTrueNorth() && CanDelayedWeave())
-                    return Role.TrueNorth;
-
                 if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
                     LevelChecked(Gekko) &&
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
-                    return Gekko;
+                    return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
+                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : Gekko;
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Kasha) &&
                     LevelChecked(Kasha) &&
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
-                    return Kasha;
+                    return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
+                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                        ? Role.TrueNorth
+                        : Kasha;
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Yukikaze) &&
                     LevelChecked(Yukikaze) && !HasSetsu)
