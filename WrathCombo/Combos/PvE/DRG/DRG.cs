@@ -1,5 +1,6 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
+using static WrathCombo.Combos.PvE.DRG.Config;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG : Melee
@@ -52,7 +53,7 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) && CanDRGWeave(Variant.Rampart))
@@ -206,7 +207,7 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) && CanDRGWeave(Variant.Rampart))
@@ -231,16 +232,16 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
-                        (Config.DRG_ST_Litany_SubOption == 0 ||
-                         Config.DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
+                        (DRG_ST_Litany_SubOption == 0 ||
+                         DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
                         return BattleLitany;
 
                     //Lance Charge Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
                         ActionReady(LanceCharge) &&
                         CanDRGWeave(LanceCharge) &&
-                        (Config.DRG_ST_Lance_SubOption == 0 ||
-                         Config.DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
+                        (DRG_ST_Lance_SubOption == 0 ||
+                         DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
                         return LanceCharge;
                 }
 
@@ -339,10 +340,10 @@ internal partial class DRG : Melee
             // healing
             if (IsEnabled(CustomComboPreset.DRG_ST_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.DRG_ST_SecondWind_Threshold))
+                if (Role.CanSecondWind(DRG_ST_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.DRG_ST_Bloodbath_Threshold))
+                if (Role.CanBloodBath(DRG_ST_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
 
@@ -401,7 +402,7 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
@@ -536,7 +537,7 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
@@ -556,14 +557,14 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Lance) &&
                         ActionReady(LanceCharge) &&
                         CanDRGWeave(LanceCharge) &&
-                        GetTargetHPPercent() >= Config.DRG_AoE_LanceChargeHP)
+                        GetTargetHPPercent() >= DRG_AoE_LanceChargeHP)
                         return LanceCharge;
 
                     //Battle Litany Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
-                        GetTargetHPPercent() >= Config.DRG_AoE_LitanyHP)
+                        GetTargetHPPercent() >= DRG_AoE_LitanyHP)
                         return BattleLitany;
                 }
 
@@ -659,10 +660,10 @@ internal partial class DRG : Melee
             // healing
             if (IsEnabled(CustomComboPreset.DRG_AoE_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.DRG_AoE_SecondWind_Threshold))
+                if (Role.CanSecondWind(DRG_AoE_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.DRG_AoE_Bloodbath_Threshold))
+                if (Role.CanBloodBath(DRG_AoE_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
             if (ComboTimer > 0)
