@@ -265,12 +265,7 @@ internal partial class VPR : Melee
                         return OriginalHook(Twinblood);
                 }
             }
-
-            // Death Rattle - Force to avoid loss
-            //  if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsTail) && In5Y &&
-            //      LevelChecked(SerpentsTail) && OriginalHook(SerpentsTail) is DeathRattle)
-            //      return OriginalHook(SerpentsTail);
-
+            
             //GCDs
             if (IsEnabled(CustomComboPreset.VPR_ST_RangedUptime) &&
                 LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())

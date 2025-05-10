@@ -9,9 +9,10 @@ internal partial class VPR
     {
         public static UserInt
             VPR_ST_SerpentsIre_SubOption = new("VPR_ST_SerpentsIre_SubOption", 1),
-            VPR_ST_UncoiledFury_Threshold = new("VPR_ST_UncoiledFury_Threshold", 1),
             VPR_ST_UncoiledFury_HoldCharges = new("VPR_ST_UncoiledFury_HoldCharges", 1),
+            VPR_ST_UncoiledFury_Threshold = new("VPR_ST_UncoiledFury_Threshold", 1),
             VPR_ST_ReAwaken_SubOption = new("VPR_ST_ReAwaken_SubOption", 0),
+            VPR_ST_ReAwaken_Threshold = new("VPR_ST_ReAwaken_Threshold", 1),
             VPR_ST_SecondWind_Threshold = new("VPR_ST_SecondWindThreshold", 25),
             VPR_ST_Bloodbath_Threshold = new("VPR_ST_BloodbathThreshold", 40),
             VPR_Balance_Content = new("VPR_Balance_Content", 1),
@@ -48,6 +49,9 @@ internal partial class VPR
 
                     DrawHorizontalRadioButton(VPR_ST_ReAwaken_SubOption,
                         "Boss encounters Only", $"Only uses {Reawaken.ActionName()} when in Boss encounters.", 1);
+
+                    DrawSliderInt(0, 5, VPR_ST_ReAwaken_Threshold,
+                        $"Set a HP% Threshold to use {Reawaken.ActionName()} when possible.");
 
                     break;
 
