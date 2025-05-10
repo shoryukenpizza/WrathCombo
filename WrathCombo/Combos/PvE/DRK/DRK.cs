@@ -90,26 +90,23 @@ internal partial class DRK : Tank
                 TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
 
+            var specialManaOnly = true;
+            if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
+                TryGetAction<Spender>(comboFlags, ref newAction, specialManaOnly))
+                return newAction;
+
             var cdBossRequirement =
                 (int)Config.DRK_ST_CDsBossRequirement ==
                 (int)Config.BossRequirement.On;
             var cdBossRequirementMet = !cdBossRequirement ||
                                        (cdBossRequirement && InBossEncounter());
-            var disesteemOnly = true;
-
             if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
-                IsEnabled(CustomComboPreset.DRK_ST_CD_Disesteem) &&
                 cdBossRequirementMet &&
-                TryGetAction<Cooldown>(comboFlags, ref newAction, disesteemOnly))
+                TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
             if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
                 TryGetAction<Spender>(comboFlags, ref newAction))
-                return newAction;
-
-            if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
-                cdBossRequirementMet &&
-                TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))

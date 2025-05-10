@@ -820,9 +820,10 @@ internal partial class DRK
     /// </remarks>
     private class Spender : IActionProvider
     {
-        public bool TryGetAction(Combo flags, ref uint action, bool? _)
+        public bool TryGetAction(Combo flags, ref uint action, bool? specialManaOnly)
         {
-            if (TryGetManaAction(flags, ref action)) return true;
+            if (TryGetManaAction(flags, ref action, specialManaOnly)) return true;
+            if (specialManaOnly == true) return false;
             if (TryGetBloodAction(flags, ref action)) return true;
 
             return false;
@@ -927,7 +928,7 @@ internal partial class DRK
             return false;
         }
 
-        private bool TryGetManaAction(Combo flags, ref uint action)
+        private bool TryGetManaAction(Combo flags, ref uint action, bool? specialOnly)
         {
             // Bail if we can't weave anything else
             if (!CanWeave) return false;
@@ -997,6 +998,8 @@ internal partial class DRK
                     return (action = OriginalHook(FloodOfDarkness)) != 0;
 
             #endregion
+
+            if (specialOnly == true) return false;
 
             #region Burst Phase Spending
 
