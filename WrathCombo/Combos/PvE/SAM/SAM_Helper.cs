@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
+using static WrathCombo.Combos.PvE.SAM.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using static WrathCombo.Data.ActionWatching;
+using ActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM
@@ -25,7 +27,7 @@ internal partial class SAM
     internal static bool UseMeikyo()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
-        int meikyoUsed = ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
+        int meikyoUsed = CombatActions.Count(x => x == MeikyoShisui);
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) && !HasStatusEffect(Buffs.MeikyoShisui) &&
             (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
@@ -33,7 +35,7 @@ internal partial class SAM
             if (EnhancedSenei)
             {
                 //if no opener
-                if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter() ||
+                if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
                      IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
                     meikyoUsed < 2 && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
@@ -86,11 +88,11 @@ internal partial class SAM
     // Iaijutsu Features
     internal static bool UseIaijutsu(ref uint actionID)
     {
-        int higanbanaThreshold = Config.SAM_ST_Higanbana_Threshold;
+        int higanbanaThreshold = SAM_ST_Higanbana_Threshold;
 
         if (LevelChecked(Iaijutsu))
         {
-            if ((IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) && Config.SAM_ST_CDs_IaijutsuOption[3] ||
+            if ((IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) && SAM_ST_CDs_IaijutsuOption[3] ||
                  IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
                 (HasStatusEffect(Buffs.TsubameReady) &&
                  (SenCount is 3 ||
@@ -114,14 +116,14 @@ internal partial class SAM
 
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
                 (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) || IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) && !IsMoving()) &&
-                ((Config.SAM_ST_CDs_IaijutsuOption[0] &&
+                ((SAM_ST_CDs_IaijutsuOption[0] &&
                   SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
-                  (Config.SAM_ST_Higanbana_Suboption == 0 ||
-                   Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
+                  (SAM_ST_Higanbana_Suboption == 0 ||
+                   SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
                   (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
-                 (Config.SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
-                 (Config.SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
+                 (SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
+                 (SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
             {
                 actionID = OriginalHook(Iaijutsu);
                 return true;
@@ -176,11 +178,11 @@ internal partial class SAM
             TendoKaeshiSetsugekka
         ];
 
-        internal override UserData ContentCheckConfig => Config.SAM_Balance_Content;
+        internal override UserData ContentCheckConfig => SAM_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
         [
-            ([2], () => Config.SAM_Opener_PrePullDelay)
+            ([2], () => SAM_Opener_PrePullDelay)
         ];
 
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
