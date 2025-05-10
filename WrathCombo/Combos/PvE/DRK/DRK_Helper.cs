@@ -404,7 +404,7 @@ internal partial class DRK
                  IsAoEEnabled(flags, Preset.DRK_AoE_CD_Delirium)) &&
                 deliriumHPMatchesThreshold &&
                 LevelChecked(BloodWeapon) &&
-                GetCooldownRemainingTime(BloodWeapon) < GCD)
+                GetCooldownRemainingTime(BloodWeapon) < GCD*2)
                 ShouldDeliriumNext = true;
 
             if (ShouldDeliriumNext &&
