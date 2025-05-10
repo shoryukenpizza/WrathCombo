@@ -132,7 +132,9 @@ internal partial class VPR : Melee
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
                 (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
-                return Vicewinder;
+                return Role.CanTrueNorth() && CanDelayedWeave()
+                    ? Role.TrueNorth
+                    : Vicewinder;
 
             // Uncoiled Fury usage
             if (ActionReady(UncoiledFury) &&
@@ -169,25 +171,20 @@ internal partial class VPR : Melee
                 {
                     if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
                         LevelChecked(FlanksbaneFang))
-                    {
-                        if (Role.CanTrueNorth() && CanDelayedWeave() &&
-                            (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
-                             !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom)))
-                            return Role.TrueNorth;
+                        return Role.CanTrueNorth() && CanDelayedWeave() &&
+                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
+                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
+                            ? Role.TrueNorth
+                            : OriginalHook(SteelFangs);
 
-                        return OriginalHook(SteelFangs);
-                    }
 
                     if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
                         LevelChecked(HindstingStrike))
-                    {
-                        if (Role.CanTrueNorth() && CanDelayedWeave() &&
-                            (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
-                             OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom)))
-                            return Role.TrueNorth;
-
-                        return OriginalHook(ReavingFangs);
-                    }
+                        return Role.CanTrueNorth() && CanDelayedWeave() &&
+                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
+                                OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
+                            ? Role.TrueNorth
+                            : OriginalHook(ReavingFangs);
                 }
 
                 if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
@@ -307,13 +304,10 @@ internal partial class VPR : Melee
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
                 (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
-            {
-                if (IsEnabled(CustomComboPreset.VPR_TrueNortVicewinder) &&
-                    Role.CanTrueNorth() && CanDelayedWeave())
-                    return Role.TrueNorth;
-
-                return Vicewinder;
-            }
+                return IsEnabled(CustomComboPreset.VPR_TrueNortVicewinder) &&
+                       Role.CanTrueNorth() && CanDelayedWeave()
+                    ? Role.TrueNorth
+                    : Vicewinder;
 
             // Uncoiled Fury usage
             if (IsEnabled(CustomComboPreset.VPR_ST_UncoiledFury) && !IsComboExpiring(2) &&
@@ -359,27 +353,21 @@ internal partial class VPR : Melee
                 {
                     if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
                         LevelChecked(FlanksbaneFang))
-                    {
-                        if (IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
-                            Role.CanTrueNorth() && CanDelayedWeave() &&
-                            (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
-                             !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom)))
-                            return Role.TrueNorth;
-
-                        return OriginalHook(SteelFangs);
-                    }
+                        return IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
+                               Role.CanTrueNorth() && CanDelayedWeave() &&
+                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
+                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
+                            ? Role.TrueNorth
+                            : OriginalHook(SteelFangs);
 
                     if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
                         LevelChecked(HindstingStrike))
-                    {
-                        if (IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
-                            Role.CanTrueNorth() && CanDelayedWeave() &&
-                            (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
-                             !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom)))
-                            return Role.TrueNorth;
-
-                        return OriginalHook(ReavingFangs);
-                    }
+                        return IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
+                               Role.CanTrueNorth() && CanDelayedWeave() &&
+                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindsbaneVenom) ||
+                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
+                            ? Role.TrueNorth
+                            : OriginalHook(ReavingFangs);
                 }
 
                 if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
