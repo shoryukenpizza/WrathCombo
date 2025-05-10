@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
@@ -66,13 +66,13 @@ internal partial class DRG
         if (IsOffCooldown(TrueThrust))
             return false;
 
-        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f && !ActionWatching.HasDoubleWeaved())
+        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f && !HasDoubleWeaved())
             return true;
 
-        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f && !ActionWatching.HasDoubleWeaved())
+        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f && !HasDoubleWeaved())
             return true;
 
-        if (SlowLock == oGCD && gcdTimer >= 1.5f && !ActionWatching.HasDoubleWeaved())
+        if (SlowLock == oGCD && gcdTimer >= 1.5f && !HasDoubleWeaved())
             return true;
 
         return false;
