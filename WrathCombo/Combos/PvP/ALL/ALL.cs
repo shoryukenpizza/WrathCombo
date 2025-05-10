@@ -207,8 +207,8 @@ namespace WrathCombo.Combos.PvP
             [
                 (Debuffs.Stun, "Stun"),
                 (Debuffs.DeepFreeze, "Deep Freeze"),
-                (Debuffs.HalfAsleep, "Half Asleep"),
-                (Debuffs.Sleep, "Sleep"),
+                (Debuffs.HalfAsleep, "Half Asleep"), // todo: remove, reset cfg
+                (Debuffs.Sleep, "Sleep"), // todo: remove, reset cfg
                 (Debuffs.Bind, "Bind"),
                 (Debuffs.Heavy, "Heavy"),
                 (Debuffs.Silence, "Silence"),
