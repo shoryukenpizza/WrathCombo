@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using WrathCombo.Data;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR : Melee
@@ -69,9 +70,9 @@ internal partial class VPR : Melee
                 return Variant.Rampart;
 
             //oGCDs
-            if (CanWeave())
+            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
             {
-                //Serpents Ire - ForceWeave
+                //Serpents Ire
                 if (InCombat() && !CappedOnCoils &&
                     ActionReady(SerpentsIre) && InBossEncounter())
                     return SerpentsIre;
@@ -136,6 +137,7 @@ internal partial class VPR : Melee
                     ? Role.TrueNorth
                     : Vicewinder;
 
+            // Uncoiled Fury usage
             // Uncoiled Fury usage
             if (ActionReady(UncoiledFury) &&
                 HasStatusEffect(Buffs.Swiftscaled) && HasStatusEffect(Buffs.HuntersInstinct) &&
@@ -226,7 +228,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             //oGCDs
-            if (CanWeave())
+            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 //Serpents Ire
                 if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsIre) && InCombat() &&
@@ -403,7 +405,7 @@ internal partial class VPR : Melee
             if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Death Rattle / Legacy Weaves
                 if (LevelChecked(SerpentsTail) &&
@@ -539,7 +541,7 @@ internal partial class VPR : Melee
             if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Death Rattle / Legacy Weaves
                 if (IsEnabled(CustomComboPreset.VPR_AoE_SerpentsTail) &&
