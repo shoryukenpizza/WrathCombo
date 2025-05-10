@@ -774,6 +774,18 @@ namespace WrathCombo.Window.Tabs
             }
 
             #endregion
+
+            ImGuiEx.Spacing(new Vector2(0, 20));
+
+            #region Hidden Features
+
+            if (ImGui.Checkbox("Show Hidden Features",
+                    ref Service.Configuration.ShowHiddenFeatures))
+                Service.Configuration.Save();
+
+            ImGuiComponents.HelpMarker("Some features can be marked as hidden, and will only be shown if this setting is enabled.\nThis is here instead of on the Settings tab while this behavior is still being tested, and to keep such features more secretive.");
+
+            #endregion
         }
 
         private static void DisableDebugConfig()
