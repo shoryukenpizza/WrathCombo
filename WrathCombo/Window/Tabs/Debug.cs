@@ -770,6 +770,15 @@ namespace WrathCombo.Window.Tabs
 
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudGrey, "(Do NOT publicly direct users to this setting!)");
+            if (Service.Configuration.ShowHiddenFeatures)
+            {
+                ImGui.Indent();
+                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                    "Hidden Features are minor one-offs that are not priorities for dev time.\n" +
+                    "Do not request new ones or maintenance for existing ones publicly.\n" +
+                    "Do not expect Hidden Features to be maintained or even stick around after they cease to be applicable.");
+                ImGui.Unindent();
+            }
 
             #endregion
 
