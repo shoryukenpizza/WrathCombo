@@ -766,7 +766,10 @@ namespace WrathCombo.Window.Tabs
                     ref Service.Configuration.ShowHiddenFeatures))
                 Service.Configuration.Save();
 
-            ImGuiComponents.HelpMarker("Some features can be marked as hidden, and will only be shown if this setting is enabled.\nThis is here instead of on the Settings tab while this behavior is still being tested, and to keep such features more secretive.");
+            ImGuiComponents.HelpMarker("Some features can be marked as hidden, and will only be shown if this setting is enabled.\nThis is here instead of on the Settings tab while this behavior is still early in its life, and to keep such features more secretive.");
+
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudGrey, "(Do NOT publicly direct users to this setting!)");
 
             #endregion
 
