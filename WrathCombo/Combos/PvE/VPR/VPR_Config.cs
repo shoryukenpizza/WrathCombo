@@ -51,7 +51,7 @@ internal partial class VPR
                         "Boss encounters Only", $"Only uses {Reawaken.ActionName()} when in Boss encounters.", 1);
 
                     DrawSliderInt(0, 5, VPR_ST_ReAwaken_Threshold,
-                        $"Set a HP% Threshold to use {Reawaken.ActionName()} when possible.");
+                        $"Set a HP% threshold to use {Reawaken.ActionName()} whenever available. (Bosses Only)");
 
                     break;
 
