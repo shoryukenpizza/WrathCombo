@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.MNK.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
 
@@ -31,28 +32,22 @@ internal partial class MNK
         if (HasStatusEffect(Buffs.CoeurlForm))
         {
             if (Coeurl is 0 && LevelChecked(Demolish))
-            {
-                if (!OnTargetsRear() &&
-                    TargetNeedsPositionals() &&
-                    !HasStatusEffect(Buffs.TrueNorth) &&
-                    ActionReady(TrueNorth) &&
-                    useTrueNorthIfEnabled)
-                    return TrueNorth;
-
-                return Demolish;
-            }
+                return !OnTargetsRear() &&
+                       TargetNeedsPositionals() &&
+                       !HasStatusEffect(Buffs.TrueNorth) &&
+                       ActionReady(TrueNorth) &&
+                       useTrueNorthIfEnabled
+                    ? TrueNorth
+                    : Demolish;
 
             if (LevelChecked(SnapPunch))
-            {
-                if (!OnTargetsFlank() &&
-                    TargetNeedsPositionals() &&
-                    !HasStatusEffect(Buffs.TrueNorth) &&
-                    ActionReady(TrueNorth) &&
-                    useTrueNorthIfEnabled)
-                    return TrueNorth;
-
-                return OriginalHook(SnapPunch);
-            }
+                return !OnTargetsFlank() &&
+                       TargetNeedsPositionals() &&
+                       !HasStatusEffect(Buffs.TrueNorth) &&
+                       ActionReady(TrueNorth) &&
+                       useTrueNorthIfEnabled
+                    ? TrueNorth
+                    : OriginalHook(SnapPunch);
         }
 
         return actionId;
@@ -268,10 +263,10 @@ internal partial class MNK
 
     internal static WrathOpener Opener()
     {
-        if (Config.MNK_SelectedOpener == 0)
+        if (MNK_SelectedOpener == 0)
             return MNKOpenerLL;
 
-        if (Config.MNK_SelectedOpener == 1)
+        if (MNK_SelectedOpener == 1)
             return MNKOpenerSL;
 
         return WrathOpener.Dummy;
@@ -307,7 +302,7 @@ internal partial class MNK
             LeapingOpo
         ];
 
-        internal override UserData ContentCheckConfig => Config.MNK_Balance_Content;
+        internal override UserData ContentCheckConfig => MNK_Balance_Content;
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
@@ -349,7 +344,7 @@ internal partial class MNK
             LeapingOpo
         ];
 
-        internal override UserData ContentCheckConfig => Config.MNK_Balance_Content;
+        internal override UserData ContentCheckConfig => MNK_Balance_Content;
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(PerfectBalance) is 2 &&
