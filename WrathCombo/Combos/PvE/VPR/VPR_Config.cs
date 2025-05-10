@@ -58,9 +58,9 @@ internal partial class VPR
                 case CustomComboPreset.VPR_ST_UncoiledFury:
                     DrawSliderInt(0, 3, VPR_ST_UncoiledFury_HoldCharges,
                         $"How many charges of {UncoiledFury.ActionName()} to keep ready? (0 = Use all)");
-                    
+
                     DrawSliderInt(0, 5, VPR_ST_UncoiledFury_Threshold,
-                    $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
+                        $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
 
                     break;
 
@@ -76,7 +76,7 @@ internal partial class VPR
                 case CustomComboPreset.VPR_AoE_UncoiledFury:
                     DrawSliderInt(0, 3, VPR_AoE_UncoiledFury_HoldCharges,
                         $"How many charges of {UncoiledFury.ActionName()} to keep ready? (0 = Use all)");
-                    
+
                     DrawSliderInt(0, 5, VPR_AoE_UncoiledFury_Threshold,
                         $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
 

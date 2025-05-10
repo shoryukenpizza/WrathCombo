@@ -265,7 +265,7 @@ internal partial class VPR : Melee
                         return OriginalHook(Twinblood);
                 }
             }
-            
+
             //GCDs
             if (IsEnabled(CustomComboPreset.VPR_ST_RangedUptime) &&
                 LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
@@ -307,7 +307,13 @@ internal partial class VPR : Melee
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
                 (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
+            {
+                if (IsEnabled(CustomComboPreset.VPR_TrueNortVicewinder) &&
+                    Role.CanTrueNorth() && CanDelayedWeave())
+                    return Role.TrueNorth;
+
                 return Vicewinder;
+            }
 
             // Uncoiled Fury usage
             if (IsEnabled(CustomComboPreset.VPR_ST_UncoiledFury) && !IsComboExpiring(2) &&

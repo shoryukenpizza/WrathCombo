@@ -34,7 +34,7 @@ internal partial class VPR
             //Use whenever
             if (SerpentOffering >= 50 && TargetIsBoss() && GetTargetHPPercent() < Config.VPR_ST_ReAwaken_Threshold)
                 return true;
-            
+
             //2min burst
             if (!JustUsed(SerpentsIre, 2.2f) && HasStatusEffect(Buffs.ReadyToReawaken) ||
                 WasLastWeaponskill(Ouroboros) && SerpentOffering >= 50 && IreCD >= 50)
