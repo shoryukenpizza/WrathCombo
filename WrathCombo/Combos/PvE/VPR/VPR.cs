@@ -1,5 +1,5 @@
 using WrathCombo.CustomComboNS;
-using WrathCombo.Data;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR : Melee
@@ -70,7 +70,7 @@ internal partial class VPR : Melee
                 return Variant.Rampart;
 
             //oGCDs
-            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 //Serpents Ire
                 if (InCombat() && !CappedOnCoils &&
@@ -228,7 +228,7 @@ internal partial class VPR : Melee
                 return actionID;
 
             //oGCDs
-            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 //Serpents Ire
                 if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsIre) && InCombat() &&
@@ -405,7 +405,7 @@ internal partial class VPR : Melee
             if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 // Death Rattle / Legacy Weaves
                 if (LevelChecked(SerpentsTail) &&
@@ -541,7 +541,7 @@ internal partial class VPR : Melee
             if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
                 return Variant.Rampart;
 
-            if (CanWeave() && !ActionWatching.HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 // Death Rattle / Legacy Weaves
                 if (IsEnabled(CustomComboPreset.VPR_AoE_SerpentsTail) &&
