@@ -85,21 +85,21 @@ internal partial class DRG : Melee
                 if (ActionReady(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
                     HasStatusEffect(Buffs.DiveReady) &&
-                    Gauge.IsLOTDActive)
+                    LoTDActive)
                     return MirageDive;
 
                 //Wyrmwind Thrust Feature
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
-                    Gauge.FirstmindsFocusCount is 2 &&
-                    (Gauge.IsLOTDActive ||
-                     !Gauge.IsLOTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    FirstmindsFocus is 2 &&
+                    (LoTDActive ||
+                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
                 if (ActionReady(Geirskogul) &&
                     CanDRGWeave(Geirskogul) &&
-                    !Gauge.IsLOTDActive)
+                    !LoTDActive)
                     return Geirskogul;
 
                 //(High) Jump Feature   
@@ -108,7 +108,7 @@ internal partial class DRG : Melee
                     !HasStatusEffect(Buffs.DiveReady) &&
                     (LevelChecked(HighJump) &&
                      (GetCooldownRemainingTime(Geirskogul) < 15 ||
-                      Gauge.IsLOTDActive) ||
+                      LoTDActive) ||
                      !LevelChecked(HighJump)) &&
                     TimeMoving.Ticks == 0)
                     return OriginalHook(Jump);
@@ -124,7 +124,7 @@ internal partial class DRG : Melee
                 if (ActionReady(Stardiver) &&
                     CanDRGWeave(Stardiver) &&
                     !HasStatusEffect(Buffs.StarcrossReady) &&
-                    Gauge.IsLOTDActive &&
+                    LoTDActive &&
                     TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
                     return Stardiver;
 
@@ -144,7 +144,7 @@ internal partial class DRG : Melee
                 if (ActionReady(Nastrond) &&
                     CanDRGWeave(Nastrond) &&
                     HasStatusEffect(Buffs.NastrondReady) &&
-                    Gauge.IsLOTDActive)
+                    LoTDActive)
                     return Nastrond;
             }
 
@@ -256,7 +256,7 @@ internal partial class DRG : Melee
                         ActionReady(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
                         HasStatusEffect(Buffs.DiveReady) &&
-                        (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && Gauge.IsLOTDActive ||
+                        (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && LoTDActive ||
                          IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
                         return MirageDive;
 
@@ -264,16 +264,16 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Wyrmwind) &&
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
-                        Gauge.FirstmindsFocusCount is 2 &&
-                        (Gauge.IsLOTDActive ||
-                         !Gauge.IsLOTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        FirstmindsFocus is 2 &&
+                        (LoTDActive ||
+                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Geirskogul) &&
                         ActionReady(Geirskogul) &&
                         CanDRGWeave(Geirskogul) &&
-                        !Gauge.IsLOTDActive)
+                        !LoTDActive)
                         return Geirskogul;
 
                     //(High) Jump Feature   
@@ -283,7 +283,7 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.DiveReady) &&
                         (LevelChecked(HighJump) &&
                          (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                          (GetCooldownRemainingTime(Geirskogul) < 15 || Gauge.IsLOTDActive) ||
+                          (GetCooldownRemainingTime(Geirskogul) < 15 || LoTDActive) ||
                           IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)) ||
                          !LevelChecked(HighJump)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) ||
@@ -305,7 +305,7 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Stardiver) &&
                         ActionReady(Stardiver) &&
                         CanDRGWeave(Stardiver) &&
-                        Gauge.IsLOTDActive &&
+                        LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_Stardiver_Melee) ||
                          IsEnabled(CustomComboPreset.DRG_ST_Stardiver_Melee) && TimeMoving.Ticks == 0 &&
@@ -331,7 +331,7 @@ internal partial class DRG : Melee
                         ActionReady(Nastrond) &&
                         CanDRGWeave(Nastrond) &&
                         HasStatusEffect(Buffs.NastrondReady) &&
-                        Gauge.IsLOTDActive)
+                        LoTDActive)
                         return Nastrond;
                 }
             }
@@ -436,15 +436,15 @@ internal partial class DRG : Melee
                 //Wyrmwind Thrust Feature
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
-                    Gauge.FirstmindsFocusCount is 2 &&
-                    (Gauge.IsLOTDActive ||
-                     !Gauge.IsLOTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    FirstmindsFocus is 2 &&
+                    (LoTDActive ||
+                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
                 if (ActionReady(Geirskogul) &&
                     CanDRGWeave(Geirskogul) &&
-                    !Gauge.IsLOTDActive)
+                    !LoTDActive)
                     return Geirskogul;
 
                 //(High) Jump Feature   
@@ -465,7 +465,7 @@ internal partial class DRG : Melee
                 if (ActionReady(Stardiver) &&
                     CanDRGWeave(Stardiver) &&
                     !HasStatusEffect(Buffs.StarcrossReady) &&
-                    Gauge.IsLOTDActive && TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
+                    LoTDActive && TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
                     return Stardiver;
 
                 //Starcross Feature
@@ -490,7 +490,7 @@ internal partial class DRG : Melee
                 if (ActionReady(Nastrond) &&
                     CanDRGWeave(Nastrond) &&
                     HasStatusEffect(Buffs.NastrondReady) &&
-                    Gauge.IsLOTDActive)
+                    LoTDActive)
                     return Nastrond;
             }
             if (Role.CanSecondWind(25))
@@ -582,16 +582,16 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Wyrmwind) &&
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
-                        Gauge.FirstmindsFocusCount is 2 &&
-                        (Gauge.IsLOTDActive ||
-                         !Gauge.IsLOTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        FirstmindsFocus is 2 &&
+                        (LoTDActive ||
+                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Geirskogul) &&
                         ActionReady(Geirskogul) &&
                         CanDRGWeave(Geirskogul) &&
-                        !Gauge.IsLOTDActive)
+                        !LoTDActive)
                         return Geirskogul;
 
                     //(High) Jump Feature   
@@ -618,7 +618,7 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Stardiver) &&
                         ActionReady(Stardiver) &&
                         CanDRGWeave(Stardiver) &&
-                        Gauge.IsLOTDActive &&
+                        LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady) &&
                         (IsNotEnabled(CustomComboPreset.DRG_AoE_Stardiver_Melee) ||
                          IsEnabled(CustomComboPreset.DRG_AoE_Stardiver_Melee) && TimeMoving.Ticks == 0 &&
@@ -651,7 +651,7 @@ internal partial class DRG : Melee
                         ActionReady(Nastrond) &&
                         CanDRGWeave(Nastrond) &&
                         HasStatusEffect(Buffs.NastrondReady) &&
-                        Gauge.IsLOTDActive)
+                        LoTDActive)
                         return Nastrond;
                 }
             }

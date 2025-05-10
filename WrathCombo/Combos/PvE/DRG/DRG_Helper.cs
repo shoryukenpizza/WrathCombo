@@ -10,9 +10,25 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
 {
-    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
     internal static StandardOpenerLogic StandardOpener = new();
     internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
+
+    internal static bool UseLifeSurge()
+    {
+        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
+        {
+            if (LevelChecked(Drakesbane) && LoTDActive &&
+                (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
+                (JustUsed(WheelingThrust) ||
+                 JustUsed(FangAndClaw) ||
+                 JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
+                return true;
+        }
+
+        return false;
+    }
+
+    #region Animation Locks
 
     internal static readonly List<uint> FastLocks =
     [
@@ -42,17 +58,6 @@ internal partial class DRG
 
     internal static uint SlowLock => Stardiver;
 
-    internal static WrathOpener Opener()
-    {
-        if (StandardOpener.LevelChecked && Config.DRG_SelectedOpener == 0)
-            return StandardOpener;
-
-        if (PiercingTalonOpener.LevelChecked && Config.DRG_SelectedOpener == 1)
-            return PiercingTalonOpener;
-
-        return WrathOpener.Dummy;
-    }
-
     internal static bool CanDRGWeave(uint oGCD)
     {
         float gcdTimer = GetCooldownRemainingTime(TrueThrust);
@@ -73,22 +78,20 @@ internal partial class DRG
         return false;
     }
 
-    internal static bool UseLifeSurge()
-    {
-        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
-        {
-            if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
-                (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
-                (JustUsed(WheelingThrust) ||
-                 JustUsed(FangAndClaw) ||
-                 JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
-                return true;
-        }
-
-        return false;
-    }
+    #endregion
 
     #region Openers
+
+    internal static WrathOpener Opener()
+    {
+        if (StandardOpener.LevelChecked && Config.DRG_SelectedOpener == 0)
+            return StandardOpener;
+
+        if (PiercingTalonOpener.LevelChecked && Config.DRG_SelectedOpener == 1)
+            return PiercingTalonOpener;
+
+        return WrathOpener.Dummy;
+    }
 
     internal class StandardOpenerLogic : WrathOpener
     {
@@ -179,6 +182,16 @@ internal partial class DRG
 
     #endregion
 
+    #region Gauge
+
+    internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
+
+    internal static bool LoTDActive => Gauge.IsLOTDActive;
+
+    internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
+
+    #endregion
+
     #region ID's
 
     public const byte ClassID = 4;
@@ -239,12 +252,6 @@ internal partial class DRG
         public const ushort
             ChaosThrust = 118,
             ChaoticSpring = 2719;
-    }
-
-    public static class Traits
-    {
-        public const uint
-            EnhancedLifeSurge = 438;
     }
 
     #endregion
