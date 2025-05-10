@@ -17,7 +17,7 @@ namespace WrathCombo.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
-        /// <summary> Gets the player or null. Set on each combo invoke</summary>
+        /// <summary> Gets the player or null. </summary>
         public static IPlayerCharacter? LocalPlayer => Svc.ClientState.LocalPlayer;
 
         /// <summary> Find if the player has a certain condition. </summary>
