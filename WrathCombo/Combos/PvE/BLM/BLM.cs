@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM : Caster
@@ -18,7 +19,7 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
                     !HasMaxPolyglotStacks)
@@ -186,7 +187,7 @@ internal partial class BLM : Caster
                 Opener().FullOpener(ref actionID))
                 return actionID;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
@@ -382,7 +383,7 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (ActionReady(Manafont) &&
                     EndOfFirePhase)
@@ -478,7 +479,7 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     ActionReady(Manafont) &&
