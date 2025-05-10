@@ -1,4 +1,6 @@
 using WrathCombo.CustomComboNS;
+using static WrathCombo.Combos.PvE.RPR.Config;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class RPR : Melee
@@ -42,7 +44,7 @@ internal partial class RPR : Melee
                 return Soulsow;
 
             //Variant Cure
-            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
                 return Variant.Cure;
 
             //Variant Rampart
@@ -50,7 +52,7 @@ internal partial class RPR : Melee
                 return Variant.Rampart;
 
             //All Weaves
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 //Arcane Cirlce
                 if (ActionReady(ArcaneCircle) && InBossEncounter() &&
@@ -134,22 +136,20 @@ internal partial class RPR : Melee
                 //Gibbet
                 if (HasStatusEffect(Buffs.EnhancedGibbet))
                 {
-                    if (Role.CanTrueNorth() && !OnTargetsFlank() &&
-                        CanDelayedWeave())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(Gibbet);
+                    return Role.CanTrueNorth() && !OnTargetsFlank() &&
+                           CanDelayedWeave()
+                        ? Role.TrueNorth
+                        : OriginalHook(Gibbet);
                 }
 
                 //Gallows
                 if (HasStatusEffect(Buffs.EnhancedGallows) ||
                     !HasStatusEffect(Buffs.EnhancedGibbet) && !HasStatusEffect(Buffs.EnhancedGallows))
                 {
-                    if (Role.CanTrueNorth() && !OnTargetsRear() &&
-                        CanDelayedWeave())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(Gallows);
+                    return Role.CanTrueNorth() && !OnTargetsRear() &&
+                           CanDelayedWeave()
+                        ? Role.TrueNorth
+                        : OriginalHook(Gallows);
                 }
             }
 
@@ -207,7 +207,7 @@ internal partial class RPR : Melee
             if (actionID is not Slice)
                 return actionID;
 
-            int positionalChoice = Config.RPR_Positional;
+            int positionalChoice = RPR_Positional;
 
             //Soulsow
             if (IsEnabled(CustomComboPreset.RPR_ST_SoulSow) &&
@@ -216,7 +216,7 @@ internal partial class RPR : Melee
                 return Soulsow;
 
             //Variant Cure
-            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
                 return Variant.Cure;
 
             //Variant Rampart
@@ -229,15 +229,15 @@ internal partial class RPR : Melee
                 return actionID;
 
             //All Weaves
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 //Arcane Cirlce
                 if (IsEnabled(CustomComboPreset.RPR_ST_ArcaneCircle) &&
                     ActionReady(ArcaneCircle) &&
                     (LevelChecked(Enshroud) && JustUsed(ShadowOfDeath) ||
                      !LevelChecked(Enshroud)) &&
-                    (Config.RPR_ST_ArcaneCircle_SubOption == 0 ||
-                     Config.RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter()))
+                    (RPR_ST_ArcaneCircle_SubOption == 0 ||
+                     RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter()))
                     return ArcaneCircle;
 
                 //Enshroud
@@ -256,11 +256,10 @@ internal partial class RPR : Melee
                     if (IsEnabled(CustomComboPreset.RPR_ST_Gluttony) &&
                         ActionReady(Gluttony))
                     {
-                        if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                            Role.CanTrueNorth())
-                            return Role.TrueNorth;
-
-                        return Gluttony;
+                        return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
+                               Role.CanTrueNorth()
+                            ? Role.TrueNorth
+                            : Gluttony;
                     }
 
                     //Bloodstalk
@@ -279,8 +278,8 @@ internal partial class RPR : Melee
                     if (IsEnabled(CustomComboPreset.RPR_ST_Sacrificium) &&
                         Lemure <= 4 && HasStatusEffect(Buffs.Oblatio) &&
                         (GetCooldownRemainingTime(ArcaneCircle) > GCD * 3 && !JustUsed(ArcaneCircle, 2) &&
-                         (Config.RPR_ST_ArcaneCircle_SubOption == 0 || Config.RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter()) ||
-                         Config.RPR_ST_ArcaneCircle_SubOption == 1 && !InBossEncounter() && IsOffCooldown(ArcaneCircle)))
+                         (RPR_ST_ArcaneCircle_SubOption == 0 || RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter()) ||
+                         RPR_ST_ArcaneCircle_SubOption == 1 && !InBossEncounter() && IsOffCooldown(ArcaneCircle)))
                         return OriginalHook(Gluttony);
 
                     //Lemure's Slice
@@ -292,10 +291,10 @@ internal partial class RPR : Melee
                 //Healing
                 if (IsEnabled(CustomComboPreset.RPR_ST_ComboHeals))
                 {
-                    if (Role.CanSecondWind(Config.RPR_STSecondWindThreshold))
+                    if (Role.CanSecondWind(RPR_STSecondWindThreshold))
                         return Role.SecondWind;
 
-                    if (Role.CanBloodBath(Config.RPR_STBloodbathThreshold))
+                    if (Role.CanBloodBath(RPR_STBloodbathThreshold))
                         return Role.Bloodbath;
                 }
             }
@@ -318,7 +317,7 @@ internal partial class RPR : Melee
 
             //Shadow Of Death
             if (IsEnabled(CustomComboPreset.RPR_ST_SoD) &&
-                UseShadowOfDeath() && GetTargetHPPercent() > Config.RPR_SoDThreshold)
+                UseShadowOfDeath() && GetTargetHPPercent() > RPR_SoDThreshold)
                 return ShadowOfDeath;
 
             //Perfectio
@@ -336,14 +335,13 @@ internal partial class RPR : Melee
                     positionalChoice is 1 && !HasStatusEffect(Buffs.EnhancedGibbet) &&
                     !HasStatusEffect(Buffs.EnhancedGallows))
                 {
-                    if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                        (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
-                         GetRemainingCharges(Role.TrueNorth) < 2 ||
-                         IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                        Role.CanTrueNorth() && !OnTargetsFlank() && CanDelayedWeave())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(Gibbet);
+                    return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
+                           (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
+                            GetRemainingCharges(Role.TrueNorth) < 2 ||
+                            IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
+                           Role.CanTrueNorth() && !OnTargetsFlank() && CanDelayedWeave()
+                        ? Role.TrueNorth
+                        : OriginalHook(Gibbet);
                 }
 
                 //Gallows
@@ -351,14 +349,13 @@ internal partial class RPR : Melee
                     positionalChoice is 0 && !HasStatusEffect(Buffs.EnhancedGibbet) &&
                     !HasStatusEffect(Buffs.EnhancedGallows))
                 {
-                    if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                        (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
-                         GetRemainingCharges(Role.TrueNorth) < 2 ||
-                         IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                        Role.CanTrueNorth() && !OnTargetsRear() && CanDelayedWeave())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(Gallows);
+                    return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
+                           (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
+                            GetRemainingCharges(Role.TrueNorth) < 2 ||
+                            IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
+                           Role.CanTrueNorth() && !OnTargetsRear() && CanDelayedWeave()
+                        ? Role.TrueNorth
+                        : OriginalHook(Gallows);
                 }
             }
 
@@ -426,13 +423,13 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (ActionReady(ArcaneCircle))
                     return ArcaneCircle;
@@ -524,13 +521,13 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanWeave())
+            if (CanWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ArcaneCircle) &&
                     ActionReady(ArcaneCircle))
@@ -568,10 +565,10 @@ internal partial class RPR : Melee
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ComboHeals))
                 {
-                    if (Role.CanSecondWind(Config.RPR_AoESecondWindThreshold))
+                    if (Role.CanSecondWind(RPR_AoESecondWindThreshold))
                         return Role.SecondWind;
 
-                    if (Role.CanBloodBath(Config.RPR_AoEBloodbathThreshold))
+                    if (Role.CanBloodBath(RPR_AoEBloodbathThreshold))
                         return Role.Bloodbath;
                 }
             }
@@ -580,7 +577,7 @@ internal partial class RPR : Melee
                 ActionReady(WhorlOfDeath) &&
                 GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
                 !HasStatusEffect(Buffs.SoulReaver) &&
-                GetTargetHPPercent() > Config.RPR_WoDThreshold)
+                GetTargetHPPercent() > RPR_WoDThreshold)
                 return WhorlOfDeath;
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_Perfectio) &&
@@ -798,7 +795,7 @@ internal partial class RPR : Melee
                 actionID is not (ShadowOfDeath or BloodStalk))
                 return actionID;
 
-            bool[] soulSowOptions = Config.RPR_SoulsowOptions;
+            bool[] soulSowOptions = RPR_SoulsowOptions;
             bool soulsowReady = ActionReady(Soulsow) && !HasStatusEffect(Buffs.Soulsow);
 
             return soulSowOptions.Length > 0 &&
