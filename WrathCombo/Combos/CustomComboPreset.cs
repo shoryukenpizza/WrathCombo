@@ -1926,6 +1926,35 @@ public enum CustomComboPreset
     #endregion
     // Last value = 5142
 
+    #region Hidden Features
+
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", DRK.JobID)]
+    [Hidden]
+    DRK_Hidden = 5200,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Hold Burst on Squirrels", "When you're targeting Squirrels in R6S add phase, hold burst.\n(until about the time the first manta is dying)", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SHoldSquirrelBurst = 5201,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Only Stun Jabberwock", "When in R6S, stun will only ever be used on the Jabberwock.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SStunJabberOnly = 5202,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionaryautomatically.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SNoAutoGroupMits = 5203,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R7S: Only Interrupt the adds casting Circle AoEs", "When you're in R7S, Interrupting will only work when you're targeting an add casting the circle AoE.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R7SCircleCastOnly = 5204,
+
+    #endregion
+    // Last value = 5204
+
     #endregion
 
     #region DRAGOON
