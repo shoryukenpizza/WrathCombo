@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using static WrathCombo.Combos.PvE.BLM.Config;
 using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
@@ -13,7 +14,7 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, Config.BLM_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, BLM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
@@ -176,7 +177,7 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, Config.BLM_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, BLM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
@@ -196,7 +197,7 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > Config.BLM_ST_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges)
                     return LeyLines;
 
                 if (EndOfFirePhase)
@@ -213,8 +214,8 @@ internal partial class BLM : Caster
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
                         !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
-                        (GetRemainingCharges(Triplecast) is 2 && Config.BLM_ST_Triplecast_UseCharges == 1 ||
-                         HasCharges(Triplecast) && Config.BLM_ST_Triplecast_UseCharges == 2) &&
+                        (GetRemainingCharges(Triplecast) is 2 && BLM_ST_Triplecast_UseCharges == 1 ||
+                         HasCharges(Triplecast) && BLM_ST_Triplecast_UseCharges == 2) &&
                         JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
@@ -252,9 +253,9 @@ internal partial class BLM : Caster
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
                 HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
-                (Config.BLM_ST_Thunder_SubOption == 0 ||
-                 Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
-                (GetTargetHPPercent() > Config.BLM_ST_Thunder_Threshold) &&
+                (BLM_ST_Thunder_SubOption == 0 ||
+                 BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
+                (GetTargetHPPercent() > BLM_ST_Thunder_Threshold) &&
                 (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3))
@@ -262,14 +263,14 @@ internal partial class BLM : Caster
 
             if (IsMoving() && InCombat())
             {
-                if (Config.BLM_ST_MovementOption[0] &&
+                if (BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
-                if (Config.BLM_ST_MovementOption[1] &&
+                if (BLM_ST_MovementOption[1] &&
                     ActionReady(Paradox) &&
                     FirePhase && ActiveParadox &&
                     !HasStatusEffect(Buffs.Firestarter) &&
@@ -277,11 +278,11 @@ internal partial class BLM : Caster
                     !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Paradox;
 
-                if (Config.BLM_ST_MovementOption[2] &&
+                if (BLM_ST_MovementOption[2] &&
                     ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
-                if (Config.BLM_ST_MovementOption[3] &&
+                if (BLM_ST_MovementOption[3] &&
                     HasPolyglotStacks() &&
                     !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast))
@@ -377,7 +378,7 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, Config.BLM_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, BLM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
@@ -396,7 +397,7 @@ internal partial class BLM : Caster
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > Config.BLM_AoE_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges)
                     return LeyLines;
             }
 
@@ -473,7 +474,7 @@ internal partial class BLM : Caster
             if (actionID is not (Blizzard2 or HighBlizzard2))
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, Config.BLM_VariantCure))
+            if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, BLM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
@@ -496,7 +497,7 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > Config.BLM_AoE_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges)
                     return LeyLines;
             }
 
@@ -507,7 +508,7 @@ internal partial class BLM : Caster
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
                 HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (GetTargetHPPercent() > Config.BLM_AoE_ThunderHP) &&
+                (GetTargetHPPercent() > BLM_AoE_ThunderHP) &&
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
@@ -528,7 +529,7 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    GetRemainingCharges(Triplecast) > Config.BLM_AoE_Triplecast_HoldCharges && HasMaxUmbralHeartStacks &&
+                    GetRemainingCharges(Triplecast) > BLM_AoE_Triplecast_HoldCharges && HasMaxUmbralHeartStacks &&
                     !ActionReady(Manafont))
                     return Triplecast;
 
