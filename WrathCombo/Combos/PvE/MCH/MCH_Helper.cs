@@ -47,13 +47,13 @@ internal partial class MCH
                         return true;
 
                     //odd mins 1st queen
-                    if (BSUsed >= 2 && Battery is 50 && LastSummon is 100)
+                    if (BSUsed >= 2 && Battery is 50 && LastSummonBattery is 100)
                         return true;
 
                     //odd mins 2nd queen
                     if ((BSUsed % 3 is 2 && Battery >= 60 ||
                          BSUsed % 3 is 0 && Battery >= 70 ||
-                         BSUsed % 3 is 1 && Battery >= 80) && LastSummon is 50)
+                         BSUsed % 3 is 1 && Battery >= 80) && LastSummonBattery is 50)
                         return true;
                 }
 
@@ -393,7 +393,7 @@ internal partial class MCH
 
     internal static bool RobotActive => Gauge.IsRobotActive;
 
-    internal static byte LastSummon => Gauge.LastSummonBatteryPower;
+    internal static byte LastSummonBattery => Gauge.LastSummonBatteryPower;
 
     internal static byte Heat => Gauge.Heat;
 
