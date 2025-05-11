@@ -101,7 +101,7 @@ internal partial class MCH
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
-                ActionReady(AirAnchor) && !MaxBattery)
+                LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && !MaxBattery)
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
@@ -156,7 +156,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
-            !MaxBattery && ActionReady(AirAnchor))
+            !MaxBattery && LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor))
         {
             actionID = AirAnchor;
 
