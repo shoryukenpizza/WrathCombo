@@ -69,7 +69,7 @@ internal partial class MCH : PhysicalRanged
                         TargetIsBoss())
                         return Wildfire;
 
-                    if (!Gauge.IsOverheated)
+                    if (!IsOverheated)
                     {
                         // BarrelStabilizer
                         if (ActionReady(BarrelStabilizer) && InBossEncounter() &&
@@ -77,7 +77,7 @@ internal partial class MCH : PhysicalRanged
                             return BarrelStabilizer;
 
                         // Hypercharge
-                        if ((Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+                        if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                             !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
@@ -97,7 +97,7 @@ internal partial class MCH : PhysicalRanged
                         }
 
                         //Queen
-                        if (UseQueen(Gauge))
+                        if (UseQueen())
                             return OriginalHook(RookAutoturret);
 
                         // Reassemble
@@ -129,7 +129,7 @@ internal partial class MCH : PhysicalRanged
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -143,7 +143,7 @@ internal partial class MCH : PhysicalRanged
                 return FullMetalField;
 
             // Heatblast
-            if (Gauge.IsOverheated && ActionReady(Heatblast))
+            if (IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
 
             //Tools
@@ -208,7 +208,7 @@ internal partial class MCH : PhysicalRanged
                 if (!HasDoubleWeaved())
                 {
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_QueenOverdrive) &&
-                        Gauge.IsRobotActive && ActionReady(RookOverdrive) &&
+                        RobotActive && ActionReady(RookOverdrive) &&
                         GetTargetHPPercent() <= MCH_ST_QueenOverDrive)
                         return OriginalHook(RookOverdrive);
 
@@ -219,7 +219,7 @@ internal partial class MCH : PhysicalRanged
                         JustUsed(Hypercharge) && ActionReady(Wildfire) && !HasStatusEffect(Buffs.Wildfire))
                         return Wildfire;
 
-                    if (!Gauge.IsOverheated)
+                    if (!IsOverheated)
                     {
                         // BarrelStabilizer
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer) &&
@@ -230,7 +230,7 @@ internal partial class MCH : PhysicalRanged
 
                         // Hypercharge
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Hypercharge) &&
-                            (Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
+                            (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
                             !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
@@ -251,7 +251,7 @@ internal partial class MCH : PhysicalRanged
 
                         // Queen
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_TurretQueen) &&
-                            UseQueen(Gauge))
+                            UseQueen())
                             return OriginalHook(RookAutoturret);
 
                         // Reassemble
@@ -291,7 +291,7 @@ internal partial class MCH : PhysicalRanged
                 {
                     if (ActionReady(GaussRound) &&
                         GetRemainingCharges(OriginalHook(GaussRound)) > MCH_ST_GaussRicoPool &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -313,7 +313,7 @@ internal partial class MCH : PhysicalRanged
 
             // Heatblast
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Heatblast) &&
-                Gauge.IsOverheated && ActionReady(Heatblast))
+                IsOverheated && ActionReady(Heatblast))
                 return OriginalHook(Heatblast);
 
             //Tools
@@ -363,18 +363,18 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (!HasDoubleWeaved() && !Gauge.IsOverheated)
+                if (!HasDoubleWeaved() && !IsOverheated)
                 {
                     // BarrelStabilizer
                     if (ActionReady(BarrelStabilizer) &&
                         !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
-                    if (Gauge.Battery == 100)
+                    if (Battery == 100)
                         return OriginalHook(RookAutoturret);
 
                     // Hypercharge
-                    if ((Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                    if ((Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
                         LevelChecked(AutoCrossbow) &&
                         (BioBlaster.LevelChecked() && GetCooldownRemainingTime(BioBlaster) > 10 ||
                          !BioBlaster.LevelChecked()) &&
@@ -401,7 +401,7 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -409,7 +409,7 @@ internal partial class MCH : PhysicalRanged
                 }
             }
 
-            if (!Gauge.IsOverheated)
+            if (!IsOverheated)
             {
                 //Full Metal Field
                 if (HasStatusEffect(Buffs.FullMetalMachinist) &&
@@ -418,7 +418,7 @@ internal partial class MCH : PhysicalRanged
 
                 if (ActionReady(BioBlaster) &&
                     !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) &&
-                    !Gauge.IsOverheated && !HasStatusEffect(Buffs.Reassembled))
+                    !IsOverheated && !HasStatusEffect(Buffs.Reassembled))
                     return OriginalHook(BioBlaster);
 
                 if (ActionReady(Flamethrower) && !IsMoving())
@@ -434,10 +434,10 @@ internal partial class MCH : PhysicalRanged
                     return AirAnchor;
             }
 
-            if (LevelChecked(AutoCrossbow) && Gauge.IsOverheated && !LevelChecked(CheckMate))
+            if (LevelChecked(AutoCrossbow) && IsOverheated && !LevelChecked(CheckMate))
                 return AutoCrossbow;
 
-            if (Gauge.IsOverheated && LevelChecked(CheckMate))
+            if (IsOverheated && LevelChecked(CheckMate))
                 return BlazingShot;
 
             return actionID;
@@ -490,25 +490,20 @@ internal partial class MCH : PhysicalRanged
             // All weaves
             if (CanWeave())
             {
-                if (!HasDoubleWeaved() && !Gauge.IsOverheated)
+                if (!HasDoubleWeaved() && !IsOverheated)
                 {
-                    if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_QueenOverdrive) &&
-                        Gauge.IsRobotActive && ActionReady(RookOverdrive) &&
-                        GetTargetHPPercent() <= MCH_AoE_QueenOverDrive)
-                        return OriginalHook(RookOverdrive);
-
                     // BarrelStabilizer
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Stabilizer) &&
                         ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                         return BarrelStabilizer;
 
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Queen) &&
-                        Gauge.Battery >= MCH_AoE_TurretUsage)
+                        Battery >= MCH_AoE_TurretUsage)
                         return OriginalHook(RookAutoturret);
 
                     // Hypercharge
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Hypercharge) &&
-                        (Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
+                        (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) && LevelChecked(Hypercharge) &&
                         LevelChecked(AutoCrossbow) &&
                         (BioBlaster.LevelChecked() && GetCooldownRemainingTime(BioBlaster) > 10 ||
                          !BioBlaster.LevelChecked() || IsNotEnabled(CustomComboPreset.MCH_AoE_Adv_Bioblaster)) &&
@@ -521,7 +516,7 @@ internal partial class MCH : PhysicalRanged
                         !HasStatusEffect(Buffs.Reassembled) && !JustUsed(Flamethrower, 10f) &&
                         GetRemainingCharges(Reassemble) > MCH_AoE_ReassemblePool &&
                         (MCH_AoE_Reassembled[0] && Scattergun.LevelChecked() ||
-                         Gauge.IsOverheated && MCH_AoE_Reassembled[1] && AutoCrossbow.LevelChecked() ||
+                         IsOverheated && MCH_AoE_Reassembled[1] && AutoCrossbow.LevelChecked() ||
                          GetCooldownRemainingTime(Chainsaw) < 1 && MCH_AoE_Reassembled[2] && Chainsaw.LevelChecked() ||
                          GetCooldownRemainingTime(OriginalHook(Chainsaw)) < 1 && MCH_AoE_Reassembled[3] &&
                          Excavator.LevelChecked()))
@@ -551,7 +546,7 @@ internal partial class MCH : PhysicalRanged
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        (UseGauss || !LevelChecked(Ricochet)))
+                        (UseGaussRound || !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) && UseRicochet)
@@ -559,7 +554,7 @@ internal partial class MCH : PhysicalRanged
                 }
             }
 
-            if (!Gauge.IsOverheated)
+            if (!IsOverheated)
             {
                 //Full Metal Field
                 if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Stabilizer_FullMetalField) &&
@@ -567,7 +562,7 @@ internal partial class MCH : PhysicalRanged
                     return FullMetalField;
 
                 if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Bioblaster) &&
-                    ActionReady(BioBlaster) && !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) && !Gauge.IsOverheated && !HasStatusEffect(Buffs.Reassembled))
+                    ActionReady(BioBlaster) && !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) && !IsOverheated && !HasStatusEffect(Buffs.Reassembled))
                     return OriginalHook(BioBlaster);
 
                 if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_FlameThrower) &&
@@ -593,12 +588,12 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(Scattergun);
             }
 
-            if (LevelChecked(AutoCrossbow) && Gauge.IsOverheated &&
+            if (LevelChecked(AutoCrossbow) && IsOverheated &&
                 (!LevelChecked(CheckMate) || IsNotEnabled(CustomComboPreset.MCH_AoE_Adv_BlazingShot)))
                 return AutoCrossbow;
 
             if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_BlazingShot) &&
-                Gauge.IsOverheated && LevelChecked(CheckMate))
+                IsOverheated && LevelChecked(CheckMate))
                 return BlazingShot;
 
             return actionID;
@@ -615,7 +610,7 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             if (IsEnabled(CustomComboPreset.MCH_Heatblast_AutoBarrel) &&
-                ActionReady(BarrelStabilizer) && !Gauge.IsOverheated &&
+                ActionReady(BarrelStabilizer) && !IsOverheated &&
                 !HasStatusEffect(Buffs.FullMetalMachinist))
                 return BarrelStabilizer;
 
@@ -623,8 +618,8 @@ internal partial class MCH : PhysicalRanged
                 ActionReady(Wildfire) && JustUsed(Hypercharge) && !HasStatusEffect(Buffs.Wildfire))
                 return Wildfire;
 
-            if (!Gauge.IsOverheated && LevelChecked(Hypercharge) &&
-                (Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
+            if (!IsOverheated && LevelChecked(Hypercharge) &&
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
                 return Hypercharge;
 
             if (IsEnabled(CustomComboPreset.MCH_Heatblast_GaussRound) &&
@@ -633,14 +628,14 @@ internal partial class MCH : PhysicalRanged
                 HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    (UseGauss || !LevelChecked(Ricochet)))
+                    (UseGaussRound || !LevelChecked(Ricochet)))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) && UseRicochet)
                     return OriginalHook(Ricochet);
             }
 
-            if (Gauge.IsOverheated && LevelChecked(OriginalHook(Heatblast)))
+            if (IsOverheated && LevelChecked(OriginalHook(Heatblast)))
                 return OriginalHook(Heatblast);
 
             return actionID;
@@ -657,26 +652,26 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             if (IsEnabled(CustomComboPreset.MCH_AutoCrossbow_AutoBarrel) &&
-                ActionReady(BarrelStabilizer) && !Gauge.IsOverheated &&
+                ActionReady(BarrelStabilizer) && !IsOverheated &&
                 !HasStatusEffect(Buffs.FullMetalMachinist))
                 return BarrelStabilizer;
 
-            if (!Gauge.IsOverheated && LevelChecked(Hypercharge) &&
-                (Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
+            if (!IsOverheated && LevelChecked(Hypercharge) &&
+                (Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)))
                 return Hypercharge;
 
             if (IsEnabled(CustomComboPreset.MCH_AutoCrossbow_GaussRound) &&
                 CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    UseGauss || !LevelChecked(Ricochet))
+                    UseGaussRound || !LevelChecked(Ricochet))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) && UseRicochet)
                     return OriginalHook(Ricochet);
             }
 
-            if (Gauge.IsOverheated && ActionReady(AutoCrossbow))
+            if (IsOverheated && ActionReady(AutoCrossbow))
                 return OriginalHook(AutoCrossbow);
 
             return actionID;
@@ -693,7 +688,7 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             if (ActionReady(GaussRound) &&
-                (UseGauss || !LevelChecked(Ricochet)))
+                (UseGaussRound || !LevelChecked(Ricochet)))
                 return OriginalHook(GaussRound);
 
             if (ActionReady(Ricochet) && UseRicochet)
@@ -708,7 +703,7 @@ internal partial class MCH : PhysicalRanged
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_Overdrive;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is RookAutoturret or AutomatonQueen && Gauge.IsRobotActive
+            actionID is RookAutoturret or AutomatonQueen && RobotActive
                 ? OriginalHook(QueenOverdrive)
                 : actionID;
     }
