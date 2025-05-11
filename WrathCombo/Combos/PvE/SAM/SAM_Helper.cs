@@ -40,37 +40,25 @@ internal partial class SAM
                     meikyoUsed < 2 && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
 
-                //double meikyo
+                if (HasStatusEffect(Buffs.TsubameReady) &&
 
-                if (HasStatusEffect(Buffs.TsubameReady))
-                {
-                    switch (gcd)
-                    {
-                        //Even windows
-                        case >= 2.09f when
-                            GetCooldownRemainingTime(Senei) <= 10 &&
-                            (meikyoUsed % 7 is 2 && SenCount is 3 && IsOffCooldown(Ikishoten) ||
-                             meikyoUsed % 7 is 4 && SenCount is 2 ||
-                             meikyoUsed % 7 is 6 && SenCount is 1):
+                    //Even windows
+                    ((gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
+                      (meikyoUsed % 7 is 2 && SenCount is 3 && IsOffCooldown(Ikishoten) ||
+                       meikyoUsed % 7 is 4 && SenCount is 2 ||
+                       meikyoUsed % 7 is 6 && SenCount is 1)) ||
+                     //Odd windows
+                     (gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
+                      (meikyoUsed % 7 is 1 && SenCount is 3 ||
+                       meikyoUsed % 7 is 3 && SenCount is 2 ||
+                       meikyoUsed % 7 is 5 && SenCount is 1)) ||
 
-                        //Odd windows
-                        case >= 2.09f when
-                            GetCooldownRemainingTime(Senei) <= 10 &&
-                            (meikyoUsed % 7 is 1 && SenCount is 3 ||
-                             meikyoUsed % 7 is 3 && SenCount is 2 ||
-                             meikyoUsed % 7 is 5 && SenCount is 1):
+                     //Even windows
+                     (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3) ||
 
-                        //Even windows
-                        case <= 2.08f when
-                            GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3:
-
-                        //Odd windows
-                        case <= 2.08f when
-                            GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3:
-
-                            return true;
-                    }
-                }
+                     //Odd windows
+                     (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)))
+                    return true;
 
                 // reset meikyo
                 if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
@@ -105,7 +93,7 @@ internal partial class SAM
 
             if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) && !IsMoving() &&
                 ((SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                  (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
+                  (JustUsed(MeikyoShisui, 15f) && ((JustUsed(TendoSetsugekka) || !LevelChecked(TendoSetsugekka))) ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
                  (SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
                  (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
@@ -120,7 +108,7 @@ internal partial class SAM
                   SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
                   (SAM_ST_Higanbana_Suboption == 0 ||
                    SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                  (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
+                  (JustUsed(MeikyoShisui, 15f) && ((JustUsed(TendoSetsugekka) || !LevelChecked(TendoSetsugekka))) ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
                  (SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
                  (SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
