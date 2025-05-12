@@ -1071,6 +1071,10 @@ public enum CustomComboPreset
         "\n(REQUIRES a countdown)", DNC.JobID)]
     DNC_ST_BalanceOpener = 4011,
 
+    [ParentCombo(DNC_ST_BalanceOpener)]
+    [CustomComboInfo("Wait for Countdown Options", "When not in combat will change to Savage Blade to wait for a countdown to appear.\nMostly here to allow for targeting the boss before the exact countdown window your opener selection is waiting for.\nONLY designed to be something you turn on while doing back-to-back pulls of content, NOT suitable to leave on all the time.", DNC.JobID)]
+    DNC_ST_Opener_BlockEarly = 4031,
+
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and no dance partner is found.", DNC.JobID)]
     DNC_ST_Adv_Partner = 4012,
@@ -1352,22 +1356,43 @@ public enum CustomComboPreset
 
     #region Dance Features
 
-    [ReplaceSkill(DNC.StandardStep, DNC.TechnicalStep)]
-    [ConflictingCombos(DNC_StandardStep_LastDance, DNC_TechnicalStep_Devilment)]
-    [CustomComboInfo("Dance Step Combo Feature",
-        "Change Standard Step and Technical Step into each dance step, while dancing." +
-        "\nWorks with Advanced Mode DNC.", DNC.JobID)]
-    DNC_DanceStepCombo = 4110,
-
     [CustomComboInfo("Custom Dance Step Feature",
         "Change custom actions into dance steps while dancing." +
-        "\nLets you still dance with combos on, without using Dance Step Combo Feature.", DNC.JobID)]
+        "\nLets you still dance with combos on, without using Step Combo Features above.", DNC.JobID)]
     DNC_CustomDanceSteps = 4115,
 
     [ParentCombo(DNC_CustomDanceSteps)]
-    [ReplaceSkill(DNC.Devilment)]
     [CustomComboInfo("Override Smaller Features", "If enabled, will let you choose actions that are replaced by the smaller features listed below here, and they will return the Step that you have set them to when dancing.", DNC.JobID)]
     DNC_CustomDanceSteps_Conflicts = 4116,
+
+    [CustomComboInfo("Dance Features", "Small Features for Standard and Technical Step", DNC.JobID)]
+    DNC_DanceFeatures = 4111,
+
+    [ParentCombo(DNC_DanceFeatures)]
+    [ReplaceSkill(DNC.StandardStep)]
+    [CustomComboInfo("Standard Step Combo Feature",
+        "Change Standard Step into each dance step, while dancing.", DNC.JobID)]
+    DNC_StandardStepCombo = 4110,
+
+    // StandardStep(or Finishing Move) --> Last Dance
+    [ParentCombo(DNC_DanceFeatures)]
+    [ReplaceSkill(DNC.StandardStep, DNC.FinishingMove)]
+    [CustomComboInfo("Standard Step to Last Dance Feature",
+        "Change Standard Step or Finishing Move to Last Dance when available.", DNC.JobID)]
+    DNC_StandardStep_LastDance = 4155,
+
+    [ParentCombo(DNC_DanceFeatures)]
+    [ReplaceSkill(DNC.TechnicalStep)]
+    [CustomComboInfo("Technical Step Combo Feature",
+        "Change Technical Step into each dance step, while dancing.", DNC.JobID)]
+    DNC_TechnicalStepCombo = 4112,
+
+    // Technical Step --> Devilment
+    [ParentCombo(DNC_DanceFeatures)]
+    [ReplaceSkill(DNC.TechnicalStep)]
+    [CustomComboInfo("Technical Step to Devilment Feature", "Change Technical Step to Devilment as soon as possible.",
+        DNC.JobID)]
+    DNC_TechnicalStep_Devilment = 4160,
 
     #endregion
     // Last value = 4116
@@ -1417,20 +1442,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Devilment to Starfall Feature", "Change Devilment into Starfall Dance after use.", DNC.JobID)]
     DNC_Starfall_Devilment = 4150,
 
-    // StandardStep(or Finishing Move) --> Last Dance
-    [ReplaceSkill(DNC.StandardStep, DNC.FinishingMove)]
-    [ConflictingCombos(DNC_DanceStepCombo)]
-    [CustomComboInfo("Standard Step to Last Dance Feature",
-        "Change Standard Step or Finishing Move to Last Dance when available.", DNC.JobID)]
-    DNC_StandardStep_LastDance = 4155,
-
-    // Technical Step --> Devilment
-    [ReplaceSkill(DNC.StandardStep, DNC.FinishingMove)]
-    [ConflictingCombos(DNC_DanceStepCombo)]
-    [CustomComboInfo("Technical Step to Devilment Feature", "Change Technical Step to Devilment as soon as possible.",
-        DNC.JobID)]
-    DNC_TechnicalStep_Devilment = 4160,
-
     // Bladeshower --> Bloodshower
     [ReplaceSkill(DNC.Bladeshower)]
     [CustomComboInfo("Bladeshower to Bloodshower Feature", "Change Bladeshower to Bloodshower when available.", DNC.JobID)]
@@ -1445,7 +1456,7 @@ public enum CustomComboPreset
     // Last value = 4170
 
     #endregion
-    // Last value = 4170
+    // Last value = 4177
 
     #region Variant
 
