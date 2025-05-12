@@ -24,8 +24,6 @@ namespace WrathCombo.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
-        private static readonly Dictionary<uint, bool> NPCPositionals = new();
-
         /// <summary> Gets the current target or null. </summary>
         public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
@@ -243,14 +241,10 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static bool TargetNeedsPositionals()
         {
-            if (!HasBattleTarget()) return false;
-            if (HasStatusEffect(3808, CurrentTarget, true)) return false; // Directional Disregard Effect (Patch 7.01)
-            if (!NPCPositionals.ContainsKey(CurrentTarget.DataId))
-            {
-                if (Svc.Data.GetExcelSheet<BNpcBase>().TryGetFirst(x => x.RowId == CurrentTarget.DataId, out var bnpc))
-                    NPCPositionals[CurrentTarget.DataId] = bnpc.IsOmnidirectional;
-            }
-            return !NPCPositionals[CurrentTarget.DataId];
+            if (CurrentTarget is not IBattleChara target || HasStatusEffect(3808, target, true))
+                return false;
+
+            return Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && !dataRow.IsOmnidirectional;
         }
 
         /// <summary> Attempts to target the given party member </summary>
