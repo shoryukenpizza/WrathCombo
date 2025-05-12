@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class AST
@@ -31,6 +31,24 @@ internal partial class AST
     public static ASTGauge Gauge => GetJobGauge<ASTGauge>();
     public static CardType DrawnCard { get; set; }
 
+    public static Dictionary<byte, int> JobPriorities = new()
+    {
+    { SAM.JobID, 1 },
+    { NIN.JobID, 2 },
+    { VPR.JobID, 3 },
+    { DRG.JobID, 4 },
+    { MNK.JobID, 5 },
+    { DRK.JobID, 6 },
+    { RPR.JobID, 7 },
+    { PCT.JobID, 8 },
+    { SMN.JobID, 9 },
+    { MCH.JobID, 10 },
+    { BRD.JobID, 11 },
+    { RDM.JobID, 12 },
+    { DNC.JobID, 13 },
+    { BLM.JobID, 14 }
+    };
+
     public static int SpellsSinceDraw()
     {
         if (ActionWatching.CombatActions.Count == 0)
@@ -42,7 +60,7 @@ internal partial class AST
             idx = 0;
 
         int ret = 0;
-        for(int i = idx; i < ActionWatching.CombatActions.Count; i++)
+        for (int i = idx; i < ActionWatching.CombatActions.Count; i++)
         {
             if (ActionWatching.GetAttackType(ActionWatching.CombatActions[i]) == ActionWatching.ActionAttackType.Spell)
                 ret++;
@@ -100,7 +118,7 @@ internal partial class AST
             return false;
 
         List<IBattleChara> targets = new();
-        for(int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
+        for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
         {
             if (GetPartySlot(i) is not IBattleChara member)
                 continue;
@@ -174,7 +192,7 @@ internal partial class AST
                 return false;
             CardType cardDrawn = Gauge.DrawnCards[0];
             PartyTargets.Clear();
-            for(int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
+            for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
             {
                 if (GetPartySlot(i) is not IBattleChara member)
                     continue;
@@ -198,7 +216,7 @@ internal partial class AST
             //The inevitable "0 targets found" because of debuffs
             if (PartyTargets.Count == 0)
             {
-                for(int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
+                for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
                 {
                     if (GetPartySlot(i) is not IBattleChara member)
                         continue;
@@ -230,37 +248,17 @@ internal partial class AST
             //Grok is a scary SOB
             if (PartyTargets.Count > 0)
             {
-
                 //Start of AST Fixed Prio
-
                 if (Config.AST_QuickTarget_Prio)
                 {
                     PartyTargets.Sort((x, y) =>
                     {
-                        Dictionary<byte, int> jobPriorities = new()
-                        {
-                        { SAM.JobID, 1 },
-                        { NIN.JobID, 2 },
-                        { VPR.JobID, 3 },
-                        { DRG.JobID, 4 },
-                        { MNK.JobID, 5 },
-                        { DRK.JobID, 6 },
-                        { RPR.JobID, 7 },
-                        { PCT.JobID, 8 },
-                        { SMN.JobID, 9 },
-                        { MCH.JobID, 10 },
-                        { BRD.JobID, 11 },
-                        { RDM.JobID, 12 },
-                        { DNC.JobID, 13 },
-                        { BLM.JobID, 14 }
-                        };
-
                         int GetPriority(IGameObject obj)
                         {
                             if (obj is not IBattleChara chara)
                                 return int.MaxValue;
 
-                            return jobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : 99;
+                            return JobPriorities.TryGetValue((byte)chara.ClassJob.RowId, out int priority) ? priority : 99;
 
                         }
 
@@ -271,9 +269,7 @@ internal partial class AST
                 {
                     PartyTargets.Shuffle();
                 }
-//End of AST Fixed prio
-
-
+                //End of AST Fixed prio
 
                 IGameObject? suitableDps = null;
                 IGameObject? unsuitableDps = null;

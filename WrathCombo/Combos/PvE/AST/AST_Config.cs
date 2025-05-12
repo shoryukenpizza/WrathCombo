@@ -196,7 +196,7 @@ internal partial class AST
                     ImGui.Spacing();
                     DrawAdditionalBoolChoice(AST_QuickTarget_SkipDamageDown, $"Skip targets with a {GetStatusName(62)} debuff", "");
                     DrawAdditionalBoolChoice(AST_QuickTarget_SkipRezWeakness, $"Skip targets with a {GetStatusName(43)} or {GetStatusName(44)} debuff", "");
-                    DrawAdditionalBoolChoice(AST_QuickTarget_Prio, $"Uses Fixed Card Priorities", "");
+                    DrawAdditionalBoolChoice(AST_QuickTarget_Prio, $"Uses Fixed Card Priorities (Based on the Balance)", "");
                     break;
 
                 case CustomComboPreset.AST_DPS_AutoDraw:
