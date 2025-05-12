@@ -45,19 +45,19 @@ internal partial class SAM
                 if (HasStatusEffect(Buffs.TsubameReady))
                 {
                     //2.14 GCD
-                    if ((gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
-                         (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
-                          meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
-                          meikyoUsed % 7 is 5 or 6 && SenCount is 1)))
+                    if (gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
+                        (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
+                         meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
+                         meikyoUsed % 7 is 5 or 6 && SenCount is 1))
                         return true;
 
                     //2.08 gcd
-                    if (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)
+                    if (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 10 && SenCount is 3)
                         return true;
                 }
 
                 // reset meikyo
-                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
+                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && WasLastWeaponskill(Yukikaze))
                     return true;
             }
 
@@ -79,10 +79,8 @@ internal partial class SAM
         {
             if ((IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) && SAM_ST_CDs_IaijutsuOption[3] ||
                  IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
-                (HasStatusEffect(Buffs.TsubameReady) &&
-                 (SenCount is 3 ||
-                  GetCooldownRemainingTime(Senei) > 33 ||
-                  HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady))))
+                (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
+                 (HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33))))
             {
                 actionID = OriginalHook(TsubameGaeshi);
                 return true;
