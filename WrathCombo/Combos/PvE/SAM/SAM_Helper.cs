@@ -57,7 +57,7 @@ internal partial class SAM
                 }
 
                 // reset meikyo
-                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && WasLastWeaponskill(Yukikaze))
+                if (gcd >= 2.09f && meikyoUsed % 7 is 0)
                     return true;
             }
 
