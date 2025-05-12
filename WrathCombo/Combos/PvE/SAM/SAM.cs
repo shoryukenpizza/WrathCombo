@@ -128,8 +128,7 @@ internal partial class SAM : Melee
                         case >= 50:
                             return Shinten;
 
-                        case < 50 when JustUsed(Higanbana) ||
-                                       !TargetIsBoss() && SenCount is 1:
+                        case < 50:
                             return Ikishoten;
                     }
                 }
@@ -301,8 +300,7 @@ internal partial class SAM : Melee
                             case >= 50:
                                 return Shinten;
 
-                            case < 50 when JustUsed(Higanbana) ||
-                                           SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() && SenCount is 1:
+                            case < 50:
                                 return Ikishoten;
                         }
                     }

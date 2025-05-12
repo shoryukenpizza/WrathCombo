@@ -24,6 +24,8 @@ internal partial class SAM
 
     internal static int SenCount => GetSenCount();
 
+    //TODO Rework
+    //Meikyo
     internal static bool UseMeikyo()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
@@ -40,25 +42,19 @@ internal partial class SAM
                     meikyoUsed < 2 && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
 
-                if (HasStatusEffect(Buffs.TsubameReady) &&
+                if (HasStatusEffect(Buffs.TsubameReady))
+                {
+                    //2.14 GCD
+                    if ((gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
+                         (meikyoUsed % 7 is 1 or 2 && SenCount is 3 ||
+                          meikyoUsed % 7 is 3 or 4 && SenCount is 2 ||
+                          meikyoUsed % 7 is 5 or 6 && SenCount is 1)))
+                        return true;
 
-                    //Even windows
-                    ((gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
-                      (meikyoUsed % 7 is 2 && SenCount is 3 && IsOffCooldown(Ikishoten) ||
-                       meikyoUsed % 7 is 4 && SenCount is 2 ||
-                       meikyoUsed % 7 is 6 && SenCount is 1)) ||
-                     //Odd windows
-                     (gcd >= 2.09f && GetCooldownRemainingTime(Senei) <= 10 &&
-                      (meikyoUsed % 7 is 1 && SenCount is 3 ||
-                       meikyoUsed % 7 is 3 && SenCount is 2 ||
-                       meikyoUsed % 7 is 5 && SenCount is 1)) ||
-
-                     //Even windows
-                     (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3) ||
-
-                     //Odd windows
-                     (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)))
-                    return true;
+                    //2.08 gcd
+                    if (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)
+                        return true;
+                }
 
                 // reset meikyo
                 if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
@@ -73,6 +69,7 @@ internal partial class SAM
         return false;
     }
 
+    //TODO Rework
     // Iaijutsu Features
     internal static bool UseIaijutsu(ref uint actionID)
     {
