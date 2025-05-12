@@ -88,10 +88,10 @@ internal partial class SAM
 
             if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) && !IsMoving() &&
                 ((SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                  (JustUsed(MeikyoShisui, 15f) && ((JustUsed(TendoSetsugekka) || !LevelChecked(TendoSetsugekka))) ||
-                   !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
-                 (SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
-                 (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
+                  (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 ||
+                   !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)) ||
+                  (SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
+                  (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady)))))
             {
                 actionID = OriginalHook(Iaijutsu);
                 return true;
@@ -103,7 +103,7 @@ internal partial class SAM
                   SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
                   (SAM_ST_Higanbana_Suboption == 0 ||
                    SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                  (JustUsed(MeikyoShisui, 15f) && ((JustUsed(TendoSetsugekka) || !LevelChecked(TendoSetsugekka))) ||
+                  (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
                  (SAM_ST_CDs_IaijutsuOption[1] && SenCount is 2 && !LevelChecked(MidareSetsugekka)) ||
                  (SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
