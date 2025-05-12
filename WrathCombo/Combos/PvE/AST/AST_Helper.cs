@@ -11,6 +11,8 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
+using ECommons.GameHelpers;
+using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
 
@@ -120,7 +122,7 @@ internal partial class AST
         List<IBattleChara> targets = new();
         for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
         {
-            if (GetPartySlot(i) is not IBattleChara member)
+            if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
                 continue;
             if (member.GameObjectId == QuickTargetCards.SelectedRandomMember.GameObjectId)
                 continue;
@@ -169,15 +171,15 @@ internal partial class AST
         {
             if (DrawnCard is not CardType.None)
             {
-                if (GetPartySlot(2) is not null)
+                if (PartyUITargeting.GetPartySlot(2) is not null)
                 {
                     _ = SetTarget();
                     Svc.Log.Debug($"Set card to {SelectedRandomMember?.Name}");
                 }
                 else
                 {
-                    Svc.Log.Debug($"Setting card to {LocalPlayer?.Name}");
-                    SelectedRandomMember = LocalPlayer;
+                    Svc.Log.Debug($"Setting card to {Player.Name}");
+                    SelectedRandomMember = Player.Object;
                 }
             }
             else
@@ -194,7 +196,7 @@ internal partial class AST
             PartyTargets.Clear();
             for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
             {
-                if (GetPartySlot(i) is not IBattleChara member)
+                if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
                     continue;
                 if (member is null)
                     continue; //Skip nulls/disconnected people
@@ -218,7 +220,7 @@ internal partial class AST
             {
                 for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
                 {
-                    if (GetPartySlot(i) is not IBattleChara member)
+                    if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
                         continue;
                     if (member is null)
                         continue; //Skip nulls/disconnected people
