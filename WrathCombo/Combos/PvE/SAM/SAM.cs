@@ -525,10 +525,10 @@ internal partial class SAM : Melee
                     switch (Kenki)
                     {
                         //Dumps Kenki in preparation for Ikishoten
-                        case > 50:
+                        case >= 50:
                             return Kyuten;
 
-                        case <= 50:
+                        case < 50:
                             return Ikishoten;
                     }
                 }
@@ -640,10 +640,10 @@ internal partial class SAM : Melee
                         switch (Kenki)
                         {
                             //Dumps Kenki in preparation for Ikishoten
-                            case > 50:
+                            case >= 50:
                                 return Kyuten;
 
-                            case <= 50:
+                            case < 50:
                                 return Ikishoten;
                         }
                     }
