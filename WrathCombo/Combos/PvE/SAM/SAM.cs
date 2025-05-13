@@ -175,6 +175,9 @@ internal partial class SAM : Melee
                     return Role.Bloodbath;
             }
 
+            if (UseTsubame)
+                return OriginalHook(TsubameGaeshi);
+
             //Ogi Namikiri Features
             if (ActionReady(OgiNamikiri) &&
                 InActionRange(OriginalHook(OgiNamikiri)) &&
@@ -185,8 +188,8 @@ internal partial class SAM : Melee
                 return OriginalHook(OgiNamikiri);
 
             // Iaijutsu Features
-            if (UseIaijutsu(ref actionID))
-                return actionID;
+            if (UseIaijutsu() && !IsMoving())
+                return OriginalHook(Iaijutsu);
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
@@ -359,9 +362,12 @@ internal partial class SAM : Melee
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_Damage) &&
-                HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
+            if (IsEnabled(CustomComboPreset.SAM_ST_Damage))
             {
+                if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
+                    SAM_ST_CDs_IaijutsuOption[3] && UseTsubame)
+                    return OriginalHook(TsubameGaeshi);
+
                 //Ogi Namikiri Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri) &&
                     (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) ||
@@ -375,8 +381,10 @@ internal partial class SAM : Melee
 
                 // Iaijutsu Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
-                    UseIaijutsu(ref actionID))
-                    return actionID;
+                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
+                     IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) &&
+                     !IsMoving()) && UseIaijutsu())
+                    return OriginalHook(Iaijutsu);
             }
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
