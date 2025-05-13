@@ -29,8 +29,6 @@ internal partial class SAM
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          (HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33)));
 
-    //TODO Rework
-    //Meikyo
     internal static bool UseMeikyo()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
