@@ -19,6 +19,7 @@ internal partial class MCH
             MCH_ST_TurretUsage = new("MCH_ST_TurretUsage", 100),
             MCH_ST_ReassemblePool = new("MCH_ST_ReassemblePool", 0),
             MCH_ST_GaussRicoPool = new("MCH_ST_GaussRicoPool", 0),
+            MCH_AoE_QueenOverDrive = new("MCH_AoE_QueenOverDrive"),
             MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold", 25),
             MCH_AoE_ReassemblePool = new("MCH_AoE_ReassemblePool", 0),
             MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage", 100),
@@ -136,6 +137,12 @@ internal partial class MCH
                     DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {AirAnchor.ActionName()}", "", 4, 1);
                     DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {Chainsaw.ActionName()}", "", 4, 2);
                     DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {Excavator.ActionName()}", "", 4, 3);
+
+                    break;
+
+                case CustomComboPreset.MCH_AoE_Adv_QueenOverdrive:
+                    DrawSliderInt(1, 10, MCH_AoE_QueenOverDrive,
+                        "HP% for the target to be at or under");
 
                     break;
 
