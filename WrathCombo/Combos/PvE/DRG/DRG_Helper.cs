@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.DRG.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
@@ -65,13 +67,13 @@ internal partial class DRG
         if (IsOffCooldown(TrueThrust))
             return false;
 
-        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f)
+        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f && !HasDoubleWeaved())
             return true;
 
-        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f)
+        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f && !HasDoubleWeaved())
             return true;
 
-        if (SlowLock == oGCD && gcdTimer >= 1.5f)
+        if (SlowLock == oGCD && gcdTimer >= 1.5f && !HasDoubleWeaved())
             return true;
 
         return false;
@@ -83,10 +85,10 @@ internal partial class DRG
 
     internal static WrathOpener Opener()
     {
-        if (StandardOpener.LevelChecked && Config.DRG_SelectedOpener == 0)
+        if (StandardOpener.LevelChecked && DRG_SelectedOpener == 0)
             return StandardOpener;
 
-        if (PiercingTalonOpener.LevelChecked && Config.DRG_SelectedOpener == 1)
+        if (PiercingTalonOpener.LevelChecked && DRG_SelectedOpener == 1)
             return PiercingTalonOpener;
 
         return WrathOpener.Dummy;
@@ -126,7 +128,7 @@ internal partial class DRG
             WyrmwindThrust
         ];
 
-        internal override UserData ContentCheckConfig => Config.DRG_Balance_Content;
+        internal override UserData ContentCheckConfig => DRG_Balance_Content;
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(LifeSurge) is 2 &&
@@ -170,7 +172,7 @@ internal partial class DRG
             WyrmwindThrust
         ];
 
-        internal override UserData ContentCheckConfig => Config.DRG_Balance_Content;
+        internal override UserData ContentCheckConfig => DRG_Balance_Content;
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(LifeSurge) is 2 &&

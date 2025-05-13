@@ -1,12 +1,13 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
+using static WrathCombo.Combos.PvE.DRG.Config;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG : Melee
 {
-    internal class DRG_ST_FullThrustCombo : CustomCombo
+    internal class DRG_BasicCombo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRG_ST_FullThrustCombo;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRG_BasicCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -16,35 +17,11 @@ internal partial class DRG : Melee
             if (ComboTimer > 0)
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
-                    return OriginalHook(VorpalThrust);
-
-                if (ComboAction == OriginalHook(VorpalThrust) && LevelChecked(FullThrust))
-                    return OriginalHook(FullThrust);
-
-                if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
-                    return FangAndClaw;
-
-                if (ComboAction is FangAndClaw && LevelChecked(Drakesbane))
-                    return Drakesbane;
-            }
-
-            return OriginalHook(TrueThrust);
-        }
-    }
-
-    internal class DRG_ST_ChaoticCombo : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRG_ST_ChaoticCombo;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (ChaosThrust or ChaoticSpring))
-                return actionID;
-
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(Disembowel))
-                    return OriginalHook(Disembowel);
+                    return LevelChecked(Disembowel) &&
+                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
+                            GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
+                        ? OriginalHook(Disembowel)
+                        : OriginalHook(VorpalThrust);
 
                 if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
                     return OriginalHook(ChaosThrust);
@@ -52,7 +29,13 @@ internal partial class DRG : Melee
                 if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
                     return WheelingThrust;
 
-                if (ComboAction is WheelingThrust && LevelChecked(Drakesbane))
+                if (ComboAction == OriginalHook(VorpalThrust) && LevelChecked(FullThrust))
+                    return OriginalHook(FullThrust);
+
+                if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
+                    return FangAndClaw;
+
+                if (ComboAction is WheelingThrust or FangAndClaw && LevelChecked(Drakesbane))
                     return Drakesbane;
             }
 
@@ -70,7 +53,7 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) && CanDRGWeave(Variant.Rampart))
@@ -183,37 +166,28 @@ internal partial class DRG : Melee
                         : OriginalHook(VorpalThrust);
 
                 if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
-                {
-                    if (Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsRear())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(ChaosThrust);
-                }
+                    return Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : OriginalHook(ChaosThrust);
 
                 if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
-                {
-                    if (Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsRear())
-                        return Role.TrueNorth;
-
-                    return WheelingThrust;
-                }
+                    return Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : WheelingThrust;
 
                 if (ComboAction == OriginalHook(VorpalThrust) && LevelChecked(FullThrust))
                     return OriginalHook(FullThrust);
 
                 if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
-                {
-                    if (Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsFlank())
-                        return Role.TrueNorth;
-
-                    return FangAndClaw;
-                }
+                    return Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsFlank()
+                        ? Role.TrueNorth
+                        : FangAndClaw;
 
                 if (ComboAction is WheelingThrust or FangAndClaw && LevelChecked(Drakesbane))
                     return Drakesbane;
@@ -233,7 +207,7 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) && CanDRGWeave(Variant.Rampart))
@@ -258,16 +232,16 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
-                        (Config.DRG_ST_Litany_SubOption == 0 ||
-                         Config.DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
+                        (DRG_ST_Litany_SubOption == 0 ||
+                         DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
                         return BattleLitany;
 
                     //Lance Charge Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
                         ActionReady(LanceCharge) &&
                         CanDRGWeave(LanceCharge) &&
-                        (Config.DRG_ST_Lance_SubOption == 0 ||
-                         Config.DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
+                        (DRG_ST_Lance_SubOption == 0 ||
+                         DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
                         return LanceCharge;
                 }
 
@@ -366,10 +340,10 @@ internal partial class DRG : Melee
             // healing
             if (IsEnabled(CustomComboPreset.DRG_ST_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.DRG_ST_SecondWind_Threshold))
+                if (Role.CanSecondWind(DRG_ST_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.DRG_ST_Bloodbath_Threshold))
+                if (Role.CanBloodBath(DRG_ST_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
 
@@ -384,40 +358,31 @@ internal partial class DRG : Melee
                         : OriginalHook(VorpalThrust);
 
                 if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
-                {
-                    if (IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
-                        Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsRear())
-                        return Role.TrueNorth;
-
-                    return OriginalHook(ChaosThrust);
-                }
+                    return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
+                           Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : OriginalHook(ChaosThrust);
 
                 if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
-                {
-                    if (IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
-                        Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsRear())
-                        return Role.TrueNorth;
-
-                    return WheelingThrust;
-                }
+                    return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
+                           Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsRear()
+                        ? Role.TrueNorth
+                        : WheelingThrust;
 
                 if (ComboAction == OriginalHook(VorpalThrust) && LevelChecked(FullThrust))
                     return OriginalHook(FullThrust);
 
                 if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
-                {
-                    if (IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
-                        Role.CanTrueNorth() &&
-                        CanDRGWeave(Role.TrueNorth) &&
-                        !OnTargetsFlank())
-                        return Role.TrueNorth;
-
-                    return FangAndClaw;
-                }
+                    return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
+                           Role.CanTrueNorth() &&
+                           CanDRGWeave(Role.TrueNorth) &&
+                           !OnTargetsFlank()
+                        ? Role.TrueNorth
+                        : FangAndClaw;
 
                 if (ComboAction is WheelingThrust or FangAndClaw && LevelChecked(Drakesbane))
                     return Drakesbane;
@@ -437,7 +402,7 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
@@ -572,7 +537,7 @@ internal partial class DRG : Melee
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
@@ -592,14 +557,14 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Lance) &&
                         ActionReady(LanceCharge) &&
                         CanDRGWeave(LanceCharge) &&
-                        GetTargetHPPercent() >= Config.DRG_AoE_LanceChargeHP)
+                        GetTargetHPPercent() >= DRG_AoE_LanceChargeHP)
                         return LanceCharge;
 
                     //Battle Litany Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
-                        GetTargetHPPercent() >= Config.DRG_AoE_LitanyHP)
+                        GetTargetHPPercent() >= DRG_AoE_LitanyHP)
                         return BattleLitany;
                 }
 
@@ -695,10 +660,10 @@ internal partial class DRG : Melee
             // healing
             if (IsEnabled(CustomComboPreset.DRG_AoE_ComboHeals))
             {
-                if (Role.CanSecondWind(Config.DRG_AoE_SecondWind_Threshold))
+                if (Role.CanSecondWind(DRG_AoE_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(Config.DRG_AoE_Bloodbath_Threshold))
+                if (Role.CanBloodBath(DRG_AoE_Bloodbath_Threshold))
                     return Role.Bloodbath;
             }
             if (ComboTimer > 0)
