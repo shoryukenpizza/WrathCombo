@@ -5954,15 +5954,13 @@ SMN.JobID)]
     [AutoAction(false, false)]
     [ReplaceSkill(VPR.SteelFangs)]
     [ConflictingCombos(VPR_ST_AdvancedMode, VPR_SerpentsTail, VPR_Legacies)]
-    [CustomComboInfo("Simple Mode - Single Target",
-        "Replaces Steel Fangs with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
+    [CustomComboInfo("Simple Mode - Single Target", "Replaces Steel Fangs with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
     VPR_ST_SimpleMode = 30000,
 
     [AutoAction(true, false)]
     [ReplaceSkill(VPR.SteelMaw)]
     [ConflictingCombos(VPR_AoE_AdvancedMode, VPR_SerpentsTail)]
-    [CustomComboInfo("Simple Mode - AoE",
-        "Replaces Steel Maw with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
+    [CustomComboInfo("Simple Mode - AoE", "Replaces Steel Maw with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", VPR.JobID)]
     VPR_AoE_SimpleMode = 30100,
 
     #endregion
@@ -5972,13 +5970,11 @@ SMN.JobID)]
     [AutoAction(false, false)]
     [ReplaceSkill(VPR.SteelFangs)]
     [ConflictingCombos(VPR_ST_SimpleMode, VPR_SerpentsTail, VPR_Legacies)]
-    [CustomComboInfo("Advanced Mode - Single Target",
-        "Replaces Steel Fangs with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", VPR.JobID)]
+    [CustomComboInfo("Advanced Mode - Single Target", "Replaces Steel Fangs with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", VPR.JobID)]
     VPR_ST_AdvancedMode = 30001,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)",
-        "Adds the Balance opener at level 100.\n Does not check positional choice.\n Always does Hunter's Coil first (FLANK)", VPR.JobID)]
+    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.\n Does not check positional choice.\n Always does Hunter's Coil first (FLANK)", VPR.JobID)]
     VPR_ST_Opener = 30002,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
@@ -5989,11 +5985,14 @@ SMN.JobID)]
     [CustomComboInfo("Vicewinder", "Adds Vicewinder to the rotation.", VPR.JobID)]
     VPR_ST_Vicewinder = 30006,
 
-    [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Vicewinder Combo",
-        "Adds Swiftskin's Coil and Hunter's Coil to the rotation.\nWill automatically swap depending on your position.", VPR.JobID)]
-    VPR_ST_VicewinderCombo = 30007,
+    [ParentCombo(VPR_ST_Vicewinder)]
+    [CustomComboInfo("True North Option", "Adds True North when available.", VPR.JobID)]
+    VPR_TrueNortVicewinder = 30016,
 
+    [ParentCombo(VPR_ST_AdvancedMode)]
+    [CustomComboInfo("Vicewinder Combo", "Adds Swiftskin's Coil and Hunter's Coil to the rotation.\nWill automatically swap depending on your position.", VPR.JobID)]
+    VPR_ST_VicewinderCombo = 30007,
+    
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Vicewinder Weaves", "Adds Twinfang and Bloodfang to the rotation.", VPR.JobID)]
     VPR_ST_VicewinderWeaves = 30013,
@@ -6023,8 +6022,7 @@ SMN.JobID)]
     VPR_ST_LegacyWeaves = 30014,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Dynamic True North Option",
-        "Adds True North when you are not in the correct position for the enhanced potency bonus.", VPR.JobID)]
+    [CustomComboInfo("Dynamic True North Option", "Adds True North when you are not in the correct position for the enhanced potency bonus.", VPR.JobID)]
     VPR_TrueNorthDynamic = 30098,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
@@ -6032,8 +6030,7 @@ SMN.JobID)]
     VPR_ST_RangedUptime = 30095,
 
     [ParentCombo(VPR_ST_RangedUptime)]
-    [CustomComboInfo("Add Uncoiled Fury",
-        "Adds Uncoiled Fury to the rotation when you are out of melee range and have Rattling Coil charges.", VPR.JobID)]
+    [CustomComboInfo("Add Uncoiled Fury", "Adds Uncoiled Fury to the rotation when you are out of melee range and have Rattling Coil charges.", VPR.JobID)]
     VPR_ST_RangedUptimeUncoiledFury = 30096,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
@@ -6047,8 +6044,7 @@ SMN.JobID)]
     [AutoAction(true, false)]
     [ReplaceSkill(VPR.SteelMaw)]
     [ConflictingCombos(VPR_AoE_SimpleMode, VPR_SerpentsTail)]
-    [CustomComboInfo("Advanced Mode - AoE",
-        "Replaces Steel Maw with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", VPR.JobID)]
+    [CustomComboInfo("Advanced Mode - AoE", "Replaces Steel Maw with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", VPR.JobID)]
     VPR_AoE_AdvancedMode = 30101,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
@@ -6060,8 +6056,7 @@ SMN.JobID)]
     VPR_AoE_Vicepit = 30105,
 
     [ParentCombo(VPR_AoE_Vicepit)]
-    [CustomComboInfo("Disable Range Check",
-        "Disables the range check for Vicepit, so it will be used even without a target selected.", VPR.JobID)]
+    [CustomComboInfo("Disable Range Check", "Disables the range check for Vicepit, so it will be used even without a target selected.", VPR.JobID)]
     VPR_AoE_Vicepit_DisableRange = 30111,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
@@ -6069,8 +6064,7 @@ SMN.JobID)]
     VPR_AoE_VicepitCombo = 30106,
 
     [ParentCombo(VPR_AoE_VicepitCombo)]
-    [CustomComboInfo("Disable Range Check",
-        "Disables the range check for Swiftskin's Den and Hunter's Den, so they will be used even without a target selected.", VPR.JobID)]
+    [CustomComboInfo("Disable Range Check", "Disables the range check for Swiftskin's Den and Hunter's Den, so they will be used even without a target selected.", VPR.JobID)]
     VPR_AoE_VicepitCombo_DisableRange = 30113,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
@@ -6094,8 +6088,7 @@ SMN.JobID)]
     VPR_AoE_Reawaken = 30110,
 
     [ParentCombo(VPR_AoE_Reawaken)]
-    [CustomComboInfo("Disable Range Check",
-        "Disables the range check for Reawaken, so it will be used even without a target selected.", VPR.JobID)]
+    [CustomComboInfo("Disable Range Check", "Disables the range check for Reawaken, so it will be used even without a target selected.", VPR.JobID)]
     VPR_AoE_Reawaken_DisableRange = 30114,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
@@ -6134,8 +6127,7 @@ SMN.JobID)]
     #region Miscellaneous
 
     [ReplaceSkill(VPR.Vicewinder)]
-    [CustomComboInfo("Vicewinder - Coils",
-        "Replaces Vicewinder with Hunter's/Swiftskin's Coils.\nWill automatically swap depending on your position.", VPR.JobID)]
+    [CustomComboInfo("Vicewinder - Coils", "Replaces Vicewinder with Hunter's/Swiftskin's Coils.\nWill automatically swap depending on your position.", VPR.JobID)]
     VPR_VicewinderCoils = 30200,
 
     [ReplaceSkill(VPR.Vicepit)]
@@ -6156,8 +6148,7 @@ SMN.JobID)]
     VPR_ReawakenLegacyWeaves = 30204,
 
     [ReplaceSkill(VPR.SerpentsTail)]
-    [CustomComboInfo("Combined Combo Ability Feature",
-        "Combines Serpent's Tail, Twinfang, and Twinblood to one button.", VPR.JobID)]
+    [CustomComboInfo("Combined Combo Ability Feature", "Combines Serpent's Tail, Twinfang, and Twinblood to one button.", VPR.JobID)]
     VPR_TwinTails = 30205,
 
     [ParentCombo(VPR_VicewinderCoils)]
@@ -6180,7 +6171,7 @@ SMN.JobID)]
 
     #endregion
     
-    //ST 30015
+    //ST 30016
     //AoE 30115
     //Misc 30210
 
