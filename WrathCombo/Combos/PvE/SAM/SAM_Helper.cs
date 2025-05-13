@@ -44,7 +44,7 @@ internal partial class SAM
                 //if no opener
                 if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
                      IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
-                    meikyoUsed < 2 && !HasStatusEffect(Buffs.TsubameReady))
+                    meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
 
                 if (HasStatusEffect(Buffs.TsubameReady))
