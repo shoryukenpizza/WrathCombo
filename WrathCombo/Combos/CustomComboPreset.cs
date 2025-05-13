@@ -1960,7 +1960,7 @@ public enum CustomComboPreset
     DRK_Hid_R6SStunJabberOnly = 5202,
 
     [ParentCombo(DRK_Hidden)]
-    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionaryautomatically.", DRK.JobID)]
+    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionary automatically.", DRK.JobID)]
     [Hidden]
     DRK_Hid_R6SNoAutoGroupMits = 5203,
 
@@ -6556,7 +6556,7 @@ SMN.JobID)]
     WAR_Hid_R6SStunJabberOnly = 18073,
 
     [ParentCombo(WAR_Hidden)]
-    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionaryautomatically.", WAR.JobID)]
+    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Shake it Off automatically.", WAR.JobID)]
     [Hidden]
     WAR_Hid_R6SNoAutoGroupMits = 18074,
 
