@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.AutoRotation;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
@@ -639,6 +641,7 @@ internal partial class DRK
                 LocalPlayer.CurrentMp >= 3000 &&
                 ShouldTBNSelf(flags.HasFlag(Combo.AoE)))
                 return (action = BlackestNight) != 0;
+                //return (action = BlackestNight.Retarget(SimpleTargets.Stacks.MOTargetSelf)) != 0;
 
             #endregion
 

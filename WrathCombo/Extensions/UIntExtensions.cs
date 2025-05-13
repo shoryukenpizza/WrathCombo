@@ -1,4 +1,5 @@
-﻿using WrathCombo.CustomComboNS.Functions;
+﻿using WrathCombo.Core;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 
 namespace WrathCombo.Extensions
@@ -12,6 +13,8 @@ namespace WrathCombo.Extensions
         internal static string ActionName(this uint value) => ActionWatching.GetActionName(value);
 
         internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
+
+        internal static uint Retarget(this uint action, TargetResolverDelegate target) => ActionRetargeting.Register(action, target);
     }
 
     internal static class UShortExtensions
