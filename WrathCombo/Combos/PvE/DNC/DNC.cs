@@ -233,6 +233,12 @@ internal partial class DNC : PhysicalRanged
                     return FanDance4;
             }
 
+            // Dance Partner
+            if (IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner) &&
+                CanWeave() &&
+                (CurrentPartnerNonOptimal || !HasStatusEffect(Buffs.ClosedPosition)))
+                return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
+
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, Config.DNCVariantCurePercent))
                 return Variant.Cure;
@@ -477,7 +483,7 @@ internal partial class DNC : PhysicalRanged
                     (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                     if (InAutoMode(true, true) ||
                         IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                        return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
+                        return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
                     else
                         return ClosedPosition;
 
@@ -557,6 +563,11 @@ internal partial class DNC : PhysicalRanged
                 if (HasStatusEffect(Buffs.FourFoldFanDance))
                     return FanDance4;
             }
+
+            // Dance Partner
+            if (CanWeave() &&
+                (CurrentPartnerNonOptimal || !HasStatusEffect(Buffs.ClosedPosition)))
+                return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, 50))
@@ -754,7 +765,7 @@ internal partial class DNC : PhysicalRanged
                 (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                 if (InAutoMode(false, false) ||
                     IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                    return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
+                    return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
                 else
                     return ClosedPosition;
 
@@ -1036,7 +1047,7 @@ internal partial class DNC : PhysicalRanged
                 (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                 if (InAutoMode(false, true) ||
                     IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                    return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
+                    return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
                 else
                     return ClosedPosition;
 
@@ -1349,10 +1360,8 @@ internal partial class DNC : PhysicalRanged
 
             var hasPartner = HasStatusEffect(Buffs.ClosedPosition);
 
-            if (hasPartner && CurrentPartnerNonOptimal)
-                return Ending;
             if (!hasPartner || CurrentPartnerNonOptimal)
-                return ClosedPosition.Retarget(Ending, DancePartnerResolver);
+                return ClosedPosition.Retarget(FeatureDancePartnerResolver);
 
             return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
                 ? All.SavageBlade
