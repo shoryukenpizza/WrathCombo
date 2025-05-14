@@ -103,6 +103,33 @@ public class ActionRetargeting
     {
         return null;
     }
+
+    #region Utilities
+
+    /// Clears <see cref="_targetResolvers">cached re-targets</see>.
+    internal static void ClearCachedRetargets()
+    {
+        _targetResolvers.Clear();
+        PluginLog.Debug("[ActionRetargeting] cleared cached re-targets");
+    }
+
+    /// Formats the method name of target resolvers for logging.
+    private static string GetMethodName(this TargetResolverDelegate targetResolver)
+    {
+        var resolverName = targetResolver.Method.Name;
+        var resolverClass = targetResolver.Method.DeclaringType?.Name ?? "";
+
+        resolverName = resolverClass switch
+        {
+            "SimpleTargets" => "SimpleTargets." + resolverName,
+            "Stacks" => "SimpleTargets.Stacks." + resolverName,
+            _ => resolverName,
+        };
+
+        return $"`{resolverName}`";
+    }
+
+    #endregion
 }
 
 /// <summary>

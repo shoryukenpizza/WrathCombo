@@ -105,6 +105,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 return false;
 
             AST.QuickTargetCards.SelectedRandomMember = null;
+            ActionRetargeting.ClearCachedRetargets();
             if (onJobChange)
                 PvEFeatures.OpenToCurrentJob(true);
             if (onJobChange || firstRun)
