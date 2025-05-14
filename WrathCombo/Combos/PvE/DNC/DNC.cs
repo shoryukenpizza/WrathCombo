@@ -114,10 +114,12 @@ internal partial class DNC : PhysicalRanged
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Partner) && !InCombat() &&
                 ActionReady(ClosedPosition) &&
                 !HasStatusEffect(Buffs.ClosedPosition) &&
-                (GetPartyMembers().Count > 1 || HasCompanionPresent()) &&
-                !InAutoMode(true, false)) // Disabled in Auto-Rotation
-                // todo: do not disable for auto-rotation, provide targeting
-                return ClosedPosition;
+                (GetPartyMembers().Count > 1 || HasCompanionPresent()))
+                if (InAutoMode(true, false) ||
+                    IsEnabled(CustomComboPreset.DNC_DesirablePartner))
+                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                else
+                    return ClosedPosition;
 
             #endregion
 
@@ -472,10 +474,12 @@ internal partial class DNC : PhysicalRanged
                 // Dance Partner
                 if (ActionReady(ClosedPosition) &&
                     !HasStatusEffect(Buffs.ClosedPosition) &&
-                    (GetPartyMembers().Count > 1 || HasCompanionPresent()) &&
-                    !InAutoMode(true, true)) // Disabled in Auto-Rotation
-                    // todo: do not disable for auto-rotation, provide targeting
-                    return ClosedPosition;
+                    (GetPartyMembers().Count > 1 || HasCompanionPresent()))
+                    if (InAutoMode(true, true) ||
+                        IsEnabled(CustomComboPreset.DNC_DesirablePartner))
+                        return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                    else
+                        return ClosedPosition;
 
                 if (TargetIsHostile())
                 {
@@ -747,10 +751,12 @@ internal partial class DNC : PhysicalRanged
                 IsEnabled(CustomComboPreset.DNC_AoE_Adv_Partner) &&
                 ActionReady(ClosedPosition) &&
                 !HasStatusEffect(Buffs.ClosedPosition) &&
-                (GetPartyMembers().Count > 1 || HasCompanionPresent()) &&
-                !InAutoMode(false, false)) // Disabled in Auto-Rotation
-                // todo: do not disable for auto-rotation, provide targeting
-                return ClosedPosition;
+                (GetPartyMembers().Count > 1 || HasCompanionPresent()))
+                if (InAutoMode(false, false) ||
+                    IsEnabled(CustomComboPreset.DNC_DesirablePartner))
+                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                else
+                    return ClosedPosition;
 
             #endregion
 
@@ -1027,10 +1033,12 @@ internal partial class DNC : PhysicalRanged
             if (!InCombat() &&
                 ActionReady(ClosedPosition) &&
                 !HasStatusEffect(Buffs.ClosedPosition) &&
-                (GetPartyMembers().Count > 1 || HasCompanionPresent()) &&
-                !InAutoMode(false, true)) // Disabled in Auto-Rotation
-                // todo: do not disable for auto-rotation, provide targeting
-                return ClosedPosition;
+                (GetPartyMembers().Count > 1 || HasCompanionPresent()))
+                if (InAutoMode(false, true) ||
+                    IsEnabled(CustomComboPreset.DNC_DesirablePartner))
+                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                else
+                    return ClosedPosition;
 
             #endregion
 
