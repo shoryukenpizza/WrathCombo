@@ -177,11 +177,6 @@ internal partial class DNC
 
     #region Dance Partner
 
-    private static bool CurrentPartnerNonOptimal =>
-        FeatureDesiredDancePartner is not null &&
-        CurrentDancePartner is not null &&
-        FeatureDesiredDancePartner != CurrentDancePartner;
-
     internal static ulong? CurrentDancePartner
     {
         get
@@ -215,7 +210,7 @@ internal partial class DNC
     {
         get
         {
-            if (!EZ.Throttle("dncFeatPartnerDesiredCheck", TS.FromSeconds(2)))
+            if (!EZ.Throttle("dncFeatPartnerDesiredCheck", TS.FromSeconds(7)))
                 return field;
 
             field = TryGetDancePartner(out var partner, true)
@@ -225,7 +220,16 @@ internal partial class DNC
         }
     }
 
+    private static bool CurrentPartnerNonOptimal =>
+        FeatureDesiredDancePartner is not null &&
+        CurrentDancePartner is not null &&
+        FeatureDesiredDancePartner != CurrentDancePartner;
+
     internal static TargetResolverDelegate DancePartnerResolver = () =>
+        Svc.Objects.FirstOrDefault(x =>
+            x.GameObjectId == DesiredDancePartner);
+
+    internal static TargetResolverDelegate FeatureDancePartnerResolver = () =>
         Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == FeatureDesiredDancePartner);
 
@@ -250,32 +254,17 @@ internal partial class DNC
 
         // Check if we have a target overriding any searching
         if (callingFromFeature is true &&
-            (IsEnabled(Options.DNC_Desirable_TargetOverride) ||
-             IsEnabled(Options.DNC_Desirable_FocusOverride)))
+            Config.DNC_Partner_FocusOverride &&
+            SimpleTargets.FocusTarget() is IBattleChara &&
+            !SimpleTargets.FocusTarget().IsDead &&
+            party.Any(x =>
+                x.GameObjectId == SimpleTargets.FocusTarget().GameObjectId) &&
+            IsInRange(SimpleTargets.FocusTarget(), 30) &&
+            SicknessFree(SimpleTargets.FocusTarget()) &&
+            DamageDownFree(SimpleTargets.FocusTarget()))
         {
-            if (IsEnabled(Options.DNC_Desirable_TargetOverride) &&
-                SimpleTargets.HardTarget() is IBattleChara &&
-                !SimpleTargets.HardTarget().IsDead &&
-                party.Any(x =>
-                    x.GameObjectId == SimpleTargets.HardTarget().GameObjectId) &&
-                IsInRange(SimpleTargets.HardTarget(), 30) &&
-                SicknessFree(SimpleTargets.HardTarget()))
-            {
-                partner = SimpleTargets.HardTarget();
-                return true;
-            }
-
-            if (IsEnabled(Options.DNC_Desirable_FocusOverride) &&
-                SimpleTargets.FocusTarget() is IBattleChara &&
-                !SimpleTargets.FocusTarget().IsDead &&
-                party.Any(x =>
-                    x.GameObjectId == SimpleTargets.FocusTarget().GameObjectId) &&
-                IsInRange(SimpleTargets.FocusTarget(), 30) &&
-                SicknessFree(SimpleTargets.FocusTarget()))
-            {
-                partner = SimpleTargets.FocusTarget();
-                return true;
-            }
+            partner = SimpleTargets.FocusTarget();
+            return true;
         }
 
         // Search for a partner
@@ -301,7 +290,12 @@ internal partial class DNC
 
         return false;
 
-        #region Sickness-checking shortcut methods
+        #region Status-checking shortcut methods
+
+        bool DamageDownFree(IGameObject? target)
+        {
+            return !TargetHasDamageDown(target);
+        }
 
         bool SicknessFree(IGameObject? target)
         {
@@ -327,20 +321,22 @@ internal partial class DNC
 
             #endregion
 
-            if (restrictions.HasFlag(PartnerPriority.Restrictions.MustBeMelee))
+            if (restrictions.HasFlag(PartnerPriority.Restrictions.Melee))
                 filter = filter
                     .Where(x => x.ClassJob.RowId.Role() is melee).ToList();
 
-            if (restrictions.HasFlag(PartnerPriority.Restrictions.MustBeDPS))
+            if (restrictions.HasFlag(PartnerPriority.Restrictions.DPS))
                 filter = filter
                     .Where(x => x.ClassJob.RowId.Role() is melee or ranged)
                     .ToList();
 
-            if (restrictions.HasFlag(PartnerPriority.Restrictions
-                    .MustBeSicknessFree))
+            if (restrictions.HasFlag(PartnerPriority.Restrictions.NotDD))
+                filter = filter.Where(DamageDownFree).ToList();
+
+            if (restrictions.HasFlag(PartnerPriority.Restrictions.NotSick))
                 filter = filter.Where(SicknessFree).ToList();
 
-            if (restrictions.HasFlag(PartnerPriority.Restrictions.MustBeBrinkFree))
+            if (restrictions.HasFlag(PartnerPriority.Restrictions.NotBrink))
                 filter = filter.Where(BrinkFree).ToList();
 
             if (filter.Count == 0 &&
@@ -390,8 +386,8 @@ internal partial class DNC
 
         internal static readonly Dictionary<uint, int> Job100Prio = new()
         {
-            { PCT.JobID, 1 },
             { SAM.JobID, 1 },
+            { PCT.JobID, 2 },
             { RPR.JobID, 2 },
             { VPR.JobID, 2 },
             { MNK.JobID, 2 },
@@ -407,7 +403,7 @@ internal partial class DNC
 
         internal static readonly Dictionary<uint, int> Job090Prio = new()
         {
-            { PCT.JobID, 0 },
+            { PCT.JobID, 1 },
             { SAM.JobID, 1 },
             { NIN.JobID, 2 },
             { MNK.JobID, 3 },
@@ -424,16 +420,21 @@ internal partial class DNC
 
         internal static readonly Restrictions[] RestrictionSteps =
         [
+            // Ailment-free DPS
+            Restrictions.Melee | Restrictions.NotDD | Restrictions.NotSick,
+            Restrictions.DPS | Restrictions.NotDD | Restrictions.NotSick,
             // Sickness-free DPS
-            Restrictions.MustBeMelee | Restrictions.MustBeSicknessFree,
-            Restrictions.MustBeDPS | Restrictions.MustBeSicknessFree,
+            Restrictions.Melee | Restrictions.NotSick,
+            Restrictions.DPS | Restrictions.NotSick,
             // Sick DPS
-            Restrictions.MustBeMelee | Restrictions.MustBeBrinkFree,
-            Restrictions.MustBeDPS | Restrictions.MustBeBrinkFree,
+            Restrictions.Melee | Restrictions.NotBrink,
+            Restrictions.DPS | Restrictions.NotBrink,
+            // Ailment-free
+            Restrictions.NotDD,
             // Sickness-free
-            Restrictions.MustBeSicknessFree,
+            Restrictions.NotSick,
             // Sick
-            Restrictions.MustBeBrinkFree,
+            Restrictions.NotBrink,
             // :(
             Restrictions.ScrapeTheBottom,
         ];
@@ -451,11 +452,12 @@ internal partial class DNC
         [Flags]
         internal enum Restrictions
         {
-            MustBeMelee = 1 << 0, // 1
-            MustBeDPS = 1 << 1, // 2
-            MustBeSicknessFree = 1 << 2, // 4
-            MustBeBrinkFree = 1 << 3, // 8
-            ScrapeTheBottom = 1 << 4, // 16
+            Melee = 1 << 0, // 1
+            DPS = 1 << 1, // 2
+            NotDD = 1 << 2, // 4
+            NotSick = 1 << 3, // 8
+            NotBrink = 1 << 4, // 16
+            ScrapeTheBottom = 1 << 5, // 32
         }
     }
 
