@@ -184,6 +184,7 @@ public static class ActionRetargeting
         {
             "SimpleTargets" => "SimpleTargets." + resolverName,
             "Stacks" => "SimpleTargets.Stacks." + resolverName,
+            "<>c" => "<CustomResolver>",
             _ => resolverName,
         };
 
