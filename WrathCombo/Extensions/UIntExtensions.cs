@@ -15,6 +15,8 @@ namespace WrathCombo.Extensions
         internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
         internal static uint Retarget(this uint action, TargetResolverDelegate target) => ActionRetargeting.Register(action, target);
+
+        internal static uint Retarget(this uint action, uint replaced, TargetResolverDelegate target) => ActionRetargeting.Register(action, target, replaced);
     }
 
     internal static class UShortExtensions

@@ -36,18 +36,22 @@ public static class ActionRetargeting
     ///         <c>val</c>
     ///     </b>
     ///     — A <see cref="TargetResolverDelegate" /> that will
-    ///     resolve the target for the ActionID.
+    ///     resolve the target for the ActionID.<br />
+    ///     — A <see cref="uint" /> that is the replaced action for the combo this
+    ///     retargeting was ran in.
     /// </remarks>
     /// <seealso cref="Register" />
-    private static readonly Dictionary<uint, TargetResolverDelegate>
+    private static readonly Dictionary<uint,
+            (TargetResolverDelegate resolver, uint replacedAction)>
         _targetResolvers = [];
 
     /// <summary>
     ///     Register an action as one you want re-targeted.
     /// </summary>
     /// <param name="actionID">The Action to retarget.</param>
+    /// <param name="replacedActionID">The Action the combo is replacing</param>
     /// <param name="resolver">
-    ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br/>
+    ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br />
     ///     Examples:
     ///     a <see cref="SimpleTargets">SimpleTarget</see> (like
     ///     <see cref="SimpleTargets.HardTarget">HardTarget</see>)
@@ -58,24 +62,26 @@ public static class ActionRetargeting
     /// <returns>
     ///     The <paramref name="actionID" /> that was registered.<br />
     ///     This only really returns to make
-    ///     <see cref="Extensions.UIntExtensions.Retarget">(uint).Retarget()</see>
+    ///     <see cref="Extensions.UIntExtensions.Retarget(uint,TargetResolverDelegate)">(uint).Retarget()</see>
     ///     simpler.
     /// </returns>
     /// <remarks>
     ///     Should only be called by
-    ///     <see cref="Extensions.UIntExtensions.Retarget">(uint).Retarget()</see>.
+    ///      <see cref="Extensions.UIntExtensions.Retarget(uint,TargetResolverDelegate)">(uint).Retarget()</see>.
     /// </remarks>
-    internal static uint Register(uint actionID, TargetResolverDelegate resolver)
+    internal static uint Register
+    (uint actionID, TargetResolverDelegate resolver,
+        uint? replacedActionID = null)
     {
         // Limit spam from the same actionID
         if (!EZ.Throttle($"retargetingFor{actionID}", TS.FromSeconds(1)))
             return actionID;
 
         // Cleaning up the old target resolver
-        if (_targetResolvers.TryGetValue(actionID, out var oldResolver))
+        if (_targetResolvers.TryGetValue(actionID, out var old))
         {
             // Keep the old resolver if it's <10 seconds old
-            if (oldResolver.Method.Name == resolver.Method.Name &&
+            if (old.resolver.Method.Name == resolver.Method.Name &&
                 !EZ.Throttle($"retargetingOver{actionID}", TS.FromSeconds(10)))
                 return actionID;
             // Unregister the old resolver (just when different)
@@ -89,7 +95,7 @@ public static class ActionRetargeting
         PluginLog.Verbose("[ActionRetargeting] registering " +
                           $"'{actionID.ActionName()}' for retargeting " +
                           $"with {resolver.GetMethodName()}");
-        _targetResolvers.Add(actionID, resolver);
+        _targetResolvers.Add(actionID, (resolver, replacedActionID ?? actionID));
 
         return actionID;
     }
@@ -118,10 +124,23 @@ public static class ActionRetargeting
     /// </returns>
     public static bool TryGetTargetFor(uint actionID, out IGameObject? target)
     {
-        // Find the target resolver
         target = null;
-        if (!_targetResolvers.TryGetValue(actionID, out var targetResolver))
-            return false;
+
+        // Find the target resolver
+        TargetResolverDelegate? targetResolver = null;
+        if (!_targetResolvers.TryGetValue(actionID, out var retargeting))
+        {
+            // Do another search for the replaced action
+            var extraSearch = _targetResolvers
+                .FirstOrDefault(kv => kv.Value.replacedAction == actionID).Value.resolver;
+            if (extraSearch is null)
+                return false;
+            targetResolver = extraSearch;
+        }
+
+        // Find the target resolver if it is a replaced-action resolver
+        targetResolver ??= retargeting.resolver;
+
         PluginLog.Debug("[ActionRetargeting] re-targeting " +
                         $"'{actionID.ActionName()}' " +
                         $"with {targetResolver.GetMethodName()}");
@@ -150,7 +169,9 @@ public static class ActionRetargeting
 
     #region Utilities
 
-    /// Clears old re-targets from the <see cref="_targetResolvers">list</see>.
+    /// Clears old re-targets from the
+    /// <see cref="_targetResolvers">list</see>
+    /// .
     internal static Action ClearOldRetargets = () =>
     {
         var oldRetargets = _targetResolvers.Keys
@@ -167,7 +188,9 @@ public static class ActionRetargeting
         Svc.Framework.RunOnTick(ClearOldRetargets!, TS.FromSeconds(25));
     };
 
-    /// Clears <see cref="_targetResolvers">cached re-targets</see>.
+    /// Clears
+    /// <see cref="_targetResolvers">cached re-targets</see>
+    /// .
     internal static void ClearCachedRetargets()
     {
         _targetResolvers.Clear();

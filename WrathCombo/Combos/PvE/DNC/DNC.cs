@@ -117,7 +117,7 @@ internal partial class DNC : PhysicalRanged
                 (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                 if (InAutoMode(true, false) ||
                     IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                    return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
                 else
                     return ClosedPosition;
 
@@ -477,7 +477,7 @@ internal partial class DNC : PhysicalRanged
                     (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                     if (InAutoMode(true, true) ||
                         IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                        return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                        return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
                     else
                         return ClosedPosition;
 
@@ -754,7 +754,7 @@ internal partial class DNC : PhysicalRanged
                 (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                 if (InAutoMode(false, false) ||
                     IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                    return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
                 else
                     return ClosedPosition;
 
@@ -1036,7 +1036,7 @@ internal partial class DNC : PhysicalRanged
                 (GetPartyMembers().Count > 1 || HasCompanionPresent()))
                 if (InAutoMode(false, true) ||
                     IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                    return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                    return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
                 else
                     return ClosedPosition;
 
@@ -1352,7 +1352,7 @@ internal partial class DNC : PhysicalRanged
             if (hasPartner && CurrentPartnerNonOptimal)
                 return Ending;
             if (!hasPartner || CurrentPartnerNonOptimal)
-                return ClosedPosition.Retarget(DesiredDancePartnerResolver);
+                return ClosedPosition.Retarget(Ending, DancePartnerResolver);
 
             return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
                 ? All.SavageBlade
