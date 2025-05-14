@@ -65,7 +65,10 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+            if (HasStatusEffect(Buffs.Thunderhead) &&
+                LevelChecked(Thunder) &&
+                InBossEncounter() &&
+                (GetTargetHPPercent() > 1) &&
                 (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3))
@@ -73,8 +76,10 @@ internal partial class BLM : Caster
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) &&
-                    !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.LeyLines))
+                if (ActionReady(Triplecast) &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
+                    !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
@@ -82,12 +87,14 @@ internal partial class BLM : Caster
                     !HasStatusEffect(Buffs.Firestarter) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast))
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
-                if (HasPolyglotStacks() && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                if (HasPolyglotStacks() &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -110,10 +117,11 @@ internal partial class BLM : Caster
                     return Fire3;
 
                 if (ActiveParadox &&
+                    CurMp > 1600 &&
                     (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (FlarestarReady)
                     return FlareStar;
@@ -125,8 +133,7 @@ internal partial class BLM : Caster
                     return Despair;
 
                 if (ActionReady(Blizzard3) &&
-                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
-                    !HasStatusEffect(Buffs.Triplecast))
+                    !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
 
                 if (ActionReady(Transpose))
@@ -138,7 +145,7 @@ internal partial class BLM : Caster
                 if (UmbralHearts is 3 &&
                     UmbralIceStacks is 3 &&
                     ActiveParadox)
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (CurMp == MP.MaxMP)
                 {
@@ -276,7 +283,7 @@ internal partial class BLM : Caster
                     !HasStatusEffect(Buffs.Firestarter) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast))
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (BLM_ST_MovementOption[2] &&
                     ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
@@ -308,10 +315,11 @@ internal partial class BLM : Caster
                     return Fire3;
 
                 if (ActiveParadox &&
+                    CurMp > 1600 &&
                     (AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
                     FlarestarReady)
@@ -338,7 +346,7 @@ internal partial class BLM : Caster
                 if (UmbralHearts is 3 &&
                     UmbralIceStacks is 3 &&
                     ActiveParadox)
-                    return Paradox;
+                    return OriginalHook(Paradox);
 
                 if (CurMp == MP.MaxMP)
                 {
