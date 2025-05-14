@@ -67,8 +67,6 @@ internal partial class BLM : Caster
 
             if (HasStatusEffect(Buffs.Thunderhead) &&
                 LevelChecked(Thunder) &&
-                InBossEncounter() &&
-                (GetTargetHPPercent() > 1) &&
                 (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3))
