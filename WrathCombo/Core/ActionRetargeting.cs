@@ -1,9 +1,14 @@
 #region
 
+using System;
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.Logging;
+using WrathCombo.Extensions;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
@@ -15,7 +20,7 @@ using ECommons.GameHelpers;
 
 namespace WrathCombo.Core;
 
-public class ActionRetargeting
+public static class ActionRetargeting
 {
     /// <summary>
     ///     List of active Actions that have a desired target, and the delegate to
@@ -47,7 +52,8 @@ public class ActionRetargeting
     ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.DPSCardsTargetResolver</see>
     /// </example>
     /// <seealso cref="TargetResolverDelegate" />
-    private static Dictionary<uint, TargetResolverDelegate> _targetResolvers = new();
+    private static readonly Dictionary<uint, TargetResolverDelegate>
+        _targetResolvers = [];
 
     /// <summary>
     ///     Register an action as one you want re-targeted.
@@ -64,6 +70,28 @@ public class ActionRetargeting
     /// </returns>
     public static uint Register(uint actionID, TargetResolverDelegate targetResolver)
     {
+        // Limit spam from the same actionID
+        if (!EZ.Throttle($"retargetingFor{actionID}", TS.FromSeconds(1)))
+            return actionID;
+
+        // Cleaning up the old target resolver
+        if (_targetResolvers.TryGetValue(actionID, out var oldResolver))
+        {
+            // Keep the old resolver
+            if (oldResolver.Method.Name == targetResolver.Method.Name)
+                return actionID;
+            // Unregister the old resolver (just when different)
+            Unregister(actionID);
+            PluginLog.Verbose(
+                $"[ActionRetargeting] overwriting retargeting for" +
+                $"'{actionID.ActionName()}'");
+        }
+
+        // Save the resolver
+        PluginLog.Verbose("[ActionRetargeting] registering" +
+                          $"'{actionID.ActionName()}' for retargeting " +
+                          $"with {targetResolver.GetMethodName()}");
+        _targetResolvers.Add(actionID, targetResolver);
         return actionID;
     }
 
@@ -82,8 +110,12 @@ public class ActionRetargeting
     ///     <see cref="TargetResolverDelegate" />.
     /// </summary>
     /// <param name="actionID">The Action to re-target.</param>
+    /// <param name="target">
+    ///     The output  <see cref="IGameObject">Game Object</see> of the target, if
+    ///     the action was found to be re-targeted.
+    /// </param>
     /// <returns>
-    ///     The <see cref="IGameObject">Game Object</see> of the target
+    ///     Whether the action is registered for re-targeting.
     /// </returns>
     public static bool TryGetTargetFor(uint actionID, out IGameObject? target)
     {
