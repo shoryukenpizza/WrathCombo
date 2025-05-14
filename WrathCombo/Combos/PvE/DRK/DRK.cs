@@ -50,8 +50,6 @@ internal partial class DRK : Tank
             // Bail if not looking at the replaced action
             if (actionID is not HardSlash) return actionID;
 
-            return BlackestNight.Retarget(SimpleTargets.Stacks.OverrideAllyOrSelf);
-
             const Combo comboFlags = Combo.ST | Combo.Adv;
             var newAction = HardSlash;
             _ = IsBursting;
