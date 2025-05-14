@@ -3,16 +3,14 @@
 using System;
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.Objects.Types;
-using ECommons.DalamudServices;
-using ECommons.GameHelpers;
 using ECommons.Logging;
+using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedParameter.Global
 
@@ -46,7 +44,7 @@ public static class ActionRetargeting
     ///     Register an action as one you want re-targeted.
     /// </summary>
     /// <param name="actionID">The Action to retarget.</param>
-    /// <param name="targetResolver">
+    /// <param name="resolver">
     ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br/>
     ///     Examples:
     ///     a <see cref="SimpleTargets">SimpleTarget</see> (like
@@ -65,7 +63,7 @@ public static class ActionRetargeting
     ///     Should only be called by
     ///     <see cref="Extensions.UIntExtensions.Retarget">(uint).Retarget()</see>.
     /// </remarks>
-    internal static uint Register(uint actionID, TargetResolverDelegate targetResolver)
+    internal static uint Register(uint actionID, TargetResolverDelegate resolver)
     {
         // Limit spam from the same actionID
         if (!EZ.Throttle($"retargetingFor{actionID}", TS.FromSeconds(1)))
@@ -74,8 +72,9 @@ public static class ActionRetargeting
         // Cleaning up the old target resolver
         if (_targetResolvers.TryGetValue(actionID, out var oldResolver))
         {
-            // Keep the old resolver
-            if (oldResolver.Method.Name == targetResolver.Method.Name)
+            // Keep the old resolver if it's <30 seconds old
+            if (oldResolver.Method.Name == resolver.Method.Name &&
+                !EZ.Throttle($"retargetingOver{actionID}", TS.FromSeconds(30)))
                 return actionID;
             // Unregister the old resolver (just when different)
             Unregister(actionID);
@@ -87,8 +86,8 @@ public static class ActionRetargeting
         // Save the resolver
         PluginLog.Verbose("[ActionRetargeting] registering" +
                           $"'{actionID.ActionName()}' for retargeting " +
-                          $"with {targetResolver.GetMethodName()}");
-        _targetResolvers.Add(actionID, targetResolver);
+                          $"with {resolver.GetMethodName()}");
+        _targetResolvers.Add(actionID, resolver);
         return actionID;
     }
 
@@ -155,10 +154,10 @@ public static class ActionRetargeting
     }
 
     /// Formats the method name of target resolvers for logging.
-    private static string GetMethodName(this TargetResolverDelegate targetResolver)
+    private static string GetMethodName(this TargetResolverDelegate resolver)
     {
-        var resolverName = targetResolver.Method.Name;
-        var resolverClass = targetResolver.Method.DeclaringType?.Name ?? "";
+        var resolverName = resolver.Method.Name;
+        var resolverClass = resolver.Method.DeclaringType?.Name ?? "";
 
         resolverName = resolverClass switch
         {
@@ -193,53 +192,3 @@ public static class ActionRetargeting
 ///     AST.CardsResolver
 /// </seealso>
 public delegate IGameObject? TargetResolverDelegate();
-
-internal static class SimpleTargets
-{
-    #region Common Target Stacks
-
-    internal static class Stacks
-    {
-        public static IGameObject? OverrideAllyOrSelf() =>
-            ModelMouseOverTarget() ?? MouseOverTarget() ??
-            FocusTarget() ?? SoftTarget() ?? HardTarget() ?? Self();
-
-        public static IGameObject? OverrideOrSelf() =>
-            ModelMouseOverTarget() ?? MouseOverTarget() ?? HardTarget() ?? Self();
-    }
-
-    #endregion
-
-    #region Core Targets
-
-    public static IGameObject? Self() =>
-        Player.Available ? Player.Object : null;
-
-    public static IGameObject? HardTarget() =>
-        Svc.Targets.Target;
-
-    public static IGameObject? SoftTarget() =>
-        Svc.Targets.SoftTarget;
-
-    public static IGameObject? FocusTarget() =>
-        Svc.Targets.FocusTarget;
-
-    public static IGameObject? MouseOverTarget() =>
-        Svc.Targets.MouseOverTarget;
-
-    public static IGameObject? ModelMouseOverTarget() =>
-        Svc.Targets.MouseOverNameplateTarget;
-
-    #endregion
-
-    #region Role Targets
-
-    public static IGameObject? Tank() => null;
-    public static IGameObject? Healer() => null;
-    public static IGameObject? DPS() => null;
-
-    #endregion
-
-    // etc, etc, a la Reaction's Custom PlaceHolders
-    // https://github.com/UnknownX7/ReAction/blob/master/PronounManager.cs
-}
