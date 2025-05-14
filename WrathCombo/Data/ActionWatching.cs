@@ -205,6 +205,15 @@ namespace WrathCombo.Data
 
         private static void CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
         {
+            // Check if there is a retargeted action
+            if (ActionRetargeting.TryGetTargetFor(actionId, out var target))
+            {
+                targetObjectId = target.GameObjectId;
+                return;
+            }
+
+            #region AST-only targeting
+
             if (actionId is not (AST.Balance or AST.Spear) ||
                 AST.QuickTargetCards.SelectedRandomMember is null ||
                 OutOfRange(actionId, Svc.ClientState.LocalPlayer!, AST.QuickTargetCards.SelectedRandomMember))
@@ -222,17 +231,23 @@ namespace WrathCombo.Data
                 case 1 when Svc.Targets.Target is not null && HasFriendlyTarget():
                     targetObjectId = Svc.Targets.Target.GameObjectId;
                     break;
-                // UI Mousover Override
+                // UI Mouseover Override
                 case 2:
-                    if (PartyUITargeting.UiMouseOverTarget is IGameObject mouseTarget)
+                    var mouseTarget = PartyUITargeting.UiMouseOverTarget;
+                    if (mouseTarget != null)
                         targetObjectId = mouseTarget.GameObjectId;
                     break;
             }
 
+#if DEBUG
             // Log the selected target for debugging
-            ulong localTargetId = targetObjectId; // Copy to local variable, can't use for the next line
-            var selectedTarget = Svc.Objects.FirstOrDefault(x => x.GameObjectId == localTargetId);
+            var localTargetId = targetObjectId; // Copy to local, making next line more stable
+            var selectedTarget =
+                Svc.Objects.FirstOrDefault(x => x.GameObjectId == localTargetId);
             Svc.Log.Debug($"Switched to {selectedTarget?.Name ?? "Unknown"}");
+#endif
+
+            #endregion
         }
 
         public static unsafe bool OutOfRange(uint actionId, IGameObject source, IGameObject target)
