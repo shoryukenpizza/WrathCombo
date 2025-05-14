@@ -225,7 +225,7 @@ internal partial class DNC
         }
     }
 
-    internal static TargetResolverDelegate DesiredDancePartnerResolver = () =>
+    internal static TargetResolverDelegate DancePartnerResolver = () =>
         Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == FeatureDesiredDancePartner);
 
