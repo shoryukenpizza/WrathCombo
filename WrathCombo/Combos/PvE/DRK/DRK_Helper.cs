@@ -641,7 +641,6 @@ internal partial class DRK
                 LocalPlayer.CurrentMp >= 3000 &&
                 ShouldTBNSelf(flags.HasFlag(Combo.AoE)))
                 return (action = BlackestNight) != 0;
-                //return (action = BlackestNight.Retarget(SimpleTargets.Stacks.MOTargetSelf)) != 0;
 
             #endregion
 

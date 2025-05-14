@@ -1,8 +1,10 @@
 #region
 
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
@@ -47,6 +49,8 @@ internal partial class DRK : Tank
         {
             // Bail if not looking at the replaced action
             if (actionID is not HardSlash) return actionID;
+
+            return BlackestNight.Retarget(SimpleTargets.Stacks.OverrideAllyOrSelf);
 
             const Combo comboFlags = Combo.ST | Combo.Adv;
             var newAction = HardSlash;
