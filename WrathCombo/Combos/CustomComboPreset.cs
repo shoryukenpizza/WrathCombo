@@ -1,6 +1,4 @@
-﻿using Lumina.Data.Parsing;
-using System;
-using WrathCombo.Attributes;
+﻿using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
 namespace WrathCombo.Combos;
@@ -1086,6 +1084,10 @@ public enum CustomComboPreset
     DNC_ST_Adv_Partner = 4012,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
+    [CustomComboInfo("Optimal Dance Partner Option", "Includes Closed Position in the rotation when your current partner is not the optimal one, such as when they die.", DNC.JobID)]
+    DNC_ST_Adv_AutoPartner = 4032,
+
+    [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Peloton Pre-Pull Option",
         "Uses Peloton when you are out of combat, do not already have the Peloton buff and are performing Standard Step with greater than 5s remaining of your dance." +
         "\n(Already included in The Balance Opener).", DNC.JobID)]
@@ -1179,7 +1181,7 @@ public enum CustomComboPreset
     DNC_ST_Adv_PanicHeals = 4027,
 
     #endregion
-    // Last value = 4030
+    // Last value = 4032
 
     #region Advanced Dancer (AoE)
 
@@ -1348,19 +1350,11 @@ public enum CustomComboPreset
     DNC_DesirablePartner = 4175,
 
     [ParentCombo(DNC_DesirablePartner)]
-    [CustomComboInfo("Party-Target Overrides Selection Option", "If you are targeting a party member that is a valid target, they will be used instead of searching party members.\nTarget must be alive, in range, and sickness free.", DNC.JobID)]
-    DNC_Desirable_TargetOverride = 4176,
-
-    [ParentCombo(DNC_DesirablePartner)]
-    [CustomComboInfo("Focus-Target Overrides Selection Option", "If your focus target is a valid target, they will be used instead of searching party members.\nFocus Target must be alive, in range, and sickness free.\n(will be overrided by a direct target, if the above is enabled)", DNC.JobID)]
-    DNC_Desirable_FocusOverride = 4177,
-
-    [ParentCombo(DNC_DesirablePartner)]
     [CustomComboInfo("Show Savage Blade", "When there is no better target: show Savage Blade, to clearly indicate that the best target is selected.", DNC.JobID)]
-    DNC_Desirable_SavageBlade = 4178,
+    DNC_Desirable_SavageBlade = 4176,
 
     #endregion
-    // Last value = 4178
+    // Last value = 4176
 
     #region Dance Features
 
@@ -1461,10 +1455,10 @@ public enum CustomComboPreset
     DNC_Procc_Windmill = 4170,
 
     #endregion
-    // Last value = 4170
+    // Last value = 4176
 
     #endregion
-    // Last value = 4177
+    // Last value = 4176
 
     #region Variant
 
