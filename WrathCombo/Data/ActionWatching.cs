@@ -385,6 +385,7 @@ namespace WrathCombo.Data
                     }
                 }
             }
+            CheckForChangedTarget(actionId, ref targetId);
             return UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
         }
 
