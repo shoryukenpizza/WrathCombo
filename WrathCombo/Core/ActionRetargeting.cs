@@ -79,15 +79,16 @@ public static class ActionRetargeting
             // Unregister the old resolver (just when different)
             Unregister(actionID);
             PluginLog.Verbose(
-                $"[ActionRetargeting] overwriting retargeting for" +
+                $"[ActionRetargeting] overwriting retargeting for " +
                 $"'{actionID.ActionName()}'");
         }
 
         // Save the resolver
-        PluginLog.Verbose("[ActionRetargeting] registering" +
+        PluginLog.Verbose("[ActionRetargeting] registering " +
                           $"'{actionID.ActionName()}' for retargeting " +
                           $"with {resolver.GetMethodName()}");
         _targetResolvers.Add(actionID, resolver);
+
         return actionID;
     }
 
@@ -132,14 +133,15 @@ public static class ActionRetargeting
         catch (Exception ex)
         {
             PluginLog.Error("[ActionRetargeting] error while resolving target for " +
-                            $"{actionID.ActionName()} " +
+                            $"'{actionID.ActionName()}' " +
                             $"with {targetResolver.GetMethodName()}:\n{ex}");
             return false;
         }
 
         // Return the results
-        PluginLog.Verbose("[ActionRetargeting] re-targeted" +
-                          $"{actionID.ActionName()} to {target?.Name ?? "null"} " +
+        PluginLog.Verbose("[ActionRetargeting] re-targeted " +
+                          $"'{actionID.ActionName()}' to " +
+                          $"'{target?.Name ?? "null"}' " +
                           $"(with {targetResolver.GetMethodName()})");
         return target != null;
     }
