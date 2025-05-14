@@ -38,20 +38,7 @@ public static class ActionRetargeting
     ///     — A <see cref="TargetResolverDelegate" /> that will
     ///     resolve the target for the ActionID.
     /// </remarks>
-    /// <example>
-    ///     For
-    ///     <b>
-    ///         <c>val</c>
-    ///     </b>
-    ///     you can use:
-    ///     <br />
-    ///     A <see cref="SimpleTargets">SimpleTarget</see>, like:
-    ///     <see cref="SimpleTargets.HardTarget">SimpleTargets.HardTarget</see>
-    ///     <br />or<br />
-    ///     A <see cref="TargetResolverDelegate">custom delegate</see>, like:
-    ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.DPSCardsTargetResolver</see>
-    /// </example>
-    /// <seealso cref="TargetResolverDelegate" />
+    /// <seealso cref="Register" />
     private static readonly Dictionary<uint, TargetResolverDelegate>
         _targetResolvers = [];
 
@@ -60,7 +47,13 @@ public static class ActionRetargeting
     /// </summary>
     /// <param name="actionID">The Action to retarget.</param>
     /// <param name="targetResolver">
-    ///     The <see cref="TargetResolverDelegate" /> to resolve the target.
+    ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br/>
+    ///     Examples:
+    ///     a <see cref="SimpleTargets">SimpleTarget</see> (like
+    ///     <see cref="SimpleTargets.HardTarget">HardTarget</see>)
+    ///     or
+    ///     a <see cref="TargetResolverDelegate">custom delegate</see> (like:
+    ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.CardsResolver</see>)
     /// </param>
     /// <returns>
     ///     The <paramref name="actionID" /> that was registered.<br />
@@ -68,7 +61,11 @@ public static class ActionRetargeting
     ///     <see cref="Extensions.UIntExtensions.Retarget">(uint).Retarget()</see>
     ///     simpler.
     /// </returns>
-    public static uint Register(uint actionID, TargetResolverDelegate targetResolver)
+    /// <remarks>
+    ///     Should only be called by
+    ///     <see cref="Extensions.UIntExtensions.Retarget">(uint).Retarget()</see>.
+    /// </remarks>
+    internal static uint Register(uint actionID, TargetResolverDelegate targetResolver)
     {
         // Limit spam from the same actionID
         if (!EZ.Throttle($"retargetingFor{actionID}", TS.FromSeconds(1)))
@@ -193,7 +190,7 @@ public static class ActionRetargeting
 ///     </code>
 /// </example>
 /// <seealso cref="Combos.PvE.AST.DPSCardsTargetResolver">
-///     AST.DPSCardsTargetResolver
+///     AST.CardsResolver
 /// </seealso>
 public delegate IGameObject? TargetResolverDelegate();
 
