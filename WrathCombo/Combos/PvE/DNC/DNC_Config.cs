@@ -103,6 +103,12 @@ internal partial class DNC
             #endregion
         }
 
+        private static void DrawPartnerInfo()
+        {
+            ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                "This will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.");
+        }
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -209,6 +215,17 @@ internal partial class DNC
 
                     UserConfig.DrawBossOnlyChoice(DNC_ST_OpenerDifficulty, "Select what kind of content to use this opener in:");
                     ImGui.Unindent();
+
+                    break;
+
+                case CustomComboPreset.DNC_ST_Adv_AutoPartner:
+                    ImGui.Indent(29f.Scale());
+                    DrawPartnerInfo();
+                    ImGui.Unindent(29f.Scale());
+
+                    UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
+                        "Prioritize your Focus Target",
+                        "If you have a focus target that is within range, alive, and has no rez sickness, it will be prioritized over The Balance's suggested Dance Partner.");
 
                     break;
 
@@ -399,11 +416,12 @@ internal partial class DNC
 
                 case CustomComboPreset.DNC_DesirablePartner:
                     ImGui.Indent(35f.Scale());
-                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
-                        "This will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.");
-                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
-                        "Will show Ending when another target is more desirable than your current partner.");
+                    DrawPartnerInfo();
                     ImGui.Unindent(35f.Scale());
+
+                    UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
+                        "Prioritize Focus Target",
+                        "If you have a focus target that is within range, alive, and has no rez sickness, it will be prioritized over The Balance's suggested Dance Partner.");
 
                     break;
 
@@ -715,6 +733,17 @@ internal partial class DNC
             new("DNC_AoE_Adv_PanicHealWindPercent", 20);
 
         #endregion
+
+        /// <summary>
+        ///     Whether the Focus Target should override the desired partner, while
+        ///     still valid.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DNC_Variant_Cure" />
+        public static readonly UserBool DNC_Partner_FocusOverride =
+            new("DNC_Partner_FocusOverride", false);
 
         /// <summary>
         ///     HP% threshold for Variant Cure.
