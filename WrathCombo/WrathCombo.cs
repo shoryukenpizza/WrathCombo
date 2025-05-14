@@ -195,6 +195,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
         }
         CustomComboFunctions.TimerSetup();
 
+        Svc.Framework.RunOnTick(ActionRetargeting.ClearOldRetargets,
+            TimeSpan.FromSeconds(60));
+
 #if DEBUG
         ConfigWindow.IsOpen = true;
         Svc.Framework.RunOnTick(() =>

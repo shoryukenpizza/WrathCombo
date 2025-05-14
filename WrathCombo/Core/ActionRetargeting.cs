@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
+using ECommons.DalamudServices;
 using ECommons.Logging;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
@@ -72,9 +74,9 @@ public static class ActionRetargeting
         // Cleaning up the old target resolver
         if (_targetResolvers.TryGetValue(actionID, out var oldResolver))
         {
-            // Keep the old resolver if it's <30 seconds old
+            // Keep the old resolver if it's <10 seconds old
             if (oldResolver.Method.Name == resolver.Method.Name &&
-                !EZ.Throttle($"retargetingOver{actionID}", TS.FromSeconds(30)))
+                !EZ.Throttle($"retargetingOver{actionID}", TS.FromSeconds(10)))
                 return actionID;
             // Unregister the old resolver (just when different)
             Unregister(actionID);
@@ -147,6 +149,23 @@ public static class ActionRetargeting
     }
 
     #region Utilities
+
+    /// Clears old re-targets from the <see cref="_targetResolvers">list</see>.
+    internal static Action ClearOldRetargets = () =>
+    {
+        var oldRetargets = _targetResolvers.Keys
+            .Where(key =>
+                !EZ.Throttle($"retargetingFor{key}", TS.FromSeconds(30)));
+
+        foreach (var key in oldRetargets)
+        {
+            Unregister(key);
+            PluginLog.Verbose("[ActionRetargeting] cleared old re-target for " +
+                              $"'{key.ActionName()}'");
+        }
+
+        Svc.Framework.RunOnTick(ClearOldRetargets!, TS.FromSeconds(25));
+    };
 
     /// Clears <see cref="_targetResolvers">cached re-targets</see>.
     internal static void ClearCachedRetargets()
