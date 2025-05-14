@@ -1,10 +1,8 @@
 #region
 
 using System.Linq;
-using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
-using WrathCombo.Extensions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
