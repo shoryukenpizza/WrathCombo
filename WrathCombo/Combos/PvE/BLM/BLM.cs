@@ -705,8 +705,8 @@ internal partial class BLM : Caster
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_FireFlarestar;
 
         protected override uint Invoke(uint actionID) =>
-            actionID == Fire4 && FirePhase && FlarestarReady && LevelChecked(FlareStar) ||
-            actionID == Flare && FirePhase && FlarestarReady && LevelChecked(FlareStar)
+            actionID is Fire4 && FirePhase && FlarestarReady && LevelChecked(FlareStar) ||
+            actionID is Flare && FirePhase && FlarestarReady && LevelChecked(FlareStar)
                 ? FlareStar
                 : actionID;
     }
