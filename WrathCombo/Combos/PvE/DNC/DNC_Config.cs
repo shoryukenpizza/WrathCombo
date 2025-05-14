@@ -397,6 +397,16 @@ internal partial class DNC
 
                 #endregion
 
+                case CustomComboPreset.DNC_DesirablePartner:
+                    ImGui.Indent(35f.Scale());
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                        "This will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.");
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                        "Will show Ending when another target is more desirable than your current partner.");
+                    ImGui.Unindent(35f.Scale());
+
+                    break;
+
                 case CustomComboPreset.DNC_Variant_Cure:
                     UserConfig.DrawSliderInt(1, 80, DNCVariantCurePercent,
                         "HP% to be at or under",

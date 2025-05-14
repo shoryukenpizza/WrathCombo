@@ -1,6 +1,8 @@
 ﻿#region
+
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable ClassNeverInstantiated.Global
@@ -1328,54 +1330,27 @@ internal partial class DNC : PhysicalRanged
 
     #region Dance Partner Features
 
-    /*internal class DNC_DesirablePartner : CustomCombo
+    internal class DNC_DesirablePartner : CustomCombo
     {
-        private static DateTime _lastPartnerCheckTime = DateTime.MinValue;
-
         protected internal override CustomComboPreset Preset =>
             CustomComboPreset.DNC_DesirablePartner;
-
-        private static bool CurrentPartnerNonOptimal =>
-            DesirableDancePartner is not null &&
-            DesirableDancePartner.GameObjectId != CurrentDancePartner;
-
-        private static IGameObject? DesirableDancePartner
-        {
-            get
-            {
-                if ((DateTime.Now - _lastPartnerCheckTime).TotalSeconds <= 3)
-                    return field;
-
-                _lastPartnerCheckTime = DateTime.Now;
-                field = TryGetDancePartner(out var partner, true)
-                    ? partner
-                    : null;
-
-                return field;
-            }
-        }
 
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not (ClosedPosition or Ending)) return actionID;
 
-            var currentTarget = LocalPlayer.TargetObject;
-            var noCurrentPartner = !HasStatusEffect(Buffs.ClosedPosition);
+            var hasPartner = HasStatusEffect(Buffs.ClosedPosition);
 
-            if (noCurrentPartner || CurrentPartnerNonOptimal)
-                if (DesirableDancePartner.GameObjectId == currentTarget.GameObjectId)
-                    return Ending;
-                else
-                {
-                    SetTarget(DesirableDancePartner);
-                    TM.DelayNext(250);
-                    TM.Enqueue(() => SetTarget(currentTarget));
-                    return ClosedPosition;
-                }
+            if (hasPartner && CurrentPartnerNonOptimal)
+                return Ending;
+            if (!hasPartner || CurrentPartnerNonOptimal)
+                return ClosedPosition.Retarget(DesiredDancePartnerResolver);
 
-            return actionID;
+            return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
+                ? All.SavageBlade
+                : actionID;
         }
-    }*/
+    }
 
     #endregion
 

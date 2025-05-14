@@ -7,6 +7,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -176,6 +177,11 @@ internal partial class DNC
 
     #region Dance Partner
 
+    private static bool CurrentPartnerNonOptimal =>
+        FeatureDesiredDancePartner is not null &&
+        CurrentDancePartner is not null &&
+        FeatureDesiredDancePartner != CurrentDancePartner;
+
     internal static ulong? CurrentDancePartner
     {
         get
@@ -205,6 +211,24 @@ internal partial class DNC
         }
     }
 
+    internal static ulong? FeatureDesiredDancePartner
+    {
+        get
+        {
+            if (!EZ.Throttle("dncFeatPartnerDesiredCheck", TS.FromSeconds(2)))
+                return field;
+
+            field = TryGetDancePartner(out var partner, true)
+                ? partner.GameObjectId
+                : null;
+            return field;
+        }
+    }
+
+    internal static TargetResolverDelegate DesiredDancePartnerResolver = () =>
+        Svc.Objects.FirstOrDefault(x =>
+            x.GameObjectId == FeatureDesiredDancePartner);
+
     private static bool TryGetDancePartner
         (out IGameObject? partner, bool? callingFromFeature = null)
     {
@@ -225,18 +249,34 @@ internal partial class DNC
             return false;
 
         // Check if we have a target overriding any searching
-        /*
-         if (callingFromFeature is true &&
-            IsEnabled(Options.DNC_Desirable_TargetOverride) &&
-            LocalPlayer.TargetObject is IBattleChara &&
-            !LocalPlayer.TargetObject.IsDead &&
-            party.Any(x =>
-                x.GameObjectId == LocalPlayer.TargetObject.GameObjectId) &&
-            IsInRange(LocalPlayer.TargetObject, 30))
+        if (callingFromFeature is true &&
+            (IsEnabled(Options.DNC_Desirable_TargetOverride) ||
+             IsEnabled(Options.DNC_Desirable_FocusOverride)))
         {
-            partner = LocalPlayer.TargetObject;
-            return true;
-        }*/
+            if (IsEnabled(Options.DNC_Desirable_TargetOverride) &&
+                SimpleTargets.HardTarget() is IBattleChara &&
+                !SimpleTargets.HardTarget().IsDead &&
+                party.Any(x =>
+                    x.GameObjectId == SimpleTargets.HardTarget().GameObjectId) &&
+                IsInRange(SimpleTargets.HardTarget(), 30) &&
+                SicknessFree(SimpleTargets.HardTarget()))
+            {
+                partner = SimpleTargets.HardTarget();
+                return true;
+            }
+
+            if (IsEnabled(Options.DNC_Desirable_FocusOverride) &&
+                SimpleTargets.FocusTarget() is IBattleChara &&
+                !SimpleTargets.FocusTarget().IsDead &&
+                party.Any(x =>
+                    x.GameObjectId == SimpleTargets.FocusTarget().GameObjectId) &&
+                IsInRange(SimpleTargets.FocusTarget(), 30) &&
+                SicknessFree(SimpleTargets.FocusTarget()))
+            {
+                partner = SimpleTargets.FocusTarget();
+                return true;
+            }
+        }
 
         // Search for a partner
         if (TryGetBestPartner(out var bestPartner))
@@ -248,7 +288,7 @@ internal partial class DNC
         // Fallback to companion
         if (HasCompanionPresent())
         {
-            partner = Svc.Buddies.CompanionBuddy.GameObject;
+            partner = SimpleTargets.Chocobo();
             return true;
         }
 

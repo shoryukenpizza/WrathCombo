@@ -1278,13 +1278,14 @@ public enum CustomComboPreset
     #endregion
     // Last value = 4057
 
-     #region Basic combo
+    #region Basic combo
 
     [ReplaceSkill(DNC.Fountain)]
     [CustomComboInfo("Basic Combo", "Replace Fountain with its combo chain.", DNC.JobID)]
     DNC_ST_BasicCombo = 4003,
 
     #endregion
+    // Last value = 4003
 
     #region Multibutton Features
 
@@ -1341,24 +1342,25 @@ public enum CustomComboPreset
 
     #region Dance Partner Features
 
-    /*
     [ReplaceSkill(DNC.ClosedPosition, DNC.Ending)]
     [CustomComboInfo("Dance Partner on Desirable Partner Feature",
-        "Replaces Closed Position (including in the combos above) with itself, but targeted to a party member, so you can cast it without having to pick anyone and without having to actually target anyone." +
-        "\nThis will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.", DNC.JobID)]
+        "Replaces Closed Position (including in the combos above) with itself, but targeted to a party member, so you can cast it without having to pick anyone and without having to actually target anyone.", DNC.JobID)]
     DNC_DesirablePartner = 4175,
 
     [ParentCombo(DNC_DesirablePartner)]
-    [CustomComboInfo("Party-Target Overrides Selection Option", "If you are targeting a party member that is a valid target, they will be used instead of searching party members.\nTarget must be alive and in range.", DNC.JobID)]
+    [CustomComboInfo("Party-Target Overrides Selection Option", "If you are targeting a party member that is a valid target, they will be used instead of searching party members.\nTarget must be alive, in range, and sickness free.", DNC.JobID)]
     DNC_Desirable_TargetOverride = 4176,
 
     [ParentCombo(DNC_DesirablePartner)]
-    [CustomComboInfo("Custom Priority Option", "If your Partner priority differs from The Balance's recommendation for some reason, you can customize the priority here.\nNot generally recommended.", DNC.JobID)]
-    DNC_Desirable_CustomPriority = 4177,
-    */
+    [CustomComboInfo("Focus-Target Overrides Selection Option", "If your focus target is a valid target, they will be used instead of searching party members.\nFocus Target must be alive, in range, and sickness free.\n(will be overrided by a direct target, if the above is enabled)", DNC.JobID)]
+    DNC_Desirable_FocusOverride = 4177,
+
+    [ParentCombo(DNC_DesirablePartner)]
+    [CustomComboInfo("Show Savage Blade", "When there is no better target: show Savage Blade, to clearly indicate that the best target is selected.", DNC.JobID)]
+    DNC_Desirable_SavageBlade = 4178,
 
     #endregion
-    // Last value = 4177
+    // Last value = 4178
 
     #region Dance Features
 
