@@ -3,6 +3,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using WrathCombo.Services;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
@@ -18,14 +19,33 @@ internal static class SimpleTargets
 {
     #region Common Target Stacks
 
+    /// <summary>
+    ///     A collection of common targeting "stacks", used when you want a number of
+    ///     different target options, with fallback values.<br/>
+    ///     (and overriding values)
+    /// </summary>
     internal static class Stacks
     {
-        public static IGameObject? OverrideAllyOrSelf() =>
-            ModelMouseOverTarget() ?? MouseOverTarget() ??
-            FocusTarget() ?? SoftTarget() ?? HardTarget() ?? Self();
+        /// A stack of common "override" targets, that users regularly override
+        /// automatic target selection with.
+        /// <remarks>
+        ///     (should also include <see cref="SimpleTargets.HardTarget" />, but
+        ///     that override shouldn't be at the top of the stack with the other
+        ///     overrides)
+        /// </remarks>
+        public static IGameObject? Overrides() =>
+            UIMouseOverTarget() ?? ModelMouseOverTarget();
 
-        public static IGameObject? OverrideOrSelf() =>
-            ModelMouseOverTarget() ?? MouseOverTarget() ?? HardTarget() ?? Self();
+        /// A very common stack that targets an ally or self, if there are no manual
+        /// overrides targeted.
+        /// <!-- todo: maybe including focus target should be an option? -->
+        public static IGameObject? OverridesAllyOrSelf() =>
+            Overrides() ?? FocusTarget() ?? SoftTarget() ?? HardTarget() ?? Self();
+
+        /// A very common stack that targets the player, if there are no manual
+        /// overrides targeted.
+        public static IGameObject? OverridesOrSelf() =>
+            Overrides() ?? HardTarget() ?? Self();
     }
 
     #endregion
@@ -44,11 +64,11 @@ internal static class SimpleTargets
     public static IGameObject? FocusTarget() =>
         Svc.Targets.FocusTarget;
 
-    public static IGameObject? MouseOverTarget() =>
-        Svc.Targets.MouseOverTarget;
+    public static IGameObject? UIMouseOverTarget() =>
+        PartyUITargeting.UiMouseOverTarget;
 
     public static IGameObject? ModelMouseOverTarget() =>
-        Svc.Targets.MouseOverNameplateTarget;
+        Svc.Targets.MouseOverNameplateTarget ?? Svc.Targets.MouseOverTarget;
 
     #endregion
 
