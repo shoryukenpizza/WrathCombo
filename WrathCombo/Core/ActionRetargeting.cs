@@ -99,9 +99,35 @@ public class ActionRetargeting
     /// <returns>
     ///     The <see cref="IGameObject">Game Object</see> of the target
     /// </returns>
-    public static IGameObject? GetTargetFor(uint actionID)
+    public static bool TryGetTargetFor(uint actionID, out IGameObject? target)
     {
-        return null;
+        // Find the target resolver
+        target = null;
+        if (!_targetResolvers.TryGetValue(actionID, out var targetResolver))
+            return false;
+        PluginLog.Debug("[ActionRetargeting] re-targeting " +
+                        $"'{actionID.ActionName()}' " +
+                        $"with {targetResolver.GetMethodName()}");
+
+        // Run the target resolver
+        Unregister(actionID);
+        try
+        {
+            target = targetResolver.Invoke();
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Error("[ActionRetargeting] error while resolving target for " +
+                            $"{actionID.ActionName()} " +
+                            $"with {targetResolver.GetMethodName()}:\n{ex}");
+            return false;
+        }
+
+        // Return the results
+        PluginLog.Verbose("[ActionRetargeting] re-targeted" +
+                          $"{actionID.ActionName()} to {target?.Name ?? "null"} " +
+                          $"(with {targetResolver.GetMethodName()})");
+        return target != null;
     }
 
     #region Utilities
