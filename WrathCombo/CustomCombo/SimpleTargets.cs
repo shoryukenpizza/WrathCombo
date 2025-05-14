@@ -70,6 +70,9 @@ internal static class SimpleTargets
     public static IGameObject? ModelMouseOverTarget() =>
         Svc.Targets.MouseOverNameplateTarget ?? Svc.Targets.MouseOverTarget;
 
+    public static IGameObject? Chocobo() =>
+        Svc.Buddies.CompanionBuddy?.GameObject;
+
     #endregion
 
     #region Role Targets
