@@ -74,22 +74,8 @@ public class ActionRetargeting
     ///     The Action to remove from the
     ///     <see cref="_targetResolvers">list of Re-Targeted Actions</see>.
     /// </param>
-    public static void Unregister(uint actionID)
-    {
-    }
-
-    /// <summary>
-    ///     Check if an action should be re-targeted or not.
-    /// </summary>
-    /// <param name="actionID">
-    ///     The Action to check against
-    ///     <see cref="_targetResolvers">list of Re-Targeted Actions</see>.
-    /// </param>
-    /// <returns>If the action should be re-targeted</returns>
-    public static bool CheckFor(uint actionID)
-    {
-        return false;
-    }
+    private static void Unregister(uint actionID) =>
+        _targetResolvers.Remove(actionID);
 
     /// <summary>
     ///     Resolve the target for an action via the provided
