@@ -43,7 +43,8 @@ public static class ActionRetargeting
     /// <seealso cref="Register" />
     private static readonly Dictionary<(uint action, uint replacedAction),
             TargetResolverDelegate>
-        _targetResolvers = [];
+        _targetResolvers =
+            []; // todo: change again to just have a key of the replaced action
 
     /// <summary>
     ///     Register an action as one you want re-targeted.
@@ -53,8 +54,8 @@ public static class ActionRetargeting
     /// <param name="resolver">
     ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br />
     ///     Examples:
-    ///     a <see cref="SimpleTargets">SimpleTarget</see> (like
-    ///     <see cref="SimpleTargets.HardTarget">HardTarget</see>)
+    ///     a <see cref="SimpleTarget">SimpleTarget</see> (like
+    ///     <see cref="SimpleTarget.HardTarget">HardTarget</see>)
     ///     or
     ///     a <see cref="TargetResolverDelegate">custom delegate</see> (like:
     ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.CardsResolver</see>)
@@ -72,7 +73,7 @@ public static class ActionRetargeting
     /// </remarks>
     internal static uint Register
     (uint action, TargetResolverDelegate resolver,
-        uint? replacedActionID = null)
+        uint? replacedActionID = null) // todo: accept any number of replaced actions
     {
         // Handle non-nullable actionID
         var replaced = replacedActionID ?? action;
@@ -87,7 +88,7 @@ public static class ActionRetargeting
             // Keep the old resolver if it's <10 seconds old
             if (old.Method.Name == resolver.Method.Name &&
                 !EZ.Throttle($"retargetingOver{action}{replaced}", TS
-                .FromSeconds(10)))
+                    .FromSeconds(10)))
                 return action;
             // Unregister the old resolver (just when different)
             Unregister(action, replaced);
@@ -101,6 +102,7 @@ public static class ActionRetargeting
                           $"'{action.ActionName()}' for retargeting " +
                           $"with {resolver.GetMethodName()}");
         _targetResolvers.Add((action, replaced), resolver);
+        // todo: add for every replaced action given
 
         return action;
     }
@@ -115,12 +117,14 @@ public static class ActionRetargeting
     /// <param name="replacedActionID">The replaced Action key.</param>
     private static void Unregister(uint actionID, uint replacedActionID) =>
         _targetResolvers.Remove((actionID, replacedActionID));
+    // todo: only accept an action id, and remove all entries where that is the retargeted action
 
     /// <summary>
     ///     Resolve the target for an action via the provided
     ///     <see cref="TargetResolverDelegate" />.
     /// </summary>
     /// <param name="action">The Action to re-target.</param>
+    /// <!-- todo: not strictly accurate - it is the replaced action -->
     /// <param name="target">
     ///     The output  <see cref="IGameObject">Game Object</see> of the target, if
     ///     the action was found to be re-targeted.
@@ -178,7 +182,9 @@ public static class ActionRetargeting
 
     #region Utilities
 
-    /// Clears old re-targets from the <see cref="_targetResolvers">list</see>.
+    /// Clears old re-targets from the
+    /// <see cref="_targetResolvers">list</see>
+    /// .
     internal static Action ClearOldRetargets = () =>
     {
         var oldRetargets = _targetResolvers.Keys
@@ -195,7 +201,9 @@ public static class ActionRetargeting
         Svc.Framework.RunOnTick(ClearOldRetargets!, TS.FromSeconds(25));
     };
 
-    /// Clears <see cref="_targetResolvers">cached re-targets</see>.
+    /// Clears
+    /// <see cref="_targetResolvers">cached re-targets</see>
+    /// .
     internal static void ClearCachedRetargets()
     {
         _targetResolvers.Clear();
