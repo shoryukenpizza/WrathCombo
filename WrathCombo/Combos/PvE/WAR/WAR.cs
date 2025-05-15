@@ -246,7 +246,7 @@ internal partial class WAR : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.WAR_ST_Interrupt) &&
-                HiddenFeaturesData.IsEnabledWith(
+                HiddenFeaturesData.IsEnabledWith( // Only interrupt circle adds in 7
                     CustomComboPreset.WAR_Hid_R7SCircleCastOnly,
                     () => HiddenFeaturesData.Content.InR7S,
                     () => HiddenFeaturesData.Targeting.R7SCircleCastingAdd) &&
@@ -619,6 +619,8 @@ internal partial class WAR : Tank
             if (actionID is not Overpower)
                 return actionID; //Our button
 
+            // If the Burst Holding for the Squirrels in 6 is enabled, check that
+            // we are either not targeting a squirrel or the fight is after 275s
             var r6SReady = !HiddenFeaturesData.IsEnabledWIth(
                 CustomComboPreset.WAR_Hid_R6SHoldSquirrelBurst,
                 () => HiddenFeaturesData.Targeting.R6SSquirrel &&
@@ -641,7 +643,7 @@ internal partial class WAR : Tank
             // Stun
             if (IsEnabled(CustomComboPreset.WAR_AoE_Stun)
                 && Role.CanLowBlow()
-                && HiddenFeaturesData.IsEnabledWith(
+                && HiddenFeaturesData.IsEnabledWith( // Only stun the jabber, if in 6
                     CustomComboPreset.WAR_Hid_R6SStunJabberOnly,
                     () => HiddenFeaturesData.Content.InR6S,
                     () => HiddenFeaturesData.Targeting.R6SJabber))
@@ -695,7 +697,7 @@ internal partial class WAR : Tank
 
                     //Reprisal
                     if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Reprisal) && //Reprisal option is enabled
-                        HiddenFeaturesData.IsEnabledWIth(
+                        HiddenFeaturesData.IsEnabledWIth( // Skip mit if in 6
                             CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
                             () => !HiddenFeaturesData.Content.InR6S) &&
                         Role.CanReprisal(Config.WAR_AoE_Reprisal_Health, checkTargetForDebuff: false) && //Player's health is below selected threshold
@@ -711,7 +713,7 @@ internal partial class WAR : Tank
                 }
                 //Thrill
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Thrill) && //Thrill option is enabled
-                    HiddenFeaturesData.IsEnabledWIth(
+                    HiddenFeaturesData.IsEnabledWIth( // Skip mit if in 6
                         CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
                         () => !HiddenFeaturesData.Content.InR6S) &&
                     ActionReady(ThrillOfBattle) && //Thrill is ready
