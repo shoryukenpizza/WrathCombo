@@ -220,6 +220,74 @@ public static class ActionRetargeting
     }
 
     #endregion
+
+    #region UInt Extensions
+
+    /// <summary>
+    ///     Retargets the action to the target specified.<br />
+    ///     Only works if the <paramref name="action" /> is the Replaced Action
+    ///     for the combo (i.e. Features, not generally main Combos).
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="target">
+    ///     The target to retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    internal static uint Retarget(this uint action, IGameObject? target) =>
+        Register(action, () => target);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.<br />
+    ///     Only works if the <paramref name="action" /> is the Replaced Action
+    ///     for the combo (i.e. Features, not generally main Combos).
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="target">
+    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
+    ///     decides the target to retarget the action onto.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    internal static uint Retarget(this uint action, TargetResolverDelegate target) =>
+        Register(action, target);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The target to retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+    /// </remarks>
+    internal static uint Retarget
+        (this uint action, uint replaced, IGameObject? target) =>
+        Register(action, () => target, replaced);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
+    ///     decides the target to retarget the action onto.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+    /// </remarks>
+    internal static uint Retarget
+        (this uint action, uint replaced, TargetResolverDelegate target) =>
+        Register(action, target, replaced);
+
+    #endregion
 }
 
 /// <summary>
