@@ -42,9 +42,11 @@
 /CONTRIBUTING.md                                      @zbee
 /WrathCombo/Services/IPC/                             @zbee
 /res/ipc_status.txt                                   @zbee
+/WrathCombo/Data/ContentCheck.cs                      @zbee
+/WrathCombo/Data/ConflictingPluginsCheck.cs           @zbee
 /WrathCombo/Combos/PvE/Content/Bozja.cs               @Akechi-kun @zbee
 /WrathCombo/CustomCombo/StancePartner.cs              @zbee
-/WrathCombo/Combos/PvE/ALL/Roles/                     @Tartarga
+/WrathCombo/Combos/PvE/ALL/                           @Tartarga
 
 # Protect the owners file
 /docs/CODEOWNERS                                      @Taurenkey @zbee
