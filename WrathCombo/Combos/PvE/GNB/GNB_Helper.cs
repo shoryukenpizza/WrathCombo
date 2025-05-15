@@ -393,12 +393,9 @@ internal partial class GNB : Tank
         var three = (InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || (!InOdd && Ammo != 3);
         var two = TraitLevelChecked(Traits.CartridgeCharge) ? Ammo > 0 : NMcd < 0.6f;
         var condition = minimum && (TraitLevelChecked(Traits.CartridgeChargeII) ? three : two);
-        if ((SlowGNB && condition && CanWeave()) ||
+        return ((SlowGNB && condition && CanWeave()) ||
             (MidGNB && condition && (InOdd ? CanWeave() : CanLateWeave)) ||
-            (FastGNB && condition && CanLateWeave))
-            return true;
-
-        return false;
+            (FastGNB && condition && CanLateWeave));
     }
     internal static bool ShouldUseBloodfest() => HasBattleTarget() && CanWeave() && CanBF && Ammo == 0;
     internal static bool ShouldUseZone() => CanZone && CanWeave() && NMcd is < 57.5f and > 17f;
