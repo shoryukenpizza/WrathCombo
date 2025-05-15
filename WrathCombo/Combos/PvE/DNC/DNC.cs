@@ -2,7 +2,7 @@
 
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
-using WrathCombo.Extensions;
+using WrathCombo.Core;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable ClassNeverInstantiated.Global

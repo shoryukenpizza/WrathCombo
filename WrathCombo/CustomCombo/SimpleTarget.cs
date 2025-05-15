@@ -15,62 +15,62 @@ using WrathCombo.Services;
 
 namespace WrathCombo.CustomComboNS;
 
-internal static class SimpleTargets
+internal static class SimpleTarget
 {
     #region Common Target Stacks
 
     /// <summary>
     ///     A collection of common targeting "stacks", used when you want a number of
-    ///     different target options, with fallback values.<br/>
+    ///     different target options, with fallback values.<br />
     ///     (and overriding values)
     /// </summary>
-    internal static class Stacks
+    internal static class Stack
     {
         /// A stack of common "override" targets, that users regularly override
         /// automatic target selection with.
         /// <remarks>
-        ///     (should also include <see cref="SimpleTargets.HardTarget" />, but
+        ///     (should also include <see cref="SimpleTarget.HardTarget" />, but
         ///     that override shouldn't be at the top of the stack with the other
         ///     overrides)
         /// </remarks>
-        public static IGameObject? Overrides() =>
-            UIMouseOverTarget() ?? ModelMouseOverTarget();
+        public static IGameObject? Overrides =>
+            UIMouseOverTarget ?? ModelMouseOverTarget;
 
         /// A very common stack that targets an ally or self, if there are no manual
         /// overrides targeted.
         /// <!-- todo: maybe including focus target should be an option? -->
-        public static IGameObject? OverridesAllyOrSelf() =>
-            Overrides() ?? FocusTarget() ?? SoftTarget() ?? HardTarget() ?? Self();
+        public static IGameObject? OverridesAllies =>
+            Overrides ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
 
         /// A very common stack that targets the player, if there are no manual
         /// overrides targeted.
-        public static IGameObject? OverridesOrSelf() =>
-            Overrides() ?? HardTarget() ?? Self();
+        public static IGameObject? OverridesSelf =>
+            Overrides ?? HardTarget ?? Self;
     }
 
     #endregion
 
     #region Core Targets
 
-    public static IGameObject? Self() =>
+    public static IGameObject? Self =>
         Player.Available ? Player.Object : null;
 
-    public static IGameObject? HardTarget() =>
+    public static IGameObject? HardTarget =>
         Svc.Targets.Target;
 
-    public static IGameObject? SoftTarget() =>
+    public static IGameObject? SoftTarget =>
         Svc.Targets.SoftTarget;
 
-    public static IGameObject? FocusTarget() =>
+    public static IGameObject? FocusTarget =>
         Svc.Targets.FocusTarget;
 
-    public static IGameObject? UIMouseOverTarget() =>
+    public static IGameObject? UIMouseOverTarget =>
         PartyUITargeting.UiMouseOverTarget;
 
-    public static IGameObject? ModelMouseOverTarget() =>
+    public static IGameObject? ModelMouseOverTarget =>
         Svc.Targets.MouseOverNameplateTarget ?? Svc.Targets.MouseOverTarget;
 
-    public static IGameObject? Chocobo() =>
+    public static IGameObject? Chocobo =>
         Svc.Buddies.CompanionBuddy?.GameObject;
 
     #endregion

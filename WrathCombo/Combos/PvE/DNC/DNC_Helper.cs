@@ -255,15 +255,15 @@ internal partial class DNC
         // Check if we have a target overriding any searching
         if (callingFromFeature is true &&
             Config.DNC_Partner_FocusOverride &&
-            SimpleTargets.FocusTarget() is IBattleChara &&
-            !SimpleTargets.FocusTarget().IsDead &&
+            SimpleTarget.FocusTarget is IBattleChara &&
+            !SimpleTarget.FocusTarget.IsDead &&
             party.Any(x =>
-                x.GameObjectId == SimpleTargets.FocusTarget().GameObjectId) &&
-            IsInRange(SimpleTargets.FocusTarget(), 30) &&
-            SicknessFree(SimpleTargets.FocusTarget()) &&
-            DamageDownFree(SimpleTargets.FocusTarget()))
+                x.GameObjectId == SimpleTarget.FocusTarget.GameObjectId) &&
+            IsInRange(SimpleTarget.FocusTarget, 30) &&
+            SicknessFree(SimpleTarget.FocusTarget) &&
+            DamageDownFree(SimpleTarget.FocusTarget))
         {
-            partner = SimpleTargets.FocusTarget();
+            partner = SimpleTarget.FocusTarget;
             return true;
         }
 
@@ -277,7 +277,7 @@ internal partial class DNC
         // Fallback to companion
         if (HasCompanionPresent())
         {
-            partner = SimpleTargets.Chocobo();
+            partner = SimpleTarget.Chocobo;
             return true;
         }
 
