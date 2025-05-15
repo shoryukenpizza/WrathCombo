@@ -49,6 +49,7 @@
 /WrathCombo/Combos/PvE/Content/Bozja.cs               @zbee @Akechi-kun
 /WrathCombo/CustomCombo/StancePartner.cs              @zbee
 /WrathCombo/Combos/PvE/ALL/                           @Tartarga
+/WrathCombo/Combos/PvE/Content/Variant/               @Tartarga
 
 # Protect the owners file
 /docs/CODEOWNERS                                      @Taurenkey @zbee
