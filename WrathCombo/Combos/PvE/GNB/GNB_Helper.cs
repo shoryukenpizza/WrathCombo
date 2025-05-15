@@ -389,9 +389,9 @@ internal partial class GNB : Tank
     #region OGCDs
     internal static bool ShouldUseNoMercy()
     {
-        var minimum = ActionReady(NoMercy) && InCombat() && HasBattleTarget();
-        var three = InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1)) || (!InOdd && Ammo != 3);
-        var two = TraitLevelChecked(Traits.CartridgeCharge) ? Ammo > 0 : ActionReady(NoMercy);
+        var minimum = NMcd < 0.6f && InCombat() && HasBattleTarget();
+        var three = (InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || (!InOdd && Ammo != 3);
+        var two = TraitLevelChecked(Traits.CartridgeCharge) ? Ammo > 0 : NMcd < 0.6f;
         var condition = minimum && (TraitLevelChecked(Traits.CartridgeChargeII) ? three : two);
         if ((SlowGNB && condition && CanWeave()) ||
             (MidGNB && condition && (InOdd ? CanWeave() : CanLateWeave)) ||
