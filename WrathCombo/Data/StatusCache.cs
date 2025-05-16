@@ -52,92 +52,65 @@ namespace WrathCombo.Data
             .ToDictionary(i => i.RowId, i => i);
 
         /// <summary>
-        /// Initializes all status ID caches in a single StatusSheet iteration.
+        /// Enum defining status effects with their name IDs.
         /// </summary>
-        /// <returns>A dictionary mapping status names to their ID sets.</returns>
-        private static Dictionary<string, HashSet<uint>> InitializeStatusIdCaches()
+        public enum StatusEffect
         {
-            var statusNames = new Dictionary<uint, string>
-            {
-                { 5, GetStatusName(5) },  // Amnesia
-                { 6, GetStatusName(6) },  // Pacification
-                { 7, GetStatusName(7) },  // Silence
-                { 43, GetStatusName(43) }, // Weakness
-                { 44, GetStatusName(44) }, // Brink of Death
-                { 62, GetStatusName(62) }  // Damage Down
-            };
+            Amnesia = 5,
+            Pacification = 6,
+            Silence = 7,
+            Weakness = 43,
+            BrinkOfDeath = 44,
+            DamageDown = 62
+        }
 
-            var caches = statusNames.Values.ToDictionary(name => name, _ => new HashSet<uint>(), StringComparer.OrdinalIgnoreCase);
+        /// <summary>
+        /// Cached dictionary mapping status effects to their HashSet of status IDs.
+        /// </summary>
+        private static readonly Dictionary<StatusEffect, HashSet<uint>> StatusIdCaches = InitializeStatusIdCaches();
 
-            foreach (var status in StatusSheet)
-            {
-                var name = status.Value.Name.ToString();
-                if (caches.TryGetValue(name, out HashSet<uint>? value))
-                    value.Add(status.Key);
-            }
+        /// <summary>
+        /// Initializes the status ID caches in a single StatusSheet iteration.
+        /// </summary>
+        private static Dictionary<StatusEffect, HashSet<uint>> InitializeStatusIdCaches()
+        {
+            var statusEffects = Enum.GetValues<StatusEffect>();
+            var nameToEffect = statusEffects
+                .Select(e => (Effect: e, Name: GetStatusName((uint)e)))
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .ToDictionary(x => x.Name, x => x.Effect, StringComparer.OrdinalIgnoreCase);
 
-            foreach (var name in statusNames.Values)
-            {
-                if (caches[name].Count == 0)
-                    Svc.Log.Warning($"No status IDs found for status name: {name}");
-            }
+            var caches = statusEffects
+                .SelectMany(e => StatusSheet
+                    .Where(s => s.Value.Name.ToString().Equals(GetStatusName((uint)e), StringComparison.OrdinalIgnoreCase))
+                    .Select(s => (Effect: e, Id: s.Key)))
+                .GroupBy(x => x.Effect)
+                .ToDictionary(g => g.Key, g => g.Select(x => x.Id).ToHashSet());
+
+            // Ensure all status effects have an entry
+            foreach (var effect in statusEffects)
+                caches.TryAdd(effect, new HashSet<uint>());
+
+            var emptyCaches = caches
+                .Where(kvp => kvp.Value.Count == 0)
+                .Select(kvp => $"No status IDs found for status effect: {kvp.Key} ({GetStatusName((uint)kvp.Key)})");
+            foreach (var warning in emptyCaches)
+                Svc.Log.Warning(warning);
 
             return caches;
         }
 
-        /// <summary>
-        /// A cached set of status IDs for the "Amnesia" status effect (name ID 5).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> AmnesiaStatusIds = InitializeStatusIdCaches()[GetStatusName(5)];
-        public static bool HasAmnesia() => HasStatusInCacheList(AmnesiaStatusIds);
+        public static bool HasAmnesia() => HasStatusInCacheList(StatusEffect.Amnesia);
 
-        /// <summary>
-        /// A cached set of status IDs for the "Pacification" status effect (name ID 6).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> PacificationStatusIds = InitializeStatusIdCaches()[GetStatusName(6)];
-        public static bool HasPacification() => HasStatusInCacheList(PacificationStatusIds);
+        public static bool HasPacification() => HasStatusInCacheList(StatusEffect.Pacification);
 
-        /// <summary>
-        /// A cached set of status IDs for the "Silence" status effect (name ID 7).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> SilenceStatusIds = InitializeStatusIdCaches()[GetStatusName(7)];
-        public static bool HasSilence() => HasStatusInCacheList(SilenceStatusIds);
+        public static bool HasSilence() => HasStatusInCacheList(StatusEffect.Silence);
 
-        /// <summary>
-        /// A cached set of status IDs for the "Weakness" status effect (name ID 43).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> WeaknessStatusIds = InitializeStatusIdCaches()[GetStatusName(43)];
-        public static bool HasWeakness(IGameObject? target) => HasStatusInCacheList(WeaknessStatusIds, target);
+        public static bool HasWeakness(IGameObject? target) => HasStatusInCacheList(StatusEffect.Weakness, target);
 
-        /// <summary>
-        /// A cached set of status IDs for the "Brink of Death" status effect (name ID 44).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> BrinkOfDeathStatusIds = InitializeStatusIdCaches()[GetStatusName(44)];
-        public static bool HasBrinkOfDeath(IGameObject? target) => HasStatusInCacheList(BrinkOfDeathStatusIds, target);
+        public static bool HasBrinkOfDeath(IGameObject? target) => HasStatusInCacheList(StatusEffect.BrinkOfDeath, target);
 
-        /// <summary>
-        /// A cached set of status IDs for the "Damage Down" status effect (name ID 62).
-        /// </summary>
-        /// <remarks>
-        /// Populated at startup. Status IDs are stable across languages.
-        /// </remarks>
-        private static readonly HashSet<uint> DamageDownStatusIds = InitializeStatusIdCaches()[GetStatusName(62)];
-        public static bool HasDamageDown(IGameObject? target) => HasStatusInCacheList(DamageDownStatusIds, target);
+        public static bool HasDamageDown(IGameObject? target) => HasStatusInCacheList(StatusEffect.DamageDown, target);
 
         /// <summary>
         /// A cached set of dispellable status IDs for quick lookup.
@@ -173,24 +146,47 @@ namespace WrathCombo.Data
                 return false;
 
             // General invincibility check
-            if (HasStatusInCacheList(InvincibleStatuses, tar))
-                return true;
+
+            byte method = 1;
+
+            switch (method)
+            {
+                case 1:
+                    if (HasStatusInCacheList(InvincibleStatuses, tar))
+                        return true;
+                    break;
+                case 2:
+                    {
+                        var targetStatuses = tar.StatusList.Select(s => s.StatusId).ToHashSet();
+                        if (targetStatuses.Any(id => InvincibleStatuses.Contains(id))) return true;
+                        break;
+                    }
+            }
 
             // Jeuno Ark Angel Encounter
-            if (HasStatusInCacheList(JeunoPlayerStatuses) && !HasStatusInCacheList(JeunoVulnerableStatuses, tar))
+            //if (Svc.ClientState.TerritoryType == ?)
+            //{
+            if (HasStatusInCacheList(JeunoPlayerStatuses,Player.Object) && !HasStatusInCacheList(JeunoVulnerableStatuses, tar))
                 return true;
+            //}
 
             // YoRHa raid encounter
+            //if (Svc.ClientState.TerritoryType == ?)
+            //{
             var alliance = CustomComboFunctions.GetAllianceGroup();
             if ((alliance != AllianceGroup.GroupA && HasStatusInCacheList(YoRHaStatuses, tar)) ||
                 (alliance != AllianceGroup.GroupB && HasStatusInCacheList(YoRHaStatuses, tar)) ||
                 (alliance != AllianceGroup.GroupC && HasStatusInCacheList(YoRHaStatuses, tar)))
                 return true;
+            //}
 
             // Omega
-            if ((HasStatusInCacheList(OmegaTargetStatuses, tar) && HasStatusInCacheList(OmegaPlayerStatuses)) ||
-                (HasStatusInCacheList(OmegaTargetStatuses, tar) && HasStatusInCacheList(OmegaPlayerStatuses)))
+            //if (Svc.ClientState.TerritoryType == ?)
+            //{
+            if ((HasStatusInCacheList(OmegaTargetStatuses, tar) && HasStatusInCacheList(OmegaPlayerStatuses, Player.Object)) ||
+                (HasStatusInCacheList(OmegaTargetStatuses, tar) && HasStatusInCacheList(OmegaPlayerStatuses, Player.Object)))
                 return true;
+            //}
 
             return false;
         }
@@ -234,12 +230,20 @@ namespace WrathCombo.Data
             }
             return false;
         }
-
-        internal static bool HasStatusInCacheList(HashSet<uint> list) => list.Count switch
+        
+        /// <summary>
+        /// Checks if a target has any status effect for the given status effect.
+        /// </summary>
+        internal static bool HasStatusInCacheList(StatusEffect effect, IGameObject? target = null)
         {
-            0 => false,
-            _ => HasStatusInCacheList(list, Player.Object)
-        };
+            return HasStatusInCacheList(StatusIdCaches[effect], target);
+        }
+
+        //internal static bool HasStatusInCacheList(HashSet<uint> list) => list.Count switch
+        //{
+        //    0 => false,
+        //    _ => HasStatusInCacheList(list, Player.Object)
+        //};
 
     }
 }
