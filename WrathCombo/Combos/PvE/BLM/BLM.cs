@@ -308,7 +308,6 @@ internal partial class BLM : Caster
             {
                 // TODO Revisit when Raid Buff checks are in place
                 if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                    HasPolyglotStacks() &&
                     ((BLM_ST_MovementOption[3] && PolyglotStacks > BLM_ST_Polyglot_Movement) ||
                      !BLM_ST_MovementOption[3]))
                     return LevelChecked(Xenoglossy)

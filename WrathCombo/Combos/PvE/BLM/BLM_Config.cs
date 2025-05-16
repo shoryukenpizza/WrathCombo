@@ -46,18 +46,6 @@ internal partial class BLM
 
                     break;
 
-                case CustomComboPreset.BLM_ST_UsePolyglot:
-                    if (BLM_ST_MovementOption[3])
-                        DrawSliderInt(1, 2, BLM_ST_Polyglot_Movement,
-                            "How many charges to save for movement?");
-                    break;
-
-                case CustomComboPreset.BLM_ST_Triplecast:
-                    if (BLM_ST_MovementOption[0])
-                        DrawSliderInt(0, 1, BLM_ST_Triplecast_Movement,
-                            "How many charges to save for movement?");
-                    break;
-
                 case CustomComboPreset.BLM_ST_Movement:
 
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 0);
@@ -65,6 +53,19 @@ internal partial class BLM
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 2);
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 3);
                     break;
+
+                case CustomComboPreset.BLM_ST_UsePolyglot:
+                    if (BLM_ST_MovementOption[3])
+                        DrawSliderInt(1, 3, BLM_ST_Polyglot_Movement,
+                            "How many charges to save for movement?");
+                    break;
+
+                case CustomComboPreset.BLM_ST_Triplecast:
+                    if (BLM_ST_MovementOption[0])
+                        DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
+                            "How many charges to save for movement?");
+                    break;
+
 
                 case CustomComboPreset.BLM_ST_Thunder:
                     DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
