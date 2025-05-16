@@ -119,8 +119,8 @@ internal partial class SAM : Melee
                     return MeikyoShisui;
 
                 //Ikishoten Features
-                //TODO Revisit when Raidbuffs are in
-                if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
+                if (ActionReady(Ikishoten) &&
+                    !HasStatusEffect(Buffs.ZanshinReady))
                 {
                     switch (Kenki)
                     {
@@ -133,27 +133,24 @@ internal partial class SAM : Melee
                     }
                 }
 
-                //Senei Features
-                if (Kenki >= 25)
+                switch (Kenki)
                 {
-                    if (ActionReady(Senei) &&
-                        (JustUsed(MidareSetsugekka) ||
-                         JustUsed(KaeshiSetsugekka) ||
-                         JustUsed(TendoSetsugekka)))
+                    //Senei Features
+                    case >= 25 when ActionReady(Senei):
                         return Senei;
 
                     //Guren if no Senei
-                    if (!LevelChecked(Senei) && ActionReady(Guren) && InActionRange(Guren))
+                    case >= 25 when !LevelChecked(Senei) && ActionReady(Guren) && InActionRange(Guren):
                         return Guren;
                 }
 
                 //Zanshin Usage
+                //TODO Buffcheck
                 if (ActionReady(Zanshin) && Kenki >= 50 &&
                     InActionRange(Zanshin) &&
                     HasStatusEffect(Buffs.ZanshinReady) &&
                     (JustUsed(Higanbana) ||
                      JustUsed(OriginalHook(OgiNamikiri)) ||
-                     !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                     return Zanshin;
 
@@ -293,7 +290,6 @@ internal partial class SAM : Melee
                         return MeikyoShisui;
 
                     //Ikishoten Features
-                    //TODO Revisit when Raidbuffs are in
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Ikishoten) &&
                         ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
                     {
@@ -315,10 +311,7 @@ internal partial class SAM : Melee
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei)
                         && Kenki >= 25)
                     {
-                        if (ActionReady(Senei) &&
-                            (JustUsed(MidareSetsugekka) ||
-                             JustUsed(KaeshiSetsugekka) ||
-                             JustUsed(TendoSetsugekka)))
+                        if (ActionReady(Senei))
                             return Senei;
 
                         //Guren if no Senei
@@ -329,6 +322,7 @@ internal partial class SAM : Melee
                     }
 
                     //Zanshin Usage
+                    //TODO Buffcheck
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Zanshin) &&
                         ActionReady(Zanshin) && Kenki >= 50 &&
                         InActionRange(Zanshin) &&
