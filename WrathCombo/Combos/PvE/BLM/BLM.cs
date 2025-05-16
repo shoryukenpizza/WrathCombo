@@ -46,16 +46,9 @@ internal partial class BLM : Caster
                     if (JustUsed(Paradox) && CurMp is MP.MaxMP)
                         return Transpose;
 
-                    if (ActionReady(Blizzard3) && UmbralIceStacks < 3)
-                    {
-                        if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
-                            return Role.Swiftcast;
-
-                        if (ActionReady(Triplecast) &&
-                            !HasStatusEffect(Buffs.Triplecast) &&
-                            !HasStatusEffect(Role.Buffs.Swiftcast))
-                            return Triplecast;
-                    }
+                    if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
+                        ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                        return Role.Swiftcast;
                 }
             }
 
@@ -106,7 +99,6 @@ internal partial class BLM : Caster
             {
                 // TODO Revisit when Raid Buff checks are in place
                 if (LevelChecked(Amplifier) &&
-                    HasPolyglotStacks() &&
                     PolyglotStacks > 1)
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
@@ -243,9 +235,10 @@ internal partial class BLM : Caster
                             return Role.Swiftcast;
 
                         if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
-                            ActionReady(Triplecast) &&
-                            !HasStatusEffect(Buffs.Triplecast) &&
-                            !HasStatusEffect(Role.Buffs.Swiftcast))
+                            ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                            !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
+                            ((BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement) ||
+                             !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                             return Triplecast;
                     }
                 }
@@ -309,7 +302,7 @@ internal partial class BLM : Caster
                 // TODO Revisit when Raid Buff checks are in place
                 if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                     ((BLM_ST_MovementOption[3] && PolyglotStacks > BLM_ST_Polyglot_Movement) ||
-                     !BLM_ST_MovementOption[3]))
+                     (!BLM_ST_MovementOption[3] && HasPolyglotStacks())))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
