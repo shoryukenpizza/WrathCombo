@@ -411,7 +411,7 @@ internal partial class BLM : Caster
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > 1)
                     return LeyLines;
             }
 
@@ -420,14 +420,14 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                (GetTargetHPPercent() > 1) &&
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
                 (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
                 return OriginalHook(Thunder2);
 
-            if (ActiveParadox &&
-                EndOfIcePhaseAoEMaxLevel)
+            if (ActiveParadox && EndOfIcePhaseAoEMaxLevel)
                 return OriginalHook(Paradox);
 
             if (FirePhase)
@@ -439,14 +439,12 @@ internal partial class BLM : Caster
                     return OriginalHook(Fire2);
 
                 if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    HasMaxUmbralHeartStacks && !ActionReady(Manafont))
+                    GetRemainingCharges(Triplecast) > 1 && HasMaxUmbralHeartStacks &&
+                    !ActionReady(Manafont))
                     return Triplecast;
 
                 if (ActionReady(Flare))
                     return Flare;
-
-                if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
-                    return OriginalHook(Blizzard2);
 
                 if (ActionReady(Transpose))
                     return Transpose;
@@ -454,21 +452,15 @@ internal partial class BLM : Caster
 
             if (IcePhase)
             {
-                if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks)
-                {
-                    if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
-                        return OriginalHook(Fire2);
-
-                    if (ActionReady(Transpose))
-                        return Transpose;
-                }
+                if ((CurMp == MP.MaxMP || HasMaxUmbralHeartStacks) &&
+                    ActionReady(Transpose))
+                    return Transpose;
 
                 if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
                 {
-                    if (HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
-                        return Blizzard4;
-
-                    return Freeze;
+                    return HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
+                        ? Blizzard4
+                        : Freeze;
                 }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
@@ -574,11 +566,10 @@ internal partial class BLM : Caster
 
                 if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
                 {
-                    if (IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
-                        HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
-                        return Blizzard4;
-
-                    return Freeze;
+                    return IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
+                           HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
+                        ? Blizzard4
+                        : Freeze;
                 }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
