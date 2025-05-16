@@ -59,11 +59,6 @@ internal partial class BLM : Caster
                 }
             }
 
-            if (LevelChecked(Amplifier) &&
-                GetCooldownRemainingTime(Amplifier) < 5 &&
-                HasMaxPolyglotStacks)
-                return Xenoglossy;
-
             if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
@@ -75,6 +70,11 @@ internal partial class BLM : Caster
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3))
                 return OriginalHook(Thunder);
+
+            if (LevelChecked(Amplifier) &&
+                GetCooldownRemainingTime(Amplifier) < 5 &&
+                HasMaxPolyglotStacks)
+                return Xenoglossy;
 
             if (IsMoving() && InCombat())
             {
@@ -104,14 +104,13 @@ internal partial class BLM : Caster
 
             if (FirePhase)
             {
-                // Revisit when Raid Buff checks are in place
-                //if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                //    LevelChecked(Amplifier) && HasPolyglotStacks() &&
-                //    (GetCooldownRemainingTime(Amplifier) < 3 || GetCooldownRemainingTime(Amplifier) > 100) ||
-                //    !LevelChecked(Amplifier) && HasPolyglotStacks())
-                //    return LevelChecked(Xenoglossy)
-                //        ? Xenoglossy
-                //        : Foul;
+                // TODO Revisit when Raid Buff checks are in place
+                if (LevelChecked(Amplifier) &&
+                    HasPolyglotStacks() &&
+                    PolyglotStacks > 1)
+                    return LevelChecked(Xenoglossy)
+                        ? Xenoglossy
+                        : Foul;
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
@@ -220,11 +219,10 @@ internal partial class BLM : Caster
                         return Role.Swiftcast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
-                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
-                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
-                        (GetRemainingCharges(Triplecast) is 2 && BLM_ST_Triplecast_UseCharges == 1 ||
-                         HasCharges(Triplecast) && BLM_ST_Triplecast_UseCharges == 2) &&
-                        JustUsed(Despair) && !ActionReady(Manafont))
+                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                        !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines) &&
+                        ((BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement) ||
+                         !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
@@ -253,13 +251,6 @@ internal partial class BLM : Caster
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) && 
-                IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) && 
-                LevelChecked(Amplifier) &&
-                GetCooldownRemainingTime(Amplifier) < 5 &&
-                HasMaxPolyglotStacks)
-                return Xenoglossy;
-
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                 HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
@@ -275,6 +266,13 @@ internal partial class BLM : Caster
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3))
                 return OriginalHook(Thunder);
+
+            if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
+                IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
+                LevelChecked(Amplifier) &&
+                GetCooldownRemainingTime(Amplifier) < 5 &&
+                HasMaxPolyglotStacks)
+                return Xenoglossy;
 
             if (IsMoving() && InCombat())
             {
@@ -308,14 +306,14 @@ internal partial class BLM : Caster
 
             if (FirePhase)
             {
-                // Revisit when Raid Buff checks are in place
-                //if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                //    LevelChecked(Amplifier) && HasPolyglotStacks() &&
-                //    (GetCooldownRemainingTime(Amplifier) < 3 || GetCooldownRemainingTime(Amplifier) > 100) ||
-                //    !LevelChecked(Amplifier) && HasPolyglotStacks())
-                //    return LevelChecked(Xenoglossy)
-                //        ? Xenoglossy
-                //        : Foul;
+                // TODO Revisit when Raid Buff checks are in place
+                if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
+                    HasPolyglotStacks() &&
+                    ((BLM_ST_MovementOption[3] && PolyglotStacks > BLM_ST_Polyglot_Movement) ||
+                     !BLM_ST_MovementOption[3]))
+                    return LevelChecked(Xenoglossy)
+                        ? Xenoglossy
+                        : Foul;
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||

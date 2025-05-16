@@ -12,7 +12,8 @@ internal partial class BLM
             BLM_VariantRampart = new("BLM_VariantRampart"),
             BLM_ST_LeyLinesCharges = new("BLM_ST_LeyLinesCharges", 1),
             BLM_ST_Thunder_Threshold = new("BLM_ST_Thunder_Threshold", 1),
-            BLM_ST_Triplecast_UseCharges = new("BLM_ST_Triplecast_UseCharges", 1),
+            BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
+            BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_AoE_Triplecast_HoldCharges = new("BLM_AoE_Triplecast_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 5),
@@ -41,13 +42,20 @@ internal partial class BLM
 
                 case CustomComboPreset.BLM_ST_LeyLines:
                     DrawSliderInt(0, 1, BLM_ST_LeyLinesCharges,
-                        $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
+                        $"How many charges of {LeyLines.ActionName()} to keep ready?");
 
                     break;
 
+                case CustomComboPreset.BLM_ST_UsePolyglot:
+                    if (BLM_ST_MovementOption[3])
+                        DrawSliderInt(1, 2, BLM_ST_Polyglot_Movement,
+                            "How many charges to save for movement?");
+                    break;
+
                 case CustomComboPreset.BLM_ST_Triplecast:
-                    DrawSliderInt(1, 2, BLM_ST_Triplecast_UseCharges,
-                        $"How many charges of {Triplecast.ActionName()} to use?");
+                    if (BLM_ST_MovementOption[0])
+                        DrawSliderInt(0, 1, BLM_ST_Triplecast_Movement,
+                            "How many charges to save for movement?");
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
