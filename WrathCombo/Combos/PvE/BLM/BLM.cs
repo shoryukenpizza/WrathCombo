@@ -22,8 +22,7 @@ internal partial class BLM : Caster
 
             if (CanWeave() && !HasDoubleWeaved())
             {
-                if (ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
-                    !HasMaxPolyglotStacks)
+                if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines))
@@ -59,6 +58,11 @@ internal partial class BLM : Caster
                     }
                 }
             }
+
+            if (LevelChecked(Amplifier) &&
+                GetCooldownRemainingTime(Amplifier) < 5 &&
+                HasMaxPolyglotStacks)
+                return Xenoglossy;
 
             if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
@@ -196,8 +200,7 @@ internal partial class BLM : Caster
             if (CanWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
-                    ActionReady(Amplifier) && PolyglotTimer >= 20000 &&
-                    !HasMaxPolyglotStacks)
+                    ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
@@ -249,6 +252,13 @@ internal partial class BLM : Caster
                     }
                 }
             }
+
+            if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) && 
+                IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) && 
+                LevelChecked(Amplifier) &&
+                GetCooldownRemainingTime(Amplifier) < 5 &&
+                HasMaxPolyglotStacks)
+                return Xenoglossy;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                 HasMaxPolyglotStacks && PolyglotTimer <= 5000)
