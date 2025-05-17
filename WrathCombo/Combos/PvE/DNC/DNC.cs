@@ -236,8 +236,10 @@ internal partial class DNC : PhysicalRanged
             // Dance Partner
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner) &&
                 CanWeave() &&
-                (CurrentPartnerNonOptimal || !HasStatusEffect(Buffs.ClosedPosition)))
-                return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
+                CurrentPartnerNonOptimal)
+                return HasStatusEffect(Buffs.ClosedPosition)
+                    ? Ending
+                    : ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, Config.DNCVariantCurePercent))
@@ -566,8 +568,10 @@ internal partial class DNC : PhysicalRanged
 
             // Dance Partner
             if (CanWeave() &&
-                (CurrentPartnerNonOptimal || !HasStatusEffect(Buffs.ClosedPosition)))
-                return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
+                CurrentPartnerNonOptimal)
+                return HasStatusEffect(Buffs.ClosedPosition)
+                    ? Ending
+                    : ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, 50))
@@ -1358,11 +1362,18 @@ internal partial class DNC : PhysicalRanged
         {
             if (actionID is not (ClosedPosition or Ending)) return actionID;
 
-            var hasPartner = HasStatusEffect(Buffs.ClosedPosition);
+            if (CurrentPartnerNonOptimal)
+            {
+                if (HasStatusEffect(Buffs.ClosedPosition))
+                    return Ending;
 
-            if (!hasPartner || CurrentPartnerNonOptimal)
+                // I could automatically end partner,
+                // instead of having the user press ending first ...
+                //StatusManager.ExecuteStatusOff(Buffs.ClosedPosition);
+
                 return ClosedPosition.Retarget([ClosedPosition, Ending],
                     FeatureDancePartnerResolver, dontCull: true);
+            }
 
             return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
                 ? All.SavageBlade

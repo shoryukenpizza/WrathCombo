@@ -221,9 +221,10 @@ internal partial class DNC
     }
 
     private static bool CurrentPartnerNonOptimal =>
-        FeatureDesiredDancePartner is not null &&
-        CurrentDancePartner is not null &&
-        FeatureDesiredDancePartner != CurrentDancePartner;
+        !HasStatusEffect(Buffs.ClosedPosition) ||
+        (CurrentDancePartner is not null &&
+         FeatureDesiredDancePartner is not null &&
+         FeatureDesiredDancePartner != CurrentDancePartner);
 
     #region Resolver Delegates
 
