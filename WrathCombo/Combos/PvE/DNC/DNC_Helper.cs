@@ -229,9 +229,6 @@ internal partial class DNC
 
     internal static TargetResolverDelegate DancePartnerResolver = () =>
     {
-        if (Player.Mounted || Player.Mounting)
-            return null;
-
         P.ActionRetargeting.MyResolverMethodName = "DancePartnerResolver";
         return Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == DesiredDancePartner);
@@ -239,9 +236,6 @@ internal partial class DNC
 
     internal static TargetResolverDelegate FeatureDancePartnerResolver = () =>
     {
-        if (Player.Mounted || Player.Mounting)
-            return null;
-
         P.ActionRetargeting.MyResolverMethodName = "FeatureDancePartnerResolver";
         return Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == FeatureDesiredDancePartner);
@@ -357,11 +351,12 @@ internal partial class DNC
             if (restrictions.HasFlag(PartnerPriority.Restrictions.NotBrink))
                 filter = filter.Where(BrinkFree).ToList();
 
+            // Run the next step if no matches were found
             if (filter.Count == 0 &&
                 step < PartnerPriority.RestrictionSteps.Length - 1)
                 return TryGetBestPartner(out newBestPartner, step + 1);
-            if (filter.Count == 0 &&
-                step == PartnerPriority.RestrictionSteps.Length - 1)
+            // If it's the last step and there are no matches found, bail
+            if (filter.Count == 0)
                 return false;
 
             filter = filter
