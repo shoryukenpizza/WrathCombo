@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Extensions;
@@ -21,18 +22,41 @@ public static class GameObjectExtensions
 
     #region Target Classification
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not friendly.
+    /// </summary>
+    /// <remarks>
+    ///     See <see cref="SimpleTarget.Stack.AllyToHeal"/> for a use case.
+    /// </remarks>
     public static IGameObject? IfFriendly (this IGameObject? obj) =>
         obj != null && CustomComboFunctions.TargetIsFriendly(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not hostile.
+    /// </summary>
     public static IGameObject? IfHostile (this IGameObject? obj) =>
         obj != null && obj.IsHostile() ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not a boss.
+    /// </summary>
     public static IGameObject? IfBoss (this IGameObject? obj) =>
         obj != null && CustomComboFunctions.IsBoss(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not a quest mob
+    /// </summary>
     public static IGameObject? IfQuestMob (this IGameObject? obj) =>
         obj != null && CustomComboFunctions.IsQuestMob(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target does not need positionals.
+    /// </summary>
     public static IGameObject? IfNeedsPositionals (this IGameObject? obj) =>
         obj != null && CustomComboFunctions.TargetNeedsPositionals(obj) ? obj : null;
 
