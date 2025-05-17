@@ -385,11 +385,15 @@ internal partial class DNC
         }
     }
 
+    #region DP-checking shortcut methods
+
     private static bool HasAnyPartner(WrathPartyMember target) =>
         HasStatusEffect(Buffs.Partner, target.BattleChara, true);
 
     private static bool HasMyPartner(WrathPartyMember target) =>
         HasStatusEffect(Buffs.Partner, target.BattleChara);
+
+    #endregion
 
     #region Partner Priority Static Data
 
