@@ -6,6 +6,7 @@ using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using WrathCombo.Attributes;
+using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
@@ -159,6 +160,21 @@ internal static class SimpleTarget
 
     #region Role Targets
 
+    public static IGameObject? AnySupport =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.GetRole() is
+                (CombatRole.Tank or CombatRole.Healer));
+
+    public static IGameObject? AnyDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.DPS);
+
+    #region Slightly More Specific Roles
+
     public static IGameObject? AnyTank =>
         CustomComboFunctions
             .GetPartyMembers()
@@ -170,14 +186,6 @@ internal static class SimpleTarget
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
-
-    public static IGameObject? AnyDPS =>
-        CustomComboFunctions
-            .GetPartyMembers()
-            .Select(x => x.BattleChara)
-            .FirstOrDefault(x => x?.GetRole() is CombatRole.DPS);
-
-    #region Slightly More Specific Roles
 
     public static IGameObject? AnyMeleeDPS =>
         CustomComboFunctions
@@ -206,6 +214,31 @@ internal static class SimpleTarget
             .FirstOrDefault(x =>
                 RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
                     JobRole.MagicalDPS);
+
+    #endregion
+
+    #region More Specific Roles
+
+    public static IGameObject? AnyPureHealer =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x =>
+                x?.ClassJob.RowId is (WHM.JobID or AST.JobID));
+
+    public static IGameObject? AnyShieldHealer =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x =>
+                x?.ClassJob.RowId is (SCH.JobID or SGE.JobID));
+
+    public static IGameObject? AnySelfishDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.ClassJob.RowId is
+                (SAM.JobID or BLM.JobID or MCH.JobID or VPR.JobID));
 
     #endregion
 
