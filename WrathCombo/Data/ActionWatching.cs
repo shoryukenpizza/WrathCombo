@@ -208,7 +208,8 @@ namespace WrathCombo.Data
             // Check if there is a retargeted action
             if (P.ActionRetargeting.TryGetTargetFor(actionId, out var target))
             {
-                targetObjectId = target.GameObjectId;
+                if (target is not null)
+                    targetObjectId = target.GameObjectId;
                 return;
             }
 
