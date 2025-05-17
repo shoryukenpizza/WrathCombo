@@ -452,10 +452,22 @@ namespace WrathCombo.Window.Functions
             }
         }
 
-        private static void DrawRetargetedAttribute(CustomComboPreset preset)
+        public static void DrawPossiblyRetargetedSymbol() => DrawRetargetedAttribute();
+
+        private static void DrawRetargetedAttribute(CustomComboPreset? preset = null)
         {
-            var possiblyRetargeted = Attributes[preset].PossiblyRetargeted != null;
-            var retargeted = Attributes[preset].RetargetedAttribute != null;
+            bool possiblyRetargeted;
+            var retargeted = false;
+            if (preset is null)
+                possiblyRetargeted = true;
+            else
+            {
+                var realPreset = preset.Value;
+                possiblyRetargeted =
+                    Attributes[realPreset].PossiblyRetargeted != null;
+                retargeted =
+                    Attributes[realPreset].RetargetedAttribute != null;
+            }
 
             if (!possiblyRetargeted && !retargeted) return;
 
@@ -480,20 +492,34 @@ namespace WrathCombo.Window.Functions
                 {
                     using (ImRaii.TextWrapPos(ImGui.GetFontSize() * 35.0f))
                     {
-                        if (possiblyRetargeted)
+                        if (possiblyRetargeted && preset is null)
+                            ImGui.TextUnformatted(
+                                "This Feature will involve retargeting actions if enabled.");
+                        if (possiblyRetargeted && preset is not null)
                             ImGui.TextUnformatted(
                                 "This Feature's actions may be retargeted.");
                         if (retargeted)
                             ImGui.TextUnformatted(
                                 "This Feature's actions are retargeted.");
 
-                        ImGui.TextUnformatted(
-                            "The actions from this Feature will automatically be\n" +
-                            "targeted onto what the developers feel is the best target\n" +
-                            "(following The Balance where applicable).");
-                        ImGui.TextUnformatted(
-                            "Using plugins like Redirect or Reaction with configurations\n" +
-                            "affecting this action will Conflict and may cause issues.");
+                        if (possiblyRetargeted && preset is null)
+                            ImGui.TextUnformatted(
+                                "The actions this Feature affects will automatically be\n" +
+                                "targeted onto the targets in the priority you have configured.");
+                        else
+                            ImGui.TextUnformatted(
+                                "The actions from this Feature will automatically be\n" +
+                                "targeted onto what the developers feel is the best target\n" +
+                                "(following The Balance where applicable).");
+
+                        if (possiblyRetargeted && preset is null)
+                            ImGui.TextUnformatted(
+                                "Using plugins like Redirect or Reaction with configurations\n" +
+                                "affecting the same actions will Conflict and may cause issues.");
+                        else
+                            ImGui.TextUnformatted(
+                                "Using plugins like Redirect or Reaction with configurations\n" +
+                                "affecting this action will Conflict and may cause issues.");
                     }
                 }
             }
