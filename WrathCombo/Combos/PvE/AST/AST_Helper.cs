@@ -107,11 +107,13 @@ internal partial class AST
             QuickTargetCards.SelectedRandomMember = null;
     }
 
+    private static bool TargetInCardRange(IGameObject target) => InActionRange(Balance, target);
+
     private static bool BetterTargetAvailable()
     {
         if (QuickTargetCards.SelectedRandomMember is null ||
             QuickTargetCards.SelectedRandomMember.IsDead ||
-            OutOfRange(Balance, QuickTargetCards.SelectedRandomMember))
+            !TargetInCardRange(QuickTargetCards.SelectedRandomMember))
             return true;
 
         IBattleChara? m = QuickTargetCards.SelectedRandomMember as IBattleChara;
@@ -130,7 +132,7 @@ internal partial class AST
                 continue; //Skip nulls/disconnected people
             if (member.IsDead)
                 continue;
-            if (OutOfRange(Balance, member))
+            if (!TargetInCardRange(member))
                 continue;
 
             if (HasStatusEffect(Buffs.BalanceBuff, member, true)) continue;
@@ -202,7 +204,7 @@ internal partial class AST
                     continue; //Skip nulls/disconnected people
                 if (member.IsDead)
                     continue;
-                if (OutOfRange(Balance, member))
+                if (!TargetInCardRange(member))
                     continue;
 
                 if (HasStatusEffect(Buffs.BalanceBuff, member, true)) continue;
@@ -226,7 +228,7 @@ internal partial class AST
                         continue; //Skip nulls/disconnected people
                     if (member.IsDead)
                         continue;
-                    if (OutOfRange(Balance, member))
+                    if (!TargetInCardRange(member))
                         continue;
 
                     if (HasStatusEffect(Buffs.BalanceBuff, member, true))
