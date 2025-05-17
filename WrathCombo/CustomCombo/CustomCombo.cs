@@ -34,20 +34,29 @@ namespace WrathCombo.CustomComboNS
         protected uint JobID { get; }
 
         /// <summary>
-        ///     This is a list of presets that are exceptions to the rule that if
-        ///     "an action is unchanged, don't modify the hotbar".<br />
+        ///     This is a list of presets and their actions that are exceptions to
+        ///     the rule that if "an action is unchanged, don't modify the hotbar".
+        ///     <br />
         ///     These presets are those that replace actions that are changed by FF,
         ///     but that we want to have complete control over.<br />
         /// </summary>
+        /// <value>
+        ///     <b>Key</b>: The preset that is an exception to the rule.<br />
+        ///     <b>Value</b>: The action ID that is allowed to be returned unchanged.<br />
+        /// </value>
         /// <remarks>
         ///     If not excepted, these presets would be treated as not having
         ///     returned anything, and as such wouldn't be allowed to touch the
         ///     hotbar, meaning that whatever behavior they were trying to do will
-        ///     not actually happen, and FF would change the action on us.
+        ///     not actually happen, and FF would change the action on us.<br />
+        ///     Without the action also being checked, the preset would block all
+        ///     other presets.
         /// </remarks>
-        private readonly List<CustomComboPreset> _presetsAllowedToReturnUnchanged = [
-            CustomComboPreset.DNC_DesirablePartner,
-        ];
+        private readonly Dictionary<CustomComboPreset, uint>
+            _presetsAllowedToReturnUnchanged = new()
+            {
+                { CustomComboPreset.DNC_DesirablePartner, DNC.ClosedPosition },
+            };
 
         /// <summary> Performs various checks then attempts to invoke the combo. </summary>
         /// <param name="actionID"> Starting action ID. </param>
@@ -79,9 +88,11 @@ namespace WrathCombo.CustomComboNS
             OptionalTarget = targetOverride;
             uint resultingActionID = Invoke(actionID);
 
+            var presetException = _presetsAllowedToReturnUnchanged
+                .TryGetValue(Preset, out var actionException);
+            var hasException = presetException && resultingActionID == actionException;
             if (resultingActionID == 0 ||
-                (actionID == resultingActionID &&
-                 !_presetsAllowedToReturnUnchanged.Contains(Preset)))
+                (actionID == resultingActionID && !hasException))
                 return false;
 
             if (!Svc.ClientState.IsPvP && ActionManager.Instance()->QueuedActionType == ActionType.Action && ActionManager.Instance()->QueuedActionId != actionID)
