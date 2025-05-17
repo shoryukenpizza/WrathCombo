@@ -225,13 +225,29 @@ internal partial class DNC
         CurrentDancePartner is not null &&
         FeatureDesiredDancePartner != CurrentDancePartner;
 
+    #region Resolver Delegates
+
     internal static TargetResolverDelegate DancePartnerResolver = () =>
-        Svc.Objects.FirstOrDefault(x =>
+    {
+        if (Player.Mounted || Player.Mounting)
+            return null;
+
+        P.ActionRetargeting.MyResolverMethodName = "DancePartnerResolver";
+        return Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == DesiredDancePartner);
+    };
 
     internal static TargetResolverDelegate FeatureDancePartnerResolver = () =>
-        Svc.Objects.FirstOrDefault(x =>
+    {
+        if (Player.Mounted || Player.Mounting)
+            return null;
+
+        P.ActionRetargeting.MyResolverMethodName = "FeatureDancePartnerResolver";
+        return Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == FeatureDesiredDancePartner);
+    };
+
+    #endregion
 
     private static bool TryGetDancePartner
         (out IGameObject? partner, bool? callingFromFeature = null)
