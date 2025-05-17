@@ -121,7 +121,7 @@ namespace WrathCombo.CustomComboNS.Functions
             ITargetManager tm = Svc.Targets;
 
             // Check optional mouseover party UI target first
-            if (checkMOPartyUI && PartyUITargeting.UiMouseOverTarget is IGameObject uiTarget)
+            if (checkMOPartyUI && SimpleTarget.UIMouseOverTarget is IGameObject uiTarget)
                 return uiTarget;
 
             // Check soft target
@@ -223,20 +223,13 @@ namespace WrathCombo.CustomComboNS.Functions
                 TargetType.Target => Svc.Targets.Target,
                 TargetType.SoftTarget => Svc.Targets.SoftTarget,
                 TargetType.FocusTarget => Svc.Targets.FocusTarget,
-                TargetType.UiMouseOverTarget => PartyUITargeting.UiMouseOverTarget,
+                TargetType.UiMouseOverTarget => SimpleTarget.UIMouseOverTarget,
                 TargetType.FieldTarget => Svc.Targets.MouseOverTarget,
                 TargetType.TargetsTarget when Svc.Targets.Target is { TargetObjectId: not 0xE0000000 } => Svc.Targets.Target.TargetObject,
                 TargetType.Self => Svc.ClientState.LocalPlayer,
-                TargetType.LastTarget => PartyUITargeting.GetIGameObjectFromPronounID(1006),
-                TargetType.LastEnemy => PartyUITargeting.GetIGameObjectFromPronounID(1084),
-                TargetType.LastAttacker => PartyUITargeting.GetIGameObjectFromPronounID(1008),
-                TargetType.P2 => PartyUITargeting.GetPartySlot(2),
-                TargetType.P3 => PartyUITargeting.GetPartySlot(3),
-                TargetType.P4 => PartyUITargeting.GetPartySlot(4),
-                TargetType.P5 => PartyUITargeting.GetPartySlot(5),
-                TargetType.P6 => PartyUITargeting.GetPartySlot(6),
-                TargetType.P7 => PartyUITargeting.GetPartySlot(7),
-                TargetType.P8 => PartyUITargeting.GetPartySlot(8),
+                TargetType.LastTarget => PronounService.GetIGameObjectFromPronounID(1006),
+                TargetType.LastEnemy => PronounService.GetIGameObjectFromPronounID(1084),
+                TargetType.LastAttacker => PronounService.GetIGameObjectFromPronounID(1008),
                 _ => null,
             };
         }

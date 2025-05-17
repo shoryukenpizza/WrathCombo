@@ -122,7 +122,7 @@ internal partial class AST
         List<IBattleChara> targets = new();
         for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
         {
-            if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
+            if (SimpleTarget.GetPartyMemberInSlotSlot(i) is not IBattleChara member)
                 continue;
             if (member.GameObjectId == QuickTargetCards.SelectedRandomMember.GameObjectId)
                 continue;
@@ -171,7 +171,7 @@ internal partial class AST
         {
             if (DrawnCard is not CardType.None)
             {
-                if (PartyUITargeting.GetPartySlot(2) is not null)
+                if (SimpleTarget.PartyMember2 is not null)
                 {
                     _ = SetTarget();
                     Svc.Log.Debug($"Set card to {SelectedRandomMember?.Name}");
@@ -196,7 +196,7 @@ internal partial class AST
             PartyTargets.Clear();
             for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
             {
-                if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
+                if (SimpleTarget.GetPartyMemberInSlotSlot(i) is not IBattleChara member)
                     continue;
                 if (member is null)
                     continue; //Skip nulls/disconnected people
@@ -220,7 +220,7 @@ internal partial class AST
             {
                 for (int i = 1; i <= 8; i++) //Checking all 8 available slots and skipping nulls & DCs
                 {
-                    if (PartyUITargeting.GetPartySlot(i) is not IBattleChara member)
+                    if (SimpleTarget.GetPartyMemberInSlotSlot(i) is not IBattleChara member)
                         continue;
                     if (member is null)
                         continue; //Skip nulls/disconnected people

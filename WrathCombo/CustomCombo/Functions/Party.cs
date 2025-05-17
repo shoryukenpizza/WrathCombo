@@ -34,7 +34,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
             for (int i = 1; i <= 8; i++)
             {
-                var member = PartyUITargeting.GetPartySlot(i);
+                var member = SimpleTarget.GetPartyMemberInSlotSlot(i);
                 if (member is IBattleChara chara && !existingIds.Contains(chara.GameObjectId))
                 {
                     WrathPartyMember wmember = new()
@@ -77,7 +77,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
             for (int i = 1; i <= 8; i++)
             {
-                if (PartyUITargeting.GetPartySlot(i) is IBattleChara member && !member.IsDead)
+                if (SimpleTarget.GetPartyMemberInSlotSlot(i) is IBattleChara member && !member.IsDead)
                 {
                     totalHP += GetTargetHPPercent(member);
                     count++;
@@ -94,7 +94,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
             for (int i = 1; i <= 8; i++)
             {
-                if (PartyUITargeting.GetPartySlot(i) is IBattleChara member && !member.IsDead)
+                if (SimpleTarget.GetPartyMemberInSlotSlot(i) is IBattleChara member && !member.IsDead)
                 {
                     if (HasStatusEffect(buff, member, true)) buffCount++;
                     partyCount++;

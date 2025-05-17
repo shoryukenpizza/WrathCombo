@@ -234,7 +234,7 @@ namespace WrathCombo.Data
                     break;
                 // UI Mouseover Override
                 case 2:
-                    var mouseTarget = PartyUITargeting.UiMouseOverTarget;
+                    var mouseTarget = SimpleTarget.UIMouseOverTarget;
                     if (mouseTarget != null)
                         targetObjectId = mouseTarget.GameObjectId;
                     break;
