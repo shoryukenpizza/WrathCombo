@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
@@ -35,6 +36,8 @@ namespace WrathCombo.Window.Functions
             public BlueInactiveAttribute? BlueInactive;
             public VariantAttribute? Variant;
             public VariantParentAttribute? VariantParent;
+            public PossiblyRetargetedAttribute? PossiblyRetargeted;
+            public RetargetedAttribute? RetargetedAttribute;
             public BozjaParentAttribute? BozjaParent;
             public EurekaParentAttribute? EurekaParent;
             public HoverInfoAttribute? HoverInfo;
@@ -51,6 +54,8 @@ namespace WrathCombo.Window.Functions
                 BlueInactive = preset.GetAttribute<BlueInactiveAttribute>();
                 Variant = preset.GetAttribute<VariantAttribute>();
                 VariantParent = preset.GetAttribute<VariantParentAttribute>();
+                PossiblyRetargeted = preset.GetAttribute<PossiblyRetargetedAttribute>();
+                RetargetedAttribute = preset.GetAttribute<RetargetedAttribute>();
                 BozjaParent = preset.GetAttribute<BozjaParentAttribute>();
                 EurekaParent = preset.GetAttribute<EurekaParentAttribute>();
                 HoverInfo = preset.GetAttribute<HoverInfoAttribute>();
@@ -129,6 +134,8 @@ namespace WrathCombo.Window.Functions
             }
 
             DrawReplaceAttribute(preset);
+
+            DrawRetargetedAttribute(preset);
 
             Vector2 length = new();
             using (var styleCol = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
@@ -441,6 +448,52 @@ namespace WrathCombo.Window.Functions
                         ImGui.SameLine();
                     }
                     ImGui.EndTooltip();
+                }
+            }
+        }
+
+        private static void DrawRetargetedAttribute(CustomComboPreset preset)
+        {
+            var possiblyRetargeted = Attributes[preset].PossiblyRetargeted != null;
+            var retargeted = Attributes[preset].RetargetedAttribute != null;
+
+            if (!possiblyRetargeted && !retargeted) return;
+
+            ImGui.SameLine();
+
+            // Color the icon for whether it is possibly or certainly retargeted
+            var color = retargeted
+                ? ImGuiColors.ParsedGreen
+                : ImGuiColors.DalamudYellow;
+
+            using var col = new ImRaii.Color();
+            col.Push(ImGuiCol.TextDisabled, color);
+
+            using (ImRaii.PushFont(UiBuilder.IconFont))
+            {
+                ImGui.TextDisabled(FontAwesomeIcon.Random.ToIconString());
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                using (ImRaii.Tooltip())
+                {
+                    using (ImRaii.TextWrapPos(ImGui.GetFontSize() * 35.0f))
+                    {
+                        if (possiblyRetargeted)
+                            ImGui.TextUnformatted(
+                                "This Feature's actions may be retargeted.");
+                        if (retargeted)
+                            ImGui.TextUnformatted(
+                                "This Feature's actions are retargeted.");
+
+                        ImGui.TextUnformatted(
+                            "The actions from this Feature will automatically be\n" +
+                            "targeted onto what the developers feel is the best target.");
+                        ImGui.TextUnformatted(
+                            "Using plugins like Redirect or Reaction with configurations\n" +
+                            "affecting this action will Conflict and may cause issues.");
+                    }
                 }
             }
         }
