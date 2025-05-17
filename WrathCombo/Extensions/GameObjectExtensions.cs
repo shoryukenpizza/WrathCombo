@@ -60,5 +60,15 @@ public static class GameObjectExtensions
     public static IGameObject? IfNeedsPositionals (this IGameObject? obj) =>
         obj != null && CustomComboFunctions.TargetNeedsPositionals(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not within range.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="range">The range to check against. Defaults to 25 yalms.</param>
+    public static IGameObject? IfWithinRange
+        (this IGameObject? obj, float range = 25) =>
+    obj != null && CustomComboFunctions.IsInRange(obj, range) ? obj : null;
+
     #endregion
 }
