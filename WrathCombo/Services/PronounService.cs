@@ -18,6 +18,9 @@ namespace WrathCombo.Services;
 
 public static unsafe class PronounService
 {
+
+    // They/Them, personally
+
     public static bool FullyReady => PronounsReady && MethodsReady;
     public static bool PronounsReady => PronounModule.Value != IntPtr.Zero;
     public static bool MethodsReady => GetGameObjectPointerFromPronounID != null;
