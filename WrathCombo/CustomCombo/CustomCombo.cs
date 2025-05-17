@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using System.Collections.Generic;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -32,13 +33,26 @@ namespace WrathCombo.CustomComboNS
         /// <summary> Gets the job ID associated with this combo. </summary>
         protected uint JobID { get; }
 
+        /// <summary>
+        ///     This is a list of presets that are exceptions to the rule that if
+        ///     "an action is unchanged, don't modify the hotbar".<br />
+        ///     These presets are those that replace actions that are changed by FF,
+        ///     but that we want to have complete control over.<br />
+        /// </summary>
+        /// <remarks>
+        ///     If not excepted, these presets would be treated as not having
+        ///     returned anything, and as such wouldn't be allowed to touch the
+        ///     hotbar, meaning that whatever behavior they were trying to do will
+        ///     not actually happen, and FF would change the action on us.
+        /// </remarks>
+        private readonly List<CustomComboPreset> _presetsAllowedToReturnUnchanged = [
+            CustomComboPreset.DNC_DesirablePartner,
+        ];
+
         /// <summary> Performs various checks then attempts to invoke the combo. </summary>
         /// <param name="actionID"> Starting action ID. </param>
         /// <param name="newActionID"> Replacement action ID. </param>
         /// <param name="targetOverride"> Optional target override. </param>
-        /// 
-        /// 
-        /// 
         /// <returns> True if the action has changed, otherwise false. </returns>
         public unsafe bool TryInvoke(uint actionID, out uint newActionID, IGameObject? targetOverride = null)
         {
@@ -64,14 +78,17 @@ namespace WrathCombo.CustomComboNS
 
             OptionalTarget = targetOverride;
             uint resultingActionID = Invoke(actionID);
-            //Dalamud.Logging.PluginLog.Debug(resultingActionID.ToString());
 
-            if (resultingActionID == 0 || actionID == resultingActionID)
+            if (resultingActionID == 0 ||
+                (actionID == resultingActionID &&
+                 !_presetsAllowedToReturnUnchanged.Contains(Preset)))
                 return false;
 
             if (!Svc.ClientState.IsPvP && ActionManager.Instance()->QueuedActionType == ActionType.Action && ActionManager.Instance()->QueuedActionId != actionID)
             {
-                if (resultingActionID != All.SavageBlade) //&& WrathOpener.CurrentOpener?.OpenerStep <= 1)  //TODO Remember why I put this particular bit in
+                // todo: tauren: remember why this condition was in the if below:
+                //      `&& WrathOpener.CurrentOpener?.OpenerStep <= 1`
+                if (resultingActionID != All.SavageBlade)
                     return false;
             }
             newActionID = resultingActionID;
