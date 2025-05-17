@@ -106,7 +106,7 @@ internal partial class DNC
         private static void DrawPartnerInfo()
         {
             ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
-                "This will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.");
+                "This will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness and Damage Down.");
         }
 
         internal static void Draw(CustomComboPreset preset)
@@ -225,7 +225,7 @@ internal partial class DNC
 
                     UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
                         "Prioritize your Focus Target",
-                        "If you have a focus target that is within range, alive, and has no rez sickness, it will be prioritized over The Balance's suggested Dance Partner.");
+                        "If you have a focus target that is within range, alive, and has no rez sickness or damage down, it will be prioritized over The Balance's suggested Dance Partner.");
 
                     break;
 
@@ -421,7 +421,7 @@ internal partial class DNC
 
                     UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
                         "Prioritize Focus Target",
-                        "If you have a focus target that is within range, alive, and has no rez sickness, it will be prioritized over The Balance's suggested Dance Partner.");
+                        "If you have a focus target that is within range, alive, and has no rez sickness or damage down, it will be prioritized over The Balance's suggested Dance Partner.");
 
                     break;
 
