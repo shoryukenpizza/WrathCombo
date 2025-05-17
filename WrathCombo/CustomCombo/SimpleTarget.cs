@@ -111,7 +111,8 @@ internal static class SimpleTarget
     public static IGameObject? AnyEnemy =>
         Svc.Objects
             .OfType<IBattleChara>()
-            .FirstOrDefault(x => x.IsHostile() && x.IsTargetable);
+            .FirstOrDefault(x => x.IsHostile() && x.IsTargetable &&
+                                 CustomComboFunctions.IsInRange(x));
 
     #region Previous Targets
 
