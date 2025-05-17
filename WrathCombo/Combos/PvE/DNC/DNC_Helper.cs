@@ -308,6 +308,8 @@ internal partial class DNC
 
         #region Status-checking shortcut methods
 
+        // These are here so I don't have to add a ton of methods to DNC
+
         bool DamageDownFree(IGameObject? target)
         {
             return !TargetHasDamageDown(target);
@@ -358,7 +360,8 @@ internal partial class DNC
             if (filter.Count == 0 &&
                 step < PartnerPriority.RestrictionSteps.Length - 1)
                 return TryGetBestPartner(out newBestPartner, step + 1);
-            if (filter.Count == 0 && step == 6)
+            if (filter.Count == 0 &&
+                step == PartnerPriority.RestrictionSteps.Length - 1)
                 return false;
 
             filter = filter
