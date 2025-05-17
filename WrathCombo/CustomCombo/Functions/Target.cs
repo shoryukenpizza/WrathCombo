@@ -193,10 +193,6 @@ namespace WrathCombo.CustomComboNS.Functions
             return false;
         }
 
-        /// <summary> Sets the player's target. </summary>
-        /// <param name="target"> Target must be a game object that the player can normally click and target. </param>
-        public static void SetTarget(IGameObject? target) => Svc.Targets.Target = target;
-
         /// <summary> Checks if target is in appropriate range for targeting </summary>
         /// <param name="target"> The target object to check </param>
         /// <param name="distance">Optional distance to check</param>
