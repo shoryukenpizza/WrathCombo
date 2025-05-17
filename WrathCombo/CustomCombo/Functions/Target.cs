@@ -216,51 +216,12 @@ namespace WrathCombo.CustomComboNS.Functions
             return Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && !dataRow.IsOmnidirectional;
         }
 
-        public static IGameObject? GetTarget(TargetType target)
-        {
-            return target switch
-            {
-                TargetType.Target => Svc.Targets.Target,
-                TargetType.SoftTarget => Svc.Targets.SoftTarget,
-                TargetType.FocusTarget => Svc.Targets.FocusTarget,
-                TargetType.UiMouseOverTarget => SimpleTarget.UIMouseOverTarget,
-                TargetType.FieldTarget => Svc.Targets.MouseOverTarget,
-                TargetType.TargetsTarget when Svc.Targets.Target is { TargetObjectId: not 0xE0000000 } => Svc.Targets.Target.TargetObject,
-                TargetType.Self => Svc.ClientState.LocalPlayer,
-                TargetType.LastTarget => PronounService.GetIGameObjectFromPronounID(1006),
-                TargetType.LastEnemy => PronounService.GetIGameObjectFromPronounID(1084),
-                TargetType.LastAttacker => PronounService.GetIGameObjectFromPronounID(1008),
-                _ => null,
-            };
-        }
-
-        public enum TargetType
-        {
-            Target,
-            SoftTarget,
-            FocusTarget,
-            UiMouseOverTarget,
-            FieldTarget,
-            TargetsTarget,
-            Self,
-            LastTarget,
-            LastEnemy,
-            LastAttacker,
-            P2,
-            P3,
-            P4,
-            P5,
-            P6,
-            P7,
-            P8
-        }
-
         public enum AttackAngle
         {
             Front,
             Flank,
             Rear,
-            Unknown
+            Unknown,
         }
 
         /// <summary> Gets the player's position relative to the target. </summary>

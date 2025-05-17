@@ -65,7 +65,11 @@ internal static class SimpleTarget
     public static IGameObject? FocusTarget =>
         Svc.Targets.FocusTarget;
 
-    // Formerly WrathCombo.Services.PartyUITargeting.UiMouseOverTarget
+    public static IGameObject? TargetsTarget =>
+        Svc.Targets.Target is { TargetObjectId: not 0xE0000000 }
+            ? Svc.Targets.Target.TargetObject
+            : null;
+
     public static IGameObject? UIMouseOverTarget
     {
         get
@@ -84,6 +88,19 @@ internal static class SimpleTarget
 
     public static IGameObject? Chocobo =>
         Svc.Buddies.CompanionBuddy?.GameObject;
+
+    #region Previous Targets
+
+    public static IGameObject? LastHardTarget =>
+        PronounService.GetIGameObjectFromPronounID(1006);
+
+    public static IGameObject? LastHostileHardTarget =>
+        PronounService.GetIGameObjectFromPronounID(1084);
+
+    public static IGameObject? MostRecentAttacker =>
+        PronounService.GetIGameObjectFromPronounID(1008);
+
+    #endregion
 
     #region Party Slots
 
