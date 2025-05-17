@@ -56,7 +56,7 @@ internal static class SimpleTarget
             MouseOver ?? HardTarget ?? Self;
 
         /// Temporary until the UI MouseOver checking is moved to be a Setting
-        public static bool AllyToHealUseMouseOver { get; set; } = false;
+        public static bool AllyToHealUseMouseOver { get; set; }
 
         /// <summary>
         ///     A very common stack to pick a heal target.
@@ -106,6 +106,11 @@ internal static class SimpleTarget
     public static IGameObject? Chocobo =>
         Svc.Buddies.CompanionBuddy?.GameObject;
 
+    public static IGameObject? AnyEnemy =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .FirstOrDefault(x => x.IsHostile() && x.IsTargetable);
+
     #region Previous Targets
 
     public static IGameObject? LastHardTarget =>
@@ -116,6 +121,16 @@ internal static class SimpleTarget
 
     public static IGameObject? MostRecentAttacker =>
         PronounService.GetIGameObjectFromPronounID(1008);
+
+    #endregion
+
+    #region Niche Targets
+
+    public static IGameObject? KardionTarget(float range) =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .FirstOrDefault(x =>
+                CustomComboFunctions.HasStatusEffect(SGE.Buffs.Kardion, x));
 
     #endregion
 
