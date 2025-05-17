@@ -7,6 +7,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
@@ -55,8 +56,9 @@ internal static class SimpleTarget
         public static IGameObject? OverridesSelf =>
             MouseOver ?? HardTarget ?? Self;
 
-        /// Temporary until the UI MouseOver checking is moved to be a Setting
-        public static bool AllyToHealUseMouseOver { get; set; }
+        /// A little mask for Plugin Configuration to make the string a bit shorter.
+        private static PluginConfiguration cfg =>
+            Service.Configuration;
 
         /// <summary>
         ///     A very common stack to pick a heal target.
@@ -75,9 +77,18 @@ internal static class SimpleTarget
         ///     - <see cref="WHM.Config.WHM_AoEHeals_MedicaMO"/>
         /// </remarks>
         public static IGameObject? AllyToHeal =>
-            (AllyToHealUseMouseOver ? MouseOver : null) ??
-            SoftTarget.IfFriendly() ?? HardTarget.IfFriendly() ??
-            LowestHPPAlly.IfWithinRange() ?? Self;
+            (cfg.UseMouseoverOverridesInDefaultHealStack
+                ? MouseOver.IfFriendly()
+                : null) ??
+            SoftTarget.IfFriendly() ??
+            HardTarget.IfFriendly() ??
+            (cfg.UseFocusTargetOverrideInDefaultHealStack
+                ? FocusTarget.IfFriendly()
+                : null) ??
+            (cfg.UseLowestHPOverrideInDefaultHealStack
+                ? LowestHPPAlly.IfWithinRange()
+                : null) ??
+            Self;
         // LowestHPPAlly has the only range-check as the others are "intentional"
     }
 
@@ -216,7 +227,7 @@ internal static class SimpleTarget
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x => x?.GetRole() is
-                (CombatRole.Tank or CombatRole.Healer));
+                CombatRole.Tank or CombatRole.Healer);
 
     public static IGameObject? AnyDPS =>
         CustomComboFunctions
@@ -275,21 +286,21 @@ internal static class SimpleTarget
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x =>
-                x?.ClassJob.RowId is (WHM.JobID or AST.JobID));
+                x?.ClassJob.RowId is WHM.JobID or AST.JobID);
 
     public static IGameObject? AnyShieldHealer =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x =>
-                x?.ClassJob.RowId is (SCH.JobID or SGE.JobID));
+                x?.ClassJob.RowId is SCH.JobID or SGE.JobID);
 
     public static IGameObject? AnySelfishDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x => x?.ClassJob.RowId is
-                (SAM.JobID or BLM.JobID or MCH.JobID or VPR.JobID));
+                SAM.JobID or BLM.JobID or MCH.JobID or VPR.JobID);
 
     #endregion
 
