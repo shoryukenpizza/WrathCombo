@@ -120,6 +120,12 @@ internal static class SimpleTarget
 
     #region Party Slots
 
+    public static IGameObject? AnyDeadPartyMember =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.IsDead == true);
+
     public static IGameObject? PartyMember1 => GetPartyMemberInSlotSlot(1);
     public static IGameObject? PartyMember2 => GetPartyMemberInSlotSlot(2);
     public static IGameObject? PartyMember3 => GetPartyMemberInSlotSlot(3);
