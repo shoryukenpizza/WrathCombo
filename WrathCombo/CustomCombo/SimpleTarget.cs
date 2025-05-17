@@ -1,8 +1,12 @@
 #region
 
+using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using WrathCombo.Attributes;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 
@@ -149,9 +153,55 @@ internal static class SimpleTarget
 
     #region Role Targets
 
-    public static IGameObject? Tank() => null;
-    public static IGameObject? Healer() => null;
-    public static IGameObject? DPS() => null;
+    public static IGameObject? AnyTank =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.Tank);
+
+    public static IGameObject? AnyHealer =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
+
+    public static IGameObject? AnyDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.DPS);
+
+    #region Slightly More Specific Roles
+
+    public static IGameObject? AnyMeleeDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.ClassJob.RowId.Role() is 2);
+
+    public static IGameObject? AnyRangedDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x => x?.ClassJob.RowId.Role() is 3);
+
+    public static IGameObject? AnyPhysRangeDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x =>
+                RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
+                    JobRole.RangedDPS);
+
+    public static IGameObject? AnyMagicalDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .FirstOrDefault(x =>
+                RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
+                    JobRole.MagicalDPS);
+
+    #endregion
 
     #endregion
 
