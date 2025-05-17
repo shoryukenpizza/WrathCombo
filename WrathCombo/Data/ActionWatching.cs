@@ -229,7 +229,7 @@ namespace WrathCombo.Data
                 // Case 0 is Default (SelectedRandomMember)
 
                 // Hard Target
-                case 1 when Svc.Targets.Target is not null && HasFriendlyTarget():
+                case 1 when Svc.Targets.Target is not null && TargetIsFriendly():
                     targetObjectId = Svc.Targets.Target.GameObjectId;
                     break;
                 // UI Mouseover Override

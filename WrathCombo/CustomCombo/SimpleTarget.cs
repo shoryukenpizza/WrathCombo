@@ -27,26 +27,38 @@ internal static class SimpleTarget
     /// </summary>
     internal static class Stack
     {
-        /// A stack of common "override" targets, that users regularly override
-        /// automatic target selection with.
-        /// <remarks>
-        ///     (should also include <see cref="SimpleTarget.HardTarget" />, but
-        ///     that override shouldn't be at the top of the stack with the other
-        ///     overrides)
-        /// </remarks>
-        public static IGameObject? Overrides =>
+        /// A stack of Mouse Over targets, primarily used for Overrides.
+        public static IGameObject? MouseOver =>
             UIMouseOverTarget ?? ModelMouseOverTarget;
 
         /// A very common stack that targets an ally or self, if there are no manual
         /// overrides targeted.
+        /// <remarks>
+        ///     "Overrides" include MouseOver at the top of the stack and the
+        ///     Hard Target near the bottom.
+        /// </remarks>
         /// <!-- todo: maybe including focus target should be an option? -->
         public static IGameObject? OverridesAllies =>
-            Overrides ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
+            MouseOver ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
 
         /// A very common stack that targets the player, if there are no manual
         /// overrides targeted.
+        /// <remarks>
+        ///     "Overrides" include MouseOver at the top of the stack and the
+        ///     Hard Target near the bottom.
+        /// </remarks>
         public static IGameObject? OverridesSelf =>
-            Overrides ?? HardTarget ?? Self;
+            MouseOver ?? HardTarget ?? Self;
+
+        /// Temporary until the UI MouseOver checking is moved to be a Setting
+        public static bool AllyToHealUseMouseOver { get; set; } = false;
+
+        /// <summary>
+        ///     A very common stack to pick a heal target.
+        /// </summary>
+        public static IGameObject? AllyToHeal =>
+            (AllyToHealUseMouseOver ? MouseOver : null) ??
+            SoftTarget.IfFriendly() ?? HardTarget.IfFriendly() ?? Self;
     }
 
     #endregion
