@@ -489,7 +489,8 @@ namespace WrathCombo.Window.Functions
 
                         ImGui.TextUnformatted(
                             "The actions from this Feature will automatically be\n" +
-                            "targeted onto what the developers feel is the best target.");
+                            "targeted onto what the developers feel is the best target\n" +
+                            "(following The Balance where applicable).");
                         ImGui.TextUnformatted(
                             "Using plugins like Redirect or Reaction with configurations\n" +
                             "affecting this action will Conflict and may cause issues.");
