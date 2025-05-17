@@ -1080,7 +1080,7 @@ public enum CustomComboPreset
     DNC_ST_Opener_BlockEarly = 4031,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
-    [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and you do not have a dance partner.", DNC.JobID)]
+    [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and you do not have a dance partner.\nWill be automatically targeted onto the Best Partner if the below option is enabled.", DNC.JobID)]
     DNC_ST_Adv_Partner = 4012,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
