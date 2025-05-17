@@ -1361,11 +1361,12 @@ internal partial class DNC : PhysicalRanged
             var hasPartner = HasStatusEffect(Buffs.ClosedPosition);
 
             if (!hasPartner || CurrentPartnerNonOptimal)
-                return ClosedPosition.Retarget(FeatureDancePartnerResolver);
+                return ClosedPosition.Retarget([ClosedPosition, Ending],
+                    FeatureDancePartnerResolver, dontCull: true);
 
             return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
                 ? All.SavageBlade
-                : actionID;
+                : ClosedPosition;
         }
     }
 

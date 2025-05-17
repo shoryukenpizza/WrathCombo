@@ -206,7 +206,7 @@ namespace WrathCombo.Data
         private static void CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
         {
             // Check if there is a retargeted action
-            if (ActionRetargeting.TryGetTargetFor(actionId, out var target))
+            if (P.ActionRetargeting.TryGetTargetFor(actionId, out var target))
             {
                 targetObjectId = target.GameObjectId;
                 return;

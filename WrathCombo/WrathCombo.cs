@@ -49,6 +49,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     internal Provider IPC;
     internal Search IPCSearch = null!;
     internal UIHelper UIHelper = null!;
+    internal ActionRetargeting ActionRetargeting = new();
 
     private readonly TextPayload starterMotd = new("[Wrath Message of the Day] ");
     private static uint? jobID;
@@ -105,7 +106,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 return false;
 
             AST.QuickTargetCards.SelectedRandomMember = null;
-            ActionRetargeting.ClearCachedRetargets();
+            P.ActionRetargeting.ClearCachedRetargets();
             if (onJobChange)
                 PvEFeatures.OpenToCurrentJob(true);
             if (onJobChange || firstRun)
@@ -195,6 +196,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         }
         CustomComboFunctions.TimerSetup();
 
+        // Starts Retarget list cleaning process after a delay
         Svc.Framework.RunOnTick(ActionRetargeting.ClearOldRetargets,
             TimeSpan.FromSeconds(60));
 
@@ -381,6 +383,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     /// <inheritdoc/>
     public void Dispose()
     {
+        ActionRetargeting.Dispose();
         ConfigWindow.Dispose();
         // Try to force a config save if there are some pending
         if (PluginConfiguration.SaveQueue.Count > 0)

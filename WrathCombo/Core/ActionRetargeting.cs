@@ -20,37 +20,42 @@ using TS = System.TimeSpan;
 
 namespace WrathCombo.Core;
 
-public static class ActionRetargeting
+/// <summary>
+///     Action Retargeting capabilities, to remove any dependence on Redirect or
+///     Reaction.<br /><br />
+///     See
+///     <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)">
+///         Retarget(uint,IGameObject) for simple Feature Retargeting.
+///     </see>
+///     <br />
+///     See
+///     <see cref="UIntExtensions.Retarget(uint,uint,TargetResolverDelegate,bool)">
+///         Retarget(uint,uint,TargetResolverDelegate) for more advanced
+///         Retargeting in a full combo.
+///     </see>
+///     <br />
+///     See <see cref="TargetResolverDelegate" /> for an example on setting up more
+///     advanced Retargeting.
+/// </summary>
+public class ActionRetargeting : IDisposable
 {
-    /// <summary>
-    ///     List of active Actions that have a desired target, and the delegate to
-    ///     resolve that target.
-    /// </summary>
-    /// <remarks>
-    ///     <b>
-    ///         <c>key</c>
-    ///     </b>
-    ///     — The ActionID that will be re-targeted.<br />
-    ///     — A <see cref="uint" /> that is the replaced action for the combo this
-    ///     retargeting was ran in.
-    ///     <br /><br />
-    ///     <b>
-    ///         <c>val</c>
-    ///     </b>
-    ///     — A <see cref="TargetResolverDelegate" /> that will
-    ///     resolve the target for the ActionID.
-    /// </remarks>
-    /// <seealso cref="Register" />
-    private static readonly Dictionary<(uint action, uint replacedAction),
-            TargetResolverDelegate>
-        _targetResolvers =
-            []; // todo: change again to just have a key of the replaced action
+    /// List of Retargets for actions, keyed with the action and replaced action(s).
+    private readonly Dictionary<uint, Retargeting>
+        _retargets = [];
 
     /// <summary>
-    ///     Register an action as one you want re-targeted.
+    ///     The Name of your
+    ///     <see cref="TargetResolverDelegate">Custom Target Resolver</see>.<br />
+    ///     If you are using a custom resolver, it should set this variable with its
+    ///     name, to help debug logs.
+    /// </summary>
+    public string? MyResolverMethodName { get; set; }
+
+    /// <summary>
+    ///     Register an action and its replaced actions as one you want Retargeted.
     /// </summary>
     /// <param name="action">The Action to retarget.</param>
-    /// <param name="replacedActionID">The Action the combo is replacing</param>
+    /// <param name="replacedActions">The Actions the combo is replacing</param>
     /// <param name="resolver">
     ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br />
     ///     Examples:
@@ -60,255 +65,380 @@ public static class ActionRetargeting
     ///     a <see cref="TargetResolverDelegate">custom delegate</see> (like:
     ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.CardsResolver</see>)
     /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     <see cref="Retargeting" /> params for further explanation.
+    /// </param>
     /// <returns>
     ///     The <paramref name="action" /> that was registered.<br />
     ///     This only really returns to make
-    ///     <see cref="Extensions.UIntExtensions.Retarget(uint,TargetResolverDelegate)">(uint).Retarget()</see>
+    ///     <see cref="UIntExtensions.Retarget(uint,TargetResolverDelegate,bool)">
+    ///         (uint).Retarget()
+    ///     </see>
     ///     simpler.
     /// </returns>
     /// <remarks>
     ///     Should only be called by
-    ///     <see cref="Extensions.UIntExtensions.Retarget(uint,TargetResolverDelegate)">(uint).Retarget()</see>
+    ///     <see cref="UIntExtensions.Retarget(uint,TargetResolverDelegate,bool)">
+    ///         (uint).Retarget()
+    ///     </see>
     ///     .
     /// </remarks>
-    internal static uint Register
-    (uint action, TargetResolverDelegate resolver,
-        uint? replacedActionID = null) // todo: accept any number of replaced actions
+    internal uint Register
+    (uint action,
+        uint[] replacedActions,
+        TargetResolverDelegate resolver,
+        bool dontCull = false)
     {
-        // Handle non-nullable actionID
-        var replaced = replacedActionID ?? action;
+        // Check the complexity of this Retarget, for overwriting purposes
+        var actionInReplaced = replacedActions.Contains(action);
 
-        // Limit spam from the same actionID
-        if (!EZ.Throttle($"retargetingFor{action}{replaced}", TS.FromSeconds(1)))
+        // Make sure the action is not in replaced actions,
+        // and there are no duplicates
+        replacedActions = replacedActions.Where(a => a != action)
+            .Distinct().ToArray();
+        // Build the Retarget object
+        var retarget = new Retargeting(action, replacedActions, resolver,
+            actionInReplaced, dontCull);
+
+        // Limit spam from the same actionID, mostly for debugging
+        if (!EZ.Throttle($"retargetFor{retarget.ID}", TS.FromSeconds(1)))
             return action;
 
-        // Cleaning up the old target resolver
-        if (_targetResolvers.TryGetValue((action, replaced), out var old))
+        #region Replace existing Retargets
+
+        var partialOverwrite = false;
+        string[] overwriting = [];
+        Retargeting? oldRetarget = null;
+        foreach (var replacedAction in replacedActions.Concat([action]))
         {
-            // Keep the old resolver if it's <10 seconds old
-            if (old.Method.Name == resolver.Method.Name &&
-                !EZ.Throttle($"retargetingOver{action}{replaced}", TS
-                    .FromSeconds(10)))
+            if (!_retargets.TryGetValue(replacedAction, out oldRetarget))
+                continue;
+
+            // Keep the old Retarget if it's the same resolver
+            if (oldRetarget.ResolverName == retarget.ResolverName)
                 return action;
-            // Unregister the old resolver (just when different)
-            Unregister(action, replaced);
-            PluginLog.Verbose(
-                $"[ActionRetargeting] overwriting retargeting for " +
-                $"'{action.ActionName()}'");
+
+            // Flag as a partial overwrite if `actionInReplaced` has different values
+            if (replacedActions != oldRetarget.ReplacedActions)
+                partialOverwrite = true;
+
+            overwriting = [oldRetarget.ResolverName, retarget.ResolverName];
         }
 
-        // Save the resolver
-        PluginLog.Verbose("[ActionRetargeting] registering " +
-                          $"'{action.ActionName()}' for retargeting " +
-                          $"with {resolver.GetMethodName()}");
-        _targetResolvers.Add((action, replaced), resolver);
-        // todo: add for every replaced action given
+        // Remove the old Retarget
+        if (overwriting.Length != 0)
+        {
+            RemoveRetarget(oldRetarget.ID);
 
+            // Elevate to a debug message if the overwriting method is not equivalent
+            var logLevel = overwriting[0] == overwriting[1] ? 0 : 1;
+#if DEBUG
+            // Elevate to a warning if not equivalent and on a debug build
+            logLevel = logLevel == 1 ? 2 : logLevel;
+#endif
+            var overwritingText = $"{overwriting[0]} -> {overwriting[1]}";
+            if (!partialOverwrite)
+                log("overwriting Retargeting for", logLevel: logLevel,
+                    showAction: true,
+                    retarget: retarget,
+                    messageAfterAction: overwritingText);
+        }
+
+        #endregion
+
+        // Save the Retarget
+        var throttleTimespan = TS.FromSeconds(partialOverwrite ? 20 : 1);
+        if (EZ.Throttle($"retargetFor{retarget.Action}", throttleTimespan))
+            log("registering", showAction: true,
+                messageAfterAction: "for Retargeting",
+                showResolver: true, retarget: retarget);
+        AddRetarget(retarget);
         return action;
     }
-
-    /// <summary>
-    ///     Unregister an action from being re-targeted.
-    /// </summary>
-    /// <param name="actionID">
-    ///     The Action to remove from the
-    ///     <see cref="_targetResolvers">list of Re-Targeted Actions</see>.
-    /// </param>
-    /// <param name="replacedActionID">The replaced Action key.</param>
-    private static void Unregister(uint actionID, uint replacedActionID) =>
-        _targetResolvers.Remove((actionID, replacedActionID));
-    // todo: only accept an action id, and remove all entries where that is the retargeted action
 
     /// <summary>
     ///     Resolve the target for an action via the provided
     ///     <see cref="TargetResolverDelegate" />.
     /// </summary>
-    /// <param name="action">The Action to re-target.</param>
-    /// <!-- todo: not strictly accurate - it is the replaced action -->
+    /// <param name="action">The Action or Replaced Action to Retarget.</param>
     /// <param name="target">
     ///     The output  <see cref="IGameObject">Game Object</see> of the target, if
-    ///     the action was found to be re-targeted.
+    ///     the action was found to be Retargeted.
     /// </param>
     /// <returns>
-    ///     Whether the action is registered for re-targeting.
+    ///     Whether the action is registered for Retargeting.
     /// </returns>
-    public static bool TryGetTargetFor(uint action, out IGameObject? target)
+    public bool TryGetTargetFor(uint action, out IGameObject? target)
     {
         target = null;
 
-        // Find the target resolver
-        uint replacedAction = 0;
-        if (!_targetResolvers.TryGetValue((action, action), out var targetResolver))
-        {
-            // Do another search for the replaced action
-            var extraSearch = _targetResolvers
-                .Where(kv => kv.Key.replacedAction == action)
-                .Select(kv => (Resolver: kv.Value,
-                    ReplacedAction: kv.Key.replacedAction))
-                .FirstOrDefault();
-            if (extraSearch.Resolver is null)
-                return false;
-            replacedAction = extraSearch.ReplacedAction;
-            targetResolver = extraSearch.Resolver;
-        }
+        // Find the Retarget object
+        if (!_retargets.TryGetValue(action, out var retarget))
+            return false;
 
-        replacedAction = replacedAction == 0 ? action : replacedAction;
-
-        PluginLog.Debug("[ActionRetargeting] re-targeting " +
-                        $"'{action.ActionName()}' " +
-                        $"with {targetResolver.GetMethodName()}");
+        log("Retargeting", showAction: true,
+            showResolver: true, retarget: retarget);
 
         // Run the target resolver
-        Unregister(action, replacedAction);
+        RemoveRetarget(retarget.ID);
         try
         {
-            target = targetResolver.Invoke();
+            target = retarget.Resolver.Invoke();
         }
         catch (Exception ex)
         {
-            PluginLog.Error("[ActionRetargeting] error while resolving target for " +
-                            $"'{action.ActionName()}' " +
-                            $"with {targetResolver.GetMethodName()}:\n{ex}");
+            log("error while resolving target for", logLevel: 3, showAction: true,
+                showResolver: true, retarget: retarget,
+                extraText: $":\n{ex}");
             return false;
         }
 
         // Return the results
-        PluginLog.Verbose("[ActionRetargeting] re-targeted " +
-                          $"'{action.ActionName()}' to " +
-                          $"'{target?.Name ?? "null"}' " +
-                          $"(with {targetResolver.GetMethodName()})");
+        log("Retargeted", logLevel: 1, showAction: true,
+            messageAfterAction: $"to '{target?.Name ?? "null"}'",
+            showResolver: true, retarget: retarget);
         return target != null;
+    }
+
+    /// <summary>
+    ///     A Retarget object, used to accurately store everything about a want to
+    ///     Retarget an action.
+    /// </summary>
+    /// <param name="action">The action wanting to be Retargeted.</param>
+    /// <param name="replacedActions">
+    ///     The combo's replaced actions; what is actually being pressed on the hotbar
+    ///     for the combo where the Retargeted action appears.
+    /// </param>
+    /// <param name="resolver">
+    ///     The <see cref="TargetResolverDelegate" /> that resolves the target for the
+    ///     action.<br />
+    ///     Can be a <see cref="SimpleTarget" />, but it gets wrapped in a delegate
+    ///     in <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)" />, or its
+    ///     two overloads.
+    /// </param>
+    /// <param name="actionInReplaced">
+    ///     Whether the action was listed in the Replaced Actions originally.<br />
+    ///     Only used to flag partial overwrites, to save a little bit of log spam.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this Retarget should be exempt from periodic culls.<br />
+    ///     Should only be set (to <see langword="true" />) for Features; combo
+    ///     Retargets should always be marked for culling.
+    /// </param>
+    private class Retargeting(
+        uint action,
+        uint[] replacedActions,
+        TargetResolverDelegate resolver,
+        bool actionInReplaced,
+        bool dontCull = false)
+    {
+        /// A unique identifier for the Retarget, to help with overwrites and removal.
+        public int ID { get; } = HashCode.Combine(action, replacedActions);
+
+        /// The action we actually want to Retarget.
+        public uint Action { get; } = action;
+
+        /// The actions that could be what is actually pressed when we want to Retarget the action.
+        public uint[] ReplacedActions { get; } = replacedActions;
+
+        /// A simple flag for whether the action is in the Replaced Actions.<br />
+        /// Only used to help with log spam.
+        public bool ActionInReplaced { get; } = actionInReplaced;
+
+        /// The target resolver that will decide the new target for the action.
+        public TargetResolverDelegate Resolver { get; } = resolver;
+
+        /// The name of the resolver method, to help with debugging.
+        public string ResolverName { get; } = GetMethodName(resolver);
+
+        /// Whether this Retarget should be removed by periodic culls.
+        /// <see cref="ClearOldRetargets" />
+        public bool DontCull { get; } = dontCull;
+
+        /// When this was created, to help with age-outs.
+        public DateTime Created { get; } = DateTime.Now;
+
+        /// <summary>
+        ///     Gets the name for the resolver.
+        /// </summary>
+        /// <param name="resolver">The resolver we want the name of.</param>
+        /// <returns>
+        ///     The name of the resolver, whether determined from the class (for
+        ///     <see cref="SimpleTarget">Simple Targets</see>) or the given name from the
+        ///     resolver itself.
+        /// </returns>
+        private static string GetMethodName(TargetResolverDelegate resolver)
+        {
+            try
+            {
+                resolver.Invoke();
+            }
+            catch (Exception ex)
+            {
+                log("error while resolving name for method",
+                    logLevel: 3,
+                    extraText: $":\n{ex}");
+                return "<ErrorResolvingNameOfCustomResolver>";
+            }
+
+            var resolverName = resolver.Method.Name;
+            var resolverClass = resolver.Method.DeclaringType?.Name ?? "";
+
+            // Standardize the names, and if a custom resolver is used,
+            // try to provide the custom name if one was provided
+            resolverName = resolverClass switch
+            {
+                "SimpleTarget" => "SimpleTarget." + resolverName,
+                "Stack" => "SimpleTarget.Stack." + resolverName,
+                "<>c" => P.ActionRetargeting.MyResolverMethodName ??
+                         "<UnnamedCustomResolver>",
+                // todo: fix for drk
+                _ => resolverName,
+            };
+            P.ActionRetargeting.MyResolverMethodName = null;
+
+            return $"`{resolverName}`";
+        }
     }
 
     #region Utilities
 
-    /// Clears old re-targets from the
-    /// <see cref="_targetResolvers">list</see>
-    /// .
-    internal static Action ClearOldRetargets = () =>
+    /// <summary>
+    ///     Adds a new Retarget to both lists of Retargets.
+    /// </summary>
+    /// <param name="retarget">The Retarget to add.</param>
+    private void AddRetarget(Retargeting retarget)
     {
-        var oldRetargets = _targetResolvers.Keys
-            .Where(key =>
-                !EZ.Throttle($"retargetingFor{key}", TS.FromSeconds(30)));
+        _retargets[retarget.Action] = retarget;
 
-        foreach (var key in oldRetargets)
+        foreach (var replacedAction in retarget.ReplacedActions)
+            _retargets[replacedAction] = retarget;
+    }
+
+    /// <summary>
+    ///     Removes all Retargets for an action.
+    /// </summary>
+    /// <param name="retargetID">The ID of the Retarget object to remove.</param>
+    private void RemoveRetarget(int retargetID)
+    {
+        var retarget = _retargets.Values
+            .FirstOrDefault(x => x.ID == retargetID);
+        if (retarget == null)
+            return;
+
+        var actionsToRemove = retarget.ReplacedActions.Concat([retarget.Action]);
+        foreach (var replacedAction in actionsToRemove)
+            _retargets.Remove(replacedAction);
+    }
+
+    /// Simple Flag to stop clearing the cache when the plugin is disposed.
+    private bool CancelCacheClearing;
+
+    /// Clears Retargets older than 20 seconds every 11 seconds.
+    /// <seealso cref="_retargets" />
+    internal Action ClearOldRetargets = () =>
+    {
+        if (P.ActionRetargeting.CancelCacheClearing)
+            return;
+
+        // Find old Retargets that are allowed to be culled
+        var oldRetargets = P.ActionRetargeting._retargets.Values
+            .Where(x => !x.DontCull &&
+                        (DateTime.Now - x.Created) > TS.FromSeconds(20))
+            .ToList();
+
+        // Cull each unique Retarget
+        foreach (var old in oldRetargets)
         {
-            Unregister(key.action, key.replacedAction);
-            PluginLog.Verbose("[ActionRetargeting] cleared old re-target for " +
-                              $"'{key.action.ActionName()}'");
+            P.ActionRetargeting.RemoveRetarget(old.ID);
+            // Make sure not to spam if the same retarget is culled more than once
+            if (!EZ.Throttle($"retargetClr{old.ID}", TS.FromSeconds(3)))
+                log("cleared old Retarget for", showAction: true, retarget: old);
         }
 
-        Svc.Framework.RunOnTick(ClearOldRetargets!, TS.FromSeconds(25));
+        Svc.Framework.RunOnTick(P.ActionRetargeting.ClearOldRetargets,
+            TS.FromSeconds(11));
     };
 
-    /// Clears
-    /// <see cref="_targetResolvers">cached re-targets</see>
-    /// .
-    internal static void ClearCachedRetargets()
+    /// Clears all cached Retargets.
+    internal void ClearCachedRetargets()
     {
-        _targetResolvers.Clear();
-        PluginLog.Debug("[ActionRetargeting] cleared cached re-targets");
+        _retargets.Clear();
+        log("cleared cached Retargets", logLevel: 1);
     }
 
-    /// Formats the method name of target resolvers for logging.
-    private static string GetMethodName(this TargetResolverDelegate resolver)
+    public void Dispose()
     {
-        var resolverName = resolver.Method.Name;
-        var resolverClass = resolver.Method.DeclaringType?.Name ?? "";
+        _retargets.Clear();
+        CancelCacheClearing = true;
+    }
 
-        resolverName = resolverClass switch
+    private static void log(string message,
+        string messageAfterAction = "",
+        int logLevel = 0,
+        bool showAction = false,
+        bool showResolver = false,
+        Retargeting? retarget = null,
+        string extraText = "")
+    {
+        message = $"[ActionRetargeting] {message}";
+        if (showAction)
+            message += $" '{retarget?.Action.ActionName()}'";
+        if (messageAfterAction != "")
+            message += $" {messageAfterAction}";
+        if (showResolver)
+            message += $" (with {retarget?.ResolverName})";
+        if (extraText != "")
+            message += $"{extraText}";
+
+        sendLog(message, logLevel);
+
+        return;
+
+        void sendLog(string msg, int ll)
         {
-            "SimpleTargets" => "SimpleTargets." + resolverName,
-            "Stacks" => "SimpleTargets.Stacks." + resolverName,
-            "<>c" => "<CustomResolver>",
-            _ => resolverName,
-        };
-
-        return $"`{resolverName}`";
+            switch (ll)
+            {
+                case 0:
+                    PluginLog.Verbose(msg);
+                    break;
+                case 1:
+                    PluginLog.Debug(msg);
+                    break;
+                case 2:
+                    PluginLog.Warning(msg);
+                    break;
+                default:
+                    PluginLog.Error(msg);
+                    break;
+            }
+        }
     }
-
-    #endregion
-
-    #region UInt Extensions
-
-    /// <summary>
-    ///     Retargets the action to the target specified.<br />
-    ///     Only works if the <paramref name="action" /> is the Replaced Action
-    ///     for the combo (i.e. Features, not generally main Combos).
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="target">
-    ///     The target to retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    internal static uint Retarget(this uint action, IGameObject? target) =>
-        Register(action, () => target);
-
-    /// <summary>
-    ///     Retargets the action to the target specified.<br />
-    ///     Only works if the <paramref name="action" /> is the Replaced Action
-    ///     for the combo (i.e. Features, not generally main Combos).
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="target">
-    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
-    ///     decides the target to retarget the action onto.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    internal static uint Retarget(this uint action, TargetResolverDelegate target) =>
-        Register(action, target);
-
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The target to retarget the action onto.<br />
-    ///     Should be a <see cref="SimpleTarget" /> property.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
-    /// </remarks>
-    internal static uint Retarget
-        (this uint action, uint replaced, IGameObject? target) =>
-        Register(action, () => target, replaced);
-
-    /// <summary>
-    ///     Retargets the action to the target specified.
-    /// </summary>
-    /// <param name="action">The action ID to retarget.</param>
-    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
-    /// <param name="target">
-    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
-    ///     decides the target to retarget the action onto.
-    /// </param>
-    /// <returns>The <paramref name="action" />.</returns>
-    /// <remarks>
-    ///     Used when the <paramref name="action" /> is not the same as the
-    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
-    /// </remarks>
-    internal static uint Retarget
-        (this uint action, uint replaced, TargetResolverDelegate target) =>
-        Register(action, target, replaced);
 
     #endregion
 }
 
 /// <summary>
-///     Delegate function to resolve a target for an action.
+///     Delegate function to resolve a target for an action.<br />
+///     Should set <see cref="ActionRetargeting.MyResolverMethodName" /> to the
+///     name of the method that is being used to resolve the target.
 /// </summary>
 /// <returns>
 ///     The <see cref="IGameObject">Game Object</see> of the target.
 /// </returns>
+/// <remarks>
+///     This resolver is run at initialization and when the action is used,
+///     it should not try to do anything except return the target.<br />
+///     As in, it shouldn't modify the state of your combo.
+/// </remarks>
 /// <example>
 ///     For inline delegate-error checking purposes it is suggested you write your
 ///     resolvers as static field lambdas in your Job's class or JobHelper class.
 ///     <code>
 ///     public static TargetResolverDelegate ExampleTargetResolver = () => {
+///         P.ActionRetargeting.MyResolverMethodName =
+///             "ExampleTargetResolver";
 ///         if (Config.HelpfulGroundTargetAbility_TargetOther)
 ///             return SimpleTargets.FocusTarget;
 ///     };
@@ -318,3 +448,161 @@ public static class ActionRetargeting
 ///     AST.CardsResolver
 /// </seealso>
 public delegate IGameObject? TargetResolverDelegate();
+
+internal static class UIntExtensions
+{
+    // One for "no replaced action specified" (simple features),
+    // "one replaced action specified" (simple combos),
+    // and "multiple replaced actions specified" (complex combos, like healers),
+    // each accepting a direct target or a target resolver.
+
+    /// <summary>
+    ///     Retargets the action to the target specified.<br />
+    ///     Only works if the <paramref name="action" /> is the Replaced Action
+    ///     for the combo (i.e. Features, not generally main Combos).
+    /// </summary>
+    /// <param name="action">The action ID to Retarget.</param>
+    /// <param name="target">
+    ///     The target to Retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    internal static uint Retarget
+        (this uint action, IGameObject? target, bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [action], () => target, dontCull);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.<br />
+    ///     Only works if the <paramref name="action" /> is the Replaced Action
+    ///     for the combo (i.e. Features, not generally main Combos).
+    /// </summary>
+    /// <param name="action">The action ID to Retarget.</param>
+    /// <param name="target">
+    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
+    ///     decides the target to Retarget the action onto.<br />
+    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
+    ///     the name of your resolver method.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    internal static uint Retarget
+        (this uint action, TargetResolverDelegate target, bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [action], target, dontCull);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The target to Retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+    /// </remarks>
+    internal static uint Retarget
+    (this uint action,
+        uint replaced,
+        IGameObject? target,
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
+    ///     decides the target to Retarget the action onto.<br />
+    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
+    ///     the name of your  resolver method.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Action (i.e. main Combos, not usually Features).
+    /// </remarks>
+    internal static uint Retarget
+    (this uint action, uint replaced, TargetResolverDelegate target, bool
+        dontCull = false) =>
+        P.ActionRetargeting.Register(action, [replaced], target, dontCull);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The target to Retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Actions, and there are multiple options for which
+    ///     actions to replace (i.e. main combos on healers, not usually features).
+    /// </remarks>
+    internal static uint Retarget
+    (this uint action,
+        uint[] replaced,
+        IGameObject? target,
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
+
+    /// <summary>
+    ///     Retargets the action to the target specified.
+    /// </summary>
+    /// <param name="action">The action ID to retarget.</param>
+    /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
+    /// <param name="target">
+    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
+    ///     decides the target to Retarget the action onto.<br />
+    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
+    ///     the name of your resolver method.
+    /// </param>
+    /// <param name="dontCull">
+    ///     Whether this method should be exempt from periodic culls.<br />
+    ///     See <see cref="ActionRetargeting.Retargeting" /> params for further
+    ///     explanation.
+    /// </param>
+    /// <returns>The <paramref name="action" />.</returns>
+    /// <remarks>
+    ///     Used when the <paramref name="action" /> is not the same as the
+    ///     combo's Replaced Actions, and there are multiple options for which
+    ///     actions to replace (i.e. main combos on healers, not usually features).
+    /// </remarks>
+    internal static uint Retarget
+    (this uint action,
+        uint[] replaced,
+        TargetResolverDelegate target,
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, replaced, target, dontCull);
+}
