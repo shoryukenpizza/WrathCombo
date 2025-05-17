@@ -1375,9 +1375,12 @@ internal partial class DNC : PhysicalRanged
                     FeatureDancePartnerResolver, dontCull: true);
             }
 
-            return IsEnabled(CustomComboPreset.DNC_Desirable_SavageBlade)
-                ? All.SavageBlade
-                : ClosedPosition;
+            return (int)Config.DNC_Partner_ActionToShow switch
+            {
+                (int)Config.PartnerShowAction.ClosedPosition => ClosedPosition,
+                (int)Config.PartnerShowAction.SavageBlade => All.SavageBlade,
+                _ => OriginalHook(actionID),
+            };
         }
     }
 
