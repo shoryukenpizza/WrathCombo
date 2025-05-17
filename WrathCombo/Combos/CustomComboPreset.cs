@@ -1081,16 +1081,17 @@ public enum CustomComboPreset
 
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and you do not have a dance partner.\nWill be automatically targeted onto the Best Partner if the below option is enabled.", DNC.JobID)]
+    [PossiblyRetargeted]
     DNC_ST_Adv_Partner = 4012,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Optimal Dance Partner Option", "Includes Ending and then Closed Position in the rotation when your current partner is not the optimal one, such as when they get a damage down.", DNC.JobID)]
+    [Retargeted]
     DNC_ST_Adv_AutoPartner = 4032,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Peloton Pre-Pull Option",
-        "Uses Peloton when you are out of combat, do not already have the Peloton buff and are performing Standard Step with greater than 5s remaining of your dance." +
-        "\n(Already included in The Balance Opener).", DNC.JobID)]
+        "Uses Peloton when you are out of combat, do not already have the Peloton buff and are performing Standard Step with greater than 5s remaining of your dance.", DNC.JobID)]
     DNC_ST_Adv_Peloton = 4013,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
@@ -1347,6 +1348,7 @@ public enum CustomComboPreset
     [ReplaceSkill(DNC.ClosedPosition, DNC.Ending)]
     [CustomComboInfo("Dance Partner on Desirable Partner Feature",
         "Replaces Closed Position with itself, but targeted to a party member, so you can cast it without having to pick anyone and without having to actually target anyone.\nWill show Ending when your current Partner is no longer the best choice.", DNC.JobID)]
+    [Retargeted]
     DNC_DesirablePartner = 4175,
 
     #endregion
