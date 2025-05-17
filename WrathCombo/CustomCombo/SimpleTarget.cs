@@ -63,7 +63,9 @@ internal static class SimpleTarget
         /// </summary>
         public static IGameObject? AllyToHeal =>
             (AllyToHealUseMouseOver ? MouseOver : null) ??
-            SoftTarget.IfFriendly() ?? HardTarget.IfFriendly() ?? Self;
+            SoftTarget.IfFriendly() ?? HardTarget.IfFriendly() ??
+            LowestHPPAlly.IfWithinRange() ?? Self;
+        // LowestHPPAlly has the only range-check as the others are "intentional"
     }
 
     #endregion
@@ -124,7 +126,9 @@ internal static class SimpleTarget
 
     #endregion
 
-    #region Niche Targets
+    #endregion
+
+    #region Party Targets
 
     public static IGameObject? KardionTarget(float range) =>
         Svc.Objects
@@ -132,15 +136,33 @@ internal static class SimpleTarget
             .FirstOrDefault(x =>
                 CustomComboFunctions.HasStatusEffect(SGE.Buffs.Kardion, x));
 
-    #endregion
-
-    #region Party Slots
-
     public static IGameObject? AnyDeadPartyMember =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .FirstOrDefault(x => x?.IsDead == true);
+
+    #region HP-Based Targets
+
+    public static IGameObject? LowestHPAlly =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x?.IsDead == false)
+            .OrderBy(x => x?.CurrentHp)
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPPAlly =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x?.IsDead == false)
+            .OrderBy(x => x?.CurrentHp / x?.MaxHp * 100)
+            .FirstOrDefault();
+
+    #endregion
+
+    #region Party Slots
 
     public static IGameObject? PartyMember1 => GetPartyMemberInSlotSlot(1);
     public static IGameObject? PartyMember2 => GetPartyMemberInSlotSlot(2);
@@ -258,7 +280,4 @@ internal static class SimpleTarget
     #endregion
 
     #endregion
-
-    // etc, etc, a la Reaction's Custom PlaceHolders
-    // https://github.com/UnknownX7/ReAction/blob/master/PronounManager.cs
 }
