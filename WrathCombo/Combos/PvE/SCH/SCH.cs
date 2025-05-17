@@ -157,8 +157,6 @@ internal partial class SCH : Healer
                 return actionID;
 
             //Grab our target
-            SimpleTarget.Stack.AllyToHealUseMouseOver =
-                Config.SCH_DeploymentTactics_Adv && Config.SCH_DeploymentTactics_UIMouseOver;
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             //Check for the Galvanize shield buff. Start applying if it doesn't exist
@@ -440,8 +438,6 @@ internal partial class SCH : Healer
                 return DissolveUnion;
 
             //Grab our target
-            SimpleTarget.Stack.AllyToHealUseMouseOver =
-                Config.SCH_ST_Heal_Adv && Config.SCH_ST_Heal_UIMouseOver;
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Esuna) && ActionReady(Role.Esuna) &&

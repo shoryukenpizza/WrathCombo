@@ -207,8 +207,6 @@ internal partial class WHM : Healer
 
             #region Variables
 
-            SimpleTarget.Stack.AllyToHealUseMouseOver =
-                Config.WHM_STHeals_UIMouseOver;
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             var thinAirReady = LevelChecked(ThinAir) &&
@@ -309,8 +307,6 @@ internal partial class WHM : Healer
                                Config.WHM_AoEHeals_AssizeWeave &&
                                CanSpellWeave());
 
-            SimpleTarget.Stack.AllyToHealUseMouseOver =
-                Config.WHM_AoEHeals_MedicaMO;
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             var hasMedica2 = GetStatusEffect(Buffs.Medica2, healTarget);
