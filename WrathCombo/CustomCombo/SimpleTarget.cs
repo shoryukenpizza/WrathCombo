@@ -130,7 +130,7 @@ internal static class SimpleTarget
 
     #region Party Targets
 
-    public static IGameObject? KardionTarget(float range) =>
+    public static IGameObject? KardionTarget =>
         Svc.Objects
             .OfType<IBattleChara>()
             .FirstOrDefault(x =>
