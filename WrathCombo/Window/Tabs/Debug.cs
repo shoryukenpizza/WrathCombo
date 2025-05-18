@@ -189,6 +189,8 @@ internal class Debug : ConfigWindow, IDisposable
                 // Print Label
                 CustomStyleText(label, valueBuilder);
             }
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("Target Statuses"))
@@ -238,7 +240,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, 10));
 
         #region Character
 
@@ -348,8 +350,8 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("In Melee Range:", InMeleeRange());
             CustomStyleText("Distance:", $"{MathF.Round(GetTargetDistance(), 2)}y");
             CustomStyleText("Height Difference:", $"{MathF.Round(GetTargetHeightDifference(), 2)}y");
-            CustomStyleText("Requires Postionals:", TargetNeedsPositionals());
             CustomStyleText("Relative Position:", AngleToTarget().ToString());
+            CustomStyleText("Requires Postionals:", TargetNeedsPositionals());
 
             ImGuiEx.Spacing(new Vector2(0, 10));
 
@@ -371,13 +373,12 @@ internal class Debug : ConfigWindow, IDisposable
                 var dist = MathF.Round(GetTargetDistance(enemy, Svc.Targets.Target), 2);
                 CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
             }
-
             ImGui.Unindent();
         }
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, 10));
 
         #region Party
 
@@ -389,6 +390,8 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Party ID:", Svc.Party.PartyId);
             CustomStyleText("Party Size:", GetPartyMembers().Count);
             CustomStyleText("Party Avg. HP:", $"{MathF.Round(GetPartyAvgHPPercent(), 2)}%");
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("Enmity Data"))
@@ -404,6 +407,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText($"{Svc.Objects.First(x => x.GameObjectId == h.Key).Name}:", $"{h.Value}%");
             }
             ImGui.Unindent();
+
             ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
@@ -437,7 +441,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, 10));
 
         #region Actions
 
@@ -450,50 +454,42 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("Action Data"))
         {
-            CustomStyleText("GCD Total:", GCDTotal);
-            CustomStyleText("Time Since Last Action:",
-                $"{ActionWatching.TimeSinceLastAction}");
+            CustomStyleText("Time Since Last Action:", $"{ActionWatching.TimeSinceLastAction}");
             CustomStyleText("Last Action:",
                 ActionWatching.LastAction == 0
                     ? string.Empty
                     : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ActionWatching.LastAction)) ? "Unknown" : ActionWatching.GetActionName(ActionWatching.LastAction))} (ID: {ActionWatching.LastAction})");
-            CustomStyleText("Last Action Cost:",
-                GetResourceCost(ActionWatching.LastAction));
-            CustomStyleText("Last Action Type:",
-                ActionWatching.GetAttackType(ActionWatching.LastAction));
-            CustomStyleText("Last Weaponskill:",
-                ActionWatching.GetActionName(ActionWatching
-                    .LastWeaponskill));
-            CustomStyleText("Last Spell:",
-                ActionWatching.GetActionName(ActionWatching.LastSpell));
-            CustomStyleText("Last Ability:",
-                ActionWatching.GetActionName(ActionWatching.LastAbility));
+            CustomStyleText("Last Action Cost:", GetResourceCost(ActionWatching.LastAction));
+            CustomStyleText("Last Action Type:", ActionWatching.GetAttackType(ActionWatching.LastAction));
+            CustomStyleText("Last Weaponskill:", ActionWatching.GetActionName(ActionWatching.LastWeaponskill));
+            CustomStyleText("Last Spell:", ActionWatching.GetActionName(ActionWatching.LastSpell));
+            CustomStyleText("Last Ability:", ActionWatching.GetActionName(ActionWatching.LastAbility));
             CustomStyleText("Combo Timer:", $"{ComboTimer:F1}");
             CustomStyleText("Combo Action:",
                 ComboAction == 0
                     ? string.Empty
                     : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ComboAction)) ? "Unknown" : ActionWatching.GetActionName(ComboAction))} (ID: {ComboAction})");
-            CustomStyleText("Cast Time:",
-                $"{LocalPlayer.CurrentCastTime:F2} / {LocalPlayer.TotalCastTime:F2}");
+            CustomStyleText("Cast Time:", $"{LocalPlayer.CurrentCastTime:F2} / {LocalPlayer.TotalCastTime:F2}");
             CustomStyleText("Cast Action:",
                 LocalPlayer.CastActionId == 0
                     ? string.Empty
                     : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(LocalPlayer.CastActionId)) ? "Unknown" : ActionWatching.GetActionName(LocalPlayer.CastActionId))} (ID: {LocalPlayer.CastActionId})");
-            CustomStyleText("Animation Lock:",
-                $"{ActionManager.Instance()->AnimationLock:F1}");
-            CustomStyleText("Queued Action:",
-                ActionManager.Instance()->QueuedActionId.ActionName());
+            CustomStyleText("GCD Total:", GCDTotal);
+            CustomStyleText("Queued Action:", ActionManager.Instance()->QueuedActionId.ActionName());
+            CustomStyleText("Animation Lock:", $"{ActionManager.Instance()->AnimationLock:F1}");
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("ActionReady Data"))
         {
             foreach (var act in actions)
             {
-                var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId,
-                    checkRecastActive: false, checkCastingActive: false);
-                CustomStyleText(act.Name.ExtractText(),
-                    $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
+                var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
+                CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
             }
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("ActionSheet Data"))
@@ -501,6 +497,7 @@ internal class Debug : ConfigWindow, IDisposable
             string prev = _debugSpell == null
                 ? "Select Action"
                 : $"({_debugSpell.Value.RowId}) Lv.{_debugSpell.Value.ClassJobLevel}. {_debugSpell.Value.Name} - {(_debugSpell.Value.IsPvP ? "PvP" : "Normal")}";
+
             ImGuiEx.SetNextItemFullWidth();
             using (var comboBox = ImRaii.Combo("###ActionCombo", prev))
             {
@@ -513,9 +510,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                     foreach (var act in actions)
                     {
-                        if (ImGui.Selectable(
-                                $"({act.RowId}) Lv.{act.ClassJobLevel}. {act.Name} - {(act.IsPvP ? "PvP" : "Normal")}",
-                                _debugSpell?.RowId == act.RowId))
+                        if (ImGui.Selectable($"({act.RowId}) Lv.{act.ClassJobLevel}. {act.Name} - {(act.IsPvP ? "PvP" : "Normal")}", _debugSpell?.RowId == act.RowId))
                         {
                             _debugSpell = act;
                         }
@@ -525,19 +520,19 @@ internal class Debug : ConfigWindow, IDisposable
 
             if (_debugSpell != null)
             {
-                var actionStatus =
-                    ActionManager.Instance()->GetActionStatus(ActionType.Action, _debugSpell.Value.RowId);
-                var icon = Svc.Texture.GetFromGameIcon(new(_debugSpell.Value.Icon)).GetWrapOrEmpty()
-                    .ImGuiHandle;
+                var actionStatus = ActionManager.Instance()->GetActionStatus(ActionType.Action, _debugSpell.Value.RowId);
+                var icon = Svc.Texture.GetFromGameIcon(new(_debugSpell.Value.Icon)).GetWrapOrEmpty().ImGuiHandle;
+
                 ImGui.Image(icon, new Vector2(60).Scale());
                 ImGui.SameLine();
                 ImGui.Image(icon, new Vector2(30).Scale());
-                CustomStyleText("Action Status:",
-                    $"{actionStatus} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(actionStatus).Text})");
+
+                CustomStyleText("Action Status:", $"{actionStatus} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(actionStatus).Text})");
                 CustomStyleText("Action Type:", _debugSpell.Value.ActionCategory.Value.Name);
+
                 if (_debugSpell.Value.UnlockLink.RowId != 0)
-                    CustomStyleText("Quest:",
-                        $"{Svc.Data.GetExcelSheet<Quest>().GetRow(_debugSpell.Value.UnlockLink.RowId).Name} ({(UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(_debugSpell.Value.UnlockLink.RowId) ? "Completed" : "Not Completed")})");
+                    CustomStyleText("Quest:", $"{Svc.Data.GetExcelSheet<Quest>().GetRow(_debugSpell.Value.UnlockLink.RowId).Name} ({(UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(_debugSpell.Value.UnlockLink.RowId) ? "Completed." : "Not completed.")})");
+                
                 CustomStyleText("Base Recast:", $"{_debugSpell.Value.Recast100ms / 10f}s");
                 CustomStyleText("Original Hook:", OriginalHook(_debugSpell.Value.RowId).ActionName());
                 CustomStyleText("Cooldown Total:", $"{ActionManager.Instance()->GetRecastTime(ActionType.Action, _debugSpell.Value.RowId)}");
@@ -554,6 +549,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Can Target Area:", $"{_debugSpell.Value.TargetArea}");
                 CustomStyleText("Cast Type:", $"{_debugSpell.Value.CastType}");
                 CustomStyleText("Can Queue:", $"{CanQueue(_debugSpell.Value.RowId)}");
+
                 if (_debugSpell.Value.EffectRange > 0)
                     CustomStyleText("Targets Hit:", $"{NumberOfEnemiesInRange(_debugSpell.Value.RowId, target)}");
 
@@ -561,25 +557,23 @@ internal class Debug : ConfigWindow, IDisposable
                     CustomStyleText("Time Since Last Use:", $"{(Environment.TickCount64 - lastUseTimestamp) / 1000f:F2}");
 
                 if (ActionWatching.LastSuccessfulUseTime.TryGetValue(_debugSpell.Value.RowId, out long lastSuccessfulUseTimestamp))
-                    CustomStyleText("Last Successful Cast:", $"{(Environment.TickCount64 - lastSuccessfulUseTimestamp) / 1000f:F2}");
+                    CustomStyleText("Time Since Last Successful Cast:", $"{(Environment.TickCount64 - lastSuccessfulUseTimestamp) / 1000f:F2}");
 
                 CustomStyleText($"JustUsedOn:", $"{JustUsedOn(_debugSpell.Value.RowId, target)}");
 
                 if (Svc.Targets.Target != null)
                 {
-                    var inRange = ActionManager.GetActionInRangeOrLoS(_debugSpell.Value.RowId,
-                        (GameObject*)LocalPlayer.Address, (GameObject*)Svc.Targets.Target.Address);
+                    var inRange = ActionManager.GetActionInRangeOrLoS(_debugSpell.Value.RowId, (GameObject*)LocalPlayer.Address, (GameObject*)Svc.Targets.Target.Address);
                     CustomStyleText("InRange or LoS:",
                         inRange == 0
                             ? "In range and in line of sight"
                             : $"{inRange}: {Svc.Data.GetExcelSheet<LogMessage>().GetRow(inRange).Text}");
-                    var canUseOnTarget = ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId,
-                        Svc.Targets.Target.Struct());
+
+                    var canUseOnTarget = ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId, Svc.Targets.Target.Struct());
                     CustomStyleText("Can Use on Target:", canUseOnTarget);
                 }
 
-                var canUseOnSelf =
-                    ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId, Player.GameObject);
+                var canUseOnSelf = ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId, Player.GameObject);
                 CustomStyleText("Can Use on Self:", canUseOnSelf);
 
                 Util.ShowObject(_debugSpell.Value);
@@ -588,7 +582,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, 10));
 
         #region Misc
 
@@ -599,30 +593,22 @@ internal class Debug : ConfigWindow, IDisposable
         {
             if (WrathOpener.CurrentOpener is not null)
             {
-                CustomStyleText("Current Opener",
-                    WrathOpener.CurrentOpener.GetType());
-                CustomStyleText("Opener State:",
-                    WrathOpener.CurrentOpener.CurrentState);
-                CustomStyleText("Current Opener Action:",
-                    WrathOpener.CurrentOpener.CurrentOpenerAction
-                        .ActionName());
-                CustomStyleText("Current Opener Step:",
-                    WrathOpener.CurrentOpener.OpenerStep);
+                CustomStyleText("Current Opener", WrathOpener.CurrentOpener.GetType());
+                CustomStyleText("Opener State:", WrathOpener.CurrentOpener.CurrentState);
+                CustomStyleText("Current Opener Action:", WrathOpener.CurrentOpener.CurrentOpenerAction.ActionName());
+                CustomStyleText("Current Opener Step:", WrathOpener.CurrentOpener.OpenerStep);
+
                 if (WrathOpener.CurrentOpener.OpenerActions.Count > 0 &&
                     WrathOpener.CurrentOpener.OpenerStep <
                     WrathOpener.CurrentOpener.OpenerActions.Count)
                 {
-                    CustomStyleText("Next Action:",
-                        WrathOpener.CurrentOpener
-                            .OpenerActions[WrathOpener.CurrentOpener.OpenerStep]
-                            .ActionName());
-                    CustomStyleText("Is Delayed Weave:",
-                        WrathOpener.CurrentOpener.DelayedWeaveSteps
-                            .Any(x => x == WrathOpener.CurrentOpener.OpenerStep));
-                    CustomStyleText("Can Delayed Weave:",
-                        CanDelayedWeave(end: 0.1));
+                    CustomStyleText("Next Action:", WrathOpener.CurrentOpener.OpenerActions[WrathOpener.CurrentOpener.OpenerStep].ActionName());
+                    CustomStyleText("Is Delayed Weave:", WrathOpener.CurrentOpener.DelayedWeaveSteps.Any(x => x == WrathOpener.CurrentOpener.OpenerStep));
+                    CustomStyleText("Can Delayed Weave:", CanDelayedWeave(end: 0.1));
                 }
             }
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("Limit Break Data"))
@@ -631,6 +617,8 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Limit Break Level:", LimitBreakLevel);
             CustomStyleText("Limit Break Action:", LimitBreakAction.ActionName());
             CustomStyleText("Limit Break Status:", $"1: {IsLB1Ready} 2: {IsLB2Ready} 3: {IsLB3Ready}");
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("Miscellaneous Data"))
@@ -638,17 +626,18 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Countdown Status:", $"{CountdownActive}");
             CustomStyleText("Countdown Remaining:", $"{CountdownRemaining}");
             CustomStyleText("Raidwide Incoming:", $"{RaidWideCasting()}");
+
+            ImGuiEx.Spacing(new Vector2(0, 10));
         }
 
         if (ImGui.CollapsingHeader("Active Blue Mage Spells"))
         {
-            ImGui.TextUnformatted(
-                $"{string.Join("\n", Service.Configuration.ActiveBLUSpells.Select(ActionWatching.GetActionName).OrderBy(x => x))}");
+            ImGui.TextUnformatted($"{string.Join("\n", Service.Configuration.ActiveBLUSpells.Select(ActionWatching.GetActionName).OrderBy(x => x))}");
         }
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, 10));
 
         #region IPC
 
@@ -676,8 +665,7 @@ internal class Debug : ConfigWindow, IDisposable
             if (_wrathLease is not null)
             {
                 CustomStyleText("Lease GUID", $"{_wrathLease}");
-                CustomStyleText("Configurations: ",
-                    $"{P.IPC.Leasing.Registrations[_wrathLease!.Value].SetsLeased}");
+                CustomStyleText("Configurations: ", $"{P.IPC.Leasing.Registrations[_wrathLease!.Value].SetsLeased}");
 
                 ImGuiEx.Spacing(new Vector2(20, 20));
 
@@ -696,8 +684,7 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.SameLine();
                 if (ImGui.Button("Set Autorot For WHM"))
                 {
-                    P.IPC.Leasing.AddRegistrationForCurrentJob(
-                        _wrathLease!.Value, Job.WHM);
+                    P.IPC.Leasing.AddRegistrationForCurrentJob(_wrathLease!.Value, Job.WHM);
                 }
 
                 ImGuiEx.Spacing(new Vector2(20, 20));
@@ -708,19 +695,14 @@ internal class Debug : ConfigWindow, IDisposable
                     // https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L460
                     if (!P.IPC.IsCurrentJobAutoRotationReady())
                         P.IPC.SetCurrentJobAutoRotationReady(_wrathLease!.Value);
+
                     P.IPC.SetAutoRotationState(_wrathLease!.Value);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.InCombatOnly,
-                        false);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.AutoRez,
-                        true);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value,
-                        AutoRotationConfigOption.AutoRezDPSJobs, true);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.IncludeNPCs,
-                        true);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value,
-                        AutoRotationConfigOption.DPSRotationMode, DPSRotationMode.Lowest_Current);
-                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value,
-                        AutoRotationConfigOption.HealerRotationMode, HealerRotationMode.Lowest_Current);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.InCombatOnly, false);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.AutoRez, true);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.AutoRezDPSJobs, true);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.IncludeNPCs, true);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.DPSRotationMode, DPSRotationMode.Lowest_Current);
+                    P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.HealerRotationMode, HealerRotationMode.Lowest_Current);
                 }
 
                 ImGui.SameLine();
@@ -756,6 +738,7 @@ internal class Debug : ConfigWindow, IDisposable
                     var combos = registration.Value.CombosControlled.Count > 0
                         ? registration.Value.CombosControlled.Count.ToString()
                         : "0";
+
                     CustomStyleText(
                         $"{registration.Value.PluginName}",
                         $"Configurations: {registration.Value.SetsLeased,3}; " +
@@ -770,18 +753,13 @@ internal class Debug : ConfigWindow, IDisposable
                     }
                     ImGui.SameLine();
 
-                    CustomStyleText(
-                        "",
-                        $"Jobs: {jobs,-30} " +
-                        $"Combos: {combos,-6}");
-                    CustomStyleText(
-                        "",
-                        $"Created: {" ",-24} {registration.Value.Created:yyyy-MM-ddTHH:mm:ss}");
+                    CustomStyleText("", $"Jobs: {jobs,-30} " + $"Combos: {combos,-6}");
+                    CustomStyleText("", $"Created: {" ",-24} {registration.Value.Created:yyyy-MM-ddTHH:mm:ss}");
                 }
             }
             else
             {
-                CustomStyleText("No current leases", "");
+                CustomStyleText("No current leases.", "");
             }
         }
 
