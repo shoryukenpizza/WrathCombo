@@ -1,13 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Status = Dalamud.Game.ClientState.Statuses.Status; // conflicts with structs if not defined
+//using Status = Dalamud.Game.ClientState.Statuses.Status; // conflicts with structs if not defined
+using Dalamud.Game.ClientState.Statuses;
+using ECommons;
 
 namespace WrathCombo.Data
 {
@@ -49,8 +49,8 @@ namespace WrathCombo.Data
         /// <summary>
         /// Lumina Status Sheet Dictionary
         /// </summary>
-        private static readonly Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet = Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>()!
-            .ToDictionary(i => i.RowId, i => i);
+        private static readonly Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet = 
+            Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>()!.ToDictionary(i => i.RowId, i => i);
 
         /// <summary>
         /// Enum defining status effects with their name IDs.
@@ -71,7 +71,8 @@ namespace WrathCombo.Data
         private static readonly Dictionary<StatusEffect, HashSet<uint>> StatusIdCaches = InitializeStatusIdCaches();
 
         /// <summary>
-        /// Initializes the status ID caches in a single StatusSheet iteration.
+        /// Initializes the status ID caches on startup for various ailments
+        /// Dictionary of Ailement / IDs (ie "Pacification" and all IDs for Pacification based on the localized name)
         /// </summary>
         private static Dictionary<StatusEffect, HashSet<uint>> InitializeStatusIdCaches()
         {
@@ -118,12 +119,21 @@ namespace WrathCombo.Data
         /// <remarks>
         /// Includes statuses like Hallowed Ground (151), Living Dead (325), etc.
         /// </remarks>
-        private static readonly HashSet<uint> InvincibleStatuses =
-        [
-            151, 198, 325, 328, 385, 394, 469, 529, 592, 656, 671, 775, 776, 895, 969, 981,
-            1240, 1302, 1303, 1567, 1570, 1697, 1829, 1936, 2413, 2654, 3012, 3039, 3052, 3054,
-            4410, 4175
-        ];
+        private static readonly HashSet<uint> InvincibleStatuses = GenerateInv();
+
+        private static HashSet<uint> GenerateInv()
+        {
+            //Search by Invincibility Icon
+            uint targetIcon = StatusSheet.FirstOrDefault(row => row.Value.RowId == 325).Value.Icon;
+            //uint targetIcon = Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>().FirstOrDefault(row => row.RowId == 325).Icon;
+            //return [.. Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>()
+            //    .Where(kvp => kvp.Icon == targetIcon)
+            //    .Select(kvp => kvp.RowId)];
+            var invincibles = StatusSheet.Where(row => row.Value.Icon == targetIcon).Select(row => row.Key).ToHashSet();
+            //Add Random Invulnerabilities not yet assigned to TerritoryType
+            invincibles.UnionWith([151, 198, 385, 469, 592, 1240, 1302, 1303, 1567, 1936, 2413, 2654, 3012, 3039, 3052, 3054, 4175]);
+            return invincibles;
+        }
 
         public static bool TargetIsInvincible(IGameObject? target)
         {
@@ -133,7 +143,6 @@ namespace WrathCombo.Data
             // Turn Target's status to uint hashset
             var targetStatuses = tar.StatusList.Select(s => s.StatusId).ToHashSet();
             uint targetID = tar.DataId;
-
 
             switch (Svc.ClientState.TerritoryType)
             {
@@ -146,7 +155,6 @@ namespace WrathCombo.Data
 
                     return false;
                 case 1248:  // Jeuno 1 Ark Angels
-
                     // ArkAngel HM = 1804
                     if (targetID is 18049 && HasStatusEffect(4410, tar, true)) return true;
 
@@ -171,30 +179,34 @@ namespace WrathCombo.Data
                         if (HasStatusEffect(2290)) return targetID != 11794;
                     }
                     return false;
+                case 801 or 805 or 1122: //Interdimensional Rift (Omega 12 / Alphascape 4), Regular/Savage?/Ultimate?
+                    // Omega-M = 9339
+                    // Omega-F = 9340
+                    if (targetID is 9339 or 9340) //numbers are for Regular
+                    {
+                        if (HasStatusEffect(1660)) return targetID == 9339; // Packet Filter M
+                        if (HasStatusEffect(1661)) return targetID == 9340; // Packet Filter F
+                        if (targetID is 9340) return HasStatusEffect(671, tar, true); // F being covered by M
+                    }
+
+                    //Savage/Ultimate? Not sure which omega fight uses 3499 and 3500.
+                    //Also, SE, why use a new Omega-M status and reuse the old Omega-F? -_-'
+                    //Wonder if targetIDs are the same......
+                    if ((tar.StatusList.Any(x => x.StatusId == 3454) && HasStatusEffect(3499)) ||
+                        (tar.StatusList.Any(x => x.StatusId == 1675) && HasStatusEffect(3500)))
+                        return true;
+                    
+                    //Check for any ol invincibility
+                    if (targetStatuses.Any(id => InvincibleStatuses.Contains(id))) return true;
+
+                    return false;
                 default:
                     break;
-            }
-
-            // Omega
-            //if (Svc.ClientState.TerritoryType is 801 or 805 or 1122)
-            //{
-
-            // Omega
-            byte Omega = 1;
-            if (Omega == 1)
-            {
-                if (
-                    (tar.StatusList.Any(x => x.StatusId == 1674 || x.StatusId == 3454) && (HasStatusEffect(1660) || HasStatusEffect(3499)))
-                    ||
-                    (tar.StatusList.Any(x => x.StatusId == 1675) && (HasStatusEffect(1661) || HasStatusEffect(3500))))
-                    return true;
-
             }
 
             // General invincibility check
             // Due to large size of InvincibleStatuses, best to check process this way
             if (targetStatuses.Any(id => InvincibleStatuses.Contains(id))) return true;
-
             return false;
         }
 
@@ -245,12 +257,5 @@ namespace WrathCombo.Data
         {
             return HasStatusInCacheList(StatusIdCaches[effect], target);
         }
-
-        //internal static bool HasStatusInCacheList(HashSet<uint> list) => list.Count switch
-        //{
-        //    0 => false,
-        //    _ => HasStatusInCacheList(list, Player.Object)
-        //};
-
     }
 }
