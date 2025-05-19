@@ -18,14 +18,12 @@ internal partial class VPR : Melee
             {
                 if (ComboAction is ReavingFangs or SteelFangs)
                 {
-                    if (LevelChecked(HuntersSting) &&
-                        (HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.FlanksbaneVenom)))
-                        return OriginalHook(SteelFangs);
-
                     if (LevelChecked(SwiftskinsSting) &&
-                        (HasStatusEffect(Buffs.HindstungVenom) || HasStatusEffect(Buffs.HindsbaneVenom) ||
-                         !HasStatusEffect(Buffs.Swiftscaled) && !HasStatusEffect(Buffs.HuntersInstinct)))
+                        (HasHindVenom() || NoSwiftscaled() || NoVenom()))
                         return OriginalHook(ReavingFangs);
+                    
+                    if (LevelChecked(HuntersSting) && (HasFlankVenom() || NoHuntersInstinct()))
+                        return OriginalHook(SteelFangs);
                 }
 
                 if (ComboAction is HuntersSting or SwiftskinsSting)
@@ -160,14 +158,12 @@ internal partial class VPR : Melee
             {
                 if (ComboAction is ReavingFangs or SteelFangs)
                 {
-                    if (LevelChecked(HuntersSting) &&
-                        (HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.FlanksbaneVenom)))
-                        return OriginalHook(SteelFangs);
-
                     if (LevelChecked(SwiftskinsSting) &&
-                        (HasStatusEffect(Buffs.HindstungVenom) || HasStatusEffect(Buffs.HindsbaneVenom) ||
-                         !HasStatusEffect(Buffs.Swiftscaled) && !HasStatusEffect(Buffs.HuntersInstinct)))
+                        (HasHindVenom() || NoSwiftscaled() || NoVenom()))
                         return OriginalHook(ReavingFangs);
+                    
+                    if (LevelChecked(HuntersSting) && (HasFlankVenom() || NoHuntersInstinct()))
+                        return OriginalHook(SteelFangs);
                 }
 
                 if (ComboAction is HuntersSting or SwiftskinsSting)
@@ -342,27 +338,17 @@ internal partial class VPR : Melee
             {
                 if (ComboAction is ReavingFangs or SteelFangs)
                 {
-                    if (LevelChecked(HuntersSting) &&
-                        (HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.FlanksbaneVenom)))
-                        return OriginalHook(SteelFangs);
-
                     if (LevelChecked(SwiftskinsSting) &&
-                        (HasStatusEffect(Buffs.HindstungVenom) || HasStatusEffect(Buffs.HindsbaneVenom) ||
-                         !HasStatusEffect(Buffs.Swiftscaled) && !HasStatusEffect(Buffs.HuntersInstinct)))
+                        (HasHindVenom() || NoSwiftscaled() || NoVenom()))
                         return OriginalHook(ReavingFangs);
+                    
+                    if (LevelChecked(HuntersSting) && (HasFlankVenom() || NoHuntersInstinct()))
+                        return OriginalHook(SteelFangs);
                 }
+
 
                 if (ComboAction is HuntersSting or SwiftskinsSting)
                 {
-                    if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
-                        LevelChecked(FlanksbaneFang))
-                        return IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
-                               Role.CanTrueNorth() && CanDelayedWeave() &&
-                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
-                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
-                            ? Role.TrueNorth
-                            : OriginalHook(SteelFangs);
-
                     if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
                         LevelChecked(HindstingStrike))
                         return IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
@@ -371,11 +357,21 @@ internal partial class VPR : Melee
                                 !OnTargetsFlank() && HasStatusEffect(Buffs.FlanksbaneVenom))
                             ? Role.TrueNorth
                             : OriginalHook(ReavingFangs);
+                    
+                    if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
+                        LevelChecked(FlanksbaneFang))
+                        return IsEnabled(CustomComboPreset.VPR_TrueNorthDynamic) &&
+                               Role.CanTrueNorth() && CanDelayedWeave() &&
+                               (!OnTargetsRear() && HasStatusEffect(Buffs.HindstungVenom) ||
+                                !OnTargetsFlank() && HasStatusEffect(Buffs.FlankstungVenom))
+                            ? Role.TrueNorth
+                            : OriginalHook(SteelFangs);
+                    
                 }
 
                 if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
                     return LevelChecked(ReavingFangs) && HasStatusEffect(Buffs.HonedReavers)
-                        ? OriginalHook(ReavingFangs)
+                            ? OriginalHook(ReavingFangs)
                         : OriginalHook(SteelFangs);
             }
 
