@@ -13,6 +13,8 @@ internal partial class VPR
 {
     internal static VPROpenerMaxLevel1 Opener1 = new();
 
+    #region Config
+    
     internal static float IreCD => GetCooldownRemainingTime(SerpentsIre);
 
     internal static bool In5Y => HasBattleTarget() && GetTargetDistance() <= 5;
@@ -22,6 +24,25 @@ internal partial class VPR
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
     internal static bool HasRattlingCoilStack() => RattlingCoilStacks > 0;
+    
+    internal static bool HasHindVenom() =>
+        HasStatusEffect(Buffs.HindstungVenom) ||
+        HasStatusEffect(Buffs.HindsbaneVenom);
+    
+    internal static bool HasFlankVenom() =>
+        HasStatusEffect(Buffs.FlankstungVenom) ||
+        HasStatusEffect(Buffs.FlanksbaneVenom);
+
+    internal static bool NoSwiftscaled() => !HasStatusEffect(Buffs.Swiftscaled);
+    
+    internal static bool NoHuntersInstinct() => !HasStatusEffect(Buffs.HuntersInstinct);
+
+    internal static bool NoVenom() =>
+        !HasStatusEffect(Buffs.FlanksbaneVenom) &&
+        !HasStatusEffect(Buffs.FlankstungVenom) &&
+        !HasStatusEffect(Buffs.HindsbaneVenom) &&
+        !HasStatusEffect(Buffs.HindstungVenom);
+    #endregion Config
 
     #region Awaken
 
