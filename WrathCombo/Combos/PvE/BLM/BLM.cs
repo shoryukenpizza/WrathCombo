@@ -449,11 +449,9 @@ internal partial class BLM : Caster
                     return Transpose;
 
                 if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
-                {
                     return HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
                         : Freeze;
-                }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
                     return OriginalHook(Blizzard2);
@@ -548,7 +546,7 @@ internal partial class BLM : Caster
                 if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks)
                 {
                     if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
-                        ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
+                        ActionReady(Fire2) && (TraitLevelChecked(Traits.AspectMasteryIII) || !TraitLevelChecked(Traits.UmbralHeart)))
                         return OriginalHook(Fire2);
 
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
@@ -557,12 +555,10 @@ internal partial class BLM : Caster
                 }
 
                 if (ActionReady(Freeze) && (UmbralIceStacks == 3 || TraitLevelChecked(Traits.UmbralHeart)))
-                {
                     return IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
                            HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
                         : Freeze;
-                }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
                     return OriginalHook(Blizzard2);
