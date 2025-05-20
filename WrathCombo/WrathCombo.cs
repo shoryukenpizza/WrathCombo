@@ -105,7 +105,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
             if (!Player.Available)
                 return false;
 
-            AST.QuickTargetCards.SelectedRandomMember = null;
             P.ActionRetargeting.ClearCachedRetargets();
             if (onJobChange)
                 PvEFeatures.OpenToCurrentJob(true);
@@ -156,7 +155,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Service.ComboCache = new CustomComboCache();
         Service.ActionReplacer = new ActionReplacer();
         ActionWatching.Enable();
-        AST.InitCheckCards();
         IPC = Provider.Init();
 
         ConfigWindow = new ConfigWindow();
@@ -406,7 +404,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Service.ActionReplacer.Dispose();
         Service.ComboCache.Dispose();
         ActionWatching.Dispose();
-        AST.DisposeCheckCards();
         CustomComboFunctions.TimerDispose();
         IPC.Dispose();
 

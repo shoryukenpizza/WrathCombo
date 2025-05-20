@@ -23,7 +23,7 @@ internal class TargetHelper : Dalamud.Interface.Windowing.Window
 
     internal unsafe void DrawTargetHelper()
     {
-        if (Combos.PvE.AST.QuickTargetCards.SelectedRandomMember is not null)
+        if (Combos.PvE.AST.CardTarget is not null)
         {
             IntPtr partyPTR = Svc.GameGui.GetAddonByName("_PartyList", 1);
             if (partyPTR == IntPtr.Zero)
@@ -36,7 +36,7 @@ internal class TargetHelper : Dalamud.Interface.Windowing.Window
             {
                 IGameObject? slot = SimpleTarget.GetPartyMemberInSlotSlot(i);
                 if (slot is null) continue;
-                if (slot.GameObjectId == Combos.PvE.AST.QuickTargetCards.SelectedRandomMember.GameObjectId)
+                if (slot.GameObjectId == Combos.PvE.AST.CardTarget.GameObjectId)
                 {
                     var member = i switch
                     {

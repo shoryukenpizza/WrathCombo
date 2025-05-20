@@ -186,6 +186,7 @@ public enum CustomComboPreset
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
         AST.JobID)]
+    [PossiblyRetargeted]
     AST_DPS_AutoPlay = 1037,
 
     [ParentCombo(AST_DPS_AutoPlay)]
@@ -239,6 +240,7 @@ public enum CustomComboPreset
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
         AST.JobID)]
+    [PossiblyRetargeted]
     AST_AOE_AutoPlay = 1045,
 
     [ParentCombo(AST_AOE_AutoPlay)]
@@ -364,14 +366,10 @@ public enum CustomComboPreset
     #region Cards
 
     [CustomComboInfo("Quick Target Damage Cards",
-        "When you play the Balance or Spear, this will automatically apply the buff to a party member. It will look at DPS that suit the card first, if none found or they have buffs already, will look at the other DPS instead.",
+        "When you play the Balance or Spear in a combo, this will automatically target the buff on to a party member.\nIt will look at DPS that suit the card first, following The Balance's priorities; if none found or they have buffs already, will look at the other DPS instead.\nWill try to skip party members that have damage downs or rez sickness.\nWill default to you if no suitable party members were found.",
         AST.JobID)]
+    [Retargeted]
     AST_Cards_QuickTargetCards = 1029,
-
-    [ParentCombo(AST_Cards_QuickTargetCards)]
-    [CustomComboInfo("Add Tanks/Healers to Auto-Target",
-        "Targets a tank or healer if no DPS remain for quick target selection", AST.JobID)]
-    AST_Cards_QuickTargetCards_TargetExtra = 1031,
 
     #endregion
 

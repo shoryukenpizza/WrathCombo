@@ -45,6 +45,10 @@ internal partial class AST : Healer
             if (!actionFound)
                 return actionID;
 
+            var replacedActions = alternateMode
+                ? CombustList.Keys.ToArray()
+                : MaleficList.ToArray();
+
             // Out of combat Card Draw
             if (!InCombat())
             {
@@ -87,7 +91,9 @@ internal partial class AST : Healer
                     (cardPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
                     !cardPooling ||
                     !LevelChecked(Divination)))
-                    return OriginalHook(Play1);
+                    return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
+                        ? OriginalHook(Play1).Retarget(replacedActions, CardResolver)
+                        : OriginalHook(Play1);
 
                 //Minor Arcana / Lord of Crowns
                 if (ActionReady(OriginalHook(MinorArcana)) &&
@@ -116,9 +122,6 @@ internal partial class AST : Healer
                     return Divination;
 
                 //Earthly Star
-                var replacedActions = alternateMode
-                    ? CombustList.Keys.ToArray()
-                    : MaleficList.ToArray();
                 if (IsEnabled(CustomComboPreset.AST_ST_DPS_EarthlyStar) &&
                     !HasStatusEffect(Buffs.EarthlyDominance) &&
                     ActionReady(EarthlyStar) &&
@@ -193,7 +196,10 @@ internal partial class AST : Healer
                 (cardPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
                 !cardPooling ||
                 !LevelChecked(Divination)))
-                return OriginalHook(Play1);
+                return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
+                    ? OriginalHook(Play1).Retarget(GravityList.ToArray(),
+                        CardResolver)
+                    : OriginalHook(Play1);
 
             //Minor Arcana / Lord of Crowns
             if (ActionReady(OriginalHook(MinorArcana)) &&
@@ -219,6 +225,7 @@ internal partial class AST : Healer
                 CanDelayedWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return Divination;
+
             //Earthly Star
             if (IsEnabled(CustomComboPreset.AST_AOE_DPS_EarthlyStar) && !IsMoving() &&
                 !HasStatusEffect(Buffs.EarthlyDominance) &&

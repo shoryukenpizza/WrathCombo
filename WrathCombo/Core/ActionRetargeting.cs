@@ -64,7 +64,7 @@ public class ActionRetargeting : IDisposable
     ///     <see cref="SimpleTarget.HardTarget">HardTarget</see>)
     ///     or
     ///     a <see cref="TargetResolverDelegate">custom delegate</see> (like:
-    ///     <see cref="Combos.PvE.AST.DPSCardsTargetResolver">AST.CardsResolver</see>)
+    ///     <see cref="AST.CardResolver">AST.CardsResolver</see>)
     /// </param>
     /// <param name="dontCull">
     ///     Whether this method should be exempt from periodic culls.<br />
@@ -456,7 +456,7 @@ public class ActionRetargeting : IDisposable
 ///     };
 ///     </code>
 /// </example>
-/// <seealso cref="Combos.PvE.AST.DPSCardsTargetResolver">
+/// <seealso cref="AST.CardResolver">
 ///     AST.CardsResolver
 /// </seealso>
 public delegate IGameObject? TargetResolverDelegate();
