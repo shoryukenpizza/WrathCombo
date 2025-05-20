@@ -86,7 +86,7 @@ internal partial class BLM
                     DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawRoundedSliderFloat(0, 4, BLM_ST_ThunderUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+                    DrawRoundedSliderFloat(0, 5, BLM_ST_ThunderUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     ImGui.Unindent();
 
@@ -104,7 +104,7 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_AoE_Thunder:
-                    DrawSliderInt(0, 10, BLM_AoE_ThunderHP,
+                    DrawSliderInt(0, 50, BLM_AoE_ThunderHP,
                         $"Stop Using {Thunder2.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
 
                     break;
