@@ -1,3 +1,5 @@
+using Dalamud.Interface.Colors;
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -11,15 +13,18 @@ internal partial class BLM
             BLM_VariantCure = new("BLM_VariantCure"),
             BLM_VariantRampart = new("BLM_VariantRampart"),
             BLM_ST_LeyLinesCharges = new("BLM_ST_LeyLinesCharges", 1),
-            BLM_ST_Thunder_Threshold = new("BLM_ST_Thunder_Threshold", 1),
+            BLM_ST_ThunderOption = new("BLM_ST_ThunderOption"),
+            BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 1),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_AoE_Triplecast_HoldCharges = new("BLM_AoE_Triplecast_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 5),
             BLM_SelectedOpener = new("BLM_SelectedOpener", 0),
-            BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 1),
             BLM_Balance_Content = new("BLM_Balance_Content", 1);
+
+        public static UserFloat
+            BLM_ST_ThunderUptime_Threshold = new("BLM_ST_ThunderUptime_Threshold");
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
@@ -68,14 +73,22 @@ internal partial class BLM
 
 
                 case CustomComboPreset.BLM_ST_Thunder:
-                    DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
-                        "All content", $"Uses {Thunder.ActionName()} regardless of content.", 0);
+
+                    DrawSliderInt(0, 50, BLM_ST_ThunderOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
-                        "Boss encounters Only", $"Only uses {Thunder.ActionName()} when in Boss encounters.", 1);
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
 
-                    DrawSliderInt(0, 10, BLM_ST_Thunder_Threshold,
-                        $"Stop using {Thunder.ActionName()} on targets below this HP % (0% = always use).");
+                    DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+
+                    DrawRoundedSliderFloat(0, 4, BLM_ST_ThunderUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+
+                    ImGui.Unindent();
 
                     break;
 

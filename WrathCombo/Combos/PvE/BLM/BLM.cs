@@ -64,6 +64,16 @@ internal partial class BLM : Caster
                  ThunderDebuffAoE?.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
+            if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                ThunderList.TryGetValue(OriginalHook(Thunder), out ushort dotDebuffID))
+            {
+                const float refreshTimer = 3;
+                const int hpThreshold = 0;
+                if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
+                    GetTargetHPPercent() > hpThreshold)
+                    return OriginalHook(Thunder);
+            }
+
             if (LevelChecked(Amplifier) &&
                 GetCooldownRemainingTime(Amplifier) < 5 &&
                 HasMaxPolyglotStacks)
@@ -251,14 +261,15 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
-                HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
-                (BLM_ST_Thunder_SubOption == 0 ||
-                 BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
-                (GetTargetHPPercent() > BLM_ST_Thunder_Threshold) &&
-                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                 ThunderDebuffST?.RemainingTime <= 3 ||
-                 ThunderDebuffAoE?.RemainingTime <= 3))
-                return OriginalHook(Thunder);
+                LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                ThunderList.TryGetValue(OriginalHook(Thunder), out ushort dotDebuffID))
+            {
+                float refreshTimer = BLM_ST_ThunderUptime_Threshold;
+                int hpThreshold = BLM_ST_Thunder_SubOption == 1 || !InBossEncounter() ? BLM_ST_ThunderOption : 0;
+                if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
+                    GetTargetHPPercent() > hpThreshold)
+                    return OriginalHook(Thunder);
+            }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                 IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
