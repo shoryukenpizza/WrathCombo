@@ -6,6 +6,7 @@ using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.Logging;
+using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -305,12 +306,25 @@ public class ActionRetargeting : IDisposable
     #region Utilities
 
     /// <summary>
+    ///     Prevents the action itself from being retargeted unless excepted,
+    ///     which stops retargets from leaking from combos as much.<br />
+    ///     Should probably match up with
+    ///     <see cref="CustomCombo._presetsAllowedToReturnUnchanged" />.
+    /// </summary>
+    private static readonly uint[] _actionsAllowedToBeReplacedAction =
+    [
+        DNC.ClosedPosition,
+    ];
+
+    /// <summary>
     ///     Adds a new Retarget to both lists of Retargets.
     /// </summary>
     /// <param name="retarget">The Retarget to add.</param>
     private void AddRetarget(Retargeting retarget)
     {
-        _retargets[retarget.Action] = retarget;
+        // Only retarget the action as well as the replaced actions if excepted
+        if (_actionsAllowedToBeReplacedAction.Contains(retarget.Action))
+            _retargets[retarget.Action] = retarget;
 
         foreach (var replacedAction in retarget.ReplacedActions)
             _retargets[replacedAction] = retarget;
