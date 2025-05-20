@@ -126,7 +126,7 @@ public class ActionRetargeting : IDisposable
         // Remove the old Retarget
         if (overwriting.Length != 0)
         {
-            RemoveRetarget(oldRetarget.ID);
+            RemoveRetarget(oldRetarget?.ID ?? 0);
 
             // Elevate to a debug message if the overwriting method is not equivalent
             var logLevel = overwriting[0] == overwriting[1] ? 0 : 1;
