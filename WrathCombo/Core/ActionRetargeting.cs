@@ -91,16 +91,12 @@ public class ActionRetargeting : IDisposable
         TargetResolverDelegate resolver,
         bool dontCull = false)
     {
-        // Check the complexity of this Retarget, for overwriting purposes
-        var actionInReplaced = replacedActions.Contains(action);
-
         // Make sure the action is not in replaced actions,
         // and there are no duplicates
         replacedActions = replacedActions.Where(a => a != action)
             .Distinct().ToArray();
         // Build the Retarget object
-        var retarget = new Retargeting(action, replacedActions, resolver,
-            actionInReplaced, dontCull);
+        var retarget = new Retargeting(action, replacedActions, resolver, dontCull);
 
         // Limit spam from the same actionID, mostly for debugging
         if (!EZ.Throttle($"retargetFor{retarget.ID}", TS.FromSeconds(1)))
@@ -218,10 +214,6 @@ public class ActionRetargeting : IDisposable
     ///     in <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)" />, or its
     ///     two overloads.
     /// </param>
-    /// <param name="actionInReplaced">
-    ///     Whether the action was listed in the Replaced Actions originally.<br />
-    ///     Only used to flag partial overwrites, to save a little bit of log spam.
-    /// </param>
     /// <param name="dontCull">
     ///     Whether this Retarget should be exempt from periodic culls.<br />
     ///     Should only be set (to <see langword="true" />) for Features; combo
@@ -231,7 +223,6 @@ public class ActionRetargeting : IDisposable
         uint action,
         uint[] replacedActions,
         TargetResolverDelegate resolver,
-        bool actionInReplaced,
         bool dontCull = false)
     {
         /// A unique identifier for the Retarget, to help with overwrites and removal.
@@ -242,10 +233,6 @@ public class ActionRetargeting : IDisposable
 
         /// The actions that could be what is actually pressed when we want to Retarget the action.
         public uint[] ReplacedActions { get; } = replacedActions;
-
-        /// A simple flag for whether the action is in the Replaced Actions.<br />
-        /// Only used to help with log spam.
-        public bool ActionInReplaced { get; } = actionInReplaced;
 
         /// The target resolver that will decide the new target for the action.
         public TargetResolverDelegate Resolver { get; } = resolver;
@@ -360,7 +347,7 @@ public class ActionRetargeting : IDisposable
                 return;
         }
         // When unloading the plugin, just kill the task
-        catch (NullReferenceException _)
+        catch (NullReferenceException)
         {
             return;
         }
