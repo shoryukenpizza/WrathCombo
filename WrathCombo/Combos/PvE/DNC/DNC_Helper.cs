@@ -305,20 +305,14 @@ internal partial class DNC
 
         // These are here so I don't have to add a ton of methods to DNC
 
-        bool DamageDownFree(IGameObject? target)
-        {
-            return !TargetHasDamageDown(target);
-        }
+        bool DamageDownFree(IGameObject? target) =>
+            !TargetHasDamageDown(target);
 
-        bool SicknessFree(IGameObject? target)
-        {
-            return !TargetHasRezWeakness(target);
-        }
+        bool SicknessFree(IGameObject? target) =>
+            !TargetHasRezWeakness(target);
 
-        bool BrinkFree(IGameObject? target)
-        {
-            return !TargetHasRezWeakness(target, false);
-        }
+        bool BrinkFree(IGameObject? target) =>
+            !TargetHasRezWeakness(target, false);
 
         #endregion
 
@@ -449,7 +443,7 @@ internal partial class DNC
             Restrictions.Melee | Restrictions.NotBrink,
             Restrictions.DPS | Restrictions.NotBrink,
             // Ailment-free
-            Restrictions.NotDD,
+            Restrictions.NotDD | Restrictions.NotSick,
             // Sickness-free
             Restrictions.NotSick,
             // Sick
