@@ -333,8 +333,7 @@ public class ActionRetargeting : IDisposable
     }
 
     /// Simple Flag to stop clearing the cache when the plugin is disposed.
-    // ReSharper disable once RedundantDefaultMemberInitializer
-    private bool CancelCacheClearing = false;
+    private bool CancelCacheClearing;
 
     /// Clears Retargets older than 20 seconds every 11 seconds.
     /// <seealso cref="_retargets" />
@@ -349,14 +348,16 @@ public class ActionRetargeting : IDisposable
                         (DateTime.Now - x.Created) > TS.FromSeconds(20))
             .ToList();
 
+
         // Cull each unique Retarget
-        foreach (var old in oldRetargets)
-        {
-            P.ActionRetargeting.RemoveRetarget(old.ID);
-            // Make sure not to spam if the same retarget is culled more than once
-            if (!EZ.Throttle($"retargetClr{old.ID}", TS.FromSeconds(3)))
-                log("cleared old Retarget for", showAction: true, retarget: old);
-        }
+        if (oldRetargets.Count > 0)
+            foreach (var old in oldRetargets)
+            {
+                P.ActionRetargeting.RemoveRetarget(old.ID);
+                // Make sure not to spam if the same retarget is culled more than once
+                if (!EZ.Throttle($"retargetClr{old.ID}", TS.FromSeconds(3)))
+                    log("cleared old Retarget for", showAction: true, retarget: old);
+            }
 
         Svc.Framework.RunOnTick(P.ActionRetargeting.ClearOldRetargets,
             TS.FromSeconds(11));
