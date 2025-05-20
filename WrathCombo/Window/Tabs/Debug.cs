@@ -368,7 +368,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("ObjectId:", target?.GameObjectId);
                 CustomStyleText("ObjectKind:", target?.ObjectKind);
                 CustomStyleText("ObjectSubKind:", target?.SubKind);
-                CustomStyleText("ObjectType:", target?.GetType()?.FullName);
+                CustomStyleText("ObjectType:", target?.GetType()?.Name);
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
