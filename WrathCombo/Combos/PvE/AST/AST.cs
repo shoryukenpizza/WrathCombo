@@ -223,8 +223,10 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_AOE_DPS_EarthlyStar) && !IsMoving() &&
                 !HasStatusEffect(Buffs.EarthlyDominance) &&
                 ActionReady(EarthlyStar) &&
+                IsOffCooldown(EarthlyStar) &&
                 CanSpellWeave())
-                return EarthlyStar;
+                return EarthlyStar.Retarget(GravityList.ToArray(),
+                    SimpleTarget.Stack.Allies);
 
             if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) &&
                 HasStatusEffect(Buffs.Divining) &&
