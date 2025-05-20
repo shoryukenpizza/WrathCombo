@@ -177,7 +177,7 @@ namespace WrathCombo.Data
                 if (actionType == 1)
                     ActionTimestamps[actionId] = Environment.TickCount64;
 
-                CheckForChangedTarget(actionId, ref targetObjectId);
+                var changed = CheckForChangedTarget(actionId, ref targetObjectId);
                 TimeLastActionUsed = DateTime.Now + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
                 LastAction = actionId;
                 ActionType = actionType;
@@ -185,6 +185,11 @@ namespace WrathCombo.Data
                 UpdateHelpers(actionId);
                 UsedOnDict[(actionId, targetObjectId)] = Environment.TickCount64;
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
+
+                // If the target was changed, support changing the target for ground actions, too
+                if (changed)
+                    ActionManager.Instance()->AreaTargetingExecuteAtObject =
+                        targetObjectId;
 
                 Svc.Log.Verbose($"{actionId} {sequence} {a5} {a6} {a7} {a8} {a9}");
             }
@@ -205,51 +210,11 @@ namespace WrathCombo.Data
 
         private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
         {
-            // Check if there is a retargeted action
-            if (P.ActionRetargeting.TryGetTargetFor(actionId, out var target))
-            {
-                if (target is null) return false;
-                targetObjectId = target.GameObjectId;
-                return true;
-            }
-
-            #region AST-only targeting
-
-            if (actionId is not (AST.Balance or AST.Spear) ||
-                AST.QuickTargetCards.SelectedRandomMember is null ||
-                OutOfRange(actionId, Svc.ClientState.LocalPlayer!, AST.QuickTargetCards.SelectedRandomMember))
+            if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target) ||
+                target is null)
                 return false;
 
-            // Set Default Result
-            targetObjectId = AST.QuickTargetCards.SelectedRandomMember.GameObjectId;
-
-            //Apply Overrides
-            switch ((int)AST.Config.AST_QuickTarget_Override)
-            {
-                // Case 0 is Default (SelectedRandomMember)
-
-                // Hard Target
-                case 1 when Svc.Targets.Target is not null && TargetIsFriendly():
-                    targetObjectId = Svc.Targets.Target.GameObjectId;
-                    break;
-                // UI Mouseover Override
-                case 2:
-                    var mouseTarget = SimpleTarget.UIMouseOverTarget;
-                    if (mouseTarget != null)
-                        targetObjectId = mouseTarget.GameObjectId;
-                    break;
-            }
-
-#if DEBUG
-            // Log the selected target for debugging
-            var localTargetId = targetObjectId; // Copy to local, making next line more stable
-            var selectedTarget =
-                Svc.Objects.FirstOrDefault(x => x.GameObjectId == localTargetId);
-            Svc.Log.Debug($"Switched to {selectedTarget?.Name ?? "Unknown"}");
-#endif
-
-            #endregion
-
+            targetObjectId = target.GameObjectId;
             return true;
         }
 
