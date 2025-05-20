@@ -345,6 +345,7 @@ public class ActionRetargeting : IDisposable
             if (P.ActionRetargeting.CancelCacheClearing)
                 return;
         }
+        // When unloading the plugin, just kill the task
         catch (NullReferenceException _)
         {
             return;
