@@ -1,4 +1,4 @@
-﻿#region
+﻿#region Directives
 
 using System;
 using System.Linq;
@@ -34,7 +34,7 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Action = Lumina.Excel.Sheets.Action;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 using Status = Dalamud.Game.ClientState.Statuses.Status;
-using System.Collections.Generic;
+using Dalamud.Interface;
 
 #endregion
 
@@ -50,11 +50,20 @@ internal class Debug : ConfigWindow, IDisposable
     private static Guid? _wrathLease;
     private static Action? _debugSpell;
 
+    // Constants
+    private const int StatusIdWidth = 8;
+    private const int StatusDurationWidth = 11;
+    private const float SpacingSmall = 10f;
+    private const float SpacingMedium = 20f;
+    private const string UnknownName = "???";
+    private const string SymbolDuration = "";
+    private const string SymbolParameter = "";
+
     internal new static unsafe void Draw()
     {
         ImGui.Text("This is where you can figure out where it all went wrong.");
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingMedium));
 
         #region Debug Walking
 
@@ -106,26 +115,31 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingMedium));
 
         var target = Svc.Targets.Target;
         var player = Svc.ClientState.LocalPlayer;
-        HashSet<uint> statusBlacklist = [360, 361, 362, 363, 364, 365, 366, 367, 368]; // Duration will not be displayed for these status effects
 
-        // Custom Styling
-        // First Column: Default White Text
-        // Second Column (Optional): Dalamud Grey Text
-        static void CustomStyleText(string label, object? value)
+        // Custom 2-Column Styling
+        static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
         {
             ImGui.Columns(2, null, false);
-            if (!string.IsNullOrEmpty(label))
+            if (!string.IsNullOrEmpty(firstColumn))
             {
-                ImGui.TextUnformatted(label);
+                ImGui.TextUnformatted(firstColumn);
             }
 
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudGrey);
             ImGui.NextColumn();
-            ImGui.TextUnformatted(value?.ToString() ?? "");
+
+            // Optional Color
+            Vector4 textColor = optionalColor ?? ImGuiColors.DalamudGrey;
+            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
+
+            // Optional Monofont
+            if (useMonofont) ImGui.PushFont(UiBuilder.MonoFont);
+            ImGui.TextUnformatted(secondColumn?.ToString() ?? string.Empty);
+            if (useMonofont) ImGui.PopFont();
+
             ImGui.PopStyleColor();
             ImGui.Columns(1);
         }
@@ -145,48 +159,46 @@ internal class Debug : ConfigWindow, IDisposable
         {
             foreach (Status? status in player.StatusList)
             {
-                // Build Components
+                // Set Status
                 string statusId = status.StatusId.ToString();
                 string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
-                string formattedParam = status.Param != 0 ? $" (P: {status.Param})" : string.Empty;
+
+                // Set Source Name
                 string sourceName = status.SourceId != player.GameObjectId
                     ? status.SourceObject?.Name?.ToString() ?? string.Empty
                     : string.Empty;
 
-                // Build Duration
-                string formattedDuration = string.Empty;
-                if (!statusBlacklist.Contains(status.StatusId))
+                // Set Duration
+                float buffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, anyOwner: true);
+                string formattedDuration = $"{SymbolDuration} {(buffDuration >= 60f
+                    ? $"{(int)(buffDuration / 60f)}m"
+                    : $"{buffDuration:F1}s")}";
+
+                // Set Parameter
+                string formattedParam = status.Param > 0
+                    ? $"{SymbolParameter} {status.Param}"
+                    : string.Empty;
+
+                // Build First Column
+                string firstColumn = (string.IsNullOrEmpty(statusName), string.IsNullOrEmpty(sourceName)) switch
                 {
-                    float buffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, anyOwner: true);
-                    if (buffDuration != 0f)
-                    {
-                        formattedDuration = buffDuration >= 60f
-                            ? $"{(int)(buffDuration / 60f)}m"
-                            : $"{buffDuration:F1}s";
-                        formattedDuration = $" ({formattedDuration})";
-                    }
-                }
+                    (false, false)  => $"{sourceName} → {statusName}:", // Both Exist
+                    (false, true)   => $"{statusName}:",                // Only 'statusName'
+                    (true, false)   => $"{sourceName} → {UnknownName}", // Only 'sourceName'
+                    (true, true)    => UnknownName                      // Neither
+                };
 
-                // Build Label
-                // Format: '[Source] → [StatusName]:' OR '[StatusName]:'
-                string label = !string.IsNullOrEmpty(statusName)
-                    ? (!string.IsNullOrEmpty(sourceName)
-                        ? $"{sourceName}  {statusName}:"
-                        : $"{statusName}:")
-                    : (!string.IsNullOrEmpty(sourceName)
-                        ? $"{sourceName}  ???"
-                        : "???");
+                // Build Second Column
+                var secondColumn = new StringBuilder();
+                secondColumn.Append(statusId.PadRight(StatusIdWidth));
+                secondColumn.Append(formattedDuration.PadRight(StatusDurationWidth));
+                secondColumn.Append(formattedParam);
 
-                // Build Value
-                var valueBuilder = new StringBuilder(statusId);
-                if (!string.IsNullOrEmpty(formattedParam)) valueBuilder.Append(' ').Append(formattedParam);
-                if (!string.IsNullOrEmpty(formattedDuration)) valueBuilder.Append(' ').Append(formattedDuration);
-
-                // Print Label
-                CustomStyleText(label, valueBuilder);
+                // Print
+                CustomStyleText(firstColumn, secondColumn, useMonofont: true);
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
         if (ImGui.CollapsingHeader("Target Statuses"))
@@ -195,48 +207,46 @@ internal class Debug : ConfigWindow, IDisposable
             {
                 foreach (Status? status in chara.StatusList)
                 {
-                    // Build Components
+                    // Set Status
                     string statusId = status.StatusId.ToString();
                     string sourceName = status.SourceObject?.Name?.ToString() ?? string.Empty;
                     string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
 
-                    // Build Duration
-                    string formattedDuration = string.Empty;
-                    if (!statusBlacklist.Contains(status.StatusId))
+                    // Set Duration
+                    float debuffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, chara, true);
+                    string formattedDuration = $"{SymbolDuration} {(debuffDuration >= 60f
+                        ? $"{(int)(debuffDuration / 60f)}m"
+                        : $"{debuffDuration:F1}s")}";
+
+                    // Set Parameter
+                    string formattedParam = status.Param > 0
+                        ? $"{SymbolParameter} {status.Param}"
+                        : string.Empty;
+
+                    // Build First Column
+                    string firstColumn = (string.IsNullOrEmpty(statusName), string.IsNullOrEmpty(sourceName)) switch
                     {
-                        float debuffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, target, true);
-                        if (debuffDuration != 0f)
-                        {
-                            formattedDuration = debuffDuration >= 60f
-                               ? $"{(int)(debuffDuration / 60f)}m"
-                               : $"{debuffDuration:F1}s";
-                            formattedDuration = $" ({formattedDuration})";
-                        }
-                    }
+                        (false, false)  => $"{sourceName} → {statusName}:", // Both Exist
+                        (false, true)   => $"{statusName}:",                // Only 'statusName'
+                        (true, false)   => $"{sourceName} → {UnknownName}", // Only 'sourceName'
+                        (true, true)    => UnknownName                      // Neither
+                    };
 
-                    // Build Label
-                    // Format: '[Source] → [StatusName]:' OR '[StatusName]:'
-                    string label = !string.IsNullOrEmpty(statusName)
-                        ? (!string.IsNullOrEmpty(sourceName)
-                            ? $"{sourceName}  {statusName}:"
-                            : $"{statusName}:")
-                        : (!string.IsNullOrEmpty(sourceName)
-                            ? $"{sourceName}  ???"
-                            : "???");
+                    // Build Second Column
+                    var secondColumn = new StringBuilder();
+                    secondColumn.Append(statusId.PadRight(StatusIdWidth));
+                    secondColumn.Append(formattedDuration.PadRight(StatusDurationWidth));
+                    secondColumn.Append(formattedParam);
 
-                    // Build Value
-                    var valueBuilder = new StringBuilder(statusId);
-                    if (!string.IsNullOrEmpty(formattedDuration)) valueBuilder.Append(' ').Append(formattedDuration);
-
-                    // Print Label
-                    CustomStyleText(label, valueBuilder);
+                    // Print
+                    CustomStyleText(firstColumn, secondColumn, useMonofont: true);
                 }
             }
         }
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 10));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
         #region Character
 
@@ -252,15 +262,14 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("In PvP:", InPvP());
             CustomStyleText("In FATE:", InFATE());
             CustomStyleText("In Combat:", InCombat());
-            CustomStyleText("In Boss Encounter:", InBossEncounter());
-            CustomStyleText("Movement Timer:", TimeMoving.ToString("mm\\:ss\\:ff"));
+            CustomStyleText("Combat Time:", CombatEngageDuration().ToString("mm\\:ss\\:ff"));
             CustomStyleText("Hitbox Radius:", player.HitboxRadius);
-            CustomStyleText("Combat Time:", CombatEngageDuration().ToString("mm\\:ss"));
-            CustomStyleText("Combat Time (Party):", PartyEngageDuration().ToString("mm\\:ss"));
+            CustomStyleText("Movement Time:", TimeMoving.ToString("mm\\:ss\\:ff"));
+            CustomStyleText("In Boss Encounter:", InBossEncounter());
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
-            CustomStyleText("Job Gauge Data", "");
+            CustomStyleText("Job Gauge Data", string.Empty);
             ImGui.Separator();
             switch (Player.Job)
             {
@@ -329,7 +338,7 @@ internal class Debug : ConfigWindow, IDisposable
                     break;
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
         if (ImGui.CollapsingHeader("Target Data"))
@@ -343,7 +352,7 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Relative Position:", AngleToTarget().ToString());
             CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
             if (ImGui.TreeNode("Object Data"))
             {
@@ -353,15 +362,15 @@ internal class Debug : ConfigWindow, IDisposable
                 if (target is not null && target.EntityId != target.GameObjectId)
                 {
                     CustomStyleText("EntityId:", target.EntityId);
-                    ImGuiEx.InfoMarker("EntityId does not match ObjectId.");
+                    ImGuiEx.InfoMarker("EntityId does not match ObjectId.\nThis object may have special interactivity rules.");
                 }
 
                 CustomStyleText("ObjectId:", target?.GameObjectId);
-                CustomStyleText("ObjectType:", target?.GetType()?.Name);
                 CustomStyleText("ObjectKind:", target?.ObjectKind);
                 CustomStyleText("ObjectSubKind:", target?.SubKind);
+                CustomStyleText("ObjectType:", target?.GetType()?.FullName);
 
-                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
             }
 
@@ -375,10 +384,11 @@ internal class Debug : ConfigWindow, IDisposable
                     {
                         CustomStyleText($"{Svc.Objects.First(x => x.GameObjectId == h.Key).Name}:", $"{h.Value}%");
                     }
+
                     ImGui.TreePop();
                 }
 
-                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
             }
 
@@ -390,7 +400,7 @@ internal class Debug : ConfigWindow, IDisposable
                 CustomStyleText("Shield:", $"{(GetHealTarget() as ICharacter).ShieldPercentage}%");
                 CustomStyleText("Health:", $"{MathF.Round(GetTargetHPPercent(GetHealTarget()), 2)}% / {MathF.Round(GetTargetHPPercent(GetHealTarget(), true), 2)}% (+Shield)");
 
-                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
             }
 
@@ -418,7 +428,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 10));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
         #region Party
 
@@ -429,10 +439,11 @@ internal class Debug : ConfigWindow, IDisposable
         {
             CustomStyleText("Party ID:", Svc.Party.PartyId);
             CustomStyleText("Party Size:", GetPartyMembers().Count);
-            CustomStyleText("Party Avg. HP:", $"{MathF.Round(GetPartyAvgHPPercent(), 2)}%");
+            CustomStyleText("Party Avg. Health:", $"{MathF.Round(GetPartyAvgHPPercent(), 2)}%");
+            CustomStyleText("Party Combat Time:", PartyEngageDuration().ToString("mm\\:ss\\:ff"));
             CustomStyleText("Alliance Group:", GetAllianceGroup());
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
         if (ImGui.CollapsingHeader("Member Data"))
@@ -459,7 +470,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 10));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
         #region Actions
 
@@ -476,7 +487,9 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Last Action:",
                 ActionWatching.LastAction == 0
                     ? string.Empty
-                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ActionWatching.LastAction)) ? "Unknown" : ActionWatching.GetActionName(ActionWatching.LastAction))} (ID: {ActionWatching.LastAction})");
+                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ActionWatching.LastAction))
+                        ? "Unknown"
+                        : ActionWatching.GetActionName(ActionWatching.LastAction))} (ID: {ActionWatching.LastAction})");
             CustomStyleText("Last Action Cost:", GetResourceCost(ActionWatching.LastAction));
             CustomStyleText("Last Action Type:", ActionWatching.GetAttackType(ActionWatching.LastAction));
             CustomStyleText("Last Weaponskill:", ActionWatching.GetActionName(ActionWatching.LastWeaponskill));
@@ -486,17 +499,21 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Combo Action:",
                 ComboAction == 0
                     ? string.Empty
-                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ComboAction)) ? "Unknown" : ActionWatching.GetActionName(ComboAction))} (ID: {ComboAction})");
+                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(ComboAction))
+                        ? "Unknown"
+                        : ActionWatching.GetActionName(ComboAction))} (ID: {ComboAction})");
             CustomStyleText("Cast Time:", $"{player.CurrentCastTime:F2} / {player.TotalCastTime:F2}");
             CustomStyleText("Cast Action:",
                 player.CastActionId == 0
                     ? string.Empty
-                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(player.CastActionId)) ? "Unknown" : ActionWatching.GetActionName(player.CastActionId))} (ID: {player.CastActionId})");
+                    : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(player.CastActionId))
+                        ? "Unknown"
+                        : ActionWatching.GetActionName(player.CastActionId))} (ID: {player.CastActionId})");
             CustomStyleText("GCD Total:", GCDTotal);
             CustomStyleText("Queued Action:", ActionManager.Instance()->QueuedActionId.ActionName());
             CustomStyleText("Animation Lock:", $"{ActionManager.Instance()->AnimationLock:F1}");
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
             if (ImGui.TreeNode("Opener Data"))
             {
@@ -517,6 +534,7 @@ internal class Debug : ConfigWindow, IDisposable
                     }
                 }
 
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
             }
 
@@ -530,10 +548,10 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.TreePop();
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
-        if (ImGui.CollapsingHeader("ActionReady Data"))
+        if (ImGui.CollapsingHeader("ActionReady"))
         {
             if (ImGui.TreeNode("PvP"))
             {
@@ -544,7 +562,7 @@ internal class Debug : ConfigWindow, IDisposable
                     CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
                 }
 
-                ImGuiEx.Spacing(new Vector2(0, 10));
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
             }
 
@@ -560,10 +578,10 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.TreePop();
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
-        if (ImGui.CollapsingHeader("ActionSheet Data"))
+        if (ImGui.CollapsingHeader("ActionSheet"))
         {
             string prev = _debugSpell == null
                 ? "Select Action"
@@ -630,6 +648,7 @@ internal class Debug : ConfigWindow, IDisposable
                 var canUseOnSelf = ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId, Player.GameObject);
                 CustomStyleText("Can Use on Self:", canUseOnSelf);
 
+                // Target Required
                 if (target is not null)
                 {
                     var canUseOnTarget = ActionManager.CanUseActionOnTarget(_debugSpell.Value.RowId, target.Struct());
@@ -657,11 +676,11 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 10));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
         #region Misc
 
-        ImGui.Text("Miscellaneous");
+        ImGui.Text("Other");
         ImGui.Separator();
 
         if (ImGui.CollapsingHeader("Blue Mage Data"))
@@ -672,7 +691,7 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.TreePop();
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
         if (ImGui.CollapsingHeader("Miscellaneous Data"))
@@ -684,7 +703,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 10));
+        ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
         #region IPC
 
@@ -696,7 +715,7 @@ internal class Debug : ConfigWindow, IDisposable
             _wrathLease = null;
         }
 
-        if (ImGui.CollapsingHeader("Wrath IPC Data"))
+        if (ImGui.CollapsingHeader("Wrath IPC"))
         {
             CustomStyleText("Wrath Leased:", _wrathLease is not null);
             if (_wrathLease is null)
@@ -761,7 +780,7 @@ internal class Debug : ConfigWindow, IDisposable
                 }
             }
 
-            ImGuiEx.Spacing(new Vector2(0, 10));
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
             CustomStyleText("All Leases:", "");
 
@@ -808,9 +827,11 @@ internal class Debug : ConfigWindow, IDisposable
             {
                 CustomStyleText("No current leases.", "");
             }
+
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
         }
 
-        if (ImGui.CollapsingHeader("Orbwalker IPC Data"))
+        if (ImGui.CollapsingHeader("Orbwalker IPC"))
         {
             CustomStyleText("Plugin Installed & On:", $"{OrbwalkerIPC.IsEnabled}");
             if (OrbwalkerIPC.IsEnabled)
