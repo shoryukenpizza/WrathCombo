@@ -43,7 +43,6 @@ internal static class SimpleTarget
         ///     "Overrides" include MouseOver at the top of the stack and the
         ///     Hard Target near the bottom.
         /// </remarks>
-        /// <!-- todo: maybe including focus target should be an option? -->
         public static IGameObject? OverridesAllies =>
             MouseOver ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
 
@@ -55,6 +54,10 @@ internal static class SimpleTarget
         /// </remarks>
         public static IGameObject? OverridesSelf =>
             MouseOver ?? HardTarget ?? Self;
+
+        /// A very common stack that targets an ally or self.
+        public static IGameObject? Allies =>
+            FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
 
         /// A little mask for Plugin Configuration to make the string a bit shorter.
         private static PluginConfiguration cfg =>
