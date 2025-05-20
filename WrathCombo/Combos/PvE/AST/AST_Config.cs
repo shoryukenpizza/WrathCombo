@@ -35,7 +35,6 @@ internal partial class AST
             AST_QuickTarget_Prio = new("AST_QuickTarget_Prio"),
             AST_QuickTarget_SkipRezWeakness = new("AST_QuickTarget_SkipRezWeakness"),
             AST_ST_SimpleHeals_Adv = new("AST_ST_SimpleHeals_Adv"),
-            AST_ST_SimpleHeals_UIMouseOver = new("AST_ST_SimpleHeals_UIMouseOver"),
             AST_ST_SimpleHeals_IncludeShields = new("AST_ST_SimpleHeals_IncludeShields"),
             AST_ST_SimpleHeals_WeaveDignity = new("AST_ST_SimpleHeals_WeaveDignity"),
             AST_ST_SimpleHeals_WeaveIntersection = new("AST_ST_SimpleHeals_WeaveIntersection"),
@@ -125,10 +124,6 @@ internal partial class AST
                     {
                         ImGui.Indent();
                         ImGui.Spacing();
-                        DrawAdditionalBoolChoice(AST_ST_SimpleHeals_UIMouseOver,
-                            "Party UI Mouseover Checking",
-                            "Check party member's HP & Debuffs by using mouseover on the party list.\n" +
-                            "To be used in conjunction with Redirect/Reaction/etc");
                         DrawAdditionalBoolChoice(AST_ST_SimpleHeals_IncludeShields, "Include Shields in HP Percent Sliders", "");
                         ImGui.Unindent();
                     }

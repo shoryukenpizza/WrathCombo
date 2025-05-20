@@ -63,19 +63,6 @@ internal static class SimpleTarget
         /// <summary>
         ///     A very common stack to pick a heal target.
         /// </summary>
-        /// <remarks>
-        ///     These Items need to be checked for removal: <br />
-        ///     - <see cref="SCH.Config.SCH_ST_Heal_Adv"/><br />
-        ///     - <see cref="SCH.Config.SCH_ST_Heal_UIMouseOver"/><br />
-        ///     - <see cref="SCH.Config.SCH_DeploymentTactics_Adv"/><br />
-        ///     - <see cref="SCH.Config.SCH_DeploymentTactics_UIMouseOver"/><br />
-        ///     - <see cref="SGE.Config.SGE_ST_Heal_Adv"/><br />
-        ///     - <see cref="SGE.Config.SGE_ST_Heal_UIMouseOver"/><br />
-        ///     - <see cref="AST.Config.AST_ST_SimpleHeals_Adv"/><br />
-        ///     - <see cref="AST.Config.AST_ST_SimpleHeals_UIMouseOver"/><br />
-        ///     - <see cref="WHM.Config.WHM_STHeals_UIMouseOver"/><br />
-        ///     - <see cref="WHM.Config.WHM_AoEHeals_MedicaMO"/>
-        /// </remarks>
         public static IGameObject? AllyToHeal =>
             (cfg.UseMouseoverOverridesInDefaultHealStack
                 ? MouseOver.IfFriendly()
