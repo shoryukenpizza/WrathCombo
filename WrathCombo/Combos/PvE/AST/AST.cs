@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -115,11 +116,16 @@ internal partial class AST : Healer
                     return Divination;
 
                 //Earthly Star
+                var replacedActions = alternateMode
+                    ? CombustList.Keys.ToArray()
+                    : MaleficList.ToArray();
                 if (IsEnabled(CustomComboPreset.AST_ST_DPS_EarthlyStar) &&
                     !HasStatusEffect(Buffs.EarthlyDominance) &&
                     ActionReady(EarthlyStar) &&
+                    IsOffCooldown(EarthlyStar) &&
                     CanSpellWeave())
-                    return EarthlyStar;
+                    return EarthlyStar.Retarget(replacedActions,
+                        SimpleTarget.Stack.Allies);
 
                 if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) &&
                     HasStatusEffect(Buffs.Divining) &&

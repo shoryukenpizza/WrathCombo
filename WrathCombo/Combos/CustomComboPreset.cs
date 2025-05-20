@@ -206,8 +206,8 @@ public enum CustomComboPreset
     AST_DPS_Oracle = 1015,
 
     [ParentCombo(AST_ST_DPS)]
-    [CustomComboInfo("Earthly Star Option", "Adds Earthly Star." +
-                                            "\nTo be used in conjunction with Redirect/Reaction/etc", AST.JobID)]
+    [CustomComboInfo("Earthly Star Option", "Adds Earthly Star placement, but not detonation, to the rotation.\nWill be targeted to your focus target, then soft and hard targets, before falling back to placing it at your feet.", AST.JobID)]
+    [Retargeted]
     AST_ST_DPS_EarthlyStar = 1051,
 
     #endregion
