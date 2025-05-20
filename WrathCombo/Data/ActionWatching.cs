@@ -203,14 +203,14 @@ namespace WrathCombo.Data
                 NIN.InMudra = false;
         }
 
-        private static void CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
+        private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
         {
             // Check if there is a retargeted action
             if (P.ActionRetargeting.TryGetTargetFor(actionId, out var target))
             {
-                if (target is not null)
-                    targetObjectId = target.GameObjectId;
-                return;
+                if (target is null) return false;
+                targetObjectId = target.GameObjectId;
+                return true;
             }
 
             #region AST-only targeting
@@ -218,7 +218,7 @@ namespace WrathCombo.Data
             if (actionId is not (AST.Balance or AST.Spear) ||
                 AST.QuickTargetCards.SelectedRandomMember is null ||
                 OutOfRange(actionId, Svc.ClientState.LocalPlayer!, AST.QuickTargetCards.SelectedRandomMember))
-                return;
+                return false;
 
             // Set Default Result
             targetObjectId = AST.QuickTargetCards.SelectedRandomMember.GameObjectId;
@@ -249,6 +249,8 @@ namespace WrathCombo.Data
 #endif
 
             #endregion
+
+            return true;
         }
 
         public static unsafe bool OutOfRange(uint actionId, IGameObject source, IGameObject target)
@@ -386,8 +388,17 @@ namespace WrathCombo.Data
                     }
                 }
             }
-            CheckForChangedTarget(actionId, ref targetId);
-            return UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+
+            var changed = CheckForChangedTarget(actionId, ref targetId);
+
+            var hookResult = UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+
+            // If the target was changed, support changing the target for ground actions, too
+            if (changed)
+                ActionManager.Instance()->AreaTargetingExecuteAtObject =
+                    targetId;
+
+            return hookResult;
         }
 
         public static void Enable()
