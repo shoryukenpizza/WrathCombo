@@ -333,7 +333,8 @@ public class ActionRetargeting : IDisposable
     }
 
     /// Simple Flag to stop clearing the cache when the plugin is disposed.
-    private bool CancelCacheClearing;
+    // ReSharper disable once RedundantDefaultMemberInitializer
+    private bool CancelCacheClearing = false;
 
     /// Clears Retargets older than 20 seconds every 11 seconds.
     /// <seealso cref="_retargets" />
