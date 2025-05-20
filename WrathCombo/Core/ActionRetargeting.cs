@@ -340,8 +340,15 @@ public class ActionRetargeting : IDisposable
     /// <seealso cref="_retargets" />
     internal Action ClearOldRetargets = () =>
     {
-        if (P.ActionRetargeting.CancelCacheClearing)
+        try
+        {
+            if (P.ActionRetargeting.CancelCacheClearing)
+                return;
+        }
+        catch (NullReferenceException _)
+        {
             return;
+        }
 
         // Find old Retargets that are allowed to be culled
         var oldRetargets = P.ActionRetargeting._retargets.Values
