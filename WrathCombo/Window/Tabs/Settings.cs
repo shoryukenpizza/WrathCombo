@@ -324,7 +324,10 @@ namespace WrathCombo.Window.Tabs
 
                 ImGui.TextUnformatted("Current Heal Stack:");
 
-                ImGuiComponents.HelpMarker("This is the priority list ");
+                ImGuiComponents.HelpMarker(
+                    "This is the order in which Wrath will try to select a healing target.\n\n" +
+                    "If the 'Retarget Healing Actions' option is disabled, that is just the target that will be used for checking the HP threshold to trigger different healing actions to show up in their rotations.\n" +
+                    "If the 'Retarget Healing Actions' option is enabled, that target is also the one that healing actions will be targeted onto (even when the action does not first check the HP of that target, like the combo's Replaced Action, for example).");
 
                 var healStackText = "";
                 var nextStackItemMarker = "   >   ";
