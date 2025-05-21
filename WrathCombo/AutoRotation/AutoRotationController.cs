@@ -66,7 +66,7 @@ namespace WrathCombo.AutoRotation
         private static bool _ninjaLockedAoE;
 
         static bool CombatBypass => (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
-        static bool InCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
+        static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
 
         internal static void Run()
         {
@@ -82,12 +82,12 @@ namespace WrathCombo.AutoRotation
 
             if (cfg.BypassBuffs)
             {
-                bool processed = ProcessAutoActions(autoActions, ref _, false) || ProcessAutoActions(autoActions, ref _, true);
+                bool processed = ProcessAutoActions(autoActions, ref _, false);
                 if (processed)
                     return;
             }
 
-            if (cfg.InCombatOnly && InCombat && !CombatBypass)
+            if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
                 return;
 
             var healTarget = Player.Object.GetRole() is CombatRole.Healer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
@@ -179,7 +179,7 @@ namespace WrathCombo.AutoRotation
                         return false;
             }
 
-            return true;
+            return false;
         }
 
         private static void PreEmptiveHot()
@@ -524,7 +524,8 @@ namespace WrathCombo.AutoRotation
                 bool switched = SwitchOnDChole(attributes, outAct, ref target);
 
                 var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
-                if (!canUseSelf && !CombatBypass && InCombat)
+                var blockedSelfBuffs = outAct is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo or DNC.StandardStep or DNC.TechnicalStep or MCH.Reassemble or SAM.MeikyoShisui;
+                if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
                     return false;
 
                 if (target is null && !canUseSelf)
