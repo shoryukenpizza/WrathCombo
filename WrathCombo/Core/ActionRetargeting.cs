@@ -26,14 +26,15 @@ namespace WrathCombo.Core;
 ///     Reaction.<br /><br />
 ///     See
 ///     <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)">
-///         Retarget(uint,IGameObject) for simple Feature Retargeting.
+///         Retarget(uint,IGameObject)
 ///     </see>
+///     for simple Feature Retargeting.
 ///     <br />
 ///     See
 ///     <see cref="UIntExtensions.Retarget(uint,uint,Func{IGameObject?},bool)">
-///         Retarget(uint,uint,TargetResolverDelegate) for more advanced
-///         Retargeting in a full combo.
+///         Retarget(uint,uint,TargetResolverDelegate)
 ///     </see>
+///     for more advanced Retargeting in a full combo.
 ///     <br />
 ///     See <see cref="TargetResolverAttribute" /> for an example on setting up more
 ///     advanced Retargeting.
