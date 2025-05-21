@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
@@ -31,6 +32,7 @@ internal partial class AST
             AST_ST_DPS_CombustSubOption = new("AST_ST_DPS_CombustSubOption", 0);            
 
         public static UserBool
+            AST_QuickTarget_Manuals = new("AST_QuickTarget_Manuals", true),
             AST_ST_SimpleHeals_Adv = new("AST_ST_SimpleHeals_Adv"),
             AST_ST_SimpleHeals_IncludeShields = new("AST_ST_SimpleHeals_IncludeShields"),
             AST_ST_SimpleHeals_WeaveDignity = new("AST_ST_SimpleHeals_WeaveDignity"),
@@ -181,6 +183,11 @@ internal partial class AST
                     break;
 
                 case CustomComboPreset.AST_Cards_QuickTargetCards:
+                    DrawAdditionalBoolChoice(AST_QuickTarget_Manuals,
+                        "Also Retarget manually-used Cards",
+                        "Will also automatically target Cards that you manually use, as in, those outside of your damage rotations.",
+                        indentDescription: true);
+
                     ImGui.Indent();
                     ImGui.TextWrapped("Target Overrides:           (hover each for more info)");
                     ImGui.Unindent();

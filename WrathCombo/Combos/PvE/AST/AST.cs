@@ -388,4 +388,21 @@ internal partial class AST : Healer
             return actionID;
         }
     }
+
+    internal class AST_RetargetManualCards : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Cards_QuickTargetCards;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Play1 ||
+                !Config.AST_QuickTarget_Manuals)
+                return actionID;
+
+            Balance.Retarget(Play1, CardResolver, dontCull: true);
+            Spear.Retarget(Play1, CardResolver, dontCull: true);
+
+            return actionID;
+        }
+    }
 }
