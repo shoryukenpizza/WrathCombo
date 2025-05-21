@@ -30,12 +30,12 @@ namespace WrathCombo.Core;
 ///     </see>
 ///     <br />
 ///     See
-///     <see cref="UIntExtensions.Retarget(uint,uint,TargetResolverDelegate,bool)">
+///     <see cref="UIntExtensions.Retarget(uint,uint,Func{IGameObject?},bool)">
 ///         Retarget(uint,uint,TargetResolverDelegate) for more advanced
 ///         Retargeting in a full combo.
 ///     </see>
 ///     <br />
-///     See <see cref="TargetResolverDelegate" /> for an example on setting up more
+///     See <see cref="TargetResolverAttribute" /> for an example on setting up more
 ///     advanced Retargeting.
 /// </summary>
 public class ActionRetargeting : IDisposable
@@ -45,25 +45,18 @@ public class ActionRetargeting : IDisposable
         _retargets = [];
 
     /// <summary>
-    ///     The Name of your
-    ///     <see cref="TargetResolverDelegate">Custom Target Resolver</see>.<br />
-    ///     If you are using a custom resolver, it should set this variable with its
-    ///     name, to help debug logs.
-    /// </summary>
-    public string? MyResolverMethodName { get; set; }
-
-    /// <summary>
     ///     Register an action and its replaced actions as one you want Retargeted.
     /// </summary>
     /// <param name="action">The Action to retarget.</param>
     /// <param name="replacedActions">The Actions the combo is replacing</param>
     /// <param name="resolver">
-    ///     The <see cref="TargetResolverDelegate" /> to resolve the target.<br />
+    ///     The <see cref="TargetResolverAttribute">TargetResolver</see> to resolve
+    ///     the target.<br />
     ///     Examples:
     ///     a <see cref="SimpleTarget">SimpleTarget</see> (like
     ///     <see cref="SimpleTarget.HardTarget">HardTarget</see>)
     ///     or
-    ///     a <see cref="TargetResolverDelegate">custom delegate</see> (like:
+    ///     a <see cref="TargetResolverAttribute">custom method</see> (like:
     ///     <see cref="AST.CardResolver">AST.CardsResolver</see>)
     /// </param>
     /// <param name="dontCull">
@@ -73,14 +66,14 @@ public class ActionRetargeting : IDisposable
     /// <returns>
     ///     The <paramref name="action" /> that was registered.<br />
     ///     This only really returns to make
-    ///     <see cref="UIntExtensions.Retarget(uint,TargetResolverDelegate,bool)">
+    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?},bool)">
     ///         (uint).Retarget()
     ///     </see>
     ///     simpler.
     /// </returns>
     /// <remarks>
     ///     Should only be called by
-    ///     <see cref="UIntExtensions.Retarget(uint,TargetResolverDelegate,bool)">
+    ///     <see cref="UIntExtensions.Retarget(uint,Func{IGameObject?},bool)">
     ///         (uint).Retarget()
     ///     </see>
     ///     .
@@ -88,7 +81,7 @@ public class ActionRetargeting : IDisposable
     internal uint Register
     (uint action,
         uint[] replacedActions,
-        TargetResolverDelegate resolver,
+        Func<IGameObject?> resolver,
         bool dontCull = false)
     {
         // Make sure the action is not in replaced actions,
@@ -156,7 +149,7 @@ public class ActionRetargeting : IDisposable
 
     /// <summary>
     ///     Resolve the target for an action via the provided
-    ///     <see cref="TargetResolverDelegate" />.
+    ///     <see cref="TargetResolverAttribute">TargetResolver</see>.
     /// </summary>
     /// <param name="action">The Action or Replaced Action to Retarget.</param>
     /// <param name="target">
@@ -208,8 +201,8 @@ public class ActionRetargeting : IDisposable
     ///     for the combo where the Retargeted action appears.
     /// </param>
     /// <param name="resolver">
-    ///     The <see cref="TargetResolverDelegate" /> that resolves the target for the
-    ///     action.<br />
+    ///     The <see cref="TargetResolverAttribute">TargetResolver</see> that
+    ///     resolves the target for the action.<br />
     ///     Can be a <see cref="SimpleTarget" />, but it gets wrapped in a delegate
     ///     in <see cref="UIntExtensions.Retarget(uint,IGameObject?,bool)" />, or its
     ///     two overloads.
@@ -222,7 +215,7 @@ public class ActionRetargeting : IDisposable
     private class Retargeting(
         uint action,
         uint[] replacedActions,
-        TargetResolverDelegate resolver,
+        Func<IGameObject?> resolver,
         bool dontCull = false)
     {
         /// A unique identifier for the Retarget, to help with overwrites and removal.
@@ -235,7 +228,7 @@ public class ActionRetargeting : IDisposable
         public uint[] ReplacedActions { get; } = replacedActions;
 
         /// The target resolver that will decide the new target for the action.
-        public TargetResolverDelegate Resolver { get; } = resolver;
+        public Func<IGameObject?> Resolver { get; } = resolver;
 
         /// The name of the resolver method, to help with debugging.
         public string ResolverName { get; } = GetMethodName(resolver);
@@ -253,23 +246,11 @@ public class ActionRetargeting : IDisposable
         /// <param name="resolver">The resolver we want the name of.</param>
         /// <returns>
         ///     The name of the resolver, whether determined from the class (for
-        ///     <see cref="SimpleTarget">Simple Targets</see>) or the given name from the
+        ///     <see cref="SimpleTarget">Simple Targets</see>) or the name of the
         ///     resolver itself.
         /// </returns>
-        private static string GetMethodName(TargetResolverDelegate resolver)
+        private static string GetMethodName(Func<IGameObject?> resolver)
         {
-            try
-            {
-                resolver.Invoke();
-            }
-            catch (Exception ex)
-            {
-                log("error while resolving name for method",
-                    logLevel: 3,
-                    extraText: $":\n{ex}");
-                return "<ErrorResolvingNameOfCustomResolver>";
-            }
-
             var resolverName = resolver.Method.Name;
             var resolverClass = resolver.Method.DeclaringType?.Name ?? "";
 
@@ -277,20 +258,44 @@ public class ActionRetargeting : IDisposable
             // try to provide the custom name if one was provided
             resolverName = resolverClass switch
             {
-                _ when P.ActionRetargeting.MyResolverMethodName is not null =>
-                    P.ActionRetargeting.MyResolverMethodName,
                 _ when resolverClass.Contains("<>c") ||
                        resolverClass.Contains("__") =>
-                    "<UnnamedCustomResolver>",
+                    "<DirectGameObject>",
                 _ => resolverName,
             };
-            P.ActionRetargeting.MyResolverMethodName = null;
 
             return $"`{resolverName}`";
         }
     }
 
     #region Utilities
+
+    /// <summary>
+    ///     Method to resolve a target for an action using custom logic.<br />
+    ///     Should return <c>IGameObject?</c>.
+    /// </summary>
+    /// <returns>
+    ///     The <see langword="null" />able
+    ///     <see cref="IGameObject">Game Object</see> of the target.
+    /// </returns>
+    /// <example>
+    ///     <code>
+    ///     [ActionRetargeting.TargetResolver]
+    ///     public static IGameObject? ExampleTargetResolver () {
+    ///         if (Config.Example_ShouldUseFocusTarget)
+    ///             return SimpleTarget.FocusTarget;
+    ///         return SimpleTarget.Self;
+    ///     };
+    ///     </code>
+    /// </example>
+    /// <seealso cref="AST.CardResolver">
+    ///     AST.CardsResolver
+    /// </seealso>
+    /// <seealso cref="DNC.DancePartnerResolver">
+    ///     DNC.DancePartnerResolver
+    /// </seealso>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class TargetResolverAttribute : Attribute { }
 
     /// <summary>
     ///     Prevents the action itself from being retargeted unless excepted,
@@ -343,6 +348,9 @@ public class ActionRetargeting : IDisposable
     {
         try
         {
+            // This doesn't even need set at Dispose() technically,
+            // since it becomes un-reference-able once the plugin is unloaded.
+            // Either way, it's an easy check, for sure.
             if (P.ActionRetargeting.CancelCacheClearing)
                 return;
         }
@@ -431,35 +439,28 @@ public class ActionRetargeting : IDisposable
     #endregion
 }
 
-/// <summary>
-///     Delegate function to resolve a target for an action.<br />
-///     Should set <see cref="ActionRetargeting.MyResolverMethodName" /> to the
-///     name of the method that is being used to resolve the target.
-/// </summary>
-/// <returns>
-///     The <see cref="IGameObject">Game Object</see> of the target.
-/// </returns>
-/// <remarks>
-///     This resolver is run at initialization and when the action is used,
-///     it should not try to do anything except return the target.<br />
-///     As in, it shouldn't modify the state of your combo.
-/// </remarks>
-/// <example>
-///     For inline delegate-error checking purposes it is suggested you write your
-///     resolvers as static field lambdas in your Job's class or JobHelper class.
-///     <code>
-///     public static TargetResolverDelegate ExampleTargetResolver = () => {
-///         P.ActionRetargeting.MyResolverMethodName =
-///             "ExampleTargetResolver";
-///         if (Config.HelpfulGroundTargetAbility_TargetOther)
-///             return SimpleTargets.FocusTarget;
-///     };
-///     </code>
-/// </example>
-/// <seealso cref="AST.CardResolver">
-///     AST.CardsResolver
-/// </seealso>
-public delegate IGameObject? TargetResolverDelegate();
+internal static class FuncIGameObjectExtensions
+{
+    /// <summary>
+    ///     A simple extension to throw a warning if the target resolver does not
+    ///     have the <see cref="ActionRetargeting.TargetResolverAttribute" />.
+    /// </summary>
+    public static Func<IGameObject?> CheckForAttribute
+        (this Func<IGameObject?> target)
+    {
+        var hasTargetResolverAttr = target.Method
+            .GetCustomAttributes(typeof(ActionRetargeting.TargetResolverAttribute), false)
+            .Length > 0;
+        if (!hasTargetResolverAttr &&
+            EZ.Throttle("retargetAttributeWarning", TS.FromSeconds(15)))
+            PluginLog.Warning(
+                "[ActionRetargeting] Custom Target Resolver provided, " +
+                "but lacks the `TargetResolver` Attribute.\n" +
+                "StackTrace:\n" + Environment.StackTrace);
+
+        return target;
+    }
+}
 
 internal static class UIntExtensions
 {
@@ -485,11 +486,8 @@ internal static class UIntExtensions
     /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     internal static uint Retarget
-        (this uint action, IGameObject? target, bool dontCull = false)
-    {
-        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
-        return P.ActionRetargeting.Register(action, [action], () => target, dontCull);
-    }
+        (this uint action, IGameObject? target, bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [action], () => target, dontCull);
 
     /// <summary>
     ///     Retargets the action to the target specified.<br />
@@ -498,10 +496,10 @@ internal static class UIntExtensions
     /// </summary>
     /// <param name="action">The action ID to Retarget.</param>
     /// <param name="target">
-    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
-    ///     decides the target to Retarget the action onto.<br />
-    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
-    ///     the name of your resolver method.
+    ///     The
+    ///     <see cref="ActionRetargeting.TargetResolverAttribute">
+    ///         Target Resolver
+    ///     </see> that provides the <see cref="IGameObject">target</see> you want.
     /// </param>
     /// <param name="dontCull">
     ///     Whether this method should be exempt from periodic culls.<br />
@@ -510,8 +508,9 @@ internal static class UIntExtensions
     /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     internal static uint Retarget
-        (this uint action, TargetResolverDelegate target, bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, [action], target, dontCull);
+        (this uint action, Func<IGameObject?> target, bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [action],
+            target.CheckForAttribute(), dontCull);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -536,10 +535,8 @@ internal static class UIntExtensions
     (this uint action,
         uint replaced,
         IGameObject? target,
-        bool dontCull = false) {
-        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
-        return P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
-    }
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -547,10 +544,8 @@ internal static class UIntExtensions
     /// <param name="action">The action ID to retarget.</param>
     /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
     /// <param name="target">
-    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
-    ///     decides the target to Retarget the action onto.<br />
-    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
-    ///     the name of your  resolver method.
+    ///     The target to Retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
     /// <param name="dontCull">
     ///     Whether this method should be exempt from periodic culls.<br />
@@ -563,9 +558,12 @@ internal static class UIntExtensions
     ///     combo's Replaced Action (i.e. main Combos, not usually Features).
     /// </remarks>
     internal static uint Retarget
-    (this uint action, uint replaced, TargetResolverDelegate target, bool
-        dontCull = false) =>
-        P.ActionRetargeting.Register(action, [replaced], target, dontCull);
+    (this uint action,
+        uint replaced,
+        Func<IGameObject?>  target,
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, [replaced],
+            target.CheckForAttribute(), dontCull);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -591,10 +589,8 @@ internal static class UIntExtensions
     (this uint action,
         uint[] replaced,
         IGameObject? target,
-        bool dontCull = false) {
-        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
-        return P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
-    }
+        bool dontCull = false) =>
+        P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -602,10 +598,8 @@ internal static class UIntExtensions
     /// <param name="action">The action ID to retarget.</param>
     /// <param name="replaced">The action ID of the combo's Replaced Action.</param>
     /// <param name="target">
-    ///     The <see cref="TargetResolverDelegate">Target Resolver</see> that
-    ///     decides the target to Retarget the action onto.<br />
-    ///     Make sure to set <see cref="ActionRetargeting.MyResolverMethodName" /> to
-    ///     the name of your resolver method.
+    ///     The target to Retarget the action onto.<br />
+    ///     Should be a <see cref="SimpleTarget" /> property.
     /// </param>
     /// <param name="dontCull">
     ///     Whether this method should be exempt from periodic culls.<br />
@@ -621,7 +615,8 @@ internal static class UIntExtensions
     internal static uint Retarget
     (this uint action,
         uint[] replaced,
-        TargetResolverDelegate target,
+        Func<IGameObject?> target,
         bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, replaced, target, dontCull);
+        P.ActionRetargeting.Register(action, replaced,
+            target.CheckForAttribute(), dontCull);
 }

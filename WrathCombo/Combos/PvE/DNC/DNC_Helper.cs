@@ -228,19 +228,15 @@ internal partial class DNC
 
     #region Resolver Delegates
 
-    internal static TargetResolverDelegate DancePartnerResolver = () =>
-    {
-        P.ActionRetargeting.MyResolverMethodName = "DancePartnerResolver";
-        return Svc.Objects.FirstOrDefault(x =>
+    [ActionRetargeting.TargetResolver]
+    internal static IGameObject? DancePartnerResolver () =>
+        Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == DesiredDancePartner);
-    };
 
-    internal static TargetResolverDelegate FeatureDancePartnerResolver = () =>
-    {
-        P.ActionRetargeting.MyResolverMethodName = "FeatureDancePartnerResolver";
-        return Svc.Objects.FirstOrDefault(x =>
+    [ActionRetargeting.TargetResolver]
+    internal static IGameObject? FeatureDancePartnerResolver() =>
+        Svc.Objects.FirstOrDefault(x =>
             x.GameObjectId == FeatureDesiredDancePartner);
-    };
 
     #endregion
 

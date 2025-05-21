@@ -62,11 +62,9 @@ internal partial class AST
 
     #region Card Targeting
 
-    public static TargetResolverDelegate CardResolver = () =>
-    {
-        P.ActionRetargeting.MyResolverMethodName = "CardResolver";
-        return CardTarget ?? SimpleTarget.Self;
-    };
+    [ActionRetargeting.TargetResolver]
+    public static IGameObject? CardResolver () =>
+        CardTarget ?? SimpleTarget.Self;
 
     internal static IGameObject? CardTarget
     {

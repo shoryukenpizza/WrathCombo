@@ -1367,7 +1367,6 @@ internal partial class DNC : PhysicalRanged
             {
                 if (HasStatusEffect(Buffs.ClosedPosition))
                     return Ending;
-
                 // I could automatically end partner,
                 // instead of having the user press ending first ...
                 //StatusManager.ExecuteStatusOff(Buffs.ClosedPosition);
