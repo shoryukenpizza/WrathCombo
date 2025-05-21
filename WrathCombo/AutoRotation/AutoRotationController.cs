@@ -65,21 +65,27 @@ namespace WrathCombo.AutoRotation
 
         private static bool _ninjaLockedAoE;
 
+        static bool CombatBypass => (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
+        static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
+
         internal static void Run()
         {
             cfg ??= new AutoRotationConfigIPCWrapper(Service.Configuration.RotationConfig);
             if (!cfg.Enabled || !Player.Available || Player.Object.IsDead || Svc.Condition[ConditionFlag.Mounted] || !EzThrottler.Throttle("Autorot", cfg.Throttler))
                 return;
 
+            uint _ = 0;
+            var autoActions = Presets.GetJobAutorots;
+
             if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.CNJ or Job.WHM or Job.AST)
                 PreEmptiveHot();
 
-            bool combatBypass = (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
-
-            if (cfg.InCombatOnly && (!GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay) && !combatBypass)
-                return;
-
-            var autoActions = Presets.GetJobAutorots;
+            if (cfg.BypassBuffs)
+            {
+                bool processed = ProcessAutoActions(autoActions, ref _, false);
+                if (processed)
+                    return;
+            }
 
             var healTarget = Player.Object.GetRole() is CombatRole.Healer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
 
@@ -94,8 +100,6 @@ namespace WrathCombo.AutoRotation
 
             if (!needsHeal)
                 TimeToHeal = null;
-
-            uint _ = 0;
 
             bool actCheck = autoActions.Any(x =>
             {
@@ -134,6 +138,11 @@ namespace WrathCombo.AutoRotation
                 _ninjaLockedAoE = false;
             }
 
+            ProcessAutoActions(autoActions, ref _, canHeal);
+        }
+
+        private static bool ProcessAutoActions(Dictionary<CustomComboPreset, bool> autoActions, ref uint _, bool canHeal)
+        {
             foreach (var preset in autoActions.Where(x => x.Key.Attributes()?.AutoAction?.IsHeal == canHeal).OrderByDescending(x => x.Key.Attributes()?.AutoAction?.IsAoE == true))
             {
                 var attributes = preset.Key.Attributes();
@@ -164,9 +173,10 @@ namespace WrathCombo.AutoRotation
 
                 if (!action.IsHeal)
                     if (AutomateDPS(preset.Key, attributes, gameAct))
-                        return;
+                        return false;
             }
 
+            return false;
         }
 
         private static void PreEmptiveHot()
@@ -269,7 +279,7 @@ namespace WrathCombo.AutoRotation
 
                         if (!IsMoving() || HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast))
                         {
-                            
+
                             if ((cfg is not null) && ((cfg.HealerSettings.AutoRezRequireSwift && ActionManager.GetAdjustedCastTime(ActionType.Action, resSpell) == 0) || !cfg.HealerSettings.AutoRezRequireSwift))
                                 ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
                         }
@@ -411,6 +421,9 @@ namespace WrathCombo.AutoRotation
 
             public static bool ExecuteAoE(Enum mode, CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
             {
+                if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
+                    return false;
+
                 if (attributes.AutoAction!.IsHeal)
                 {
                     LockedAoE = false;
@@ -438,6 +451,7 @@ namespace WrathCombo.AutoRotation
                 }
                 else
                 {
+
                     var target = !cfg.DPSSettings.AoEIgnoreManual && cfg.DPSRotationMode == DPSRotationMode.Manual ? Svc.Targets.Target : DPSTargeting.BaseSelection.MaxBy(x => NumberOfEnemiesInRange(OriginalHook(gameAct), x, true));
                     var numEnemies = NumberOfEnemiesInRange(gameAct, target, true);
                     if (!_ninjaLockedAoE)
@@ -501,8 +515,6 @@ namespace WrathCombo.AutoRotation
             {
                 if (_ninjaLockedAoE) return false;
                 var target = GetSingleTarget(mode);
-                if (target is null)
-                    return false;
 
                 var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
                 if (!CanQueue(outAct))
@@ -512,17 +524,22 @@ namespace WrathCombo.AutoRotation
 
                 bool switched = SwitchOnDChole(attributes, outAct, ref target);
 
-                if (target is null)
+                var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
+                var blockedSelfBuffs = outAct is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo or DNC.StandardStep or DNC.TechnicalStep or MCH.Reassemble or SAM.MeikyoShisui;
+
+                if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
+                    return false;
+
+                if (target is null && !canUseSelf)
                     return false;
 
                 var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
-                var canUseTarget = ActionManager.CanUseActionOnTarget(outAct, target.Struct());
-                var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
-                var inRange = IsInLineOfSight(target) && InActionRange(outAct, target);
+                var canUseTarget = target is null ? false : ActionManager.CanUseActionOnTarget(outAct, target.Struct());
+                var inRange = target is null && canUseSelf ? true : target is null ? false : IsInLineOfSight(target) && InActionRange(outAct, target);
 
                 var canUse = canUseSelf || canUseTarget || areaTargeted;
 
-                if (canUse || cfg.DPSSettings.AlwaysSelectTarget)
+                if ((canUse || cfg.DPSSettings.AlwaysSelectTarget) && !canUseSelf)
                     Svc.Targets.Target = target;
 
                 var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
