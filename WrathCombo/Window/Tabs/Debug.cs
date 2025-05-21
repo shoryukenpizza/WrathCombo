@@ -344,7 +344,7 @@ internal class Debug : ConfigWindow, IDisposable
         if (ImGui.CollapsingHeader("Target Data"))
         {
             CustomStyleText("Name:", target?.Name);
-            CustomStyleText("Health:", $"{EnemyHealthCurrentHp():N0} / {EnemyHealthMaxHp():N0} ({MathF.Round(GetTargetHPPercent(), 2)}%)");
+            CustomStyleText("Health:", $"{EnemyHealthCurrentHp():N0} / {GetTargetMaxHP():N0} ({MathF.Round(GetTargetHPPercent(), 2)}%)");
             CustomStyleText("Distance:", $"{MathF.Round(GetTargetDistance(), 2)}y");
             CustomStyleText("Hitbox Radius:", target?.HitboxRadius);
             CustomStyleText("In Melee Range:", InMeleeRange());
@@ -394,11 +394,11 @@ internal class Debug : ConfigWindow, IDisposable
 
             if (ImGui.TreeNode("Heal Target Data"))
             {
-                CustomStyleText("Current:", GetHealTarget().Name);
+                CustomStyleText("Current:", SimpleTarget.Stack.AllyToHeal.Name);
                 ImGuiEx.InfoMarker("Cycles from Party UI Mouseover → Soft Target → Hard Target → Player.");
 
-                CustomStyleText("Shield:", $"{(GetHealTarget() as ICharacter).ShieldPercentage}%");
-                CustomStyleText("Health:", $"{MathF.Round(GetTargetHPPercent(GetHealTarget()), 2)}% / {MathF.Round(GetTargetHPPercent(GetHealTarget(), true), 2)}% (+Shield)");
+                CustomStyleText("Shield:", $"{(SimpleTarget.Stack.AllyToHeal as ICharacter).ShieldPercentage}%");
+                CustomStyleText("Health:", $"{MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal), 2)}% / {MathF.Round(GetTargetHPPercent(SimpleTarget.Stack.AllyToHeal, true), 2)}% (+Shield)");
 
                 ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
                 ImGui.TreePop();
