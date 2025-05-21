@@ -277,11 +277,11 @@ public class ActionRetargeting : IDisposable
             // try to provide the custom name if one was provided
             resolverName = resolverClass switch
             {
-                "SimpleTarget" => "SimpleTarget." + resolverName,
-                "Stack" => "SimpleTarget.Stack." + resolverName,
-                "<>c" => P.ActionRetargeting.MyResolverMethodName ??
-                         "<UnnamedCustomResolver>",
-                // todo: fix for drk
+                _ when P.ActionRetargeting.MyResolverMethodName is not null =>
+                    P.ActionRetargeting.MyResolverMethodName,
+                _ when resolverClass.Contains("<>c") ||
+                       resolverClass.Contains("__") =>
+                    "<UnnamedCustomResolver>",
                 _ => resolverName,
             };
             P.ActionRetargeting.MyResolverMethodName = null;
@@ -485,8 +485,11 @@ internal static class UIntExtensions
     /// </param>
     /// <returns>The <paramref name="action" />.</returns>
     internal static uint Retarget
-        (this uint action, IGameObject? target, bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, [action], () => target, dontCull);
+        (this uint action, IGameObject? target, bool dontCull = false)
+    {
+        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
+        return P.ActionRetargeting.Register(action, [action], () => target, dontCull);
+    }
 
     /// <summary>
     ///     Retargets the action to the target specified.<br />
@@ -533,8 +536,10 @@ internal static class UIntExtensions
     (this uint action,
         uint replaced,
         IGameObject? target,
-        bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
+        bool dontCull = false) {
+        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
+        return P.ActionRetargeting.Register(action, [replaced], () => target, dontCull);
+    }
 
     /// <summary>
     ///     Retargets the action to the target specified.
@@ -586,8 +591,10 @@ internal static class UIntExtensions
     (this uint action,
         uint[] replaced,
         IGameObject? target,
-        bool dontCull = false) =>
-        P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
+        bool dontCull = false) {
+        P.ActionRetargeting.MyResolverMethodName = "<DirectGameObject>";
+        return P.ActionRetargeting.Register(action, replaced, () => target, dontCull);
+    }
 
     /// <summary>
     ///     Retargets the action to the target specified.
