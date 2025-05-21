@@ -3,16 +3,12 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
-using WrathCombo.Extensions;
-using ECommons.GameHelpers;
 using WrathCombo.Core;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -277,6 +273,12 @@ internal partial class AST
 
         public override bool HasCooldowns()
         {
+            if (ActionReady(EarthlyStar))
+                EarthlyStar.Retarget(Config.AST_DPS_AltMode > 0
+                        ? CombustList.Keys.ToArray()
+                        : MaleficList.ToArray(),
+                    SimpleTarget.Stack.Allies);
+
             if (GetCooldown(EarthlyStar).CooldownElapsed >= 4f)
                 return false;
 
