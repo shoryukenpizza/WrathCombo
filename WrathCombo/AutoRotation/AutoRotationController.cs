@@ -501,9 +501,7 @@ namespace WrathCombo.AutoRotation
             {
                 if (_ninjaLockedAoE) return false;
                 var target = GetSingleTarget(mode);
-                if (target is null)
-                    return false;
-
+  
                 var outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, target));
                 if (!CanQueue(outAct))
                 {
@@ -512,13 +510,14 @@ namespace WrathCombo.AutoRotation
 
                 bool switched = SwitchOnDChole(attributes, outAct, ref target);
 
-                if (target is null)
+                var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
+
+                if (target is null && !canUseSelf)
                     return false;
 
                 var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
-                var canUseTarget = ActionManager.CanUseActionOnTarget(outAct, target.Struct());
-                var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
-                var inRange = IsInLineOfSight(target) && InActionRange(outAct, target);
+                var canUseTarget = target is null ? false : ActionManager.CanUseActionOnTarget(outAct, target.Struct());
+                var inRange = target is null && canUseSelf ? true : target is null ? false : IsInLineOfSight(target) && InActionRange(outAct, target);
 
                 var canUse = canUseSelf || canUseTarget || areaTargeted;
 
