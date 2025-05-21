@@ -87,9 +87,6 @@ namespace WrathCombo.AutoRotation
                     return;
             }
 
-            if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
-                return;
-
             var healTarget = Player.Object.GetRole() is CombatRole.Healer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
 
             var aoeheal = Player.Object?.GetRole() is CombatRole.Healer && HealerTargeting.CanAoEHeal() &&
@@ -424,6 +421,9 @@ namespace WrathCombo.AutoRotation
 
             public static bool ExecuteAoE(Enum mode, CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
             {
+                if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
+                    return false;
+
                 if (attributes.AutoAction!.IsHeal)
                 {
                     LockedAoE = false;
@@ -451,6 +451,7 @@ namespace WrathCombo.AutoRotation
                 }
                 else
                 {
+
                     var target = !cfg.DPSSettings.AoEIgnoreManual && cfg.DPSRotationMode == DPSRotationMode.Manual ? Svc.Targets.Target : DPSTargeting.BaseSelection.MaxBy(x => NumberOfEnemiesInRange(OriginalHook(gameAct), x, true));
                     var numEnemies = NumberOfEnemiesInRange(gameAct, target, true);
                     if (!_ninjaLockedAoE)
@@ -525,6 +526,7 @@ namespace WrathCombo.AutoRotation
 
                 var canUseSelf = ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
                 var blockedSelfBuffs = outAct is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo or DNC.StandardStep or DNC.TechnicalStep or MCH.Reassemble or SAM.MeikyoShisui;
+
                 if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
                     return false;
 
