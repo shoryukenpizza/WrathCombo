@@ -75,7 +75,8 @@ internal partial class SAM
 
     internal static bool UseIaijutsu()
     {
-        int higanbanaThreshold = SAM_ST_Higanbana_Threshold;
+        int higanbanaHPThreshold = SAM_ST_Higanbana_HP_Threshold;
+        int higanbanaRefresh = SAM_ST_Higanbana_Refresh;
 
         if (LevelChecked(Iaijutsu))
         {
@@ -83,10 +84,10 @@ internal partial class SAM
 
                 //Higanbana
                 ((SAM_ST_CDs_IaijutsuOption[0] &&
-                  SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
+                  SenCount is 1 && GetTargetHPPercent() > higanbanaHPThreshold &&
                   (SAM_ST_Higanbana_Suboption == 0 ||
                    SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                  (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 ||
+                  ((JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= higanbanaRefresh) ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
 
                  //Tenka Goken
@@ -100,7 +101,7 @@ internal partial class SAM
 
                 //Higanbana
                 ((SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                  (JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 ||
+                  ((JustUsed(MeikyoShisui, 15f) && GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 15) ||
                    !HasStatusEffect(Debuffs.Higanbana, CurrentTarget))) ||
 
                  //Tenka Goken
