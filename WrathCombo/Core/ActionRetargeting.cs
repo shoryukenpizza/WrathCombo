@@ -41,8 +41,7 @@ namespace WrathCombo.Core;
 public class ActionRetargeting : IDisposable
 {
     /// List of Retargets for actions, keyed with the action and replaced action(s).
-    private readonly Dictionary<uint, Retargeting>
-        _retargets = [];
+    internal readonly Dictionary<uint, Retargeting> Retargets = [];
 
     /// <summary>
     ///     Register an action and its replaced actions as one you want Retargeted.
@@ -102,7 +101,7 @@ public class ActionRetargeting : IDisposable
         Retargeting? oldRetarget = null;
         foreach (var replacedAction in replacedActions.Concat([action]))
         {
-            if (!_retargets.TryGetValue(replacedAction, out oldRetarget))
+            if (!Retargets.TryGetValue(replacedAction, out oldRetarget))
                 continue;
 
             // Keep the old Retarget if it's the same resolver
@@ -164,7 +163,7 @@ public class ActionRetargeting : IDisposable
         target = null;
 
         // Find the Retarget object
-        if (!_retargets.TryGetValue(action, out var retarget))
+        if (!Retargets.TryGetValue(action, out var retarget))
             return false;
 
         log("Retargeting", showAction: true,
@@ -212,7 +211,7 @@ public class ActionRetargeting : IDisposable
     ///     Should only be set (to <see langword="true" />) for Features; combo
     ///     Retargets should always be marked for culling.
     /// </param>
-    private class Retargeting(
+    internal class Retargeting(
         uint action,
         uint[] replacedActions,
         Func<IGameObject?> resolver,
@@ -316,10 +315,10 @@ public class ActionRetargeting : IDisposable
     {
         // Only retarget the action as well as the replaced actions if excepted
         if (_actionsAllowedToBeReplacedAction.Contains(retarget.Action))
-            _retargets[retarget.Action] = retarget;
+            Retargets[retarget.Action] = retarget;
 
         foreach (var replacedAction in retarget.ReplacedActions)
-            _retargets[replacedAction] = retarget;
+            Retargets[replacedAction] = retarget;
     }
 
     /// <summary>
@@ -328,14 +327,14 @@ public class ActionRetargeting : IDisposable
     /// <param name="retargetID">The ID of the Retarget object to remove.</param>
     private void RemoveRetarget(int retargetID)
     {
-        var retarget = _retargets.Values
+        var retarget = Retargets.Values
             .FirstOrDefault(x => x.ID == retargetID);
         if (retarget == null)
             return;
 
         var actionsToRemove = retarget.ReplacedActions.Concat([retarget.Action]);
         foreach (var replacedAction in actionsToRemove)
-            _retargets.Remove(replacedAction);
+            Retargets.Remove(replacedAction);
     }
 
     /// Simple Flag to stop clearing the cache when the plugin is disposed.
@@ -343,7 +342,7 @@ public class ActionRetargeting : IDisposable
     private bool CancelCacheClearing { get; set; } = false;
 
     /// Clears Retargets older than 20 seconds every 11 seconds.
-    /// <seealso cref="_retargets" />
+    /// <seealso cref="Retargets" />
     internal Action ClearOldRetargets = () =>
     {
         try
@@ -361,7 +360,7 @@ public class ActionRetargeting : IDisposable
         }
 
         // Find old Retargets that are allowed to be culled
-        var oldRetargets = P.ActionRetargeting._retargets.Values
+        var oldRetargets = P.ActionRetargeting.Retargets.Values
             .Where(x => !x.DontCull &&
                         (DateTime.Now - x.Created) > TS.FromSeconds(20))
             .ToList();
@@ -384,13 +383,13 @@ public class ActionRetargeting : IDisposable
     /// Clears all cached Retargets.
     internal void ClearCachedRetargets()
     {
-        _retargets.Clear();
+        Retargets.Clear();
         log("cleared cached Retargets", logLevel: 1);
     }
 
     public void Dispose()
     {
-        _retargets.Clear();
+        Retargets.Clear();
         CancelCacheClearing = true;
     }
 
