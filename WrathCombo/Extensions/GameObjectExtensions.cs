@@ -71,4 +71,45 @@ public static class GameObjectExtensions
     obj != null && CustomComboFunctions.IsInRange(obj, range) ? obj : null;
 
     #endregion
+
+    #region Target Checking (same as above, but returns a boolean)
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is friendly.
+    /// </summary>
+    public static bool IsFriendly(this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.TargetIsFriendly(obj);
+
+    // `IsHostile` already exists, and works the exact same as we would write here
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is a boss.
+    /// </summary>
+    public static bool IsBoss(this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.IsBoss(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is a quest mob.
+    /// </summary>
+    public static bool IsQuestMob(this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.IsQuestMob(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target needs positionals.
+    /// </summary>
+    public static bool NeedsPositionals(this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.TargetNeedsPositionals(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is within range.
+    /// </summary>
+    public static bool IsWithinRange(this IGameObject? obj, float range = 25) =>
+        obj != null && CustomComboFunctions.IsInRange(obj, range);
+
+    #endregion
 }
