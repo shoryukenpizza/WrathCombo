@@ -456,10 +456,10 @@ namespace WrathCombo.Window.Functions
 
         private static void DrawRetargetedAttribute(CustomComboPreset? preset = null)
         {
-            bool possiblyRetargeted;
+            var possiblyRetargeted = false;
             var retargeted = false;
             if (preset is null)
-                possiblyRetargeted = true;
+                retargeted = true;
             else
             {
                 var realPreset = preset.Value;
@@ -492,17 +492,19 @@ namespace WrathCombo.Window.Functions
                 {
                     using (ImRaii.TextWrapPos(ImGui.GetFontSize() * 35.0f))
                     {
-                        if (possiblyRetargeted && preset is null)
+                        var usedOnSettingsPage =
+                            retargeted && preset is null;
+                        if (usedOnSettingsPage)
                             ImGui.TextUnformatted(
                                 "This Feature will involve retargeting actions if enabled.");
-                        if (possiblyRetargeted && preset is not null)
+                        if (possiblyRetargeted)
                             ImGui.TextUnformatted(
                                 "This Feature's actions may be retargeted.");
-                        if (retargeted)
+                        if (retargeted && preset is not null)
                             ImGui.TextUnformatted(
                                 "This Feature's actions are retargeted.");
 
-                        if (possiblyRetargeted && preset is null)
+                        if (usedOnSettingsPage)
                             ImGui.TextUnformatted(
                                 "The actions this Feature affects will automatically be\n" +
                                 "targeted onto the targets in the priority you have configured.");
@@ -512,7 +514,7 @@ namespace WrathCombo.Window.Functions
                                 "targeted onto what the developers feel is the best target\n" +
                                 "(following The Balance where applicable).");
 
-                        if (possiblyRetargeted && preset is null)
+                        if (usedOnSettingsPage)
                             ImGui.TextUnformatted(
                                 "Using plugins like Redirect or Reaction with configurations\n" +
                                 "affecting the same actions will Conflict and may cause issues.");
