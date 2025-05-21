@@ -64,7 +64,7 @@ internal partial class DRG : Melee
                 !InMeleeRange() && HasBattleTarget())
                 return PiercingTalon;
 
-            if (HasStatusEffect(Buffs.PowerSurge))
+            if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
                 //Battle Litany Feature
                 if (ActionReady(BattleLitany) &&
@@ -224,7 +224,7 @@ internal partial class DRG : Melee
                 !InMeleeRange() && HasBattleTarget())
                 return PiercingTalon;
 
-            if (HasStatusEffect(Buffs.PowerSurge))
+            if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
                 if (IsEnabled(CustomComboPreset.DRG_ST_Buffs))
                 {
