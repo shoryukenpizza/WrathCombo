@@ -2256,6 +2256,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", GNB.JobID)]
     GNB_ST_Interrupt = 7084,
 
+    [ParentCombo(GNB_ST_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", GNB.JobID)]
+    GNB_ST_Stun = 7085,
+
     #region Cooldowns
 
     [ParentCombo(GNB_ST_Advanced)]
