@@ -1,3 +1,4 @@
+using Dalamud.Interface.Colors;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -44,38 +45,59 @@ internal partial class BRD
 
 
                 case CustomComboPreset.BRD_Adv_DoT:
-                    DrawHorizontalRadioButton(BRD_Adv_DoT_SubOption,
-                        "All content", $"Uses Dots regardless of content.", 0);
+
+                    DrawSliderInt(0, 100, BRD_Adv_DoT_Threshold,
+                        $"Stop using Dots on targets below this HP % (0% = always use, 100% = never use).");
+
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(BRD_Adv_DoT_SubOption,
-                        "Boss encounters Only", $"Only uses Dots when in Boss encounters.", 1);
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
 
-                    DrawSliderInt(0, 10, BRD_Adv_DoT_Threshold,
-                        $"Stop using Dots on targets below this HP % (0% = always use).");
+                    DrawHorizontalRadioButton(BRD_Adv_DoT_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+
+                    ImGui.Unindent();
 
                     break;
 
                 case CustomComboPreset.BRD_Adv_Buffs:
-                    DrawHorizontalRadioButton(BRD_Adv_Buffs_SubOption,
-                        "All content", $"Uses Buffs regardless of content.", 0);
+
+                    DrawSliderInt(0, 100, BRD_Adv_Buffs_Threshold,
+                       $"Stop using Buffs on targets below this HP % (0% = always use, 100% = never use).");
+
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(BRD_Adv_Buffs_SubOption,
-                        "Boss encounters Only", $"Only uses Buffs when in Boss encounters.", 1);
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
 
-                    DrawSliderInt(0, 10, BRD_Adv_Buffs_Threshold,
-                        $"Stop using Buffs on targets below this HP % (0% = always use).");
+                    DrawHorizontalRadioButton(BRD_Adv_Buffs_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+
+                    ImGui.Unindent();
 
                     break;
 
                 case CustomComboPreset.BRD_AoE_Adv_Buffs:
-                    DrawHorizontalRadioButton(BRD_AoE_Adv_Buffs_SubOption,
-                        "All content", $"Uses Buffs regardless of content.", 0);
+
+                    DrawSliderInt(0, 100, BRD_AoE_Adv_Buffs_Threshold,
+                        $"Stop using Buffs on targets below this HP % (0% = always use, 100% = never use).");
+
+                    ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(BRD_AoE_Adv_Buffs_SubOption,
-                        "Boss encounters Only", $"Only uses Buffs when in Boss encounters.", 1);
+                        "Non-boss Encounters Only", $"Applies HP check to Non-Boss Encounters only", 0);
 
-                    DrawSliderInt(0, 50, BRD_AoE_Adv_Buffs_Threshold,
-                        $"Stop using Buffs on targets below this HP % (0% = always use).");
+                    DrawHorizontalRadioButton(BRD_AoE_Adv_Buffs_SubOption,
+                        "All Content", $"Applies HP Check to All Content", 1);
+
+                    ImGui.Unindent();
 
                     break;
 
