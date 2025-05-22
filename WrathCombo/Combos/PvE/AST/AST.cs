@@ -399,8 +399,7 @@ internal partial class AST : Healer
                 !Config.AST_QuickTarget_Manuals)
                 return actionID;
 
-            Balance.Retarget(Play1, CardResolver, dontCull: true);
-            Spear.Retarget(Play1, CardResolver, dontCull: true);
+            Play1.Retarget([Spear, Balance], CardResolver, dontCull: true);
 
             return actionID;
         }
