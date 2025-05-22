@@ -672,6 +672,69 @@ internal class Debug : ConfigWindow, IDisposable
                     ImGui.TreePop();
                 }
             }
+
+            ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+        }
+
+        if (ImGui.CollapsingHeader("Action Retargeting"))
+        {
+            var retargets = P.ActionRetargeting.Retargets;
+
+            CustomStyleText("Current Unique Retargeting entries:",
+                $"{retargets.Select(x => x.Value.ID)
+                    .Distinct().Count()}");
+            CustomStyleText("Current Total Retargeting entries:", $"{retargets.Count}");
+            ImGuiComponents.HelpMarker("This includes all entries for combos' Replaced Actions as well.");
+
+            if (retargets.Count > 0)
+            {
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+
+                ImGui.Indent();
+                ImGuiEx.TextUnderlined("Retargets:");
+                var first = true;
+                var distinctRetargets = retargets
+                    .DistinctBy(x => x.Value.ID)
+                    .Select(x => x.Value)
+                    .OrderBy(x => x.Action);
+                foreach (var retarget in distinctRetargets)
+                {
+                    if (!first) ImGuiEx.Spacing(new Vector2(0f, SpacingSmall/2));
+
+                    CustomStyleText($"Action: {retarget.Action.ActionName()}",
+                        $"ID: {retarget.ID,20}");
+                    // Set a set amount of distance to the right of the ID,
+                    // so the help mark doesn't move
+                    var width = ImGui.CalcTextSize($"ID: {retarget.ID,20}").X;
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 110f.Scale() - width);
+                    ImGui.Text("");
+                    ImGuiComponents.HelpMarker("If you see the ID constantly changing, that's a sign that the Retarget is constantly being Partially Overwritten.\n\nThis occurs when two different Retargets keep being registered, which do not fully overwrite each other (they do not share the same Replaced Actions).\nUsually this is when you have a retargeting of an action in Feature and also in a Main Combo, and is a sign that both/all the Retargets will likely work.");
+
+                    ImGui.Indent();
+
+                    ImGui.Indent(10f.Scale());
+                    var replacedActionsString = string.Join(", ",
+                        retarget.ReplacedActions.Select(x => x.ActionName()));
+                    ImGuiEx.Text("Replaced Actions:");
+                    ImGui.SameLine();
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey, replacedActionsString);
+                    ImGui.Unindent(10f.Scale());
+
+                    CustomStyleText($"Resolver: {retarget.ResolverName}",
+                        $"Resolved Target: '{retarget.Resolver().Name}'");
+                    ImGuiComponents.HelpMarker("Resolvers may only resolve to a fallback target,\nexcept under conditions where the Retargeting would actually be applied.");
+
+                    var createdTimeString = retarget.Created.ToString(@"HH\:mm\:ss");
+                    CustomStyleText($"Created: {createdTimeString}",
+                        $"Don't Cull Setting: {(retarget.DontCull ? "On" : "Off")}");
+
+                    ImGui.Unindent();
+
+                    first = false;
+                }
+                ImGui.Unindent();
+            }
         }
 
         #endregion
@@ -746,7 +809,6 @@ internal class Debug : ConfigWindow, IDisposable
                 {
                     P.IPC.SetCurrentJobAutoRotationReady(_wrathLease!.Value);
                 }
-
                 ImGui.SameLine();
                 if (ImGui.Button("Set Autorot For WHM"))
                 {
@@ -755,7 +817,6 @@ internal class Debug : ConfigWindow, IDisposable
 
                 ImGuiEx.Spacing(new Vector2(20, 20));
 
-                ImGui.Indent();
                 if (ImGui.Button("Mimic AutoDuty"))
                 {
                     // https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L460
@@ -770,7 +831,6 @@ internal class Debug : ConfigWindow, IDisposable
                     P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.DPSRotationMode, DPSRotationMode.Lowest_Current);
                     P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.HealerRotationMode, HealerRotationMode.Lowest_Current);
                 }
-
                 ImGui.SameLine();
                 if (ImGui.Button("Mimic Questionable"))
                 {
