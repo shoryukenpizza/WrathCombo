@@ -1544,6 +1544,10 @@ public enum CustomComboPreset
     DRK_ST_CD_Interrupt = 5014,
 
     [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", DRK.JobID)]
+    DRK_ST_CD_Stun = 5040,
+
+    [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Delirium on Cooldown",
         "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.\n Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.",
         DRK.JobID)]
@@ -1678,7 +1682,7 @@ public enum CustomComboPreset
     #endregion
 
     #endregion
-    // Last value = 5039
+    // Last value = 5040
 
     #region Advanced Multi Target Combo
 
@@ -1701,7 +1705,7 @@ public enum CustomComboPreset
     DRK_AoE_Interrupt = 5052,
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.", DRK.JobID)]
     DRK_AoE_Stun = 5053,
 
     [ParentCombo(DRK_AoE_CDs)]
