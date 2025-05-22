@@ -6220,6 +6220,10 @@ SMN.JobID)]
     WAR_ST_Interrupt = 18066,
 
     [ParentCombo(WAR_ST_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", WAR.JobID)]
+    WAR_ST_Stun = 18071,
+
+    [ParentCombo(WAR_ST_Advanced)]
     [CustomComboInfo("Storm's Eye Option", "Adds Storms Eye into the rotation.", WAR.JobID)]
     WAR_ST_Advanced_StormsEye = 18005,
 
@@ -6514,7 +6518,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 18070
+    // Last value = 18071
 
     #endregion
 

@@ -374,10 +374,10 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  IsSTEnabled(flags, Preset.DRK_ST_CD_Stun) ||
                  IsAoEEnabled(flags, Preset.DRK_AoE_Stun)) &&
-                !InBossEncounter() &&
                 !TargetIsBoss() &&
                 !JustUsed(Role.Interject) &&
-                Role.CanLowBlow())
+                Role.CanLowBlow() &&
+                !InBossEncounter())
                 return (action = Role.LowBlow) != 0;
 
             #endregion
