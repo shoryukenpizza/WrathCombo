@@ -33,7 +33,7 @@ internal static class SimpleTarget
     /// </summary>
     internal static class Stack
     {
-        /// A stack of Mouse Over targets, primarily used for Overrides.
+        /// A stack of Mouse Over targets (including model mouseover).
         public static IGameObject? MouseOver =>
             UIMouseOverTarget ?? ModelMouseOverTarget;
 
@@ -44,7 +44,7 @@ internal static class SimpleTarget
         ///     Hard Target near the bottom.
         /// </remarks>
         public static IGameObject? OverridesAllies =>
-            MouseOver ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
+            UIMouseOverTarget ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
 
         /// A very common stack that targets the player, if there are no manual
         /// overrides targeted.
@@ -53,7 +53,7 @@ internal static class SimpleTarget
         ///     Hard Target near the bottom.
         /// </remarks>
         public static IGameObject? OverridesSelf =>
-            MouseOver ?? HardTarget ?? Self;
+            UIMouseOverTarget ?? HardTarget ?? Self;
 
         /// A very common stack that targets an ally or self.
         public static IGameObject? Allies =>
@@ -67,8 +67,11 @@ internal static class SimpleTarget
         ///     A very common stack to pick a heal target.
         /// </summary>
         public static IGameObject? AllyToHeal =>
-            (cfg.UseMouseoverOverridesInDefaultHealStack
-                ? MouseOver.IfFriendly()
+            (cfg.UseUIMouseoverOverridesInDefaultHealStack
+                ? UIMouseOverTarget.IfFriendly()
+                : null) ??
+            (cfg.UseFieldMouseoverOverridesInDefaultHealStack
+                ? ModelMouseOverTarget.IfFriendly()
                 : null) ??
             SoftTarget.IfFriendly() ??
             HardTarget.IfFriendly() ??
