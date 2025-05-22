@@ -1,6 +1,7 @@
 ﻿# Guides on using specific parts of Wrath
 
 - [IPC](/docs/IPC.md) - for other plugins to control Wrath Combo settings.
+- [Action Retargeting](/docs/Retargeting.md) - for retargeting an action.
 
 # Rotations
 Rotations refer to the code behind the Combo presets, specifically the logic
