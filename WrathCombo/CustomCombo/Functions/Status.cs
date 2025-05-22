@@ -15,7 +15,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <param name="target">Optional target</param>
         /// <returns>Status object or null.</returns>
-        public static Status? GetStatusEffect(uint statusId, IGameObject? target = null, bool anyOwner = false)
+        public static Status? GetStatusEffect(ushort statusId, IGameObject? target = null, bool anyOwner = false)
         {
             // Default to LocalPlayer if no target/bad target
             target ??= LocalPlayer;
@@ -33,7 +33,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="target">Optional Target</param>
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <returns>Boolean if the status effect exists or not</returns>
-        public static bool HasStatusEffect(uint statusId, IGameObject? target = null, bool anyOwner = false)
+        public static bool HasStatusEffect(ushort statusId, IGameObject? target = null, bool anyOwner = false)
         {
             // Default to LocalPlayer if no target provided
             target ??= LocalPlayer;
@@ -48,7 +48,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <param name="status">Retrieved Status object</param>
         /// <returns>Boolean if the status effect exists or not</returns>
-        public static bool HasStatusEffect(uint statusId, out Status? status, IGameObject? target = null, bool anyOwner = false)
+        public static bool HasStatusEffect(ushort statusId, out Status? status, IGameObject? target = null, bool anyOwner = false)
         {
             target ??= LocalPlayer;
             status = GetStatusEffect(statusId, target, anyOwner);
@@ -74,7 +74,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="target">Optional Target</param>
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <returns>Float representing remaining status effect time</returns>
-        public unsafe static float GetStatusEffectRemainingTime(uint effectId, IGameObject? target = null, bool anyOwner = false) => 
+        public unsafe static float GetStatusEffectRemainingTime(ushort effectId, IGameObject? target = null, bool anyOwner = false) => 
             GetStatusEffectRemainingTime(GetStatusEffect(effectId, target, anyOwner));
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="target">Optional Target</param>
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <returns>Integer representing status effect stack count</returns>
-        public static ushort GetStatusEffectStacks(uint effectId, IGameObject? target = null, bool anyOwner = false) =>
+        public static ushort GetStatusEffectStacks(ushort effectId, IGameObject? target = null, bool anyOwner = false) =>
             GetStatusEffectStacks(GetStatusEffect(effectId, target, anyOwner));
 
 

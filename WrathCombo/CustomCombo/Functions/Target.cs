@@ -505,7 +505,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
             return count;
         }
-        
+
         public static int NumberOfEnemiesInRange(byte range)
         {
             return Svc.Objects.Count(
