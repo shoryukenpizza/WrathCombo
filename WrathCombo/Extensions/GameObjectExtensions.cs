@@ -34,6 +34,15 @@ public static class GameObjectExtensions
 
     /// <summary>
     ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not in the player's party.
+    /// </summary>
+    public static IGameObject? IfInParty (this IGameObject? obj) =>
+        obj != null &&
+        CustomComboFunctions.GetPartyMembers()
+            .Any(x => x.GameObjectId != obj.GameObjectId) ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
     ///     <see langword="null" /> if the target is not hostile.
     /// </summary>
     public static IGameObject? IfHostile (this IGameObject? obj) =>
@@ -80,6 +89,15 @@ public static class GameObjectExtensions
     /// </summary>
     public static bool IsFriendly(this IGameObject? obj) =>
         obj != null && CustomComboFunctions.TargetIsFriendly(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is in the player's party.
+    /// </summary>
+    public static bool IsInParty(this IGameObject? obj) =>
+        obj != null &&
+        CustomComboFunctions.GetPartyMembers()
+            .Any(x => x.GameObjectId != obj.GameObjectId);
 
     // `IsHostile` already exists, and works the exact same as we would write here
 
