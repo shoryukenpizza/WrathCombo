@@ -73,10 +73,13 @@ internal partial class PLD : Tank
 
             // Stun
             if (!TargetIsBoss()
-                && Role.CanLowBlow()
+                && TargetIsCasting()
                 && !JustUsed(Role.Interject)
                 && !InBossEncounter())
-                return Role.LowBlow;
+                if (ActionReady(ShieldBash) && !JustUsed(Role.LowBlow))
+                    return ShieldBash;
+                else if (Role.CanLowBlow() && !JustUsed(ShieldBash))
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -421,10 +424,13 @@ internal partial class PLD : Tank
             // Stun
             if (IsEnabled(CustomComboPreset.PLD_ST_Stun)
                 && !TargetIsBoss()
-                && Role.CanLowBlow()
+                && TargetIsCasting()
                 && !JustUsed(Role.Interject)
                 && !InBossEncounter())
-                return Role.LowBlow;
+                if (ActionReady(ShieldBash) && !JustUsed(Role.LowBlow))
+                    return ShieldBash;
+                else if (Role.CanLowBlow() && !JustUsed(ShieldBash))
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
