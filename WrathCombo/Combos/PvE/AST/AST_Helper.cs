@@ -10,6 +10,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Core;
+using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -70,7 +71,7 @@ internal partial class AST
     {
         get
         {
-            if (!EZ.Throttle("astCardTargetCheck", TS.FromSeconds(0.75)))
+            if (!EZ.Throttle("astCardTargetCheck", TS.FromSeconds(0.1)))
                 return field;
 
             if (Svc.ClientState.LocalPlayer is null ||
@@ -82,6 +83,29 @@ internal partial class AST
                 !IsInParty())
                 return field = null;
 
+            // Check if we have a target overriding any searching
+            if (Config.AST_QuickTarget_Override != 0)
+            {
+                var targetOverride =
+                    (int)Config.AST_QuickTarget_Override switch
+                    {
+                        1 => SimpleTarget.HardTarget,
+                        2 => SimpleTarget.UIMouseOverTarget,
+                        _ => SimpleTarget.Stack.MouseOver,
+                    };
+                if (targetOverride is IBattleChara &&
+                    !targetOverride.IsDead &&
+                    targetOverride.IsFriendly() &&
+                    InCardRange(targetOverride) &&
+                    targetOverride.IsInParty() &&
+                    DamageDownFree(targetOverride) &&
+                    SicknessFree(targetOverride))
+                    return field = targetOverride;
+            }
+
+            if (!EZ.Throttle("astCardPartyCheck", TS.FromSeconds(0.75)))
+                return field;
+
             var card = Gauge.DrawnCards[0];
             var playerID = LocalPlayer.GameObjectId;
             var party = GetPartyMembers()
@@ -91,21 +115,6 @@ internal partial class AST
                 .Where(InCardRange)
                 .Where(ExistingCardBuffFree)
                 .ToList();
-
-            // Check if we have a target overriding any searching
-            if (Config.AST_QuickTarget_Override != 0) {
-                var targetOverride = Config.AST_QuickTarget_Override == 1
-                    ? SimpleTarget.HardTarget
-                    : SimpleTarget.Stack.MouseOver;
-                if (targetOverride is IBattleChara &&
-                    !targetOverride.IsDead &&
-                    party.Any(x =>
-                        x.GameObjectId == targetOverride.GameObjectId) &&
-                    InCardRange(targetOverride) &&
-                    !TargetHasDamageDown(targetOverride) &&
-                    !TargetHasRezWeakness(targetOverride))
-                    return field = targetOverride;
-            }
 
             if (party.Count <= 1)
                 return field = null;
