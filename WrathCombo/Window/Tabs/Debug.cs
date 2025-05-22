@@ -861,7 +861,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         #endregion
 
-        ImGuiEx.Spacing(new Vector2(0, 20));
+        ImGuiEx.Spacing(new Vector2(0, SpacingMedium));
 
         #region Hidden Features
 
