@@ -3964,6 +3964,10 @@ public enum CustomComboPreset
     PLD_ST_Interrupt = 11058,
 
     [ParentCombo(PLD_ST_AdvancedMode)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", PLD.JobID)]
+    PLD_ST_Stun = 11062,
+
+    [ParentCombo(PLD_ST_AdvancedMode)]
     [CustomComboInfo("Fight or Flight Option",
         "Adds Fight or Flight to Advanced Mode.\n- Uses after Royal Authority during opener.\n- Afterward, on cooldown alongside Requiescat.\n- Target HP must be at or above:",
         PLD.JobID)]
@@ -4257,7 +4261,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11061
+    //// Last value = 11062
 
     #endregion
 
