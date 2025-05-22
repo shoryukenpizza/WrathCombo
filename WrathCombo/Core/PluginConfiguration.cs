@@ -76,7 +76,9 @@ namespace WrathCombo.Core
 
         public bool RetargetHealingActionsToStack = false;
 
-        public bool UseMouseoverOverridesInDefaultHealStack = false;
+        public bool UseUIMouseoverOverridesInDefaultHealStack = false;
+
+        public bool UseFieldMouseoverOverridesInDefaultHealStack = false;
 
         public bool UseFocusTargetOverrideInDefaultHealStack = false;
 

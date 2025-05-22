@@ -337,8 +337,10 @@ namespace WrathCombo.Window.Tabs
                 }
                 else
                 {
-                    if (Service.Configuration.UseMouseoverOverridesInDefaultHealStack)
-                        healStackText += "MouseOver" + nextStackItemMarker;
+                    if (Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack)
+                        healStackText += "UI MouseOver" + nextStackItemMarker;
+                    if (Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack)
+                        healStackText += "Field MouseOver" + nextStackItemMarker;
                     healStackText += "Soft Target" + nextStackItemMarker;
                     healStackText += "Hard Target" + nextStackItemMarker;
                     if (Service.Configuration.UseFocusTargetOverrideInDefaultHealStack)
@@ -354,22 +356,41 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Default Heal Stack Include: MouseOver
+                #region Default Heal Stack Include: UI MouseOver
 
                 if (useCusHealStack) ImGui.BeginDisabled();
 
-                bool useMouseoverOverridesInDefaultHealStack =
-                    Service.Configuration.UseMouseoverOverridesInDefaultHealStack;
-                if (ImGui.Checkbox("Add MouseOver to the Default Healing Stack", ref useMouseoverOverridesInDefaultHealStack))
+                bool useUIMouseoverOverridesInDefaultHealStack =
+                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack;
+                if (ImGui.Checkbox("Add UI MouseOver to the Default Healing Stack", ref useUIMouseoverOverridesInDefaultHealStack))
                 {
-                    Service.Configuration.UseMouseoverOverridesInDefaultHealStack =
-                        useMouseoverOverridesInDefaultHealStack;
+                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack =
+                        useUIMouseoverOverridesInDefaultHealStack;
                     Service.Configuration.Save();
                 }
 
                 if (useCusHealStack) ImGui.EndDisabled();
 
-                ImGuiComponents.HelpMarker("This will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI, nameplate UI, or character model.\n\nIt is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have MouseOver targets in your Redirect/Reaction configuration).\nDefault: Off");
+                ImGuiComponents.HelpMarker("This will add any UI MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\nIt is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have UI MouseOver targets in your Redirect/Reaction configuration).\nDefault: Off");
+
+                #endregion
+
+                #region Default Heal Stack Include: Field MouseOver
+
+                if (useCusHealStack) ImGui.BeginDisabled();
+
+                bool useFieldMouseoverOverridesInDefaultHealStack =
+                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack;
+                if (ImGui.Checkbox("Add Field MouseOver to the Default Healing Stack", ref useFieldMouseoverOverridesInDefaultHealStack))
+                {
+                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack =
+                        useFieldMouseoverOverridesInDefaultHealStack;
+                    Service.Configuration.Save();
+                }
+
+                if (useCusHealStack) ImGui.EndDisabled();
+
+                ImGuiComponents.HelpMarker("This will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any nameplate UI or character model.\n\nIt is recommended to enable this only if you regularly intentionally use field mouseover targeting already.\nDefault: Off");
 
                 #endregion
 

@@ -194,7 +194,8 @@ internal partial class AST
                     ImGui.NewLine();
                     DrawRadioButton(AST_QuickTarget_Override, "No Override", "", 0);
                     DrawRadioButton(AST_QuickTarget_Override, "Hard Target Override", "Overrides selection with hard target, if you have one that is in range and does not have damage down or rez sickness.", 1, descriptionAsTooltip: true);
-                    DrawRadioButton(AST_QuickTarget_Override, "MouseOver Override", "Overrides selection with MouseOver target, if you have one that is in range and does not have damage down or rez sickness.", 2, descriptionAsTooltip: true);
+                    DrawRadioButton(AST_QuickTarget_Override, "UI MouseOver Override", "Overrides selection with UI MouseOver target, if you have one that is in range and does not have damage down or rez sickness.", 2, descriptionAsTooltip: true);
+                    DrawRadioButton(AST_QuickTarget_Override, "Any MouseOver Override", "Overrides selection with UI or Nameplate or Model MouseOver target (in that order), if you have one that is in range and does not have damage down or rez sickness.", 3, descriptionAsTooltip: true);
                     break;
 
                 case CustomComboPreset.AST_DPS_AutoDraw:
