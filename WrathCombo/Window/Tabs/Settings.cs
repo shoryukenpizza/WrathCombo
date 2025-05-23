@@ -376,8 +376,10 @@ namespace WrathCombo.Window.Tabs
                 // Collapsing Header for the Heal Stack Customization Options
                 _unCollapsed = ImGui.CollapsingHeader(labelText,
                     ImGuiTreeNodeFlags.SpanAvailWidth);
+                var collapsibleHeight = ImGui.GetItemRectSize().Y;
                 if (_unCollapsed)
                 {
+                    ImGui.BeginGroup();
                     #region Default Heal Stack Include: UI MouseOver
 
                     if (useCusHealStack) ImGui.BeginDisabled();
@@ -489,15 +491,14 @@ namespace WrathCombo.Window.Tabs
                     }
 
                     #endregion
+                    ImGui.EndGroup();
+
+                    // Get the max height of the section above
+                    _healStackCustomizationHeight =
+                        ImGui.GetItemRectSize().Y + collapsibleHeight + 5f.Scale();
                 }
 
                 ImGui.EndChild();
-                // Get the max height of the section above
-                var prevItemHeight = ImGui.GetItemRectSize().Y;
-                _healStackCustomizationHeight =
-                    prevItemHeight > _healStackCustomizationHeight
-                        ? prevItemHeight
-                        : _healStackCustomizationHeight;
 
                 #endregion
 
@@ -550,7 +551,7 @@ namespace WrathCombo.Window.Tabs
         #region Custom Heal Stack Manager Methods
 
         private static bool _unCollapsed;
-        private static float _healStackCustomizationHeight = 350f.Scale();
+        private static float _healStackCustomizationHeight = 0;
         private static string SimpleTargetItemToAddToCustomHealStack = "default";
         private static bool _iconGroupWidthSet;
         private static float _iconGroupWidth =
