@@ -615,7 +615,7 @@ namespace WrathCombo.Window.Tabs
                 }
             }
 
-            ImGuiComponents.HelpMarker("The priority goes from top to bottom.\nScroll down to see all of your items.\nClick the Up and Down buttons to move items in the list.\nClick the X button to remove an item from the list.\nIf there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\n\nDefault: Focus Target > Hard Target > Self");
+            ImGuiComponents.HelpMarker("The priority goes from top to bottom.\nScroll down to see all of your items.\nClick the Up and Down buttons to move items in the list.\nClick the X button to remove an item from the list.\n\nIf there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\nThese targets will only be considered valid if they are friendly and within 25y.\n\nDefault: Focus Target > Hard Target > Self");
 
             // Utility
             GetButtonGroupSize();
