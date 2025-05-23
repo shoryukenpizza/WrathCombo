@@ -68,69 +68,96 @@ namespace WrathCombo.AutoRotation
         static bool CombatBypass => (cfg.BypassQuest && DPSTargeting.BaseSelection.Any(x => IsQuestMob(x))) || (cfg.BypassFATE && InFATE());
         static bool NotInCombat => !GetPartyMembers().Any(x => x.BattleChara is not null && x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay;
 
+        private static bool ShouldSkipAutorotation()
+        {
+            return !cfg.Enabled
+                || !Player.Available
+                || Player.Object.IsDead
+                || Svc.Condition[ConditionFlag.Mounted]
+                || !EzThrottler.Throttle("Autorot", cfg.Throttler);
+        }
+
         internal static void Run()
         {
             cfg ??= new AutoRotationConfigIPCWrapper(Service.Configuration.RotationConfig);
-            if (!cfg.Enabled || !Player.Available || Player.Object.IsDead || Svc.Condition[ConditionFlag.Mounted] || !EzThrottler.Throttle("Autorot", cfg.Throttler))
+
+            // Early exit for all conditions that should prevent autorotation
+            if (ShouldSkipAutorotation())
                 return;
 
             uint _ = 0;
             var autoActions = Presets.GetJobAutorots;
 
+            // Pre-emptive HoT for healers
             if (cfg.HealerSettings.PreEmptiveHoT && Player.Job is Job.CNJ or Job.WHM or Job.AST)
                 PreEmptiveHot();
 
-            if (cfg.BypassBuffs)
+            // Bypass buffs logic
+            if (cfg.BypassBuffs && NotInCombat)
             {
-                bool processed = ProcessAutoActions(autoActions, ref _, false);
-                if (processed)
+                if (ProcessAutoActions(autoActions, ref _, false, true))
                     return;
             }
 
-            var healTarget = Player.Object.GetRole() is CombatRole.Healer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
+            // Only run in combat if required
+            if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
+                return;
 
-            var aoeheal = Player.Object?.GetRole() is CombatRole.Healer && HealerTargeting.CanAoEHeal() &&
-                autoActions.Any(x => x.Key.Attributes()?.AutoAction?.IsHeal == true && x.Key.Attributes()?.AutoAction?.IsAoE == true);
-            bool needsHeal = ((healTarget != null &&
-                autoActions.Any(x => x.Key.Attributes()?.AutoAction?.IsHeal == true && x.Key.Attributes()?.AutoAction?.IsAoE != true)) || aoeheal) &&
-                Player.Object?.GetRole() is CombatRole.Healer;
+            // Healer logic
+            bool isHealer = Player.Object.GetRole() is CombatRole.Healer;
+            var healTarget = isHealer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
+
+            bool aoeheal = isHealer
+                && HealerTargeting.CanAoEHeal()
+                && autoActions.Any(x => x.Key.Attributes()?.AutoAction?.IsHeal == true && x.Key.Attributes()?.AutoAction?.IsAoE == true);
+
+            bool needsHeal = ((healTarget != null
+                && autoActions.Any(x => x.Key.Attributes()?.AutoAction?.IsHeal == true && x.Key.Attributes()?.AutoAction?.IsAoE != true))
+                || aoeheal)
+                && isHealer;
 
             if (needsHeal && TimeToHeal is null)
                 TimeToHeal = DateTime.Now;
-
-            if (!needsHeal)
+            else if (!needsHeal)
                 TimeToHeal = null;
 
+            // Check if any healing action is ready
             bool actCheck = autoActions.Any(x =>
             {
                 var attr = x.Key.Attributes();
                 return attr?.AutoAction?.IsHeal == true && ActionReady(AutoRotationHelper.InvokeCombo(x.Key, attr, ref _));
             });
 
-            bool canHeal = TimeToHeal is null ? false : (DateTime.Now - TimeToHeal.Value).TotalSeconds >= cfg.HealerSettings.HealDelay && actCheck;
+            bool canHeal = TimeToHeal is not null
+                && (DateTime.Now - TimeToHeal.Value).TotalSeconds >= cfg.HealerSettings.HealDelay
+                && actCheck;
 
-            if (Player.Object?.CurrentCastTime > 0) return;
-            if (Player.Object?.GetRole() is CombatRole.Healer || (Player.Job is Job.SMN or Job.RDM && cfg.HealerSettings.AutoRezDPSJobs))
+            // Don't act if currently casting
+            if (Player.Object?.CurrentCastTime > 0)
+                return;
+
+            // Healer cleanse/rez logic
+            if (isHealer || (Player.Job is Job.SMN or Job.RDM && cfg.HealerSettings.AutoRezDPSJobs))
             {
                 if (!needsHeal)
                 {
-                    if (cfg.HealerSettings.AutoCleanse && Player.Object?.GetRole() is CombatRole.Healer)
-                    {
+                    if (cfg.HealerSettings.AutoCleanse && isHealer)
                         CleanseParty();
-                        //if (GetPartyMembers().Any((x => HasCleansableDebuff(x))))
-                        //    return;
-                    }
 
                     if (cfg.HealerSettings.AutoRez)
                         RezParty();
                 }
             }
 
+            // SGE Kardia logic
             if (Player.Job is Job.SGE && cfg.HealerSettings.ManageKardia)
                 UpdateKardiaTarget();
 
+            // Don't act if animation locked
+            if (ActionManager.Instance()->AnimationLock > 0)
+                return;
 
-            if (ActionManager.Instance()->AnimationLock > 0) return;
+            // Reset locks if no action for 3 seconds
             if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 3)
             {
                 LockedAoE = false;
@@ -138,42 +165,58 @@ namespace WrathCombo.AutoRotation
                 _ninjaLockedAoE = false;
             }
 
-            ProcessAutoActions(autoActions, ref _, canHeal);
+            ProcessAutoActions(autoActions, ref _, canHeal, false);
         }
 
-        private static bool ProcessAutoActions(Dictionary<CustomComboPreset, bool> autoActions, ref uint _, bool canHeal)
+        private static bool ProcessAutoActions(Dictionary<CustomComboPreset, bool> autoActions, ref uint _, bool canHeal, bool stOnly)
         {
-            foreach (var preset in autoActions.Where(x => x.Key.Attributes()?.AutoAction?.IsHeal == canHeal).OrderByDescending(x => x.Key.Attributes()?.AutoAction?.IsAoE == true))
+            // Pre-filter and cache attributes to avoid repeated lookups
+            var filteredActions = autoActions
+                .Select(x => new { Preset = x.Key, Attributes = x.Key.Attributes() })
+                .Where(x => x.Attributes is { AutoAction: not null, ReplaceSkill: not null })
+                .Where(x => x.Attributes.AutoAction.IsHeal == canHeal)
+                .Where(x => !stOnly || x.Attributes.AutoAction.IsAoE == false)
+                .OrderByDescending(x => x.Attributes.AutoAction.IsAoE);
+
+            foreach (var entry in filteredActions)
             {
-                var attributes = preset.Key.Attributes();
-                if (attributes is null || attributes.AutoAction is null || attributes.ReplaceSkill is null) continue;
-                var action = attributes.AutoAction;
-                if ((action.IsAoE && LockedST) || (!action.IsAoE && LockedAoE)) continue;
-                uint gameAct = attributes.ReplaceSkill.ActionIDs.First();
+                var attributes = entry.Attributes;
+                var action = attributes.AutoAction!;
 
-                if (ActionManager.Instance()->GetActionStatus(ActionType.Action, gameAct) == 639) continue;
-                var sheetAct = Svc.Data.GetExcelSheet<Action>().GetRow(gameAct);
+                // Skip if locked
+                if ((action.IsAoE && LockedST) || (!action.IsAoE && LockedAoE))
+                    continue;
 
-                var outAct = OriginalHook(AutoRotationHelper.InvokeCombo(preset.Key, attributes, ref _));
-                if (!CanQueue(outAct)) continue;
+                // Skip if rez invuln is up
+                if (!action.IsHeal && HasStatusEffect(418))
+                    continue;
+
+                uint gameAct = attributes.ReplaceSkill!.ActionIDs.First();
+
+                // Skip if action is unavailable
+                if (ActionManager.Instance()->GetActionStatus(ActionType.Action, gameAct) == 639)
+                    continue;
+
+                var outAct = OriginalHook(AutoRotationHelper.InvokeCombo(entry.Preset, attributes, ref _));
+                if (!CanQueue(outAct))
+                    continue;
+
                 if (action.IsHeal)
                 {
-                    AutomateHealing(preset.Key, attributes, gameAct);
+                    AutomateHealing(entry.Preset, attributes, gameAct);
                     continue;
                 }
 
-                if (!action.IsHeal && HasStatusEffect(418)) //Rez Invuln
-                    continue;
-
+                // Tank logic
                 if (Player.Object?.GetRole() is CombatRole.Tank)
                 {
-                    AutomateTanking(preset.Key, attributes, gameAct);
+                    AutomateTanking(entry.Preset, attributes, gameAct);
                     continue;
                 }
 
-                if (!action.IsHeal)
-                    if (AutomateDPS(preset.Key, attributes, gameAct))
-                        return false;
+                // DPS logic
+                if (!action.IsHeal && AutomateDPS(entry.Preset, attributes, gameAct))
+                    return false;
             }
 
             return false;
@@ -181,13 +224,7 @@ namespace WrathCombo.AutoRotation
 
         private static void PreEmptiveHot()
         {
-            if (PartyInCombat())
-                return;
-
-            if (Svc.Targets.FocusTarget is null)
-                return;
-
-            if (InDuty() && !Svc.DutyState.IsDutyStarted)
+            if (PartyInCombat() || Svc.Targets.FocusTarget is null || (InDuty() && !Svc.DutyState.IsDutyStarted))
                 return;
 
             ushort regenBuff = Player.Job switch
@@ -421,9 +458,6 @@ namespace WrathCombo.AutoRotation
 
             public static bool ExecuteAoE(Enum mode, CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
             {
-                if (cfg.InCombatOnly && NotInCombat && !CombatBypass)
-                    return false;
-
                 if (attributes.AutoAction!.IsHeal)
                 {
                     LockedAoE = false;
