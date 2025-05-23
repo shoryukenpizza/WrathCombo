@@ -186,7 +186,7 @@ internal static class SimpleTarget
         Svc.Objects
             .OfType<IBattleChara>()
             .FirstOrDefault(x => x.IsHostile() && x.IsTargetable &&
-                                 CustomComboFunctions.IsInRange(x));
+                                 x.IsWithinRange());
 
     #region Previous Targets
 
@@ -270,59 +270,75 @@ internal static class SimpleTarget
 
     #endregion
 
-    #region Role Targets
+    #region Role Targets (that are not the current player)
 
+    /// Gets any Tank or Healer that is not the player.
     public static IGameObject? AnySupport =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is
                 CombatRole.Tank or CombatRole.Healer);
 
+    /// Gets any DPS that is not the player.
     public static IGameObject? AnyDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.DPS);
 
     #region Slightly More Specific Roles
 
+    /// Gets any Tank that is not the player.
     public static IGameObject? AnyTank =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Tank);
 
+    /// Gets any Healer that is not the player.
     public static IGameObject? AnyHealer =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
 
+    /// Gets any Melee DPS that is not the player.
     public static IGameObject? AnyMeleeDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.ClassJob.RowId.Role() is 2);
 
+    /// Gets any Physical Ranged DPS that is not the player.
     public static IGameObject? AnyRangedDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.ClassJob.RowId.Role() is 3);
 
+    /// Gets any Magical DPS that is not the player.
     public static IGameObject? AnyPhysRangeDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x =>
                 RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
                     JobRole.RangedDPS);
 
+    /// Gets any Magical DPS that is not the player.
     public static IGameObject? AnyMagicalDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x =>
                 RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
                     JobRole.MagicalDPS);
@@ -331,24 +347,30 @@ internal static class SimpleTarget
 
     #region More Specific Roles
 
+    /// Gets any Pure Healer that is not the player.
     public static IGameObject? AnyPureHealer =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x =>
                 x?.ClassJob.RowId is WHM.JobID or AST.JobID);
 
+    /// Gets any Shield Healer that is not the player.
     public static IGameObject? AnyShieldHealer =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x =>
                 x?.ClassJob.RowId is SCH.JobID or SGE.JobID);
 
+    /// Gets any Selfish DPS that is not the player.
     public static IGameObject? AnySelfishDPS =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.ClassJob.RowId is
                 SAM.JobID or BLM.JobID or MCH.JobID or VPR.JobID);
 
