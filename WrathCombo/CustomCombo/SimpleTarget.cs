@@ -90,10 +90,10 @@ internal static class SimpleTarget
             SoftTarget.IfFriendly() ??
             HardTarget.IfFriendly() ??
             (cfg.UseFocusTargetOverrideInDefaultHealStack
-                ? FocusTarget.IfFriendly().IfWithinRange()
+                ? FocusTarget.IfFriendly().IfWithinRange().IfMissingHP()
                 : null) ??
             (cfg.UseLowestHPOverrideInDefaultHealStack
-                ? LowestHPPAlly.IfWithinRange()
+                ? LowestHPPAlly.IfWithinRange().IfMissingHP()
                 : null) ??
             Self;
 
