@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Data.Parsing.Layer;
 using System;
 using WrathCombo.Services;
@@ -17,7 +18,7 @@ namespace WrathCombo.CustomComboNS.Functions
             if (agentMap is null)
                 return false;
 
-            bool isMoving = agentMap->IsPlayerMoving;
+            bool isMoving = agentMap->IsPlayerMoving || Player.IsJumping;
 
             if (isMoving)
             {
