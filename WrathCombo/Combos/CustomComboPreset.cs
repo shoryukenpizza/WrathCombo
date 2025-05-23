@@ -271,8 +271,9 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(AST.Benefic2)]
-    [CustomComboInfo("Simple Heals - Single Target", "Replaces Benefic II with a one button healing replacement.",
+    [CustomComboInfo("Simple Heals - Single Target", "Replaces Benefic II with a one button healing replacement.\nAll actions here will be Retargeted if Settings>Retarget Healing Actions is enabled.",
         AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals = 1023,
 
     [ParentCombo(AST_ST_SimpleHeals)]

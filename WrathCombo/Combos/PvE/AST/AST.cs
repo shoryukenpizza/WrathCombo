@@ -327,52 +327,60 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) >= Config.AST_ST_SimpleHeals_Esuna &&
                 HasCleansableDebuff(healTarget))
-                return Role.Esuna;
+                return Role.Esuna
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Spire) &&
                 Gauge.DrawnCards[2] == CardType.Spire &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Spire &&
                 ActionReady(Play3) &&
                 canSpire)
-                return OriginalHook(Play3);
+                return OriginalHook(Play3)
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Ewer) &&
                 Gauge.DrawnCards[2] == CardType.Ewer &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Ewer &&
                 ActionReady(Play3) &&
                 canEwer)
-                return OriginalHook(Play3);
+                return OriginalHook(Play3)
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Arrow) &&
                 Gauge.DrawnCards[1] == CardType.Arrow &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Arrow &&
                 ActionReady(Play2) &&
                 canArrow)
-                return OriginalHook(Play2);
+                return OriginalHook(Play2)
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Bole) &&
                 Gauge.DrawnCards[1] == CardType.Bole &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Bole &&
                 ActionReady(Play2) &&
                 canBole)
-                return OriginalHook(Play2);
+                return OriginalHook(Play2)
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_EssentialDignity) &&
                 ActionReady(EssentialDignity) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_EssentialDignity &&
                 canDignity)
-                return EssentialDignity;
+                return EssentialDignity
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Exaltation) &&
                 ActionReady(Exaltation) &&
                 canExalt)
-                return Exaltation;
+                return Exaltation
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_CelestialIntersection) &&
                 ActionReady(CelestialIntersection) &&
                 canIntersect &&
                 !(healTarget as IBattleChara)!.HasShield())
-                return CelestialIntersection;
+                return CelestialIntersection
+                    .RetargetIfEnabled(OptionalTarget, Benefic2);
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_AspectedBenefic) && ActionReady(AspectedBenefic))
             {
@@ -383,7 +391,8 @@ internal partial class AST : Healer
                 Status? neutralSectBuff = GetStatusEffect(Buffs.NeutralSect, healTarget);
                 if (aspectedBeneficHoT is null || aspectedBeneficHoT.RemainingTime <= 3
                                                || neutralSectShield is null && neutralSectBuff is not null)
-                    return AspectedBenefic;
+                    return AspectedBenefic
+                        .RetargetIfEnabled(OptionalTarget, Benefic2);
             }
             return actionID;
         }
