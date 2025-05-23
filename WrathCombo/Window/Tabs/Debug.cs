@@ -722,7 +722,7 @@ internal class Debug : ConfigWindow, IDisposable
                     ImGui.Unindent(10f.Scale());
 
                     CustomStyleText($"Resolver: {retarget.ResolverName}",
-                        $"Resolved Target: '{retarget.Resolver().Name}'");
+                        $"Resolved Target: '{retarget.Resolver()?.Name ?? "Null"}'");
                     ImGuiComponents.HelpMarker("Resolvers may only resolve to a fallback target,\nexcept under conditions where the Retargeting would actually be applied.");
 
                     var createdTimeString = retarget.Created.ToString(@"HH\:mm\:ss");
