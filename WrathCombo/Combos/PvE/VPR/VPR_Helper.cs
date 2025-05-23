@@ -284,18 +284,18 @@ internal partial class VPR
             FourthGeneration,
             FourthLegacy,
             Ouroboros,
-            UncoiledFury,
-            UncoiledTwinfang,
-            UncoiledTwinblood,
-            UncoiledFury,
-            UncoiledTwinfang,
-            UncoiledTwinblood,
+            UncoiledFury, //21
+            UncoiledTwinfang, //22
+            UncoiledTwinblood, //23
+            UncoiledFury, //24
+            UncoiledTwinfang, //25
+            UncoiledTwinblood, //26
             HindstingStrike,
             DeathRattle,
             Vicewinder,
-            UncoiledFury,
-            UncoiledTwinfang,
-            UncoiledTwinblood,
+            UncoiledFury, //30
+            UncoiledTwinfang, //31
+            UncoiledTwinblood, //32
             HuntersCoil, //33
             TwinfangBite, //34
             TwinbloodBite, //35
@@ -312,6 +312,11 @@ internal partial class VPR
             ([36], HuntersCoil, () => SwiftskinsCoilReady),
             ([37], TwinfangBite, () => HasStatusEffect(Buffs.HuntersVenom)),
             ([38], TwinbloodBite, () => HasStatusEffect(Buffs.SwiftskinsVenom))
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([21, 22, 23, 24, 25, 26, 30, 31, 32], () => VPR_Opener_ExcludeUF)
         ];
 
         internal override UserData ContentCheckConfig => VPR_Balance_Content;
