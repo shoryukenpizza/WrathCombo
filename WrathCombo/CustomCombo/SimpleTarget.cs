@@ -109,8 +109,12 @@ internal static class SimpleTarget
             {
                 foreach (var name in Service.Configuration.CustomHealStack)
                 {
-                    var target = GetSimpleTargetValueFromName(name)
-                        .IfFriendly().IfWithinRange();
+                    var resolved = GetSimpleTargetValueFromName(name);
+                    var target = resolved.IfFriendly().IfWithinRange();
+
+                    // Only include Lowest HP Ally options if they are missing HP
+                    if (name.Contains("Lowest"))
+                        target = target.IfMissingHP();
                     if (target != null) return target;
                 }
 
