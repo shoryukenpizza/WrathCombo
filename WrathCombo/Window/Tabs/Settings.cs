@@ -361,7 +361,22 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                if (ImGui.CollapsingHeader("Heal Stack Customization Options"))
+                #region Heal Stack Customization Options
+
+                var labelText = "Heal Stack Customization Options";
+                // Nest the Collapse into a Child of varying size, to be able to limit its width
+                var dynamicHeight = _unCollapsed
+                    ? _healStackCustomizationHeight
+                    : ImGui.CalcTextSize("I").Y + 5f.Scale();
+                ImGui.BeginChild("##HealStackCustomization",
+                    new Vector2(ImGui.CalcTextSize(labelText).X * 2.2f, dynamicHeight),
+                    false,
+                    ImGuiWindowFlags.NoScrollbar);
+
+                // Collapsing Header for the Heal Stack Customization Options
+                _unCollapsed = ImGui.CollapsingHeader(labelText,
+                    ImGuiTreeNodeFlags.SpanAvailWidth);
+                if (_unCollapsed)
                 {
                     #region Default Heal Stack Include: UI MouseOver
 
@@ -476,6 +491,16 @@ namespace WrathCombo.Window.Tabs
                     #endregion
                 }
 
+                ImGui.EndChild();
+                // Get the max height of the section above
+                var prevItemHeight = ImGui.GetItemRectSize().Y;
+                _healStackCustomizationHeight =
+                    prevItemHeight > _healStackCustomizationHeight
+                        ? prevItemHeight
+                        : _healStackCustomizationHeight;
+
+                #endregion
+
                 #endregion
 
                 #region Troubleshooting Options
@@ -524,6 +549,8 @@ namespace WrathCombo.Window.Tabs
 
         #region Custom Heal Stack Manager Methods
 
+        private static bool _unCollapsed;
+        private static float _healStackCustomizationHeight = 350f.Scale();
         private static string SimpleTargetItemToAddToCustomHealStack = "default";
         private static bool _iconGroupWidthSet;
         private static float _iconGroupWidth =
