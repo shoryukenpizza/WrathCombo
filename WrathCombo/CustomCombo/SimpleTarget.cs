@@ -66,7 +66,19 @@ internal static class SimpleTarget
         /// <summary>
         ///     A very common stack to pick a heal target.
         /// </summary>
+        /// <seealso cref="DefaultHealStack"/>
+        /// <seealso cref="CustomHealStack"/>
         public static IGameObject? AllyToHeal =>
+            cfg.UseCustomHealStack ? CustomHealStack : DefaultHealStack;
+
+        /// <summary>
+        ///     The Default Heal Stack, with customization options.
+        /// </summary>
+        /// <remarks>
+        ///     LowestHPPAlly and FocusTarget are the only ones with a range check,
+        ///     as the others are "intentional" at the time they are grabbed.
+        /// </remarks>
+        public static IGameObject? DefaultHealStack =>
             (cfg.UseUIMouseoverOverridesInDefaultHealStack
                 ? UIMouseOverTarget.IfFriendly()
                 : null) ??
@@ -76,13 +88,47 @@ internal static class SimpleTarget
             SoftTarget.IfFriendly() ??
             HardTarget.IfFriendly() ??
             (cfg.UseFocusTargetOverrideInDefaultHealStack
-                ? FocusTarget.IfFriendly()
+                ? FocusTarget.IfFriendly().IfWithinRange()
                 : null) ??
             (cfg.UseLowestHPOverrideInDefaultHealStack
                 ? LowestHPPAlly.IfWithinRange()
                 : null) ??
             Self;
-        // LowestHPPAlly has the only range-check as the others are "intentional"
+
+        #region Custom Heal Stack Resolving
+
+        /// <summary>
+        ///     The Custom Heal Stack, fully user-made.
+        /// </summary>
+        /// <seealso cref="PluginConfiguration.CustomHealStack"/>
+        internal static IGameObject? CustomHealStack
+        {
+            get
+            {
+                foreach (var name in Service.Configuration.CustomHealStack)
+                {
+                    var target = GetSimpleTargetValueFromName(name)
+                        .IfFriendly().IfWithinRange();
+                    if (target != null) return target;
+                }
+
+                // Fall back to Self, if the stack is small and returned nothing
+                if (Service.Configuration.CustomHealStack.Length <= 3)
+                    return Self;
+
+                return null;
+            }
+        }
+
+        private static IGameObject? GetSimpleTargetValueFromName (string name)
+        {
+            var property = typeof(SimpleTarget).GetProperty(name);
+            if (property == null) return null;
+            var value = property.GetValue(null);
+            return value as IGameObject;
+        }
+
+        #endregion
     }
 
     #endregion
