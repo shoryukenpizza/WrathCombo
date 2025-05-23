@@ -459,6 +459,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Scathe Option", "Add Scathe while moving and below lvl 66.", BLM.JobID)]
     BLM_ST_UseScathe = 2116,
 
+    [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Manaward Option", "Adds Manaward to the rotation.", BLM.JobID)]
+    BLM_ST_Manaward = 2199,
+
     #endregion
 
     #region AoE - Advanced

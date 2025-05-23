@@ -50,6 +50,9 @@ internal partial class BLM : Caster
                         ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
                 }
+
+                if (ActionReady(Manaward) && PlayerHealthPercentageHp() < 25)
+                    return Manaward;
             }
 
             if (IsMoving() && !LevelChecked(Triplecast))
@@ -245,6 +248,10 @@ internal partial class BLM : Caster
                             return Triplecast;
                     }
                 }
+
+                if (IsEnabled(CustomComboPreset.BLM_ST_Manaward) &&
+                    ActionReady(Manaward) && PlayerHealthPercentageHp() < BLM_ST_Manaward_Threshold)
+                    return Manaward;
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UseScathe) &&

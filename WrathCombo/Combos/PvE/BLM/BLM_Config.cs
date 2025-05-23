@@ -17,6 +17,7 @@ internal partial class BLM
             BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 1),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
+            BLM_ST_Manaward_Threshold = new("BLM_ST_Manaward_Threshold", 25),
             BLM_AoE_Triplecast_HoldCharges = new("BLM_AoE_Triplecast_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 5),
@@ -92,6 +93,12 @@ internal partial class BLM
 
                     break;
 
+                case CustomComboPreset.BLM_ST_Manaward:
+                    DrawSliderInt(0, 100, BLM_ST_Manaward_Threshold,
+                        $"{Manaward.ActionName()} HP percentage threshold");
+
+                    break;
+                
                 case CustomComboPreset.BLM_AoE_LeyLines:
                     DrawSliderInt(0, 1, BLM_AoE_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
