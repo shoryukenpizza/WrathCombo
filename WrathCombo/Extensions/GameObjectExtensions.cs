@@ -3,6 +3,7 @@ using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -71,6 +72,13 @@ public static class GameObjectExtensions
 
     /// <summary>
     ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is the player.
+    /// </summary>
+    public static IGameObject? IfNotThePlayer (this IGameObject? obj) =>
+        obj != null && obj.GameObjectId != Player.Object.GameObjectId ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
     ///     <see langword="null" /> if the target is not within range.
     /// </summary>
     /// <param name="obj"></param>
@@ -121,6 +129,13 @@ public static class GameObjectExtensions
     /// </summary>
     public static bool NeedsPositionals(this IGameObject? obj) =>
         obj != null && CustomComboFunctions.TargetNeedsPositionals(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object is the player.
+    /// </summary>
+    public static bool IsNotThePlayer(this IGameObject? obj) =>
+        obj != null && obj.GameObjectId != Player.Object.GameObjectId;
 
     /// <summary>
     ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
