@@ -394,7 +394,8 @@ internal partial class AST : Healer
                     return AspectedBenefic
                         .RetargetIfEnabled(OptionalTarget, Benefic2);
             }
-            return actionID;
+            return actionID
+                .RetargetIfEnabled(OptionalTarget, Benefic2);
         }
     }
 
