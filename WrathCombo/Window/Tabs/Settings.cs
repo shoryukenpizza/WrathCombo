@@ -6,21 +6,20 @@ using ImGuiNET;
 using System.Numerics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
-using ECommons.DalamudServices;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Window.Tabs
 {
     internal class Settings : ConfigWindow
     {
-        private static string SimpleTargetItemToAddToCustomHealStack = "default";
-
         internal new static void Draw()
         {
             using (ImRaii.Child("main", new Vector2(0, 0), true))
@@ -333,7 +332,13 @@ namespace WrathCombo.Window.Tabs
                 var nextStackItemMarker = "   >   ";
                 if (useCusHealStack)
                 {
-
+                    foreach (var item in Service.Configuration.CustomHealStack
+                                 .Select((value, index) => new { value, index }))
+                    {
+                        healStackText += TargetDisplayNameFromPropertyName(item.value);
+                        if (item.index < Service.Configuration.CustomHealStack.Length - 1)
+                            healStackText += nextStackItemMarker;
+                    }
                 }
                 else
                 {
@@ -347,7 +352,7 @@ namespace WrathCombo.Window.Tabs
                         healStackText += "Focus Target" + nextStackItemMarker;
                     if (Service.Configuration.UseLowestHPOverrideInDefaultHealStack)
                         healStackText += "Lowest HP% Ally" + nextStackItemMarker;
-                    healStackText += "Yourself";
+                    healStackText += "Self";
                 }
                 ImGuiEx.Spacing(new Vector2(10, 0));
                 ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey, healStackText);
@@ -457,60 +462,13 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Custom Heal Stack Setup
+                #region Custom Heal Stack Manager
 
                 if (Service.Configuration.UseCustomHealStack)
                 {
-                    #region Combo Variables
-
-                    var defaultLabel = "Select a Target to Add";
-                    var minSize = ImGui.CalcTextSize(defaultLabel).X;
-
-                    var simpleTargetProperties = typeof(SimpleTarget)
-                        .GetProperties(BindingFlags.Public |
-                                       BindingFlags.Static)
-                        .Select(x => x.Name)
-                        .Where(x => !x.Contains("Enemy") && !x.Contains("Attack"))
-                        .Prepend("default")
-                        .ToArray();
-
-                    var nonPartyMembers = simpleTargetProperties
-                        .Where(name => !name.StartsWith("PartyMember"));
-                    var partyMembers = simpleTargetProperties
-                        .Where(name => name.StartsWith("PartyMember"));
-                    var simpleTargets =
-                        nonPartyMembers.Concat(partyMembers).ToArray();
-
-                    var simpleTargetNames =
-                        simpleTargets.ToDictionary(
-                            name => name,
-                            name =>
-                            {
-                                return name switch
-                                {
-                                    "default" => defaultLabel,
-                                    "UIMouseOverTarget" => "UI-MouseOver Target",
-                                    "ModelMouseOverTarget" =>
-                                        "Model-MouseOver Target",
-                                    "LowestHPAlly" => "Lowest HP Ally",
-                                    "LowestHPPAlly" => "Lowest HP% Ally",
-#pragma warning disable SYSLIB1045
-                                    _ => Regex.Replace(name,
-#pragma warning restore SYSLIB1045
-                                        @"(?<=[a-z])(?=[A-Z0-9])", " "),
-                                };
-                            }
-                        );
-
-                    #endregion
-
-                    ImGui.PushItemWidth(minSize + 40f.Scale());
-                    ImGuiEx.Combo(
-                        "##CustomHealTargetStack",
-                        ref SimpleTargetItemToAddToCustomHealStack,
-                        simpleTargets,
-                        names: simpleTargetNames
-                    );
+                    ImGui.Indent();
+                    DrawCustomHealStackMaker();
+                    ImGui.Unindent();
                 }
 
                 #endregion
@@ -560,5 +518,210 @@ namespace WrathCombo.Window.Tabs
                 #endregion
             }
         }
+
+        private static string SimpleTargetItemToAddToCustomHealStack = "default";
+        private static bool _singleIconWidthSet;
+        private static float _iconGroupWidth =
+            ImGui.CalcTextSize("x").X;
+        private static float _longestPropertyLabel =
+            ImGui.CalcTextSize("Field-MouseOver Target").X;
+        private static float _propertyHeight =
+            ImGui.CalcTextSize("I").Y;
+
+#pragma warning disable SYSLIB1045
+        private static void DrawCustomHealStackMaker()
+        {
+            ImGui.Text("Add to the Stack:");
+            ImGui.SameLine();
+            DrawItemAdding();
+
+            ImGuiComponents.HelpMarker("Click this dropdown to open the list of available Target options.\nClick any entry to add it to your Custom Heal Stack, at the bottom.\nThere is a Textbox that says 'Filter...' at the top, type into this to search the list.");
+
+            ImGuiEx.Spacing(new Vector2(0, 5));
+
+            #region Sizing Variables
+
+            var currentStyle = ImGui.GetStyle();
+            var widthModifiers = (currentStyle.ItemSpacing.X * 2) +
+                                 (currentStyle.ItemInnerSpacing.X * 2);
+            var width = _longestPropertyLabel + _iconGroupWidth +
+                        widthModifiers;
+            var height = (_propertyHeight * 5) +
+                         (currentStyle.ItemSpacing.Y * 4 / 2) +
+                         (currentStyle.ItemInnerSpacing.Y * 5 / 2) +
+                         (currentStyle.WindowPadding.Y * 2);
+            var size = new Vector2(width, height);
+
+            #endregion
+
+            const ImGuiWindowFlags flags = ImGuiWindowFlags.NoMove
+                                           | ImGuiWindowFlags.NoResize;
+
+            // Display the Custom Heal Stack
+            using (ImRaii.Child("###CustomHealStackList", size, true, flags))
+            {
+                foreach (var item in Service.Configuration.CustomHealStack)
+                {
+                    var text = TargetDisplayNameFromPropertyName(item);
+                    #region Sizing Variables
+
+                    var areaWidth = ImGui.GetContentRegionAvail().X;
+                    var textWidth = ImGui.CalcTextSize(text).X;
+                    var dummyWidth = areaWidth - textWidth - _iconGroupWidth -
+                                     widthModifiers / 2;
+                    #endregion
+
+                    ImGui.TextUnformatted(text);
+
+                    ImGui.SameLine();
+                    ImGui.Dummy(new Vector2(dummyWidth, 0));
+                    ImGui.SameLine();
+
+                    DrawPropertyControlGroup(item);
+                }
+            }
+
+            ImGuiComponents.HelpMarker("The priority goes from top to bottom.\nScroll down to see all of your items.\nClick the Up and Down buttons to move items in the list.\nClick the X button to remove an item from the list.\nIf there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\n\nDefault: Focus Target > Hard Target > Self");
+
+            // Utility
+            GetButtonGroupSize();
+
+            return;
+
+            void DrawItemAdding()
+            {
+                #region Combo Variables
+
+                var defaultLabel = "Select a Target to Add";
+                var minSize = ImGui.CalcTextSize(defaultLabel).X;
+
+                // List of ally-related SimpleTarget properties
+                var simpleTargetProperties = typeof(SimpleTarget)
+                    .GetProperties(BindingFlags.Public |
+                                   BindingFlags.Static)
+                    .Select(x => x.Name)
+                    .Where(x => !x.Contains("Enemy") && !x.Contains("Attack") && !x.Contains("Dead"))
+                    .Prepend("default")
+                    .ToArray();
+
+                // Put the ordered Party Member properties at the bottom
+                var nonPartyMembers = simpleTargetProperties
+                    .Where(name => !name.StartsWith("PartyMember"));
+                var partyMembers = simpleTargetProperties
+                    .Where(name => name.StartsWith("PartyMember"));
+                var simpleTargets =
+                    nonPartyMembers.Concat(partyMembers).ToArray();
+
+                // Make Property names properly spaced and readable
+                var simpleTargetNames =
+                    simpleTargets.ToDictionary(
+                        name => name,
+                        TargetDisplayNameFromPropertyName
+                    );
+
+                // Save some data about the sizing of the text
+                _longestPropertyLabel = simpleTargetNames
+                    .Select(x => x.Value)
+                    .Max(x => ImGui.CalcTextSize(x).X);
+                _propertyHeight =
+                    ImGui.CalcTextSize("I").Y > _propertyHeight
+                        ? ImGui.CalcTextSize("I").Y
+                        : _propertyHeight;
+
+                #endregion
+
+                ImGui.PushItemWidth(minSize + 40f.Scale());
+                if (ImGuiEx.Combo(
+                    "##CustomHealTargetStack",
+                    ref SimpleTargetItemToAddToCustomHealStack,
+                    simpleTargets,
+                    names: simpleTargetNames
+                ))
+                {
+                    PluginConfiguration.AddHealStackItem(
+                        SimpleTargetItemToAddToCustomHealStack);
+                    SimpleTargetItemToAddToCustomHealStack = "default";
+                }
+            }
+
+            void DrawPropertyControlGroup(string property)
+            {
+                using (ImRaii.Group())
+                {
+                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 0));
+                    using (ImRaii.PushFont(UiBuilder.IconFont))
+                    {
+                        bool disable;
+                        // Move Up Button
+                        disable = Service.Configuration.CustomHealStack.First() == property;
+                        if (disable)
+                            ImGui.BeginDisabled();
+                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretUp,
+                            "customStack"+property+"up"))
+                            PluginConfiguration.MoveHealStackItemUp(property);
+                        if (disable)
+                            ImGui.EndDisabled();
+
+                        ImGui.SameLine();
+
+                        // Move Down Button
+                        disable = Service.Configuration.CustomHealStack.Last() == property;
+                        if (disable)
+                            ImGui.BeginDisabled();
+                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretDown,
+                            "customStack"+property+"down"))
+                            PluginConfiguration.MoveHealStackItemDown(property);
+                        if (disable)
+                            ImGui.EndDisabled();
+
+                        ImGui.SameLine();
+
+                        // Delete Button
+                        disable = Service.Configuration.CustomHealStack.Length <= 1;
+                        if (disable)
+                            ImGui.BeginDisabled();
+                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.Times,
+                            "customStack"+property+"del"))
+                            PluginConfiguration.RemoveHealStackItem(property);
+                        if (disable)
+                            ImGui.EndDisabled();
+                    }
+                    ImGui.PopStyleVar();
+                }
+            }
+
+            void GetButtonGroupSize()
+            {
+                if (_singleIconWidthSet) return;
+
+                ImGui.SameLine();
+                var transparent = new Vector4(0f, 0f, 0f, 0f);
+                using (ImRaii.PushColor(ImGuiCol.Text, transparent))
+                    DrawPropertyControlGroup("");
+
+                _iconGroupWidth = ImGui.GetItemRectSize().X;
+                _propertyHeight = ImGui.GetItemRectSize().Y > _propertyHeight
+                    ? ImGui.GetItemRectSize().Y
+                    : _propertyHeight;
+                _singleIconWidthSet = true;
+            }
+        }
+
+        private static string TargetDisplayNameFromPropertyName (string propertyName)
+        {
+            return propertyName switch
+            {
+                "default" => "Select a Target to Add",
+                // Handle special cases
+                "UIMouseOverTarget" => "UI-MouseOver Target",
+                "ModelMouseOverTarget" => "Field-MouseOver Target",
+                "LowestHPAlly" => "Lowest HP Ally",
+                "LowestHPPAlly" => "Lowest HP% Ally",
+                // Format the rest with Regex
+                _ => Regex.Replace(propertyName,
+                    @"(?<=[a-z])(?=[A-Z0-9])", " "),
+            };
+        }
+#pragma warning restore SYSLIB1045
     }
 }
