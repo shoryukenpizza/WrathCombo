@@ -13,6 +13,8 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
@@ -107,6 +109,8 @@ internal static class SimpleTarget
         {
             get
             {
+                var logging = EZ.Throttle("customHealStackLog", TS.FromSeconds(10));
+
                 foreach (var name in Service.Configuration.CustomHealStack)
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
@@ -115,6 +119,16 @@ internal static class SimpleTarget
                     // Only include Lowest HP Ally options if they are missing HP
                     if (name.Contains("Lowest"))
                         target = target.IfMissingHP();
+
+                    if (logging)
+                        PluginLog.Verbose(
+                            $"[Custom Heal Stack] {name,-25} => " +
+                            $"{target?.Name ?? "null",-30}" +
+                            $" (friendly: {resolved.IsFriendly(),5}, " +
+                            $"within range: {target.IsWithinRange(),5}, " +
+                            $"missing HP: {target.IsMissingHP(),5})"
+                        );
+
                     if (target != null) return target;
                 }
 
