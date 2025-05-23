@@ -519,8 +519,10 @@ namespace WrathCombo.Window.Tabs
             }
         }
 
+        #region Custom Heal Stack Manager Methods
+
         private static string SimpleTargetItemToAddToCustomHealStack = "default";
-        private static bool _singleIconWidthSet;
+        private static bool _iconGroupWidthSet;
         private static float _iconGroupWidth =
             ImGui.CalcTextSize("x").X;
         private static float _longestPropertyLabel =
@@ -632,11 +634,11 @@ namespace WrathCombo.Window.Tabs
 
                 ImGui.PushItemWidth(minSize + 40f.Scale());
                 if (ImGuiEx.Combo(
-                    "##CustomHealTargetStack",
-                    ref SimpleTargetItemToAddToCustomHealStack,
-                    simpleTargets,
-                    names: simpleTargetNames
-                ))
+                        "##CustomHealTargetStack",
+                        ref SimpleTargetItemToAddToCustomHealStack,
+                        simpleTargets,
+                        names: simpleTargetNames
+                    ))
                 {
                     PluginConfiguration.AddHealStackItem(
                         SimpleTargetItemToAddToCustomHealStack);
@@ -657,7 +659,7 @@ namespace WrathCombo.Window.Tabs
                         if (disable)
                             ImGui.BeginDisabled();
                         if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretUp,
-                            "customStack"+property+"up"))
+                                "customStack"+property+"up"))
                             PluginConfiguration.MoveHealStackItemUp(property);
                         if (disable)
                             ImGui.EndDisabled();
@@ -669,7 +671,7 @@ namespace WrathCombo.Window.Tabs
                         if (disable)
                             ImGui.BeginDisabled();
                         if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretDown,
-                            "customStack"+property+"down"))
+                                "customStack"+property+"down"))
                             PluginConfiguration.MoveHealStackItemDown(property);
                         if (disable)
                             ImGui.EndDisabled();
@@ -681,7 +683,7 @@ namespace WrathCombo.Window.Tabs
                         if (disable)
                             ImGui.BeginDisabled();
                         if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.Times,
-                            "customStack"+property+"del"))
+                                "customStack"+property+"del"))
                             PluginConfiguration.RemoveHealStackItem(property);
                         if (disable)
                             ImGui.EndDisabled();
@@ -692,7 +694,7 @@ namespace WrathCombo.Window.Tabs
 
             void GetButtonGroupSize()
             {
-                if (_singleIconWidthSet) return;
+                if (_iconGroupWidthSet) return;
 
                 ImGui.SameLine();
                 var transparent = new Vector4(0f, 0f, 0f, 0f);
@@ -703,7 +705,7 @@ namespace WrathCombo.Window.Tabs
                 _propertyHeight = ImGui.GetItemRectSize().Y > _propertyHeight
                     ? ImGui.GetItemRectSize().Y
                     : _propertyHeight;
-                _singleIconWidthSet = true;
+                _iconGroupWidthSet = true;
             }
         }
 
@@ -723,5 +725,7 @@ namespace WrathCombo.Window.Tabs
             };
         }
 #pragma warning restore SYSLIB1045
+
+        #endregion
     }
 }
