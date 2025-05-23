@@ -455,6 +455,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Movement Option", "Add chosen options for movement.", BLM.JobID)]
     BLM_ST_Movement = 2113,
 
+    [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Scathe Option", "Add Scathe while moving and below lvl 66.", BLM.JobID)]
+    BLM_ST_UseScathe = 2116,
+
     #endregion
 
     #region AoE - Advanced
@@ -574,7 +578,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value ST = 2115
+    // Last value ST = 2116
     //Last Value AoE = 2212
     //Last Value misc = 2061
 

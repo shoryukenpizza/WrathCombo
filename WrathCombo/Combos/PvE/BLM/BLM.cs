@@ -52,6 +52,9 @@ internal partial class BLM : Caster
                 }
             }
 
+            if (IsMoving() && !LevelChecked(Triplecast))
+                return Scathe;
+
             if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
@@ -243,6 +246,10 @@ internal partial class BLM : Caster
                     }
                 }
             }
+
+            if (IsEnabled(CustomComboPreset.BLM_ST_UseScathe) &&
+                IsMoving() && !LevelChecked(Triplecast))
+                return Scathe;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                 HasMaxPolyglotStacks && PolyglotTimer <= 5000)
