@@ -361,117 +361,120 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Default Heal Stack Include: UI MouseOver
-
-                if (useCusHealStack) ImGui.BeginDisabled();
-
-                bool useUIMouseoverOverridesInDefaultHealStack =
-                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack;
-                if (ImGui.Checkbox("Add UI MouseOver to the Default Healing Stack", ref useUIMouseoverOverridesInDefaultHealStack))
+                if (ImGui.CollapsingHeader("Heal Stack Customization Options"))
                 {
-                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack =
-                        useUIMouseoverOverridesInDefaultHealStack;
-                    Service.Configuration.Save();
+                    #region Default Heal Stack Include: UI MouseOver
+
+                    if (useCusHealStack) ImGui.BeginDisabled();
+
+                    bool useUIMouseoverOverridesInDefaultHealStack =
+                        Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack;
+                    if (ImGui.Checkbox("Add UI MouseOver to the Default Healing Stack", ref useUIMouseoverOverridesInDefaultHealStack))
+                    {
+                        Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack =
+                            useUIMouseoverOverridesInDefaultHealStack;
+                        Service.Configuration.Save();
+                    }
+
+                    if (useCusHealStack) ImGui.EndDisabled();
+
+                    ImGuiComponents.HelpMarker("This will add any UI MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\nIt is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have UI MouseOver targets in your Redirect/Reaction configuration).\nDefault: Off");
+
+                    #endregion
+
+                    #region Default Heal Stack Include: Field MouseOver
+
+                    if (useCusHealStack) ImGui.BeginDisabled();
+
+                    bool useFieldMouseoverOverridesInDefaultHealStack =
+                        Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack;
+                    if (ImGui.Checkbox("Add Field MouseOver to the Default Healing Stack", ref useFieldMouseoverOverridesInDefaultHealStack))
+                    {
+                        Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack =
+                            useFieldMouseoverOverridesInDefaultHealStack;
+                        Service.Configuration.Save();
+                    }
+
+                    if (useCusHealStack) ImGui.EndDisabled();
+
+                    ImGuiComponents.HelpMarker("This will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any nameplate UI or character model.\n\nIt is recommended to enable this only if you regularly intentionally use field mouseover targeting already.\nDefault: Off");
+
+                    #endregion
+
+                    #region Default Heal Stack Include: Focus Target
+
+                    if (useCusHealStack) ImGui.BeginDisabled();
+
+                    bool useFocusTargetOverrideInDefaultHealStack =
+                        Service.Configuration.UseFocusTargetOverrideInDefaultHealStack;
+                    if (ImGui.Checkbox("Add Focus Target to the Default Healing Stack", ref useFocusTargetOverrideInDefaultHealStack))
+                    {
+                        Service.Configuration.UseFocusTargetOverrideInDefaultHealStack =
+                            useFocusTargetOverrideInDefaultHealStack;
+                        Service.Configuration.Save();
+                    }
+
+                    if (useCusHealStack) ImGui.EndDisabled();
+
+                    ImGuiComponents.HelpMarker("This will add your focus target under your hard and soft targets in the Default Heal Stack, overriding the rest of the stack if you have a living focus target.\n\nDefault: Off");
+
+                    #endregion
+
+                    #region Default Heal Stack Include: Lowest HP Ally
+
+                    if (useCusHealStack) ImGui.BeginDisabled();
+
+                    bool useLowestHPOverrideInDefaultHealStack =
+                        Service.Configuration.UseLowestHPOverrideInDefaultHealStack;
+                    if (ImGui.Checkbox("Add Lowest HP% Ally to the Default Healing Stack", ref useLowestHPOverrideInDefaultHealStack))
+                    {
+                        Service.Configuration.UseLowestHPOverrideInDefaultHealStack =
+                            useLowestHPOverrideInDefaultHealStack;
+                        Service.Configuration.Save();
+                    }
+
+                    if (useCusHealStack) ImGui.EndDisabled();
+
+                    ImGuiComponents.HelpMarker("This will add a nearby party member with the lowest HP% to bottom of the Default Heal Stack, overriding only yourself.\n\nTHIS SHOULD BE USED WITH THE 'RETARGET HEALING ACTIONS' SETTING!\n\nDefault: Off");
+
+                    if (useCusHealStack) ImGui.BeginDisabled();
+                    if (useLowestHPOverrideInDefaultHealStack)
+                    {
+                        ImGuiEx.Spacing(new Vector2(30, 0));
+                        ImGuiEx.Text(ImGuiColors.DalamudYellow, "This should be used with the 'Retarget Healing Actions' setting above!");
+                    }
+                    if (useCusHealStack) ImGui.EndDisabled();
+
+                    #endregion
+
+                    ImGuiEx.Spacing(new Vector2(5, 5));
+                    ImGui.TextUnformatted("Or");
+                    ImGuiEx.Spacing(new Vector2(0, 5));
+
+                    #region Use Custom Heal Stack
+
+                    bool useCustomHealStack = Service.Configuration.UseCustomHealStack;
+                    if (ImGui.Checkbox("Use a Custom Heal Stack Instead", ref useCustomHealStack))
+                    {
+                        Service.Configuration.UseCustomHealStack = useCustomHealStack;
+                        Service.Configuration.Save();
+                    }
+
+                    ImGuiComponents.HelpMarker("Select this if you would rather make your own stack of target priorities for Heal Targets instead of using our default stack.\n\nIt is recommended to use this to align with your Redirect/Reaction configuration if you're not using the Retarget Healing Actions setup; otherwise it is preference.\nDefault: Off");
+
+                    #endregion
+
+                    #region Custom Heal Stack Manager
+
+                    if (Service.Configuration.UseCustomHealStack)
+                    {
+                        ImGui.Indent();
+                        DrawCustomHealStackMaker();
+                        ImGui.Unindent();
+                    }
+
+                    #endregion
                 }
-
-                if (useCusHealStack) ImGui.EndDisabled();
-
-                ImGuiComponents.HelpMarker("This will add any UI MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any party member UI.\n\nIt is recommended to enable this if you are a keyboard+mouse user and enable Retarget Healing Actions (or have UI MouseOver targets in your Redirect/Reaction configuration).\nDefault: Off");
-
-                #endregion
-
-                #region Default Heal Stack Include: Field MouseOver
-
-                if (useCusHealStack) ImGui.BeginDisabled();
-
-                bool useFieldMouseoverOverridesInDefaultHealStack =
-                    Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack;
-                if (ImGui.Checkbox("Add Field MouseOver to the Default Healing Stack", ref useFieldMouseoverOverridesInDefaultHealStack))
-                {
-                    Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack =
-                        useFieldMouseoverOverridesInDefaultHealStack;
-                    Service.Configuration.Save();
-                }
-
-                if (useCusHealStack) ImGui.EndDisabled();
-
-                ImGuiComponents.HelpMarker("This will add any MouseOver targets to the top of the Default Heal Stack, overriding the rest of the stack if you are mousing over any nameplate UI or character model.\n\nIt is recommended to enable this only if you regularly intentionally use field mouseover targeting already.\nDefault: Off");
-
-                #endregion
-
-                #region Default Heal Stack Include: Focus Target
-
-                if (useCusHealStack) ImGui.BeginDisabled();
-
-                bool useFocusTargetOverrideInDefaultHealStack =
-                    Service.Configuration.UseFocusTargetOverrideInDefaultHealStack;
-                if (ImGui.Checkbox("Add Focus Target to the Default Healing Stack", ref useFocusTargetOverrideInDefaultHealStack))
-                {
-                    Service.Configuration.UseFocusTargetOverrideInDefaultHealStack =
-                        useFocusTargetOverrideInDefaultHealStack;
-                    Service.Configuration.Save();
-                }
-
-                if (useCusHealStack) ImGui.EndDisabled();
-
-                ImGuiComponents.HelpMarker("This will add your focus target under your hard and soft targets in the Default Heal Stack, overriding the rest of the stack if you have a living focus target.\n\nDefault: Off");
-
-                #endregion
-
-                #region Default Heal Stack Include: Lowest HP Ally
-
-                if (useCusHealStack) ImGui.BeginDisabled();
-
-                bool useLowestHPOverrideInDefaultHealStack =
-                    Service.Configuration.UseLowestHPOverrideInDefaultHealStack;
-                if (ImGui.Checkbox("Add Lowest HP% Ally to the Default Healing Stack", ref useLowestHPOverrideInDefaultHealStack))
-                {
-                    Service.Configuration.UseLowestHPOverrideInDefaultHealStack =
-                        useLowestHPOverrideInDefaultHealStack;
-                    Service.Configuration.Save();
-                }
-
-                if (useCusHealStack) ImGui.EndDisabled();
-
-                ImGuiComponents.HelpMarker("This will add a nearby party member with the lowest HP% to bottom of the Default Heal Stack, overriding only yourself.\n\nTHIS SHOULD BE USED WITH THE 'RETARGET HEALING ACTIONS' SETTING!\n\nDefault: Off");
-
-                if (useCusHealStack) ImGui.BeginDisabled();
-                if (useLowestHPOverrideInDefaultHealStack)
-                {
-                    ImGuiEx.Spacing(new Vector2(30, 0));
-                    ImGuiEx.Text(ImGuiColors.DalamudYellow, "This should be used with the 'Retarget Healing Actions' setting above!");
-                }
-                if (useCusHealStack) ImGui.EndDisabled();
-
-                #endregion
-
-                ImGuiEx.Spacing(new Vector2(5, 5));
-                ImGui.TextUnformatted("Or");
-                ImGuiEx.Spacing(new Vector2(0, 5));
-
-                #region Use Custom Heal Stack
-
-                bool useCustomHealStack = Service.Configuration.UseCustomHealStack;
-                if (ImGui.Checkbox("Use a Custom Heal Stack Instead", ref useCustomHealStack))
-                {
-                    Service.Configuration.UseCustomHealStack = useCustomHealStack;
-                    Service.Configuration.Save();
-                }
-
-                ImGuiComponents.HelpMarker("Select this if you would rather make your own stack of target priorities for Heal Targets instead of using our default stack.\n\nIt is recommended to use this to align with your Redirect/Reaction configuration if you're not using the Retarget Healing Actions setup; otherwise it is preference.\nDefault: Off");
-
-                #endregion
-
-                #region Custom Heal Stack Manager
-
-                if (Service.Configuration.UseCustomHealStack)
-                {
-                    ImGui.Indent();
-                    DrawCustomHealStackMaker();
-                    ImGui.Unindent();
-                }
-
-                #endregion
 
                 #endregion
 
@@ -533,6 +536,7 @@ namespace WrathCombo.Window.Tabs
 #pragma warning disable SYSLIB1045
         private static void DrawCustomHealStackMaker()
         {
+            ImGuiEx.Spacing(new Vector2(5f.Scale(), 0));
             ImGui.Text("Add to the Stack:");
             ImGui.SameLine();
             DrawItemAdding();
