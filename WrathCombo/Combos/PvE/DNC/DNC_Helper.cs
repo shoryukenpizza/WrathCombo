@@ -244,35 +244,35 @@ internal partial class DNC
         (out IGameObject? partner, bool? callingFromFeature = null)
     {
         partner = null;
-        var playerID = LocalPlayer.GameObjectId;
+
+        if (!Player.Available)
+            return false;
+
+        // Check if we have a target overriding any searching
+        var focusTarget = SimpleTarget.FocusTarget;
+        if (callingFromFeature is true &&
+            Config.DNC_Partner_FocusOverride &&
+            focusTarget is IBattleChara &&
+            !focusTarget.IsDead &&
+            focusTarget.IsInParty() &&
+            IsInRange(focusTarget, 30) &&
+            SicknessFree(focusTarget) &&
+            DamageDownFree(focusTarget))
+        {
+            partner = focusTarget;
+            return true;
+        }
+
         var party = GetPartyMembers()
-            .Where(member => member.GameObjectId != playerID)
+            .Where(member => member.GameObjectId != Player.Object.GameObjectId)
             .Where(member => !member.BattleChara.IsDead)
             .Where(member => IsInRange(member.BattleChara, 30))
             .Where(member => !HasAnyPartner(member) || HasMyPartner(member))
             .Select(member => member.BattleChara)
             .ToList();
 
-        // Bails
-        if (!Player.Available)
-            return false;
         if (party.Count <= 1 && !HasCompanionPresent())
             return false;
-
-        // Check if we have a target overriding any searching
-        if (callingFromFeature is true &&
-            Config.DNC_Partner_FocusOverride &&
-            SimpleTarget.FocusTarget is IBattleChara &&
-            !SimpleTarget.FocusTarget.IsDead &&
-            party.Any(x =>
-                x.GameObjectId == SimpleTarget.FocusTarget.GameObjectId) &&
-            IsInRange(SimpleTarget.FocusTarget, 30) &&
-            SicknessFree(SimpleTarget.FocusTarget) &&
-            DamageDownFree(SimpleTarget.FocusTarget))
-        {
-            partner = SimpleTarget.FocusTarget;
-            return true;
-        }
 
         // Search for a partner
         if (TryGetBestPartner(out var bestPartner))
