@@ -1,10 +1,12 @@
 #region
 
+using System;
 using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -122,10 +124,19 @@ internal static class SimpleTarget
 
         private static IGameObject? GetSimpleTargetValueFromName (string name)
         {
-            var property = typeof(SimpleTarget).GetProperty(name);
-            if (property == null) return null;
-            var value = property.GetValue(null);
-            return value as IGameObject;
+            try
+            {
+                var property = typeof(SimpleTarget).GetProperty(name);
+                if (property == null) return null;
+                var value = property.GetValue(null);
+                return value as IGameObject;
+            }
+            catch (Exception e)
+            {
+                PluginLog.Warning($"Error getting target value from name: '{name}'. " +
+                                  $"Edited value?\n{e}");
+                return null;
+            }
         }
 
         #endregion
