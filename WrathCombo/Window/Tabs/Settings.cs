@@ -300,11 +300,11 @@ namespace WrathCombo.Window.Tabs
 
                 var useCusHealStack = Service.Configuration.UseCustomHealStack;
 
-                #region Retarget Healing Actions
+                #region Retarget ST Healing Actions
 
                 bool retargetHealingActions =
                     Service.Configuration.RetargetHealingActionsToStack;
-                if (ImGui.Checkbox("Retarget Healing Actions", ref retargetHealingActions))
+                if (ImGui.Checkbox("Retarget (Single Target) Healing Actions", ref retargetHealingActions))
                 {
                     Service.Configuration.RetargetHealingActionsToStack =
                         retargetHealingActions;
@@ -312,7 +312,7 @@ namespace WrathCombo.Window.Tabs
                 }
 
                 ImGuiComponents.HelpMarker(
-                    "This will retarget all healing actions to the Heal Stack as shown below,\nsimilarly to how Redirect or Reaction would.\n\nIt is recommended to enable this if you customize the Heal Stack at all.\nDefault: Off");
+                    "This will retarget all single target healing actions to the Heal Stack as shown below,\nsimilarly to how Redirect or Reaction would.\n\nIt is recommended to enable this if you customize the Heal Stack at all.\nDefault: Off");
                 Presets.DrawPossiblyRetargetedSymbol();
 
                 #endregion
