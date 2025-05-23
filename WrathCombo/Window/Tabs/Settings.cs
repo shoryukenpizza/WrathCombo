@@ -312,7 +312,7 @@ namespace WrathCombo.Window.Tabs
                 }
 
                 ImGuiComponents.HelpMarker(
-                    "This will retarget all single target healing actions to the Heal Stack as shown below,\nsimilarly to how Redirect or Reaction would.\n\nIt is recommended to enable this if you customize the Heal Stack at all.\nDefault: Off");
+                    "This will retarget all single target healing actions to the Heal Stack as shown below,\nsimilarly to how Redirect or Reaction would.\nThis ensures that the target used to check HP% threshold logic for healing actions is the same target that will receive that heal.\n\nIt is recommended to enable this if you customize the Heal Stack at all.\nDefault: Off");
                 Presets.DrawPossiblyRetargetedSymbol();
 
                 #endregion
