@@ -123,10 +123,10 @@ internal static class SimpleTarget
                     if (logging)
                         PluginLog.Verbose(
                             $"[Custom Heal Stack] {name,-25} => " +
-                            $"{target?.Name ?? "null",-30}" +
+                            $"{resolved?.Name ?? "null",-30}" +
                             $" (friendly: {resolved.IsFriendly(),5}, " +
-                            $"within range: {target.IsWithinRange(),5}, " +
-                            $"missing HP: {target.IsMissingHP(),5})"
+                            $"within range: {resolved.IsWithinRange(),5}, " +
+                            $"missing HP: {resolved.IsMissingHP(),5})"
                         );
 
                     if (target != null) return target;
