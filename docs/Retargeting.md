@@ -2,6 +2,10 @@
 > See [The Example C#](RetargetingExample.cs) for barebones examples of how to 
 > set up Retargeting for an action.
 
+> [!IMPORTANT]
+> Be sure to open the `Action Retargeting` section of the Debug tab, if you are 
+> implementing any Retargeting yourself: `/wrath dbg`
+
 ## Capabilities of Action Retargeting
 
 Action Retargeting is meant to primarily remove our dependence on Redirect and
