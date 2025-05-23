@@ -87,6 +87,16 @@ public static class GameObjectExtensions
         (this IGameObject? obj, float range = 25) =>
     obj != null && CustomComboFunctions.IsInRange(obj, range) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not below 99% HP.
+    /// </summary>
+    public static IGameObject? IfMissingHP (this IGameObject? obj) =>
+        obj is IBattleChara battle &&
+        battle.CurrentHp / battle.MaxHp * 100 < 99
+            ? obj
+            : null;
+
     #endregion
 
     #region Target Checking (same as above, but returns a boolean)
@@ -143,6 +153,13 @@ public static class GameObjectExtensions
     /// </summary>
     public static bool IsWithinRange(this IGameObject? obj, float range = 25) =>
         obj != null && CustomComboFunctions.IsInRange(obj, range);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the target is below 99% HP.
+    /// </summary>
+    public static bool IsMissingHP(this IGameObject? obj) =>
+        obj is IBattleChara battle && battle.CurrentHp / battle.MaxHp * 100 < 99;
 
     #endregion
 }
