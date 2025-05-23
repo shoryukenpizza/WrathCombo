@@ -380,10 +380,10 @@ namespace WrathCombo.Window.Tabs
                 if (useCusHealStack) ImGui.BeginDisabled();
 
                 bool useFieldMouseoverOverridesInDefaultHealStack =
-                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack;
+                    Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack;
                 if (ImGui.Checkbox("Add Field MouseOver to the Default Healing Stack", ref useFieldMouseoverOverridesInDefaultHealStack))
                 {
-                    Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack =
+                    Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack =
                         useFieldMouseoverOverridesInDefaultHealStack;
                     Service.Configuration.Save();
                 }
