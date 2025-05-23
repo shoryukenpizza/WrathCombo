@@ -343,9 +343,9 @@ namespace WrathCombo.Window.Tabs
                 else
                 {
                     if (Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack)
-                        healStackText += "UI MouseOver" + nextStackItemMarker;
+                        healStackText += "UI-MouseOver Target" + nextStackItemMarker;
                     if (Service.Configuration.UseFieldMouseoverOverridesInDefaultHealStack)
-                        healStackText += "Field MouseOver" + nextStackItemMarker;
+                        healStackText += "Field-MouseOver Target" + nextStackItemMarker;
                     healStackText += "Soft Target" + nextStackItemMarker;
                     healStackText += "Hard Target" + nextStackItemMarker;
                     if (Service.Configuration.UseFocusTargetOverrideInDefaultHealStack)
