@@ -110,7 +110,6 @@ public static class DebugFile
             AddPlayerInfo();
 
             AddSettingsInfo();
-
             AddAutoRotationInfo();
 
             AddFeatures(job);
@@ -199,6 +198,10 @@ public static class DebugFile
         AddLine();
         AddLine($"Current Zone: {currentZone}");
         AddLine($"Current Party Size: {GetPartyMembers().Count}");
+        AddLine();
+        AddLine($"HP: {(player.CurrentHp / player.MaxHp * 100):F0}%");
+        AddLine($"+Shield: {player.ShieldPercentage:F0}%");
+        AddLine($"MP: {(player.CurrentMp / player.MaxMp * 100):F0}%");
         AddLine("END PLAYER INFO");
 
         AddLine();
