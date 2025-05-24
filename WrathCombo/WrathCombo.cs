@@ -40,7 +40,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 {
     internal static TaskManager? TM;
     internal readonly ConfigWindow ConfigWindow;
-    private readonly SettingChangeWindow SettingChangeWindow;
+    private readonly MajorChangesWindow _majorChangesWindow;
     private readonly TargetHelper TargetHelper;
     internal static DateTime LastPresetDeconflictTime = DateTime.MinValue;
     internal static WrathCombo? P;
@@ -161,11 +161,11 @@ public sealed partial class WrathCombo : IDalamudPlugin
         IPC = Provider.Init();
 
         ConfigWindow = new ConfigWindow();
-        SettingChangeWindow = new SettingChangeWindow();
+        _majorChangesWindow = new MajorChangesWindow();
         TargetHelper = new();
         ws = new();
         ws.AddWindow(ConfigWindow);
-        ws.AddWindow(SettingChangeWindow);
+        ws.AddWindow(_majorChangesWindow);
         ws.AddWindow(TargetHelper);
 
         Svc.PluginInterface.UiBuilder.Draw += ws.Draw;
@@ -335,7 +335,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void DrawUI()
     {
-        SettingChangeWindow.Draw();
+        _majorChangesWindow.Draw();
         ConfigWindow.Draw();
     }
 
@@ -419,6 +419,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private void OnOpenMainUi() =>
         HandleOpenCommand(forceOpen: true);
 
-    private void OnOpenConfigUi() =>
+    internal void OnOpenConfigUi() =>
         HandleOpenCommand(tab: OpenWindow.Settings, forceOpen: true);
 }

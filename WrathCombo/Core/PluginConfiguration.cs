@@ -383,11 +383,12 @@ namespace WrathCombo.Core
         public bool HideMessageOfTheDay { get; set; } = false;
 
         /// <summary>
-        ///     Whether the Setting Change Suggestion window was hidden for a
+        ///     Whether the Major Changes window was hidden for a
         ///     specific version.
         /// </summary>
-        /// <seealso cref="SettingChangeWindow"/>
-        public string HideSettingsChangeSuggestionForVersion { get; set; } = "";
+        /// <seealso cref="MajorChangesWindow"/>
+        public Version HideMajorChangesForVersion { get; set; } =
+            System.Version.Parse("0.0.0");
 
         /// <summary>
         ///     If the DTR Bar text should be shortened.
