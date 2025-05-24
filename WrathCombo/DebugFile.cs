@@ -468,9 +468,14 @@ public static class DebugFile
         var playerID = Svc.ClientState.LocalPlayer.GameObjectId;
         var statusEffects = Svc.ClientState.LocalPlayer.StatusList;
 
-        AddLine($"Status Effects found: {statusEffects.Count()}");
+        var statusEffectsCount = 0;
+        foreach (var _ in statusEffects)
+            statusEffectsCount++;
 
-        if (statusEffects.Length <= 0) return;
+        AddLine($"Status Effects found: {statusEffectsCount} " +
+                $"(max: {statusEffects.Count()})");
+
+        if (statusEffectsCount <= 0) return;
 
         AddLine("START STATUS EFFECTS");
         foreach (var effect in statusEffects)
@@ -508,6 +513,7 @@ public static class DebugFile
         AddLine("START DEBUG CODE");
         AddLine(GetDebugCode());
         AddLine("END DEBUG CODE");
+        AddLine();
     }
 
     private static void AddLogHistory()
