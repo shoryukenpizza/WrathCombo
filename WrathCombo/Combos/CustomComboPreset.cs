@@ -5544,6 +5544,7 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Physick)]
     [CustomComboInfo("Simple Heals - Single Target",
         "Change Physick into Adloquium, Lustrate, then Physick with below options:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal = 16023,
 
     [ParentCombo(SCH_ST_Heal)]
@@ -5560,26 +5561,32 @@ public enum CustomComboPreset
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Esuna = 16026,
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Adloquium Option", "Use Adloquium when missing Galvanize or target HP%% below:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Adloquium = 16027,
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Lustrate Option", "Use Lustrate when target HP%% below:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Lustrate = 16028,
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Excogitation Option", "Use Excogitation when target HP%% below:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Excogitation = 16038,
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Protraction Option", "Use Protraction when target HP%% below:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Protraction = 16039,
 
     [ParentCombo(SCH_ST_Heal)]
     [CustomComboInfo("Aetherpact Option", "Use Aetherpact when target HP%% below:", SCH.JobID)]
+    [PossiblyRetargeted]
     SCH_ST_Heal_Aetherpact = 16047,
 
     #endregion

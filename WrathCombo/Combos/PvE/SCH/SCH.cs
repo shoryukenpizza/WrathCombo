@@ -443,7 +443,8 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) >= Config.SCH_ST_Heal_EsunaOption &&
                 HasCleansableDebuff(healTarget))
-                return Role.Esuna;
+                return Role.Esuna
+                    .RetargetIfEnabled(OptionalTarget, Physick);
 
             for(int i = 0; i < Config.SCH_ST_Heals_Priority.Count; i++)
             {
@@ -454,7 +455,8 @@ internal partial class SCH : Healer
                 {
                     if (GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= config &&
                         ActionReady(spell))
-                        return spell;
+                        return spell
+                            .RetargetIfEnabled(OptionalTarget, Physick);
                 }
             }
 
@@ -470,10 +472,12 @@ internal partial class SCH : Healer
                     (!Config.SCH_ST_Heal_AldoquimOpts[1] ||
                      !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && !HasStatusEffect(SGE.Buffs.EukrasianPrognosis, healTarget, true)
                     )) //Eukrasia Shield Check
-                    return OriginalHook(Adloquium);
+                    return OriginalHook(Adloquium)
+                        .RetargetIfEnabled(OptionalTarget, Physick);
             }
 
-            return actionID;
+            return actionID
+                .RetargetIfEnabled(OptionalTarget, Physick);
         }
     }
 }
