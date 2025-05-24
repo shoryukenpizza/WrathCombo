@@ -3,7 +3,6 @@
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.Logging;
-using FFXIVClientStructs;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Dalamud.Game.ClientState.Objects.Types;
+using ECommons.GameFunctions;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
@@ -121,7 +122,6 @@ public static class DebugFile
             AddLine();
 
             AddDebugCode();
-
             AddLogHistory();
 
             AddLine();
@@ -518,8 +518,15 @@ public static class DebugFile
 
     private static void AddLogHistory()
     {
-        AddLine("START LOG HISTORY");
-        AddLine(string.Join("\n", DebugLog));
+        AddLine($"Setting Changes log Count: {DebugLog.Count}");
+
+        if (DebugLog.Count < 1) return;
+
+        var logsCopy = DebugLog.ToList();
+        logsCopy.Reverse();
+
+        AddLine("START LOG HISTORY (most recent first)");
+        AddLine(string.Join("\n", logsCopy));
         AddLine("END LOG HISTORY");
     }
 
