@@ -98,7 +98,7 @@ internal partial class BLM
                         $"{Manaward.ActionName()} HP percentage threshold");
 
                     break;
-                
+
                 case CustomComboPreset.BLM_AoE_LeyLines:
                     DrawSliderInt(0, 1, BLM_AoE_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
