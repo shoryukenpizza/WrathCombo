@@ -369,16 +369,11 @@ internal partial class SGE : Healer
                             .RetargetIfEnabled(OptionalTarget, Diagnosis);
             }
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_EDiagnosis) &&
-                LevelChecked(Eukrasia) &&
-                GetTargetHPPercent(healTarget, Config.SGE_ST_Heal_IncludeShields) <=
-                Config.SGE_ST_Heal_EDiagnosisHP &&
+            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_EDiagnosis) && LevelChecked(Eukrasia) &&
+                GetTargetHPPercent(healTarget, Config.SGE_ST_Heal_IncludeShields) <= Config.SGE_ST_Heal_EDiagnosisHP &&
                 (Config.SGE_ST_Heal_EDiagnosisOpts[0] || // Ignore Any Shield check
-                 !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget,
-                     true) && //Shield Check
-                 (!Config.SGE_ST_Heal_EDiagnosisOpts[1] ||
-                  !HasStatusEffect(SCH.Buffs.Galvanize, healTarget,
-                      true)))) //Galvanize Check
+                 !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget, true) && //Shield Check
+                 (!Config.SGE_ST_Heal_EDiagnosisOpts[1] || !HasStatusEffect(SCH.Buffs.Galvanize, healTarget, true)))) //Galvanize Check
                 return Eukrasia;
 
             return actionID
