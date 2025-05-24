@@ -6629,18 +6629,22 @@ SMN.JobID)]
     [ReplaceSkill(WHM.Cure)]
     [CustomComboInfo("Simple Heals - Single Target", "Replaces Cure with a one button single target healing setup.",
         WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals = 19300,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Regen Option", "Applies Regen to the target if missing.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Regen = 19301,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Benediction Option", "Uses Benediction when target is below HP threshold.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Benediction = 19302,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Afflatus Solace Option", "Uses Afflatus Solace when available.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Solace = 19303,
 
     [ParentCombo(WHM_STHeals)]
@@ -6649,14 +6653,17 @@ SMN.JobID)]
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Tetragrammaton Option", "Uses Tetragrammaton when available.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Tetragrammaton = 19305,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Divine Benison Option", "Uses Divine Benison when available.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Benison = 19306,
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Aquaveil Option", "Uses Aquaveil when available.", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_STHeals_Aquaveil = 19307,
 
     [ParentCombo(WHM_STHeals)]
@@ -6666,6 +6673,7 @@ SMN.JobID)]
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
     WHM_STHeals_Esuna = 19309,
+    [PossiblyRetargeted]
 
     #endregion
 
