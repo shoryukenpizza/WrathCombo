@@ -108,6 +108,7 @@ public static class DebugFile
             AddLine();
 
             AddPlayerInfo();
+            AddTargetInfo();
 
             AddSettingsInfo();
             AddAutoRotationInfo();
@@ -203,6 +204,37 @@ public static class DebugFile
         AddLine($"+Shield: {player.ShieldPercentage:F0}%");
         AddLine($"MP: {(player.CurrentMp / player.MaxMp * 100):F0}%");
         AddLine("END PLAYER INFO");
+
+        AddLine();
+    }
+
+    private static void AddTargetInfo()
+    {
+        var target = Svc.ClientState.LocalPlayer.TargetObject;
+
+        AddLine($"Target: {target?.GameObjectId.ToString() ?? "None"}");
+
+        if (target is null) return;
+
+        IBattleChara? battleTarget = null;
+        if (target is IBattleChara)
+            battleTarget = target as IBattleChara;
+
+        AddLine("START TARGET INFO");
+        AddLine($"Targetable: {target.IsTargetable}");
+        AddLine($"Hostile: {target.IsHostile()}");
+        AddLine($"Dead: {target.IsDead}");
+        AddLine($"Distance: {GetTargetDistance(target):F1}y");
+        if (battleTarget is not null)
+        {
+            AddLine($"Level: {battleTarget.Level}");
+            AddLine($"Is Casting: {battleTarget.IsCasting}");
+            AddLine($"Is Cast Interruptable: {battleTarget.IsCastInterruptible}");
+            AddLine();
+            AddLine($"HP: {(battleTarget.CurrentHp / battleTarget.MaxHp * 100):F0}%");
+            AddLine($"+Shield: {battleTarget.ShieldPercentage:F0}%");
+        }
+        AddLine("END TARGET INFO");
 
         AddLine();
     }
