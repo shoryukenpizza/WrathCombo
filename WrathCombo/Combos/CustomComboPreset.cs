@@ -279,38 +279,47 @@ public enum CustomComboPreset
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Essential Dignity Option",
         "Essential Dignity will be added when the target is at or below the value set", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_EssentialDignity = 1024,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Celestial Intersection Option", "Adds Celestial Intersection.", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_CelestialIntersection = 1025,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed.", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_AspectedBenefic = 1027,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Esuna = 1039,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Exaltation Option", "Adds Exaltation.", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Exaltation = 1028,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("The Spire Option", "Adds The Spire (Shield)  when the card has been drawn", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Spire = 1030,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("The Ewer Option", "Adds The Ewer (Heal over time) when the card has been drawn", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Ewer = 1032,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("The Arrow Option", "Adds The Arrow (increased healing)  when the card has been drawn", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Arrow = 1049,
 
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("The Bole Option", "Adds The Bole (Reduced Damage) when the card has been drawn", AST.JobID)]
+    [PossiblyRetargeted]
     AST_ST_SimpleHeals_Bole = 1050,
 
     [AutoAction(true, true)]
