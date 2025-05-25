@@ -265,6 +265,7 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Combat Time:", CombatEngageDuration().ToString("mm\\:ss\\:ff"));
             CustomStyleText("Hitbox Radius:", player.HitboxRadius);
             CustomStyleText("Movement Time:", TimeMoving.ToString("mm\\:ss\\:ff"));
+            CustomStyleText($"Dashing:", IsDashing());
             CustomStyleText("In Boss Encounter:", InBossEncounter());
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));

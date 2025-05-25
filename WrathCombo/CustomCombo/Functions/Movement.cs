@@ -58,7 +58,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         private delegate void RMIWalkDelegate(MoveControllerSubMemberForMine* self, float* sumLeft, float* sumForward, float* sumTurnLeft, byte* haveBackwardOrStrafe, byte* a6, byte bAdditiveUnk);
         [Signature("E8 ?? ?? ?? ?? 80 7B 3E 00 48 8D 3D", DetourName = nameof(RMIWalkDetour))]
-        private readonly Hook<RMIWalkDelegate> _rmiWalkHook;
+        private readonly Hook<RMIWalkDelegate> _rmiWalkHook = null!;
 
         private void RMIWalkDetour(MoveControllerSubMemberForMine* self, float* sumLeft, float* sumForward, float* sumTurnLeft, byte* haveBackwardOrStrafe, byte* a6, byte bAdditiveUnk)
         {
