@@ -1445,11 +1445,6 @@ public enum CustomComboPreset
     #endregion
     // Last value = 4139
 
-    // Devilment --> Starfall
-    [ReplaceSkill(DNC.Devilment)]
-    [CustomComboInfo("Devilment to Starfall Feature", "Change Devilment into Starfall Dance after use.", DNC.JobID)]
-    DNC_Starfall_Devilment = 4150,
-
     // Bladeshower --> Bloodshower
     [ReplaceSkill(DNC.Bladeshower)]
     [CustomComboInfo("Bladeshower to Bloodshower Feature", "Change Bladeshower to Bloodshower when available.", DNC.JobID)]

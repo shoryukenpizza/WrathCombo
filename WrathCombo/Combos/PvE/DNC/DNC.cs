@@ -1480,7 +1480,7 @@ internal partial class DNC : PhysicalRanged
         protected override uint Invoke(uint actionID)
         {
             // Fan Dance 3 & 4 on Flourish
-            if (actionID is not Flourish || !CanWeave()) return actionID;
+            if (actionID is not Flourish) return actionID;
 
             if (WantsCustomStepsOnSmallerFeatures)
                 if (GetCustomDanceStep(actionID, out var danceStep))
@@ -1532,26 +1532,6 @@ internal partial class DNC : PhysicalRanged
     }
 
     #endregion
-
-    internal class DNC_Starfall_Devilment : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset =>
-            CustomComboPreset.DNC_Starfall_Devilment;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Devilment) return actionID;
-
-            if (WantsCustomStepsOnSmallerFeatures)
-                if (GetCustomDanceStep(actionID, out var danceStep))
-                    return danceStep;
-
-            if (HasStatusEffect(Buffs.FlourishingStarfall))
-                return StarfallDance;
-
-            return actionID;
-        }
-    }
 
     internal class DNC_Procc_Bladeshower : CustomCombo
     {
