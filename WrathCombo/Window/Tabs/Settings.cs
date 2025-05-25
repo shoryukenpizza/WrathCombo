@@ -557,7 +557,7 @@ namespace WrathCombo.Window.Tabs
         private static float _iconGroupWidth =
             ImGui.CalcTextSize("x").X;
         private static float _longestPropertyLabel =
-            ImGui.CalcTextSize("Field-MouseOver Target").X;
+            ImGui.CalcTextSize("Lowest HP% Ally if missing HP").X;
         private static float _propertyHeight =
             ImGui.CalcTextSize("I").Y;
 
@@ -634,7 +634,9 @@ namespace WrathCombo.Window.Tabs
                     .GetProperties(BindingFlags.Public |
                                    BindingFlags.Static)
                     .Select(x => x.Name)
-                    .Where(x => !x.Contains("Enemy") && !x.Contains("Attack") && !x.Contains("Dead"))
+                    .Where(x => !x.Contains("Enemy") &&
+                                !x.Contains("Attack") &&
+                                !x.Contains("Dead"))
                     .Prepend("default")
                     .ToArray();
 
@@ -750,7 +752,9 @@ namespace WrathCombo.Window.Tabs
                 "UIMouseOverTarget" => "UI-MouseOver Target",
                 "ModelMouseOverTarget" => "Field-MouseOver Target",
                 "LowestHPAlly" => "Lowest HP Ally",
+                "LowestHPAllyIfMissingHP" => "Lowest HP Ally if missing HP",
                 "LowestHPPAlly" => "Lowest HP% Ally",
+                "LowestHPPAllyIfMissingHP" => "Lowest HP% Ally if missing HP",
                 // Format the rest with Regex
                 _ => Regex.Replace(propertyName,
                     @"(?<=[a-z])(?=[A-Z0-9])", " "),

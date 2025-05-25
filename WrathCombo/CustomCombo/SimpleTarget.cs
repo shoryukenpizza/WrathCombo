@@ -116,8 +116,8 @@ internal static class SimpleTarget
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target = resolved.IfFriendly().IfWithinRange();
 
-                    // Only include Lowest HP Ally options if they are missing HP
-                    if (name.Contains("Lowest"))
+                    // Only include Missing-HP options if they are missing HP
+                    if (name.Contains("Missing"))
                         target = target.IfMissingHP();
 
                     if (logging)
@@ -249,8 +249,10 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .Where(x => x?.IsDead == false)
             .OrderBy(x => x?.CurrentHp)
-            .FirstOrDefault()
-            .IfMissingHP();
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPAllyIfMissingHP =>
+        LowestHPAlly?.IfMissingHP();
 
     public static IGameObject? LowestHPPAlly =>
         CustomComboFunctions
@@ -258,8 +260,10 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .Where(x => x?.IsDead == false)
             .OrderBy(x => x?.CurrentHp / x?.MaxHp * 100)
-            .FirstOrDefault()
-            .IfMissingHP();
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPPAllyIfMissingHP =>
+        LowestHPPAlly?.IfMissingHP();
 
     #endregion
 
