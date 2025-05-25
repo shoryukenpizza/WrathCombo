@@ -128,7 +128,7 @@ internal partial class AST : Healer
                     IsOffCooldown(EarthlyStar) &&
                     CanSpellWeave())
                     return EarthlyStar.Retarget(replacedActions,
-                        SimpleTarget.Stack.Allies);
+                        SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
                 if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) &&
                     HasStatusEffect(Buffs.Divining) &&
@@ -233,7 +233,7 @@ internal partial class AST : Healer
                 IsOffCooldown(EarthlyStar) &&
                 CanSpellWeave())
                 return EarthlyStar.Retarget(GravityList.ToArray(),
-                    SimpleTarget.Stack.Allies);
+                    SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
             if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) &&
                 HasStatusEffect(Buffs.Divining) &&
