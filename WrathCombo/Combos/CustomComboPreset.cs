@@ -6682,8 +6682,8 @@ SMN.JobID)]
 
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
-    WHM_STHeals_Esuna = 19309,
     [PossiblyRetargeted]
+    WHM_STHeals_Esuna = 19309,
 
     #endregion
 
