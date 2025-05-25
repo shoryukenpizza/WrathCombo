@@ -248,7 +248,9 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static bool TargetIsInvincible(IGameObject target)
         {
-            var tar = (target as IBattleChara);
+            if (target is not IBattleChara tar)
+                return false;
+
             bool invinceStatus = tar.StatusList.Any(y => InvincibleStatuses.Any(x => x == y.StatusId));
             if (invinceStatus)
                 return true;
