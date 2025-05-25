@@ -116,6 +116,7 @@ internal partial class AST : Healer
                 if (IsEnabled(CustomComboPreset.AST_DPS_Divination) &&
                     ActionReady(Divination) &&
                     !HasStatusEffect(Buffs.Divination, anyOwner: true) && //Overwrite protection
+                    !HasStatusEffect(Buffs.Divining) &&
                     GetTargetHPPercent() > Config.AST_DPS_DivinationOption &&
                     CanDelayedWeave() &&
                     ActionWatching.NumberOfGcdsUsed >= 3)
