@@ -92,7 +92,7 @@ internal static class SimpleTarget
             SoftTarget.IfFriendly() ??
             HardTarget.IfFriendly() ??
             (cfg.UseFocusTargetOverrideInDefaultHealStack
-                ? FocusTarget.IfFriendly().IfWithinRange().IfMissingHP()
+                ? FocusTarget.IfFriendly().IfWithinRange()
                 : null) ??
             (cfg.UseLowestHPOverrideInDefaultHealStack
                 ? LowestHPPAlly.IfWithinRange().IfMissingHP()
@@ -173,8 +173,14 @@ internal static class SimpleTarget
     public static IGameObject? SoftTarget =>
         Svc.Targets.SoftTarget;
 
+    public static IGameObject? SoftTargetIfMissingHP =>
+        Svc.Targets.SoftTarget.IfMissingHP();
+
     public static IGameObject? FocusTarget =>
         Svc.Targets.FocusTarget;
+
+    public static IGameObject? FocusTargetIfMissingHP =>
+        Svc.Targets.FocusTarget.IfMissingHP();
 
     public static IGameObject? TargetsTarget =>
         Svc.Targets.Target is { TargetObjectId: not 0xE0000000 }
@@ -243,7 +249,8 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .Where(x => x?.IsDead == false)
             .OrderBy(x => x?.CurrentHp)
-            .FirstOrDefault();
+            .FirstOrDefault()
+            .IfMissingHP();
 
     public static IGameObject? LowestHPPAlly =>
         CustomComboFunctions
@@ -251,7 +258,8 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .Where(x => x?.IsDead == false)
             .OrderBy(x => x?.CurrentHp / x?.MaxHp * 100)
-            .FirstOrDefault();
+            .FirstOrDefault()
+            .IfMissingHP();
 
     #endregion
 
