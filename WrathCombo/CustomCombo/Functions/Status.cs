@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
@@ -267,6 +268,10 @@ namespace WrathCombo.CustomComboNS.Functions
             // Omega
             if ((tar.StatusList.Any(x => x.StatusId == 1674 || x.StatusId == 3454) && (HasStatusEffect(1660) || HasStatusEffect(3499))) ||
                 (tar.StatusList.Any(x => x.StatusId == 1675) && (HasStatusEffect(1661) || HasStatusEffect(3500))))
+                return true;
+
+            //ToZ final boss (technically not invincible)
+            if (tar.DataId is (13298 or 13299) && Svc.Objects.Any(y => y.DataId is 13297 && !y.IsDead))
                 return true;
 
 
