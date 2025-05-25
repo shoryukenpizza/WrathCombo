@@ -314,25 +314,6 @@ internal partial class WAR : Tank
     }
     #endregion
 
-    #region Basic Combos
-    internal class WAR_ST_StormsPathCombo : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsPathCombo;
-        protected override uint Invoke(uint id) => (id != StormsPath) ? id :
-            (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
-            (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsPath)) ? StormsPath :
-            HeavySwing;
-    }
-    internal class WAR_ST_StormsEyeCombo : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsEyeCombo;
-        protected override uint Invoke(uint id) => (id != StormsEye) ? id :
-            (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
-            (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye)) ? StormsEye :
-            HeavySwing;
-    }
-    #endregion
-
     #region Storm's Eye -> Storm's Path
     internal class WAR_EyePath : CustomCombo
     {
@@ -384,6 +365,33 @@ internal partial class WAR : Tank
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ThrillEquilibrium;
         protected override uint Invoke(uint action) => action != Equilibrium ? action : ActionReady(ThrillOfBattle) ? ThrillOfBattle : action;
+    }
+    #endregion
+
+    #region Reprisal -> Shake It Off
+    internal class WAR_Mit_Party : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_Mit_Party;
+        protected override uint Invoke(uint action) => action != ShakeItOff ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+    }
+    #endregion
+
+    #region Basic Combos
+    internal class WAR_ST_StormsPathCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsPathCombo;
+        protected override uint Invoke(uint id) => (id != StormsPath) ? id :
+            (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
+            (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsPath)) ? StormsPath :
+            HeavySwing;
+    }
+    internal class WAR_ST_StormsEyeCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsEyeCombo;
+        protected override uint Invoke(uint id) => (id != StormsEye) ? id :
+            (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
+            (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye)) ? StormsEye :
+            HeavySwing;
     }
     #endregion
 }

@@ -2466,6 +2466,10 @@ public enum CustomComboPreset
     [ParentCombo(GNB_Mit_OneButton)]
     [CustomComboInfo("Nebula Option", "Adds Nebula to the one-button mitigation.", GNB.JobID)]
     GNB_Mit_Nebula = 7083,
+
+    [ReplaceSkill(GNB.HeartOfLight)]
+    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Heart of Light with Reprisal when ready.", WAR.JobID)]
+    GNB_Mit_Party = 7085,
     #endregion
 
     #region Misc
@@ -2798,7 +2802,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last Value = 7083
+    // Last Value = 7085
     #endregion
 
     #region MACHINIST
@@ -6345,7 +6349,6 @@ SMN.JobID)]
     
     #region One-Button Mitigation
     [ReplaceSkill(WAR.ThrillOfBattle)]
-    [ConflictingCombos(WAR_ThrillEquilibrium)]
     [CustomComboInfo("One-Button Mitigation Feature", "Replaces Thrill Of Battle with an all-in-one mitigation button.", WAR.JobID)]
     WAR_Mit_OneButton = 18045,
 
@@ -6384,6 +6387,10 @@ SMN.JobID)]
     [ParentCombo(WAR_Mit_OneButton)]
     [CustomComboInfo("Vengeance Option", "Adds Vengeance to the one-button mitigation.", WAR.JobID)]
     WAR_Mit_Vengeance = 18054,
+
+    [ReplaceSkill(WAR.ShakeItOff)]
+    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Shake It Off with Reprisal when ready.", WAR.JobID)]
+    WAR_Mit_Party = 18111,
     #endregion
 
     #region Misc
@@ -6600,7 +6607,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last Value = 18110
+    // Last Value = 18111
 
     #endregion
 

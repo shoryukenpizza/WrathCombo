@@ -559,16 +559,6 @@ internal partial class GNB : Tank
 
     #endregion
 
-    #region Aurora Protection
-    internal class GNB_AuroraProtection : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_AuroraProtection;
-        protected override uint Invoke(uint actionID) => actionID != Aurora ? actionID :
-            (HasFriendlyTarget() && HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) ||
-            (!HasFriendlyTarget() && HasStatusEffect(Buffs.Aurora, anyOwner: true)) ? All.SavageBlade : actionID;
-    }
-    #endregion
-
     #region One-Button Mitigation
     internal class GNB_Mit_OneButton : CustomCombo
     {
@@ -589,6 +579,24 @@ internal partial class GNB : Tank
             }
             return actionID;
         }
+    }
+    #endregion
+
+    #region Reprisal -> Heart of Light
+    internal class GNB_Mit_Party : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_Mit_Party;
+        protected override uint Invoke(uint action) => action != HeartOfLight ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+    }
+    #endregion
+
+    #region Aurora Protection
+    internal class GNB_AuroraProtection : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_AuroraProtection;
+        protected override uint Invoke(uint actionID) => actionID != Aurora ? actionID :
+            (HasFriendlyTarget() && HasStatusEffect(Buffs.Aurora, CurrentTarget, true)) ||
+            (!HasFriendlyTarget() && HasStatusEffect(Buffs.Aurora, anyOwner: true)) ? All.SavageBlade : actionID;
     }
     #endregion
 
