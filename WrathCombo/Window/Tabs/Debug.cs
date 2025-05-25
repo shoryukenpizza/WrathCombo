@@ -161,7 +161,7 @@ internal class Debug : ConfigWindow, IDisposable
             {
                 // Set Status
                 string statusId = status.StatusId.ToString();
-                string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
+                string statusName = StatusCache.GetStatusName(status.StatusId) ?? string.Empty;
 
                 // Set Source Name
                 string sourceName = status.SourceId != player.GameObjectId
@@ -210,7 +210,7 @@ internal class Debug : ConfigWindow, IDisposable
                     // Set Status
                     string statusId = status.StatusId.ToString();
                     string sourceName = status.SourceObject?.Name?.ToString() ?? string.Empty;
-                    string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
+                    string statusName = StatusCache.GetStatusName(status.StatusId) ?? string.Empty;
 
                     // Set Duration
                     float debuffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, chara, true);
