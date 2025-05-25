@@ -76,7 +76,7 @@ namespace WrathCombo.Data
                     foreach (var eff in target.effects)
                     {
 #if DEBUG
-                        Svc.Log.Verbose($"{eff.Type}, {eff.Value} 0:{eff.Param0}, 1:{eff.Param1}, 2:{eff.Param2}, 3:{eff.Param3}, 4:{eff.Param4} | ({header->ActionId.ActionName()}) -> {Svc.Objects.First(x => x.GameObjectId == target.id).Name}, {eff.AtSource}/{eff.FromTarget}");
+                        Svc.Log.Verbose($"{eff.Type}, {eff.Value} 0:{eff.Param0}, 1:{eff.Param1}, 2:{eff.Param2}, 3:{eff.Param3}, 4:{eff.Param4} | ({header->ActionId.ActionName()}) -> {Svc.Objects.FirstOrDefault(x => x.GameObjectId == target.id)?.Name}, {eff.AtSource}/{eff.FromTarget}");
 #endif
                         if (eff.Type is ActionEffectType.Heal or ActionEffectType.Damage)
                         {
@@ -220,7 +220,7 @@ namespace WrathCombo.Data
                     break;
                 // UI Mousover Override
                 case 2:
-                    if (GetMouseOverHealTarget() is IGameObject mouseTarget)
+                    if (PartyUITargeting.UiMouseOverTarget is IGameObject mouseTarget)
                         targetObjectId = mouseTarget.GameObjectId;
                     break;
             }
@@ -243,16 +243,16 @@ namespace WrathCombo.Data
         /// <returns>Time in milliseconds if found, else -1.</returns>
         public static float TimeSinceActionUsed(uint actionId)
         {
-            if (ActionTimestamps.ContainsKey(actionId))
-                return Environment.TickCount64 - ActionTimestamps[actionId];
+            if (ActionTimestamps.TryGetValue(actionId, out long timestamp))
+                return Environment.TickCount64 - timestamp;
 
             return -1f;
         }
 
         public static float TimeSinceLastSuccessfulCast(uint actionId)
         {
-            if (LastSuccessfulUseTime.ContainsKey(actionId))
-                return Environment.TickCount64 - LastSuccessfulUseTime[actionId];
+            if (LastSuccessfulUseTime.TryGetValue(actionId, out long timestamp))
+                return Environment.TickCount64 - timestamp;
 
             return -1f;
         }

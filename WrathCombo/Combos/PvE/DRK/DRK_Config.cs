@@ -63,7 +63,13 @@ internal partial class DRK
                 #region Adv Single Target
 
                 case CustomComboPreset.DRK_ST_BalanceOpener:
+                    ImGui.Indent();
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
+                    ImGui.Unindent();
+                    ImGui.NewLine();
+                    UserConfig.DrawAdditionalBoolChoice(DRK_ST_OpenerUnmend,
+                        "Include Unmend",
+                        "Will include Unmend in the opener if selected.");
                     break;
 
                 case CustomComboPreset.DRK_ST_CDs:
@@ -116,8 +122,12 @@ internal partial class DRK
                         DRK_ST_ManaSpenderPoolingDifficulty,
                         DRK_ST_ManaSpenderPoolingDifficultyListSet
                     );
-                    UserConfig.DrawSliderInt(0, 45, DRK_ST_BurstSoonThreshold,
-                        "Seconds before Burst to start saving Edges (0 = Don't save)",
+
+                    break;
+
+                case CustomComboPreset.DRK_ST_Sp_ManaOvercap:
+                    UserConfig.DrawSliderInt(0, 30, DRK_ST_BurstSoonThreshold,
+                        "Seconds before Burst to save (allowing capping)",
                         itemWidth: little, sliderIncrement: SliderIncrements.Fives);
 
                     break;
@@ -538,6 +548,17 @@ internal partial class DRK
             new("DRK_ST_OpenerDifficulty", [false, true]);
 
         /// <summary>
+        ///     Whether to include Unmend in the opener for Single Target.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see langword="true"/> <br />
+        ///     <b>Options</b>: <see langword="true"/> or <see langword="false"/>
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_ST_BalanceOpener" />
+        public static readonly UserBool DRK_ST_OpenerUnmend =
+            new("DRK_ST_OpenerUnmend", true);
+
+        /// <summary>
         ///     Cooldown Boss Restriction for Single Target.
         /// </summary>
         /// <value>
@@ -642,13 +663,13 @@ internal partial class DRK
         ///     and attempts to save Dark Arts will start working in.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: 30<br />
+        ///     <b>Default</b>: 18<br />
         ///     <b>Range</b>: 0 - 45 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_Edge" />
+        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_ManaOvercap" />
         public static readonly UserInt DRK_ST_BurstSoonThreshold =
-            new("DRK_ST_BurstSoonThreshold", 30);
+            new("DRK_ST_BurstSoonThreshold", 18);
 
         /// <summary>
         ///     Difficulty of Mana Spender Pooling for Single Target.
