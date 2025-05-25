@@ -16,6 +16,16 @@ internal partial class WAR : Tank
             if (ShouldUseOther)
                 return OtherAction;
 
+            #region Stuns
+            if (Role.CanInterject())
+                return Role.Interject;
+            if (!TargetIsBoss()
+                && Role.CanLowBlow()
+                && !JustUsed(Role.Interject)
+                && !InBossEncounter())
+                return Role.LowBlow;
+            #endregion
+
             #region Mitigations
             if (Config.WAR_ST_MitsOptions != 1)
             {
@@ -79,9 +89,17 @@ internal partial class WAR : Tank
                 return action;
             if (ShouldUseOther)
                 return OtherAction;
+            #region Stuns
             if (IsEnabled(CustomComboPreset.WAR_ST_Interrupt)
                 && Role.CanInterject())
                 return Role.Interject;
+            if (IsEnabled(CustomComboPreset.WAR_ST_Stun)
+                && !TargetIsBoss()
+                && Role.CanLowBlow()
+                && !JustUsed(Role.Interject)
+                && !InBossEncounter())
+                return Role.LowBlow;
+            #endregion
 
             #region Mitigations
             if (IsEnabled(CustomComboPreset.WAR_ST_Mitigation) && InCombat() && !MitUsed)
@@ -139,7 +157,7 @@ internal partial class WAR : Tank
                 return PrimalWrath;
             if (IsEnabled(CustomComboPreset.WAR_ST_Onslaught) && ShouldUseOnslaught(Config.WAR_ST_Onslaught_Charges, Config.WAR_ST_Onslaught_Distance, Config.WAR_ST_Onslaught_Movement == 1 || (Config.WAR_ST_Onslaught_Movement == 0 && !IsMoving())))
                 return Onslaught;
-            if (IsEnabled(CustomComboPreset.WAR_ST_PrimalRend) && 
+            if (IsEnabled(CustomComboPreset.WAR_ST_PrimalRend) &&
                 ShouldUsePrimalRend(Config.WAR_ST_PrimalRend_Distance, Config.WAR_ST_PrimalRend_Movement == 1 || (Config.WAR_ST_PrimalRend_Movement == 0 && !IsMoving())) &&
                 (Config.WAR_ST_PrimalRend_EarlyLate == 0 || (Config.WAR_ST_PrimalRend_EarlyLate == 1 && (GetStatusEffectRemainingTime(Buffs.PrimalRendReady) <= 15 || (!HasIR.Stacks && !HasBF.Stacks && !HasWrath)))))
                 return PrimalRend;
@@ -166,7 +184,8 @@ internal partial class WAR : Tank
                 return OtherAction;
             if (Role.CanInterject())
                 return Role.Interject;
-            if (Role.CanLowBlow())
+            if (Role.CanLowBlow()
+                && !JustUsed(Role.Interject))
                 return Role.LowBlow;
 
             #region Mitigations
@@ -230,7 +249,7 @@ internal partial class WAR : Tank
                 return OtherAction;
             if (IsEnabled(CustomComboPreset.WAR_AoE_Interrupt) && Role.CanInterject())
                 return Role.Interject;
-            if (IsEnabled(CustomComboPreset.WAR_AoE_Stun) && Role.CanLowBlow())
+            if (IsEnabled(CustomComboPreset.WAR_AoE_Stun) && !JustUsed(Role.Interject) && Role.CanLowBlow())
                 return Role.LowBlow;
 
             #region Mitigations

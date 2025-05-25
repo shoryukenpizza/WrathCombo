@@ -19,8 +19,16 @@ internal partial class GNB : Tank
                 return actionID;
 
             #region Non-Rotation
+            #region Stuns
             if (Role.CanInterject())
                 return Role.Interject;
+            if (!TargetIsBoss()
+                && Role.CanLowBlow()
+                && !JustUsed(Role.Interject)
+                && !InBossEncounter())
+                return Role.LowBlow;
+            #endregion
+
             if (ShouldUseOther)
                 return OtherAction;
 
@@ -127,8 +135,16 @@ internal partial class GNB : Tank
                 return actionID;
 
             #region Non-Rotation
+            #region Stuns
             if (IsEnabled(CustomComboPreset.GNB_ST_Interrupt) && Role.CanInterject())
                 return Role.Interject;
+            if (IsEnabled(CustomComboPreset.GNB_ST_Stun)
+                && !TargetIsBoss()
+                && Role.CanLowBlow()
+                && !JustUsed(Role.Interject)
+                && !InBossEncounter())
+                return Role.LowBlow;
+            #endregion
             if (ShouldUseOther)
                 return OtherAction;
 
@@ -170,7 +186,7 @@ internal partial class GNB : Tank
             #endregion
 
             #region Rotation
-            if (IsEnabled(CustomComboPreset.GNB_ST_Opener) && 
+            if (IsEnabled(CustomComboPreset.GNB_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
             
@@ -251,7 +267,7 @@ internal partial class GNB : Tank
             #region Non-Rotation
             if (Role.CanInterject())
                 return Role.Interject;
-            if (Role.CanLowBlow())
+            if (Role.CanLowBlow() && !JustUsed(Role.Interject))
                 return Role.LowBlow;
             if (ShouldUseOther)
                 return OtherAction;
@@ -328,7 +344,7 @@ internal partial class GNB : Tank
 
             if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && Role.CanInterject())
                 return Role.Interject;
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && Role.CanLowBlow())
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && Role.CanLowBlow() && !JustUsed(Role.Interject))
                 return Role.LowBlow;
             if (ShouldUseOther)
                 return OtherAction;
@@ -510,7 +526,7 @@ internal partial class GNB : Tank
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_FC_Features;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID != FatedCircle) 
+            if (actionID != FatedCircle)
                 return actionID;
             if (IsEnabled(CustomComboPreset.GNB_FC_Continuation) && HasStatusEffect(Buffs.ReadyToRaze) && LevelChecked(FatedBrand))
                 return FatedBrand;

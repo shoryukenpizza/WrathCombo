@@ -1540,6 +1540,10 @@ public enum CustomComboPreset
     DRK_ST_CD_Interrupt = 5014,
 
     [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", DRK.JobID)]
+    DRK_ST_CD_Stun = 5040,
+
+    [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Delirium on Cooldown",
         "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.\n Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.",
         DRK.JobID)]
@@ -1674,7 +1678,7 @@ public enum CustomComboPreset
     #endregion
 
     #endregion
-    // Last value = 5039
+    // Last value = 5040
 
     #region Advanced Multi Target Combo
 
@@ -1697,7 +1701,7 @@ public enum CustomComboPreset
     DRK_AoE_Interrupt = 5052,
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.", DRK.JobID)]
     DRK_AoE_Stun = 5053,
 
     [ParentCombo(DRK_AoE_CDs)]
@@ -2277,6 +2281,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", GNB.JobID)]
     GNB_ST_Interrupt = 7084,
 
+    [ParentCombo(GNB_ST_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", GNB.JobID)]
+    GNB_ST_Stun = 7086,
+
     #region Mitigations
 
     [ParentCombo(GNB_ST_Advanced)]
@@ -2787,7 +2795,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last Value = 7085
+    // Last Value = 7086
     #endregion
 
     #region MACHINIST
@@ -3895,6 +3903,10 @@ public enum CustomComboPreset
     PLD_ST_Interrupt = 11058,
 
     [ParentCombo(PLD_ST_AdvancedMode)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", PLD.JobID)]
+    PLD_ST_Stun = 11062,
+
+    [ParentCombo(PLD_ST_AdvancedMode)]
     [CustomComboInfo("Fight or Flight Option",
         "Adds Fight or Flight to Advanced Mode.\n- Uses after Royal Authority during opener.\n- Afterward, on cooldown alongside Requiescat.\n- Target HP must be at or above:",
         PLD.JobID)]
@@ -4188,7 +4200,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11061
+    //// Last value = 11062
 
     #endregion
 
@@ -6193,6 +6205,10 @@ SMN.JobID)]
     [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", WAR.JobID)]
     WAR_ST_Interrupt = 18066,
 
+    [ParentCombo(WAR_ST_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", WAR.JobID)]
+    WAR_ST_Stun = 18112,
+
     #region Mitigations
 
     [ParentCombo(WAR_ST_Advanced)]
@@ -6327,7 +6343,7 @@ SMN.JobID)]
     #endregion
 
     #endregion
-    
+
     #region One-Button Mitigation
     [ReplaceSkill(WAR.ThrillOfBattle)]
     [CustomComboInfo("One-Button Mitigation Feature", "Replaces Thrill Of Battle with an all-in-one mitigation button.", WAR.JobID)]
@@ -6588,7 +6604,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last Value = 18111
+    // Last Value = 18112
 
     #endregion
 
