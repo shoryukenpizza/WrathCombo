@@ -6366,9 +6366,7 @@ SMN.JobID)]
     WAR_Mit_Reprisal = 18049,
 
     [ParentCombo(WAR_Mit_OneButton)]
-    [CustomComboInfo("Thrill Of Battle First Option",
-        "Adds Thrill Of Battle to the one-button mitigation." +
-        "\nNOTE: even if disabled, will still try to use Thrill Of Battle as the lowest priority.", WAR.JobID)]
+    [CustomComboInfo("Thrill Of Battle First Option", "Adds Thrill Of Battle to the one-button mitigation.\nNOTE: even if disabled, will still try to use Thrill Of Battle as the lowest priority.", WAR.JobID)]
     WAR_Mit_ThrillOfBattle = 18050,
 
     [ParentCombo(WAR_Mit_OneButton)]
@@ -6435,15 +6433,9 @@ SMN.JobID)]
     [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", WAR.JobID)]
     WAR_Variant_Ultimatum = 18030,
 
-    [ReplaceSkill(WAR.ThrillOfBattle)]
-    [ConflictingCombos(WAR_Mit_OneButton)]
-    [CustomComboInfo("Equilibrium Feature", "Replaces Thrill Of Battle with Equilibrium when used.", WAR.JobID)]
+    [ReplaceSkill(WAR.Equilibrium)]
+    [CustomComboInfo("Thrill of Battle to Equilibirum Feature", "Replaces Equilibirum with Thrill of Battle when ready.", WAR.JobID)]
     WAR_ThrillEquilibrium = 18055,
-
-    [ParentCombo(WAR_ThrillEquilibrium)]
-    [CustomComboInfo("Buffed Equilibrium Only", "Replaces Thrill Of Battle with Equilibrium only when under its buff.",
-        WAR.JobID)]
-    WAR_ThrillEquilibrium_BuffOnly = 18056,
 
     [ReplaceSkill(WAR.NascentFlash)]
     [CustomComboInfo("Nascent Flash Feature", "Replace Nascent Flash with Raw intuition when level synced below 76.", WAR.JobID)]
