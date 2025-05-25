@@ -112,7 +112,7 @@ internal partial class SAM : Melee
                 return Enpi;
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
                 //Meikyo Features
                 if (UseMeikyo())
@@ -176,7 +176,7 @@ internal partial class SAM : Melee
                 return OriginalHook(TsubameGaeshi);
 
             //Ogi Namikiri Features
-            if (ActionReady(OgiNamikiri) &&
+            if (ActionReady(OgiNamikiri) && M6SReady &&
                 InActionRange(OriginalHook(OgiNamikiri)) &&
                 HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 (JustUsed(Higanbana, 5f) ||
@@ -280,7 +280,7 @@ internal partial class SAM : Melee
                 return Enpi;
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs))
                 {
@@ -366,7 +366,7 @@ internal partial class SAM : Melee
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri) &&
                     (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
-                    HasStatusEffect(Buffs.OgiNamikiriReady) &&
+                    HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
                     (JustUsed(Higanbana, 5f) ||
                      SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.OgiNamikiriReady) <= 8) || NamikiriReady)
@@ -507,7 +507,7 @@ internal partial class SAM : Melee
                 return Variant.Rampart;
 
             //oGCD Features
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
                 if (OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
                     return Hagakure;
@@ -549,7 +549,7 @@ internal partial class SAM : Melee
                     return Role.Bloodbath;
             }
 
-            if (ActionReady(OgiNamikiri) &&
+            if (ActionReady(OgiNamikiri) && M6SReady &&
                 !IsMoving() && (HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                 return OriginalHook(OgiNamikiri);
 
@@ -614,7 +614,7 @@ internal partial class SAM : Melee
                 return Variant.Rampart;
 
             //oGCD Features
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Hagakure) &&
                     OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
@@ -674,7 +674,7 @@ internal partial class SAM : Melee
             if (IsEnabled(CustomComboPreset.SAM_AoE_Damage))
             {
                 if (IsEnabled(CustomComboPreset.SAM_AoE_OgiNamikiri) &&
-                    ActionReady(OgiNamikiri) &&
+                    ActionReady(OgiNamikiri) && M6SReady &&
                     (!IsMoving() && HasStatusEffect(Buffs.OgiNamikiriReady) || NamikiriReady))
                     return OriginalHook(OgiNamikiri);
 
