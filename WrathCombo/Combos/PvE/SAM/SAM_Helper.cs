@@ -30,7 +30,7 @@ internal partial class SAM
         (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
          (HasStatusEffect(Buffs.TsubameReady) && (SenCount is 3 || GetCooldownRemainingTime(Senei) > 33)));
 
-    internal static bool M6SReady => !HiddenFeaturesData.IsEnabledWIth(CustomComboPreset.SAM_Hid_M6SHoldSquirrelBurst, () =>
+    internal static bool M6SReady => !HiddenFeaturesData.IsEnabledWith(CustomComboPreset.SAM_Hid_M6SHoldSquirrelBurst, () =>
         HiddenFeaturesData.Targeting.R6SSquirrel && CombatEngageDuration().TotalSeconds < 275);
 
     internal static bool UseMeikyo()

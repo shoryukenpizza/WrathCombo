@@ -331,7 +331,7 @@ internal partial class DRK
             if (!CanWeave || Gauge.DarksideTimeRemaining <= 1) return false;
             if (disesteemOnly == true) return false;
 
-            if (HiddenFeaturesData.IsEnabledWIth(
+            if (HiddenFeaturesData.IsEnabledWith(
                     Preset.DRK_Hid_R6SHoldSquirrelBurst,
                     () => HiddenFeaturesData.Targeting.R6SSquirrel &&
                           CombatEngageDuration().TotalSeconds < 275))
@@ -712,7 +712,7 @@ internal partial class DRK
                 reprisalUseForRaidwides &&
                 Role.CanReprisal(reprisalThreshold, reprisalTargetCount,
                     !flags.HasFlag(Combo.AoE)) &&
-                HiddenFeaturesData.IsEnabledWIth(
+                HiddenFeaturesData.IsEnabledWith(
                     Preset.DRK_Hid_R6SNoAutoGroupMits,
                     () => !HiddenFeaturesData.Content.InR6S))
                 return (action = Role.Reprisal) != 0;
@@ -742,7 +742,7 @@ internal partial class DRK
                 RaidWideCasting() &&
                 missionaryAvoidanceSatisfied &&
                 PlayerHealthPercentageHp() <= missionaryThreshold &&
-                HiddenFeaturesData.IsEnabledWIth(
+                HiddenFeaturesData.IsEnabledWith(
                     Preset.DRK_Hid_R6SNoAutoGroupMits,
                     () => !HiddenFeaturesData.Content.InR6S))
                 return (action = DarkMissionary) != 0;

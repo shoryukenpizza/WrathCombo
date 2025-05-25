@@ -254,7 +254,7 @@ internal partial class WAR : Tank
 
             // If the Burst Holding for the Squirrels in 6 is enabled, check that
             // we are either not targeting a squirrel or the fight is after 275s
-            var r6SReady = !HiddenFeaturesData.IsEnabledWIth(
+            var r6SReady = !HiddenFeaturesData.IsEnabledWith(
                 CustomComboPreset.WAR_Hid_R6SHoldSquirrelBurst,
                 () => HiddenFeaturesData.Targeting.R6SSquirrel &&
                       CombatEngageDuration().TotalSeconds < 275);
@@ -282,7 +282,7 @@ internal partial class WAR : Tank
                         (Config.WAR_AoE_Rampart_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Rampart_SubOption == 1)))
                         return Role.Rampart;
                     if (IsEnabled(CustomComboPreset.WAR_AoE_Reprisal) && Role.CanReprisal(Config.WAR_AoE_Reprisal_Health, checkTargetForDebuff: false) &&
-                        HiddenFeaturesData.IsEnabledWIth( // Skip mit if in 6
+                        HiddenFeaturesData.IsEnabledWith( // Skip mit if in 6
                                 CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
                                 () => !HiddenFeaturesData.Content.InR6S) &&
                         (Config.WAR_AoE_Reprisal_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Reprisal_SubOption == 1)))
@@ -291,7 +291,7 @@ internal partial class WAR : Tank
                         return Role.ArmsLength;
                 }
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Thrill) && ActionReady(ThrillOfBattle) && PlayerHealthPercentageHp() <= Config.WAR_AoE_Thrill_Health &&
-                    HiddenFeaturesData.IsEnabledWIth( // Skip mit if in 6
+                    HiddenFeaturesData.IsEnabledWith( // Skip mit if in 6
                         CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
                         () => !HiddenFeaturesData.Content.InR6S) &&
                     (Config.WAR_AoE_Thrill_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Thrill_SubOption == 1)))

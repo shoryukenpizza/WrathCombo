@@ -73,7 +73,7 @@ internal static class HiddenFeaturesData
     ///     If Hidden Features are enabled and the preset is enabled,
     ///     and the logic is true.
     /// </returns>
-    public static bool IsEnabledWIth
+    public static bool IsEnabledWith
         (CustomComboPreset preset, Func<bool> logic) =>
         FeaturesEnabled && IsEnabled(preset) && logic();
 
