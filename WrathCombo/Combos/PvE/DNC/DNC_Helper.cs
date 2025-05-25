@@ -221,9 +221,11 @@ internal partial class DNC
     }
 
     private static bool CurrentPartnerNonOptimal =>
-        !HasStatusEffect(Buffs.ClosedPosition) ||
+        FeatureDesiredDancePartner is not null &&
+        (!HasStatusEffect(Buffs.ClosedPosition) &&
+         (IsInParty() ||
+          HasCompanionPresent())) ||
         (CurrentDancePartner is not null &&
-         FeatureDesiredDancePartner is not null &&
          FeatureDesiredDancePartner != CurrentDancePartner);
 
     #region Resolver Delegates
@@ -271,7 +273,7 @@ internal partial class DNC
             .Select(member => member.BattleChara)
             .ToList();
 
-        if (party.Count <= 1 && !HasCompanionPresent())
+        if (party.Count < 1 && !HasCompanionPresent())
             return false;
 
         // Search for a partner

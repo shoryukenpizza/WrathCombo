@@ -97,7 +97,7 @@ internal partial class DNC : PhysicalRanged
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Partner) && !InCombat() &&
                 ActionReady(ClosedPosition) &&
                 !HasStatusEffect(Buffs.ClosedPosition) &&
-                (GetPartyMembers().Count > 1 || HasCompanionPresent()))
+                (IsInParty() || HasCompanionPresent()))
                 if (InAutoMode(true, false) ||
                     IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner))
                     return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
