@@ -1,5 +1,4 @@
 using System.Linq;
-using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 namespace WrathCombo.Combos.PvE;
@@ -260,7 +259,6 @@ internal partial class WAR : Tank
                 () => HiddenFeaturesData.Targeting.R6SSquirrel &&
                       CombatEngageDuration().TotalSeconds < 275);
 
-
             if (IsEnabled(CustomComboPreset.WAR_AoE_Interrupt) && Role.CanInterject())
                 return Role.Interject;
             if (IsEnabled(CustomComboPreset.WAR_AoE_Stun) && !JustUsed(Role.Interject) && Role.CanLowBlow() && HiddenFeaturesData.IsEnabledWith( // Only stun the jabber, if in 6
@@ -351,7 +349,7 @@ internal partial class WAR : Tank
             {
                 int index = Config.WAR_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint actionID))
-                    return action;
+                    return actionID;
             }
             return action;
         }

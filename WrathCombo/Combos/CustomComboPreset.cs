@@ -6663,6 +6663,8 @@ SMN.JobID)]
 
     #endregion
 
+    #endregion
+
     #region WHITE MAGE
 
     #region Single Target DPS Feature
