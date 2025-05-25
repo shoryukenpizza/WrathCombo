@@ -1943,6 +1943,35 @@ public enum CustomComboPreset
     #endregion
     // Last value = 5142
 
+    #region Hidden Features
+
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", DRK.JobID)]
+    [Hidden]
+    DRK_Hidden = 5200,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Hold Burst on Squirrels", "When you're targeting Squirrels in R6S add phase, hold burst.\n(until about the time the first manta is dying)", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SHoldSquirrelBurst = 5201,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Only Stun Jabberwock", "When in R6S, stun will only ever be used on the Jabberwock.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SStunJabberOnly = 5202,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Dark Missionary automatically.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R6SNoAutoGroupMits = 5203,
+
+    [ParentCombo(DRK_Hidden)]
+    [CustomComboInfo("R7S: Only Interrupt the adds casting Circle AoEs", "When you're in R7S, Interrupting will only work when you're targeting an add casting the circle AoE.", DRK.JobID)]
+    [Hidden]
+    DRK_Hid_R7SCircleCastOnly = 5204,
+
+    #endregion
+    // Last value = 5204
+
     #endregion
 
     #region DRAGOON
@@ -5311,14 +5340,12 @@ public enum CustomComboPreset
     [Variant]
     [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", SAM.JobID)]
-    SAM_Variant_Cure = 15300,
+    SAM_Variant_Cure = 15254,
 
     [Variant]
     [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SAM.JobID)]
-    SAM_Variant_Rampart = 15301,
-
-    // Last value = 15301
+    SAM_Variant_Rampart = 15255,
 
     #endregion
 
@@ -5334,9 +5361,23 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Hidden Features
+
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SAM.JobID)]
+    [Hidden]
+    SAM_Hidden = 15300,
+
+    [ParentCombo(SAM_Hidden)]
+    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", SAM.JobID)]
+    [Hidden]
+    SAM_Hid_M6SHoldSquirrelBurst = 15301,
+
+    #endregion
+
     // Last Value ST = 15023
     // Last Value AoE = 15113
-    // Last Value Misc = 15253
+    // Last Value Misc = 15255
+    // Last Value Hidden = 15301
 
     #endregion
 
@@ -6602,9 +6643,37 @@ SMN.JobID)]
 
     #endregion
 
+    #region Hidden Features
+
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", WAR.JobID)]
+    [Hidden]
+    WAR_Hidden = 18113,
+
+    [ParentCombo(WAR_Hidden)]
+    [CustomComboInfo("R6S: Hold Burst on Squirrels", "When you're targeting Squirrels in R6S add phase, hold burst.\n(until about the time the first manta is dying)", WAR.JobID)]
+    [Hidden]
+    WAR_Hid_R6SHoldSquirrelBurst = 18114,
+
+    [ParentCombo(WAR_Hidden)]
+    [CustomComboInfo("R6S: Only Stun Jabberwock", "When in R6S, stun will only ever be used on the Jabberwock.", WAR.JobID)]
+    [Hidden]
+    WAR_Hid_R6SStunJabberOnly = 18115,
+
+    [ParentCombo(WAR_Hidden)]
+    [CustomComboInfo("R6S: Save Reprisal and Dark Missionary", "When in R6S, never try use Reprisal or Shake it Off automatically.", WAR.JobID)]
+    [Hidden]
+    WAR_Hid_R6SNoAutoGroupMits = 18116,
+
+    [ParentCombo(WAR_Hidden)]
+    [CustomComboInfo("R7S: Only Interrupt the adds casting Circle AoEs", "When you're in R7S, Interrupting will only work when you're targeting an add casting the circle AoE.", WAR.JobID)]
+    [Hidden]
+    WAR_Hid_R7SCircleCastOnly = 18117,
+
     #endregion
 
-    // Last Value = 18112
+    // Last value = 18117
+
+    #endregion
 
     #endregion
 

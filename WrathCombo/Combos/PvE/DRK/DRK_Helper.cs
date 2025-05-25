@@ -331,6 +331,12 @@ internal partial class DRK
             if (!CanWeave || Gauge.DarksideTimeRemaining <= 1) return false;
             if (disesteemOnly == true) return false;
 
+            if (HiddenFeaturesData.IsEnabledWith(
+                    Preset.DRK_Hid_R6SHoldSquirrelBurst,
+                    () => HiddenFeaturesData.Targeting.R6SSquirrel &&
+                          CombatEngageDuration().TotalSeconds < 275))
+                return false;
+
             #region Living Shadow
 
             #region Variables
@@ -368,6 +374,10 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  IsSTEnabled(flags, Preset.DRK_ST_CD_Interrupt) ||
                  IsAoEEnabled(flags, Preset.DRK_AoE_Interrupt)) &&
+                HiddenFeaturesData.IsEnabledWith(
+                    Preset.DRK_Hid_R7SCircleCastOnly,
+                    () => HiddenFeaturesData.Content.InR7S,
+                    () => HiddenFeaturesData.Targeting.R7SCircleCastingAdd) &&
                 Role.CanInterject())
                 return (action = Role.Interject) != 0;
 
@@ -377,6 +387,10 @@ internal partial class DRK
                 !TargetIsBoss() &&
                 !JustUsed(Role.Interject) &&
                 Role.CanLowBlow() &&
+                HiddenFeaturesData.IsEnabledWith(
+                    Preset.DRK_Hid_R6SStunJabberOnly,
+                    () => HiddenFeaturesData.Content.InR6S,
+                    () => HiddenFeaturesData.Targeting.R6SJabber) &&
                 !InBossEncounter())
                 return (action = Role.LowBlow) != 0;
 
@@ -526,19 +540,21 @@ internal partial class DRK
 
     #region JustUsedMit
 
+    private static bool InSavagePlus => ContentCheck.IsInSavagePlusContent;
+
     /// <summary>
     ///     Whether mitigation was very recently used, depending on the duration and
     ///     strength of the mitigation.
     /// </summary>
-    private static readonly bool JustUsedMitigation =
-        JustUsed(BlackestNight, 4f) ||
-        JustUsed(Oblation, 4f) ||
-        JustUsed(Role.Reprisal, 4f) ||
-        JustUsed(DarkMissionary, 5f) ||
+    private static bool JustUsedMitigation =>
+        JustUsed(BlackestNight, (InSavagePlus ? 3f : 4f)) ||
+        JustUsed(Oblation, (InSavagePlus ? 6f : 4f)) ||
+        JustUsed(Role.Reprisal, (InSavagePlus ? 1f : 4f)) ||
+        JustUsed(DarkMissionary, (InSavagePlus ? 0f : 5f)) ||
         JustUsed(Role.Rampart, 6f) ||
-        JustUsed(Role.ArmsLength, 4f) ||
-        JustUsed(ShadowedVigil, 6f) ||
-        JustUsed(LivingDead, 7f);
+        JustUsed(Role.ArmsLength, (InSavagePlus ? 0f : 4f)) ||
+        JustUsed(ShadowedVigil, (InSavagePlus ? 11f : 6f)) ||
+        JustUsed(LivingDead, (InSavagePlus ? 13f : 7f));
 
     #endregion
 
@@ -695,7 +711,10 @@ internal partial class DRK
                  IsAoEEnabled(flags, Preset.DRK_AoE_Mit_Reprisal)) &&
                 reprisalUseForRaidwides &&
                 Role.CanReprisal(reprisalThreshold, reprisalTargetCount,
-                    !flags.HasFlag(Combo.AoE)))
+                    !flags.HasFlag(Combo.AoE)) &&
+                HiddenFeaturesData.IsEnabledWith(
+                    Preset.DRK_Hid_R6SNoAutoGroupMits,
+                    () => !HiddenFeaturesData.Content.InR6S))
                 return (action = Role.Reprisal) != 0;
 
             #endregion
@@ -722,7 +741,10 @@ internal partial class DRK
                 ActionReady(DarkMissionary) &&
                 RaidWideCasting() &&
                 missionaryAvoidanceSatisfied &&
-                PlayerHealthPercentageHp() <= missionaryThreshold)
+                PlayerHealthPercentageHp() <= missionaryThreshold &&
+                HiddenFeaturesData.IsEnabledWith(
+                    Preset.DRK_Hid_R6SNoAutoGroupMits,
+                    () => !HiddenFeaturesData.Content.InR6S))
                 return (action = DarkMissionary) != 0;
 
             #endregion
