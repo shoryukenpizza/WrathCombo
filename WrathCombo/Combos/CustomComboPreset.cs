@@ -2286,7 +2286,7 @@ public enum CustomComboPreset
 
     [ParentCombo(GNB_ST_Advanced)]
     [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", GNB.JobID)]
-    GNB_ST_Stun = 7085,
+    GNB_ST_Stun = 7086,
 
     #region Mitigations
 
@@ -2798,7 +2798,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last Value = 7085
+    // Last Value = 7086
     #endregion
 
     #region MACHINIST
