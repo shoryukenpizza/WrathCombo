@@ -61,6 +61,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", ADV.JobID)]
     ALL_Healer_Raise = 100010,
 
+    [ParentCombo(ALL_Healer_Raise)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", ADV.JobID)]
+    [Retargeted]
+    ALL_Healer_Raise_Retarget = 100011,
+
     #endregion
 
     #region Global Magical Ranged Features
@@ -86,6 +91,11 @@ public enum CustomComboPreset
         "Changes the class' Raise Ability into Swiftcast. Red Mage will also show VerCure if Swiftcast is on cooldown.",
         ADV.JobID)]
     ALL_Caster_Raise = 100021,
+
+    [ParentCombo(ALL_Caster_Raise)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", ADV.JobID)]
+    [Retargeted]
+    ALL_Caster_Raise_Retarget = 100022,
 
     #endregion
 
