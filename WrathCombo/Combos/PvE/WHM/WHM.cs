@@ -334,6 +334,11 @@ internal partial class WHM : Healer
                 ActionReady(DivineCaress))
                 return OriginalHook(DivineCaress);
 
+            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum) &&
+                ActionReady(Asylum) &&
+                !IsMoving())
+                return Asylum;
+
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Lucid) &&
                 CanSpellWeave() &&
                 Role.CanLucidDream(Config.WHM_AoEHeals_Lucid))

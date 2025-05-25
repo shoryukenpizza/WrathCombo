@@ -6731,6 +6731,10 @@ SMN.JobID)]
     [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active.", WHM.JobID)]
     WHM_AoEHeals_DivineCaress = 19207,
 
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.", WHM.JobID)]
+    WHM_AoEHeals_Asylum = 19028,
+
     #endregion
 
     #region Heals Small Features
@@ -6766,7 +6770,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 19027
+    // Last value = 19028
 
     #endregion
 
