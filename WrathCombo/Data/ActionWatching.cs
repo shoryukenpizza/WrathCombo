@@ -177,7 +177,15 @@ namespace WrathCombo.Data
                 if (actionType == 1)
                     ActionTimestamps[actionId] = Environment.TickCount64;
 
+                var originalTargetId = targetObjectId;
                 var changed = CheckForChangedTarget(actionId, ref targetObjectId);
+                if (changed)
+                    if (!ActionManager.CanUseActionOnTarget(actionId,
+                            Svc.Objects
+                                .FirstOrDefault(x => x.GameObjectId == targetObjectId)
+                                .Struct()))
+                        targetObjectId = originalTargetId;
+
                 TimeLastActionUsed = DateTime.Now + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
                 LastAction = actionId;
                 ActionType = actionType;
@@ -354,7 +362,15 @@ namespace WrathCombo.Data
                 }
             }
 
+            var originalTargetId = targetId;
             var changed = CheckForChangedTarget(actionId, ref targetId);
+
+            if (changed)
+                if (!ActionManager.CanUseActionOnTarget(actionId,
+                    Svc.Objects
+                        .FirstOrDefault(x => x.GameObjectId == targetId)
+                        .Struct()))
+                    targetId = originalTargetId;
 
             var hookResult = UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
 
