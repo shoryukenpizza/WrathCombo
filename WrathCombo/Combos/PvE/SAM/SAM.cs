@@ -364,8 +364,7 @@ internal partial class SAM : Melee
 
                 //Ogi Namikiri Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri) &&
-                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) ||
-                     IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) && !IsMoving()) &&
+                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) &&
                     (JustUsed(Higanbana, 5f) ||
@@ -375,9 +374,8 @@ internal partial class SAM : Melee
 
                 // Iaijutsu Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
-                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
-                     IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) &&
-                     !IsMoving()) && UseIaijutsu())
+                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) || !IsMoving()) &&
+                    UseIaijutsu())
                     return OriginalHook(Iaijutsu);
             }
 
