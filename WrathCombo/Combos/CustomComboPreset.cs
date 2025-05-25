@@ -3655,25 +3655,25 @@ public enum CustomComboPreset
     [CustomComboInfo("Starry Muse Burst Feature", "Adds selected spells below to the burst phase.", PCT.JobID)]
     PCT_ST_AdvancedMode_Burst_Phase = 20010,
 
-    [ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
-    [CustomComboInfo("Comet in Black Option", "Adds Comet in Black to the burst phase.", PCT.JobID)]
-    PCT_ST_AdvancedMode_Burst_CometInBlack = 20011,
+    //[ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
+    //[CustomComboInfo("Comet in Black Option", "Adds Comet in Black to the burst phase.", PCT.JobID)]
+    //PCT_ST_AdvancedMode_Burst_CometInBlack = 20011,
 
-    [ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
-    [CustomComboInfo("Star Prism Option", "Adds Star Prism to the burst phase.", PCT.JobID)]
-    PCT_ST_AdvancedMode_Burst_StarPrism = 20012,
+    [ParentCombo(PCT_ST_AdvancedMode)]
+    [CustomComboInfo("Star Prism Option", "Adds Star Prism to the Rotation.", PCT.JobID)]
+    PCT_ST_AdvancedMode_StarPrism = 20012,
 
-    [ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
-    [CustomComboInfo("Rainbow Drip Option", "Adds Rainbow Drip to the burst phase.", PCT.JobID)]
-    PCT_ST_AdvancedMode_Burst_RainbowDrip = 20013,
+    [ParentCombo(PCT_ST_AdvancedMode)]
+    [CustomComboInfo("Rainbow Drip Option", "Adds Rainbow Drip to the rotation with Rainbow Birght Buff.", PCT.JobID)]
+    PCT_ST_AdvancedMode_RainbowDrip = 20013,
 
-    [ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
-    [CustomComboInfo("Hammer Stamp Combo Option", "Adds Hammer Stamp Combo to the burst phase.", PCT.JobID)]
-    PCT_ST_AdvancedMode_Burst_HammerCombo = 20014,
+    //[ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
+    //[CustomComboInfo("Hammer Stamp Combo Option", "Adds Hammer Stamp Combo to the burst phase.", PCT.JobID)]
+    //PCT_ST_AdvancedMode_Burst_HammerCombo = 20014,
 
-    [ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
-    [CustomComboInfo("Blizzard in Cyan Option", "Adds Blizzard in Cyan to the burst phase.", PCT.JobID)]
-    PCT_ST_AdvancedMode_Burst_BlizzardInCyan = 20015,
+    //[ParentCombo(PCT_ST_AdvancedMode_Burst_Phase)]
+    //[CustomComboInfo("Blizzard in Cyan Option", "Adds Blizzard in Cyan to the burst phase.", PCT.JobID)]
+    //PCT_ST_AdvancedMode_Burst_BlizzardInCyan = 20015,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
     [CustomComboInfo("Motif Selection Feature", "Add Selected Motifs to the combo.", PCT.JobID)]
