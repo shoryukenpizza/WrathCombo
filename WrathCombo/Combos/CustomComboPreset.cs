@@ -5340,14 +5340,12 @@ public enum CustomComboPreset
     [Variant]
     [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", SAM.JobID)]
-    SAM_Variant_Cure = 15300,
+    SAM_Variant_Cure = 15254,
 
     [Variant]
     [VariantParent(SAM_ST_AdvancedMode, SAM_AoE_AdvancedMode)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SAM.JobID)]
-    SAM_Variant_Rampart = 15301,
-
-    // Last value = 15301
+    SAM_Variant_Rampart = 15255,
 
     #endregion
 
@@ -5363,9 +5361,23 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Hidden Features
+
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SAM.JobID)]
+    [Hidden]
+    SAM_Hidden = 15300,
+
+    [ParentCombo(SAM_Hidden)]
+    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", SAM.JobID)]
+    [Hidden]
+    SAM_Hid_M6SHoldSquirrelBurst = 15301,
+
+    #endregion
+
     // Last Value ST = 15023
     // Last Value AoE = 15113
-    // Last Value Misc = 15253
+    // Last Value Misc = 15255
+    // Last Value Hidden = 15301
 
     #endregion
 
