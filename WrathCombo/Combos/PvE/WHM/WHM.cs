@@ -336,7 +336,8 @@ internal partial class WHM : Healer
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum) &&
                 ActionReady(Asylum) &&
-                !IsMoving())
+                !IsMoving() &&
+                (!Config.WHM_AoEHeals_AsylumRaidwideOnly || RaidWideCasting()))
                 return Asylum;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Lucid) &&

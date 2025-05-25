@@ -219,6 +219,12 @@ internal partial class WHM
                     ImGui.Unindent();
                     break;
 
+                case CustomComboPreset.WHM_AoEHeals_Asylum:
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_AsylumRaidwideOnly,
+                        "Only use when a Raidwide is casting",
+                        "Will not use Asylum in the rotation unless we detect a Raidwide is casting.");
+                    break;
+
                 #endregion
             }
         }
@@ -608,6 +614,16 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Medica2" />
         internal static UserFloat WHM_AoEHeals_MedicaTime =
             new("WHM_AoEHeals_MedicaTime");
+
+        /// <summary>
+        ///     Only use Asylum vs a Raidwide.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Asylum" />
+        internal static UserBool WHM_AoEHeals_AsylumRaidwideOnly =
+            new("WHM_AoEHeals_AsylumRaidwideOnly");
 
         #endregion
 
