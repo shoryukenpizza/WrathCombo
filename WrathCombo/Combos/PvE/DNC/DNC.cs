@@ -1580,8 +1580,9 @@ internal partial class DNC : PhysicalRanged
                 if (GetCustomDanceStep(actionID, out var danceStep))
                     return danceStep;
 
-            if (HasStatusEffect(Buffs.FlourishingSymmetry) ||
-                HasStatusEffect(Buffs.SilkenSymmetry))
+            if ((HasStatusEffect(Buffs.FlourishingSymmetry) ||
+                 HasStatusEffect(Buffs.SilkenSymmetry)) &&
+                ActionReady(RisingWindmill))
                 return RisingWindmill;
 
             return actionID;
