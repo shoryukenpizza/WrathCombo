@@ -306,6 +306,7 @@ public class ActionRetargeting : IDisposable
     private static readonly uint[] _actionsAllowedToBeReplacedAction =
     [
         DNC.ClosedPosition,
+        AST.EssentialDignity,
     ];
 
     /// <summary>

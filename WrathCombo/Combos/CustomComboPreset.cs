@@ -360,6 +360,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Ascend", AST.JobID)]
     AST_Raise_Alternative = 1003,
 
+    [ReplaceSkill(AST.EssentialDignity)]
+    [CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
+    [Retargeted]
+    AST_RetargetEssentialDignity = 1059,
+
     [Variant]
     [VariantParent(AST_ST_DPS_CombustUptime)]
     [CustomComboInfo("Spirit Dart Option",

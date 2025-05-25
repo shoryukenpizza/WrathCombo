@@ -400,6 +400,16 @@ internal partial class AST : Healer
         }
     }
 
+    internal class AST_RetargetEssentialDignity : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_RetargetEssentialDignity;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not EssentialDignity
+                ? actionID
+                : actionID.Retarget(SimpleTarget.Stack.AllyToHeal, dontCull: true);
+    }
+
     internal class AST_RetargetManualCards : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Cards_QuickTargetCards;
