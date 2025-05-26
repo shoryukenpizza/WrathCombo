@@ -407,10 +407,10 @@ public partial class Helper(ref Leasing leasing)
     {
         get
         {
-            // If the IPC status was checked within the last 5 minutes:
+            // If the IPC status was checked within the last 20 minutes:
             // return the cached value
             if (_ipcEnabled is not null &&
-                !EZ.Throttle("ipcLastStatusChecked", TS.FromMinutes(5)))
+                !EZ.Throttle("ipcLastStatusChecked", TS.FromMinutes(20)))
                 return _ipcEnabled!.Value;
 
             // Otherwise, check the status and cache the result

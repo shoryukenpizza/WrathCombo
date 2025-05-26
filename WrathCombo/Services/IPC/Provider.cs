@@ -125,6 +125,8 @@ public partial class Provider : IDisposable
             return;
         }
 
+        _ = P.IPC.Helper.IPCEnabled;
+
         // Build job-specific combo state caches
         // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
         P.IPCSearch.ComboStatesByJob.TryGetValue(Player.Job, out _);
