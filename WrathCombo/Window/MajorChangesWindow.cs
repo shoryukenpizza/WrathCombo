@@ -30,12 +30,12 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     {
         PluginLog.Debug(
             "MajorChangesWindow: " +
-            $"IsVersionProblematic: {IsVersionProblematic}, " +
-            $"IsSuggestionHiddenForThisVersion: {IsSuggestionHiddenForThisVersion}, " +
+            $"IsVersionProblematic: {DoesVersionHaveChange}, " +
+            $"IsSuggestionHiddenForThisVersion: {IsPopupHiddenForThisVersion}, " +
             $"WasUsingOldMouseOverConfigs: {WasUsingOldMouseOverConfigs}"
         );
-        if (IsVersionProblematic &&
-            !IsSuggestionHiddenForThisVersion)
+        if (DoesVersionHaveChange &&
+            !IsPopupHiddenForThisVersion)
             IsOpen = true;
 
         BringToFront();
@@ -75,7 +75,7 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
             ImGui.SameLine();
             FontAwesome.Print(ImGuiColors.HealerGreen, FontAwesomeIcon.Check);
             ImGui.SameLine();
-            ImGuiEx.Text($"Option Enabled");
+            ImGuiEx.Text($"Enabled");
         }
 
         #endregion
@@ -98,29 +98,43 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
             "which may not have lined up with your targeting, and used the 'wrong' heals.\n\n" +
             "Action Retargeting addresses that!"
         );
-       ImGuiEx.Text(
+        ImGuiEx.Text(
             "Additionally, we have added the ability to control the 'Stack' of targets\n" +
             "that Healing combos will use to check HP and choose to cast different heals,\n" +
             "and an option to also Retarget all Single-Target Healing actions to that same Stack.\n" +
+            "(This option, 'Retarget Healing Actions', is highly recommended!)");
+        ImGuiEx.Text(
             "You can find these new settings under:\n" +
             "Settings > 'Target Options' (and the collapsed 'Heal Stack Customization Options')"
         );
         ImGui.NewLine();
         if (ImGui.Button("> Open the Settings Tab##majorSettings2"))
             P.OnOpenConfigUi();
+        if (ImGui.Button("> Enable the Retarget Healing Actions option for me"))
+        {
+            Service.Configuration.RetargetHealingActionsToStack = true;
+            Service.Configuration.Save();
+        }
+        if (Service.Configuration.RetargetHealingActionsToStack)
+        {
+            ImGui.SameLine();
+            FontAwesome.Print(ImGuiColors.HealerGreen, FontAwesomeIcon.Check);
+            ImGui.SameLine();
+            ImGuiEx.Text($"Enabled");
+        }
         ImGui.NewLine();
         ImGuiEx.Text(
-            "You will find new symbols indicating if a Combo or Feature is Retargeted\n" +
-            "if you go look at some jobs (Healers and Dancer for now)."
+            "You will find new symbols indicating if a Feature's actions are Retargeted:"
         );
-        ImGuiEx.Text("This indicates an action that might be Retargeted:");
+        ImGuiEx.Text("Depending on settings, MAY be Retargeted:");
         ImGui.SameLine();
         using (ImRaii.PushFont(UiBuilder.IconFont))
         {
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow))
                 ImGui.Text(FontAwesomeIcon.Random.ToIconString());
         }
-        ImGuiEx.Text("This indicates an action that will be Retargeted:");
+        ImGui.SameLine();
+        ImGuiEx.Text("WILL always be Retargeted:");
         ImGui.SameLine();
         using (ImRaii.PushFont(UiBuilder.IconFont))
         {
@@ -130,16 +144,20 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
         ImGui.NewLine();
         ImGuiEx.Text(ImGuiColors.DalamudYellow,
             "If you previously had Redirect/Reaction configured for actions that are\n" +
-            "now Retargeted, you may likely want to remove those configurations.");
+            "now Retargeted, or had Reaction's/Bossmod's Instant Ground Target options,\n" +
+            "you may likely want to disable those options.");
         ImGuiEx.Text(
-            "This incudes AST's Cards, DNC's Dancer Partner, and all Single-Target\n" +
-            "Healing actions (if you turn on the setting to retarget these).");
+            "That incudes AST Cards, DNC Partner, and (if enabled:)\n" +
+            "Single-Target Healing Actions");
         ImGuiComponents.HelpMarker(
-            "Healing actions is up to preference, but Dance Partner and Cards are now\n" +
-            "smarter than simple retargeting of actions (following The Balance's priorities,\n" +
+            "Healing actions is up to preference whether you choose to enable that\n" +
+            "in settings (highly recommended), but Dance Partner and Cards are now smarter\n" +
+            "than simple retargeting of actions (following The Balance's priorities,\n" +
             "checking for damage downs, etc).");
 
         #endregion
+
+        #region Close and Do not Show again
 
         ImGuiEx.Spacing(new System.Numerics.Vector2(0, 20));
         ImGui.Separator();
@@ -154,12 +172,10 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
             IsOpen = false;
         }
 
+        #endregion
+
         if (_centeredWindow < 5)
             CenterWindow();
-    }
-
-    public override void PostDraw()
-    {
     }
 
     #region Minimum Width
@@ -202,20 +218,20 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     /// <summary>
     ///     The version where the problem was introduced.
     /// </summary>
-    private static readonly Version VersionWhereProblemIntroduced =
+    private static readonly Version VersionWhereChangeIntroduced =
         new(1, 0, 1, 5);
 
     /// <summary>
     ///     Whether the current version is problematic.
     /// </summary>
     /// <remarks>No need to update this value to re-use this window.</remarks>
-    private static readonly bool IsVersionProblematic =
-        Version >= VersionWhereProblemIntroduced;
+    private static readonly bool DoesVersionHaveChange =
+        Version >= VersionWhereChangeIntroduced;
 
     /// <summary>
     ///     Whether the suggestion should be hidden for this version.
     /// </summary>
-    private static readonly bool IsSuggestionHiddenForThisVersion =
+    private static readonly bool IsPopupHiddenForThisVersion =
         Service.Configuration.HideMajorChangesForVersion >= Version;
 
     #endregion
