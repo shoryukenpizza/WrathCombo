@@ -9,6 +9,7 @@ using ECommons.Logging;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
+using WrathCombo.Services;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
 
@@ -165,7 +166,7 @@ public class ActionRetargeting : IDisposable
         target = null;
         replacedWith = action;
         // Find the Retarget object
-        if (!Retargets.TryGetValue(action, out var retarget))
+        if (!Retargets.TryGetValue(action, out var retarget) || Service.ActionReplacer.LastActionInvokeFor[action] != retarget.Action)
             return false;
 
         replacedWith = retarget.Action;

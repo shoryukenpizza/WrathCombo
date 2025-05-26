@@ -339,12 +339,12 @@ namespace WrathCombo.Data
                 {
                     if (combo.TryInvoke(actionId, out result))
                     {
-                        actionId = result;
+                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result;
                         break;
                     }
                 }
             }
-
+            
             var originalTargetId = targetId;
             var changed = CheckForChangedTarget(actionId, ref targetId, out uint replacedWith);
 
