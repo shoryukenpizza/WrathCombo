@@ -106,7 +106,7 @@ public class ActionRetargeting : IDisposable
                 continue;
 
             // Keep the old Retarget if it's the same resolver
-            if (oldRetarget.ResolverName == retarget.ResolverName)
+            if (oldRetarget.Resolver().GameObjectId == retarget.Resolver().GameObjectId)
                 return action;
 
             // Flag as a partial overwrite if `actionInReplaced` has different values

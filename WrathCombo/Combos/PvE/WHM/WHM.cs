@@ -215,7 +215,7 @@ internal partial class WHM : Healer
                                Config.WHM_STHeals_ThinAir;
 
             var regenReady = ActionReady(Regen) &&
-                             !JustUsed(Regen, 4) &&
+                             !JustUsedOn(Regen, healTarget) &&
                              GetStatusEffectRemainingTime(Buffs.Regen, healTarget) 
                                 <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
                              GetTargetHPPercent(healTarget,Config.WHM_STHeals_IncludeShields) 
