@@ -156,17 +156,19 @@ public class ActionRetargeting : IDisposable
     ///     The output  <see cref="IGameObject">Game Object</see> of the target, if
     ///     the action was found to be Retargeted.
     /// </param>
+    /// <param name="replacedWith"></param>
     /// <returns>
     ///     Whether the action is registered for Retargeting.
     /// </returns>
-    public bool TryGetTargetFor(uint action, out IGameObject? target)
+    public bool TryGetTargetFor(uint action, out IGameObject? target, out uint replacedWith)
     {
         target = null;
-
+        replacedWith = action;
         // Find the Retarget object
         if (!Retargets.TryGetValue(action, out var retarget))
             return false;
 
+        replacedWith = retarget.Action;
         log("Retargeting", showAction: true,
             showResolver: true, retarget: retarget);
 

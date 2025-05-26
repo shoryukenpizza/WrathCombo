@@ -173,15 +173,6 @@ namespace WrathCombo.Data
                 if (actionType == 1)
                     ActionTimestamps[actionId] = Environment.TickCount64;
 
-                var originalTargetId = targetObjectId;
-                var changed = CheckForChangedTarget(actionId, ref targetObjectId);
-                if (changed)
-                    if (!ActionManager.CanUseActionOnTarget(actionId,
-                            Svc.Objects
-                                .FirstOrDefault(x => x.GameObjectId == targetObjectId)
-                                .Struct()))
-                        targetObjectId = originalTargetId;
-
                 TimeLastActionUsed = DateTime.Now + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
                 LastAction = actionId;
                 ActionType = actionType;
@@ -189,11 +180,6 @@ namespace WrathCombo.Data
                 UpdateHelpers(actionId);
                 UsedOnDict[(actionId, targetObjectId)] = Environment.TickCount64;
                 SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
-
-                // If the target was changed, support changing the target for ground actions, too
-                if (changed)
-                    ActionManager.Instance()->AreaTargetingExecuteAtObject =
-                        targetObjectId;
 
                 Svc.Log.Verbose($"{actionId} {sequence} {a5} {a6} {a7} {a8} {a9}");
             }
@@ -212,9 +198,10 @@ namespace WrathCombo.Data
                 NIN.InMudra = false;
         }
 
-        private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId)
+        private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
         {
-            if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target) ||
+            replacedWith = actionId;
+            if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target, out replacedWith) ||
                 target is null)
                 return false;
 
@@ -359,16 +346,16 @@ namespace WrathCombo.Data
             }
 
             var originalTargetId = targetId;
-            var changed = CheckForChangedTarget(actionId, ref targetId);
+            var changed = CheckForChangedTarget(actionId, ref targetId, out uint replacedWith);
 
             if (changed)
-                if (!ActionManager.CanUseActionOnTarget(actionId,
+                if (!ActionManager.CanUseActionOnTarget(replacedWith,
                     Svc.Objects
                         .FirstOrDefault(x => x.GameObjectId == targetId)
                         .Struct()))
                     targetId = originalTargetId;
 
-            var hookResult = UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+            var hookResult = UseActionHook.Original(actionManager, actionType, replacedWith, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
 
             // If the target was changed, support changing the target for ground actions, too
             if (changed)
