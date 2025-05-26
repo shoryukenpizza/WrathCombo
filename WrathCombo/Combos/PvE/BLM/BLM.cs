@@ -461,7 +461,7 @@ internal partial class BLM : Caster
                     ActionReady(Transpose))
                     return Transpose;
 
-                if (ActionReady(Freeze) && UmbralIceStacks == 3)
+                if (ActionReady(Freeze))
                     return LevelChecked(Blizzard4) && HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
                         : Freeze;
@@ -567,7 +567,7 @@ internal partial class BLM : Caster
                         return Transpose;
                 }
 
-                if (ActionReady(Freeze) && UmbralIceStacks == 3)
+                if (ActionReady(Freeze))
                     return IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
                            LevelChecked(Blizzard4) && HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
