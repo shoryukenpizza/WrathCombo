@@ -346,7 +346,8 @@ namespace WrathCombo.Data
             }
             
             var originalTargetId = targetId;
-            var changed = CheckForChangedTarget(actionId, ref targetId, out uint replacedWith);
+            var changed = CheckForChangedTarget(actionId, ref targetId,
+                out var replacedWith);
 
             if (changed)
                 if (!ActionManager.CanUseActionOnTarget(replacedWith,
