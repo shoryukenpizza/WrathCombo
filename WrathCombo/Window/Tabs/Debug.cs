@@ -161,7 +161,7 @@ internal class Debug : ConfigWindow, IDisposable
             {
                 // Set Status
                 string statusId = status.StatusId.ToString();
-                string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
+                string statusName = StatusCache.GetStatusName(status.StatusId) ?? string.Empty;
 
                 // Set Source Name
                 string sourceName = status.SourceId != player.GameObjectId
@@ -210,7 +210,7 @@ internal class Debug : ConfigWindow, IDisposable
                     // Set Status
                     string statusId = status.StatusId.ToString();
                     string sourceName = status.SourceObject?.Name?.ToString() ?? string.Empty;
-                    string statusName = ActionWatching.GetStatusName(status.StatusId) ?? string.Empty;
+                    string statusName = StatusCache.GetStatusName(status.StatusId) ?? string.Empty;
 
                     // Set Duration
                     float debuffDuration = GetStatusEffectRemainingTime((ushort)status.StatusId, chara, true);
@@ -344,6 +344,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("Target Data"))
         {
+            if (target is not null) { 
             CustomStyleText("Name:", target?.Name);
             CustomStyleText("Health:", $"{EnemyHealthCurrentHp():N0} / {GetTargetMaxHP():N0} ({MathF.Round(GetTargetHPPercent(), 2)}%)");
             CustomStyleText("Distance:", $"{MathF.Round(GetTargetDistance(), 2)}y");
@@ -352,6 +353,8 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Height Difference:", $"{MathF.Round(GetTargetHeightDifference(), 2)}y");
             CustomStyleText("Relative Position:", AngleToTarget().ToString());
             CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
+            CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
+
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
@@ -405,25 +408,26 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.TreePop();
             }
 
-            if (ImGui.TreeNode("Enemies Near Target"))
-            {
-                var enemies = Svc.Objects
-                .OfType<IBattleNpc>()
-                .Where(x => x.ObjectKind == ObjectKind.BattleNpc &&
-                            x.IsTargetable &&
-                            !x.IsDead &&
-                            x.BattleNpcKind is BattleNpcSubKind.Enemy or BattleNpcSubKind.BattleNpcPart);
-
-                foreach (var enemy in enemies)
+                if (ImGui.TreeNode("Enemies Near Target"))
                 {
-                    if (!enemy.Character()->InCombat) continue;
-                    if (enemy.GameObjectId == target?.GameObjectId) continue;
+                    var enemies = Svc.Objects
+                    .OfType<IBattleNpc>()
+                    .Where(x => x.ObjectKind == ObjectKind.BattleNpc &&
+                                x.IsTargetable &&
+                                !x.IsDead &&
+                                x.BattleNpcKind is BattleNpcSubKind.Enemy or BattleNpcSubKind.BattleNpcPart);
 
-                    var dist = MathF.Round(GetTargetDistance(enemy, target), 2);
-                    CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
+                    foreach (var enemy in enemies)
+                    {
+                        if (!enemy.Character()->InCombat) continue;
+                        if (enemy.GameObjectId == target?.GameObjectId) continue;
+
+                        var dist = MathF.Round(GetTargetDistance(enemy, target), 2);
+                        CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
+                    }
+
+                    ImGui.TreePop();
                 }
-
-                ImGui.TreePop();
             }
         }
 

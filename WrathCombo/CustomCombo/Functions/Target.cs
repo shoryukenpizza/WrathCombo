@@ -227,6 +227,15 @@ internal abstract partial class CustomComboFunctions
         return count;
     }
 
+    public static int NumberOfEnemiesInRange(byte range)
+    {
+        return Svc.Objects.Count(
+            o => o.ObjectKind == ObjectKind.BattleNpc &&
+                 o.IsHostile() &&
+                 o.IsTargetable &&
+                 GetTargetDistance(o) <= range);
+    }
+
     internal static unsafe bool IsInLineOfSight(IGameObject? target)
     {
         if (target is null) return false;
