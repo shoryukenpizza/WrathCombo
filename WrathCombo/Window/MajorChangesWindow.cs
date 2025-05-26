@@ -70,6 +70,13 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
             Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack = true;
             Service.Configuration.Save();
         }
+        if (Service.Configuration.UseUIMouseoverOverridesInDefaultHealStack)
+        {
+            ImGui.SameLine();
+            FontAwesome.Print(ImGuiColors.HealerGreen, FontAwesomeIcon.Check);
+            ImGui.SameLine();
+            ImGuiEx.Text($"Option Enabled");
+        }
 
         #endregion
 
