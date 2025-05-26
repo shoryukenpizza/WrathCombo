@@ -265,6 +265,7 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Combat Time:", CombatEngageDuration().ToString("mm\\:ss\\:ff"));
             CustomStyleText("Hitbox Radius:", player.HitboxRadius);
             CustomStyleText("Movement Time:", TimeMoving.ToString("mm\\:ss\\:ff"));
+            CustomStyleText($"Dashing:", IsDashing());
             CustomStyleText("In Boss Encounter:", InBossEncounter());
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
@@ -343,6 +344,7 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("Target Data"))
         {
+            if (target is not null) { 
             CustomStyleText("Name:", target?.Name);
             CustomStyleText("Health:", $"{EnemyHealthCurrentHp():N0} / {EnemyHealthMaxHp():N0} ({MathF.Round(GetTargetHPPercent(), 2)}%)");
             CustomStyleText("Distance:", $"{MathF.Round(GetTargetDistance(), 2)}y");
@@ -351,6 +353,8 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Height Difference:", $"{MathF.Round(GetTargetHeightDifference(), 2)}y");
             CustomStyleText("Relative Position:", AngleToTarget().ToString());
             CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
+            CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
+
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
 
@@ -404,25 +408,26 @@ internal class Debug : ConfigWindow, IDisposable
                 ImGui.TreePop();
             }
 
-            if (ImGui.TreeNode("Enemies Near Target"))
-            {
-                var enemies = Svc.Objects
-                .OfType<IBattleNpc>()
-                .Where(x => x.ObjectKind == ObjectKind.BattleNpc &&
-                            x.IsTargetable &&
-                            !x.IsDead &&
-                            x.BattleNpcKind is BattleNpcSubKind.Enemy or BattleNpcSubKind.BattleNpcPart);
-
-                foreach (var enemy in enemies)
+                if (ImGui.TreeNode("Enemies Near Target"))
                 {
-                    if (!enemy.Character()->InCombat) continue;
-                    if (enemy.GameObjectId == target?.GameObjectId) continue;
+                    var enemies = Svc.Objects
+                    .OfType<IBattleNpc>()
+                    .Where(x => x.ObjectKind == ObjectKind.BattleNpc &&
+                                x.IsTargetable &&
+                                !x.IsDead &&
+                                x.BattleNpcKind is BattleNpcSubKind.Enemy or BattleNpcSubKind.BattleNpcPart);
 
-                    var dist = MathF.Round(GetTargetDistance(enemy, target), 2);
-                    CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
+                    foreach (var enemy in enemies)
+                    {
+                        if (!enemy.Character()->InCombat) continue;
+                        if (enemy.GameObjectId == target?.GameObjectId) continue;
+
+                        var dist = MathF.Round(GetTargetDistance(enemy, target), 2);
+                        CustomStyleText($"{enemy.Name} ({enemy.GameObjectId}):", $"{dist}y");
+                    }
+
+                    ImGui.TreePop();
                 }
-
-                ImGui.TreePop();
             }
         }
 
@@ -621,7 +626,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                 if (_debugSpell.Value.UnlockLink.RowId != 0)
                     CustomStyleText("Quest:", $"{Svc.Data.GetExcelSheet<Quest>().GetRow(_debugSpell.Value.UnlockLink.RowId).Name} ({(UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(_debugSpell.Value.UnlockLink.RowId) ? "Completed" : "Not Completed")})");
-                
+
                 CustomStyleText("Base Recast:", $"{_debugSpell.Value.Recast100ms / 10f}s");
                 CustomStyleText("Original Hook:", OriginalHook(_debugSpell.Value.RowId).ActionName());
                 CustomStyleText("Cooldown Total:", $"{ActionManager.Instance()->GetRecastTime(ActionType.Action, _debugSpell.Value.RowId)}");
@@ -857,6 +862,30 @@ internal class Debug : ConfigWindow, IDisposable
                 }
                 ImGui.Unindent();
             }
+        }
+
+        #endregion
+
+        ImGuiEx.Spacing(new Vector2(0, SpacingMedium));
+
+        #region Hidden Features
+
+        if (ImGui.Checkbox("Show Hidden Features",
+                ref Service.Configuration.ShowHiddenFeatures))
+            Service.Configuration.Save();
+
+        ImGuiComponents.HelpMarker("Some features can be marked as hidden, and will only be shown if this setting is enabled.\nThis is here instead of on the Settings tab while this behavior is still early in its life, and to keep such features more secretive.");
+
+        ImGui.SameLine();
+        ImGui.TextColored(ImGuiColors.DalamudGrey, "(Do NOT publicly direct users to this setting!)");
+        if (Service.Configuration.ShowHiddenFeatures)
+        {
+            ImGui.Indent();
+            ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                "Hidden Features are minor one-offs that are not priorities for dev time.\n" +
+                "Do not request new ones or maintenance for existing ones publicly.\n" +
+                "Do not expect Hidden Features to be maintained or even stick around after they cease to be applicable.");
+            ImGui.Unindent();
         }
 
         #endregion

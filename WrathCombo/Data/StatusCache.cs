@@ -155,6 +155,11 @@ namespace WrathCombo.Data
                     if (CompareLists(InvincibleStatuses, targetStatuses)) return true;
 
                     return false;
+                case 952:  //ToZ final boss (technically not invincible)
+                    if (targetID is (13298 or 13299) && Svc.Objects.Any(y => y.DataId is 13297 && !y.IsDead))
+                        return true;
+
+                    return false;
                 default:
                     break;
             }

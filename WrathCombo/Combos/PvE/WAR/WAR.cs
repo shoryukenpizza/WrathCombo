@@ -91,6 +91,10 @@ internal partial class WAR : Tank
                 return OtherAction;
             #region Stuns
             if (IsEnabled(CustomComboPreset.WAR_ST_Interrupt)
+                && HiddenFeaturesData.IsEnabledWith( // Only interrupt circle adds in 7
+                    CustomComboPreset.WAR_Hid_R7SCircleCastOnly,
+                    () => HiddenFeaturesData.Content.InR7S,
+                    () => HiddenFeaturesData.Targeting.R7SCircleCastingAdd)
                 && Role.CanInterject())
                 return Role.Interject;
             if (IsEnabled(CustomComboPreset.WAR_ST_Stun)
@@ -247,9 +251,20 @@ internal partial class WAR : Tank
                 return action; //Our button
             if (ShouldUseOther)
                 return OtherAction;
+
+            // If the Burst Holding for the Squirrels in 6 is enabled, check that
+            // we are either not targeting a squirrel or the fight is after 275s
+            var r6SReady = !HiddenFeaturesData.IsEnabledWith(
+                CustomComboPreset.WAR_Hid_R6SHoldSquirrelBurst,
+                () => HiddenFeaturesData.Targeting.R6SSquirrel &&
+                      CombatEngageDuration().TotalSeconds < 275);
+
             if (IsEnabled(CustomComboPreset.WAR_AoE_Interrupt) && Role.CanInterject())
                 return Role.Interject;
-            if (IsEnabled(CustomComboPreset.WAR_AoE_Stun) && !JustUsed(Role.Interject) && Role.CanLowBlow())
+            if (IsEnabled(CustomComboPreset.WAR_AoE_Stun) && !JustUsed(Role.Interject) && Role.CanLowBlow() && HiddenFeaturesData.IsEnabledWith( // Only stun the jabber, if in 6
+                    CustomComboPreset.WAR_Hid_R6SStunJabberOnly,
+                    () => HiddenFeaturesData.Content.InR6S,
+                    () => HiddenFeaturesData.Targeting.R6SJabber))
                 return Role.LowBlow;
 
             #region Mitigations
@@ -267,12 +282,18 @@ internal partial class WAR : Tank
                         (Config.WAR_AoE_Rampart_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Rampart_SubOption == 1)))
                         return Role.Rampart;
                     if (IsEnabled(CustomComboPreset.WAR_AoE_Reprisal) && Role.CanReprisal(Config.WAR_AoE_Reprisal_Health, checkTargetForDebuff: false) &&
+                        HiddenFeaturesData.IsEnabledWith( // Skip mit if in 6
+                                CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
+                                () => !HiddenFeaturesData.Content.InR6S) &&
                         (Config.WAR_AoE_Reprisal_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Reprisal_SubOption == 1)))
                         return Role.Reprisal;
                     if (IsEnabled(CustomComboPreset.WAR_AoE_ArmsLength) && PlayerHealthPercentageHp() <= Config.WAR_AoE_ArmsLength_Health && Role.CanArmsLength())
                         return Role.ArmsLength;
                 }
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Thrill) && ActionReady(ThrillOfBattle) && PlayerHealthPercentageHp() <= Config.WAR_AoE_Thrill_Health &&
+                    HiddenFeaturesData.IsEnabledWith( // Skip mit if in 6
+                        CustomComboPreset.WAR_Hid_R6SNoAutoGroupMits,
+                        () => !HiddenFeaturesData.Content.InR6S) &&
                     (Config.WAR_AoE_Thrill_SubOption == 0 || (TargetIsBoss() && Config.WAR_AoE_Thrill_SubOption == 1)))
                     return ThrillOfBattle;
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Equilibrium) && ActionReady(Equilibrium) && PlayerHealthPercentageHp() <= Config.WAR_AoE_Equilibrium_Health &&
@@ -283,6 +304,8 @@ internal partial class WAR : Tank
                     return OriginalHook(RawIntuition);
             }
             #endregion
+
+            if (!r6SReady) return AOECombo;
 
             #region Rotation
             if (IsEnabled(CustomComboPreset.WAR_AoE_RangedUptime) && ShouldUseTomahawk)
@@ -326,7 +349,7 @@ internal partial class WAR : Tank
             {
                 int index = Config.WAR_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint actionID))
-                    return action;
+                    return actionID;
             }
             return action;
         }

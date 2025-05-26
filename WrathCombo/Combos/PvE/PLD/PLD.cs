@@ -332,7 +332,7 @@ internal partial class PLD : Tank
                             return OriginalHook(Requiescat);
 
                         // Fight or Flight
-                        if (ActionReady(FightOrFlight) && (cooldownRequiescat < 0.5f && hasRequiescatMP && canEarlyWeave || !LevelChecked(Requiescat)))
+                        if (ActionReady(FightOrFlight) && (!LevelChecked(Requiescat) || (cooldownRequiescat < 0.5f && hasRequiescatMP && canEarlyWeave)))
                             return FightOrFlight;
 
                         // Variant Ultimatum
@@ -654,7 +654,7 @@ internal partial class PLD : Tank
 
                         // Fight or Flight
                         if (IsEnabled(CustomComboPreset.PLD_AoE_AdvancedMode_FoF) && ActionReady(FightOrFlight) && GetTargetHPPercent() >= Config.PLD_AoE_FoF_Trigger &&
-                            (cooldownRequiescat < 0.5f && hasRequiescatMP && canEarlyWeave || !LevelChecked(Requiescat)))
+                            (!LevelChecked(Requiescat) || (cooldownRequiescat < 0.5f && hasRequiescatMP && canEarlyWeave)))
                             return FightOrFlight;
 
                         // Variant Ultimatum
