@@ -3,8 +3,9 @@ using WrathCombo.Combos;
 
 namespace WrathCombo.Attributes
 {
+    /*
     /// <summary> Attribute documenting required combo relationships. </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.OccultCrescent)]
     internal class OccultCrescentParentAttribute : Attribute
     {
         /// <summary> Initializes a new instance of the <see cref="OccultCrescentParentAttribute"/> class. </summary>
@@ -14,4 +15,5 @@ namespace WrathCombo.Attributes
         /// <summary> Gets the display name. </summary>
         public CustomComboPreset[] ParentPresets { get; }
     }
+    */
 }

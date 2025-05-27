@@ -2,9 +2,11 @@
 
 namespace WrathCombo.Attributes
 {
+    /*
     /// <summary> Attribute designating Occult Crescent actions. </summary>
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.OccultCrescent)]
     internal class OccultCrescentAttribute : Attribute
     {
     }
+    */
 }
