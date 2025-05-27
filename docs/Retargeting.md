@@ -122,6 +122,29 @@ You would simply return the action, with Retargeting:
 return action.Retarget(SimpleTarget.AnyEnemy);
 ```
 
+Then you would tag the Preset in `CustomComboPreset.cs` with the
+`[Retargeted]` or `[PossiblyRetargeted]` attribute, depending on whether the Preset
+is always Retargeted or if it depends on another setting, respecively.
+```csharp
+[ReplaceSkill(AST.EssentialDignity)]
+[CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
+[Retargeted]
+AST_RetargetEssentialDignity = 1059,
+// This preset is always Retargeted if enabled
+    
+[ParentCombo(AST_ST_DPS)]
+[CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
+    AST.JobID)]
+[PossiblyRetargeted("AST's Quick Target Damage Cards Feature", Condition.ASTQuickTargetCardsFeatureEnabled)]
+AST_DPS_AutoPlay = 1037,
+// This preset is only Retargeted when enabled, if the listed setting is also enabled
+```
+
+> If you're adding a Possibly Retargeted Feature, you will need to also add the 
+> Condition to the `Condition` enum in `RetargetedAttribute.cs`, and the logic 
+> for that Condition to the `switch` in
+> `WrathCombo.Window.Functions.Presets.DrawRetargetedAttribute()`.
+
 ### Using Retargeting with `replaced` Actions
 
 Ultimately, `replaced` actions are just the actions the Combo goes onto, simple 
