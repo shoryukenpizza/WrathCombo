@@ -254,5 +254,4 @@ internal static class PvPCommon
             return selectedStatuses.Where((t, i) => t && HasStatusEffect(Statuses[i].debuff, anyOwner: true)).Any();
         }
     }
-
 }
