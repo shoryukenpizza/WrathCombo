@@ -138,13 +138,12 @@ AST_RetargetEssentialDignity = 1059,
     AST.JobID)]
 [PossiblyRetargeted("AST's Quick Target Damage Cards Feature", Condition.ASTQuickTargetCardsFeatureEnabled)]
 AST_DPS_AutoPlay = 1037,
-// This preset is only Retargeted when enabled, if the listed setting is also enabled
+// This preset is only Retargeted if the listed setting is also enabled
 ```
 
 > If you're adding a Possibly Retargeted Feature, you will need to also add the 
 > Condition to the `Condition` enum in `RetargetedAttribute.cs`, and the logic 
-> for that Condition to the `switch` in
-> `WrathCombo.Window.Functions.Presets.DrawRetargetedAttribute()`.
+> for that Condition to the `switch` in `Presets.DrawRetargetedAttribute()`.
 
 ### Using Retargeting with `replaced` Actions
 
