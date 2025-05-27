@@ -553,10 +553,20 @@ namespace WrathCombo.Window.Functions
                             "Using plugins like Redirect or Reaction with configurations\n" +
                             "affecting this action will Conflict and may cause issues.");
 
-                        if (possiblyRetargeted)
+                        var settingInfo = "";
+                        if (preset.HasValue)
+                            settingInfo =
+                                Attributes[preset.Value].PossiblyRetargeted is not
+                                    null
+                                    ? Attributes[preset.Value].PossiblyRetargeted.SettingInfo
+                                    : "";
+                        if (settingInfo != "")
+                        {
+                            ImGui.NewLine();
                             ImGui.TextUnformatted(
                                 "The setting that controls if this action is retargeted is:\n" +
-                                Attributes[preset!.Value].PossiblyRetargeted!.SettingInfo);
+                                settingInfo);
+                        }
                     }
                 }
             }
