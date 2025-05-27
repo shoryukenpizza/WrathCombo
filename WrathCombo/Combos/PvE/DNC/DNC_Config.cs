@@ -218,13 +218,21 @@ internal partial class DNC
 
                     break;
 
+                case CustomComboPreset.DNC_ST_Adv_PartnerAuto:
+                    UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
+                        "Prioritize your Focus Target##DPFocusOver0",
+                        "If you have a focus target that is within range, it will be prioritized over The Balance's suggested Dance Partner.",
+                        indentDescription: true);
+
+                    break;
+
                 case CustomComboPreset.DNC_ST_Adv_AutoPartner:
                     ImGui.Indent(29f.Scale());
                     DrawPartnerInfo();
                     ImGui.Unindent(29f.Scale());
 
                     UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
-                        "Prioritize your Focus Target",
+                        "Prioritize your Focus Target##DPFocusOver1",
                         "If you have a focus target that is within range, alive, and has no rez sickness or damage down, it will be prioritized over The Balance's suggested Dance Partner.",
                         indentDescription: true);
 
@@ -422,7 +430,7 @@ internal partial class DNC
                     ImGuiEx.Spacing(new Vector2(0, 12));
 
                     UserConfig.DrawAdditionalBoolChoice(DNC_Partner_FocusOverride,
-                        "Prioritize Focus Target",
+                        "Prioritize your Focus Target##DPFocusOver2",
                         "If you have a focus target that is within range, alive, and has no rez sickness or damage down, it will be prioritized over The Balance's suggested Dance Partner.",
                         indentDescription: true);
 

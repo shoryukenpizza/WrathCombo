@@ -99,7 +99,7 @@ internal partial class DNC : PhysicalRanged
                 !HasStatusEffect(Buffs.ClosedPosition) &&
                 (IsInParty() || HasCompanionPresent()))
                 if (InAutoMode(true, false) ||
-                    IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner))
+                    IsEnabled(CustomComboPreset.DNC_ST_Adv_PartnerAuto))
                     return ClosedPosition.Retarget(Cascade, DancePartnerResolver);
                 else
                     return ClosedPosition;
@@ -463,11 +463,7 @@ internal partial class DNC : PhysicalRanged
                 if (ActionReady(ClosedPosition) &&
                     !HasStatusEffect(Buffs.ClosedPosition) &&
                     (GetPartyMembers().Count > 1 || HasCompanionPresent()))
-                    if (InAutoMode(true, true) ||
-                        IsEnabled(CustomComboPreset.DNC_DesirablePartner))
-                        return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
-                    else
-                        return ClosedPosition;
+                    return ClosedPosition.Retarget(Cascade, FeatureDancePartnerResolver);
 
                 if (TargetIsHostile())
                 {

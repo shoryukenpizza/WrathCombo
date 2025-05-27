@@ -1099,9 +1099,13 @@ public enum CustomComboPreset
     DNC_ST_Opener_BlockEarly = 4031,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
-    [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and you do not have a dance partner.\nWill be automatically targeted onto the Best Partner if the below option is enabled.", DNC.JobID)]
-    [PossiblyRetargeted]
+    [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and you do not have a dance partner.", DNC.JobID)]
     DNC_ST_Adv_Partner = 4012,
+
+    [ParentCombo(DNC_ST_Adv_Partner)]
+    [CustomComboInfo("Retarget to Optimal Partner", "Will Retarget the Closed Position shown out of combat to your optimal partner.", DNC.JobID)]
+    [Retargeted]
+    DNC_ST_Adv_PartnerAuto = 4033,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Optimal Dance Partner Option", "Includes Ending and then Closed Position in the rotation when your current partner is not the optimal one, such as when they get a damage down.", DNC.JobID)]
