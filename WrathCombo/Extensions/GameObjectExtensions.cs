@@ -97,6 +97,13 @@ public static class GameObjectExtensions
             ? obj
             : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not invulnerable/invincible.
+    /// </summary>
+    public static IGameObject? IfNotInvincible (this IGameObject? obj) =>
+        obj != null && !CustomComboFunctions.TargetIsInvincible(obj) ? obj : null;
+
     #endregion
 
     #region Target Checking (same as above, but returns a boolean)
@@ -160,6 +167,13 @@ public static class GameObjectExtensions
     /// </summary>
     public static bool IsMissingHP(this IGameObject? obj) =>
         obj is IBattleChara battle && battle.CurrentHp / battle.MaxHp * 100 < 99;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object is not invulnerable/invincible.
+    /// </summary>
+    public static bool IsNotInvincible(this IGameObject? obj) =>
+        obj != null && !CustomComboFunctions.TargetIsInvincible(obj);
 
     #endregion
 }

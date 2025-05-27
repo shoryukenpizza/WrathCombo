@@ -212,6 +212,40 @@ internal static class SimpleTarget
             .FirstOrDefault(x => x.IsHostile() && x.IsTargetable &&
                                  x.IsWithinRange());
 
+    #region Enemies
+
+    public static IGameObject? LowestHPEnemy =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange())
+            .OrderBy(x => x.CurrentHp)
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPEnemyIfMissingHPAndNotInvuln =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsMissingHP() &&
+                        x.IsWithinRange() && x.IsNotInvincible())
+            .OrderBy(x => x.CurrentHp)
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPPEnemy =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange())
+            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .FirstOrDefault();
+
+    public static IGameObject? LowestHPPEnemyIfMissingHPAndNotInvuln =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsMissingHP() &&
+                        x.IsWithinRange() && x.IsNotInvincible())
+            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .FirstOrDefault();
+
+    #endregion
+
     #region Previous Targets
 
     public static IGameObject? LastHardTarget =>
