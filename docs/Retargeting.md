@@ -8,8 +8,8 @@
 
 ## Capabilities of Action Retargeting
 
-Action Retargeting is meant to primarily remove our dependence on Redirect and
-Reaction, but additionally has a goal of opening up new possibilities for features
+Action Retargeting is meant to remove our dependence on Redirect and primarily
+Reaction also aims to open up new possibilities for features
 that would hinge on targeting capabilities.\
 As such, it has similar capabilities to Redirect and Reaction, but with more data
 (since it's plugged into rotations).
@@ -23,7 +23,7 @@ What it can do:
 
 What it cannot do:
 - Retarget X action from two different combos (with the same Y other actions, or 
-  lack there of) to the specified target, they will overwrite each other.
+  lack thereof) to the specified target, they will overwrite each other.
   - Realistically, this would be a Conflict for the Presets anyway.
 
 Given that it's pretty simple behavior to boot, there's not much to say about 
@@ -33,29 +33,29 @@ to Retarget the same action, which should always be possible to handle.
 ## Use Cases for Retargeting
 
 Similar to how Wrath Combo was before `1.0.1.6`, Retargeting is primarily meant to
-remove a dependency of ours, and add a limited set of new features.\
+remove a dependency of ours and add a limited set of new features.\
 It isn't meant to be the solution for Wrath to have Redirect built into everything.
 
 It should be used:
-- Where Redirect/Reaction were required before.
+- Where Redirect/Reaction was required before.
 - Where you can add another action to a job's rotation that you could not before 
   without targeting.
 - Where you would be applying beneficial effects to other players, and without 
   targeting this would require the user to target who you were wanting the 
   ability to be used on.\
-  (healing actions, but also think stuff like mitigating the main tank when off 
+  (healing actions, but also think stuff like mitigating the main tank when off-
   tanking)
 
 ### When Retargeting should NOT be used
 
-Again, we do not want for Wrath Combo to be a "rotation plugin, but with Redirect 
+Again, we do not want Wrath Combo to be a "rotation plugin, but with Redirect 
 baked in", we maintain the same stance of still expecting the user to target 
 their enemy.
 
 It should not be used:
 - When trying to use a hostile action that would normally be a non-targeted
   action as part of a rotation.
-    - Of course there may be exceptions (possibly for Hidden Features for getting
+    - Of course, there may be exceptions (possibly for Hidden Features for getting
       aggro, for example), but this would be a path leading to Redirect just being
       baked into every aspect of Wrath, which is not a desirable goal.
 - When trying to provide a target for a beneficial effect that requires one,
@@ -69,7 +69,7 @@ It should not be used:
 
 Retargeting should always be done with the `Retarget` extension method (though
 `P.ActionRetargeting.Register()` is left exposed, if it must be used), which has 
-a pretty simple signature, but nonetheless will be explained fully here.\
+a pretty simple signature, but will be explained fully here.\
 You can see the signature, and its overloads, more closely in the `UIntExtensions`
 class at the bottom of [ActionRetargeting.cs](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Core/ActionRetargeting.cs#L465).
 
@@ -124,7 +124,7 @@ return action.Retarget(SimpleTarget.AnyEnemy);
 
 Then you would tag the Preset in `CustomComboPreset.cs` with the
 `[Retargeted]` or `[PossiblyRetargeted]` attribute, depending on whether the Preset
-is always Retargeted or if it depends on another setting, respecively.
+is always Retargeted or if it depends on another setting, respectively.
 ```csharp
 [ReplaceSkill(AST.EssentialDignity)]
 [CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
@@ -176,7 +176,7 @@ if (!actionFound) return actionID;
 ```
 Where the combo can replace a list of `Malefic` actions or `Combust` actions.
 
-But you just need to derive a simple list of which ever is selected by the user, 
+But you just need to derive a simple list of whichever is selected by the user, 
 then you can use that just as simply:
 ```csharp
 var replacedActions = alternateMode
@@ -194,7 +194,7 @@ This is fairly simple:
 - If the `action` being Retargeted is NOT the same as the Replaced Action (not 
   plural) of the combo.
 
-If your combo replaces multiple actions, they all need provided.\
+If your combo replaces multiple actions, they all need to be provided.\
 If your combo replaces an action, and it is not the same as the action being 
 Retargeted, it needs to be provided.
 
@@ -208,7 +208,7 @@ above, it is as simple as providing the name of your `TargetResolver` in the
 SomeAction.Retarget(MyCustomResolver);
 ```
 
-Not the lack of `()` at the end of the method name, as this is a reference to the 
+Note the lack of `()` at the end of the method name, as this is a reference to the 
 method, not the result of running it.
 
 ## Setting up a custom `TargetResolver`
@@ -236,17 +236,17 @@ Note that the method *must* return a `IGameObject?`, and that it is marked with 
 `[ActionRetargeting.TargetResolver]` attribute.\
 Without this attribute, the method will throw Warnings periodically, as the 
 attribute has documentation point to `ActionRetargeting` for others to see and 
-the author to reference, and clearly indicates the behavior the method should 
+the author to reference, and indicates the behavior the method should 
 exhibit.
 
 There are two notable examples of more complex `TargetResolvers`
 - [AST's `CardResolver`](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Combos/PvE/AST/AST_Helper.cs#L67)
   - This is only a simple masking method, to very simply fall back to using Cards 
-    on self, which was not desired behavior on `CardTarget` itself.
+    on self, which was not the desired behavior on `CardTarget` itself.
 - [DNC's `DesirablePartnerResolver`](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Combos/PvE/DNC/DNC_Helper.cs#L195)
   - This is only a simple masking method as it calls `TryGetDancePartner` in a 
     different way from `FeatureDesirablePartnerResolver`.
 
  (both methods *could* be the method that they call, instead of masks of them, 
- that's just how both of these worked out, and is not a recommended pattern by any 
+ that's just how both of these worked out and is not a recommended pattern by any 
  means)
