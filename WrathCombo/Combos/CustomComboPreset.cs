@@ -4190,6 +4190,15 @@ public enum CustomComboPreset
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Clemency Option", "Adds Clemency to the one-button mitigation.", PLD.JobID)]
     PLD_Mit_Clemency = 11057,
+
+    [ReplaceSkill(PLD.DivineVeil)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Divine Veil with Reprisal when ready.", PLD.JobID)]
+    PLD_Mit_Party = 11063,
+
+    [ParentCombo(PLD_Mit_Party)]
+    [CustomComboInfo("Include Passage of Arms", "Includes Passage of Arms when both Divine Veil and Reprisal are on cooldown.",
+        PLD.JobID)]
+    PLD_Mit_Party_Wings = 11064,
     #endregion
 
     #region Extra Features
@@ -4233,7 +4242,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11062
+    //// Last value = 11064
 
     #endregion
 
