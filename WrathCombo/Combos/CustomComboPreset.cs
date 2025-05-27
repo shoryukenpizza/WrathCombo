@@ -6492,7 +6492,7 @@ SMN.JobID)]
     WAR_Variant_Ultimatum = 18030,
 
     [ReplaceSkill(WAR.Equilibrium)]
-    [CustomComboInfo("Thrill of Battle to Equilibirum Feature", "Replaces Equilibirum with Thrill of Battle when ready.", WAR.JobID)]
+    [CustomComboInfo("Equilibirum to Thrill of Battle Feature", "Replaces Equilibirum with Thrill of Battle when ready.", WAR.JobID)]
     WAR_ThrillEquilibrium = 18055,
 
     [ReplaceSkill(WAR.NascentFlash)]
