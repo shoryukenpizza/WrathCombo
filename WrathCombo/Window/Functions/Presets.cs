@@ -22,6 +22,8 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
 
 namespace WrathCombo.Window.Functions
 {
@@ -457,24 +459,58 @@ namespace WrathCombo.Window.Functions
             }
         }
 
-        public static void DrawPossiblyRetargetedSymbol() => DrawRetargetedAttribute();
+        public static void DrawRetargetedSymbolForSettingsPage() =>
+            DrawRetargetedAttribute(
+                firstLine: "This Feature will involve retargeting actions if enabled.",
+                secondLine: "The actions this Feature affects will automatically be\n" +
+                            "targeted onto the targets in the priority you have configured.",
+                thirdLine: "Using plugins like Redirect or Reaction with configurations\n" +
+                           "affecting the same actions will Conflict and may cause issues.");
 
-        private static void DrawRetargetedAttribute(CustomComboPreset? preset = null)
+        private static void DrawRetargetedAttribute
+            (CustomComboPreset? preset = null,
+                string? firstLine = null,
+                string? secondLine = null,
+                string? thirdLine = null)
         {
+            // Determine what symbol to show
             var possiblyRetargeted = false;
-            var retargeted = false;
+            bool retargeted;
             if (preset is null)
                 retargeted = true;
             else
             {
-                var realPreset = preset.Value;
                 possiblyRetargeted =
-                    Attributes[realPreset].PossiblyRetargeted != null;
+                    Attributes[preset.Value].PossiblyRetargeted != null;
                 retargeted =
-                    Attributes[realPreset].RetargetedAttribute != null;
+                    Attributes[preset.Value].RetargetedAttribute != null;
             }
 
             if (!possiblyRetargeted && !retargeted) return;
+
+            // Resolved the conditions if possibly retargeted
+            if (possiblyRetargeted)
+            {
+                void MakeRetargeted()
+                {
+                    retargeted = true;
+                    possiblyRetargeted = false;
+                }
+
+                switch (Attributes[preset!.Value].PossiblyRetargeted!.PossibleCondition)
+                {
+                    case Condition.RetargetHealingActionsEnabled:
+                        if (Service.Configuration.RetargetHealingActionsToStack)
+                            MakeRetargeted();
+                        break;
+                    case Condition.ASTQuickTargetCardsFeatureEnabled:
+                        if (IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards))
+                            MakeRetargeted();
+                        break;
+                    default:
+                        return; // No other conditions are supported yet
+                }
+            }
 
             ImGui.SameLine();
 
@@ -497,36 +533,29 @@ namespace WrathCombo.Window.Functions
                 {
                     using (ImRaii.TextWrapPos(ImGui.GetFontSize() * 35.0f))
                     {
-                        var usedOnSettingsPage =
-                            retargeted && preset is null;
-                        if (usedOnSettingsPage)
-                            ImGui.TextUnformatted(
-                                "This Feature will involve retargeting actions if enabled.");
                         if (possiblyRetargeted)
                             ImGui.TextUnformatted(
                                 "This Feature's actions may be retargeted.");
-                        if (retargeted && preset is not null)
+                        if (retargeted)
                             ImGui.TextUnformatted(
+                                firstLine ??
                                 "This Feature's actions are retargeted.");
 
-                        if (usedOnSettingsPage)
-                            ImGui.TextUnformatted(
-                                "The actions this Feature affects will automatically be\n" +
-                                "targeted onto the targets in the priority you have configured.");
-                        else
-                            ImGui.TextUnformatted(
-                                "The actions from this Feature will automatically be\n" +
-                                "targeted onto what the developers feel is the best target\n" +
-                                "(following The Balance where applicable).");
+                        ImGui.TextUnformatted(
+                            secondLine ??
+                            "The actions from this Feature will automatically be\n" +
+                            "targeted onto what the developers feel is the best target\n" +
+                            "(following The Balance where applicable).");
 
-                        if (usedOnSettingsPage)
+                        ImGui.TextUnformatted(
+                            thirdLine ??
+                            "Using plugins like Redirect or Reaction with configurations\n" +
+                            "affecting this action will Conflict and may cause issues.");
+
+                        if (possiblyRetargeted)
                             ImGui.TextUnformatted(
-                                "Using plugins like Redirect or Reaction with configurations\n" +
-                                "affecting the same actions will Conflict and may cause issues.");
-                        else
-                            ImGui.TextUnformatted(
-                                "Using plugins like Redirect or Reaction with configurations\n" +
-                                "affecting this action will Conflict and may cause issues.");
+                                "The setting that controls if this action is retargeted is:\n" +
+                                Attributes[preset!.Value].PossiblyRetargeted!.SettingInfo);
                     }
                 }
             }

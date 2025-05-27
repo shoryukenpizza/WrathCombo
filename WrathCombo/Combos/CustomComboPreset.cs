@@ -1,6 +1,12 @@
 ﻿using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
+using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
+// ReSharper disable EmptyRegion
+// ReSharper disable InconsistentNaming
+// ReSharper disable StringLiteralTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 namespace WrathCombo.Combos;
 
 /// <summary> Combo presets. </summary>
@@ -196,7 +202,7 @@ public enum CustomComboPreset
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
         AST.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted("AST's Quick Target Damage Cards Feature", Condition.ASTQuickTargetCardsFeatureEnabled)]
     AST_DPS_AutoPlay = 1037,
 
     [ParentCombo(AST_DPS_AutoPlay)]
@@ -250,7 +256,7 @@ public enum CustomComboPreset
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
         AST.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted("AST's Quick Target Damage Cards Feature", Condition.ASTQuickTargetCardsFeatureEnabled)]
     AST_AOE_AutoPlay = 1045,
 
     [ParentCombo(AST_AOE_AutoPlay)]
@@ -281,7 +287,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(AST.Benefic2)]
-    [CustomComboInfo("Simple Heals - Single Target", "Replaces Benefic II with a one button healing replacement.\nAll actions here will be Retargeted if Settings>Retarget Healing Actions is enabled.",
+    [CustomComboInfo("Simple Heals - Single Target", "Replaces Benefic II with a one button healing replacement.",
         AST.JobID)]
     [PossiblyRetargeted]
     AST_ST_SimpleHeals = 1023,
@@ -1205,7 +1211,7 @@ public enum CustomComboPreset
     DNC_ST_Adv_PanicHeals = 4027,
 
     #endregion
-    // Last value = 4032
+    // Last value = 4033
 
     #region Advanced Dancer (AoE)
 
