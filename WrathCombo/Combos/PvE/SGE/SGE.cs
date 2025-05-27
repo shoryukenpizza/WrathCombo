@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
+using System.Linq;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
@@ -176,6 +177,9 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             bool actionFound = actionID is Dosis2 || !Config.SGE_ST_DPS_Adv && DosisList.ContainsKey(actionID);
+            var replacedActions = Config.SGE_ST_DPS_Adv
+                ? [Dosis2]
+                : DosisList.Keys.ToArray();
 
             if (!actionFound)
                 return actionID;
@@ -210,7 +214,8 @@ internal partial class SGE : Healer
             // Addersgall Protection
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_AddersgallProtect) && CanSpellWeave() &&
                 ActionReady(Druochole) && Gauge.Addersgall >= Config.SGE_ST_DPS_AddersgallProtect)
-                return Druochole;
+                return Druochole
+                    .RetargetIfEnabled(null, replacedActions);
 
             // Buff check Above. Without it, Toxikon and any future option will interfere in the Eukrasia->Eukrasia Dosis combo
             if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))

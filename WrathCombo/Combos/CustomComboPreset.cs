@@ -4811,6 +4811,7 @@ public enum CustomComboPreset
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Addersgall Overflow Protection",
         "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
+    [PossiblyRetargeted]
     SGE_ST_DPS_AddersgallProtect = 14054,
 
     #endregion
