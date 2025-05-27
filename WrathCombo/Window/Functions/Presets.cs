@@ -497,6 +497,7 @@ namespace WrathCombo.Window.Functions
                     possiblyRetargeted = false;
                 }
 
+                // Should have all conditions in PossiblyRetargetedAttribute.Condition
                 switch (Attributes[preset!.Value].PossiblyRetargeted!.PossibleCondition)
                 {
                     case Condition.RetargetHealingActionsEnabled:
@@ -508,7 +509,7 @@ namespace WrathCombo.Window.Functions
                             MakeRetargeted();
                         break;
                     default:
-                        return; // No other conditions are supported yet
+                        return; // No other conditions are supported
                 }
             }
 
