@@ -139,6 +139,7 @@ AST_RetargetEssentialDignity = 1059,
 [PossiblyRetargeted("AST's Quick Target Damage Cards Feature", Condition.ASTQuickTargetCardsFeatureEnabled)]
 AST_DPS_AutoPlay = 1037,
 // This preset is only Retargeted if the listed setting is also enabled
+// PossiblyRetargeted does have default values for those parameters, but they are for ST Healing Actions
 ```
 
 > If you're adding a Possibly Retargeted Feature, you will need to also add the 
