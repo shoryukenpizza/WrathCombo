@@ -131,7 +131,8 @@ is always Retargeted or if it depends on another setting, respecively.
 [Retargeted]
 AST_RetargetEssentialDignity = 1059,
 // This preset is always Retargeted if enabled
-    
+```
+```csharp
 [ParentCombo(AST_ST_DPS)]
 [CustomComboInfo("Card Play Weave Option", "Weaves your Balance or Spear card (best used with Quick Target Cards)",
     AST.JobID)]
