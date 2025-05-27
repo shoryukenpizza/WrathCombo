@@ -31,8 +31,8 @@ internal static class PvPCommon
             Silence = 1347,
             Bind = 1345,
             Stun = 1343,
-            HalfAsleep = 3022, // Unused
-            Sleep = 1348, // Unused
+            HalfAsleep = 3022,  // Unused
+            Sleep = 1348,       // Unused
             DeepFreeze = 3219,
             Heavy = 1344,
             Unguarded = 3021,
@@ -42,12 +42,12 @@ internal static class PvPCommon
     internal class Buffs
     {
         public const ushort
-            Soaring = 1465, // Rival Wings
-            FlyingHigh = 1730, // Rival Wings
+            RidingMecha = 1420, // Rival Wings
+            Soaring = 1465,     // Rival Wings
+            FlyingHigh = 1730,  // Rival Wings
             Sprint = 1342,
             Guard = 3054,
-            WeakenedGuard = 3673,
-            RidingMecha = 1420;
+            WeakenedGuard = 3673;
     }
 
     internal class Config
@@ -135,7 +135,7 @@ internal static class PvPCommon
 
         public static bool Execute()
         {
-            if (LocalPlayer is not { } player || player.IsDead) return false;
+            if (LocalPlayer is not { } player || player.IsDead || player.CurrentMp < RecuperateCost) return false;
 
             // Special States
             if (HasStatusEffect(DRGPvP.Buffs.SkyHigh) ||
@@ -147,7 +147,7 @@ internal static class PvPCommon
             var adjustedCurrentHP = player.CurrentHp * 100;
             var adjustedMaxHP = player.MaxHp - RecuperateAmount;
 
-            return player.CurrentMp >= RecuperateCost && adjustedCurrentHP <= Config.EmergencyHealThreshold * adjustedMaxHP;
+            return adjustedCurrentHP <= Config.EmergencyHealThreshold * adjustedMaxHP;
         }
     }
 
