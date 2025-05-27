@@ -1879,8 +1879,12 @@ public enum CustomComboPreset
     [CustomComboInfo("Shadow Wall / Vigil Option", "Adds Shadow Wall / Vigil to the one-button mitigation.", DRK.JobID)]
     DRK_Mit_ShadowWall = 5099,
 
+    [ReplaceSkill(DRK.DarkMissionary)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Dark Missionary with Reprisal when ready.", DRK.JobID)]
+    DRK_Mit_Party = 5100,
+
     #endregion
-    // Last value = 5099
+    // Last value = 5100
 
     #region oGCD Feature
 

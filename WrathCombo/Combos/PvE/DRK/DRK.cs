@@ -318,6 +318,17 @@ internal partial class DRK : Tank
         }
     }
 
+    internal class DRK_Mit_OneButton_Party : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.DRK_Mit_Party;
+
+        protected override uint Invoke(uint action) =>
+            action is not DarkMissionary
+                ? action
+                : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+    }
+
     #endregion
 
     #endregion
