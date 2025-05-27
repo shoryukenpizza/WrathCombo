@@ -2490,7 +2490,7 @@ public enum CustomComboPreset
     GNB_Mit_Nebula = 7083,
 
     [ReplaceSkill(GNB.HeartOfLight)]
-    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Heart of Light with Reprisal when ready.", GNB.JobID)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Heart of Light with Reprisal when ready.", GNB.JobID)]
     GNB_Mit_Party = 7085,
     #endregion
 
@@ -6427,7 +6427,7 @@ SMN.JobID)]
     WAR_Mit_Vengeance = 18054,
 
     [ReplaceSkill(WAR.ShakeItOff)]
-    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Shake It Off with Reprisal when ready.", WAR.JobID)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Shake It Off with Reprisal when ready.", WAR.JobID)]
     WAR_Mit_Party = 18111,
     #endregion
 
