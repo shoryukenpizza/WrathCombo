@@ -16,8 +16,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dalamud.Networking.Http;
 using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
@@ -45,7 +47,12 @@ public sealed partial class WrathCombo : IDalamudPlugin
     internal static DateTime LastPresetDeconflictTime = DateTime.MinValue;
     internal static WrathCombo? P;
     private readonly WindowSystem ws;
-    private readonly HttpClient httpClient = new();
+    private static readonly SocketsHttpHandler httpHandler = new()
+    {
+        AutomaticDecompression = DecompressionMethods.All,
+        ConnectCallback = new HappyEyeballsCallback().ConnectCallback,
+    };
+    private readonly HttpClient httpClient = new(httpHandler) { Timeout = TimeSpan.FromSeconds(5) };
     private readonly IDtrBarEntry DtrBarEntry;
     internal Provider IPC;
     internal Search IPCSearch = null!;
