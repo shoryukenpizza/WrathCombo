@@ -99,6 +99,13 @@ internal static class SimpleTarget
             GetHealStack(cfg.UseCustomHealStack,
                 (target) => target.IfDead());
 
+        /// <summary>
+        ///     <see cref="AllyToRaise"/> &gt; <see cref="AnyDeadPartyMember"/>  &gt;
+        ///     <see cref="HardTarget"/>.
+        /// </summary>
+        public static IGameObject? RaiseStack =>
+            AllyToRaise ?? AnyDeadPartyMember ?? HardTarget;
+
         #region Custom Heal Stack Resolving
 
         /// <summary>
