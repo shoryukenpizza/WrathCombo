@@ -4,17 +4,12 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
 using System.Numerics;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
-using WrathCombo.Core;
-using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Window.Tabs
 {
@@ -335,7 +330,7 @@ namespace WrathCombo.Window.Tabs
                     foreach (var item in Service.Configuration.CustomHealStack
                                  .Select((value, index) => new { value, index }))
                     {
-                        healStackText += TargetDisplayNameFromPropertyName(item.value);
+                        healStackText += UserConfig.TargetDisplayNameFromPropertyName(item.value);
                         if (item.index < Service.Configuration.CustomHealStack.Length - 1)
                             healStackText += nextStackItemMarker;
                     }
@@ -380,6 +375,7 @@ namespace WrathCombo.Window.Tabs
                 if (_unCollapsed)
                 {
                     ImGui.BeginGroup();
+
                     #region Default Heal Stack Include: UI MouseOver
 
                     if (useCusHealStack) ImGui.BeginDisabled();
@@ -486,11 +482,26 @@ namespace WrathCombo.Window.Tabs
                     if (Service.Configuration.UseCustomHealStack)
                     {
                         ImGui.Indent();
-                        DrawCustomHealStackMaker();
+                        UserConfig.DrawCustomStackManager(
+                            "CustomHealStack",
+                            ref Service.Configuration.CustomHealStack,
+                            ["Enemy", "Attack", "Dead"],
+                            "The priority goes from top to bottom.\n" +
+                            "Scroll down to see all of your items.\n" +
+                            "Click the Up and Down buttons to move items in the list.\n" +
+                            "Click the X button to remove an item from the list.\n\n" +
+                            "If there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\n\n" +
+                            "These targets will only be considered valid if they are friendly and within 25y.\n" +
+                            "These targets will be checked for being Dead or having a Cleansable Debuff\n" +
+                            "when this Stack is applied to Raises or Esuna, respectively.\n" +
+                            "(For Raises: the Stack will fall back to your Hard Target or any Dead Party Member)\n\n" +
+                            "Default: Focus Target > Hard Target > Self"
+                        );
                         ImGui.Unindent();
                     }
 
                     #endregion
+
                     ImGui.EndGroup();
 
                     // Get the max height of the section above
@@ -499,6 +510,78 @@ namespace WrathCombo.Window.Tabs
                 }
 
                 ImGui.EndChild();
+
+                #endregion
+
+                ImGuiEx.Spacing(new Vector2(0, 10));
+
+                #region Current Raise Stack
+
+                ImGui.TextUnformatted("Current Raise Stack:");
+
+                ImGuiComponents.HelpMarker(
+                    "This is the order in which Wrath will try to select a " +
+                    "target to Raise,\nif Retargeting of any Raise Feature is enabled.\n\n" +
+                    "You can find Raise Features under PvE>General,\n" +
+                    "or under each caster that has a Raise.");
+
+                var raiseStackText = "";
+                if (Service.Configuration.UseCustomRaiseStack)
+                {
+                    foreach (var item in Service.Configuration.CustomHealStack
+                                 .Select((value, index) => new { value, index }))
+                    {
+                        raiseStackText +=
+                            UserConfig.TargetDisplayNameFromPropertyName(item.value);
+                        if (item.index <
+                            Service.Configuration.CustomRaiseStack.Length - 1)
+                            raiseStackText += nextStackItemMarker;
+                    }
+                }
+                else
+                    raiseStackText += "Your Heal Stack (see above), " +
+                                      "but checking each entry for if they're dead.";
+
+                ImGuiEx.Spacing(new Vector2(10, 0));
+                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey, raiseStackText);
+
+                ImGuiEx.Spacing(new Vector2(0, 10));
+
+                #endregion
+
+                #region Use Custom Raise Stack
+
+                bool useCustomRaiseStack = Service.Configuration.UseCustomRaiseStack;
+                if (ImGui.Checkbox("Use a Custom Raise Stack", ref useCustomRaiseStack))
+                {
+                    Service.Configuration.UseCustomRaiseStack = useCustomRaiseStack;
+                    Service.Configuration.Save();
+                }
+
+                ImGuiComponents.HelpMarker("By default the Raise Stack will just be your Heal Stack (Custom or not),\nchecking each entry for if they're dead, and then falling back to:\nyour Hard Target if they're dead,\nor to <Any Dead Party Member> if there is still no valid option by then.\n\nSelect this if you would rather customize the Raise Stack\nto have different priorities than your Heal Stack.\n\nDefault: Off");
+
+                #endregion
+
+                #region Custom Raise Stack Manager
+
+                if (Service.Configuration.UseCustomRaiseStack)
+                {
+                    ImGui.Indent();
+                    UserConfig.DrawCustomStackManager(
+                        "CustomRaiseStack",
+                        ref Service.Configuration.CustomRaiseStack,
+                        ["Enemy", "Attack", "MissingHP", "Lowest", "Chocobo"],
+                        "The priority goes from top to bottom.\n" +
+                        "Scroll down to see all of your items.\n" +
+                        "Click the Up and Down buttons to move items in the list.\n" +
+                        "Click the X button to remove an item from the list.\n\n" +
+                        "If there are fewer than 4 items, and all return nothing when checked, will fall back to:\n" +
+                        "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
+                        "These targets will only be considered valid if they are friendly, dead, and within 30y.\n" +
+                        "Default: Focus Target > Hard Target > Any Dead Party Member"
+                    );
+                    ImGui.Unindent();
+                }
 
                 #endregion
 
@@ -552,218 +635,6 @@ namespace WrathCombo.Window.Tabs
 
         private static bool _unCollapsed;
         private static float _healStackCustomizationHeight = 0;
-        private static string SimpleTargetItemToAddToCustomHealStack = "default";
-        private static bool _iconGroupWidthSet;
-        private static float _iconGroupWidth =
-            ImGui.CalcTextSize("x").X;
-        private static float _longestPropertyLabel =
-            ImGui.CalcTextSize("Lowest HP% Ally (If Missing HP)").X;
-        private static float _propertyHeight =
-            ImGui.CalcTextSize("I").Y;
-
-#pragma warning disable SYSLIB1045
-        private static void DrawCustomHealStackMaker()
-        {
-            ImGuiEx.Spacing(new Vector2(5f.Scale(), 0));
-            ImGui.Text("Add to the Stack:");
-            ImGui.SameLine();
-            DrawItemAdding();
-
-            ImGuiComponents.HelpMarker("Click this dropdown to open the list of available Target options.\nClick any entry to add it to your Custom Heal Stack, at the bottom.\nThere is a Textbox that says 'Filter...' at the top, type into this to search the list.");
-
-            ImGuiEx.Spacing(new Vector2(0, 5));
-
-            #region Sizing Variables
-
-            var currentStyle = ImGui.GetStyle();
-            var widthModifiers = (currentStyle.ItemSpacing.X * 2) +
-                                 (currentStyle.ItemInnerSpacing.X * 2);
-            var width = _longestPropertyLabel + _iconGroupWidth +
-                        widthModifiers;
-            var height = (_propertyHeight * 5) +
-                         (currentStyle.ItemSpacing.Y * 4 / 2) +
-                         (currentStyle.ItemInnerSpacing.Y * 5 / 2) +
-                         (currentStyle.WindowPadding.Y * 2);
-            var size = new Vector2(width, height);
-
-            #endregion
-
-            const ImGuiWindowFlags flags = ImGuiWindowFlags.NoMove
-                                           | ImGuiWindowFlags.NoResize;
-
-            // Display the Custom Heal Stack
-            using (ImRaii.Child("###CustomHealStackList", size, true, flags))
-            {
-                foreach (var item in Service.Configuration.CustomHealStack)
-                {
-                    var text = TargetDisplayNameFromPropertyName(item);
-                    #region Sizing Variables
-
-                    var areaWidth = ImGui.GetContentRegionAvail().X;
-                    var textWidth = ImGui.CalcTextSize(text).X;
-                    var dummyWidth = areaWidth - textWidth - _iconGroupWidth -
-                                     widthModifiers / 2;
-                    #endregion
-
-                    ImGui.TextUnformatted(text);
-
-                    ImGui.SameLine();
-                    ImGui.Dummy(new Vector2(dummyWidth, 0));
-                    ImGui.SameLine();
-
-                    DrawPropertyControlGroup(item);
-                }
-            }
-
-            ImGuiComponents.HelpMarker("The priority goes from top to bottom.\nScroll down to see all of your items.\nClick the Up and Down buttons to move items in the list.\nClick the X button to remove an item from the list.\n\nIf there are fewer than 4 items, and all return nothing when checked, will fall back to Self.\nThese targets will only be considered valid if they are friendly and within 25y.\n\nDefault: Focus Target > Hard Target > Self");
-
-            // Utility
-            GetButtonGroupSize();
-
-            return;
-
-            void DrawItemAdding()
-            {
-                #region Combo Variables
-
-                var defaultLabel = "Select a Target to Add";
-                var minSize = ImGui.CalcTextSize(defaultLabel).X;
-
-                // List of ally-related SimpleTarget properties
-                var simpleTargetProperties = typeof(SimpleTarget)
-                    .GetProperties(BindingFlags.Public |
-                                   BindingFlags.Static)
-                    .Select(x => x.Name)
-                    .Where(x => !x.Contains("Enemy") &&
-                                !x.Contains("Attack") && !x.Contains("Dead"))
-                    .Prepend("default")
-                    .ToArray();
-
-                // Put the ordered Party Member properties at the bottom
-                var nonPartyMembers = simpleTargetProperties
-                    .Where(name => !name.StartsWith("PartyMember"));
-                var partyMembers = simpleTargetProperties
-                    .Where(name => name.StartsWith("PartyMember"));
-                var simpleTargets =
-                    nonPartyMembers.Concat(partyMembers).ToArray();
-
-                // Make Property names properly spaced and readable
-                var simpleTargetNames =
-                    simpleTargets.ToDictionary(
-                        name => name,
-                        TargetDisplayNameFromPropertyName
-                    );
-
-                // Save some data about the sizing of the text
-                _longestPropertyLabel = simpleTargetNames
-                    .Select(x => x.Value)
-                    .Max(x => ImGui.CalcTextSize(x).X);
-                _propertyHeight =
-                    ImGui.CalcTextSize("I").Y > _propertyHeight
-                        ? ImGui.CalcTextSize("I").Y
-                        : _propertyHeight;
-
-                #endregion
-
-                ImGui.PushItemWidth(minSize + 40f.Scale());
-                if (ImGuiEx.Combo(
-                        "##CustomHealTargetStack",
-                        ref SimpleTargetItemToAddToCustomHealStack,
-                        simpleTargets,
-                        names: simpleTargetNames
-                    ))
-                {
-                    PluginConfiguration.AddHealStackItem(
-                        SimpleTargetItemToAddToCustomHealStack);
-                    SimpleTargetItemToAddToCustomHealStack = "default";
-                }
-            }
-
-            void DrawPropertyControlGroup(string property)
-            {
-                using (ImRaii.Group())
-                {
-                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 0));
-                    using (ImRaii.PushFont(UiBuilder.IconFont))
-                    {
-                        bool disable;
-                        // Move Up Button
-                        disable = Service.Configuration.CustomHealStack.First() == property;
-                        if (disable)
-                            ImGui.BeginDisabled();
-                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretUp,
-                                "customStack"+property+"up"))
-                            PluginConfiguration.MoveHealStackItemUp(property);
-                        if (disable)
-                            ImGui.EndDisabled();
-
-                        ImGui.SameLine();
-
-                        // Move Down Button
-                        disable = Service.Configuration.CustomHealStack.Last() == property;
-                        if (disable)
-                            ImGui.BeginDisabled();
-                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.CaretDown,
-                                "customStack"+property+"down"))
-                            PluginConfiguration.MoveHealStackItemDown(property);
-                        if (disable)
-                            ImGui.EndDisabled();
-
-                        ImGui.SameLine();
-
-                        // Delete Button
-                        disable = Service.Configuration.CustomHealStack.Length <= 1;
-                        if (disable)
-                            ImGui.BeginDisabled();
-                        if (ImGuiEx.IconButtonScaled(FontAwesomeIcon.Times,
-                                "customStack"+property+"del"))
-                            PluginConfiguration.RemoveHealStackItem(property);
-                        if (disable)
-                            ImGui.EndDisabled();
-                    }
-                    ImGui.PopStyleVar();
-                }
-            }
-
-            void GetButtonGroupSize()
-            {
-                if (_iconGroupWidthSet) return;
-
-                ImGui.SameLine();
-                var transparent = new Vector4(0f, 0f, 0f, 0f);
-                using (ImRaii.PushColor(ImGuiCol.Text, transparent))
-                    DrawPropertyControlGroup("");
-
-                _iconGroupWidth = ImGui.GetItemRectSize().X;
-                _propertyHeight = ImGui.GetItemRectSize().Y > _propertyHeight
-                    ? ImGui.GetItemRectSize().Y
-                    : _propertyHeight;
-                _iconGroupWidthSet = true;
-            }
-        }
-
-        private static string TargetDisplayNameFromPropertyName (string propertyName)
-        {
-            var name = propertyName switch
-            {
-                "default" => "Select a Target to Add",
-                // Handle special cases
-                "UIMouseOverTarget" => "UI-MouseOver Target",
-                "ModelMouseOverTarget" => "Field-MouseOver Target",
-                "LowestHPAlly" => "Lowest HP Ally",
-                "LowestHPAllyIfMissingHP" => "Lowest HP Ally If Missing HP",
-                "LowestHPPAlly" => "Lowest HP% Ally",
-                "LowestHPPAllyIfMissingHP" => "Lowest HP% Ally If Missing HP",
-                // Format the rest with Regex
-                _ => Regex.Replace(propertyName,
-                    @"(?<=[a-z])(?=[A-Z0-9])", " "),
-            };
-
-            name = name.Replace(" If Missing HP", " (If Missing HP)");
-
-            return name;
-        }
-#pragma warning restore SYSLIB1045
 
         #endregion
     }

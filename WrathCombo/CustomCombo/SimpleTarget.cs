@@ -68,12 +68,12 @@ internal static class SimpleTarget
             Service.Configuration;
 
         /// <summary>
-        ///     A very common stack to pick a heal target.
+        ///     A very common stack to pick a heal target, whether the user is
+        ///     using the Default or Custom Heal Stack.
         /// </summary>
         /// <seealso cref="DefaultHealStack"/>
         /// <seealso cref="CustomHealStack"/>
-        public static IGameObject? AllyToHeal =>
-            cfg.UseCustomHealStack ? CustomHealStack : DefaultHealStack;
+        public static IGameObject? AllyToHeal => GetStack();
 
         /// <summary>
         ///     The Default Heal Stack, with customization options.
@@ -82,40 +82,50 @@ internal static class SimpleTarget
         ///     LowestHPPAlly and FocusTarget are the only ones with a range check,
         ///     as the others are "intentional" at the time they are grabbed.
         /// </remarks>
-        internal static IGameObject? DefaultHealStack => GetHealStack();
+        internal static IGameObject? DefaultHealStack =>
+            GetStack(StackOption.DefaultHealStack);
 
         /// <summary>
         ///     The Custom Heal Stack, fully user-made.
         /// </summary>
         /// <seealso cref="PluginConfiguration.CustomHealStack"/>
-        /// <seealso cref="GetHealStack"/>
-        internal static IGameObject? CustomHealStack => GetHealStack(true);
+        /// <seealso cref="GetStack"/>
+        internal static IGameObject? CustomHealStack =>
+            GetStack(StackOption.CustomHealStack);
 
         public static IGameObject? AllyToEsuna =>
-            GetHealStack(cfg.UseCustomHealStack,
+            GetStack(logicForEachEntryInStack:
                 (target) => target.IfHasCleansable());
 
+        /// <summary>
+        ///     A very common stack to pick a raise target, whether the user is
+        ///     using the Default or Custom Heal Stack.
+        /// </summary>
+        /// <seealso cref="DefaultRaiseStack"/>
+        /// <seealso cref="CustomRaiseStack"/>
         public static IGameObject? AllyToRaise =>
-            GetHealStack(cfg.UseCustomHealStack,
-                (target) => target.IfDead());
+            GetStack(StackOption.UserChosenRaiseStack);
+
+        public static IGameObject? DefaultRaiseStack =>
+            GetStack(StackOption.DefaultRaiseStack);
 
         /// <summary>
-        ///     <see cref="AllyToRaise"/> &gt; <see cref="HardTarget"/> (if dead)
-        ///     &gt; <see cref="AnyDeadPartyMember"/>
+        ///     The Custom Heal Stack, fully user-made.
         /// </summary>
-        public static IGameObject? RaiseStack =>
-            AllyToRaise ?? HardTarget.IfDead() ?? AnyDeadPartyMember;
+        /// <seealso cref="PluginConfiguration.CustomRaiseStack"/>
+        /// <seealso cref="GetStack"/>
+        internal static IGameObject? CustomRaiseStack =>
+            GetStack(StackOption.CustomRaiseStack);
 
-        #region Custom Heal Stack Resolving
+        #region Custom Stack Resolving
 
         /// <summary>
         ///     Gets the Default or Custom Heal Stack, and applies any custom logic
         ///     to each entry in the stack.
         /// </summary>
-        /// <param name="customHealStack">
-        ///     Whether to use the Custom Heal Stack.<br />
-        ///     Provide <see cref="PluginConfiguration.UseCustomHealStack" /> if not
-        ///     <see cref="DefaultHealStack" /> or <see cref="CustomHealStack" />.
+        /// <param name="stack">
+        ///     Which <see cref="StackOption">Stack</see> to get.<br />
+        ///     Defaults to <see cref="StackOption.UserChosenHealStack" />.
         /// </param>
         /// <param name="logicForEachEntryInStack">
         ///     A short method, probably of <see cref="GameObjectExtensions" />,
@@ -125,12 +135,14 @@ internal static class SimpleTarget
         /// <returns>
         ///     The first matching target in the stack, or <see langword="null" />.
         /// </returns>
-        private static IGameObject? GetHealStack
-            (bool customHealStack = false,
+        private static IGameObject? GetStack
+            (StackOption stack = StackOption.UserChosenHealStack,
                 Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
         {
             #region Default Heal Stack
-            if (!customHealStack)
+            if (stack is StackOption.DefaultHealStack ||
+                (stack is StackOption.UserChosenHealStack &&
+                 !cfg.UseCustomHealStack))
                 return
                     (cfg.UseUIMouseoverOverridesInDefaultHealStack
                         ? CustomLogic(UIMouseOverTarget.IfFriendly())
@@ -150,33 +162,78 @@ internal static class SimpleTarget
             #endregion
 
             #region Custom Heal Stack
-            var logging = EZ.Throttle("customHealStackLog", TS.FromSeconds(10));
-
-            foreach (var name in Service.Configuration.CustomHealStack)
+            if (stack is StackOption.CustomHealStack ||
+                (stack is StackOption.UserChosenHealStack &&
+                 cfg.UseCustomHealStack))
             {
-                var resolved = GetSimpleTargetValueFromName(name);
-                var target =
-                    CustomLogic(resolved.IfFriendly().IfWithinRange());
+                var logging = EZ.Throttle("customHealStackLog", TS.FromSeconds(10));
 
-                // Only include Missing-HP options if they are missing HP
-                if (name.Contains("Missing"))
-                    target = target.IfMissingHP();
+                foreach (var name in Service.Configuration.CustomHealStack)
+                {
+                    var resolved = GetSimpleTargetValueFromName(name);
+                    var target =
+                        CustomLogic(resolved.IfFriendly().IfWithinRange());
 
-                if (logging)
-                    PluginLog.Verbose(
-                        $"[Custom Heal Stack] {name,-25} => " +
-                        $"{resolved?.Name ?? "null",-30}" +
-                        $" (friendly: {resolved.IsFriendly(),5}, " +
-                        $"within range: {resolved.IsWithinRange(),5}, " +
-                        $"missing HP: {resolved.IsMissingHP(),5})"
-                    );
+                    // Only include Missing-HP options if they are missing HP
+                    if (name.Contains("Missing"))
+                        target = target.IfMissingHP();
 
-                if (target != null) return target;
+                    if (logging)
+                        PluginLog.Verbose(
+                            $"[Custom Heal Stack] {name,-25} => " +
+                            $"{resolved?.Name ?? "null",-30}" +
+                            $" (friendly: {resolved.IsFriendly(),5}, " +
+                            $"within range: {resolved.IsWithinRange(),5}, " +
+                            $"missing HP: {resolved.IsMissingHP(),5})"
+                        );
+
+                    if (target != null) return target;
+                }
+
+                // Fall back to Self, if the stack is small and returned nothing
+                if (Service.Configuration.CustomHealStack.Length <= 3)
+                    return Self;
             }
+            #endregion
 
-            // Fall back to Self, if the stack is small and returned nothing
-            if (Service.Configuration.CustomHealStack.Length <= 3)
-                return Self;
+            #region Default Raise Stack
+            if (stack is StackOption.DefaultRaiseStack ||
+                (stack is StackOption.UserChosenRaiseStack &&
+                 !cfg.UseCustomRaiseStack))
+                return GetStack(logicForEachEntryInStack:
+                    (target) => target.IfDead()) ??
+                       HardTarget.IfDead() ?? AnyDeadPartyMember;
+            #endregion
+
+            #region Custom Raise Stack
+            if (stack is StackOption.CustomRaiseStack ||
+                (stack is StackOption.UserChosenRaiseStack &&
+                 cfg.UseCustomRaiseStack))
+            {
+                var logging = EZ.Throttle("customRaiseStackLog", TS.FromSeconds(10));
+
+                foreach (var name in Service.Configuration.CustomRaiseStack)
+                {
+                    var resolved = GetSimpleTargetValueFromName(name);
+                    var target =
+                        CustomLogic(resolved.IfFriendly().IfDead().IfWithinRange(30));
+
+                    if (logging)
+                        PluginLog.Verbose(
+                            $"[Custom Raise Stack] {name,-25} => " +
+                            $"{resolved?.Name ?? "null",-30}" +
+                            $" (friendly: {resolved.IsFriendly(),5}, " +
+                            $"within range: {resolved.IsWithinRange(),5}, " +
+                            $"is dead: {resolved.IsDead,5})"
+                        );
+
+                    if (target != null) return target;
+                }
+
+                // Fall back to Hard Target, if the stack is small and returned nothing
+                if (Service.Configuration.CustomRaiseStack.Length <= 3)
+                    return HardTarget ?? AnyDeadPartyMember;
+            }
             #endregion
 
             return null;
@@ -205,6 +262,16 @@ internal static class SimpleTarget
                                   $"Edited value?\n{e}");
                 return null;
             }
+        }
+
+        private enum StackOption
+        {
+            UserChosenHealStack,
+            DefaultHealStack,
+            CustomHealStack,
+            UserChosenRaiseStack,
+            DefaultRaiseStack,
+            CustomRaiseStack,
         }
 
         #endregion
@@ -271,10 +338,10 @@ internal static class SimpleTarget
             .OrderBy(x => x.CurrentHp)
             .FirstOrDefault();
 
-    public static IGameObject? LowestHPEnemyIfMissingHPAndNotInvuln =>
+    public static IGameObject? LowestHPEnemyIfNotInvuln =>
         Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsMissingHP() &&
+            .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange() && x.IsNotInvincible())
             .OrderBy(x => x.CurrentHp)
             .FirstOrDefault();
@@ -286,10 +353,10 @@ internal static class SimpleTarget
             .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
             .FirstOrDefault();
 
-    public static IGameObject? LowestHPPEnemyIfMissingHPAndNotInvuln =>
+    public static IGameObject? LowestHPPEnemyIfNotInvuln =>
         Svc.Objects
             .OfType<IBattleChara>()
-            .Where(x => x.IsHostile() && x.IsTargetable && x.IsMissingHP() &&
+            .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange() && x.IsNotInvincible())
             .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
             .FirstOrDefault();
