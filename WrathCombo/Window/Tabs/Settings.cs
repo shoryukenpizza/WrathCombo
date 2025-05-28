@@ -511,11 +511,14 @@ namespace WrathCombo.Window.Tabs
 
                 ImGui.EndChild();
 
+                if (_unCollapsed)
+                    ImGuiEx.Spacing(new Vector2(0, 10));
+
                 #endregion
 
                 ImGuiEx.Spacing(new Vector2(0, 10));
 
-                #region Current Raise Stack
+                #region Raise Stack Manager
 
                 ImGui.TextUnformatted("Current Raise Stack:");
 
@@ -525,65 +528,23 @@ namespace WrathCombo.Window.Tabs
                     "You can find Raise Features under PvE>General,\n" +
                     "or under each caster that has a Raise.");
 
-                var raiseStackText = "";
-                if (Service.Configuration.UseCustomRaiseStack)
-                {
-                    foreach (var item in Service.Configuration.CustomRaiseStack
-                                 .Select((value, index) => new { value, index }))
-                    {
-                        raiseStackText +=
-                            UserConfig.TargetDisplayNameFromPropertyName(item.value, true);
-                        if (item.index <
-                            Service.Configuration.CustomRaiseStack.Length - 1)
-                            raiseStackText += nextStackItemMarker;
-                    }
-                }
-                else
-                    raiseStackText += "Your Heal Stack (see above), " +
-                                      "but checking each entry for if they're dead.";
-
-                ImGuiEx.Spacing(new Vector2(10, 0));
-                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey, raiseStackText);
-
-                ImGuiEx.Spacing(new Vector2(0, 10));
-
-                #endregion
-
-                #region Use Custom Raise Stack
-
-                bool useCustomRaiseStack = Service.Configuration.UseCustomRaiseStack;
-                if (ImGui.Checkbox("Use a Custom Raise Stack", ref useCustomRaiseStack))
-                {
-                    Service.Configuration.UseCustomRaiseStack = useCustomRaiseStack;
-                    Service.Configuration.Save();
-                }
-
-                ImGuiComponents.HelpMarker("By default the Raise Stack will just be your Heal Stack (Custom or not),\nchecking each entry for if they're dead, and then falling back to:\nyour Hard Target if they're dead,\nor to <Any Dead Party Member> if there is still no valid option by then.\n\nSelect this if you would rather customize the Raise Stack\nto have different priorities than your Heal Stack.\n\nDefault: Off");
-
-                #endregion
-
-                #region Custom Raise Stack Manager
-
-                if (Service.Configuration.UseCustomRaiseStack)
-                {
-                    ImGui.Indent();
-                    ImGui.TextDisabled("(all targets are checked for rezz-ability)");
-                    UserConfig.DrawCustomStackManager(
-                        "CustomRaiseStack",
-                        ref Service.Configuration.CustomRaiseStack,
-                        ["Enemy", "Attack", "MissingHP", "Lowest", "Chocobo"],
-                        "The priority goes from top to bottom.\n" +
-                        "Scroll down to see all of your items.\n" +
-                        "Click the Up and Down buttons to move items in the list.\n" +
-                        "Click the X button to remove an item from the list.\n\n" +
-                        "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
-                        "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
-                        "These targets will only be considered valid if they are friendly, dead, and within 30y.\n" +
-                        "Default: Any Healer > Any Tank > Any Raiser > Any Dead Party Member",
-                        true
-                    );
-                    ImGui.Unindent();
-                }
+                ImGui.Indent();
+                UserConfig.DrawCustomStackManager(
+                    "CustomRaiseStack",
+                    ref Service.Configuration.RaiseStack,
+                    ["Enemy", "Attack", "MissingHP", "Lowest", "Chocobo"],
+                    "The priority goes from top to bottom.\n" +
+                    "Scroll down to see all of your items.\n" +
+                    "Click the Up and Down buttons to move items in the list.\n" +
+                    "Click the X button to remove an item from the list.\n\n" +
+                    "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
+                    "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
+                    "These targets will only be considered valid if they are friendly, dead, and within 30y.\n" +
+                    "Default: Any Healer > Any Tank > Any Raiser > Any Dead Party Member",
+                    true
+                );
+                ImGui.TextDisabled("(all targets are checked for rezz-ability)");
+                ImGui.Unindent();
 
                 #endregion
 

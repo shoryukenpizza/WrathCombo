@@ -95,10 +95,7 @@ namespace WrathCombo.Core
             "Self",
         ];
 
-        public bool UseCustomRaiseStack = false;
-
-        // Just has value so the UI element for it is more obvious from the get-go
-        public string[] CustomRaiseStack = [
+        public string[] RaiseStack = [
             "AnyHealer",
             "AnyTank",
             "AnyRaiser",

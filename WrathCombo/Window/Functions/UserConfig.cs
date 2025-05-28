@@ -963,19 +963,6 @@ namespace WrathCombo.Window.Functions
             string helpMarkerTextForStack = "",
             bool thisIsForRaiseStack = false)
         {
-            #region Adding to the Stack
-
-            ImGuiEx.Spacing(new Vector2(5f.Scale(), 0));
-            ImGui.Text("Add to the Stack:");
-            ImGui.SameLine();
-            DrawItemAdding(stackName, targetsToRemoveIfStringContains,
-                ref customStackSetting,
-                ref _customStackLongestProperty, ref _customStackTallestProperty,
-                thisIsForRaiseStack);
-            ImGuiComponents.HelpMarker("Click this dropdown to open the list of available Target options.\nClick any entry to add it to your Custom Stack, at the bottom.\nThere is a Textbox that says 'Filter...' at the top, type into this to search the list.");
-
-            #endregion
-
             #region Stack Display Sizing Variables
 
             var currentStyle = ImGui.GetStyle();
@@ -1022,6 +1009,19 @@ namespace WrathCombo.Window.Functions
 
             if (helpMarkerTextForStack != "")
                 ImGuiComponents.HelpMarker(helpMarkerTextForStack);
+
+            #endregion
+
+            #region Adding to the Stack
+
+            ImGuiEx.Spacing(new Vector2(5f.Scale(), 0));
+            ImGui.Text("Add to the Stack:");
+            ImGui.SameLine();
+            DrawItemAdding(stackName, targetsToRemoveIfStringContains,
+                ref customStackSetting,
+                ref _customStackLongestProperty, ref _customStackTallestProperty,
+                thisIsForRaiseStack);
+            ImGuiComponents.HelpMarker("Click this dropdown to open the list of available Target options.\nClick any entry to add it to your Custom Stack, at the bottom.\nThere is a Textbox that says 'Filter...' at the top, type into this to search the list.");
 
             #endregion
 

@@ -93,35 +93,25 @@ internal static class SimpleTarget
         internal static IGameObject? CustomHealStack =>
             GetStack(StackOption.CustomHealStack);
 
+        /// <summary>
+        ///     The <see cref="AllyToHeal">Heal Stack</see>, but filtered to
+        ///     those with a cleansable status effect.
+        /// </summary>
         public static IGameObject? AllyToEsuna =>
             GetStack(logicForEachEntryInStack:
                 (target) => target.IfHasCleansable());
 
         /// <summary>
-        ///     A very common stack to pick a raise target, whether the user is
-        ///     using the Default or Custom Heal Stack.
+        ///     The Customizable Raise Stack.
         /// </summary>
-        /// <seealso cref="DefaultRaiseStack"/>
-        /// <seealso cref="CustomRaiseStack"/>
         public static IGameObject? AllyToRaise =>
-            GetStack(StackOption.UserChosenRaiseStack);
-
-        public static IGameObject? DefaultRaiseStack =>
-            GetStack(StackOption.DefaultRaiseStack);
-
-        /// <summary>
-        ///     The Custom Heal Stack, fully user-made.
-        /// </summary>
-        /// <seealso cref="PluginConfiguration.CustomRaiseStack"/>
-        /// <seealso cref="GetStack"/>
-        internal static IGameObject? CustomRaiseStack =>
-            GetStack(StackOption.CustomRaiseStack);
+            GetStack(StackOption.RaiseStack);
 
         #region Custom Stack Resolving
 
         /// <summary>
-        ///     Gets the Default or Custom Heal Stack, and applies any custom logic
-        ///     to each entry in the stack.
+        ///     Gets the desired Stack, and applies any custom logic to each entry in
+        ///     the stack.
         /// </summary>
         /// <param name="stack">
         ///     Which <see cref="StackOption">Stack</see> to get.<br />
@@ -130,7 +120,7 @@ internal static class SimpleTarget
         /// <param name="logicForEachEntryInStack">
         ///     A short method, probably of <see cref="GameObjectExtensions" />,
         ///     to apply to each entry in the stack.<br />
-        ///     <see cref="AllyToEsuna"/> and <see cref="AllyToRaise"/> as examples.
+        ///     <see cref="AllyToEsuna"/> for an example.
         /// </param>
         /// <returns>
         ///     The first matching target in the stack, or <see langword="null" />.
@@ -196,23 +186,12 @@ internal static class SimpleTarget
             }
             #endregion
 
-            #region Default Raise Stack
-            if (stack is StackOption.DefaultRaiseStack ||
-                (stack is StackOption.UserChosenRaiseStack &&
-                 !cfg.UseCustomRaiseStack))
-                return GetStack(logicForEachEntryInStack:
-                    (target) => target.IfDead()) ??
-                       HardTarget.IfFriendly().IfDead() ?? AnyDeadPartyMember;
-            #endregion
-
-            #region Custom Raise Stack
-            if (stack is StackOption.CustomRaiseStack ||
-                (stack is StackOption.UserChosenRaiseStack &&
-                 cfg.UseCustomRaiseStack))
+            #region Raise Stack
+            if (stack is StackOption.RaiseStack)
             {
-                var logging = EZ.Throttle("customRaiseStackLog", TS.FromSeconds(10));
+                var logging = EZ.Throttle("raiseStackLog", TS.FromSeconds(10));
 
-                foreach (var name in Service.Configuration.CustomRaiseStack)
+                foreach (var name in Service.Configuration.RaiseStack)
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target =
@@ -231,7 +210,7 @@ internal static class SimpleTarget
                 }
 
                 // Fall back to Hard Target, if the stack is small and returned nothing
-                if (Service.Configuration.CustomRaiseStack.Length <= 4)
+                if (Service.Configuration.RaiseStack.Length <= 4)
                     return HardTarget.IfFriendly().IfDead() ?? AnyDeadPartyMember;
             }
             #endregion
@@ -269,9 +248,7 @@ internal static class SimpleTarget
             UserChosenHealStack,
             DefaultHealStack,
             CustomHealStack,
-            UserChosenRaiseStack,
-            DefaultRaiseStack,
-            CustomRaiseStack,
+            RaiseStack,
         }
 
         #endregion
