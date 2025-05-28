@@ -34,13 +34,7 @@ internal static class PvPCommon
             Sprint = 1342,
             Guard = 3054,
             Resilience = 3248,
-            WeakenedGuard = 3673,
-            Rampart = 1978,
-            Bloodbath = 1982,
-            Swift = 4477,
-            Dervish = 4478,
-            Bravery = 4479,
-            Stoneskin2 = 4481;
+            WeakenedGuard = 3673;
     }
 
     internal class Debuffs
@@ -54,11 +48,7 @@ internal static class PvPCommon
             DeepFreeze = 3219,
             Heavy = 1344,
             Unguarded = 3021,
-            MiracleOfNature = 3085,
-            PhantomDart = 1986,
-            Rampage = 4476,
-            Rust = 4480,
-            Diabrosis = 4482;
+            MiracleOfNature = 3085;
     }
 
     internal class Config
@@ -119,9 +109,28 @@ internal static class PvPCommon
     }
 
     // Lists of Excluded Actions 
-    internal static readonly List<uint>
-        MovementSkills = [WARPvP.Onslaught, VPRPvP.Slither, NINPvP.Shukuchi, DNCPvP.EnAvant, MNKPvP.Thunderclap, RDMPvP.CorpsACorps, RDMPvP.Displacement, SGEPvP.Icarus, RPRPvP.HellsIngress, RPRPvP.Regress, BRDPvP.RepellingShot, BLMPvP.AetherialManipulation, DRGPvP.ElusiveJump, GNBPvP.RoughDivide],
-        GlobalSkills = [Teleport, Guard, Recuperate, Purify, StandardElixir, Sprint];
+    internal static readonly HashSet<uint>
+        CommonActions = [Teleport, Return, Guard, Recuperate, Purify, StandardElixir, Sprint, PvPRoleAction],
+        MovementActions = [
+            PLDPvP.Intervene, PLDPvP.Guardian,
+            WARPvP.Onslaught, WARPvP.PrimalRend,
+            DRKPvP.Plunge,
+            GNBPvP.RoughDivide,
+            WHMPvP.SeraphStrike,
+            ASTPvP.Epicycle, ASTPvP.Retrograde,
+            SGEPvP.Icarus,
+            MNKPvP.Thunderclap,
+            DRGPvP.ElusiveJump, DRGPvP.HighJump,
+            NINPvP.Shukuchi, NINPvP.ForkedRaiju, NINPvP.FleetingRaiju,
+            RPRPvP.HellsIngress, RPRPvP.Regress,
+            VPRPvP.Slither,
+            SAMPvP.Soten,
+            DNCPvP.EnAvant,
+            BRDPvP.RepellingShot,
+            PCTPvP.Smudge,
+            SMNPvP.CrimsonCyclone,
+            BLMPvP.AetherialManipulation,
+            RDMPvP.CorpsACorps, RDMPvP.Displacement];
 
     internal class GlobalEmergencyHeals : CustomCombo
     {
@@ -138,8 +147,8 @@ internal static class PvPCommon
             }
 
             if (Execute() && InPvP() &&
-                !GlobalSkills.Contains(actionID) &&
-                !MovementSkills.Contains(actionID))
+                !CommonActions.Contains(actionID) &&
+                !MovementActions.Contains(actionID))
                 return OriginalHook(Recuperate);
 
             return actionID;
@@ -186,8 +195,8 @@ internal static class PvPCommon
             }
 
             if (Execute() && InPvP() &&
-                !GlobalSkills.Contains(actionID) &&
-                !MovementSkills.Contains(actionID))
+                !CommonActions.Contains(actionID) &&
+                !MovementActions.Contains(actionID))
                 return OriginalHook(Guard);
 
             return actionID;
@@ -240,7 +249,7 @@ internal static class PvPCommon
             }
 
             if (Execute() && InPvP() &&
-                !GlobalSkills.Contains(actionID))
+                !CommonActions.Contains(actionID))
                 return OriginalHook(Purify);
 
             return actionID;
