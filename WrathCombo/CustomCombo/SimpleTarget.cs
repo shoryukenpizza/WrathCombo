@@ -100,8 +100,8 @@ internal static class SimpleTarget
                 (target) => target.IfDead());
 
         /// <summary>
-        ///     <see cref="AllyToRaise"/> &gt; <see cref="AnyDeadPartyMember"/>  &gt;
-        ///     <see cref="HardTarget"/>.
+        ///     <see cref="AllyToRaise"/> &gt; <see cref="HardTarget"/> (if dead)
+        ///     &gt; <see cref="AnyDeadPartyMember"/>
         /// </summary>
         public static IGameObject? RaiseStack =>
             AllyToRaise ?? HardTarget.IfDead() ?? AnyDeadPartyMember;
