@@ -1241,12 +1241,14 @@ namespace WrathCombo.Window.Functions
                 "LowestHPAllyIfMissingHP" => "Lowest HP Ally If Missing HP",
                 "LowestHPPAlly" => "Lowest HP% Ally",
                 "LowestHPPAllyIfMissingHP" => "Lowest HP% Ally If Missing HP",
+                "AnyDeadRaiserDPSIfNoneAlive" => "Any Dead Raiser DPS If None Alive",
                 // Format the rest with Regex
                 _ => Regex.Replace(propertyName,
                     @"(?<=[a-z])(?=[A-Z0-9])", " "),
             };
 
             name = name.Replace(" If Missing HP", " (If Missing HP)");
+            name = name.Replace(" If None Alive", " (If None Alive)");
 
             return name;
         }
