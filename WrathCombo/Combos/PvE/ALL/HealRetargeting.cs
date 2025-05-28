@@ -37,6 +37,11 @@ public static class HealRetargeting
     }
 
     /// Just a shorter reference to
+    /// <see cref="SimpleTarget.Stack.AllyToEsuna" />
+    /// .
+    private static IGameObject? EsunaStack => SimpleTarget.Stack.AllyToEsuna;
+
+    /// Just a shorter reference to
     /// <see cref="SimpleTarget.Stack.AllyToHeal" />
     /// .
     private static IGameObject? HealStack => SimpleTarget.Stack.AllyToHeal;
@@ -54,7 +59,9 @@ public static class HealRetargeting
             IGameObject? optionalTarget,
             bool dontCull = false) =>
         RetargetSettingOn && optionalTarget is null
-            ? actionID.Retarget(HealStack, dontCull)
+            ? actionID.Retarget(
+                actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
+                dontCull)
             : actionID;
 
     /// <summary>
@@ -71,7 +78,9 @@ public static class HealRetargeting
         uint replaced,
         bool dontCull = false) =>
         RetargetSettingOn && optionalTarget is null
-            ? actionID.Retarget(replaced, HealStack, dontCull)
+            ? actionID.Retarget(replaced,
+                actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
+                dontCull)
             : actionID;
 
     /// <summary>
@@ -88,6 +97,8 @@ public static class HealRetargeting
         uint[] replaced,
         bool dontCull = false) =>
         RetargetSettingOn && optionalTarget is null
-            ? actionID.Retarget(replaced, HealStack, dontCull)
+            ? actionID.Retarget(replaced,
+                actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
+                dontCull)
             : actionID;
 }
