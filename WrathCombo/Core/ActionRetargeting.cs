@@ -304,8 +304,9 @@ public class ActionRetargeting : IDisposable
     /// <summary>
     ///     Prevents the action itself from being retargeted unless excepted,
     ///     which stops retargets from leaking from combos as much.<br />
-    ///     Should probably match up with
-    ///     <see cref="CustomCombo._presetsAllowedToReturnUnchanged" />.
+    ///     Should also add to
+    ///     <see cref="CustomCombo._presetsAllowedToReturnUnchanged" /> if the
+    ///     action is one that FF changes.
     /// </summary>
     private static readonly uint[] _actionsAllowedToBeReplacedAction =
     [
