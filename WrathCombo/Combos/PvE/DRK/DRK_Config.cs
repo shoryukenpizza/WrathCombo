@@ -3,6 +3,7 @@
 using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System.Numerics;
+using Dalamud.Interface.Colors;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
@@ -439,7 +440,29 @@ internal partial class DRK
 
                     break;
 
-                    #endregion
+                #endregion
+
+                #region Standalones
+
+                case CustomComboPreset.DRK_Retarget_TBN_TT:
+                    ImGui.Indent(34f.Scale());
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                        "Note: If you are Off-Tanking, and want to use this ability on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +
+                        "If you don't, it would go to the main tank.\n" +
+                        "If you don't use those Features for your personal mitigation, you may not want to enable this.");
+                    ImGui.Unindent(34f.Scale());
+                    break;
+
+                case CustomComboPreset.DRK_Retarget_Oblation_TT:
+                    ImGui.Indent(34f.Scale());
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                        "Note: If you are Off-Tanking, and want to use this ability on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +
+                        "If you don't, it would go to the main tank.\n" +
+                        "If you don't use those Features for your personal mitigation, you may not want to enable this.");
+                    ImGui.Unindent(34f.Scale());
+                    break;
+
+                #endregion
             }
         }
 

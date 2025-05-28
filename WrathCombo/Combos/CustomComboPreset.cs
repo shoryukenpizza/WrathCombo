@@ -1946,8 +1946,31 @@ public enum CustomComboPreset
     #endregion
     // Last value = 5123
 
+    #region Standalones
+
+    [ReplaceSkill(DRK.BlackestNight)]
+    [CustomComboInfo("Retarget The Blackest Night Feature", "Will Retarget The Blackest Night outside of other combos to your MouseOver Target.", DRK.JobID)]
+    [Retargeted]
+    DRK_Retarget_TBN = 5130,
+
+    [ParentCombo(DRK_Retarget_TBN)]
+    [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget The Blackest Night onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", DRK.JobID)]
+    DRK_Retarget_TBN_TT = 5131,
+
+    [ReplaceSkill(DRK.Oblation)]
+    [CustomComboInfo("Retarget Oblation Feature", "Will Retarget Oblation outside of other combos to your MouseOver Target.", DRK.JobID)]
+    [Retargeted]
+    DRK_Retarget_Oblation = 5132,
+
+    [ParentCombo(DRK_Retarget_Oblation)]
+    [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Oblation onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", DRK.JobID)]
+    DRK_Retarget_Oblation_TT = 5133,
+
     #endregion
-    // Last value = 5123
+    // Last value = 5133
+
+    #endregion
+    // Last value = 5133
 
     #region Variant
 

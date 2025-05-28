@@ -312,6 +312,8 @@ public class ActionRetargeting : IDisposable
         // Features that only Retarget themselves
         DNC.ClosedPosition,
         AST.EssentialDignity,
+        DRK.BlackestNight,
+        DRK.Oblation,
 
         // Resurrection abilities from the "All" feature
         WHM.Raise,
