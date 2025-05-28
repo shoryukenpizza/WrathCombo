@@ -133,7 +133,7 @@ internal partial class SCH : Healer
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? IsEnabled(CustomComboPreset.SCH_Raise_Retarget)
                     ? Resurrection.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.AllyToRaise, dontCull: true)
+                        SimpleTarget.Stack.RaiseStack)
                     : Resurrection
                 : actionID;
     }
