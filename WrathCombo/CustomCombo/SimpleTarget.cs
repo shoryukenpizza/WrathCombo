@@ -202,7 +202,7 @@ internal static class SimpleTarget
                  !cfg.UseCustomRaiseStack))
                 return GetStack(logicForEachEntryInStack:
                     (target) => target.IfDead()) ??
-                       HardTarget.IfDead() ?? AnyDeadPartyMember;
+                       HardTarget.IfFriendly().IfDead() ?? AnyDeadPartyMember;
             #endregion
 
             #region Custom Raise Stack
@@ -224,15 +224,15 @@ internal static class SimpleTarget
                             $"{resolved?.Name ?? "null",-30}" +
                             $" (friendly: {resolved.IsFriendly(),5}, " +
                             $"within range: {resolved.IsWithinRange(),5}, " +
-                            $"is dead: {resolved.IsDead,5})"
+                            $"is dead: {resolved.IsDead(),5})"
                         );
 
                     if (target != null) return target;
                 }
 
                 // Fall back to Hard Target, if the stack is small and returned nothing
-                if (Service.Configuration.CustomRaiseStack.Length <= 3)
-                    return HardTarget ?? AnyDeadPartyMember;
+                if (Service.Configuration.CustomRaiseStack.Length <= 4)
+                    return HardTarget.IfFriendly().IfDead() ?? AnyDeadPartyMember;
             }
             #endregion
 
@@ -390,7 +390,7 @@ internal static class SimpleTarget
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
-            .FirstOrDefault(x => x?.IsDead == true);
+            .FirstOrDefault(x => x?.IsDead() == true);
 
     #region HP-Based Targets
 
@@ -398,7 +398,7 @@ internal static class SimpleTarget
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
-            .Where(x => x?.IsDead == false)
+            .Where(x => x?.IsDead() == false)
             .OrderBy(x => x?.CurrentHp)
             .FirstOrDefault();
 
@@ -409,7 +409,7 @@ internal static class SimpleTarget
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
-            .Where(x => x?.IsDead == false)
+            .Where(x => x?.IsDead() == false)
             .OrderBy(x => x?.CurrentHp / x?.MaxHp * 100)
             .FirstOrDefault();
 
