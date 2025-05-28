@@ -25,6 +25,24 @@ internal static class PvPCommon
         Sprint = 29057,
         PvPRoleAction = 43259;
 
+    internal class Buffs
+    {
+        public const ushort
+            RidingMecha = 1420, // Rival Wings
+            Soaring = 1465,     // Rival Wings
+            FlyingHigh = 1730,  // Rival Wings
+            Sprint = 1342,
+            Guard = 3054,
+            Resilience = 3248,
+            WeakenedGuard = 3673,
+            Rampart = 1978,
+            Bloodbath = 1982,
+            Swift = 4477,
+            Dervish = 4478,
+            Bravery = 4479,
+            Stoneskin2 = 4481;
+    }
+
     internal class Debuffs
     {
         public const ushort
@@ -36,18 +54,11 @@ internal static class PvPCommon
             DeepFreeze = 3219,
             Heavy = 1344,
             Unguarded = 3021,
-            MiracleOfNature = 3085;
-    }
-
-    internal class Buffs
-    {
-        public const ushort
-            RidingMecha = 1420, // Rival Wings
-            Soaring = 1465,     // Rival Wings
-            FlyingHigh = 1730,  // Rival Wings
-            Sprint = 1342,
-            Guard = 3054,
-            WeakenedGuard = 3673;
+            MiracleOfNature = 3085,
+            PhantomDart = 1986,
+            Rampage = 4476,
+            Rust = 4480,
+            Diabrosis = 4482;
     }
 
     internal class Config
@@ -107,7 +118,7 @@ internal static class PvPCommon
             : targetHasImmunities;
     }
 
-    // Lists of Excluded skills 
+    // Lists of Excluded Actions 
     internal static readonly List<uint>
         MovementSkills = [WARPvP.Onslaught, VPRPvP.Slither, NINPvP.Shukuchi, DNCPvP.EnAvant, MNKPvP.Thunderclap, RDMPvP.CorpsACorps, RDMPvP.Displacement, SGEPvP.Icarus, RPRPvP.HellsIngress, RPRPvP.Regress, BRDPvP.RepellingShot, BLMPvP.AetherialManipulation, DRGPvP.ElusiveJump, GNBPvP.RoughDivide],
         GlobalSkills = [Teleport, Guard, Recuperate, Purify, StandardElixir, Sprint];
@@ -120,7 +131,8 @@ internal static class PvPCommon
         {
             if ((HasStatusEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
             {
-                if (actionID is Guard) return Guard;
+                if (actionID is Guard)
+                    return Guard;
 
                 return All.SavageBlade;
             }
@@ -157,12 +169,12 @@ internal static class PvPCommon
 
         protected override uint Invoke(uint actionID)
         {
-            var player = LocalPlayer;
-
             if ((HasStatusEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
             {
                 if (actionID is Guard)
                 {
+                    var player = LocalPlayer;
+
                     if (IsEnabled(CustomComboPreset.PvP_MashCancelRecup) && !JustUsed(Guard, 2f) &&
                         player.CurrentMp >= RecuperateCost && player.CurrentHp <= player.MaxHp - RecuperateAmount) 
                         return Recuperate;
@@ -221,7 +233,9 @@ internal static class PvPCommon
         {
             if ((HasStatusEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
             {
-                if (actionID == Guard) return Guard;
+                if (actionID is Guard)
+                    return Guard;
+
                 return All.SavageBlade;
             }
 
