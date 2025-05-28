@@ -488,6 +488,23 @@ internal static class SimpleTarget
             .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
 
+    /// Gets any Raiser (Healer or DPS) that is not the player.
+    public static IGameObject? AnyRaiser =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer ||
+                x?.ClassJob.RowId is SMN.JobID or RDM.JobID);
+
+    /// Gets any Raiser DPS that is not the player.
+    public static IGameObject? AnyRaiserDPS =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer())
+            .FirstOrDefault(x => x?.ClassJob.RowId is SMN.JobID or RDM.JobID);
+
     /// Gets any Melee DPS that is not the player.
     public static IGameObject? AnyMeleeDPS =>
         CustomComboFunctions
@@ -523,6 +540,101 @@ internal static class SimpleTarget
             .FirstOrDefault(x =>
                 RoleAttribute.GetRoleFromJob(x?.ClassJob.RowId ?? 0) is
                     JobRole.MagicalDPS);
+
+    #endregion
+
+    #region Slightly More Specific Roles, with Additions
+
+    /// Gets any Tank that is dead (but only if all tanks are dead).
+    public static IGameObject? AnyDeadTankIfNoneAlive
+    {
+        get
+        {
+            var tanks = CustomComboFunctions
+                .GetPartyMembers()
+                .Select(x => x.BattleChara)
+                .Where(x => x.IsNotThePlayer() && x?.GetRole() is CombatRole.Tank)
+                .ToArray();
+            var deadTanks =
+                tanks.Where(x => x?.IsDead() == true).ToArray();
+
+            if (deadTanks.Length == 0)
+                return null;
+            if (tanks.Any(x => x?.IsDead() == false))
+                return null;
+
+            return deadTanks.FirstOrDefault();
+        }
+    }
+
+    /// Gets any Healer that is dead (but only if all healers are dead).
+    public static IGameObject? AnyDeadHealerIfNoneAlive
+    {
+        get
+        {
+            var healers = CustomComboFunctions
+                .GetPartyMembers()
+                .Select(x => x.BattleChara)
+                .Where(x => x?.GetRole() is CombatRole.Healer)
+                .ToArray();
+            var deadHealers =
+                healers.Where(x => x?.IsDead() == true).ToArray();
+
+            if (deadHealers.Length == 0)
+                return null;
+            if (healers.Any(x => x?.IsDead() == false))
+                return null;
+
+            return deadHealers.FirstOrDefault();
+        }
+    }
+
+    /// Gets any Raiser (Healer or DPS) that is dead (but only if all Raisers are dead).
+    public static IGameObject? AnyDeadRaiserIfNoneAlive
+    {
+        get
+        {
+            var raisers = CustomComboFunctions
+                .GetPartyMembers()
+                .Select(x => x.BattleChara)
+                .Where(x => x.IsNotThePlayer() &&
+                            (x?.GetRole() is CombatRole.Healer ||
+                             x?.ClassJob.RowId is SMN.JobID or RDM.JobID))
+                .ToArray();
+            var deadRaisers =
+                raisers.Where(x => x?.IsDead() == true).ToArray();
+
+            if (deadRaisers.Length == 0)
+                return null;
+            if (raisers.Any(x => x?.IsDead() == false))
+                return null;
+
+            return deadRaisers.FirstOrDefault();
+        }
+    }
+
+    /// Gets any Raiser DPS that is dead (but only if all Raiser DPS are dead).
+    public static IGameObject? AnyDeadRaiserDPSIfNoneAlive
+    {
+        get
+        {
+            var raisers = CustomComboFunctions
+                .GetPartyMembers()
+                .Select(x => x.BattleChara)
+                .Where(x => x.IsNotThePlayer() &&
+                            x?.ClassJob.RowId is SMN.JobID or RDM.JobID)
+                .ToArray();
+            var deadRaisers =
+                raisers.Where(x => x?.IsDead() == true).ToArray();
+
+            if (deadRaisers.Length == 0)
+                return null;
+            if (raisers.Any(x => x?.IsDead() == false))
+                return null;
+
+            return deadRaisers.FirstOrDefault();
+        }
+    }
 
     #endregion
 
