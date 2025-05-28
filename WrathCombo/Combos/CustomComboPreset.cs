@@ -1949,7 +1949,7 @@ public enum CustomComboPreset
     #region Standalones
 
     [ReplaceSkill(DRK.BlackestNight)]
-    [CustomComboInfo("Retarget The Blackest Night Feature", "Will Retarget The Blackest Night outside of other combos to your MouseOver Target.", DRK.JobID)]
+    [CustomComboInfo("Retarget The Blackest Night Feature", "Will Retarget The Blackest Night outside of other combos to your MouseOver Target (or a friendly Hard Target).", DRK.JobID)]
     [Retargeted]
     DRK_Retarget_TBN = 5130,
 
@@ -1958,7 +1958,7 @@ public enum CustomComboPreset
     DRK_Retarget_TBN_TT = 5131,
 
     [ReplaceSkill(DRK.Oblation)]
-    [CustomComboInfo("Retarget Oblation Feature", "Will Retarget Oblation outside of other combos to your MouseOver Target.", DRK.JobID)]
+    [CustomComboInfo("Retarget Oblation Feature", "Will Retarget Oblation outside of other combos to your MouseOver Target (or a friendly Hard Target).", DRK.JobID)]
     [Retargeted]
     DRK_Retarget_Oblation = 5132,
 
