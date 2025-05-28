@@ -99,8 +99,9 @@ namespace WrathCombo.Core
 
         // Just has value so the UI element for it is more obvious from the get-go
         public string[] CustomRaiseStack = [
-            "FocusTarget",
-            "HardTarget",
+            "AnyHealer",
+            "AnyTank",
+            "AnyRaiser",
             "AnyDeadPartyMember",
         ];
 
