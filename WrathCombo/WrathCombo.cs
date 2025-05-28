@@ -106,13 +106,13 @@ public sealed partial class WrathCombo : IDalamudPlugin
             if (!Player.Available)
                 return false;
 
+            WrathOpener.SelectOpener();
             AST.QuickTargetCards.SelectedRandomMember = null;
             if (onJobChange)
                 PvEFeatures.OpenToCurrentJob(true);
             if (onJobChange || firstRun)
             {
                 Service.ActionReplacer.UpdateFilteredCombos();
-                WrathOpener.SelectOpener();
                 Svc.Framework.RunOnTick(Provider.BuildCachesAction());
                 P.IPCSearch.UpdateActiveJobPresets();
                 P.IPC.Leasing.SuspendLeases(CancellationReason.JobChanged);
