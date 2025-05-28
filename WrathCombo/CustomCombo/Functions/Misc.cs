@@ -206,9 +206,19 @@ namespace WrathCombo.CustomComboNS.Functions
             // Phantom Jobs list
             public static readonly List<byte> _phantomJobs =
             [
-
-                //TODO: implement
-
+                Freelancer.PhantomJobID,
+                Knight.PhantomJobID,
+                Monk.PhantomJobID,
+                Thief.PhantomJobID,
+                Berserker.PhantomJobID,
+                Ranger.PhantomJobID,
+                TimeMage.PhantomJobID,
+                Chemist.PhantomJobID,
+                Bard.PhantomJobID,
+                Oracle.PhantomJobID,
+                Cannoneer.PhantomJobID,
+                Samurai.PhantomJobID,
+                Geolancer.PhantomJobID
             ];
             */
         }
