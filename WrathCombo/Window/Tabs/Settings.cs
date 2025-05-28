@@ -575,10 +575,10 @@ namespace WrathCombo.Window.Tabs
                         "Scroll down to see all of your items.\n" +
                         "Click the Up and Down buttons to move items in the list.\n" +
                         "Click the X button to remove an item from the list.\n\n" +
-                        "If there are fewer than 4 items, and all return nothing when checked, will fall back to:\n" +
+                        "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
                         "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
                         "These targets will only be considered valid if they are friendly, dead, and within 30y.\n" +
-                        "Default: Focus Target > Hard Target > Any Dead Party Member"
+                        "Default: Any Healer > Any Tank > Any Raiser > Any Dead Party Member"
                     );
                     ImGui.Unindent();
                 }
