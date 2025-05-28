@@ -4718,6 +4718,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Vercure Option", "If Swiftcast is on cooldown, change to Vercure to proc Dualcast.", RDM.JobID)]
     RDM_Raise_Vercure = 13621,
 
+    [ParentCombo(RDM_Raise)]
+    [CustomComboInfo("Retarget Raise and Vercure", "Will Retarget the Raise and Vercure affected here to your Heal Stack.", RDM.JobID)]
+    [Retargeted]
+    RDM_Raise_Retarget = 13839,
+
     #endregion
 
     #region Sections 8 to 9 - Miscellaneous
@@ -5944,6 +5949,11 @@ SMN.JobID)]
     [ConflictingCombos(ALL_Caster_Raise)]
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Raise when on cooldown.", SMN.JobID)]
     SMN_Raise = 17027,
+
+    [ParentCombo(SMN_Raise)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", SMN.JobID)]
+    [Retargeted]
+    SMN_Raise_Retarget = 17079,
 
     [ReplaceSkill(SMN.Ruin4)]
     [CustomComboInfo("Ruin III Mobility Feature", "Puts Ruin III on Ruin IV when you don't have Further Ruin.",
