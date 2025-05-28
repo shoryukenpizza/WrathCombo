@@ -6554,9 +6554,18 @@ SMN.JobID)]
     WAR_Bloodwhetting = 18118,
 
     [ParentCombo(WAR_Bloodwhetting)]
-    [CustomComboInfo("Nascent When Targeting Option", "If available, will replace the combo with Nascent Flash if you are hard targeting someone.", WAR.JobID)]
-    [Retargeted]
+    [CustomComboInfo("Nascent When Targeting Option", "If available, will replace the combo with Nascent Flash if you are hard targeting an ally.", WAR.JobID)]
     WAR_Bloodwhetting_Targeting = 18119,
+
+    [ParentCombo(WAR_Bloodwhetting_Targeting)]
+    [CustomComboInfo("Include MouseOver Target", "If mousing over an ally in the UI, will Retarget Nascent Flash onto them.", WAR.JobID)]
+    [Retargeted]
+    WAR_Bloodwhetting_Targeting_MO = 18120,
+
+    [ParentCombo(WAR_Bloodwhetting_Targeting)]
+    [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Nascent Flash onto them.\n(if not mousing over or hard targeting an ally, and you're not top aggro)", WAR.JobID)]
+    [Retargeted]
+    WAR_Bloodwhetting_Targeting_TT = 18121,
 
     #region Bozja
     [Bozja]
@@ -6743,7 +6752,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 18119
+    // Last value = 18121
 
     #endregion
 

@@ -416,10 +416,13 @@ internal partial class WAR : Tank
                 return action;
 
             var target =
-                (Config.WAR_Bloodwhetting_IncludeMouseOver
+                (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting_MO)
                     ? SimpleTarget.UIMouseOverTarget.IfFriendly()
                     : null) ??
-                SimpleTarget.HardTarget.IfFriendly();
+                SimpleTarget.HardTarget.IfFriendly() ??
+                (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting_TT) && !PlayerHasAggro
+                    ? SimpleTarget.TargetsTarget.IfFriendly().IfNotThePlayer()
+                    : null);
 
             // Nascent if trying to heal an ally
             if (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting) &&
