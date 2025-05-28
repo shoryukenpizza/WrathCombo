@@ -6563,7 +6563,7 @@ SMN.JobID)]
     WAR_Bloodwhetting_Targeting_MO = 18120,
 
     [ParentCombo(WAR_Bloodwhetting_Targeting)]
-    [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Nascent Flash onto them.\n(if not mousing over or hard targeting an ally, and you're not top aggro)", WAR.JobID)]
+    [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Nascent Flash onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", WAR.JobID)]
     [Retargeted]
     WAR_Bloodwhetting_Targeting_TT = 18121,
 
