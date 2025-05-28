@@ -210,6 +210,7 @@ internal static class PvPCommon
             if (HasStatusEffect(DRGPvP.Buffs.SkyHigh) ||
                 HasStatusEffect(WARPvP.Buffs.InnerRelease) ||
                 HasStatusEffect(VPRPvP.Buffs.HardenedScales) ||
+                HasStatusEffect(PLDPvP.Buffs.HallowedGround) ||
                 HasStatusEffect(DRKPvP.Buffs.UndeadRedemption) ||
                 HasStatusEffect(Debuffs.Unguarded, anyOwner: true) ||
                 HasStatusEffect(Buffs.RidingMecha, anyOwner: true))
