@@ -67,9 +67,31 @@ internal partial class DRK
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
                     ImGui.Unindent();
                     ImGui.NewLine();
-                    UserConfig.DrawAdditionalBoolChoice(DRK_ST_OpenerUnmend,
-                        "Include Unmend",
-                        "Will include Unmend in the opener if selected.");
+                    ImGui.Indent();
+                    ImGui.Text("Choose the action to pull with:     (hover each for more info)");
+                    ImGui.Unindent();
+                    ImGui.NewLine();
+                    UserConfig.DrawRadioButton(DRK_ST_OpenerAction,
+                        "Unmend (Standard)",
+                        "Will use Unmend to pull, if selected.\n" +
+                        "Should start at -1.0 seconds.\n\n" +
+                        "Recommended by The Balance.",
+                        outputValue: (int) PullAction.Unmend,
+                        descriptionAsTooltip: true);
+                    UserConfig.DrawRadioButton(DRK_ST_OpenerAction,
+                        "Shadowstride",
+                        "Will use Shadowstride to pull, if selected.\n" +
+                        "Will use an extra Hard Slash before Disesteem.\n" +
+                        "Should start at -0.7 seconds.",
+                        outputValue: (int) PullAction.Shadowstride,
+                        descriptionAsTooltip: true);
+                    UserConfig.DrawRadioButton(DRK_ST_OpenerAction,
+                        "Hard Slash (Face or Manual Pulling)",
+                        "Will use nothing to pull, if selected, just going straight to Hard Slash.\n" +
+                        "Will use an extra Hard Slash before Disesteem.\n" +
+                        "Should start at 0.0 seconds.",
+                        outputValue: (int) PullAction.HardSlash,
+                        descriptionAsTooltip: true);
                     break;
 
                 case CustomComboPreset.DRK_ST_CDs:
@@ -501,6 +523,13 @@ internal partial class DRK
             On,
         }
 
+        internal enum PullAction
+        {
+            Unmend,
+            Shadowstride,
+            HardSlash,
+        }
+
         #endregion
 
         #region Options
@@ -548,15 +577,15 @@ internal partial class DRK
             new("DRK_ST_OpenerDifficulty", [false, true]);
 
         /// <summary>
-        ///     Whether to include Unmend in the opener for Single Target.
+        ///     What action is used to pull, in the opener.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see langword="true"/> <br />
-        ///     <b>Options</b>: <see langword="true"/> or <see langword="false"/>
+        ///     <b>Default</b>: <see cref="PullAction.Unmend" /> <br />
+        ///     <b>Options</b>: <see cref="PullAction">PullAction Enum</see>
         /// </value>
         /// <seealso cref="CustomComboPreset.DRK_ST_BalanceOpener" />
-        public static readonly UserBool DRK_ST_OpenerUnmend =
-            new("DRK_ST_OpenerUnmend", true);
+        public static readonly UserInt DRK_ST_OpenerAction =
+            new("DRK_ST_OpenerAction", (int)PullAction.Unmend);
 
         /// <summary>
         ///     Cooldown Boss Restriction for Single Target.

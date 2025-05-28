@@ -52,11 +52,16 @@ internal partial class DRK : Tank
             var newAction = HardSlash;
             _ = IsBursting;
 
-            // Unmend Option
+            // Unmend Option for Pulling
+            var skipBecauseOpener =
+                IsEnabled(CustomComboPreset.DRK_ST_BalanceOpener) &&
+                Opener().HasCooldowns();
             if (IsEnabled(CustomComboPreset.DRK_ST_RangedUptime) &&
                 ActionReady(Unmend) &&
                 !InMeleeRange() &&
-                HasBattleTarget())
+                HasBattleTarget() &&
+                !InCombat() &&
+                !skipBecauseOpener)
                 return Unmend;
 
             // Opener
@@ -75,6 +80,13 @@ internal partial class DRK : Tank
 
             // Bail if not in combat
             if (!InCombat()) return HardSlash;
+
+            // Unmend Option for Uptime
+            if (IsEnabled(CustomComboPreset.DRK_ST_RangedUptime) &&
+                ActionReady(Unmend) &&
+                !InMeleeRange() &&
+                HasBattleTarget())
+                return Unmend;
 
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
