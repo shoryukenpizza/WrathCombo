@@ -84,6 +84,9 @@ internal partial class WAR
             WAR_Bozja_LostAethershield_Health = new("WAR_Bozja_LostAethershield_Health", 70),
             WAR_Bozja_LostReraise_Health = new("WAR_Bozja_LostReraise_Health", 10);
 
+        public static UserBool
+            WAR_Bloodwhetting_IncludeMouseOver = new("WAR_Bloodwhetting_IncludeMouseOver");
+
         public static UserFloat
             WAR_ST_Onslaught_Distance = new("WAR_ST_Ons_Distance", 3.0f),
             WAR_ST_PrimalRend_Distance = new("WAR_ST_PR_Distance", 3.0f),
@@ -462,7 +465,14 @@ internal partial class WAR
                     UserConfig.DrawSliderInt(1, 100, WAR_VariantCure,
                         " Player HP% to be less than or equal to:", 200);
                     break;
-                    #endregion
+
+                case CustomComboPreset.WAR_Bloodwhetting_Targeting:
+                    UserConfig.DrawAdditionalBoolChoice(WAR_Bloodwhetting_IncludeMouseOver,
+                        "Include UI MouseOver Target",
+                        "Will replace the target for Nascent Flash if you are hovering over a UI target.",
+                        indentDescription: true);
+                    break;
+                #endregion
             }
         }
     }

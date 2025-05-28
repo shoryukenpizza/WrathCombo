@@ -1,6 +1,9 @@
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class WAR : Tank
@@ -398,7 +401,39 @@ internal partial class WAR : Tank
     internal class WAR_NascentFlash : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_NascentFlash;
-        protected override uint Invoke(uint action) => action != RawIntuition ? action : ActionReady(NascentFlash) ? NascentFlash : action;
+        protected override uint Invoke(uint actionID) => actionID != NascentFlash ? actionID : LevelChecked(NascentFlash) ? NascentFlash : RawIntuition;
+    }
+    #endregion
+
+    #region Bloodwhetting -> Nascent Flash or Raw Intuition
+    internal class WAR_Bloodwhetting : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_Bloodwhetting;
+
+        protected override uint Invoke(uint action)
+        {
+            if (action != Bloodwhetting)
+                return action;
+
+            var target =
+                (Config.WAR_Bloodwhetting_IncludeMouseOver
+                    ? SimpleTarget.UIMouseOverTarget.IfFriendly()
+                    : null) ??
+                SimpleTarget.HardTarget.IfFriendly();
+
+            // Nascent if trying to heal an ally
+            if (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting) &&
+                LevelChecked(NascentFlash) &&
+                target != null)
+                return NascentFlash.Retarget(Bloodwhetting, target);
+
+            // Raw Intuition if too low for Bloodwhetting, and not trying to heal an ally
+            if (!LevelChecked(Bloodwhetting) &&
+                LevelChecked(RawIntuition))
+                return RawIntuition;
+
+            return action;
+        }
     }
     #endregion
 

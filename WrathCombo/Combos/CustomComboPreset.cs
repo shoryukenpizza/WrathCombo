@@ -6549,6 +6549,15 @@ SMN.JobID)]
     [CustomComboInfo("Nascent Flash Feature", "Replace Nascent Flash with Raw intuition when level synced below 76.", WAR.JobID)]
     WAR_NascentFlash = 18017,
 
+    [ReplaceSkill(WAR.Bloodwhetting)]
+    [CustomComboInfo("Bloodwhetting Feature", "Replaces Bloodwhetting with Raw Intuition, when level synced below 82.", WAR.JobID)]
+    WAR_Bloodwhetting = 18118,
+
+    [ParentCombo(WAR_Bloodwhetting)]
+    [CustomComboInfo("Nascent When Targeting Option", "If available, will replace the combo with Nascent Flash if you are hard targeting someone.", WAR.JobID)]
+    [Retargeted]
+    WAR_Bloodwhetting_Targeting = 18119,
+
     #region Bozja
     [Bozja]
     [CustomComboInfo("Lost Focus Option", "Use Lost Focus when available.", WAR.JobID)]
@@ -6734,7 +6743,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 18117
+    // Last value = 18119
 
     #endregion
 
