@@ -117,10 +117,7 @@ internal partial class All
 
             if (IsEnabled(CustomComboPreset.ALL_Healer_Raise_Retarget))
                 return actionID.Retarget(replacedActions.ToArray(),
-                    SimpleTarget.Stack.AllyToRaise ??
-                    SimpleTarget.AnyDeadPartyMember ??
-                    SimpleTarget.HardTarget,
-                    dontCull: true);
+                    SimpleTarget.Stack.RaiseStack, dontCull: true);
 
             return actionID;
         }
@@ -155,9 +152,7 @@ internal partial class All
                 HasStatusEffect(RDM.Buffs.Dualcast))
                 if (IsEnabled(CustomComboPreset.ALL_Caster_Raise_Retarget))
                     return actionID.Retarget(replacedActions.ToArray(),
-                        SimpleTarget.Stack.AllyToRaise ??
-                        SimpleTarget.AnyDeadPartyMember ??
-                        SimpleTarget.HardTarget);
+                        SimpleTarget.Stack.RaiseStack, dontCull: true);
                 else
                     return actionID;
 
@@ -170,10 +165,7 @@ internal partial class All
 
             if (IsEnabled(CustomComboPreset.ALL_Caster_Raise_Retarget))
                 return actionID.Retarget(replacedActions.ToArray(),
-                    SimpleTarget.Stack.AllyToRaise ??
-                    SimpleTarget.AnyDeadPartyMember ??
-                    SimpleTarget.HardTarget,
-                    dontCull: true);
+                    SimpleTarget.Stack.RaiseStack, dontCull: true);
 
             return actionID;
         }
