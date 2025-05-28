@@ -67,6 +67,14 @@ namespace WrathCombo.CustomComboNS
                             Svc.Log.Debug($"Opener Now Ready");
                     }
 
+                    if (value == OpenerState.InOpener)
+                    {
+                        if (Service.Configuration.OutputOpenerLogs)
+                            DuoLog.Information("Opener Started");
+                        else
+                            Svc.Log.Debug($"Opener Started");
+                    }
+
                     if (value == OpenerState.FailedOpener)
                     {
                         if (Service.Configuration.OutputOpenerLogs)
@@ -74,7 +82,7 @@ namespace WrathCombo.CustomComboNS
                         else
                             Svc.Log.Information($"Opener Failed at step {OpenerStep}, {CurrentOpenerAction.ActionName()}");
 
-                        if (AllowReopener)
+                        if (AllowReopener || !InCombat())
                             ResetOpener();
                     }
 
@@ -166,20 +174,27 @@ namespace WrathCombo.CustomComboNS
 
             if (CurrentState == OpenerState.OpenerReady)
             {
-                if (!HasCooldowns() && OpenerStep == 1)
+                if (OpenerStep > 1)
+                {
+                    CurrentState = OpenerState.InOpener;
+
+                }
+                else
+                if (!HasCooldowns())
                 {
                     ResetOpener();
                     return false;
                 }
+            }
 
-                if (OpenerStep > 1)
+
+            if (CurrentState == OpenerState.InOpener)
+            {
+                bool delay = PrepullDelays.FindFirst(x => x.Steps.Any(y => y == DelayedStep && y == OpenerStep), out var hold);
+                if ((!delay && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
                 {
-                    bool delay = PrepullDelays.FindFirst(x => x.Steps.Any(y => y == DelayedStep && y == OpenerStep), out var hold);
-                    if ((!delay && InCombat() && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
-                    {
-                        CurrentState = OpenerState.FailedOpener;
-                        return false;
-                    }
+                    CurrentState = OpenerState.FailedOpener;
+                    return false;
                 }
 
                 if (OpenerStep <= OpenerActions.Count)
@@ -232,7 +247,7 @@ namespace WrathCombo.CustomComboNS
                         CurrentOpenerAction = OpenerActions[OpenerStep - 1];
                     }
 
-                    while (OpenerStep > 1 && !ActionReady(CurrentOpenerAction) &&
+                    while (!ActionReady(CurrentOpenerAction) &&
                            !SkipSteps.Any(x => x.Steps.Any(y => y == OpenerStep - 1)) &&
                            ActionWatching.TimeSinceLastAction.TotalSeconds > Math.Max(1.5, GCDTotal))
                     {
@@ -247,6 +262,7 @@ namespace WrathCombo.CustomComboNS
 
 
                     return true;
+
                 }
 
             }
