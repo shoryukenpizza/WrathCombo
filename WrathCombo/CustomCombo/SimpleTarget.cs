@@ -104,7 +104,7 @@ internal static class SimpleTarget
         ///     <see cref="HardTarget"/>.
         /// </summary>
         public static IGameObject? RaiseStack =>
-            AllyToRaise ?? AnyDeadPartyMember ?? HardTarget;
+            AllyToRaise ?? HardTarget.IfDead() ?? AnyDeadPartyMember;
 
         #region Custom Heal Stack Resolving
 
