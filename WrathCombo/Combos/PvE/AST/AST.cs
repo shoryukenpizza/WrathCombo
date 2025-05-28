@@ -28,7 +28,7 @@ internal partial class AST : Healer
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? IsEnabled(CustomComboPreset.AST_Raise_Alternative_Retarget)
                     ? Ascend.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.RaiseStack)
+                        SimpleTarget.Stack.AllyToRaise)
                     : Ascend
                 : actionID;
     }

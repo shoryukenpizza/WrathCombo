@@ -300,7 +300,7 @@ internal partial class SGE : Healer
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? IsEnabled(CustomComboPreset.SGE_Raise_Retarget)
                     ? Egeiro.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.RaiseStack)
+                        SimpleTarget.Stack.AllyToRaise)
                     : Egeiro
                 : actionID;
     }

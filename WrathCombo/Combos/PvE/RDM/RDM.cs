@@ -346,7 +346,7 @@ internal partial class RDM : Caster
             if (Variant.CanRaise(CustomComboPreset.RDM_Variant_Raise))
                 return IsEnabled(CustomComboPreset.RDM_Raise_Retarget)
                     ? Variant.Raise.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.RaiseStack)
+                        SimpleTarget.Stack.AllyToRaise)
                     : Variant.Raise;
 
             if (LevelChecked(Verraise))
@@ -355,7 +355,7 @@ internal partial class RDM : Caster
                 if (schwifty || HasStatusEffect(Buffs.Dualcast))
                     return IsEnabled(CustomComboPreset.RDM_Raise_Retarget)
                         ? Verraise.Retarget(Role.Swiftcast,
-                            SimpleTarget.Stack.RaiseStack)
+                            SimpleTarget.Stack.AllyToRaise)
                         : Verraise;
                 if (IsEnabled(CustomComboPreset.RDM_Raise_Vercure) &&
                     !schwifty &&

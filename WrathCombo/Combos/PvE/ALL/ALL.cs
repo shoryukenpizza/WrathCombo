@@ -117,7 +117,7 @@ internal partial class All
 
             if (IsEnabled(CustomComboPreset.ALL_Healer_Raise_Retarget))
                 return actionID.Retarget(replacedActions.ToArray(),
-                    SimpleTarget.Stack.RaiseStack, dontCull: true);
+                    SimpleTarget.Stack.AllyToRaise, dontCull: true);
 
             return actionID;
         }
@@ -152,7 +152,7 @@ internal partial class All
                 HasStatusEffect(RDM.Buffs.Dualcast))
                 if (IsEnabled(CustomComboPreset.ALL_Caster_Raise_Retarget))
                     return actionID.Retarget(replacedActions.ToArray(),
-                        SimpleTarget.Stack.RaiseStack, dontCull: true);
+                        SimpleTarget.Stack.AllyToRaise, dontCull: true);
                 else
                     return actionID;
 
@@ -165,7 +165,7 @@ internal partial class All
 
             if (IsEnabled(CustomComboPreset.ALL_Caster_Raise_Retarget))
                 return actionID.Retarget(replacedActions.ToArray(),
-                    SimpleTarget.Stack.RaiseStack, dontCull: true);
+                    SimpleTarget.Stack.AllyToRaise, dontCull: true);
 
             return actionID;
         }

@@ -21,13 +21,13 @@ internal partial class SMN : Caster
             if (Variant.CanRaise(CustomComboPreset.SMN_Variant_Raise))
                 return IsEnabled(CustomComboPreset.SMN_Raise_Retarget)
                     ? Variant.Raise.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.RaiseStack)
+                        SimpleTarget.Stack.AllyToRaise)
                     : Variant.Raise;
 
             if (IsOnCooldown(Role.Swiftcast))
                 return IsEnabled(CustomComboPreset.SMN_Raise_Retarget)
                     ? Resurrection.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.RaiseStack)
+                        SimpleTarget.Stack.AllyToRaise)
                     : Resurrection;
             return actionID;
         }

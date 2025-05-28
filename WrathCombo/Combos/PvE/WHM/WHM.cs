@@ -439,7 +439,7 @@ internal partial class WHM : Healer
                     ? ThinAir
                     : IsEnabled(CustomComboPreset.WHM_Raise_Retarget)
                         ? Raise.Retarget(Role.Swiftcast,
-                            SimpleTarget.Stack.RaiseStack)
+                            SimpleTarget.Stack.AllyToRaise)
                         : Raise;
 
             return actionID;
