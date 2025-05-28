@@ -74,7 +74,7 @@ namespace WrathCombo.CustomComboNS
                         else
                             Svc.Log.Information($"Opener Failed at step {OpenerStep}, {CurrentOpenerAction.ActionName()}");
 
-                        if (AllowReopener)
+                        if (AllowReopener || !InCombat())
                             ResetOpener();
                     }
 
@@ -152,7 +152,7 @@ namespace WrathCombo.CustomComboNS
                 return false;
             }
 
-            currentOpener = this;
+            CurrentOpener = this;
 
             if (CurrentState == OpenerState.OpenerNotReady)
             {
@@ -175,7 +175,7 @@ namespace WrathCombo.CustomComboNS
                 if (OpenerStep > 1)
                 {
                     bool delay = PrepullDelays.FindFirst(x => x.Steps.Any(y => y == DelayedStep && y == OpenerStep), out var hold);
-                    if ((!delay && InCombat() && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
+                    if ((!delay && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
                     {
                         CurrentState = OpenerState.FailedOpener;
                         return false;
@@ -307,6 +307,7 @@ namespace WrathCombo.CustomComboNS
 
                 if (currentOpener != value)
                 {
+                    Svc.Log.Debug($"Setting CurrentOpener");
                     currentOpener = value;
                     Svc.Framework.Update += currentOpener.UpdateOpener;
                     OnCastInterrupted += RevertInterruptedCasts;
