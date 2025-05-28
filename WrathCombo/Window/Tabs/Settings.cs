@@ -528,11 +528,11 @@ namespace WrathCombo.Window.Tabs
                 var raiseStackText = "";
                 if (Service.Configuration.UseCustomRaiseStack)
                 {
-                    foreach (var item in Service.Configuration.CustomHealStack
+                    foreach (var item in Service.Configuration.CustomRaiseStack
                                  .Select((value, index) => new { value, index }))
                     {
                         raiseStackText +=
-                            UserConfig.TargetDisplayNameFromPropertyName(item.value);
+                            UserConfig.TargetDisplayNameFromPropertyName(item.value, true);
                         if (item.index <
                             Service.Configuration.CustomRaiseStack.Length - 1)
                             raiseStackText += nextStackItemMarker;
@@ -567,6 +567,7 @@ namespace WrathCombo.Window.Tabs
                 if (Service.Configuration.UseCustomRaiseStack)
                 {
                     ImGui.Indent();
+                    ImGui.TextDisabled("(all targets are checked for rezz-ability)");
                     UserConfig.DrawCustomStackManager(
                         "CustomRaiseStack",
                         ref Service.Configuration.CustomRaiseStack,
@@ -578,7 +579,8 @@ namespace WrathCombo.Window.Tabs
                         "If there are fewer than 5 items, and all return nothing when checked, will fall back to:\n" +
                         "your Hard Target if they're dead, or <Any Dead Party Member>.\n\n"+
                         "These targets will only be considered valid if they are friendly, dead, and within 30y.\n" +
-                        "Default: Any Healer > Any Tank > Any Raiser > Any Dead Party Member"
+                        "Default: Any Healer > Any Tank > Any Raiser > Any Dead Party Member",
+                        true
                     );
                     ImGui.Unindent();
                 }

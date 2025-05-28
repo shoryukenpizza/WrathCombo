@@ -960,7 +960,8 @@ namespace WrathCombo.Window.Functions
         (string stackName,
             ref string[] customStackSetting,
             string[]? targetsToRemoveIfStringContains = null,
-            string helpMarkerTextForStack = "")
+            string helpMarkerTextForStack = "",
+            bool thisIsForRaiseStack = false)
         {
             #region Adding to the Stack
 
@@ -969,7 +970,8 @@ namespace WrathCombo.Window.Functions
             ImGui.SameLine();
             DrawItemAdding(stackName, targetsToRemoveIfStringContains,
                 ref customStackSetting,
-                ref _customStackLongestProperty, ref _customStackTallestProperty);
+                ref _customStackLongestProperty, ref _customStackTallestProperty,
+                thisIsForRaiseStack);
             ImGuiComponents.HelpMarker("Click this dropdown to open the list of available Target options.\nClick any entry to add it to your Custom Stack, at the bottom.\nThere is a Textbox that says 'Filter...' at the top, type into this to search the list.");
 
             #endregion
@@ -999,7 +1001,7 @@ namespace WrathCombo.Window.Functions
             {
                 foreach (var item in customStackSetting)
                 {
-                    var text = TargetDisplayNameFromPropertyName(item);
+                    var text = TargetDisplayNameFromPropertyName(item, thisIsForRaiseStack);
                     #region Sizing Variables
 
                     var areaWidth = ImGui.GetContentRegionAvail().X;
@@ -1157,7 +1159,8 @@ namespace WrathCombo.Window.Functions
             string[]? unwantedTargetPieces,
             ref string[] customStackSetting,
             ref float longestProperty,
-            ref float tallestProperty)
+            ref float tallestProperty,
+            bool thisIsForRaiseStack = false)
         {
             #region Combo Variables
 
@@ -1185,7 +1188,7 @@ namespace WrathCombo.Window.Functions
             var simpleTargetNames =
                 simpleTargets.ToDictionary(
                     name => name,
-                    TargetDisplayNameFromPropertyName
+                    name => TargetDisplayNameFromPropertyName(name, thisIsForRaiseStack)
                 );
 
             // Save some data about the sizing of the text
@@ -1229,7 +1232,9 @@ namespace WrathCombo.Window.Functions
         }
 
 #pragma warning disable SYSLIB1045
-        internal static string TargetDisplayNameFromPropertyName (string propertyName)
+        internal static string TargetDisplayNameFromPropertyName
+            (string propertyName,
+                bool thisIsForRaiseStack = false)
         {
             var name = propertyName switch
             {
@@ -1249,6 +1254,8 @@ namespace WrathCombo.Window.Functions
 
             name = name.Replace(" If Missing HP", " (If Missing HP)");
             name = name.Replace(" If None Alive", " (If None Alive)");
+            if (thisIsForRaiseStack)
+                name = name.Replace("Dead ", "");
 
             return name;
         }
