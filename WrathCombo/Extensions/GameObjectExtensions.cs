@@ -121,10 +121,11 @@ public static class GameObjectExtensions
 
     /// <summary>
     ///     Can be chained onto a <see cref="IGameObject" /> to make it return
-    ///     <see langword="null" /> if the target is not dead.
+    ///     <see langword="null" /> if the target is not dead enough.
     /// </summary>
+    /// <seealso cref="IsDeadEnoughToRaise"/>
     public static IGameObject? IfDead (this IGameObject? obj) =>
-        obj != null && obj.IsDead ? obj : null;
+        obj != null && IsDeadEnoughToRaise(obj) ? obj : null;
 
     #endregion
 
@@ -204,5 +205,28 @@ public static class GameObjectExtensions
     public static bool IsCleansable(this IGameObject? obj) =>
         obj != null && CustomComboFunctions.HasCleansableDebuff(obj);
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object is dead enough.
+    /// </summary>
+    /// <seealso cref="IsDeadEnoughToRaise"/>
+    public static bool IsDead(this IGameObject? obj) =>
+        obj != null && IsDeadEnoughToRaise(obj);
+
     #endregion
+
+    /// <summary>
+    ///     Checks if the object is dead, and should be raised.<br />
+    ///     Checks for them being dead but targetable, not having Transcendence or
+    ///     a Raise, and having been dead for more than 2 seconds.
+    /// </summary>
+    private static bool IsDeadEnoughToRaise(this IGameObject? obj)
+    {
+        if (obj is not IBattleChara battleObj) return false;
+        return battleObj.IsDead &&
+               !CustomComboFunctions.HasStatusEffect(2648, battleObj, true) &&
+               !CustomComboFunctions.HasStatusEffect(148, battleObj, true) &&
+               battleObj.IsTargetable &&
+               CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId).TotalSeconds > 2;
+    }
 }
