@@ -319,11 +319,7 @@ namespace WrathCombo.CustomComboNS
         private static void ResetAfterCombat(ConditionFlag flag, bool value)
         {
             if (flag == ConditionFlag.InCombat && !value)
-            {
-                Svc.Log.Debug($"HERE");
                 CurrentOpener.ResetOpener();
-
-            }
         }
 
         private static void RevertInterruptedCasts(uint interruptedAction)
