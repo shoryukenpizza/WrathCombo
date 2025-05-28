@@ -82,12 +82,6 @@ internal static class SimpleTarget
         ///     LowestHPPAlly and FocusTarget are the only ones with a range check,
         ///     as the others are "intentional" at the time they are grabbed.
         /// </remarks>
-                ? FocusTarget.IfFriendly().IfWithinRange()
-                : null) ??
-            (cfg.UseLowestHPOverrideInDefaultHealStack
-                ? LowestHPPAlly.IfWithinRange().IfMissingHP()
-                : null) ??
-            Self;
         internal static IGameObject? DefaultHealStack => GetHealStack();
 
         /// <summary>
@@ -96,6 +90,14 @@ internal static class SimpleTarget
         /// <seealso cref="PluginConfiguration.CustomHealStack"/>
         /// <seealso cref="GetHealStack"/>
         internal static IGameObject? CustomHealStack => GetHealStack(true);
+
+        public static IGameObject? AllyToEsuna =>
+            GetHealStack(cfg.UseCustomHealStack,
+                (target) => target.IfHasCleansable());
+
+        public static IGameObject? AllyToRaise =>
+            GetHealStack(cfg.UseCustomHealStack,
+                (target) => target.IfDead());
 
         #region Custom Heal Stack Resolving
 
