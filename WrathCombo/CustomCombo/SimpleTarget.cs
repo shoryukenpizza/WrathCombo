@@ -82,61 +82,102 @@ internal static class SimpleTarget
         ///     LowestHPPAlly and FocusTarget are the only ones with a range check,
         ///     as the others are "intentional" at the time they are grabbed.
         /// </remarks>
-        public static IGameObject? DefaultHealStack =>
-            (cfg.UseUIMouseoverOverridesInDefaultHealStack
-                ? UIMouseOverTarget.IfFriendly()
-                : null) ??
-            (cfg.UseFieldMouseoverOverridesInDefaultHealStack
-                ? ModelMouseOverTarget.IfFriendly()
-                : null) ??
-            SoftTarget.IfFriendly() ??
-            HardTarget.IfFriendly() ??
-            (cfg.UseFocusTargetOverrideInDefaultHealStack
                 ? FocusTarget.IfFriendly().IfWithinRange()
                 : null) ??
             (cfg.UseLowestHPOverrideInDefaultHealStack
                 ? LowestHPPAlly.IfWithinRange().IfMissingHP()
                 : null) ??
             Self;
-
-        #region Custom Heal Stack Resolving
+        internal static IGameObject? DefaultHealStack => GetHealStack();
 
         /// <summary>
         ///     The Custom Heal Stack, fully user-made.
         /// </summary>
         /// <seealso cref="PluginConfiguration.CustomHealStack"/>
-        internal static IGameObject? CustomHealStack
+        /// <seealso cref="GetHealStack"/>
+        internal static IGameObject? CustomHealStack => GetHealStack(true);
+
+        #region Custom Heal Stack Resolving
+
+        /// <summary>
+        ///     Gets the Default or Custom Heal Stack, and applies any custom logic
+        ///     to each entry in the stack.
+        /// </summary>
+        /// <param name="customHealStack">
+        ///     Whether to use the Custom Heal Stack.<br />
+        ///     Provide <see cref="PluginConfiguration.UseCustomHealStack" /> if not
+        ///     <see cref="DefaultHealStack" /> or <see cref="CustomHealStack" />.
+        /// </param>
+        /// <param name="logicForEachEntryInStack">
+        ///     A short method, probably of <see cref="GameObjectExtensions" />,
+        ///     to apply to each entry in the stack.<br />
+        ///     <see cref="AllyToEsuna"/> and <see cref="AllyToRaise"/> as examples.
+        /// </param>
+        /// <returns>
+        ///     The first matching target in the stack, or <see langword="null" />.
+        /// </returns>
+        private static IGameObject? GetHealStack
+            (bool customHealStack = false,
+                Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
         {
-            get
+            #region Default Heal Stack
+            if (!customHealStack)
+                return
+                    (cfg.UseUIMouseoverOverridesInDefaultHealStack
+                        ? CustomLogic(UIMouseOverTarget.IfFriendly())
+                        : null) ??
+                    (cfg.UseFieldMouseoverOverridesInDefaultHealStack
+                        ? CustomLogic(ModelMouseOverTarget.IfFriendly())
+                        : null) ??
+                    CustomLogic(SoftTarget.IfFriendly()) ??
+                    CustomLogic(HardTarget.IfFriendly()) ??
+                    (cfg.UseFocusTargetOverrideInDefaultHealStack
+                        ? CustomLogic(FocusTarget.IfFriendly().IfWithinRange())
+                        : null) ??
+                    (cfg.UseLowestHPOverrideInDefaultHealStack
+                        ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
+                        : null) ??
+                    Self;
+            #endregion
+
+            #region Custom Heal Stack
+            var logging = EZ.Throttle("customHealStackLog", TS.FromSeconds(10));
+
+            foreach (var name in Service.Configuration.CustomHealStack)
             {
-                var logging = EZ.Throttle("customHealStackLog", TS.FromSeconds(10));
+                var resolved = GetSimpleTargetValueFromName(name);
+                var target =
+                    CustomLogic(resolved.IfFriendly().IfWithinRange());
 
-                foreach (var name in Service.Configuration.CustomHealStack)
-                {
-                    var resolved = GetSimpleTargetValueFromName(name);
-                    var target = resolved.IfFriendly().IfWithinRange();
+                // Only include Missing-HP options if they are missing HP
+                if (name.Contains("Missing"))
+                    target = target.IfMissingHP();
 
-                    // Only include Missing-HP options if they are missing HP
-                    if (name.Contains("Missing"))
-                        target = target.IfMissingHP();
+                if (logging)
+                    PluginLog.Verbose(
+                        $"[Custom Heal Stack] {name,-25} => " +
+                        $"{resolved?.Name ?? "null",-30}" +
+                        $" (friendly: {resolved.IsFriendly(),5}, " +
+                        $"within range: {resolved.IsWithinRange(),5}, " +
+                        $"missing HP: {resolved.IsMissingHP(),5})"
+                    );
 
-                    if (logging)
-                        PluginLog.Verbose(
-                            $"[Custom Heal Stack] {name,-25} => " +
-                            $"{resolved?.Name ?? "null",-30}" +
-                            $" (friendly: {resolved.IsFriendly(),5}, " +
-                            $"within range: {resolved.IsWithinRange(),5}, " +
-                            $"missing HP: {resolved.IsMissingHP(),5})"
-                        );
+                if (target != null) return target;
+            }
 
-                    if (target != null) return target;
-                }
+            // Fall back to Self, if the stack is small and returned nothing
+            if (Service.Configuration.CustomHealStack.Length <= 3)
+                return Self;
+            #endregion
 
-                // Fall back to Self, if the stack is small and returned nothing
-                if (Service.Configuration.CustomHealStack.Length <= 3)
-                    return Self;
+            return null;
 
-                return null;
+            IGameObject? CustomLogic (IGameObject? target)
+            {
+                if (target is null) return null;
+                if (logicForEachEntryInStack is null) return target;
+
+                return logicForEachEntryInStack(target);
             }
         }
 

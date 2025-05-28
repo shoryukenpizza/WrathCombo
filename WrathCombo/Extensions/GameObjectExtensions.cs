@@ -104,6 +104,28 @@ public static class GameObjectExtensions
     public static IGameObject? IfNotInvincible (this IGameObject? obj) =>
         obj != null && !CustomComboFunctions.TargetIsInvincible(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target does not have a cleansable
+    ///     debuff.
+    /// </summary>
+    public static IGameObject? IfHasCleansable (this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.HasCleansableDebuff(obj) ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is dead.
+    /// </summary>
+    public static IGameObject? IfAlive (this IGameObject? obj) =>
+        obj != null && !obj.IsDead ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not dead.
+    /// </summary>
+    public static IGameObject? IfDead (this IGameObject? obj) =>
+        obj != null && obj.IsDead ? obj : null;
+
     #endregion
 
     #region Target Checking (same as above, but returns a boolean)
@@ -174,6 +196,13 @@ public static class GameObjectExtensions
     /// </summary>
     public static bool IsNotInvincible(this IGameObject? obj) =>
         obj != null && !CustomComboFunctions.TargetIsInvincible(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object has a cleansable debuff.
+    /// </summary>
+    public static bool IsCleansable(this IGameObject? obj) =>
+        obj != null && CustomComboFunctions.HasCleansableDebuff(obj);
 
     #endregion
 }
