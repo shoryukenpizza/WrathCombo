@@ -1,13 +1,18 @@
-﻿using WrathCombo.Attributes;
+﻿#region
+
+using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
 using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
+
 // ReSharper disable EmptyRegion
 // ReSharper disable InconsistentNaming
 // ReSharper disable StringLiteralTypo
 // ReSharper disable IdentifierTypo
 // ReSharper disable CommentTypo
-using static WrathCombo.Combos.PvE.PCT;
+
+#endregion
+
 namespace WrathCombo.Combos;
 
 /// <summary> Combo presets. </summary>
