@@ -557,7 +557,7 @@ namespace WrathCombo.Window.Tabs
         private static float _iconGroupWidth =
             ImGui.CalcTextSize("x").X;
         private static float _longestPropertyLabel =
-            ImGui.CalcTextSize("Lowest HP% Ally if missing HP").X;
+            ImGui.CalcTextSize("Lowest HP% Ally (If Missing HP)").X;
         private static float _propertyHeight =
             ImGui.CalcTextSize("I").Y;
 
@@ -744,20 +744,24 @@ namespace WrathCombo.Window.Tabs
 
         private static string TargetDisplayNameFromPropertyName (string propertyName)
         {
-            return propertyName switch
+            var name = propertyName switch
             {
                 "default" => "Select a Target to Add",
                 // Handle special cases
                 "UIMouseOverTarget" => "UI-MouseOver Target",
                 "ModelMouseOverTarget" => "Field-MouseOver Target",
                 "LowestHPAlly" => "Lowest HP Ally",
-                "LowestHPAllyIfMissingHP" => "Lowest HP Ally if missing HP",
+                "LowestHPAllyIfMissingHP" => "Lowest HP Ally If Missing HP",
                 "LowestHPPAlly" => "Lowest HP% Ally",
-                "LowestHPPAllyIfMissingHP" => "Lowest HP% Ally if missing HP",
+                "LowestHPPAllyIfMissingHP" => "Lowest HP% Ally If Missing HP",
                 // Format the rest with Regex
                 _ => Regex.Replace(propertyName,
                     @"(?<=[a-z])(?=[A-Z0-9])", " "),
             };
+
+            name = name.Replace(" If Missing HP", " (If Missing HP)");
+
+            return name;
         }
 #pragma warning restore SYSLIB1045
 
