@@ -376,6 +376,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Ascend", AST.JobID)]
     AST_Raise_Alternative = 1003,
 
+    [ParentCombo(AST_Raise_Alternative)]
+    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", AST.JobID)]
+    [Retargeted]
+    AST_Raise_Alternative_Retarget = 1060,
+
     [ReplaceSkill(AST.EssentialDignity)]
     [CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
     [Retargeted]
@@ -404,7 +409,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 1058
+    // Last value = 1060
 
     #endregion
 
@@ -5016,6 +5021,11 @@ public enum CustomComboPreset
         SGE.JobID)]
     SGE_Raise = 14040,
 
+    [ParentCombo(SGE_Raise)]
+    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", SGE.JobID)]
+    [Retargeted]
+    SGE_Raise_Retarget = 14061,
+
     [ReplaceSkill(SGE.Soteria)]
     [CustomComboInfo("Soteria to Kardia Feature",
         "Soteria turns into Kardia when not active or Soteria is on-cooldown.", SGE.JobID)]
@@ -5062,7 +5072,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last used number = 14060
+    // Last used number = 14061
 
     #endregion
 
@@ -5625,6 +5635,11 @@ public enum CustomComboPreset
         "Changes Swiftcast to Resurrection while Swiftcast is on cooldown.", SCH.JobID)]
     SCH_Raise = 16032,
 
+    [ParentCombo(SCH_Raise)]
+    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", SCH.JobID)]
+    [Retargeted]
+    SCH_Raise_Retarget = 16050,
+
     [ReplaceSkill(SCH.WhisperingDawn, SCH.FeyIllumination, SCH.FeyBlessing, SCH.Aetherpact, SCH.Dissipation,
         SCH.SummonSeraph)]
     [CustomComboInfo("Fairy Feature", "Change all fairy actions into Summon Eos when the Fairy is not summoned.",
@@ -5654,7 +5669,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 16047
+    // Last value = 16050
 
     #endregion
 
@@ -6942,6 +6957,11 @@ SMN.JobID)]
         WHM.JobID)]
     WHM_ThinAirRaise = 19014,
 
+    [ParentCombo(WHM_Raise)]
+    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Raise_Retarget = 19029,
+
     #endregion
 
     #region Variants
@@ -6959,7 +6979,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 19028
+    // Last value = 19029
 
     #endregion
 

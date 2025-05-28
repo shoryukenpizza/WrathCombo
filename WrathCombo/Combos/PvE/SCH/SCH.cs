@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -130,7 +131,10 @@ internal partial class SCH : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Raise;
         protected override uint Invoke(uint actionID) =>
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
-                ? Resurrection
+                ? IsEnabled(CustomComboPreset.SCH_Raise_Retarget)
+                    ? Resurrection.Retarget(Role.Swiftcast,
+                        SimpleTarget.Stack.AllyToRaise, dontCull: true)
+                    : Resurrection
                 : actionID;
     }
 

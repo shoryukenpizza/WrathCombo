@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
@@ -297,7 +298,10 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID) =>
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
-                ? Egeiro
+                ? IsEnabled(CustomComboPreset.SGE_Raise_Retarget)
+                    ? Egeiro.Retarget(Role.Swiftcast,
+                        SimpleTarget.Stack.AllyToRaise, dontCull: true)
+                    : Egeiro
                 : actionID;
     }
 

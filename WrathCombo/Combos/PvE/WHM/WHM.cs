@@ -1,6 +1,7 @@
 #region
 
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 
@@ -436,7 +437,10 @@ internal partial class WHM : Healer
             if (HasStatusEffect(Role.Buffs.Swiftcast))
                 return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
                     ? ThinAir
-                    : Raise;
+                    : IsEnabled(CustomComboPreset.WHM_Raise_Retarget)
+                        ? Raise.Retarget(Role.Swiftcast,
+                            SimpleTarget.Stack.AllyToRaise, dontCull: true)
+                        : Raise;
 
             return actionID;
         }
