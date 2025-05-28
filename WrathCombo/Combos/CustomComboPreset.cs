@@ -1879,8 +1879,12 @@ public enum CustomComboPreset
     [CustomComboInfo("Shadow Wall / Vigil Option", "Adds Shadow Wall / Vigil to the one-button mitigation.", DRK.JobID)]
     DRK_Mit_ShadowWall = 5099,
 
+    [ReplaceSkill(DRK.DarkMissionary)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Dark Missionary with Reprisal when ready.", DRK.JobID)]
+    DRK_Mit_Party = 5100,
+
     #endregion
-    // Last value = 5099
+    // Last value = 5100
 
     #region oGCD Feature
 
@@ -2490,7 +2494,7 @@ public enum CustomComboPreset
     GNB_Mit_Nebula = 7083,
 
     [ReplaceSkill(GNB.HeartOfLight)]
-    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Heart of Light with Reprisal when ready.", GNB.JobID)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Heart of Light with Reprisal when ready.", GNB.JobID)]
     GNB_Mit_Party = 7085,
     #endregion
 
@@ -4186,6 +4190,15 @@ public enum CustomComboPreset
     [ParentCombo(PLD_Mit_OneButton)]
     [CustomComboInfo("Clemency Option", "Adds Clemency to the one-button mitigation.", PLD.JobID)]
     PLD_Mit_Clemency = 11057,
+
+    [ReplaceSkill(PLD.DivineVeil)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Divine Veil with Reprisal when ready.", PLD.JobID)]
+    PLD_Mit_Party = 11063,
+
+    [ParentCombo(PLD_Mit_Party)]
+    [CustomComboInfo("Include Passage of Arms", "Includes Passage of Arms when both Divine Veil and Reprisal are on cooldown.",
+        PLD.JobID)]
+    PLD_Mit_Party_Wings = 11064,
     #endregion
 
     #region Extra Features
@@ -4229,7 +4242,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11062
+    //// Last value = 11064
 
     #endregion
 
@@ -6427,7 +6440,7 @@ SMN.JobID)]
     WAR_Mit_Vengeance = 18054,
 
     [ReplaceSkill(WAR.ShakeItOff)]
-    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Shake It Off with Reprisal when ready.", WAR.JobID)]
+    [CustomComboInfo("One-Button Party Mitigation Feature", "Replaces Shake It Off with Reprisal when ready.", WAR.JobID)]
     WAR_Mit_Party = 18111,
     #endregion
 
@@ -6479,7 +6492,7 @@ SMN.JobID)]
     WAR_Variant_Ultimatum = 18030,
 
     [ReplaceSkill(WAR.Equilibrium)]
-    [CustomComboInfo("Thrill of Battle to Equilibirum Feature", "Replaces Equilibirum with Thrill of Battle when ready.", WAR.JobID)]
+    [CustomComboInfo("Equilibirum to Thrill of Battle Feature", "Replaces Equilibirum with Thrill of Battle when ready.", WAR.JobID)]
     WAR_ThrillEquilibrium = 18055,
 
     [ReplaceSkill(WAR.NascentFlash)]
