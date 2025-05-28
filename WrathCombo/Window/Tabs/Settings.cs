@@ -635,7 +635,7 @@ namespace WrathCombo.Window.Tabs
                                    BindingFlags.Static)
                     .Select(x => x.Name)
                     .Where(x => !x.Contains("Enemy") &&
-                                !x.Contains("Attack"))
+                                !x.Contains("Attack") && !x.Contains("Dead"))
                     .Prepend("default")
                     .ToArray();
 
