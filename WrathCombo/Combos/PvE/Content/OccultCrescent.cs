@@ -11,145 +11,156 @@ internal class OccultCrescent
 
     public static ushort
         //Freelancer
-        OccultResuscitation = 60,
-        OccultTreasuresight = 61,
+        OccultResuscitation = 41650,
+        OccultTreasuresight = 41651,
 
         //Knight
-        PhantomGuard = 0,
-        Pray = 1,
-        OccultHeal = 2,
-        Pledge = 3,
+        PhantomGuard = 41588,
+        Pray = 41589,
+        OccultHeal = 41590,
+        Pledge = 41591,
 
         //Monk
-        PhantomKick = 4,
-        OccultCounter = 5,
-        Counterstance = 6,
-        OccultChakra = 7,
+        PhantomKick = 41595,
+        OccultCounter = 41596,
+        Counterstance = 41597,
+        OccultChakra = 41598,
 
         //Thief
-        OccultSprint = 8,
-        Steal = 9,
-        Vigilance = 10,
-        TrapDetection = 11,
-        PilferWeapon = 12,
+        OccultSprint = 41646,
+        Steal = 41647,
+        Vigilance = 41648,
+        TrapDetection = 41649,
+        PilferWeapon = 41650,
 
         //Berserker
-        Rage = 13,
-        DeadlyBlow = 14,
+        Rage = 41592,
+        DeadlyBlow = 41594,
 
         //Ranger
-        PhantomAim = 15,
-        OccultFeatherfoot = 16,
-        OccultFalcon = 17,
-        OccultUnicorn = 18,
+        PhantomAim = 41599,
+        OccultFeatherfoot = 41600,
+        OccultFalcon = 41601,
+        OccultUnicorn = 41602,
 
         //Time Mage
-        OccultSlowga = 19,
-        OccultComet = 20,
-        OccultMageMasher = 21,
-        OccultDispel = 22,
-        OccultQuick = 23,
+        OccultSlowga = 41621,
+        OccultComet = 41622,
+        OccultMageMasher = 41623,
+        OccultDispel = 41624,
+        OccultQuick = 41625,
 
         //Chemist
-        OccultPotion = 24,
-        OccultEther = 25,
-        Revive = 26,
-        OccultElixir = 27,
+        OccultPotion = 41631,
+        OccultEther = 41633,
+        Revive = 41634,
+        OccultElixir = 41635,
 
         //Bard
-        OffensiveAria = 28,
-        RomeosBallad = 29,
-        MightyMarch = 30,
-        HerosRime = 31,
+        MightyMarch = 41607,
+        OffensiveAria = 41608,
+        RomeosBallad = 41609,
+        HerosRime = 41610,
 
         //Oracle
-        Predict = 32,
-        PhantomJudgment = 33,
-        Cleansing = 34,
-        Blessing = 35,
-        Starfall = 36,
-        Recuperation = 37,
-        PhantomDoom = 38,
-        PhantomRejuvenation = 39,
-        Invulnerability = 40,
+        Predict = 41636,
+        PhantomJudgment = 41637,
+        Cleansing = 41638,
+        Blessing = 41639,
+        Starfall = 41640,
+        Recuperation = 41641,
+        PhantomDoom = 41642,
+        PhantomRejuvenation = 41643,
+        Invulnerability = 41644,
 
         //Cannoneer
-        PhantomFire = 41,
-        HolyCannon = 42,
-        DarkCannon = 43,
-        ShockCannon = 44,
-        SilverCannon = 45,
+        PhantomFire = 41626,
+        HolyCannon = 41627,
+        DarkCannon = 41628,
+        ShockCannon = 41629,
+        SilverCannon = 41630,
 
         //Samurai
-        Mineuchi = 46,
-        Shirahadori = 47,
-        Iainuki = 48,
-        Zeninage = 49,
+        Mineuchi = 41603,
+        Shirahadori = 41604,
+        Iainuki = 41605,
+        Zeninage = 41606,
 
         //Geomancer
-        BattleBell = 50,
-        Weather = 51,
-        Sunbath = 52,
-        CloudyCaress = 53,
-        BlessedRain = 54,
-        MistyMirage = 55,
-        HastyMirage = 56,
-        AetherialGain = 57,
-        RingingRespite = 58,
-        Suspend = 59;
+        BattleBell = 41611,
+        Weather = 41612,
+        Sunbath = 41613,
+        CloudyCaress = 41614,
+        BlessedRain = 41615,
+        MistyMirage = 41616,
+        HastyMirage = 41617,
+        AetherialGain = 41618,
+        RingingRespite = 41619,
+        Suspend = 41620;
 
     public static class Buffs
     {
         public static ushort
-            PhantomGuard = 0, //10s
-            Pray = 0, //30s; TODO: Is this going to be labeled as a standard Regen? idk yet
-            EnduringFortitude = 0, //30m
-            Pledge = 0, //10s
-            PhantomKick = 0, //40s
-            CounterStance = 0, //60s
-            Fleetfooted = 0, //30m
-            OccultSprint = 0, //10s
-            Vigilance = 0, //20s
-            ForseenOffense = 0, //20s
-            PilferWeapon = 0, //60s
-            Rage = 0, //10s
-            PentupRage = 0,
-            PhantomAim = 0, //30s
-            OccultUnicorn = 0, //30s
-            OccultSlowga = 0, //30s
-            OccultQuickRecast = 0, //20s
-            OccultQuickMovement = 0, //10s
-            OffensiveAria = 0, //70s
-            RomeosBalladFreeze = 0, //3s
-            RomeosBalladEXP = 0, //30m
-            MightyMarch = 0, //30s
-            HerosRime = 0, //20s
-            PredictionOfJudgment = 0, //30s
-            PredictionOfCleansing = 0, //30s
-            PredictionOfBlessing = 0, //30s
-            PredictionOfStarfall = 0, //30s
-            Recuperation = 0, //20s
-            FortifiedRecuperation = 0, //3s
-            PhantomDoom = 0, //8s-60s
-            PhantomRejuvenation = 0, //20s
-            Invulnerability = 0, //8s
-            SilverSickness = 0, //70s
-            Shirahadori = 0, //4s
-            BattleBell = 0, //60s
-            BattlesClangor = 0, //30s
-            CloudyCaress = 0, //20s
-            BlessedRain = 0, //20s
-            MistyMirage = 0, //20s
-            HastyMirage = 0, //20s
-            AetherialGain = 0, //20s
-            RingingRespite = 0, //60s
-            Suspend = 0; //60s
+            PhantomGuard = 4231,
+            Pray = 4232,
+            EnduringFortitude = 4233,
+            Pledge = 4234,
+            Rage = 4235,
+            PentupRage = 4236,
+            PhantomKick = 4237,
+            Fleetfooted = 4239,
+            PhantomAim = 4240,
+            OccultUnicorn = 4243,
+            RomeosBallad = 4244,
+            MightyMarch = 4246,
+            OffensiveAria = 4247,
+            HerosRime = 4249,
+            BattleBell = 4251,
+            BattlesClangor = 4252,
+            BlessedRain = 4253,
+            MistyMirage = 4254,
+            HastyMirage = 4255,
+            AetherialGain = 4256,
+            RingingRespite = 4257,
+            Suspend = 4258,
+            OccultQuick = 4260,
+            OccultSprint = 4261,
+            OccultSwift = 4262,
+            SilverSickness = 4264,
+            PredictionOfJudgment = 4265,
+            PredictionOfCleansing = 4266,
+            PredictionOfBlessing = 4267,
+            PredictionOfStarfall = 4268,
+            Recuperation = 4271,
+            FortifiedRecuperation = 4272,
+            PhantomDoom = 4273,
+            PhantomRejuvenation = 4274,
+            Invulnerability = 4275,
+            Shirahadori = 4245,
+            Vigilance = 4277,
+            CloudyCaress = 4280,
+
+            //Job Equipped
+            PhantomFreelancer = 4355,
+            PhantomKnight = 4356,
+            PhantomMonk = 4357,
+            PhantomThief = 4358,
+            PhantomBerserker = 4359,
+            PhantomRanger = 4360,
+            PhantomTimeMage = 4361,
+            PhantomChemist = 4362,
+            PhantomBard = 4363,
+            PhantomOracle = 4364,
+            PhantomCannoneer = 4365,
+            PhantomSamurai = 4366,
+            PhantomGeomancer = 4367;
     }
     public static class Debuffs
     {
         public static ushort
-            OccultMageMasher = 0, //60s
-            Mineuchi = 0; //4s
+            OccultMageMasher = 4259,
+            FalsePrediction = 4269,
+            WeaponPlifered = 4279;
     }
     public static class Traits
     {
@@ -166,5 +177,11 @@ internal class OccultCrescent
             EnhancedPhantomFire = 9,
             EnhancedIainuki = 10,
             EnhancedBell = 11;
+    }
+    public static class Items
+    {
+        public static ushort
+            OccultPotion = 47741,
+            OccultElixir = 47743;
     }
 }
