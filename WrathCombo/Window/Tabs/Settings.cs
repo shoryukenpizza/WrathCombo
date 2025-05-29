@@ -182,6 +182,28 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
+                #region Queued Action Suppression
+
+                if (ImGui.Checkbox($"Queued Action Suppression", ref Service.Configuration.SuppressQueuedActions))
+                    Service.Configuration.Save();
+
+                ImGuiComponents.HelpMarker($"With this enabled, whenever you queue an action that is not the same as the button you are pressing, it will disable every other button's feature from running. This resolves a number of issues where incorrect actions are performed due to how the game processes queued actions, however the visual experience on your hotbars is degraded. This is not recommended to be disabled, however if you feel uncomfortable with hotbar icons changing quickly this is one way to resolve it (or use Performance Mode) but be aware that this may introduce unintended side effects to combos if you have a lot enabled for a job." +
+                    $"\n\n" +
+                    $"For a more complicated explanation, whenever an action is used, the following happens:" +
+                    $"\n1. If the action invokes the GCD (Weaponskills & Spells), if the GCD currently isn't active it will use it right away." +
+                    $"\n2. Otherwise, if you're within the \"Queue Window\" (normally the last 0.5s of the GCD), it gets added to the queue before it is used." +
+                    $"\n3. If the action is an Ability, as long as there's no animation lock currently happening it will execute right away." +
+                    $"\n4. Otherwise, it is added to the queue immediately and then used when the animation lock is finished." +
+                    $"\n\nFor step 1, the action being passed to the game is the original, unmodified action, which is then converted at use time. At step 2, things get messy as the queued action still remains the unmodified action, but when the queue is executed it treats it as if the modified action *is* the unmodified action." +
+                    $"\n\nE.g. Original action Cure, modified action Cure II. At step 1, the game is okay to convert Cure to Cure II because that is what we're telling it to do. However, when Cure is passed to the queue, it treats it as if the unmodified action is Cure II." +
+                    $"\n\nThis is similar for steps 3 & 4, except it can just happen earlier." +
+                    $"\n\nHow this impacts us is if using the example before, we have a feature replacing Cure with Cure II, and another replacing Cure II with Regen and you enable both, the following happens:" +
+                    $"\n\nStep 1, Cure is passed to the game, is converted to Cure II.\nYou press Cure again at the Queue Window, Cure is passed to the queue, however the queue when it goes to execute will treat it as Cure II.\nResult is instead of Cure II being executed, it's Regen, because we've told it to modify Cure II to Regen." +
+                    $"\nThis was not part of the first feature, therefore an incorrect action." +
+                    $"\n\nOur workaround for this is to disable all other actions being replaced if they don't match the queued action, which this setting controls.");
+
+                #endregion
+
                 #region Throttle
 
                 var len = ImGui.CalcTextSize("milliseconds").X;
