@@ -1,8 +1,10 @@
 #region
 
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
@@ -325,6 +327,65 @@ internal partial class DRK : Tank
                 if (CheckMitigationConfigMeetsRequirements(index, out var action))
                     return action;
             }
+
+            return actionID;
+        }
+    }
+
+    internal class DRK_Mit_OneButton_Party : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.DRK_Mit_Party;
+
+        protected override uint Invoke(uint action) =>
+            action is not DarkMissionary
+                ? action
+                : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+    }
+
+    #endregion
+
+    #region Standalones
+
+    internal class DRK_RetargetTBN : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.DRK_Retarget_TBN;
+
+        protected override uint Invoke(uint actionID) {
+            if (actionID is not BlackestNight) return actionID;
+
+            var target =
+                SimpleTarget.UIMouseOverTarget.IfFriendly() ??
+                SimpleTarget.HardTarget.IfFriendly() ??
+                (IsEnabled(CustomComboPreset.DRK_Retarget_TBN_TT) && !PlayerHasAggro
+                    ? SimpleTarget.TargetsTarget.IfFriendly().IfNotThePlayer()
+                    : null);
+
+            if (target is not null)
+                return actionID.Retarget(target, dontCull: true);
+
+            return actionID;
+        }
+    }
+
+    internal class DRK_RetargetOblation : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.DRK_Retarget_Oblation;
+
+        protected override uint Invoke(uint actionID) {
+            if (actionID is not Oblation) return actionID;
+
+            var target =
+                SimpleTarget.UIMouseOverTarget.IfFriendly() ??
+                SimpleTarget.HardTarget.IfFriendly() ??
+                (IsEnabled(CustomComboPreset.DRK_Retarget_Oblation_TT) && !PlayerHasAggro
+                    ? SimpleTarget.TargetsTarget.IfFriendly().IfNotThePlayer()
+                    : null);
+
+            if (target is not null)
+                return actionID.Retarget(target, dontCull: true);
 
             return actionID;
         }
