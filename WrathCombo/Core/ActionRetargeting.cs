@@ -167,7 +167,9 @@ public class ActionRetargeting : IDisposable
         replacedWith = action;
         // Find the Retarget object
         if (!Retargets.TryGetValue(action, out var retarget) ||
-            Service.ActionReplacer.LastActionInvokeFor[action] != retarget.Action)
+            !Service.ActionReplacer.LastActionInvokeFor
+                .TryGetValue(action, out var lastAction) ||
+            lastAction != retarget.Action)
             return false;
 
         replacedWith = retarget.Action;
