@@ -23,11 +23,11 @@ namespace WrathCombo.CustomComboNS
 
         private void UpdateOpener(Dalamud.Plugin.Services.IFramework framework)
         {
-            if (!Service.ActionReplacer.getActionHook.IsEnabled)
+            if (Service.Configuration.PerformanceMode)
             {
-                SelectOpener();
+                CurrentOpener = this;
                 uint _ = 0;
-                FullOpener(ref _);
+                CurrentOpener.FullOpener(ref _);
             }
         }
 

@@ -106,12 +106,8 @@ namespace WrathCombo.Core
 
         public bool ActionChanging = true;
 
-        private DateTime _lastActionChangeCheck = DateTime.MinValue;
-
         internal void SetActionChanging(bool? newValue = null)
         {
-            if ((DateTime.Now - _lastActionChangeCheck).TotalSeconds < 3) return;
-
             if (newValue is not null && newValue != ActionChanging)
             {
                 ActionChanging = newValue.Value;
@@ -126,6 +122,8 @@ namespace WrathCombo.Core
         }
 
         public bool ShowHiddenFeatures = false;
+
+        public bool SuppressQueuedActions = true;
 
         #endregion
 

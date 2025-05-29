@@ -8,6 +8,7 @@ using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Services;
 
 namespace WrathCombo.CustomComboNS
 {
@@ -95,7 +96,7 @@ namespace WrathCombo.CustomComboNS
                 (actionID == resultingActionID && !hasException))
                 return false;
 
-            if (!Svc.ClientState.IsPvP && ActionManager.Instance()->QueuedActionType == ActionType.Action && ActionManager.Instance()->QueuedActionId != actionID)
+            if (Service.Configuration.SuppressQueuedActions && !Svc.ClientState.IsPvP && ActionManager.Instance()->QueuedActionType == ActionType.Action && ActionManager.Instance()->QueuedActionId != actionID)
             {
                 // todo: tauren: remember why this condition was in the if below:
                 //      `&& WrathOpener.CurrentOpener?.OpenerStep <= 1`
