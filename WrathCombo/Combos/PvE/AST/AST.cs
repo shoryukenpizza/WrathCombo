@@ -57,7 +57,8 @@ internal partial class AST : Healer
             {
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                     ActionReady(OriginalHook(AstralDraw)) &&
-                    (Gauge.DrawnCards.All(x => x is CardType.None) || DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards))
+                    (Gauge.DrawnCards.All(x => x is CardType.None) ||
+                     (DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)))
                     return OriginalHook(AstralDraw);
             }
 
@@ -111,7 +112,8 @@ internal partial class AST : Healer
                 //Card Draw
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                     ActionReady(OriginalHook(AstralDraw)) &&
-                    (Gauge.DrawnCards.All(x => x is CardType.None) || DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards) &&
+                    (Gauge.DrawnCards.All(x => x is CardType.None) ||
+                     (DrawnCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)) &&
                     CanDelayedWeave())
                     return OriginalHook(AstralDraw);
 
@@ -217,7 +219,8 @@ internal partial class AST : Healer
             //Card Draw
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) &&
                 ActionReady(OriginalHook(AstralDraw)) &&
-                (Gauge.DrawnCards.All(x => x is CardType.None) || DrawnCard == CardType.None && Config.AST_AOE_DPS_OverwriteCards) &&
+                (Gauge.DrawnCards.All(x => x is CardType.None) ||
+                 (DrawnCard == CardType.None && Config.AST_AOE_DPS_OverwriteCards)) &&
                 CanDelayedWeave())
                 return OriginalHook(AstralDraw);
 
