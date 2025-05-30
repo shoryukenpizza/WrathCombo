@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -131,9 +132,15 @@ public static class GameObjectExtensions
     ///     Can be chained onto a <see cref="IGameObject" /> to make it return
     ///     <see langword="null" /> if the target is not targetable.
     /// </summary>
-    /// <seealso cref="IsDeadEnoughToRaise"/>
     public static IGameObject? IfTargetable (this IGameObject? obj) =>
         obj != null && obj.IsTargetable ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not a real player.
+    /// </summary>
+    public static IGameObject? IfAPlayer (this IGameObject? obj) =>
+        obj != null && obj is IPlayerCharacter ? obj : null;
 
     #endregion
 
@@ -220,6 +227,13 @@ public static class GameObjectExtensions
     /// <seealso cref="IsDeadEnoughToRaise"/>
     public static bool IsDead(this IGameObject? obj) =>
         obj != null && IsDeadEnoughToRaise(obj);
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object is a player.
+    /// </summary>
+    public static bool IsAPlayer(this IGameObject? obj) =>
+        obj != null && obj is IPlayerCharacter;
 
     #endregion
 
