@@ -61,6 +61,9 @@ internal partial class PCT
 
     internal static uint BurstWindow(uint actionId)
     {
+        if (LandscapeMotifReady)
+            return OriginalHook(LandscapeMotif);        
+
         if (!HasStatusEffect(Buffs.StarryMuse))
         {
             if (SteelMuseReady)
@@ -110,6 +113,9 @@ internal partial class PCT
 
             if (CometinBlack.LevelChecked() && HasStatusEffect(Buffs.MonochromeTones) && HasPaint && !HasStatusEffect(Buffs.RainbowBright))
                 return OriginalHook(CometinBlack);
+
+            if (HasStatusEffect(Buffs.SubtractivePalette))
+                return OriginalHook(BlizzardinCyan);
         }
         return actionId;
     }
