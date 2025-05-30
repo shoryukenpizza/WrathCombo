@@ -5,7 +5,7 @@
 /WrathCombo/Combos/PvE/AST/                           @Taurenkey
 /WrathCombo/Combos/PvE/BLM/                           @Kagekazu
 /WrathCombo/Combos/PvE/BLU/                           @zbee
-/WrathCombo/Combos/PvE/BRD/                           @zbee
+/WrathCombo/Combos/PvE/BRD/                           @edewen
 /WrathCombo/Combos/PvE/DNC/                           @zbee
 /WrathCombo/Combos/PvE/DRG/                           @Kagekazu
 /WrathCombo/Combos/PvE/DRK/                           @zbee
@@ -26,7 +26,8 @@
 /WrathCombo/Combos/PvE/WHM/                           @zbee
 
 # PvP Combos
-/WrathCombo/Combos/PvP/                               @Nik-Potokar @Kaeris-Tempest
+/WrathCombo/Combos/PvP/                               @Nik-Potokar @Kaeris-Tempest @edewen
+/WrathCombo/Combos/PvP/BRDPVP.cs                      @edewen
 /WrathCombo/Combos/PvP/BLMPVP.cs                      @Kaeris-Tempest
 /WrathCombo/Combos/PvP/RDMPVP.cs                      @Kaeris-Tempest
 /WrathCombo/Combos/PvP/SAMPVP.cs                      @Kaeris-Tempest
