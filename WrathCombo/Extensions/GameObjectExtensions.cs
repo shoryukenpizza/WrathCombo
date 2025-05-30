@@ -127,6 +127,14 @@ public static class GameObjectExtensions
     public static IGameObject? IfDead (this IGameObject? obj) =>
         obj != null && IsDeadEnoughToRaise(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not targetable.
+    /// </summary>
+    /// <seealso cref="IsDeadEnoughToRaise"/>
+    public static IGameObject? IfTargetable (this IGameObject? obj) =>
+        obj != null && obj.IsTargetable ? obj : null;
+
     #endregion
 
     #region Target Checking (same as above, but returns a boolean)
