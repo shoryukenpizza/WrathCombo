@@ -49,7 +49,9 @@ internal static class SimpleTarget
         ///     Hard Target near the bottom.
         /// </remarks>
         public static IGameObject? OverridesAllies =>
-            UIMouseOverTarget ?? FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
+            UIMouseOverTarget ?? FocusTarget.IfFriendly() ??
+            SoftTarget.IfFriendly()  ?? HardTarget .IfFriendly() ??
+            Self;
 
         /// A very common stack that targets the player, if there are no manual
         /// overrides targeted.
@@ -62,7 +64,8 @@ internal static class SimpleTarget
 
         /// A very common stack that targets an ally or self.
         public static IGameObject? Allies =>
-            FocusTarget ?? SoftTarget ?? HardTarget ?? Self;
+            FocusTarget.IfFriendly() ?? SoftTarget.IfFriendly() ??
+            HardTarget .IfFriendly() ?? Self;
 
         /// A little mask for Plugin Configuration to make the string a bit shorter.
         private static PluginConfiguration cfg =>
