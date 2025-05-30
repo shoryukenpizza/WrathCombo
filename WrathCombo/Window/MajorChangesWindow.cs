@@ -219,7 +219,7 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     ///     The version where the problem was introduced.
     /// </summary>
     private static readonly Version VersionWhereChangeIntroduced =
-        new(1, 0, 1, 5);
+        new(1, 0, 1, 6);
 
     /// <summary>
     ///     Whether the current version is problematic.
@@ -232,7 +232,7 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     ///     Whether the suggestion should be hidden for this version.
     /// </summary>
     private static readonly bool IsPopupHiddenForThisVersion =
-        Service.Configuration.HideMajorChangesForVersion >= Version;
+        Service.Configuration.HideMajorChangesForVersion >= VersionWhereChangeIntroduced;
 
     #endregion
 

@@ -29,6 +29,8 @@ namespace WrathCombo.CustomComboNS
                 uint _ = 0;
                 CurrentOpener.FullOpener(ref _);
             }
+
+            
         }
 
         public void ProgressOpener(uint actionId)
@@ -174,8 +176,12 @@ namespace WrathCombo.CustomComboNS
 
                 if (OpenerStep > 1)
                 {
+                    bool prevStepSkipping = SkipSteps.FindFirst(x => x.Steps.FindFirst(y => y == OpenerStep  - 1, out var t), out var p);
+                    if (prevStepSkipping)
+                        prevStepSkipping = p.Condition();
+
                     bool delay = PrepullDelays.FindFirst(x => x.Steps.Any(y => y == DelayedStep && y == OpenerStep), out var hold);
-                    if ((!delay && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
+                    if ((!delay && !prevStepSkipping && ActionWatching.TimeSinceLastAction.TotalSeconds >= Service.Configuration.OpenerTimeout) || (delay && (DateTime.Now - DelayedAt).TotalSeconds > hold.HoldDelay() + Service.Configuration.OpenerTimeout))
                     {
                         CurrentState = OpenerState.FailedOpener;
                         return false;
