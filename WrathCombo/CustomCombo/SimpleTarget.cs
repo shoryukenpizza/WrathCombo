@@ -369,6 +369,13 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .FirstOrDefault(x => x?.IsDead() == true);
 
+    public static IGameObject? AnyDeadNonPartyMember =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsFriendly() && !x.IsInParty() &&
+                        x.IsTargetable)
+            .FirstOrDefault(x => !x.IsDead);
+
     #region HP-Based Targets
 
     public static IGameObject? LowestHPAlly =>
