@@ -249,6 +249,7 @@ public static class GameObjectExtensions
                !CustomComboFunctions.HasStatusEffect(2648, battleObj, true) &&
                !CustomComboFunctions.HasStatusEffect(148, battleObj, true) &&
                battleObj.IsTargetable &&
-               CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId).TotalSeconds > 2;
+               (CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId)
+                   .TotalSeconds > 2 || !obj.IsInParty());
     }
 }

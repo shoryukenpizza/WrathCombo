@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -71,8 +72,8 @@ internal static class SimpleTarget
         ///     A very common stack to pick a heal target, whether the user is
         ///     using the Default or Custom Heal Stack.
         /// </summary>
-        /// <seealso cref="DefaultHealStack" />
-        /// <seealso cref="CustomHealStack" />
+        /// <seealso cref="DefaultHealStack"/>
+        /// <seealso cref="CustomHealStack"/>
         public static IGameObject? AllyToHeal => GetStack();
 
         /// <summary>
@@ -88,8 +89,8 @@ internal static class SimpleTarget
         /// <summary>
         ///     The Custom Heal Stack, fully user-made.
         /// </summary>
-        /// <seealso cref="PluginConfiguration.CustomHealStack" />
-        /// <seealso cref="GetStack" />
+        /// <seealso cref="PluginConfiguration.CustomHealStack"/>
+        /// <seealso cref="GetStack"/>
         internal static IGameObject? CustomHealStack =>
             GetStack(StackOption.CustomHealStack);
 
@@ -99,7 +100,7 @@ internal static class SimpleTarget
         /// </summary>
         public static IGameObject? AllyToEsuna =>
             GetStack(logicForEachEntryInStack:
-                target => target.IfHasCleansable());
+                (target) => target.IfHasCleansable());
 
         /// <summary>
         ///     The Customizable Raise Stack.
@@ -120,17 +121,16 @@ internal static class SimpleTarget
         /// <param name="logicForEachEntryInStack">
         ///     A short method, probably of <see cref="GameObjectExtensions" />,
         ///     to apply to each entry in the stack.<br />
-        ///     <see cref="AllyToEsuna" /> for an example.
+        ///     <see cref="AllyToEsuna"/> for an example.
         /// </param>
         /// <returns>
         ///     The first matching target in the stack, or <see langword="null" />.
         /// </returns>
         private static IGameObject? GetStack
-        (StackOption stack = StackOption.UserChosenHealStack,
-            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
+            (StackOption stack = StackOption.UserChosenHealStack,
+                Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
         {
             #region Default Heal Stack
-
             if (stack is StackOption.DefaultHealStack ||
                 (stack is StackOption.UserChosenHealStack &&
                  !cfg.UseCustomHealStack))
@@ -150,11 +150,9 @@ internal static class SimpleTarget
                         ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
                         : null) ??
                     Self;
-
             #endregion
 
             #region Custom Heal Stack
-
             if (stack is StackOption.CustomHealStack ||
                 (stack is StackOption.UserChosenHealStack &&
                  cfg.UseCustomHealStack))
@@ -165,8 +163,7 @@ internal static class SimpleTarget
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target =
-                        CustomLogic(resolved.IfFriendly().IfTargetable()
-                            .IfWithinRange());
+                        CustomLogic(resolved.IfFriendly().IfTargetable().IfWithinRange());
 
                     // Only include Missing-HP options if they are missing HP
                     if (name.Contains("Missing"))
@@ -188,11 +185,9 @@ internal static class SimpleTarget
                 if (Service.Configuration.CustomHealStack.Length <= 3)
                     return Self;
             }
-
             #endregion
 
             #region Raise Stack
-
             if (stack is StackOption.RaiseStack)
             {
                 var logging = EZ.Throttle("raiseStackLog", TS.FromSeconds(10));
@@ -220,12 +215,11 @@ internal static class SimpleTarget
                 if (Service.Configuration.RaiseStack.Length <= 4)
                     return HardTarget.IfFriendly().IfDead() ?? AnyDeadPartyMember;
             }
-
             #endregion
 
             return null;
 
-            IGameObject? CustomLogic(IGameObject? target)
+            IGameObject? CustomLogic (IGameObject? target)
             {
                 if (target is null) return null;
                 if (logicForEachEntryInStack is null) return target;
@@ -234,7 +228,7 @@ internal static class SimpleTarget
             }
         }
 
-        private static IGameObject? GetSimpleTargetValueFromName(string name)
+        private static IGameObject? GetSimpleTargetValueFromName (string name)
         {
             try
             {
@@ -245,9 +239,8 @@ internal static class SimpleTarget
             }
             catch (Exception e)
             {
-                PluginLog.Warning(
-                    $"Error getting target value from name: '{name}'. " +
-                    $"Edited value?\n{e}");
+                PluginLog.Warning($"Error getting target value from name: '{name}'. " +
+                                  $"Edited value?\n{e}");
                 return null;
             }
         }
@@ -382,11 +375,8 @@ internal static class SimpleTarget
         Svc.Objects
             .Where(x => x is IBattleChara &&
                         x.IsFriendly() && !x.IsInParty() &&
-                        x.IsAPlayer() && x.IsTargetable &&
-                        !CustomComboFunctions.HasStatusEffect(2648, x, true) &&
-                        !CustomComboFunctions.HasStatusEffect(148, x, true)
-            )
-            .FirstOrDefault(x => x.IsDead);
+                        x.IsAPlayer() && x.IsTargetable)
+            .FirstOrDefault(x => x.IsDead());
 
     #region HP-Based Targets
 
@@ -491,7 +481,7 @@ internal static class SimpleTarget
             .Select(x => x.BattleChara)
             .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer ||
-                                 x?.ClassJob.RowId is SMN.JobID or RDM.JobID);
+                x?.ClassJob.RowId is SMN.JobID or RDM.JobID);
 
     /// Gets any Raiser DPS that is not the player.
     public static IGameObject? AnyRaiserDPS =>
