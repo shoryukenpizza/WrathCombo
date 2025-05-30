@@ -162,7 +162,7 @@ internal static class SimpleTarget
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target =
-                        CustomLogic(resolved.IfFriendly().IfWithinRange());
+                        CustomLogic(resolved.IfFriendly().IfTargetable().IfWithinRange());
 
                     // Only include Missing-HP options if they are missing HP
                     if (name.Contains("Missing"))
@@ -195,7 +195,8 @@ internal static class SimpleTarget
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target =
-                        CustomLogic(resolved.IfFriendly().IfDead().IfWithinRange(30));
+                        CustomLogic(resolved.IfFriendly().IfTargetable()
+                            .IfDead().IfWithinRange(30));
 
                     if (logging)
                         PluginLog.Verbose(
