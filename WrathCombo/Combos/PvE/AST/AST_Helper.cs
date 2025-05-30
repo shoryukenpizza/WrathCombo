@@ -32,7 +32,7 @@ internal partial class AST
     public static ASTOpenerMaxLevel1 Opener1 = new();
 
     public static ASTGauge Gauge => GetJobGauge<ASTGauge>();
-    public static CardType DrawnCard { get; set; }
+    public static CardType DrawnDPSCard => Gauge.DrawnCards[0];
 
     public static int SpellsSinceDraw()
     {
