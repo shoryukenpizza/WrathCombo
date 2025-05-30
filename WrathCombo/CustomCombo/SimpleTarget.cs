@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -372,6 +373,7 @@ internal static class SimpleTarget
 
     public static IGameObject? AnyDeadNonPartyMember =>
         Svc.Objects
+            .OfType<IPlayerCharacter>()
             .OfType<IBattleChara>()
             .Where(x => x.IsFriendly() && !x.IsInParty() &&
                         x.IsTargetable)
