@@ -124,13 +124,13 @@ internal partial class VPR : Melee
             if (CappedOnCoils() &&
                 (HasCharges(Vicewinder) && !HasStatusEffect(Buffs.SwiftskinsVenom) &&
                  !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.Reawakened) || //spend if Vicewinder is up, after Reawaken
-                 IreCD() <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
+                 IreCD <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
                 return UncoiledFury;
 
             //Vicewinder Usage
             if (HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
-                (IreCD() >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
+                (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return Role.CanTrueNorth() && CanDelayedWeave()
                     ? Role.TrueNorth
@@ -293,14 +293,14 @@ internal partial class VPR : Melee
             if (IsEnabled(CustomComboPreset.VPR_ST_UncoiledFury) && CappedOnCoils() &&
                 (HasCharges(Vicewinder) && !HasStatusEffect(Buffs.SwiftskinsVenom) &&
                  !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.Reawakened) || //spend if Vicewinder is up, after Reawaken
-                 IreCD() <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
+                 IreCD <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
                 return UncoiledFury;
 
             //Vicewinder Usage
             if (IsEnabled(CustomComboPreset.VPR_ST_Vicewinder) &&
                 HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
-                (IreCD() >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
+                (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return IsEnabled(CustomComboPreset.VPR_TrueNortVicewinder) &&
                        Role.CanTrueNorth() && CanDelayedWeave()
@@ -450,12 +450,12 @@ internal partial class VPR : Melee
 
             //Overcap protection
             if ((HasCharges(Vicepit) && !HasStatusEffect(Buffs.FellskinsVenom) && !HasStatusEffect(Buffs.FellhuntersVenom) ||
-                 IreCD() <= GCD * 2) && !HasStatusEffect(Buffs.Reawakened) && CappedOnCoils())
+                 IreCD <= GCD * 2) && !HasStatusEffect(Buffs.Reawakened) && CappedOnCoils())
                 return UncoiledFury;
 
             //Vicepit Usage
             if (ActionReady(Vicepit) && !HasStatusEffect(Buffs.Reawakened) &&
-                (IreCD() >= GCD * 5 || !LevelChecked(SerpentsIre)) && InRange())
+                (IreCD >= GCD * 5 || !LevelChecked(SerpentsIre)) && InRange())
                 return Vicepit;
 
             // Uncoiled Fury usage
@@ -600,14 +600,14 @@ internal partial class VPR : Melee
             //Overcap protection
             if (IsEnabled(CustomComboPreset.VPR_AoE_UncoiledFury) &&
                 (HasCharges(Vicepit) && !HasStatusEffect(Buffs.FellskinsVenom) && !HasStatusEffect(Buffs.FellhuntersVenom) ||
-                 IreCD() <= GCD * 2) && !HasStatusEffect(Buffs.Reawakened) && CappedOnCoils())
+                 IreCD <= GCD * 2) && !HasStatusEffect(Buffs.Reawakened) && CappedOnCoils())
                 return UncoiledFury;
 
             //Vicepit Usage
             if (IsEnabled(CustomComboPreset.VPR_AoE_Vicepit) &&
                 ActionReady(Vicepit) && !HasStatusEffect(Buffs.Reawakened) &&
                 (InRange() || IsEnabled(CustomComboPreset.VPR_AoE_Vicepit_DisableRange)) &&
-                (IreCD() >= GCD * 5 || !LevelChecked(SerpentsIre)))
+                (IreCD >= GCD * 5 || !LevelChecked(SerpentsIre)))
                 return Vicepit;
 
             // Uncoiled Fury usage
