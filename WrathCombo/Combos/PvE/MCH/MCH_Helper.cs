@@ -96,12 +96,14 @@ internal partial class MCH
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1]) &&
-                !LevelChecked(Excavator) && ActionReady(Chainsaw) && !MaxBattery())
+                !LevelChecked(Excavator) && !MaxBattery() && LevelChecked(Chainsaw) &&
+                (GetCooldownChargeRemainingTime(Chainsaw) <= GCD || IsOffCooldown(Chainsaw)))
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
-                LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && !MaxBattery())
+                !MaxBattery() && LevelChecked(AirAnchor) &&
+                (GetCooldownChargeRemainingTime(AirAnchor) <= GCD || IsOffCooldown(AirAnchor)))
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
