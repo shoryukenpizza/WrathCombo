@@ -29,7 +29,7 @@ internal partial class MCH
     {
         if (!HasDoubleWeaved() && !HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
-            !RobotActive && Battery >= 50)
+            !RobotActive() && Battery >= 50)
         {
             if ((MCH_ST_Adv_Turret_SubOption == 0 ||
                  MCH_ST_Adv_Turret_SubOption == 1 && InBossEncounter() ||
@@ -96,12 +96,12 @@ internal partial class MCH
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1]) &&
-                !LevelChecked(Excavator) && ActionReady(Chainsaw) && !MaxBattery)
+                !LevelChecked(Excavator) && ActionReady(Chainsaw) && !MaxBattery())
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
-                LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && !MaxBattery)
+                LevelChecked(AirAnchor) && IsOffCooldown(AirAnchor) && !MaxBattery())
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
@@ -147,7 +147,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_Chainsaw) && ReassembledChainsawST) &&
-            !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
+            !MaxBattery() && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
             (GetCooldownChargeRemainingTime(Chainsaw) <= GCD / 2 || IsOffCooldown(Chainsaw)))
         {
             actionID = Chainsaw;
@@ -157,7 +157,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
-            !MaxBattery && LevelChecked(AirAnchor) &&
+            !MaxBattery() && LevelChecked(AirAnchor) &&
             (GetCooldownChargeRemainingTime(AirAnchor) <= GCD / 2 || IsOffCooldown(AirAnchor)))
         {
             actionID = AirAnchor;
@@ -177,7 +177,7 @@ internal partial class MCH
 
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor)) &&
-            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
+            LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery() &&
             (GetCooldownChargeRemainingTime(HotShot) < GCD / 2 || ActionReady(HotShot)))
         {
             actionID = HotShot;
@@ -391,9 +391,9 @@ internal partial class MCH
 
     internal static MCHGauge Gauge = GetJobGauge<MCHGauge>();
 
-    internal static bool IsOverheated => Gauge.IsOverheated;
+    internal static bool IsOverheated() => Gauge.IsOverheated;
 
-    internal static bool RobotActive => Gauge.IsRobotActive;
+    internal static bool RobotActive() => Gauge.IsRobotActive;
 
     internal static byte LastSummonBattery => Gauge.LastSummonBatteryPower;
 
@@ -401,7 +401,7 @@ internal partial class MCH
 
     internal static byte Battery => Gauge.Battery;
 
-    internal static bool MaxBattery => Battery >= 100;
+    internal static bool MaxBattery() => Battery >= 100;
 
     #endregion
 
