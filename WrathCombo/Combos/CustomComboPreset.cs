@@ -6240,7 +6240,6 @@ SMN.JobID)]
     VPR_SerpentsTail = 30210,
 
     #endregion
-    
     //ST 30016
     //AoE 30115
     //Misc 30210
@@ -6248,9 +6247,8 @@ SMN.JobID)]
     #endregion
 
     #region WARRIOR
-    
-    #region Simple Mode
 
+    #region Simple Mode
     [AutoAction(false, false)]
     [ConflictingCombos(WAR_ST_Advanced)]
     [ReplaceSkill(WAR.HeavySwing)]
@@ -6266,7 +6264,6 @@ SMN.JobID)]
         "Replaces Overpower with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.",
         WAR.JobID)]
     WAR_AoE_Simple = 18001,
-
     #endregion
 
     #region Advanced ST
@@ -6329,7 +6326,6 @@ SMN.JobID)]
     WAR_ST_Stun = 18112,
 
     #region Mitigations
-
     [ParentCombo(WAR_ST_Advanced)]
     [CustomComboInfo("Mitigation Options", "Adds defensive actions into the rotation based on Health percentage remaining.", WAR.JobID)]
     WAR_ST_Mitigation = 18040,
@@ -6365,7 +6361,6 @@ SMN.JobID)]
     [ParentCombo(WAR_ST_Mitigation)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length into the rotation based on Health percentage remaining.", WAR.JobID)]
     WAR_ST_ArmsLength = 18062,
-
     #endregion
 
     #endregion
@@ -6422,7 +6417,6 @@ SMN.JobID)]
     WAR_AoE_Stun = 18068,
 
     #region Mitigations
-
     [ParentCombo(WAR_AoE_Advanced)]
     [CustomComboInfo("Mitigation Options", "Adds defensive actions into the rotation based on Health percentage remaining.", WAR.JobID)]
     WAR_AoE_Mitigation = 18035,
@@ -6458,7 +6452,6 @@ SMN.JobID)]
     [ParentCombo(WAR_AoE_Mitigation)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length into the rotation based on Health percentage remaining.", WAR.JobID)]
     WAR_AoE_ArmsLength = 18064,
-
     #endregion
 
     #endregion
@@ -6511,6 +6504,41 @@ SMN.JobID)]
 
     #region Misc
 
+    #region Fell Cleave Features
+    [ReplaceSkill(WAR.FellCleave)]
+    [ConflictingCombos(WAR_InfuriateFellCleave)]
+    [CustomComboInfo("Fell Cleave Features", "Collection of Fell Cleave related features.\n Enable all for this to be an all-in-one Single Target Burst button.", WAR.JobID)]
+    WAR_FC_Features = 18122,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Inner Release Option", "Adds Berserk / Inner Release to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_InnerRelease = 18123,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Infuriate Option", "Adds Infuriate to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_Infuriate = 18124,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Onslaught Option", "Adds Onslaught to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_Onslaught = 18125,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Upheaval Option", "Adds Upheaval to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_Upheaval = 18126,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Primal Rend Option", "Adds Primal Rend to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_PrimalRend = 18127,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Primal Wrath Option", "Adds Primal Wrath to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_PrimalWrath = 18128,
+
+    [ParentCombo(WAR_FC_Features)]
+    [CustomComboInfo("Primal Ruination Option", "Adds Primal Ruination to Fell Cleave when available.", WAR.JobID)]
+    WAR_FC_PrimalRuination = 18129,
+    #endregion
+
     #region Basic Combo
     [ReplaceSkill(WAR.StormsPath)]
     [CustomComboInfo("Storm's Path Combo", "Replace Storm's Path with its combo chain.", WAR.JobID)]
@@ -6522,6 +6550,7 @@ SMN.JobID)]
     #endregion
 
     [ReplaceSkill(WAR.FellCleave, WAR.Decimate)]
+    [ConflictingCombos(WAR_FC_Features)]
     [CustomComboInfo("Infuriate on Fell Cleave / Decimate Feature", "Turns Fell Cleave and Decimate into Infuriate if at or under set gauge value.", WAR.JobID)]
     WAR_InfuriateFellCleave = 18024,
 
