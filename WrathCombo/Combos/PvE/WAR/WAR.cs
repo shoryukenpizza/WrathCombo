@@ -396,16 +396,6 @@ internal partial class WAR : Tank
     }
     #endregion
 
-    #region Storm's Eye Combo -> Storm's Eye
-    internal class WAR_StormsEye : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_StormsEye;
-        protected override uint Invoke(uint action) => action != StormsEye ? action :
-            ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim) ? Maim :
-            ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye) ? StormsEye : HeavySwing;
-    }
-    #endregion
-
     #region Primal Combo -> Inner Release
     internal class WAR_PrimalCombo_InnerRelease : CustomCombo
     {

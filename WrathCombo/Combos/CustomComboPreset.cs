@@ -6558,10 +6558,6 @@ SMN.JobID)]
     [CustomComboInfo("Inner Release Priority Option", "Prevents the use of Infuriate while you have Inner Release stacks available.", WAR.JobID)]
     WAR_InfuriateFellCleave_IRFirst = 18027,
 
-    [ReplaceSkill(WAR.StormsEye)]
-    [CustomComboInfo("Storm's Eye Combo Feature", "Replace Storm's Eye with its combo chain.", WAR.JobID)]
-    WAR_StormsEye = 18025,
-
     [ReplaceSkill(WAR.StormsPath)]
     [CustomComboInfo("Storm's Eye Feature", "Replaces Storm's Path with Storm's Eye when Surging Tempest buff needs refreshing.", WAR.JobID)]
     WAR_EyePath = 18057,
