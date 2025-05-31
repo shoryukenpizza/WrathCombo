@@ -71,7 +71,7 @@ internal partial class MCH : PhysicalRanged
                     if (!IsOverheated())
                     {
                         // BarrelStabilizer
-                        if (ActionReady(BarrelStabilizer) && InBossEncounter() &&
+                        if (ActionReady(BarrelStabilizer) && TargetIsBoss() &&
                             !HasStatusEffect(Buffs.FullMetalMachinist))
                             return BarrelStabilizer;
 
@@ -138,7 +138,7 @@ internal partial class MCH : PhysicalRanged
 
             // Full Metal Field
             if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
-                InBossEncounter() && !JustUsed(BarrelStabilizer) &&
+                TargetIsBoss() && !JustUsed(BarrelStabilizer) &&
                 (GetCooldownRemainingTime(Wildfire) <= GCD || fullMetal.RemainingTime <= 6))
                 return FullMetalField;
 
@@ -224,7 +224,7 @@ internal partial class MCH : PhysicalRanged
                         // BarrelStabilizer
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer) &&
                             (MCH_ST_Adv_BarrelStabiliser_SubOption == 0 ||
-                             MCH_ST_Adv_BarrelStabiliser_SubOption == 1 && InBossEncounter()) &&
+                             MCH_ST_Adv_BarrelStabiliser_SubOption == 1 && TargetIsBoss()) &&
                             ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                             return BarrelStabilizer;
 
@@ -304,7 +304,7 @@ internal partial class MCH : PhysicalRanged
             // Full Metal Field
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 (MCH_ST_Adv_FullMetalMachinist_SubOption == 0 ||
-                 MCH_ST_Adv_FullMetalMachinist_SubOption == 1 && InBossEncounter()) &&
+                 MCH_ST_Adv_FullMetalMachinist_SubOption == 1 && TargetIsBoss()) &&
                 HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 !JustUsed(BarrelStabilizer) &&
                 (fullMetal.RemainingTime <= 6 ||
