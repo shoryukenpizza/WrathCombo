@@ -244,12 +244,12 @@ public static class GameObjectExtensions
     /// </summary>
     private static bool IsDeadEnoughToRaise(this IGameObject? obj)
     {
-        if (obj is not IBattleChara battleObj) return false;
-        return battleObj.IsDead &&
-               !CustomComboFunctions.HasStatusEffect(2648, battleObj, true) &&
-               !CustomComboFunctions.HasStatusEffect(148, battleObj, true) &&
-               battleObj.IsTargetable &&
-               (CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId)
+        return obj.IsDead &&
+               obj.IsAPlayer() &&
+               !CustomComboFunctions.HasStatusEffect(2648, obj, true) &&
+               !CustomComboFunctions.HasStatusEffect(148, obj, true) &&
+               obj.IsTargetable &&
+               (CustomComboFunctions.TimeSpentDead(obj.GameObjectId)
                    .TotalSeconds > 2 || !obj.IsInParty());
     }
 }
