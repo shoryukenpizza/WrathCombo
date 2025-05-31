@@ -142,7 +142,7 @@ internal partial class MNK : Melee
                        Chakra >= 5
                     ? TheForbiddenChakra
                     : actionID;
-            
+
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&
                 !HasStatusEffect(Buffs.FiresRumination) &&
