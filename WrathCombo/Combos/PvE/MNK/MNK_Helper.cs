@@ -141,7 +141,7 @@ internal partial class MNK
         {
         #region Open Lunar
 
-            if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
+            if (!LunarNadi || BothNadisOpen() || !SolarNadi && !LunarNadi)
             {
                 switch (OpoOpo)
                 {
@@ -159,7 +159,7 @@ internal partial class MNK
 
         #region Open Solar
 
-            if (!SolarNadi && !BothNadisOpen)
+            if (!SolarNadi && !BothNadisOpen())
             {
                 if (CoeurlChakra is 0)
                 {
@@ -215,7 +215,7 @@ internal partial class MNK
         {
         #region Open Lunar
 
-            if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
+            if (!LunarNadi || BothNadisOpen() || !SolarNadi && !LunarNadi)
             {
                 if (LevelChecked(ShadowOfTheDestroyer))
                 {
@@ -234,7 +234,7 @@ internal partial class MNK
 
         #region Open Solar
 
-            if (!SolarNadi && !BothNadisOpen)
+            if (!SolarNadi && !BothNadisOpen())
             {
                 switch (GetStatusEffectStacks(Buffs.PerfectBalance))
                 {
@@ -378,7 +378,7 @@ internal partial class MNK
 
     internal static Nadi Nadi => Gauge.Nadi;
 
-    internal static bool BothNadisOpen => Nadi.ToString() == "Lunar, Solar";
+    internal static bool BothNadisOpen() => Nadi.ToString() == "Lunar, Solar";
 
     internal static bool SolarNadi => Nadi is Nadi.Solar;
 

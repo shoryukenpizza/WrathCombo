@@ -18,7 +18,7 @@ internal partial class DRG
     {
         if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
         {
-            if (LevelChecked(Drakesbane) && LoTDActive &&
+            if (LevelChecked(Drakesbane) && LoTDActive() &&
                 (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
                 (JustUsed(WheelingThrust) ||
                  JustUsed(FangAndClaw) ||
@@ -193,7 +193,7 @@ internal partial class DRG
 
     internal static DRGGauge Gauge = GetJobGauge<DRGGauge>();
 
-    internal static bool LoTDActive => Gauge.IsLOTDActive;
+    internal static bool LoTDActive() => Gauge.IsLOTDActive;
 
     internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
 

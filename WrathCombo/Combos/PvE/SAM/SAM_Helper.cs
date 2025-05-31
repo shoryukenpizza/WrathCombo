@@ -190,11 +190,11 @@ internal partial class SAM
 
     internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
 
-    internal static bool HasGetsu => Gauge.HasGetsu;
+    internal static bool HasGetsu() => Gauge.HasGetsu;
 
-    internal static bool HasSetsu => Gauge.HasSetsu;
+    internal static bool HasSetsu() => Gauge.HasSetsu;
 
-    internal static bool HasKa => Gauge.HasKa;
+    internal static bool HasKa() => Gauge.HasKa;
 
     internal static byte Kenki => Gauge.Kenki;
 
@@ -202,19 +202,19 @@ internal partial class SAM
 
     internal static Kaeshi Kaeshi => Gauge.Kaeshi;
 
-    internal static bool NamikiriReady => Kaeshi is Kaeshi.Namikiri;
+    internal static bool NamikiriReady() => Kaeshi is Kaeshi.Namikiri;
 
     private static int GetSenCount()
     {
         int senCount = 0;
 
-        if (HasGetsu)
+        if (HasGetsu())
             senCount++;
 
-        if (HasSetsu)
+        if (HasSetsu())
             senCount++;
 
-        if (HasKa)
+        if (HasKa())
             senCount++;
 
         return senCount;
