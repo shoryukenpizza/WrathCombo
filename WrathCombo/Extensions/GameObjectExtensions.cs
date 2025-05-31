@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -127,6 +128,20 @@ public static class GameObjectExtensions
     public static IGameObject? IfDead (this IGameObject? obj) =>
         obj != null && IsDeadEnoughToRaise(obj) ? obj : null;
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not targetable.
+    /// </summary>
+    public static IGameObject? IfTargetable (this IGameObject? obj) =>
+        obj != null && obj.IsTargetable ? obj : null;
+
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it return
+    ///     <see langword="null" /> if the target is not a real player.
+    /// </summary>
+    public static IGameObject? IfAPlayer (this IGameObject? obj) =>
+        obj != null && obj is IPlayerCharacter ? obj : null;
+
     #endregion
 
     #region Target Checking (same as above, but returns a boolean)
@@ -213,6 +228,13 @@ public static class GameObjectExtensions
     public static bool IsDead(this IGameObject? obj) =>
         obj != null && IsDeadEnoughToRaise(obj);
 
+    /// <summary>
+    ///     Can be chained onto a <see cref="IGameObject" /> to make it a quick
+    ///     boolean check for if the object is a player.
+    /// </summary>
+    public static bool IsAPlayer(this IGameObject? obj) =>
+        obj != null && obj is IPlayerCharacter;
+
     #endregion
 
     /// <summary>
@@ -227,6 +249,7 @@ public static class GameObjectExtensions
                !CustomComboFunctions.HasStatusEffect(2648, battleObj, true) &&
                !CustomComboFunctions.HasStatusEffect(148, battleObj, true) &&
                battleObj.IsTargetable &&
-               CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId).TotalSeconds > 2;
+               (CustomComboFunctions.TimeSpentDead(battleObj.GameObjectId)
+                   .TotalSeconds > 2 || !obj.IsInParty());
     }
 }
