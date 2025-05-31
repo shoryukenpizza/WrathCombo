@@ -450,9 +450,9 @@ internal partial class WAR
 
                 case CustomComboPreset.WAR_FC_Onslaught:
                     UserConfig.DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
-                            "Stationary Only", "Uses Onslaught only while stationary", 0);
+                        "Stationary Only", "Uses Onslaught only while stationary", 0);
                     UserConfig.DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
-                            "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
+                        "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     UserConfig.DrawSliderInt(0, 2, WAR_FC_Onslaught_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
