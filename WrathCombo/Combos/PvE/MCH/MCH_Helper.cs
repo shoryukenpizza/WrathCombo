@@ -148,7 +148,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_Chainsaw) && ReassembledChainsawST) &&
             !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
-            (GetCooldownChargeRemainingTime(Chainsaw) < GCD / 2 || IsOffCooldown(Chainsaw)))
+            (GetCooldownChargeRemainingTime(Chainsaw) <= GCD / 2 || IsOffCooldown(Chainsaw)))
         {
             actionID = Chainsaw;
 
@@ -158,7 +158,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
             !MaxBattery && LevelChecked(AirAnchor) &&
-            (GetCooldownChargeRemainingTime(AirAnchor) < GCD / 2 || IsOffCooldown(AirAnchor)))
+            (GetCooldownChargeRemainingTime(AirAnchor) <= GCD / 2 || IsOffCooldown(AirAnchor)))
         {
             actionID = AirAnchor;
 
