@@ -22,7 +22,7 @@ internal partial class BLM : Caster
 
             if (CanSpellWeave() && !HasDoubleWeaved())
             {
-                if (ActionReady(Amplifier) && !HasMaxPolyglotStacks())
+                if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines))
@@ -58,7 +58,7 @@ internal partial class BLM : Caster
             if (IsMoving() && !LevelChecked(Triplecast))
                 return Scathe;
 
-            if (HasMaxPolyglotStacks() && PolyglotTimer <= 5000)
+            if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
@@ -72,7 +72,7 @@ internal partial class BLM : Caster
 
             if (LevelChecked(Amplifier) &&
                 GetCooldownRemainingTime(Amplifier) < 5 &&
-                HasMaxPolyglotStacks())
+                HasMaxPolyglotStacks)
                 return Xenoglossy;
 
             if (IsMoving() && InCombat())
@@ -124,8 +124,8 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(FireSpam()) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
-                    return FireSpam();
+                if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
+                    return FireSpam;
 
                 if (ActionReady(Despair))
                     return Despair;
@@ -158,8 +158,8 @@ internal partial class BLM : Caster
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
-                if (ActionReady(BlizzardSpam()))
-                    return BlizzardSpam();
+                if (ActionReady(BlizzardSpam))
+                    return BlizzardSpam;
             }
 
             if (LevelChecked(Fire3))
@@ -194,7 +194,7 @@ internal partial class BLM : Caster
             if (CanSpellWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
-                    ActionReady(Amplifier) && !HasMaxPolyglotStacks())
+                    ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
@@ -258,7 +258,7 @@ internal partial class BLM : Caster
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot))
             {
                 //Overcap protection
-                if (HasMaxPolyglotStacks() && PolyglotTimer <= 5000)
+                if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -287,7 +287,7 @@ internal partial class BLM : Caster
                 IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                 LevelChecked(Amplifier) &&
                 GetCooldownRemainingTime(Amplifier) < 5 &&
-                HasMaxPolyglotStacks())
+                HasMaxPolyglotStacks)
                 return Xenoglossy;
 
             if (IsMoving() && InCombat())
@@ -346,8 +346,8 @@ internal partial class BLM : Caster
                     FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(FireSpam()) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
-                    return FireSpam();
+                if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
+                    return FireSpam;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Despair) &&
                     ActionReady(Despair))
@@ -385,8 +385,8 @@ internal partial class BLM : Caster
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
-                if (ActionReady(BlizzardSpam()))
-                    return BlizzardSpam();
+                if (ActionReady(BlizzardSpam))
+                    return BlizzardSpam;
             }
 
             if (LevelChecked(Fire3))
@@ -454,7 +454,7 @@ internal partial class BLM : Caster
                     return OriginalHook(Fire2);
 
                 if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    GetRemainingCharges(Triplecast) > 1 && HasMaxUmbralHeartStacks() &&
+                    GetRemainingCharges(Triplecast) > 1 && HasMaxUmbralHeartStacks &&
                     !ActionReady(Manafont))
                     return Triplecast;
 
@@ -467,7 +467,7 @@ internal partial class BLM : Caster
 
             if (IcePhase)
             {
-                if ((CurMp == MP.MaxMP || HasMaxUmbralHeartStacks()) &&
+                if ((CurMp == MP.MaxMP || HasMaxUmbralHeartStacks) &&
                     ActionReady(Transpose))
                     return Transpose;
 
@@ -548,7 +548,7 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    GetRemainingCharges(Triplecast) > BLM_AoE_Triplecast_HoldCharges && HasMaxUmbralHeartStacks() &&
+                    GetRemainingCharges(Triplecast) > BLM_AoE_Triplecast_HoldCharges && HasMaxUmbralHeartStacks &&
                     !ActionReady(Manafont))
                     return Triplecast;
 
@@ -566,7 +566,7 @@ internal partial class BLM : Caster
 
             if (IcePhase)
             {
-                if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks())
+                if (CurMp == MP.MaxMP || HasMaxUmbralHeartStacks)
                 {
                     if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
                         ActionReady(Fire2) && (TraitLevelChecked(Traits.AspectMasteryIII) || !TraitLevelChecked(Traits.UmbralHeart)))
@@ -743,7 +743,7 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_AmplifierXeno;
         protected override uint Invoke(uint actionID) =>
-            actionID is Amplifier && HasMaxPolyglotStacks()
+            actionID is Amplifier && HasMaxPolyglotStacks
                 ? Xenoglossy
                 : actionID;
     }
