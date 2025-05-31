@@ -55,8 +55,7 @@ internal partial class RPR : Melee
             if (CanWeave() && !HasDoubleWeaved())
             {
                 //Arcane Cirlce
-                if (LevelChecked(ArcaneCircle) && InBossEncounter() &&
-                    (GetCooldownChargeRemainingTime(ArcaneCircle) <= GCD / 2 || IsOffCooldown(ArcaneCircle)) &&
+                if (ActionReady(ArcaneCircle) && InBossEncounter() &&
                     (LevelChecked(Enshroud) && JustUsed(ShadowOfDeath) ||
                      !LevelChecked(Enshroud)))
                     return ArcaneCircle;
@@ -232,8 +231,7 @@ internal partial class RPR : Melee
             {
                 //Arcane Cirlce
                 if (IsEnabled(CustomComboPreset.RPR_ST_ArcaneCircle) &&
-                    LevelChecked(ArcaneCircle) &&
-                    (GetCooldownChargeRemainingTime(ArcaneCircle) <= GCD / 2 || IsOffCooldown(ArcaneCircle)) &&
+                    ActionReady(ArcaneCircle) &&
                     (LevelChecked(Enshroud) && JustUsed(ShadowOfDeath) ||
                      !LevelChecked(Enshroud)) &&
                     (RPR_ST_ArcaneCircle_SubOption == 0 ||
@@ -766,12 +764,12 @@ internal partial class RPR : Melee
 
     internal class RPR_ArcaneCirclePlentifulHarvest : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.RPR_ArcaneCirclePlentifulHarvest;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RPR_ArcaneCirclePlentifulHarvest;
 
         protected override uint Invoke(uint actionID) =>
             actionID is ArcaneCircle &&
-            HasStatusEffect(Buffs.ImmortalSacrifice) && LevelChecked(PlentifulHarvest)
+            HasStatusEffect(Buffs.ImmortalSacrifice) &&
+            LevelChecked(PlentifulHarvest)
                 ? PlentifulHarvest
                 : actionID;
     }
