@@ -15,11 +15,10 @@ internal partial class VPR
 
     #region Config
 
-    internal static float IreCD => GetCooldownRemainingTime(SerpentsIre);
+    internal static float IreCD() => GetCooldownRemainingTime(SerpentsIre);
 
-    internal static bool In5Y => HasBattleTarget() && GetTargetDistance() <= 5;
-
-    internal static bool CappedOnCoils =>
+    internal static bool InRange() => IsInRange(CurrentTarget, 5f);
+    internal static bool CappedOnCoils() =>
         TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 2 ||
         !TraitLevelChecked(Traits.EnhancedVipersRattle) && RattlingCoilStacks > 1;
 
@@ -60,12 +59,12 @@ internal partial class VPR
 
             //2min burst
             if (!JustUsed(SerpentsIre, 2.2f) && HasStatusEffect(Buffs.ReadyToReawaken) ||
-                WasLastWeaponskill(Ouroboros) && SerpentOffering >= 50 && IreCD >= 50)
+                WasLastWeaponskill(Ouroboros) && SerpentOffering >= 50 && IreCD() >= 50)
                 return true;
 
             //1min
             if (SerpentOffering is >= 50 and <= 80 &&
-                IreCD is >= 50 and <= 62)
+                IreCD() is >= 50 and <= 62)
                 return true;
 
             //overcap protection
