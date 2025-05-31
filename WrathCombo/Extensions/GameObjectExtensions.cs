@@ -160,7 +160,7 @@ public static class GameObjectExtensions
     public static bool IsInParty(this IGameObject? obj) =>
         obj != null &&
         CustomComboFunctions.GetPartyMembers()
-            .Any(x => x.GameObjectId != obj.GameObjectId);
+            .Any(x => x.GameObjectId == obj.GameObjectId);
 
     // `IsHostile` already exists, and works the exact same as we would write here
 
