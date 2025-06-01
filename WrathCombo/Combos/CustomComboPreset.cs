@@ -26,6 +26,7 @@ public enum CustomComboPreset
     Phantom_Freelancer = 110000,
 
     [OccultCrescent]
+    [ParentCombo(Phantom_Freelancer)]
     [CustomComboInfo("Occult Resuscitation", "Adds Occult Resuscitation into the rotation.", ADV.JobID)]
     Phantom_Freelancer_OccultResuscitation = 110001,
 
