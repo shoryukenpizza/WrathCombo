@@ -1,13 +1,178 @@
 ﻿using ContentHelper = ECommons.GameHelpers;
-using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE.Content;
 
 internal class OccultCrescent
 {
-    //public static bool InOccultCrescent => ContentHelper.Content.ContentType == ContentHelper.ContentType.OccultCrescent;
-    //public static bool InOccultRaids => ContentHelper.Content.ContentType == ContentHelper.ContentType.OccultCrescentRaid;
-    //public static bool IsInOccultCrescent => ContentHelper.Content.TerritoryIntendedUse == IntendedUse.OccultCrescent && (InOccultCrescent || InOccultRaids);
+    public static bool InFieldOps => ContentHelper.Content.ContentType == ContentHelper.ContentType.FieldOperations;
+    public static bool InSouthHorn => InFieldOps && ContentHelper.Content.TerritoryID == 1252; //South Horn
+    internal static uint BestPhantomAction()
+    {
+        if (!InSouthHorn)
+            return 0;
+
+        bool CanUse(uint action) => HasActionEquipped(action) && IsOffCooldown(action);
+        bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && CanUse(action);
+
+        if (HasStatusEffect(Buffs.PhantomBard))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Bard_MightyMarch, MightyMarch),
+            (CustomComboPreset.Phantom_Bard_OffensiveAria, OffensiveAria),
+            (CustomComboPreset.Phantom_Bard_RomeosBallad, RomeosBallad),
+            (CustomComboPreset.Phantom_Bard_HerosRime, HerosRime), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomBerserker))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Berserker_Rage, Rage),
+            (CustomComboPreset.Phantom_Berserker_DeadlyBlow, DeadlyBlow), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomCannoneer))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Cannoneer_PhantomFire, PhantomFire),
+            (CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon),
+            (CustomComboPreset.Phantom_Cannoneer_DarkCannon, DarkCannon),
+            (CustomComboPreset.Phantom_Cannoneer_ShockCannon, ShockCannon),
+            (CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomChemist))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
+            (CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),
+            (CustomComboPreset.Phantom_Chemist_Revive, Revive),
+            (CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomFreelancer))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Freelancer_OccultResuscitation, OccultResuscitation),
+            (CustomComboPreset.Phantom_Freelancer_OccultTreasuresight, OccultTreasuresight), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomGeomancer))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Geomancer_BattleBell, BattleBell),
+            (CustomComboPreset.Phantom_Geomancer_Weather, Weather),
+            (CustomComboPreset.Phantom_Geomancer_Sunbath, Sunbath),
+            (CustomComboPreset.Phantom_Geomancer_CloudyCaress, CloudyCaress),
+            (CustomComboPreset.Phantom_Geomancer_BlessedRain, BlessedRain),
+            (CustomComboPreset.Phantom_Geomancer_MistyMirage, MistyMirage),
+            (CustomComboPreset.Phantom_Geomancer_HastyMirage, HastyMirage),
+            (CustomComboPreset.Phantom_Geomancer_AetherialGain, AetherialGain),
+            (CustomComboPreset.Phantom_Geomancer_RingingRespite, RingingRespite),
+            (CustomComboPreset.Phantom_Geomancer_Suspend, Suspend), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomKnight))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Knight_PhantomGuard, PhantomGuard),
+            (CustomComboPreset.Phantom_Knight_Pray, Pray),
+            (CustomComboPreset.Phantom_Knight_OccultHeal, OccultHeal),
+            (CustomComboPreset.Phantom_Knight_Pledge, Pledge), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomMonk))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Monk_PhantomKick, PhantomKick),
+            (CustomComboPreset.Phantom_Monk_OccultCounter, OccultCounter),
+            (CustomComboPreset.Phantom_Monk_Counterstance, Counterstance),
+            (CustomComboPreset.Phantom_Monk_OccultChakra, OccultChakra), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomOracle))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Oracle_Predict, Predict),
+            (CustomComboPreset.Phantom_Oracle_PhantomJudgment, PhantomJudgment),
+            (CustomComboPreset.Phantom_Oracle_Cleansing, Cleansing),
+            (CustomComboPreset.Phantom_Oracle_Blessing, Blessing),
+            (CustomComboPreset.Phantom_Oracle_Starfall, Starfall),
+            (CustomComboPreset.Phantom_Oracle_Recuperation, Recuperation),
+            (CustomComboPreset.Phantom_Oracle_PhantomDoom, PhantomDoom),
+            (CustomComboPreset.Phantom_Oracle_PhantomRejuvenation, PhantomRejuvenation),
+            (CustomComboPreset.Phantom_Oracle_Invulnerability, Invulnerability), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomRanger))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Ranger_PhantomAim, PhantomAim),
+            (CustomComboPreset.Phantom_Ranger_OccultFeatherfoot, OccultFeatherfoot),
+            (CustomComboPreset.Phantom_Ranger_OccultFalcon, OccultFalcon),
+            (CustomComboPreset.Phantom_Ranger_OccultUnicorn, OccultUnicorn), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomSamurai))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Samurai_Mineuchi, Mineuchi),
+            (CustomComboPreset.Phantom_Samurai_Shirahadori, Shirahadori),
+            (CustomComboPreset.Phantom_Samurai_Iainuki, Iainuki),
+            (CustomComboPreset.Phantom_Samurai_Zeninage, Zeninage), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomThief))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_Thief_OccultSprint, OccultSprint),
+            (CustomComboPreset.Phantom_Thief_Steal, Steal),
+            (CustomComboPreset.Phantom_Thief_Vigilance, Vigilance),
+            (CustomComboPreset.Phantom_Thief_TrapDetection, TrapDetection),
+            (CustomComboPreset.Phantom_Thief_PilferWeapon, PilferWeapon), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        if (HasStatusEffect(Buffs.PhantomTimeMage))
+        {
+            foreach (var (preset, action) in new[]
+            { (CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga),
+            (CustomComboPreset.Phantom_TimeMage_OccultComet, OccultComet),
+            (CustomComboPreset.Phantom_TimeMage_OccultMageMasher, OccultMageMasher),
+            (CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel),
+            (CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick), })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+        }
+
+        return 0; // No conditions met
+    }
+    public static bool ShouldUsePhantomActions(uint actionID) => BestPhantomAction() != 0 && IsOffCooldown(actionID);
+    public static bool ExecutePhantomActions(uint actionID) => InSouthHorn && ShouldUsePhantomActions(actionID);
+
 
     public static ushort
         //Freelancer

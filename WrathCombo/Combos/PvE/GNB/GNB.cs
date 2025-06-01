@@ -148,6 +148,8 @@ internal partial class GNB : Tank
             if (ShouldUseOther)
                 return OtherAction;
 
+            OccultCrescent.ExecutePhantomActions(OccultCrescent.BestPhantomAction());
+
             #region Mitigations
             if (IsEnabled(CustomComboPreset.GNB_ST_Mitigation) && InCombat() && !MitUsed)
             {
