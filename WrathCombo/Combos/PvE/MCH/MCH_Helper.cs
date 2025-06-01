@@ -97,13 +97,13 @@ internal partial class MCH
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1]) &&
                 !LevelChecked(Excavator) && !MaxBattery && LevelChecked(Chainsaw) &&
-                (GetCooldownRemainingTime(Chainsaw) <= GCD || IsOffCooldown(Chainsaw)))
+                GetCooldownRemainingTime(Chainsaw) <= GCD)
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
                 !MaxBattery && LevelChecked(AirAnchor) &&
-                (GetCooldownRemainingTime(AirAnchor) <= GCD || IsOffCooldown(AirAnchor)))
+                GetCooldownRemainingTime(AirAnchor) <= GCD)
                 return true;
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
@@ -150,7 +150,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_Chainsaw) && ReassembledChainsawST) &&
             !MaxBattery && !HasStatusEffect(Buffs.ExcavatorReady) && LevelChecked(Chainsaw) &&
-            (GetCooldownRemainingTime(Chainsaw) <= GCD / 2 || IsOffCooldown(Chainsaw)))
+            GetCooldownRemainingTime(Chainsaw) <= GCD / 2)
         {
             actionID = Chainsaw;
 
@@ -160,7 +160,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor) && ReassembledAnchorST) &&
             !MaxBattery && LevelChecked(AirAnchor) &&
-            (GetCooldownRemainingTime(AirAnchor) <= GCD / 2 || IsOffCooldown(AirAnchor)))
+            GetCooldownRemainingTime(AirAnchor) <= GCD / 2)
         {
             actionID = AirAnchor;
 
@@ -180,7 +180,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor)) &&
             LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
-            (GetCooldownRemainingTime(HotShot) < GCD / 2 || IsOffCooldown(HotShot)))
+            GetCooldownRemainingTime(HotShot) <= GCD / 2)
         {
             actionID = HotShot;
 

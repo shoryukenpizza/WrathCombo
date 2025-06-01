@@ -73,7 +73,7 @@ internal partial class RPR : Melee
                 {
                     //Gluttony
                     if (LevelChecked(Gluttony) &&
-                        (GetCooldownRemainingTime(Gluttony) <= GCD / 2 || IsOffCooldown(Gluttony)))
+                        GetCooldownRemainingTime(Gluttony) <= GCD)
                         return Gluttony;
 
                     if (JustUsed(Gluttony) && Role.CanTrueNorth())
@@ -253,7 +253,7 @@ internal partial class RPR : Melee
                     //Gluttony
                     if (IsEnabled(CustomComboPreset.RPR_ST_Gluttony) &&
                         LevelChecked(Gluttony) &&
-                        (GetCooldownRemainingTime(Gluttony) <= GCD / 2 || IsOffCooldown(Gluttony)))
+                        GetCooldownRemainingTime(Gluttony) <= GCD)
                         return Gluttony;
 
                     if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
@@ -440,7 +440,7 @@ internal partial class RPR : Melee
 
                 if (LevelChecked(Gluttony) && Soul >= 50 && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
-                    (GetCooldownRemainingTime(Gluttony) <= GCD / 2 || IsOffCooldown(Gluttony)))
+                    GetCooldownRemainingTime(Gluttony) <= GCD)
                     return Gluttony;
 
                 if (LevelChecked(GrimSwathe) && !HasStatusEffect(Buffs.Enshrouded) &&
@@ -541,7 +541,7 @@ internal partial class RPR : Melee
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Gluttony) &&
                     LevelChecked(Gluttony) && Soul >= 50 && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
-                    (GetCooldownRemainingTime(Gluttony) <= GCD / 2 || IsOffCooldown(Gluttony)))
+                    GetCooldownRemainingTime(Gluttony) <= GCD)
                     return Gluttony;
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_GrimSwathe) &&
