@@ -901,7 +901,8 @@ public enum CustomComboPreset
     BRD_ST_Wardens = 3047,
 
     [ParentCombo(BRD_ST_Wardens)]
-    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function", BRD.JobID)]
+    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function following party list", BRD.JobID)]
+    [Retargeted]
     BRD_ST_WardensAuto = 3064,
 
     [AutoAction(true, false)]
@@ -974,7 +975,8 @@ public enum CustomComboPreset
     BRD_AoE_Wardens = 3046,
 
     [ParentCombo(BRD_AoE_Wardens)]
-    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function.", BRD.JobID)]
+    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function following party list.", BRD.JobID)]
+    [Retargeted]
     BRD_AoE_WardensAuto = 3063,
 
     #endregion
