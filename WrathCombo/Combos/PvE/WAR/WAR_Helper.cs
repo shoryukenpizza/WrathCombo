@@ -182,7 +182,7 @@ internal partial class WAR : Tank
     internal static uint STCombo 
         => ComboTimer > 0 ? LevelChecked(Maim) && ComboAction == HeavySwing ? Maim
         : LevelChecked(StormsPath) && ComboAction == Maim
-        ? (LevelChecked(StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29
+        ? (LevelChecked(StormsEye) && ((IsEnabled(CustomComboPreset.WAR_ST_Simple) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29) || (IsEnabled(CustomComboPreset.WAR_ST_Advanced) && IsEnabled(CustomComboPreset.WAR_ST_StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= Config.WAR_SurgingRefreshRange))
         ? StormsEye : StormsPath) : HeavySwing : HeavySwing;
     internal static uint AOECombo => (ComboTimer > 0 && LevelChecked(MythrilTempest) && ComboAction == Overpower) ? MythrilTempest : Overpower;
     #endregion
