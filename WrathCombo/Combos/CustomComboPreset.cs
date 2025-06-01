@@ -900,6 +900,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", BRD.JobID)]
     BRD_ST_Wardens = 3047,
 
+    [ParentCombo(BRD_ST_Wardens)]
+    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function", BRD.JobID)]
+    BRD_ST_WardensAuto = 3064,
+
     [AutoAction(true, false)]
     [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_SimpleMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
@@ -968,6 +972,10 @@ public enum CustomComboPreset
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", BRD.JobID)]
     BRD_AoE_Wardens = 3046,
+
+    [ParentCombo(BRD_AoE_Wardens)]
+    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function.", BRD.JobID)]
+    BRD_AoE_WardensAuto = 3063,
 
     #endregion
 
@@ -1062,7 +1070,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 3058
+    // Last value = 3063
 
     #endregion
 
@@ -7004,7 +7012,8 @@ SMN.JobID)]
     WHM_AoEHeals_DivineCaress = 19207,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.", WHM.JobID)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto a friendly focus target, soft target, hard target, and fallback to placing it at your feet.", WHM.JobID)]
+    [Retargeted]
     WHM_AoEHeals_Asylum = 19028,
 
     #endregion
