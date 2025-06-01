@@ -29,7 +29,8 @@ internal partial class PCT
     internal static bool PaletteReady => SubtractivePalette.LevelChecked() && !HasStatusEffect(Buffs.SubtractivePalette) && !HasStatusEffect(Buffs.MonochromeTones) && 
                                             (HasStatusEffect(Buffs.SubtractiveSpectrum) || gauge.PalleteGauge >= 50 && ScenicCD > 40 || gauge.PalleteGauge == 100);
     internal static bool HasPaint => gauge.Paint > 0;
-  
+    internal static bool BurstPhaseReady => LevelChecked(StarPrism) && InCombat() && (ScenicCD <= 5 || HasStatusEffect(Buffs.StarryMuse) && gauge.PalleteGauge >= 50);
+
 
 
     //Buff Tracking
@@ -61,15 +62,15 @@ internal partial class PCT
 
     internal static uint BurstWindow(uint actionId)
     {
-        if (LandscapeMotifReady)
+        if (LandscapeMotifReady) //Emergency Landscape Paint if someone started a fight with no motifs.
             return OriginalHook(LandscapeMotif);        
 
         if (!HasStatusEffect(Buffs.StarryMuse))
         {
-            if (SteelMuseReady)
+            if (SteelMuseReady && HasCharges(SteelMuse))
                 return OriginalHook(SteelMuse);
 
-            if (ActionReady(HammerStamp) && !HasStatusEffect(Buffs.StarryMuse) && ScenicCD < 1 && !JustUsed(HammerStamp, 3f))
+            if (ActionReady(HammerStamp) && !HasStatusEffect(Buffs.StarryMuse) && ScenicCD < 1 && !JustUsed(HammerStamp, 3f) && GetStatusEffectStacks(Buffs.HammerTime) == 3)
                 return HammerStamp;
 
             if (CanWeave() && ActionReady(SubtractivePalette) && !HasStatusEffect(Buffs.SubtractivePalette) && 
@@ -77,7 +78,7 @@ internal partial class PCT
                 (HasStatusEffect(Buffs.SubtractiveSpectrum) || gauge.PalleteGauge >= 50))
                 return SubtractivePalette;
 
-            if (ScenicMuseReady && CanDelayedWeave() && IsOffCooldown(ScenicMuse))
+            if (ScenicMuseReady && (CanDelayedWeave() || !CanWeave()) && IsOffCooldown(ScenicMuse)) // The !canweave option is specifically so that it can minimize drift IF it does not catch the delayed weave in time.
                 return OriginalHook(ScenicMuse);            
         }
 
