@@ -180,7 +180,7 @@ internal partial class MCH
         if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
              IsEnabled(CustomComboPreset.MCH_ST_Adv_AirAnchor)) &&
             LevelChecked(HotShot) && !LevelChecked(AirAnchor) && !MaxBattery &&
-            (GetCooldownRemainingTime(HotShot) < GCD / 2 || ActionReady(HotShot)))
+            (GetCooldownRemainingTime(HotShot) < GCD / 2 || IsOffCooldown(HotShot)))
         {
             actionID = HotShot;
 
