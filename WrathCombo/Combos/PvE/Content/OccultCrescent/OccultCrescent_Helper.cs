@@ -14,8 +14,9 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
 {
-    internal static bool CanUse(uint action) => HasActionEquipped(action) && IsOffCooldown(action);
-    internal static bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && ActionReady(action);
+
+=======
+    internal static bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && HasActionEquipped(action) && ActionReady(action);
 
     public static ushort
     //Freelancer
