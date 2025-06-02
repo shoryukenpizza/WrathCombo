@@ -18,7 +18,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
+                           ((LevelChecked(ChaosThrust) && ChaosDoTDebuff is null &&
+                             (CanApplyStatus(CurrentTarget, Debuffs.ChaosThrust) ||
+                              CanApplyStatus(CurrentTarget, Debuffs.ChaoticSpring))) ||
                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
@@ -157,7 +159,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
+                           ((LevelChecked(ChaosThrust) && ChaosDoTDebuff is null &&
+                             (CanApplyStatus(CurrentTarget, Debuffs.ChaosThrust) ||
+                              CanApplyStatus(CurrentTarget, Debuffs.ChaoticSpring))) ||
                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
@@ -346,7 +350,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
+                           ((LevelChecked(ChaosThrust) && ChaosDoTDebuff is null &&
+                             (CanApplyStatus(CurrentTarget, Debuffs.ChaosThrust) ||
+                              CanApplyStatus(CurrentTarget, Debuffs.ChaoticSpring))) ||
                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
