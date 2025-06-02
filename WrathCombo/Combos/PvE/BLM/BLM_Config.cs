@@ -17,6 +17,7 @@ internal partial class BLM
             BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 1),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
+            BLM_ST_Polyglot_Save = new("BLM_ST_Polyglot_Save", 0),
             BLM_ST_Manaward_Threshold = new("BLM_ST_Manaward_Threshold", 25),
             BLM_AoE_Triplecast_HoldCharges = new("BLM_AoE_Triplecast_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
@@ -61,6 +62,8 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_UsePolyglot:
+                    DrawSliderInt(0, 3, BLM_ST_Polyglot_Save,
+                        "How many charges to save for manual use?");
                     if (BLM_ST_MovementOption[3])
                         DrawSliderInt(1, 3, BLM_ST_Polyglot_Movement,
                             "How many charges to save for movement?");
