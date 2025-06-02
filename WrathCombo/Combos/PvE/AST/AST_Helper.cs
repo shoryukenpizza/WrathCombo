@@ -100,9 +100,6 @@ internal partial class AST
                     return field = targetOverride;
             }
 
-            if (!EZ.Throttle("astCardPartyCheck", TS.FromSeconds(0.5)))
-                return field;
-
             var card = Gauge.DrawnCards[0];
             var party = GetPartyMembers()
                 .Select(member => member.BattleChara)
