@@ -196,7 +196,8 @@ internal partial class DNC
     {
         get
         {
-            if (!EZ.Throttle("dncPartnerDesiredCheck", TS.FromSeconds(2)))
+            if (!EZ.Throttle("dncPartnerDesiredCheck", TS.FromSeconds(2)) &&
+                field is not null)
                 return field;
 
             field = TryGetDancePartner(out var partner)
@@ -214,20 +215,19 @@ internal partial class DNC
         (CurrentDancePartner is not null &&
          DesiredDancePartner != CurrentDancePartner);
 
-    #region Resolver Delegates
-
     [ActionRetargeting.TargetResolver]
     internal static IGameObject? DancePartnerResolver () =>
         Svc.Objects.FirstOrDefault(x =>
-            x.GameObjectId == DesiredDancePartner);
-
-    #endregion
+            x.GameObjectId == DesiredDancePartner) ??
+        (!HasStatusEffect(Buffs.ClosedPosition)
+            ? SimpleTarget.AnySelfishDPS ?? SimpleTarget.AnyMeleeDPS ?? SimpleTarget.AnyDPS
+            : null);
 
     private static bool TryGetDancePartner (out IGameObject? partner)
     {
         partner = null;
 
-        if (!Player.Available || Player.IsBusy)
+        if (!Player.Available)
             return false;
 
         #region Skip a new check, if the current partner is just out of range
