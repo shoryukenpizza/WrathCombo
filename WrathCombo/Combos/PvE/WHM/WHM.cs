@@ -60,6 +60,9 @@ internal partial class WHM : Healer
 
             #endregion
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             if (!InCombat()) return actionID;
 
             #region Weaves

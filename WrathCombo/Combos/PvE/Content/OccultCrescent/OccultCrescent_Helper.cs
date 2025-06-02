@@ -148,26 +148,13 @@ internal partial class OccultCrescent
             Invulnerability = 4275,
             Shirahadori = 4245,
             Vigilance = 4277,
-            CloudyCaress = 4280,
-
-            //Job Equipped
-            PhantomFreelancer = 4355,
-            PhantomKnight = 4356,
-            PhantomMonk = 4357,
-            PhantomThief = 4358,
-            PhantomBerserker = 4359,
-            PhantomRanger = 4360,
-            PhantomTimeMage = 4361,
-            PhantomChemist = 4362,
-            PhantomBard = 4363,
-            PhantomOracle = 4364,
-            PhantomCannoneer = 4365,
-            PhantomSamurai = 4366,
-            PhantomGeomancer = 4367;
+            CloudyCaress = 4280;        
     }
     public static class Debuffs
     {
         public static ushort
+
+            Slow = 3493,
             OccultMageMasher = 4259,
             FalsePrediction = 4269,
             WeaponPlifered = 4279;
