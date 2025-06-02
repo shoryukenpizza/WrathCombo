@@ -63,7 +63,7 @@ internal partial class OccultCrescent
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Oracle_Cleansing:
+                case CustomComboPreset.Phantom_Oracle_Blessing:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Oracle_Blessing_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
