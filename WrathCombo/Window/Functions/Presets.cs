@@ -41,7 +41,6 @@ namespace WrathCombo.Window.Functions
             public PossiblyRetargetedAttribute? PossiblyRetargeted;
             public RetargetedAttribute? RetargetedAttribute;
             public BozjaParentAttribute? BozjaParent;
-            public OccultCrescentParentAttribute? OccultParent;
             public EurekaParentAttribute? EurekaParent;
             public HoverInfoAttribute? HoverInfo;
             public ReplaceSkillAttribute? ReplaceSkill;
@@ -61,7 +60,6 @@ namespace WrathCombo.Window.Functions
                 PossiblyRetargeted = preset.GetAttribute<PossiblyRetargetedAttribute>();
                 RetargetedAttribute = preset.GetAttribute<RetargetedAttribute>();
                 BozjaParent = preset.GetAttribute<BozjaParentAttribute>();
-                OccultParent = preset.GetAttribute<OccultCrescentParentAttribute>();
                 EurekaParent = preset.GetAttribute<EurekaParentAttribute>();
                 HoverInfo = preset.GetAttribute<HoverInfoAttribute>();
                 ReplaceSkill = preset.GetAttribute<ReplaceSkillAttribute>();
@@ -89,7 +87,6 @@ namespace WrathCombo.Window.Functions
             var blueAttr = Attributes[preset].BlueInactive;
             var variantParents = Attributes[preset].VariantParent;
             var bozjaParents = Attributes[preset].BozjaParent;
-            var occultParents = Attributes[preset].OccultParent;
             var eurekaParents = Attributes[preset].EurekaParent;
             var auto = Attributes[preset].AutoAction;
             var hidden = Attributes[preset].Hidden;
@@ -254,30 +251,6 @@ namespace WrathCombo.Window.Functions
                 ImGui.TextWrapped($"Part of normal combo{(bozjaParents.ParentPresets.Length > 1 ? "s" : "")}:");
                 StringBuilder builder = new();
                 foreach (var par in bozjaParents.ParentPresets)
-                {
-                    builder.Insert(0, $"{(Attributes.ContainsKey(par) ? Attributes[par].CustomComboInfo.Name : par.GetAttribute<CustomComboInfoAttribute>().Name)}");
-                    var par2 = par;
-                    while (PresetStorage.GetParent(par2) != null)
-                    {
-                        var subpar = PresetStorage.GetParent(par2);
-                        if (subpar != null)
-                        {
-                            builder.Insert(0, $"{(Attributes.ContainsKey(subpar.Value) ? Attributes[subpar.Value].CustomComboInfo.Name : subpar?.GetAttribute<CustomComboInfoAttribute>().Name)} -> ");
-                            par2 = subpar!.Value;
-                        }
-                    }
-
-                    ImGui.TextWrapped($"- {builder}");
-                    builder.Clear();
-                }
-                ImGui.PopStyleColor();
-            }
-            if (occultParents is not null)
-            {
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-                ImGui.TextWrapped($"Part of normal combo{(occultParents.ParentPresets.Length > 1 ? "s" : "")}:");
-                StringBuilder builder = new();
-                foreach (var par in occultParents.ParentPresets)
                 {
                     builder.Insert(0, $"{(Attributes.ContainsKey(par) ? Attributes[par].CustomComboInfo.Name : par.GetAttribute<CustomComboInfoAttribute>().Name)}");
                     var par2 = par;
