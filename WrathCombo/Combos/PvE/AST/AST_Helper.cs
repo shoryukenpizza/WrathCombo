@@ -104,11 +104,9 @@ internal partial class AST
                 return field;
 
             var card = Gauge.DrawnCards[0];
-            var playerID = LocalPlayer.GameObjectId;
             var party = GetPartyMembers()
-                .Where(member => member.GameObjectId != playerID)
-                .Where(member => !member.BattleChara.IsDead)
                 .Select(member => member.BattleChara)
+                .Where(member => !member.IsDead && member.IsNotThePlayer())
                 .Where(InCardRange)
                 .Where(ExistingCardBuffFree)
                 .ToList();
