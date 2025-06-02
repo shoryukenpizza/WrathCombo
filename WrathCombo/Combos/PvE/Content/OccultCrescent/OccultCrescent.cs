@@ -10,7 +10,7 @@ internal partial class OccultCrescent
     {
         #region Bard
         if (IsEnabled(CustomComboPreset.Phantom_Bard) &&
-            CanWeave() && HasStatusEffect(Buffs.PhantomBard))
+            CanWeave())
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_HerosRime, HerosRime))
                 return HerosRime; //burst song
@@ -25,7 +25,7 @@ internal partial class OccultCrescent
 
         #region Berserker
         if (IsEnabled(CustomComboPreset.Phantom_Berserker) &&
-            CanWeave() && HasStatusEffect(Buffs.PhantomBerserker))
+            CanWeave())
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_Rage, Rage))
                 return Rage; //buff
@@ -35,8 +35,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Cannoneer
-        if (IsEnabled(CustomComboPreset.Phantom_Cannoneer) &&
-            CanWeave() && HasStatusEffect(Buffs.PhantomCannoneer))
+        if (IsEnabled(CustomComboPreset.Phantom_Cannoneer))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon) && !HasStatusEffect(Buffs.SilverSickness))
                 return SilverCannon; //debuff
@@ -56,7 +55,7 @@ internal partial class OccultCrescent
         #region Chemist
         //TODO: not sure if this will work tbh
         if (IsEnabled(CustomComboPreset.Phantom_Chemist) &&
-            CanWeave() && HasStatusEffect(Buffs.PhantomChemist))
+            CanWeave())
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, Revive) && TargetIsFriendly() && GetTargetHPPercent() == 0)
                 return Revive; 
@@ -71,15 +70,13 @@ internal partial class OccultCrescent
 
         #region Freelancer
         if (IsEnabled(CustomComboPreset.Phantom_Freelancer) &&
-            HasStatusEffect(Buffs.PhantomFreelancer) &&
             IsEnabledAndUsable(CustomComboPreset.Phantom_Freelancer_OccultResuscitation, OccultResuscitation) &&
             PlayerHealthPercentageHp() <= Config.Phantom_Freelancer_Resuscitation_Health)
             return OccultResuscitation;
         #endregion
 
         #region Geomancer
-        if (IsEnabled(CustomComboPreset.Phantom_Geomancer) &&
-            HasStatusEffect(Buffs.PhantomGeomancer))
+        if (IsEnabled(CustomComboPreset.Phantom_Geomancer))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Geomancer_BattleBell, BattleBell) && !HasStatusEffect(Buffs.BattleBell))
                 return BattleBell; //buff
@@ -106,23 +103,21 @@ internal partial class OccultCrescent
         #endregion
 
         #region Knight
-        if (IsEnabled(CustomComboPreset.Phantom_Knight) &&
-            HasStatusEffect(Buffs.PhantomKnight))
+        if (IsEnabled(CustomComboPreset.Phantom_Knight))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_PhantomGuard, PhantomGuard) && GetTargetHPPercent() <= Config.Phantom_Knight_PhantomGuard_Health)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_PhantomGuard, PhantomGuard) && GetTargetHPPercent() <= Config.Phantom_Knight_PhantomGuard_Health && InCombat())
                 return PhantomGuard; //mit
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_Pray, Pray) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_Pray_Health && LocalPlayer.CurrentMp >= 5000)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_Pray, Pray) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_Pray_Health && !HasStatusEffect(Buffs.Pray))
                 return Pray; //regen
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_OccultHeal, OccultHeal) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_OccultHeal_Health)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_OccultHeal, OccultHeal) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_OccultHeal_Health && LocalPlayer.CurrentMp >= 5000)
                 return OccultHeal; //heal
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_Pledge, Pledge) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_Pledge_Health)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_Pledge, Pledge) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_Pledge_Health && InCombat())
                 return Pledge; //inv
         }
         #endregion
 
         #region Monk
-        if (IsEnabled(CustomComboPreset.Phantom_Monk) &&
-            HasStatusEffect(Buffs.PhantomMonk))
+        if (IsEnabled(CustomComboPreset.Phantom_Monk))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Monk_OccultChakra, OccultChakra) && CanWeave() && PlayerHealthPercentageHp() <= Config.Phantom_Monk_OccultChakra_Health)
                 return OccultChakra; //heal
@@ -136,8 +131,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Oracle
-        if (IsEnabled(CustomComboPreset.Phantom_Oracle) &&
-            HasStatusEffect(Buffs.PhantomOracle))
+        if (IsEnabled(CustomComboPreset.Phantom_Oracle))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Predict, Predict) && !HasStatusEffect(Buffs.PredictionOfJudgment) && !HasStatusEffect(Buffs.PredictionOfCleansing) && !HasStatusEffect(Buffs.PredictionOfBlessing) && !HasStatusEffect(Buffs.PredictionOfStarfall))
                 return Predict; //start of the chain
@@ -153,8 +147,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Ranger
-        if (IsEnabled(CustomComboPreset.Phantom_Ranger) &&
-            HasStatusEffect(Buffs.PhantomRanger))
+        if (IsEnabled(CustomComboPreset.Phantom_Ranger))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_OccultUnicorn, OccultUnicorn) && CanWeave() && 
                 PlayerHealthPercentageHp() <= Config.Phantom_Ranger_OccultUnicorn_Health)
@@ -168,8 +161,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Samurai
-        if (IsEnabled(CustomComboPreset.Phantom_Samurai) &&
-            HasStatusEffect(Buffs.PhantomSamurai))
+        if (IsEnabled(CustomComboPreset.Phantom_Samurai))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Mineuchi, Mineuchi) && CanWeave() && CanInterruptEnemy())
                 return Mineuchi; //stun
@@ -183,8 +175,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Thief
-        if (IsEnabled(CustomComboPreset.Phantom_Thief) &&
-            HasStatusEffect(Buffs.PhantomThief))
+        if (IsEnabled(CustomComboPreset.Phantom_Thief))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Thief_OccultSprint, OccultSprint))
                 return OccultSprint; //movement speed
@@ -198,8 +189,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Time Mage
-        if (IsEnabled(CustomComboPreset.Phantom_TimeMage) &&
-            HasStatusEffect(Buffs.PhantomTimeMage))
+        if (IsEnabled(CustomComboPreset.Phantom_TimeMage))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick))
                 return OccultQuick; //damage buff
