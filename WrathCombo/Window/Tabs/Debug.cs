@@ -635,7 +635,7 @@ internal class Debug : ConfigWindow, IDisposable
                 ? "Select Type"
                 : _sheetCategory.Value.ToString();
 
-            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.2f);
+            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.3f);
             using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
             {
                 if (comboBoxSheet)
