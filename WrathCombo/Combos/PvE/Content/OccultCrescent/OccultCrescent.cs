@@ -1,7 +1,7 @@
 ﻿using System.Reflection.Metadata;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
-namespace WrathCombo.Combos.PvE.Content;
+namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
 {

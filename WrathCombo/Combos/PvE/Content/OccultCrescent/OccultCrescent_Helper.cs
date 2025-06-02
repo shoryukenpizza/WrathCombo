@@ -10,7 +10,7 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 #endregion
 
-namespace WrathCombo.Combos.PvE.Content;
+namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
 {

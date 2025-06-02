@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using ECommons.DalamudServices;
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -6,7 +7,7 @@ using WrathCombo.Window.Functions;
 using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
-namespace WrathCombo.Combos.PvE.Content;
+namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
 {
@@ -14,7 +15,7 @@ internal partial class OccultCrescent
     {
         public static UserInt
             Phantom_Freelancer_Resuscitation_Health = new("Phantom_Freelancer_Resuscitation_Health", 50),
-            Phantom_Geomancer_Sunbath_Health = new ("Phantom_Freelancer_Resuscitation_Health", 50),
+            Phantom_Geomancer_Sunbath_Health = new ("Phantom_Geomancer_Sunbath_Health", 50),
             Phantom_Knight_PhantomGuard_Health = new("Phantom_Knight_PhantomGuard_Health", 50),
             Phantom_Knight_Pray_Health = new("Phantom_Knight_Pray_Health", 50),
             Phantom_Knight_OccultHeal_Health = new("Phantom_Knight_OccultHeal_Health", 50),
@@ -25,6 +26,7 @@ internal partial class OccultCrescent
             Phantom_Ranger_OccultUnicorn_Health = new("Phantom_Ranger_OccultUnicorn_Health", 50),
             Phantom_Ranger_PhantomAim_Stop = new("Phantom_Ranger_PhantomAim_Stop", 30),
             Phantom_Thief_Steal_Health = new("Phantom_Thief_Steal_Health", 10);
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
