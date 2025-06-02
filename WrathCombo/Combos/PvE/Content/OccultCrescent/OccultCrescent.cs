@@ -1,9 +1,11 @@
-﻿using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+﻿using System.Reflection.Metadata;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE.Content;
 
 internal partial class OccultCrescent
 {
+    public const byte JobID = 100;
     internal static uint BestPhantomAction()
     {
         #region Bard

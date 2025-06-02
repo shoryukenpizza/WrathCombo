@@ -72,6 +72,9 @@ namespace WrathCombo.CustomComboNS.Functions
                 if (key == 0)
                     return "General/Multiple Jobs";
 
+                if (key == 100)
+                    return "Occult Crescent";
+
                 //Override DOH/DOL
                 if (key is DOH.JobID) key = 08; //Set to Carpenter
                 if (key is DOL.JobID) key = 16; //Set to Miner

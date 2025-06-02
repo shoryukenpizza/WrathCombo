@@ -150,12 +150,6 @@ namespace WrathCombo.Window.Tabs
                                     }
                                 }
 
-                                if (ImGui.BeginTabItem("Occult Crescent"))
-                                {
-                                    DrawOccultContents();
-                                    ImGui.EndTabItem();
-                                }
-
                                 if (groupedPresets[OpenJob].Any(x => PresetStorage.IsEureka(x.Preset)))
                                 {
                                     if (ImGui.BeginTabItem("Eureka"))
@@ -197,23 +191,6 @@ namespace WrathCombo.Window.Tabs
                 ImGuiEx.Spacing(new Vector2(0, 12));
             }
         }
-        //TODO: Fix showing in General & DOH/DOL tabs
-        private static void DrawOccultContents()
-        {
-            foreach (var (_, presets) in groupedPresets)
-            {
-                var occultPresets = presets.Where(x =>
-                    PresetStorage.IsOccultCrescent(x.Preset) &&
-                    !PresetStorage.ShouldBeHidden(x.Preset));
-
-                foreach (var (preset, info) in occultPresets)
-                {
-                    InfoBox presetBox = new() { Color = Colors.Grey, BorderThickness = 1f, CurveRadius = 8f, ContentsAction = () => { Presets.DrawPreset(preset, info); } };
-                    presetBox.Draw();
-                    ImGuiEx.Spacing(new Vector2(0, 12));
-                }
-            }
-        }
 
         internal static void DrawHeadingContents(string jobName)
         {
@@ -223,7 +200,6 @@ namespace WrathCombo.Window.Tabs
                          !PresetStorage.IsPvP(x.Preset) &&
                          !PresetStorage.IsVariant(x.Preset) &&
                          !PresetStorage.IsBozja(x.Preset) &&
-                         !PresetStorage.IsOccultCrescent(x.Preset) &&
                          !PresetStorage.IsEureka(x.Preset) &&
                          !PresetStorage.ShouldBeHidden(x.Preset)))
             {
