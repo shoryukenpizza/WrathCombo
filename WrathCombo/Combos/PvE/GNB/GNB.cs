@@ -31,7 +31,6 @@ internal partial class GNB : Tank
 
             if (ShouldUseOther)
                 return OtherAction;
-
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
@@ -152,7 +151,6 @@ internal partial class GNB : Tank
 
             if (ShouldUseOther)
                 return OtherAction;
-
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
@@ -279,7 +277,6 @@ internal partial class GNB : Tank
                 return Role.LowBlow;
             if (ShouldUseOther)
                 return OtherAction;
-
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
@@ -359,7 +356,6 @@ internal partial class GNB : Tank
                 return Role.LowBlow;
             if (ShouldUseOther)
                 return OtherAction;
-
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 

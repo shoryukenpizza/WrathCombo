@@ -24,9 +24,7 @@ internal partial class OccultCrescent
             Phantom_Oracle_Starfall_Health = new("Phantom_Oracle_Starfall_Health", 100),
             Phantom_Ranger_OccultUnicorn_Health = new("Phantom_Ranger_OccultUnicorn_Health", 50),
             Phantom_Ranger_PhantomAim_Stop = new("Phantom_Ranger_PhantomAim_Stop", 30),
-            Phantom_Thief_Steal_Health = new("Phantom_Thief_Steal_Health", 10),
-
-            ;
+            Phantom_Thief_Steal_Health = new("Phantom_Thief_Steal_Health", 10);
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
