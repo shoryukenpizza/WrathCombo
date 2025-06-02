@@ -49,6 +49,14 @@ internal class Debug : ConfigWindow, IDisposable
 
     private static Guid? _wrathLease;
     private static Action? _debugSpell;
+    private static SheetType? _sheetCategory;
+
+    public enum SheetType
+    {
+        PvP,
+        Normal,
+        Phantom
+    }
 
     // Constants
     private const int StatusIdWidth = 8;
@@ -482,9 +490,25 @@ internal class Debug : ConfigWindow, IDisposable
         ImGui.Text("Action");
         ImGui.Separator();
 
-        var actions = Svc.Data.GetExcelSheet<Action>()
-            .Where(x => (x.ClassJobLevel > 0 || (x.IsPvP && x.ActionCategory.RowId is 2 or 3 or 4 or 9 or 15)) &&
-                        x.ClassJobCategory.RowId != 1 && x.ClassJobCategory.Value.IsJobInCategory(Player.Job)).OrderBy(x => x.ClassJobLevel);
+        var actionsPvP = Svc.Data.GetExcelSheet<Action>()
+            .Where(x =>
+                x.IsPvP &&
+                x.Icon is not 405 &&
+                (x.ClassJobCategory.Value.IsJobInCategory(Player.Job) || x.ActionCategory.RowId is 0))
+            .OrderBy(x => x.RowId);
+
+        var actionsNormal = Svc.Data.GetExcelSheet<Action>()
+            .Where(x =>
+                x.ClassJobLevel > 0 &&
+                x.ClassJobCategory.RowId != 1 &&
+                x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
+            .OrderBy(x => x.ClassJobLevel);
+
+        var actionsPhantom = Svc.Data.GetExcelSheet<Action>()
+            .Where(x =>
+                x.RowId is 41343 or (>= 41588 and <= 41651) &&
+                x.RowId is not (41593 or 41632))
+            .OrderBy(x => x.RowId);
 
         if (ImGui.CollapsingHeader("Action Data"))
         {
@@ -565,9 +589,8 @@ internal class Debug : ConfigWindow, IDisposable
         {
             if (ImGui.TreeNode("PvP"))
             {
-                foreach (var act in actions)
+                foreach (var act in actionsPvP)
                 {
-                    if (!act.IsPvP) continue;
                     var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
                     CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
                 }
@@ -578,9 +601,20 @@ internal class Debug : ConfigWindow, IDisposable
 
             if (ImGui.TreeNode("Normal"))
             {
-                foreach (var act in actions)
+                foreach (var act in actionsNormal)
                 {
-                    if (act.IsPvP) continue;
+                    var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
+                    CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
+                }
+
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                ImGui.TreePop();
+            }
+
+            if (ImGui.TreeNode("Phantom"))
+            {
+                foreach (var act in actionsPhantom)
+                {
                     var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
                     CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
                 }
@@ -593,25 +627,63 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("ActionSheet"))
         {
-            string prev = _debugSpell == null
+            var prevAction = _debugSpell == null
                 ? "Select Action"
-                : $"({_debugSpell.Value.RowId}) Lv.{_debugSpell.Value.ClassJobLevel} {_debugSpell.Value.Name} - {(_debugSpell.Value.IsPvP ? "PvP" : "Normal")}";
+                : $"Lv.{_debugSpell.Value.ClassJobLevel} {_debugSpell.Value.Name} ({_debugSpell.Value.RowId})";
 
-            ImGuiEx.SetNextItemFullWidth();
-            using (var comboBox = ImRaii.Combo("###ActionCombo", prev))
+            var prevSheet = _sheetCategory == null
+                ? "Select Type"
+                : _sheetCategory.Value.ToString();
+
+            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.2f);
+            using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
             {
-                if (comboBox)
+                if (comboBoxSheet)
+                {
+                    if (ImGui.Selectable("", _sheetCategory == null))
+                    {
+                        _sheetCategory = null;
+                        _debugSpell = null;
+                    }
+
+                    foreach (SheetType sheetType in Enum.GetValues(typeof(SheetType)))
+                    {
+                        if (ImGui.Selectable($"{sheetType}"))
+                        {
+                            _sheetCategory = sheetType;
+                            _debugSpell = null;
+                        }
+                    }
+                }
+            }
+
+            var currentActions = _sheetCategory switch
+            {
+                SheetType.PvP => actionsPvP,
+                SheetType.Normal => actionsNormal,
+                SheetType.Phantom => actionsPhantom,
+                _ => null,
+            };
+
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
+            using (var comboBoxAction = ImRaii.Combo("###ActionCombo", prevAction))
+            {
+                if (comboBoxAction)
                 {
                     if (ImGui.Selectable("", _debugSpell == null))
                     {
                         _debugSpell = null;
                     }
 
-                    foreach (var act in actions)
+                    if (currentActions != null)
                     {
-                        if (ImGui.Selectable($"({act.RowId}) Lv.{act.ClassJobLevel} {act.Name} - {(act.IsPvP ? "PvP" : "Normal")}", _debugSpell?.RowId == act.RowId))
+                        foreach (var act in currentActions)
                         {
-                            _debugSpell = act;
+                            if (ImGui.Selectable($"Lv.{act.ClassJobLevel} {act.Name} ({act.RowId})", _debugSpell?.RowId == act.RowId))
+                            {
+                                _debugSpell = act;
+                            }
                         }
                     }
                 }
