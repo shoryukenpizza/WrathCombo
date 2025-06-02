@@ -431,7 +431,7 @@ internal partial class PLD : Tank
                 && TargetIsCasting()
                 && !JustUsed(Role.Interject)
                 && !InBossEncounter())
-                if (IsEnabled(CustomComboPreset.PLD_ST_ShieldBash) && ActionReady(ShieldBash) && !JustUsed(Role.LowBlow))
+                if (IsEnabled(CustomComboPreset.PLD_ST_ShieldBash) && ActionReady(ShieldBash) && !JustUsed(Role.LowBlow) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
                     return ShieldBash;
                 else if (IsEnabled(CustomComboPreset.PLD_ST_LowBlow) && Role.CanLowBlow() && !JustUsed(ShieldBash))
                     return Role.LowBlow;
@@ -637,7 +637,7 @@ internal partial class PLD : Tank
 
             // Stun
             if (TargetIsCasting() && !JustUsed(Role.Interject))
-                if (IsEnabled(CustomComboPreset.PLD_AoE_ShieldBash) && ActionReady(ShieldBash) && !JustUsed(Role.LowBlow))
+                if (IsEnabled(CustomComboPreset.PLD_AoE_ShieldBash) && ActionReady(ShieldBash) && !JustUsed(Role.LowBlow) && !JustUsedOn(ShieldBash, CurrentTarget, 10))
                     return ShieldBash;
                 else if (IsEnabled(CustomComboPreset.PLD_AoE_LowBlow) && Role.CanLowBlow() && !JustUsed(ShieldBash))
                     return Role.LowBlow;
