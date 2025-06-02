@@ -49,13 +49,14 @@ internal class Debug : ConfigWindow, IDisposable
 
     private static Guid? _wrathLease;
     private static Action? _debugSpell;
-    private static SheetType? _sheetCategory;
+    private static SheetType? _sheetType;
 
     public enum SheetType
     {
+        PvE,
         PvP,
-        Normal,
-        Phantom
+        Bozja,
+        Occult
     }
 
     // Constants
@@ -490,23 +491,36 @@ internal class Debug : ConfigWindow, IDisposable
         ImGui.Text("Action");
         ImGui.Separator();
 
-        var actionsPvP = Svc.Data.GetExcelSheet<Action>()
+        // ActionSheet Reference
+        var actionSheet = Svc.Data.GetExcelSheet<Action>();
+
+        // PvP Actions
+        var actionsPvP = actionSheet
             .Where(x =>
                 x.IsPvP &&
                 x.Icon is not 405 &&
                 (x.ClassJobCategory.Value.IsJobInCategory(Player.Job) || x.ActionCategory.RowId is 0))
             .OrderBy(x => x.RowId);
 
-        var actionsNormal = Svc.Data.GetExcelSheet<Action>()
+        // PvE Actions
+        var actionsPvE = actionSheet
             .Where(x =>
                 x.ClassJobLevel > 0 &&
                 x.ClassJobCategory.RowId != 1 &&
                 x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
             .OrderBy(x => x.ClassJobLevel);
 
-        var actionsPhantom = Svc.Data.GetExcelSheet<Action>()
+        // Bozja Actions
+        var actionsBozja = actionSheet
             .Where(x =>
-                x.RowId is 41343 or (>= 41588 and <= 41651) &&
+                x.RowId is (>= 20701 and <= 20733) or (>= 22344 and <= 22356) or (>= 23908 and <= 23921) &&
+                x.ActionCategory.RowId is not 5)
+            .OrderBy(x => x.RowId);
+
+        // Occult Actions
+        var actionsOccult = actionSheet
+            .Where(x =>
+                x.RowId is >= 41588 and <= 41651 &&
                 x.RowId is not (41593 or 41632))
             .OrderBy(x => x.RowId);
 
@@ -587,39 +601,46 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("ActionReady"))
         {
-            if (ImGui.TreeNode("PvP"))
-            {
-                foreach (var act in actionsPvP)
-                {
-                    var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
-                    CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
-                }
+            var prevSheet = _sheetType == null
+                ? "Select Type"
+                : _sheetType.Value.ToString();
 
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
+            ImGuiEx.SetNextItemFullWidth();
+            using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
+            {
+                if (comboBoxSheet)
+                {
+                    if (ImGui.Selectable("", _sheetType == null))
+                    {
+                        _sheetType = null;
+                    }
+
+                    foreach (SheetType sheetType in Enum.GetValues(typeof(SheetType)))
+                    {
+                        if (ImGui.Selectable($"{sheetType}"))
+                        {
+                            _sheetType = sheetType;
+                        }
+                    }
+                }
             }
 
-            if (ImGui.TreeNode("Normal"))
+            var currentActions = _sheetType switch
             {
-                foreach (var act in actionsNormal)
+                SheetType.PvE => actionsPvE,
+                SheetType.PvP => actionsPvP,
+                SheetType.Bozja => actionsBozja,
+                SheetType.Occult => actionsOccult,
+                _ => null,
+            };
+
+            if (_sheetType != null)
+            {
+                foreach (var act in currentActions)
                 {
                     var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
                     CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
                 }
-
-                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
-                ImGui.TreePop();
-            }
-
-            if (ImGui.TreeNode("Phantom"))
-            {
-                foreach (var act in actionsPhantom)
-                {
-                    var status = ActionManager.Instance()->GetActionStatus(ActionType.Action, act.RowId, checkRecastActive: false, checkCastingActive: false);
-                    CustomStyleText(act.Name.ExtractText(), $"{ActionReady(act.RowId)}, {status} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(status).Text})");
-                }
-
-                ImGui.TreePop();
             }
 
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
@@ -631,18 +652,18 @@ internal class Debug : ConfigWindow, IDisposable
                 ? "Select Action"
                 : $"Lv.{_debugSpell.Value.ClassJobLevel} {_debugSpell.Value.Name} ({_debugSpell.Value.RowId})";
 
-            var prevSheet = _sheetCategory == null
+            var prevSheet = _sheetType == null
                 ? "Select Type"
-                : _sheetCategory.Value.ToString();
+                : _sheetType.Value.ToString();
 
             ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.3f);
             using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
             {
                 if (comboBoxSheet)
                 {
-                    if (ImGui.Selectable("", _sheetCategory == null))
+                    if (ImGui.Selectable("", _sheetType == null))
                     {
-                        _sheetCategory = null;
+                        _sheetType = null;
                         _debugSpell = null;
                     }
 
@@ -650,18 +671,19 @@ internal class Debug : ConfigWindow, IDisposable
                     {
                         if (ImGui.Selectable($"{sheetType}"))
                         {
-                            _sheetCategory = sheetType;
+                            _sheetType = sheetType;
                             _debugSpell = null;
                         }
                     }
                 }
             }
 
-            var currentActions = _sheetCategory switch
+            var currentActions = _sheetType switch
             {
+                SheetType.PvE => actionsPvE,
                 SheetType.PvP => actionsPvP,
-                SheetType.Normal => actionsNormal,
-                SheetType.Phantom => actionsPhantom,
+                SheetType.Bozja => actionsBozja,
+                SheetType.Occult => actionsOccult,
                 _ => null,
             };
 
