@@ -22,7 +22,7 @@ public enum CustomComboPreset
 
     #region PHANTOM ACTIONS
     [OccultCrescent]
-    [CustomComboInfo("Freelancer Job Actions", "Enable to add Freelancer-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Freelancer Job Actions", "Enable this to add Freelancer-specific actions into the rotation.", ADV.JobID)]
     Phantom_Freelancer = 110000,
 
     [OccultCrescent]
@@ -36,7 +36,7 @@ public enum CustomComboPreset
     Phantom_Freelancer_OccultTreasuresight = 110002,
 
     [OccultCrescent]
-    [CustomComboInfo("Knight Job Actions", "Enable to add Knight-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Knight Job Actions", "Enable this to add Knight-specific actions into the rotation.", ADV.JobID)]
     Phantom_Knight = 110003,
 
     [OccultCrescent]
@@ -60,7 +60,7 @@ public enum CustomComboPreset
     Phantom_Knight_Pledge = 110007,
 
     [OccultCrescent]
-    [CustomComboInfo("Monk Job Actions", "Enable to add Monk-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Monk Job Actions", "Enable this to add Monk-specific actions into the rotation.", ADV.JobID)]
     Phantom_Monk = 110008,
 
     [OccultCrescent]
@@ -84,7 +84,7 @@ public enum CustomComboPreset
     Phantom_Monk_OccultChakra = 110012,
 
     [OccultCrescent]
-    [CustomComboInfo("Thief Job Actions", "Enable to add Thief-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Thief Job Actions", "Enable this to add Thief-specific actions into the rotation.", ADV.JobID)]
     Phantom_Thief = 110013,
 
     [OccultCrescent]
@@ -113,7 +113,7 @@ public enum CustomComboPreset
     Phantom_Thief_PilferWeapon = 110018,
 
     [OccultCrescent]
-    [CustomComboInfo("Samurai Job Actions", "Enable to add Samurai-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Samurai Job Actions", "Enable this to add Samurai-specific actions into the rotation.", ADV.JobID)]
     Phantom_Samurai = 110053,
 
     [OccultCrescent]
@@ -137,7 +137,7 @@ public enum CustomComboPreset
     Phantom_Samurai_Zeninage = 110057,
 
     [OccultCrescent]
-    [CustomComboInfo("Berserker Job Actions", "Enable to add Berserker-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Berserker Job Actions", "Enable this to add Berserker-specific actions into the rotation.", ADV.JobID)]
     Phantom_Berserker = 110019,
 
     [OccultCrescent]
@@ -151,7 +151,7 @@ public enum CustomComboPreset
     Phantom_Berserker_DeadlyBlow = 110021,
 
     [OccultCrescent]
-    [CustomComboInfo("Ranger Job Actions", "Enable to add Ranger-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Ranger Job Actions", "Enable this to add Ranger-specific actions into the rotation.", ADV.JobID)]
     Phantom_Ranger = 110022,
 
     [OccultCrescent]
@@ -175,7 +175,7 @@ public enum CustomComboPreset
     Phantom_Ranger_OccultUnicorn = 110026,
 
     [OccultCrescent]
-    [CustomComboInfo("Time Mage Job Actions", "Enable to add Time Mage-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Time Mage Job Actions", "Enable this to add Time Mage-specific actions into the rotation.", ADV.JobID)]
     Phantom_TimeMage = 110027,
 
     [OccultCrescent]
@@ -204,7 +204,7 @@ public enum CustomComboPreset
     Phantom_TimeMage_OccultQuick = 110032,
 
     [OccultCrescent]
-    [CustomComboInfo("Chemist Job Actions", "Enable to add Chemist-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Chemist Job Actions", "Enable this to add Chemist-specific actions into the rotation.", ADV.JobID)]
     Phantom_Chemist = 110033,
 
     [OccultCrescent]
@@ -228,7 +228,7 @@ public enum CustomComboPreset
     Phantom_Chemist_OccultElixir = 110037,
 
     [OccultCrescent]
-    [CustomComboInfo("Bard Job Actions", "Enable to add Bard-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Bard Job Actions", "Enable this to add Bard-specific actions into the rotation.", ADV.JobID)]
     Phantom_Bard = 110038,
 
     [OccultCrescent]
@@ -252,7 +252,7 @@ public enum CustomComboPreset
     Phantom_Bard_HerosRime = 110042,
 
     [OccultCrescent]
-    [CustomComboInfo("Oracle Job Actions", "Enable to add Oracle-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Oracle Job Actions", "Enable this to add Oracle-specific actions into the rotation.", ADV.JobID)]
     Phantom_Oracle = 110043,
 
     [OccultCrescent]
@@ -301,7 +301,7 @@ public enum CustomComboPreset
     Phantom_Oracle_Invulnerability = 110052,
 
     [OccultCrescent]
-    [CustomComboInfo("Cannoneer Job Actions", "Enable to add Cannoneer-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Cannoneer Job Actions", "Enable this to add Cannoneer-specific actions into the rotation.", ADV.JobID)]
     Phantom_Cannoneer = 110058,
 
     [OccultCrescent]
@@ -330,48 +330,13 @@ public enum CustomComboPreset
     Phantom_Cannoneer_SilverCannon = 110063,
 
     [OccultCrescent]
-    [CustomComboInfo("Geomancer Job Actions", "Enable to add Geomancer-specific actions into the rotation.", ADV.JobID)]
+    [CustomComboInfo("Geomancer Job Actions", "Enable this to add Geomancer-specific actions into the rotation.", ADV.JobID)]
     Phantom_Geomancer = 110064,
 
     [OccultCrescent]
     [ParentCombo(Phantom_Geomancer)]
     [CustomComboInfo("Battle Bell", "Adds Battle Bell into the rotation.", ADV.JobID)]
     Phantom_Geomancer_BattleBell = 110065,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Weather", "Adds Weather into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_Weather = 110066,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Sunbath", "Adds Sunbath into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_Sunbath = 110067,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Cloudy Caress", "Adds Cloudy Caress into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_CloudyCaress = 110068,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Blessed Rain", "Adds Blessed Rain into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_BlessedRain = 110069,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Misty Mirage", "Adds Misty Mirage into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_MistyMirage = 110070,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Hasty Mirage", "Adds Hasty Mirage into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_HastyMirage = 110071,
-
-    [OccultCrescent]
-    [ParentCombo(Phantom_Geomancer)]
-    [CustomComboInfo("Aetherial Gain", "Adds Aetherial Gain into the rotation.", ADV.JobID)]
-    Phantom_Geomancer_AetherialGain = 110072,
 
     [OccultCrescent]
     [ParentCombo(Phantom_Geomancer)]
@@ -382,6 +347,41 @@ public enum CustomComboPreset
     [ParentCombo(Phantom_Geomancer)]
     [CustomComboInfo("Suspend", "Adds Suspend into the rotation.", ADV.JobID)]
     Phantom_Geomancer_Suspend = 110074,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer)]
+    [CustomComboInfo("Weather", "Adds Weather into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_Weather = 110066,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Sunbath", "Adds Sunbath into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_Sunbath = 110067,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Cloudy Caress", "Adds Cloudy Caress into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_CloudyCaress = 110068,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Blessed Rain", "Adds Blessed Rain into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_BlessedRain = 110069,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Misty Mirage", "Adds Misty Mirage into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_MistyMirage = 110070,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Hasty Mirage", "Adds Hasty Mirage into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_HastyMirage = 110071,
+
+    [OccultCrescent]
+    [ParentCombo(Phantom_Geomancer_Weather)]
+    [CustomComboInfo("Aetherial Gain", "Adds Aetherial Gain into the rotation.", ADV.JobID)]
+    Phantom_Geomancer_AetherialGain = 110072,
 
     //Last Value = 110074
     #endregion
