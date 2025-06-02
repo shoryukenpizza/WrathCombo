@@ -159,5 +159,8 @@ namespace WrathCombo.CustomComboNS.Functions
 
             return false;
         }
+
+        public static bool CanApplyStatus(IGameObject? target, ushort[] status) =>
+            status.Any(statusId => CanApplyStatus(target, statusId));
     }
 }
