@@ -136,10 +136,10 @@ namespace WrathCombo.CustomComboNS.Functions
         {
             target ??= LocalPlayer;
             if (target is IPlayerCharacter pc)
-                return pc.StatusList.Count() == 30;
+                return pc.StatusList.Count(x => x.StatusId != 0) == 30;
 
             if (target is IBattleNpc npc)
-                return npc.StatusList.Count() == 60;
+                return npc.StatusList.Count(x => x.StatusId != 0) == 60;
 
             return false;
         }
