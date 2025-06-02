@@ -160,6 +160,10 @@ namespace WrathCombo.CustomComboNS.Functions
             return false;
         }
 
+        /// <summary>
+        ///     Overload to accept a list of status IDs.
+        /// </summary>
+        /// <seealso cref="CanApplyStatus(IGameObject?,ushort)"/>
         public static bool CanApplyStatus(IGameObject? target, ushort[] status) =>
             status.Any(statusId => CanApplyStatus(target, statusId));
     }
