@@ -1,5 +1,7 @@
 ﻿using System.Reflection.Metadata;
+using WrathCombo.CustomComboNS;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
 
 namespace WrathCombo.Combos.PvE;
 
@@ -54,17 +56,23 @@ internal partial class OccultCrescent
 
         #region Chemist
         //TODO: not sure if this will work tbh
-        if (IsEnabled(CustomComboPreset.Phantom_Chemist) &&
-            CanWeave())
+        if (IsEnabled(CustomComboPreset.Phantom_Chemist))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, Revive) && TargetIsFriendly() && GetTargetHPPercent() == 0)
-                return Revive; 
-            foreach (var (preset, action) in new[]
-            { (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
-            (CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),
-            (CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
-                if (IsEnabledAndUsable(preset, action))
-                    return action;
+                return Revive;
+
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion) && PlayerHealthPercentageHp() <= Config.Phantom_Chemist_OccultPotion_Health)
+                return OccultPotion;
+
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther) && LocalPlayer.CurrentMp <= Config.Phantom_Chemist_OccultEther_MP)
+                return OccultEther;
+
+            //foreach (var (preset, action) in new[]
+            //{ (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
+            //(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),A
+            //(CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
+                //if (IsEnabledAndUsable(preset, action))
+                    //return action;
         }
         #endregion
 
@@ -139,7 +147,7 @@ internal partial class OccultCrescent
                 return Blessing; //heal
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_PhantomJudgment, PhantomJudgment) && HasStatusEffect(Buffs.PredictionOfJudgment))
                 return PhantomJudgment; //damage + heal
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Cleansing, Cleansing) && HasStatusEffect(Buffs.PredictionOfCleansing) && CanInterruptEnemy())
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Cleansing, Cleansing) && HasStatusEffect(Buffs.PredictionOfCleansing)) // removed interupt. it hits 20% harder than Judgement. 120k aoe.
                 return Cleansing; //damage plus interrupt
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Starfall, Starfall) && HasStatusEffect(Buffs.PredictionOfStarfall) && PlayerHealthPercentageHp() <= Config.Phantom_Oracle_Starfall_Health)
                 return Starfall; //damage to targets + 90% total HP damage to self
@@ -199,7 +207,7 @@ internal partial class OccultCrescent
                 return OccultMageMasher; //weaken target's magic attack
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultComet, OccultComet))
                 return OccultComet; //damage
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !JustUsed(OccultSlowga, 30f)) //shitty hack, fix later
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !HasStatusEffect(Debuffs.Slow, CurrentTarget) && !JustUsed(OccultSlowga, 30f)) //shitty hack, fix later Perhaps a count of casts? it 
                 return OccultSlowga; //aoe slow
         }
         #endregion

@@ -21,6 +21,8 @@ internal partial class OccultCrescent
             Phantom_Knight_OccultHeal_Health = new("Phantom_Knight_OccultHeal_Health", 50),
             Phantom_Knight_Pledge_Health = new("Phantom_Knight_Pledge_Health", 50),
             Phantom_Monk_OccultChakra_Health = new("Phantom_Monk_OccultChakra_Health", 29),
+            Phantom_Chemist_OccultPotion_Health = new("Phantom_Chemist_OccultPotion_Health", 50),
+            Phantom_Chemist_OccultEther_MP = new("Phantom_Chemist_OccultEther_MP", 50),
             Phantom_Oracle_Blessing_Health = new("Phantom_Oracle_Blessing_Health", 50),
             Phantom_Oracle_Starfall_Health = new("Phantom_Oracle_Starfall_Health", 100),
             Phantom_Ranger_OccultUnicorn_Health = new("Phantom_Ranger_OccultUnicorn_Health", 50),
@@ -63,7 +65,7 @@ internal partial class OccultCrescent
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Oracle_Cleansing:
+                case CustomComboPreset.Phantom_Oracle_Blessing:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Oracle_Blessing_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
@@ -86,6 +88,16 @@ internal partial class OccultCrescent
                 case CustomComboPreset.Phantom_Thief_Steal:
                     UserConfig.DrawSliderInt(1, 50, Phantom_Thief_Steal_Health,
                         "Target HP% to be \nless than or equal to:", 200);
+                    break;
+
+                case CustomComboPreset.Phantom_Chemist_OccultPotion:
+                    UserConfig.DrawSliderInt(1, 100, Phantom_Chemist_OccultPotion_Health,
+                        "Player HP% to be \nless than or equal to:", 200);
+                    break;
+
+                case CustomComboPreset.Phantom_Chemist_OccultEther:
+                    UserConfig.DrawSliderInt(1, 10000, Phantom_Chemist_OccultEther_MP,
+                        "Player MP to be \nless than or equal to:", sliderIncrement: SliderIncrements.Hundreds);
                     break;
             }
         }

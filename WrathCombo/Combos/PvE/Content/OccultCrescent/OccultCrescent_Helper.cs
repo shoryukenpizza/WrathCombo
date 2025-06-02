@@ -14,6 +14,8 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
 {
+
+=======
     internal static bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && HasActionEquipped(action) && ActionReady(action);
 
     public static ushort
@@ -52,9 +54,9 @@ internal partial class OccultCrescent
 
     //Time Mage
     OccultSlowga = 41621,
-    OccultComet = 41622,
-    OccultMageMasher = 41623,
-    OccultDispel = 41624,
+    OccultComet = 41623,
+    OccultMageMasher = 41624,
+    OccultDispel = 41622,
     OccultQuick = 41625,
 
     //Chemist

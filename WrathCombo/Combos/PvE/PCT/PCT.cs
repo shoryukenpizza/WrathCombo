@@ -238,9 +238,6 @@ internal partial class PCT : Caster
                 return Variant.Rampart;
             #endregion
 
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
-
             #region Prepull
             if ((prepullEnabled && !InCombat()) || (noTargetMotifEnabled && InCombat() && CurrentTarget == null))
             {
@@ -253,8 +250,11 @@ internal partial class PCT : Caster
             }
             #endregion
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             #region Opener
-           
+
             if (openerEnabled && Opener().FullOpener(ref actionID))
                 return actionID;
 

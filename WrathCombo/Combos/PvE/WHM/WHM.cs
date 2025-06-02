@@ -133,6 +133,10 @@ internal partial class WHM : Healer
             if (actionID is not (Holy or Holy3))
                 return actionID;
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+
             #region Swiftcast Opener
 
             if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_SwiftHoly) &&
