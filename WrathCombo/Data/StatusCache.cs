@@ -12,6 +12,8 @@ namespace WrathCombo.Data
 {
     internal partial class CustomComboCache : IDisposable
     {
+        private const uint InvalidStatusID = 0;
+
         //Invalidate this
         private readonly ConcurrentDictionary<(uint StatusID, ulong? TargetID, ulong? SourceID), Status?> statusCache = new();
 
@@ -27,18 +29,19 @@ namespace WrathCombo.Data
 
             var key = (statusID, obj.GameObjectId, sourceID);
 
-            if (statusCache.TryGetValue(key, out Status? found))
+            if (statusCache.TryGetValue(key, out var found))
                 return found;
 
             if (obj is not IBattleChara chara)
                 return statusCache[key] = null;
 
-            if (chara.StatusList == null)
-                return statusCache[key] = null;
+            StatusList? statuses;
+            try { statuses = chara.StatusList; }
+            catch { return statusCache[key] = null; }
 
-            foreach (Status? status in chara.StatusList)
+            foreach (var status in statuses)
             {
-                if (status == null)
+                if (status.StatusId == InvalidStatusID)
                     continue;
 
                 if (status.StatusId == statusID &&
@@ -58,7 +61,7 @@ namespace WrathCombo.Data
         /// Lumina Status Sheet Dictionary
         /// </summary>
         private static readonly Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet = 
-            Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>()!.ToDictionary(i => i.RowId, i => i);
+            Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>().ToDictionary(i => i.RowId, i => i);
 
 
         private static readonly HashSet<uint> DamageDownStatuses =
@@ -101,11 +104,14 @@ namespace WrathCombo.Data
 
         public static bool TargetIsInvincible(IGameObject? target)
         {
-            if (target is not IBattleChara tar || tar.StatusList == null)
+            if (target is not IBattleChara tar)
                 return false;
+            StatusList? statuses;
+            try { statuses = tar.StatusList; }
+            catch { return false; }
 
             // Turn Target's status to uint hashset
-            var targetStatuses = tar.StatusList.Select(s => s.StatusId).ToHashSet();
+            var targetStatuses = statuses.Select(s => s.StatusId).ToHashSet();
             uint targetID = tar.DataId;
 
             switch (Svc.ClientState.TerritoryType)
@@ -169,8 +175,6 @@ namespace WrathCombo.Data
                         return true;
 
                     return false;
-                default:
-                    break;
             }
 
             // General invincibility check
@@ -210,9 +214,14 @@ namespace WrathCombo.Data
         /// <returns></returns>
         internal static bool HasStatusInCacheList(HashSet<uint> statusList, IGameObject? gameObject = null)
         {
-            if (gameObject is not IBattleChara chara || chara.StatusList == null)
+            if (gameObject is not IBattleChara chara)
                 return false;
-            var targetStatuses = chara.StatusList.Select(s => s.StatusId).ToHashSet();
+
+            StatusList? statuses;
+            try { statuses = chara.StatusList; }
+            catch { return false; }
+
+            var targetStatuses = statuses.Select(s => s.StatusId).ToHashSet();
             return statusList.Count switch
             {
                 0 => false,
