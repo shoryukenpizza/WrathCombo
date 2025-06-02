@@ -1,5 +1,7 @@
 ﻿using System.Reflection.Metadata;
+using WrathCombo.CustomComboNS;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
 
 namespace WrathCombo.Combos.PvE;
 
@@ -54,17 +56,23 @@ internal partial class OccultCrescent
 
         #region Chemist
         //TODO: not sure if this will work tbh
-        if (IsEnabled(CustomComboPreset.Phantom_Chemist) &&
-            CanWeave())
+        if (IsEnabled(CustomComboPreset.Phantom_Chemist))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, Revive) && TargetIsFriendly() && GetTargetHPPercent() == 0)
-                return Revive; 
-            foreach (var (preset, action) in new[]
-            { (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
-            (CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),
-            (CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
-                if (IsEnabledAndUsable(preset, action))
-                    return action;
+                return Revive;
+
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion) && PlayerHealthPercentageHp() <= Config.Phantom_Chemist_OccultPotion_Health)
+                return OccultPotion;
+
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther) && LocalPlayer.CurrentMp <= Config.Phantom_Chemist_OccultEther_MP)
+                return OccultEther;
+
+            //foreach (var (preset, action) in new[]
+            //{ (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
+            //(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),A
+            //(CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
+                //if (IsEnabledAndUsable(preset, action))
+                    //return action;
         }
         #endregion
 
