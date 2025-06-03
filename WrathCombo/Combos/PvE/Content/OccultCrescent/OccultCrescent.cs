@@ -16,11 +16,11 @@ internal partial class OccultCrescent
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_HerosRime, HerosRime))
                 return HerosRime; //burst song
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_OffensiveAria, OffensiveAria) && !HasStatusEffect(Buffs.OffensiveAria) && !HasStatusEffect(Buffs.HerosRime))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_OffensiveAria, OffensiveAria) && !HasStatusEffect(Buffs.OffensiveAria) && !HasStatusEffect(Buffs.HerosRime, anyOwner: true))
                 return OffensiveAria; //off-song
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_RomeosBallad, RomeosBallad) && CanInterruptEnemy())
                 return RomeosBallad; //interrupt
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_MightyMarch, MightyMarch) && !HasStatusEffect(Buffs.MightyMarch))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Bard_MightyMarch, MightyMarch) && !HasStatusEffect(Buffs.MightyMarch) && PlayerHealthPercentageHp() <= Config.Phantom_Bard_MightyMarch_Health)
                 return MightyMarch; //heal
         }
         #endregion
@@ -39,10 +39,10 @@ internal partial class OccultCrescent
         #region Cannoneer
         if (IsEnabled(CustomComboPreset.Phantom_Cannoneer))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon) && !HasStatusEffect(Buffs.SilverSickness))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon) && !HasStatusEffect(Debuffs.SilverSickness, CurrentTarget))
                 return SilverCannon; //debuff
             //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
-            //    return HolyCannon; //better on Undead targets
+            //    return HolyCannon; //better on Undead targets____ they dont share a cooldown you fire all the cannons so doesnt really matter if undead. 
 
             foreach (var (preset, action) in new[]
             { (CustomComboPreset.Phantom_Cannoneer_PhantomFire, PhantomFire),
@@ -55,7 +55,7 @@ internal partial class OccultCrescent
         #endregion
 
         #region Chemist
-        //TODO: not sure if this will work tbh
+        //To do, Elixir?
         if (IsEnabled(CustomComboPreset.Phantom_Chemist))
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, Revive) && TargetIsFriendly() && GetTargetHPPercent() == 0)
@@ -66,13 +66,7 @@ internal partial class OccultCrescent
 
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther) && LocalPlayer.CurrentMp <= Config.Phantom_Chemist_OccultEther_MP)
                 return OccultEther;
-
-            //foreach (var (preset, action) in new[]
-            //{ (CustomComboPreset.Phantom_Chemist_OccultPotion, OccultPotion),
-            //(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther),A
-            //(CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir), })
-                //if (IsEnabledAndUsable(preset, action))
-                    //return action;
+            
         }
         #endregion
 
@@ -157,10 +151,10 @@ internal partial class OccultCrescent
         #region Ranger
         if (IsEnabled(CustomComboPreset.Phantom_Ranger))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_OccultUnicorn, OccultUnicorn) && CanWeave() && 
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_OccultUnicorn, OccultUnicorn) && CanWeave() && !HasStatusEffect(Buffs.OccultUnicorn, anyOwner: true) &&
                 PlayerHealthPercentageHp() <= Config.Phantom_Ranger_OccultUnicorn_Health)
                 return OccultUnicorn; //heal
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_PhantomAim, PhantomAim) && CanWeave() &&
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_PhantomAim, PhantomAim) && CanWeave() && !HasStatusEffect(Buffs.PhantomAim, anyOwner:true) &&
                 GetTargetHPPercent() >= Config.Phantom_Ranger_PhantomAim_Stop)
                 return PhantomAim; //damage buff
             //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_OccultFalcon, OccultFalcon) && CanWeave() && !HasStatusEffect(Buffs.OccultUnicorn)) //TODO: add something for ground targeting? atm needs something like Reaction to work correctly
