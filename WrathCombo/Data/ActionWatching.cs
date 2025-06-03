@@ -332,31 +332,34 @@ namespace WrathCombo.Data
 
         private unsafe static bool UseActionDetour(ActionManager* actionManager, ActionType actionType, uint actionId, ulong targetId, uint extraParam, ActionManager.UseActionMode mode, uint comboRouteId, bool* outOptAreaTargeted)
         {
-            if (Service.Configuration.PerformanceMode)
+            var original = actionId; //Save the original action, do not modify
+            var originalTargetId = targetId; //Save the original target, do not modify
+
+            if (Service.Configuration.PerformanceMode) //Performance mode only logic, to modify the actionId
             {
                 var result = actionId;
                 foreach (var combo in ActionReplacer.FilteredCombos)
                 {
                     if (combo.TryInvoke(actionId, out result))
                     {
-                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result;
+                        actionId = Service.ActionReplacer.LastActionInvokeFor[actionId] = result; //Sets actionId and the LastActionInvokeFor dictionary entry to the result of the combo
                         break;
                     }
                 }
             }
-            
-            var originalTargetId = targetId;
-            var changed = CheckForChangedTarget(actionId, ref targetId,
-                out var replacedWith);
+           
+            var changed = CheckForChangedTarget(original, ref targetId,
+                out var replacedWith); //Passes the original action to the retargeting framework, outputs a targetId and a replaced action
 
-            if (changed)
+            if (changed) //Check if the action can be used on the target, and if not revert to original
                 if (!ActionManager.CanUseActionOnTarget(replacedWith,
                     Svc.Objects
                         .FirstOrDefault(x => x.GameObjectId == targetId)
                         .Struct()))
-                    targetId = originalTargetId;
+                    targetId = originalTargetId; 
 
-            var hookResult = UseActionHook.Original(actionManager, actionType, replacedWith, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
+            //Important to pass actionId here and not replaced. Performance mode = result from earlier, which could be modified. Non-performance mode = original action, which gets modified by the hook. Same result.
+            var hookResult = UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
 
             // If the target was changed, support changing the target for ground actions, too
             if (changed)
