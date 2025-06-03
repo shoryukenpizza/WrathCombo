@@ -49,8 +49,8 @@ internal class Debug : ConfigWindow, IDisposable
 
     private static Guid? _wrathLease;
     private static Action? _debugSpell;
-    private static SheetType? _readyType;
-    private static SheetType? _sheetType;
+    private static SheetType? _typeActionReady;
+    private static SheetType? _typeActionSheet;
 
     public enum SheetType
     {
@@ -61,8 +61,8 @@ internal class Debug : ConfigWindow, IDisposable
     }
 
     // Constants
-    private const int StatusIdWidth = 8;
-    private const int StatusDurationWidth = 11;
+    private const int WidthStatusId = 8;
+    private const int WidthStatusDuration = 11;
     private const float SpacingSmall = 10f;
     private const float SpacingMedium = 20f;
     private const string UnknownName = "???";
@@ -200,8 +200,8 @@ internal class Debug : ConfigWindow, IDisposable
 
                 // Build Second Column
                 var secondColumn = new StringBuilder();
-                secondColumn.Append(statusId.PadRight(StatusIdWidth));
-                secondColumn.Append(formattedDuration.PadRight(StatusDurationWidth));
+                secondColumn.Append(statusId.PadRight(WidthStatusId));
+                secondColumn.Append(formattedDuration.PadRight(WidthStatusDuration));
                 secondColumn.Append(formattedParam);
 
                 // Print
@@ -244,8 +244,8 @@ internal class Debug : ConfigWindow, IDisposable
 
                     // Build Second Column
                     var secondColumn = new StringBuilder();
-                    secondColumn.Append(statusId.PadRight(StatusIdWidth));
-                    secondColumn.Append(formattedDuration.PadRight(StatusDurationWidth));
+                    secondColumn.Append(statusId.PadRight(WidthStatusId));
+                    secondColumn.Append(formattedDuration.PadRight(WidthStatusDuration));
                     secondColumn.Append(formattedParam);
 
                     // Print
@@ -495,6 +495,14 @@ internal class Debug : ConfigWindow, IDisposable
         // ActionSheet Reference
         var actionSheet = Svc.Data.GetExcelSheet<Action>();
 
+        // PvE Actions
+        var actionsPvE = actionSheet
+            .Where(x =>
+                x.ClassJobLevel > 0 &&
+                x.ClassJobCategory.RowId != 1 &&
+                x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
+            .OrderBy(x => x.ClassJobLevel);
+
         // PvP Actions
         var actionsPvP = actionSheet
             .Where(x =>
@@ -503,14 +511,6 @@ internal class Debug : ConfigWindow, IDisposable
                 x.ClassJobCategory.RowId != 1 &&
                 x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
             .OrderBy(x => x.RowId);
-
-        // PvE Actions
-        var actionsPvE = actionSheet
-            .Where(x =>
-                x.ClassJobLevel > 0 &&
-                x.ClassJobCategory.RowId != 1 &&
-                x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
-            .OrderBy(x => x.ClassJobLevel);
 
         // Bozja Actions
         var actionsBozja = actionSheet
@@ -603,31 +603,31 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("ActionReady"))
         {
-            var prevSheet = _readyType == null
+            var prevSheet = _typeActionReady == null
                 ? "Select Type"
-                : _readyType.Value.ToString();
+                : _typeActionReady.Value.ToString();
 
             ImGuiEx.SetNextItemFullWidth();
             using (var comboBoxReady = ImRaii.Combo("###ReadyCombo", prevSheet))
             {
                 if (comboBoxReady)
                 {
-                    if (ImGui.Selectable("", _readyType == null))
+                    if (ImGui.Selectable("", _typeActionReady == null))
                     {
-                        _readyType = null;
+                        _typeActionReady = null;
                     }
 
                     foreach (SheetType sheetType in Enum.GetValues(typeof(SheetType)))
                     {
                         if (ImGui.Selectable($"{sheetType}"))
                         {
-                            _readyType = sheetType;
+                            _typeActionReady = sheetType;
                         }
                     }
                 }
             }
 
-            var currentActions = _readyType switch
+            var currentActions = _typeActionReady switch
             {
                 SheetType.PvE => actionsPvE,
                 SheetType.PvP => actionsPvP,
@@ -636,7 +636,7 @@ internal class Debug : ConfigWindow, IDisposable
                 _ => null,
             };
 
-            if (_readyType != null)
+            if (_typeActionReady != null)
             {
                 foreach (var act in currentActions)
                 {
@@ -654,18 +654,18 @@ internal class Debug : ConfigWindow, IDisposable
                 ? "Select Action"
                 : $"Lv.{_debugSpell.Value.ClassJobLevel} {_debugSpell.Value.Name} ({_debugSpell.Value.RowId})";
 
-            var prevSheet = _sheetType == null
+            var prevSheet = _typeActionSheet == null
                 ? "Select Type"
-                : _sheetType.Value.ToString();
+                : _typeActionSheet.Value.ToString();
 
             ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.3f);
             using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
             {
                 if (comboBoxSheet)
                 {
-                    if (ImGui.Selectable("", _sheetType == null))
+                    if (ImGui.Selectable("", _typeActionSheet == null))
                     {
-                        _sheetType = null;
+                        _typeActionSheet = null;
                         _debugSpell = null;
                     }
 
@@ -673,14 +673,14 @@ internal class Debug : ConfigWindow, IDisposable
                     {
                         if (ImGui.Selectable($"{sheetType}"))
                         {
-                            _sheetType = sheetType;
+                            _typeActionSheet = sheetType;
                             _debugSpell = null;
                         }
                     }
                 }
             }
 
-            var currentActions = _sheetType switch
+            var currentActions = _typeActionSheet switch
             {
                 SheetType.PvE => actionsPvE,
                 SheetType.PvP => actionsPvP,
