@@ -470,6 +470,15 @@ internal partial class WAR : Tank
     }
     #endregion
 
+    #region MyRegion
+    internal class WAR_RetargetHolmgang : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_RetargetHolmgang;
+
+        protected override uint Invoke(uint actionID) => actionID != Holmgang ? actionID : actionID.Retarget(SimpleTarget.Self, dontCull: true);
+    }
+    #endregion
+
     #region Basic Combos
     internal class WAR_ST_StormsPathCombo : CustomCombo
     {
