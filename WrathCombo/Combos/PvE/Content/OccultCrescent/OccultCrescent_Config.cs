@@ -20,6 +20,7 @@ internal partial class OccultCrescent
             Phantom_Knight_Pray_Health = new("Phantom_Knight_Pray_Health", 50),
             Phantom_Knight_OccultHeal_Health = new("Phantom_Knight_OccultHeal_Health", 50),
             Phantom_Knight_Pledge_Health = new("Phantom_Knight_Pledge_Health", 50),
+            Phantom_Bard_MightyMarch_Health = new("Phantom_Bard_MightyMarch_Health", 50),
             Phantom_Monk_OccultChakra_Health = new("Phantom_Monk_OccultChakra_Health", 29),
             Phantom_Chemist_OccultPotion_Health = new("Phantom_Chemist_OccultPotion_Health", 50),
             Phantom_Chemist_OccultEther_MP = new("Phantom_Chemist_OccultEther_MP", 50),
@@ -57,6 +58,10 @@ internal partial class OccultCrescent
                     break;
                 case CustomComboPreset.Phantom_Knight_Pledge:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Knight_Pledge_Health,
+                        "Player HP% to be \nless than or equal to:", 200);
+                    break;
+                case CustomComboPreset.Phantom_Bard_MightyMarch:
+                    UserConfig.DrawSliderInt(1, 100, Phantom_Bard_MightyMarch_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 

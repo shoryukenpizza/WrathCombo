@@ -135,8 +135,7 @@ internal partial class OccultCrescent
             Suspend = 4258,
             OccultQuick = 4260,
             OccultSprint = 4261,
-            OccultSwift = 4262,
-            SilverSickness = 4264,
+            OccultSwift = 4262,            
             PredictionOfJudgment = 4265,
             PredictionOfCleansing = 4266,
             PredictionOfBlessing = 4267,
@@ -154,8 +153,9 @@ internal partial class OccultCrescent
     {
         public static ushort
 
-            Slow = 3493,
+            Slow = 3493,            
             OccultMageMasher = 4259,
+            SilverSickness = 4264,
             FalsePrediction = 4269,
             WeaponPlifered = 4279;
     }
