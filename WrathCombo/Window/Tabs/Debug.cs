@@ -49,6 +49,7 @@ internal class Debug : ConfigWindow, IDisposable
 
     private static Guid? _wrathLease;
     private static Action? _debugSpell;
+    private static SheetType? _readyType;
     private static SheetType? _sheetType;
 
     public enum SheetType
@@ -602,33 +603,31 @@ internal class Debug : ConfigWindow, IDisposable
 
         if (ImGui.CollapsingHeader("ActionReady"))
         {
-            var prevSheet = _sheetType == null
+            var prevSheet = _readyType == null
                 ? "Select Type"
-                : _sheetType.Value.ToString();
+                : _readyType.Value.ToString();
 
             ImGuiEx.SetNextItemFullWidth();
             using (var comboBoxReady = ImRaii.Combo("###ReadyCombo", prevSheet))
             {
                 if (comboBoxReady)
                 {
-                    if (ImGui.Selectable("", _sheetType == null))
+                    if (ImGui.Selectable("", _readyType == null))
                     {
-                        _sheetType = null;
-                        _debugSpell = null;
+                        _readyType = null;
                     }
 
                     foreach (SheetType sheetType in Enum.GetValues(typeof(SheetType)))
                     {
                         if (ImGui.Selectable($"{sheetType}"))
                         {
-                            _sheetType = sheetType;
-                            _debugSpell = null;
+                            _readyType = sheetType;
                         }
                     }
                 }
             }
 
-            var currentActions = _sheetType switch
+            var currentActions = _readyType switch
             {
                 SheetType.PvE => actionsPvE,
                 SheetType.PvP => actionsPvP,
@@ -637,7 +636,7 @@ internal class Debug : ConfigWindow, IDisposable
                 _ => null,
             };
 
-            if (_sheetType != null)
+            if (_readyType != null)
             {
                 foreach (var act in currentActions)
                 {
