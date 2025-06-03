@@ -498,8 +498,9 @@ internal class Debug : ConfigWindow, IDisposable
         var actionsPvP = actionSheet
             .Where(x =>
                 x.IsPvP &&
-                x.Icon is not 405 &&
-                (x.ClassJobCategory.Value.IsJobInCategory(Player.Job) || x.ActionCategory.RowId is 0))
+                x.Icon != 405 &&
+                x.ClassJobCategory.RowId != 1 &&
+                x.ClassJobCategory.Value.IsJobInCategory(Player.Job))
             .OrderBy(x => x.RowId);
 
         // PvE Actions
@@ -513,8 +514,8 @@ internal class Debug : ConfigWindow, IDisposable
         // Bozja Actions
         var actionsBozja = actionSheet
             .Where(x =>
-                x.RowId is (>= 20701 and <= 20733) or (>= 22344 and <= 22356) or (>= 23908 and <= 23921) &&
-                x.ActionCategory.RowId is not 5)
+                x.ActionCategory.RowId != 5 &&
+                x.RowId is (>= 20701 and <= 20733) or (>= 22344 and <= 22356) or (>= 23908 and <= 23921))
             .OrderBy(x => x.RowId);
 
         // Occult Actions
