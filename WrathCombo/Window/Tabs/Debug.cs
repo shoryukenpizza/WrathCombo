@@ -613,6 +613,7 @@ internal class Debug : ConfigWindow, IDisposable
                     if (ImGui.Selectable("", _sheetType == null))
                     {
                         _sheetType = null;
+                        _debugSpell = null;
                     }
 
                     foreach (SheetType sheetType in Enum.GetValues(typeof(SheetType)))
@@ -620,6 +621,7 @@ internal class Debug : ConfigWindow, IDisposable
                         if (ImGui.Selectable($"{sheetType}"))
                         {
                             _sheetType = sheetType;
+                            _debugSpell = null;
                         }
                     }
                 }
