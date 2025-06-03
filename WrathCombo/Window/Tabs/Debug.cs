@@ -606,9 +606,9 @@ internal class Debug : ConfigWindow, IDisposable
                 : _sheetType.Value.ToString();
 
             ImGuiEx.SetNextItemFullWidth();
-            using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
+            using (var comboBoxReady = ImRaii.Combo("###ReadyCombo", prevSheet))
             {
-                if (comboBoxSheet)
+                if (comboBoxReady)
                 {
                     if (ImGui.Selectable("", _sheetType == null))
                     {
