@@ -7014,7 +7014,7 @@ SMN.JobID)]
     WHM_AoEHeals_DivineCaress = 19207,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto a friendly focus target, soft target, hard target, and fallback to placing it at your feet.", WHM.JobID)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", WHM.JobID)]
     [Retargeted]
     WHM_AoEHeals_Asylum = 19028,
 
