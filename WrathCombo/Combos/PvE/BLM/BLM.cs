@@ -64,13 +64,11 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
                 (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3) &&
-                GetTargetHPPercent() > 0 &&
-                ((CanApplyStatus(CurrentTarget, Debuffs.Thunder)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.Thunder3)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.HighThunder))))
+                GetTargetHPPercent() > 0)
                 return OriginalHook(Thunder);
 
             if (LevelChecked(Amplifier) &&
@@ -279,13 +277,11 @@ internal partial class BLM : Caster
                 float refreshTimer = BLM_ST_ThunderUptime_Threshold;
                 int hpThreshold = BLM_ST_Thunder_SubOption == 1 || !InBossEncounter() ? BLM_ST_ThunderOption : 0;
 
-                if ((ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
+                    (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                      ThunderDebuffST?.RemainingTime <= refreshTimer ||
                      ThunderDebuffAoE?.RemainingTime <= refreshTimer) &&
-                    GetTargetHPPercent() > hpThreshold &&
-                    ((CanApplyStatus(CurrentTarget, Debuffs.Thunder)) ||
-                     (CanApplyStatus(CurrentTarget, Debuffs.Thunder3)) ||
-                     (CanApplyStatus(CurrentTarget, Debuffs.HighThunder))))
+                    GetTargetHPPercent() > hpThreshold)
                     return OriginalHook(Thunder);
             }
 
@@ -441,10 +437,8 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (GetTargetHPPercent() > 1) &&
-                ((CanApplyStatus(CurrentTarget, Debuffs.Thunder2)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.Thunder4)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.HighThunder2))) &&
+                GetTargetHPPercent() > 1 &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
@@ -536,10 +530,8 @@ internal partial class BLM : Caster
 
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
                 HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
                 (GetTargetHPPercent() > BLM_AoE_ThunderHP) &&
-                ((CanApplyStatus(CurrentTarget, Debuffs.Thunder2)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.Thunder4)) ||
-                 (CanApplyStatus(CurrentTarget, Debuffs.HighThunder2))) &&
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
