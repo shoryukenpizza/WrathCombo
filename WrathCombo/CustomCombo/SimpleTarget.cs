@@ -50,7 +50,7 @@ internal static class SimpleTarget
         /// </remarks>
         public static IGameObject? OverridesAllies =>
             UIMouseOverTarget ?? FocusTarget.IfFriendly() ??
-            SoftTarget.IfFriendly()  ?? HardTarget .IfFriendly() ??
+            SoftTarget.IfFriendly() ?? HardTarget.IfFriendly() ??
             Self;
 
         /// A very common stack that targets the player, if there are no manual
