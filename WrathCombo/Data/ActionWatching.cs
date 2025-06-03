@@ -351,7 +351,9 @@ namespace WrathCombo.Data
             var changed = CheckForChangedTarget(original, ref targetId,
                 out var replacedWith); //Passes the original action to the retargeting framework, outputs a targetId and a replaced action
 
-            if (changed) //Check if the action can be used on the target, and if not revert to original
+            var areaTargeted = Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Action>().GetRow(replacedWith).TargetArea;
+
+            if (changed && !areaTargeted) //Check if the action can be used on the target, and if not revert to original
                 if (!ActionManager.CanUseActionOnTarget(replacedWith,
                     Svc.Objects
                         .FirstOrDefault(x => x.GameObjectId == targetId)
