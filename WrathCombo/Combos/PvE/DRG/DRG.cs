@@ -86,8 +86,9 @@ internal partial class DRG : Melee
                     CanDRGWeave(MirageDive) &&
                     HasStatusEffect(Buffs.DiveReady) &&
                     ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
-                      (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
-                     !TraitLevelChecked(Traits.LifeOfTheDragon)))
+                      (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                       GetCooldownRemainingTime(Geirskogul) > 3))) ||
+                    !TraitLevelChecked(Traits.LifeOfTheDragon))
                     return MirageDive;
 
                 //Wyrmwind Thrust Feature
@@ -108,7 +109,7 @@ internal partial class DRG : Melee
                     CanDRGWeave(OriginalHook(Jump)) &&
                     !HasStatusEffect(Buffs.DiveReady) &&
                     (LevelChecked(HighJump) &&
-                     (GetCooldownRemainingTime(Geirskogul) < 15 ||
+                     (GetCooldownRemainingTime(Geirskogul) < 13 ||
                       LoTDActive) ||
                      !LevelChecked(HighJump)))
                     return OriginalHook(Jump);
@@ -257,7 +258,8 @@ internal partial class DRG : Melee
                         HasStatusEffect(Buffs.DiveReady) &&
                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
                          ((TraitLevelChecked(Traits.LifeOfTheDragon) && LoTDActive) ||
-                          GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
+                          (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                           GetCooldownRemainingTime(Geirskogul) > 3))) ||
                         IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage))
                         return MirageDive;
 
@@ -283,7 +285,7 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.DiveReady) &&
                         (LevelChecked(HighJump) &&
                          (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                          (GetCooldownRemainingTime(Geirskogul) < 15 || LoTDActive) ||
+                          (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive) ||
                           IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)) ||
                          !LevelChecked(HighJump)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) ||
@@ -435,8 +437,7 @@ internal partial class DRG : Melee
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
                     FirstmindsFocus is 2 &&
-                    (LoTDActive ||
-                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
@@ -583,8 +584,7 @@ internal partial class DRG : Melee
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
                         FirstmindsFocus is 2 &&
-                        (LoTDActive ||
-                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
