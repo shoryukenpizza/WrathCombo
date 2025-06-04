@@ -185,7 +185,7 @@ internal partial class SMN : Caster
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (Ruin or Ruin2))
+            if (actionID is not (Ruin or Ruin2 or Ruin3))
                 return actionID;
                         
             #region Variants
@@ -464,8 +464,11 @@ internal partial class SMN : Caster
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (Ruin or Ruin2))
-                return actionID;
+            bool allRuins = Config.SMN_ST_Advanced_Combo_AltMode == 0;
+            bool actionFound = allRuins && AllRuinsList.Contains(actionID) ||
+                               !allRuins && NotRuin3List.Contains(actionID);   
+            if (!actionFound)
+                return actionID;          
 
             if (NeedToSummon && ActionReady(SummonCarbuncle))
                 return SummonCarbuncle;
@@ -478,8 +481,9 @@ internal partial class SMN : Caster
             bool IfritAstralFlowStrike = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[3];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[2];
             var waitForSearing = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
+            var replacedActions = allRuins ? AllRuinsList.ToArray() : NotRuin3List.ToArray();
             #endregion
-           
+
             #region Opener    
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Balance_Opener) &&
                 Opener().FullOpener(ref actionID))
@@ -542,7 +546,7 @@ internal partial class SMN : Caster
                             return OriginalHook(AstralFlow);
 
                         if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && DemiPheonix)
-                            return OriginalHook(AstralFlow).Retarget([Ruin, Ruin2], SimpleTarget.TargetsTarget.IfInParty() ?? SimpleTarget.AnyTank.IfMissingHP() ?? SimpleTarget.LowestHPPAlly.IfMissingHP() ?? SimpleTarget.Self);
+                            return OriginalHook(AstralFlow).Retarget(replacedActions, SimpleTarget.TargetsTarget.IfInParty() ?? SimpleTarget.AnyTank.IfMissingHP() ?? SimpleTarget.LowestHPPAlly.IfMissingHP() ?? SimpleTarget.Self);
                     }
                 }
 

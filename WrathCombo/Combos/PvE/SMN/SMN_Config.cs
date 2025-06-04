@@ -3,6 +3,8 @@ using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Extensions.UIntExtensions;
+using static WrathCombo.Window.Functions.UserConfig;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -11,6 +13,7 @@ internal partial class SMN
     internal static class Config
     {
         public static UserInt
+            SMN_ST_Advanced_Combo_AltMode = new("SMN_ST_Advanced_Combo_AltMode"),
             SMN_ST_Lucid = new("SMN_ST_Lucid", 8000),
             SMN_ST_BurstPhase = new("SMN_ST_BurstPhase", 1),
             SMN_ST_SwiftcastPhase = new("SMN_SwiftcastPhase", 1),
@@ -43,6 +46,11 @@ internal partial class SMN
         {
             switch (preset)
             {
+                case CustomComboPreset.SMN_ST_Advanced_Combo:
+                    DrawRadioButton(SMN_ST_Advanced_Combo_AltMode, $"On Ruin 1, 2, and 3", "", 0);
+                    DrawRadioButton(SMN_ST_Advanced_Combo_AltMode, $"On Ruin 1 and 2 Only", $"Alternative DPS Mode. Leaves Ruin 3 alone for pure DPS.", 1);
+                    break;
+
                 case CustomComboPreset.SMN_ST_Advanced_Combo_Balance_Opener:
                     
                     UserConfig.DrawBossOnlyChoice(SMN_Balance_Content);

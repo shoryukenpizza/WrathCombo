@@ -152,6 +152,10 @@ internal partial class SMN
     #endregion
 
     #region Variables
+    internal static readonly List<uint>
+        AllRuinsList = [Ruin, Ruin2, Ruin3],
+        NotRuin3List = [Ruin, Ruin2];
+
     internal static SMNGauge Gauge => GetJobGauge<SMNGauge>();
 
     internal static bool IsIfritAttuned => Gauge.AttunementType is SummonAttunement.Ifrit;
