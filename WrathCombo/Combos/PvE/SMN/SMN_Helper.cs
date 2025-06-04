@@ -162,7 +162,10 @@ internal partial class SMN
     internal static bool IsDreadwyrmTranceReady => !LevelChecked(SummonBahamut) && IsBahamutReady;
     internal static bool IsBahamutReady => !IsPhoenixReady && !IsSolarBahamutReady;
     internal static bool IsPhoenixReady => Gauge.AetherFlags.HasFlag((AetherFlags)4) && !Gauge.AetherFlags.HasFlag((AetherFlags)8);
-    internal static bool IsSolarBahamutReady => Gauge.AetherFlags.HasFlag((AetherFlags)8) || Gauge.AetherFlags.HasFlag((AetherFlags)12);    
+    internal static bool IsSolarBahamutReady => Gauge.AetherFlags.HasFlag((AetherFlags)8) || Gauge.AetherFlags.HasFlag((AetherFlags)12);
+    internal static bool DemiExists => CurrentDemiSummon is not DemiSummon.None;
+    internal static bool DemiNotPheonix => CurrentDemiSummon is not DemiSummon.Phoenix;
+    internal static bool DemiPheonix => CurrentDemiSummon is DemiSummon.Phoenix;
 
     private static DateTime SummonTime
     {

@@ -84,39 +84,7 @@ internal partial class SMN
                 case CustomComboPreset.SMN_AoE_Advanced_Combo_Ifrit:
                     UserConfig.DrawPriorityInput(SMN_AoE_Egi_Priority, 3, 2,
                         $"{SummonRuby.ActionName()} Priority: ");
-                    break;
-
-                case CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Solar Bahamut/Pre 100 Bahamut",
-                        "Bursts during Bahamut phase before 100.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Phoenix/Post 100 Bahamut", "Bursts during Phoenix phase. Also adds Regular Bahamut at 100. ", 2);
-
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Any Demi Phase",
-                        "Bursts during any Demi Summon phase.", 3);
-
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Flexible (SpS) Option",
-                        "Bursts when Searing Light is ready, regardless of phase.", 4);
-
-                    UserConfig.DrawSliderInt(0, 3, SMN_ST_Burst_Delay,
-                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
-
-                    break;
-
-                case CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Solar Bahamut/Pre 100 Bahamut",
-                        "Bursts during Bahamut phase below 100.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Phoenix/Post 100 Bahamut", "Bursts during Phoenix phase. Also adds Regular Bahamut at 100.", 2);
-
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Any Demi Phase",
-                        "Bursts during any Demi Summon phase.", 3);
-
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Flexible (SpS) Option",
-                        "Bursts when Searing Light is ready, regardless of phase.", 4);
-
-                    UserConfig.DrawSliderInt(0, 3, SMN_AoE_Burst_Delay,
-                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
-
-                    break;
+                    break;              
 
                 case CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi:
                     UserConfig.DrawHorizontalRadioButton(SMN_ST_SwiftcastPhase, "Garuda", "Swiftcasts Slipstream", 1);
@@ -185,16 +153,7 @@ internal partial class SMN
                                 "Enforced Crimson Cyclone Melee Check", "Only uses Crimson Cyclone within melee range.");
 
                         break;
-                    }
-
-                case CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight:
-                    UserConfig.DrawAdditionalBoolChoice(SMN_ST_Searing_Any, $"Do not user when under another {Job.SMN.GetData().Abbreviation}'s {Buffs.SearingLight.StatusName()} buff.", $"Saves your {SearingLight.ActionName()} if you already have the buff from another {Job.SMN.GetData().Abbreviation}.");
-                    break;
-
-                case CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight:
-                    UserConfig.DrawAdditionalBoolChoice(SMN_AoE_Searing_Any, $"Do not user when under another {Job.SMN.GetData().Abbreviation}'s {Buffs.SearingLight.StatusName()} buff.", $"Saves your {SearingLight.ActionName()} if you already have the buff from another {Job.SMN.GetData().Abbreviation}.");
-                    break;
-                
+                    }  
             }
         }
     }
