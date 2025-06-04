@@ -87,15 +87,14 @@ internal partial class DRG : Melee
                     HasStatusEffect(Buffs.DiveReady) &&
                     ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
                       (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
-                     !TraitLevelChecked(Traits.LifeOfTheDragon) && !LoTDActive))
+                     !TraitLevelChecked(Traits.LifeOfTheDragon)))
                     return MirageDive;
 
                 //Wyrmwind Thrust Feature
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
                     FirstmindsFocus is 2 &&
-                    (LoTDActive ||
-                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
@@ -132,15 +131,13 @@ internal partial class DRG : Melee
                 //Starcross Feature
                 if (ActionReady(Starcross) &&
                     CanDRGWeave(Starcross) &&
-                    HasStatusEffect(Buffs.StarcrossReady) &&
-                    LoTDActive)
+                    HasStatusEffect(Buffs.StarcrossReady))
                     return Starcross;
 
                 //Rise of the Dragon Feature
                 if (ActionReady(RiseOfTheDragon) &&
                     CanDRGWeave(RiseOfTheDragon) &&
-                    HasStatusEffect(Buffs.DragonsFlight) &&
-                    LoTDActive)
+                    HasStatusEffect(Buffs.DragonsFlight))
                     return RiseOfTheDragon;
 
                 //Nastrond Feature
@@ -259,9 +256,9 @@ internal partial class DRG : Melee
                         CanDRGWeave(MirageDive) &&
                         HasStatusEffect(Buffs.DiveReady) &&
                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                         TraitLevelChecked(Traits.LifeOfTheDragon) && LoTDActive ||
-                         IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage) ||
-                         GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3))
+                         ((TraitLevelChecked(Traits.LifeOfTheDragon) && LoTDActive) ||
+                          GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
+                        IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage))
                         return MirageDive;
 
                     //Wyrmwind Thrust Feature
@@ -269,8 +266,7 @@ internal partial class DRG : Melee
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
                         FirstmindsFocus is 2 &&
-                        (LoTDActive ||
-                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
@@ -301,8 +297,7 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.DragonsFlight) &&
                         (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) &&
-                         InMeleeRange()))
+                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) && InMeleeRange()))
                         return DragonfireDive;
 
                     //StarDiver Feature
@@ -319,16 +314,14 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Starcross) &&
                         ActionReady(Starcross) &&
                         CanDRGWeave(Starcross) &&
-                        HasStatusEffect(Buffs.StarcrossReady) &&
-                        LoTDActive)
+                        HasStatusEffect(Buffs.StarcrossReady))
                         return Starcross;
 
                     //Rise of the Dragon Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Dives_RiseOfTheDragon) &&
                         ActionReady(RiseOfTheDragon) &&
                         CanDRGWeave(RiseOfTheDragon) &&
-                        HasStatusEffect(Buffs.DragonsFlight) &&
-                        LoTDActive)
+                        HasStatusEffect(Buffs.DragonsFlight))
                         return RiseOfTheDragon;
 
                     //Nastrond Feature
@@ -475,15 +468,13 @@ internal partial class DRG : Melee
                 //Starcross Feature
                 if (ActionReady(Starcross) &&
                     CanDRGWeave(Starcross) &&
-                    HasStatusEffect(Buffs.StarcrossReady) &&
-                    LoTDActive)
+                    HasStatusEffect(Buffs.StarcrossReady))
                     return Starcross;
 
                 //Rise of the Dragon Feature
                 if (ActionReady(RiseOfTheDragon) &&
                     CanDRGWeave(RiseOfTheDragon) &&
-                    HasStatusEffect(Buffs.DragonsFlight) &&
-                    LoTDActive)
+                    HasStatusEffect(Buffs.DragonsFlight))
                     return RiseOfTheDragon;
 
                 //Mirage Feature
@@ -492,7 +483,7 @@ internal partial class DRG : Melee
                     HasStatusEffect(Buffs.DiveReady) &&
                     ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
                       (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
-                     !TraitLevelChecked(Traits.LifeOfTheDragon) && !LoTDActive))
+                     !TraitLevelChecked(Traits.LifeOfTheDragon)))
                     return MirageDive;
 
                 //Nastrond Feature
@@ -636,16 +627,14 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Starcross) &&
                         ActionReady(Starcross) &&
                         CanDRGWeave(Starcross) &&
-                        HasStatusEffect(Buffs.StarcrossReady) &&
-                        LoTDActive)
+                        HasStatusEffect(Buffs.StarcrossReady))
                         return Starcross;
 
                     //Rise of the Dragon Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_RiseOfTheDragon) &&
                         ActionReady(RiseOfTheDragon) &&
                         CanDRGWeave(RiseOfTheDragon) &&
-                        HasStatusEffect(Buffs.DragonsFlight) &&
-                        LoTDActive)
+                        HasStatusEffect(Buffs.DragonsFlight))
                         return RiseOfTheDragon;
 
                     //Mirage Feature
@@ -655,7 +644,7 @@ internal partial class DRG : Melee
                         HasStatusEffect(Buffs.DiveReady) &&
                         ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
                           (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
-                         !TraitLevelChecked(Traits.LifeOfTheDragon) && !LoTDActive))
+                         !TraitLevelChecked(Traits.LifeOfTheDragon)))
                         return MirageDive;
 
                     //Nastrond Feature
