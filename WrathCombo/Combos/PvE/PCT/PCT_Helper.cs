@@ -236,22 +236,22 @@ internal partial class PCT
             PomMuse,
             StrikingMuse,
             WingMotif,
-            StarryMuse,
+            StarryMuse, //5
             HammerStamp,
             SubtractivePalette,
             BlizzardinCyan,
             StoneinYellow,
-            ThunderinMagenta,
+            ThunderinMagenta,//10
             CometinBlack,
             WingedMuse,
             MogoftheAges,
             StarPrism,
-            HammerBrush,
+            HammerBrush,//15
             PolishingHammer,
             RainbowDrip,
             Role.Swiftcast,
             ClawMotif,
-            ClawedMuse,
+            ClawedMuse,//20
         ];
         internal override UserData? ContentCheckConfig => Config.PCT_Balance_Content;
 
@@ -262,6 +262,7 @@ internal partial class PCT
             ([8, 9, 10], ThunderinMagenta, () => OriginalHook(BlizzardinCyan) == ThunderinMagenta),
             ([11], HolyInWhite, () => !HasStatusEffect(Buffs.MonochromeTones)),
         ];
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([17], () => HasStatusEffect(Buffs.RainbowBright))];
 
         public override bool HasCooldowns()
         {
