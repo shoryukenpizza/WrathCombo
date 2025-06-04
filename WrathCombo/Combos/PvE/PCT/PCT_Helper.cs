@@ -262,7 +262,7 @@ internal partial class PCT
             ([8, 9, 10], ThunderinMagenta, () => OriginalHook(BlizzardinCyan) == ThunderinMagenta),
             ([11], HolyInWhite, () => !HasStatusEffect(Buffs.MonochromeTones)),
         ];
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([17], () => HasStatusEffect(Buffs.RainbowBright))];
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([17], () => !HasStatusEffect(Buffs.RainbowBright))];
 
         public override bool HasCooldowns()
         {
