@@ -7,6 +7,8 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.Data;
+using System.Diagnostics.Metrics;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -168,8 +170,13 @@ internal partial class SMN
     internal static bool IsPhoenixReady => Gauge.AetherFlags.HasFlag((AetherFlags)4) && !Gauge.AetherFlags.HasFlag((AetherFlags)8);
     internal static bool IsSolarBahamutReady => Gauge.AetherFlags.HasFlag((AetherFlags)8) || Gauge.AetherFlags.HasFlag((AetherFlags)12);
     internal static bool DemiExists => CurrentDemiSummon is not DemiSummon.None;
+    internal static bool DemiNone => CurrentDemiSummon is DemiSummon.None;
     internal static bool DemiNotPheonix => CurrentDemiSummon is not DemiSummon.Phoenix;
     internal static bool DemiPheonix => CurrentDemiSummon is DemiSummon.Phoenix;
+    internal static bool SearingBurstDriftCheck => SearingCD >=3 && SearingCD <=8;
+    internal static bool SummonerWeave => CanSpellWeave() && !ActionWatching.HasDoubleWeaved();
+    internal static float SearingCD => GetCooldownRemainingTime(SearingLight);
+   
     #endregion
 
     #region Carbuncle Summoner
@@ -280,6 +287,18 @@ internal partial class SMN
     }
 
     #endregion
+
+    internal static uint EmergencyDemiAttacks(uint actionId)
+    {
+        if (Gauge.SummonTimerRemaining <= 2500)
+        {
+            if (ActionReady(OriginalHook(EnkindleBahamut)))
+                return OriginalHook(EnkindleBahamut);
+            if (ActionReady(AstralFlow) && DemiNotPheonix)
+                return OriginalHook(AstralFlow);
+        }
+        return actionId;
+    }
 
     #region Opener
 

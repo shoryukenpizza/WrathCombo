@@ -204,7 +204,7 @@ internal partial class SMN : Caster
 
             #region OGCD
 
-            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            if (SummonerWeave)
             {
                 // Searing Light
                 if (IsOffCooldown(SearingLight) && LevelChecked(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true) && CurrentDemiSummon is not DemiSummon.None)
@@ -256,7 +256,7 @@ internal partial class SMN : Caster
             #region Titan Phase
             if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                if (ActionReady(AstralFlow) && CanSpellWeave())
+                if (ActionReady(AstralFlow) && SummonerWeave)
                     return OriginalHook(AstralFlow);
 
                 if (GemshineReady)
@@ -338,7 +338,7 @@ internal partial class SMN : Caster
 
             #region OGCD
 
-            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            if (SummonerWeave)
             {
                 // Searing Light
                 if (IsOffCooldown(SearingLight) && LevelChecked(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true) && CurrentDemiSummon is not DemiSummon.None)
@@ -398,7 +398,7 @@ internal partial class SMN : Caster
             #region Titan Phase
             if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster)
             {
-                if (ActionReady(AstralFlow) && CanSpellWeave())
+                if (ActionReady(AstralFlow) && SummonerWeave)
                     return OriginalHook(AstralFlow);
 
                 if (GemshineReady)
@@ -500,15 +500,10 @@ internal partial class SMN : Caster
 
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiExists && Gauge.SummonTimerRemaining <= 2500)
-            {
-                if (ActionReady(OriginalHook(EnkindleBahamut)))
-                    return OriginalHook(EnkindleBahamut);            
-                if (ActionReady(AstralFlow) && DemiNotPheonix)
-                    return OriginalHook(AstralFlow);                
-            }                      
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiExists)
+                return EmergencyDemiAttacks(actionID);  
 
-            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            if (SummonerWeave)
             {
                 // Searing Light
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight) && ActionReady(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true))
@@ -527,7 +522,7 @@ internal partial class SMN : Caster
                 {
                     if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_oGCDPooling) && LevelChecked(SearingLight))
                     {
-                        if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || GetCooldown(SearingLight).CooldownRemaining > 30)
+                        if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || SearingCD > 30)
                             return OriginalHook(EnergyDrain);
                     }
                     else if (!ActionReady(SearingLight))
@@ -546,7 +541,15 @@ internal partial class SMN : Caster
                             return OriginalHook(AstralFlow);
 
                         if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && DemiPheonix)
-                            return OriginalHook(AstralFlow).Retarget(replacedActions, SimpleTarget.TargetsTarget.IfInParty() ?? SimpleTarget.AnyTank.IfMissingHP() ?? SimpleTarget.LowestHPPAlly.IfMissingHP() ?? SimpleTarget.Self);
+                        {
+                            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle_Retarget))
+                                return OriginalHook(AstralFlow).Retarget(replacedActions, 
+                                    SimpleTarget.TargetsTarget.IfInParty() ?? 
+                                    SimpleTarget.AnyTank.IfMissingHP() ?? 
+                                    SimpleTarget.LowestHPPAlly.IfMissingHP() ?? 
+                                    SimpleTarget.Self);
+                            else return OriginalHook(AstralFlow);
+                        }                            
                     }
                 }
 
@@ -586,13 +589,15 @@ internal partial class SMN : Caster
             #region Demi Summon
             // Demi
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
-                return OriginalHook(Aethercharge);
+                return IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight_Burst) && SearingBurstDriftCheck
+                    ? OriginalHook(Ruin) 
+                    : OriginalHook(Aethercharge);
             #endregion
 
             #region Titan Phase
             if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                if (TitanAstralFlow && ActionReady(AstralFlow) && CanSpellWeave())
+                if (TitanAstralFlow && ActionReady(AstralFlow) && SummonerWeave)
                     return OriginalHook(AstralFlow);
 
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
@@ -622,7 +627,7 @@ internal partial class SMN : Caster
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
                     return OriginalHook(Gemshine);
 
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && IsMoving())
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && HasStatusEffect(Buffs.FurtherRuin) && IsMoving())
                     return Ruin4;
             }
             #endregion
@@ -642,7 +647,7 @@ internal partial class SMN : Caster
                    || (IfritAstralFlowStrike && HasStatusEffect(Buffs.CrimsonStrike) && InMeleeRange())) //After Strike
                     return OriginalHook(AstralFlow);
 
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && HasStatusEffect(Buffs.FurtherRuin) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Ruin4;
             }
             #endregion
@@ -662,7 +667,7 @@ internal partial class SMN : Caster
             #endregion
 
             #region Ruin 4 Dump
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && !IsAttunedAny  && CurrentDemiSummon is DemiSummon.None && HasStatusEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && !IsAttunedAny  && DemiNone && HasStatusEffect(Buffs.FurtherRuin))
                 return Ruin4;
             #endregion
 
@@ -702,16 +707,10 @@ internal partial class SMN : Caster
 
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiExists && Gauge.SummonTimerRemaining <= 2500)
-            {
-                if (ActionReady(OriginalHook(EnkindleBahamut)))
-                    return OriginalHook(EnkindleBahamut);
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiExists)
+                return EmergencyDemiAttacks(actionID);
 
-                if (ActionReady(AstralFlow) && DemiNotPheonix)
-                    return OriginalHook(AstralFlow);
-            }
-
-            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            if (SummonerWeave)
             {
                 // Searing Light
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight) && ActionReady(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true))
@@ -730,7 +729,7 @@ internal partial class SMN : Caster
                 {
                     if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_oGCDPooling) && LevelChecked(SearingLight))
                     {
-                        if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || GetCooldown(SearingLight).CooldownRemaining > 30)
+                        if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || SearingCD > 30)
                             return OriginalHook(EnergyDrain);
                     }
                     else if (!ActionReady(SearingLight)) 
@@ -751,7 +750,15 @@ internal partial class SMN : Caster
                             return OriginalHook(AstralFlow);
 
                         if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Rekindle) && DemiPheonix)
-                            return OriginalHook(AstralFlow).Retarget([Outburst, Tridisaster], SimpleTarget.TargetsTarget.IfInParty() ?? SimpleTarget.AnyTank.IfMissingHP() ?? SimpleTarget.LowestHPPAlly.IfMissingHP() ?? SimpleTarget.Self);
+                        {
+                            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Rekindle_Retarget))
+                                return OriginalHook(AstralFlow).Retarget([Outburst, Tridisaster], 
+                                    SimpleTarget.TargetsTarget.IfInParty() ?? 
+                                    SimpleTarget.AnyTank.IfMissingHP() ?? 
+                                    SimpleTarget.LowestHPPAlly.IfMissingHP() ?? 
+                                    SimpleTarget.Self);
+                            else return OriginalHook(AstralFlow);
+                        }
                     }
                 }
 
@@ -792,13 +799,15 @@ internal partial class SMN : Caster
             #region Demi Summon
             // Demi
             if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
-                return OriginalHook(Aethercharge);
+                return IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight_Burst) && SearingBurstDriftCheck
+                    ? OriginalHook(Ruin)
+                    : OriginalHook(Aethercharge);
             #endregion
 
             #region Titan Phase
             if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                if (TitanAstralFlow && ActionReady(AstralFlow) && CanSpellWeave())
+                if (TitanAstralFlow && ActionReady(AstralFlow) && SummonerWeave)
                     return OriginalHook(AstralFlow);
 
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
@@ -822,7 +831,7 @@ internal partial class SMN : Caster
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
                     return OriginalHook(PreciousBrilliance);
 
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && IsMoving())
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && HasStatusEffect(Buffs.FurtherRuin) && IsMoving())
                     return Ruin4;
             }
 
@@ -843,7 +852,7 @@ internal partial class SMN : Caster
                    || (IfritAstralFlowStrike && HasStatusEffect(Buffs.CrimsonStrike) && InMeleeRange())) //After Strike
                     return OriginalHook(AstralFlow);
 
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && HasStatusEffect(Buffs.FurtherRuin) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Ruin4;
             }
             #endregion
@@ -864,7 +873,7 @@ internal partial class SMN : Caster
 
             #region Ruin 4 Dump
             // Ruin 4 Dump
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && !IsAttunedAny && CurrentDemiSummon is DemiSummon.None && HasStatusEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && !IsAttunedAny && DemiNone && HasStatusEffect(Buffs.FurtherRuin))
                 return Ruin4;
             #endregion
 
