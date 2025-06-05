@@ -82,6 +82,9 @@ internal partial class PCT
                 return OriginalHook(ScenicMuse);            
         }
 
+        if (HyperPhantasiaMovementPaint() && IsMoving())
+            return HasStatusEffect(Buffs.MonochromeTones) ? OriginalHook(CometinBlack) : OriginalHook(HolyInWhite);
+
         if (HasStatusEffect(Buffs.SubtractivePalette) && (GetStatusEffectRemainingTime(Buffs.StarryMuse) > 10 || !HasStatusEffect(Buffs.StarryMuse)))
             return OriginalHook(BlizzardinCyan);
 
