@@ -286,19 +286,7 @@ internal partial class SMN
         return 0;
     }
 
-    #endregion
-
-    internal static uint EmergencyDemiAttacks(uint actionId)
-    {
-        if (Gauge.SummonTimerRemaining <= 2500)
-        {
-            if (ActionReady(OriginalHook(EnkindleBahamut)))
-                return OriginalHook(EnkindleBahamut);
-            if (ActionReady(AstralFlow) && DemiNotPheonix)
-                return OriginalHook(AstralFlow);
-        }
-        return actionId;
-    }
+    #endregion   
 
     #region Opener
 
