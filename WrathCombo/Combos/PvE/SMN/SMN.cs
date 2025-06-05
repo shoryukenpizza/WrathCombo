@@ -3,6 +3,7 @@ using WrathCombo.CustomComboNS;
 using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
+using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -126,7 +127,7 @@ internal partial class SMN : Caster
                  PreciousBrilliance or Gemshine))
                 return actionID;
 
-            if (NeedToSummon && ActionReady(SummonCarbuncle))
+            if (NeedToSummon)
                 return SummonCarbuncle;
 
             return actionID;
@@ -203,7 +204,7 @@ internal partial class SMN : Caster
 
             #region OGCD
 
-            if (CanSpellWeave())
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Searing Light
                 if (IsOffCooldown(SearingLight) && LevelChecked(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true) && CurrentDemiSummon is not DemiSummon.None)
@@ -337,7 +338,7 @@ internal partial class SMN : Caster
 
             #region OGCD
 
-            if (CanSpellWeave())
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Searing Light
                 if (IsOffCooldown(SearingLight) && LevelChecked(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true) && CurrentDemiSummon is not DemiSummon.None)
@@ -470,7 +471,7 @@ internal partial class SMN : Caster
             if (!actionFound)
                 return actionID;          
 
-            if (NeedToSummon && ActionReady(SummonCarbuncle))
+            if (NeedToSummon)
                 return SummonCarbuncle;
 
             #region Variables
@@ -480,7 +481,7 @@ internal partial class SMN : Caster
             bool IfritAstralFlowCyclone = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[1];
             bool IfritAstralFlowStrike = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[3];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[2];
-            var waitForSearing = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
+            var dontWaitForSearing = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
             var replacedActions = allRuins ? AllRuinsList.ToArray() : NotRuin3List.ToArray();
             #endregion
 
@@ -498,18 +499,16 @@ internal partial class SMN : Caster
             #endregion
 
             #region OGCD
-
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiExists && Gauge.SummonTimerRemaining <= 2500)
             {
                 if (ActionReady(OriginalHook(EnkindleBahamut)))
-                    return OriginalHook(EnkindleBahamut);
-            
+                    return OriginalHook(EnkindleBahamut);            
                 if (ActionReady(AstralFlow) && DemiNotPheonix)
                     return OriginalHook(AstralFlow);                
             }                      
 
-            if (CanSpellWeave())
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Searing Light
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight) && ActionReady(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true))
@@ -519,7 +518,7 @@ internal partial class SMN : Caster
                         if (DemiExists)                            
                             return SearingLight;
                     }
-                    else
+                    else if (!ActionReady(OriginalHook(Aethercharge)))
                         return SearingLight;
                 }
 
@@ -531,11 +530,12 @@ internal partial class SMN : Caster
                         if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || GetCooldown(SearingLight).CooldownRemaining > 30)
                             return OriginalHook(EnergyDrain);
                     }
-                    else return OriginalHook(EnergyDrain);
+                    else if (!ActionReady(SearingLight))
+                        return OriginalHook(EnergyDrain);
                 }                   
 
                 // Demi Nuke
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiExists && (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || waitForSearing) && (GetCooldown(EnergyDrain).CooldownRemaining >= 3 || !ActionReady(Fester)))
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiExists && (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || dontWaitForSearing) && (GetCooldown(EnergyDrain).CooldownRemaining >= 3 || !ActionReady(Fester)))
                 {
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
@@ -551,7 +551,6 @@ internal partial class SMN : Caster
                 }
 
                 // Fester Logic
-
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EDFester) && ActionReady(Fester) && !HasStatusEffect(Buffs.TitansFavor))
                 {
                     if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_oGCDPooling))
@@ -582,15 +581,12 @@ internal partial class SMN : Caster
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))
                     return Role.LucidDreaming;
             }
-
             #endregion
 
             #region Demi Summon
-
             // Demi
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
-
             #endregion
 
             #region Titan Phase
@@ -632,7 +628,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Ifrit Phase
-
             if (IsIfritAttuned || OriginalHook(AstralFlow) is CrimsonCyclone or CrimsonStrike)
             {
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3 && Role.CanSwiftcast())
@@ -653,7 +648,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Egi Priority
-
             foreach (var prio in Config.SMN_ST_Egi_Priority.Items.OrderBy(x => x))
             {
                 var index = Config.SMN_ST_Egi_Priority.IndexOf(prio);
@@ -665,14 +659,11 @@ internal partial class SMN : Caster
                 if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
                     return spell;
             }
-
             #endregion
 
             #region Ruin 4 Dump
-
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && !IsAttunedAny  && CurrentDemiSummon is DemiSummon.None && HasStatusEffect(Buffs.FurtherRuin))
                 return Ruin4;
-
             #endregion
 
             return actionID;
@@ -688,7 +679,7 @@ internal partial class SMN : Caster
             if (actionID is not (Outburst or Tridisaster))
                 return actionID;
 
-            if (NeedToSummon && ActionReady(SummonCarbuncle))
+            if (NeedToSummon)
                 return SummonCarbuncle;
 
             #region Variables            
@@ -698,7 +689,7 @@ internal partial class SMN : Caster
             bool IfritAstralFlowCyclone = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[1];
             bool IfritAstralFlowStrike = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[3];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[2];
-            var waitForSearing = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
+            var dontWaitForSearing = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
             #endregion
 
             #region Variant
@@ -710,7 +701,6 @@ internal partial class SMN : Caster
             #endregion            
 
             #region OGCD
-
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
             if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiExists && Gauge.SummonTimerRemaining <= 2500)
             {
@@ -721,7 +711,7 @@ internal partial class SMN : Caster
                     return OriginalHook(AstralFlow);
             }
 
-            if (CanSpellWeave())
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 // Searing Light
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight) && ActionReady(SearingLight) && !HasStatusEffect(Buffs.SearingLight, anyOwner: true))
@@ -731,7 +721,7 @@ internal partial class SMN : Caster
                         if (DemiExists)
                             return SearingLight;
                     }
-                    else
+                    else if (!ActionReady(OriginalHook(Aethercharge)))
                         return SearingLight;
                 }
 
@@ -743,11 +733,14 @@ internal partial class SMN : Caster
                         if (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || GetCooldown(SearingLight).CooldownRemaining > 30)
                             return OriginalHook(EnergyDrain);
                     }
-                    else return LevelChecked(EnergySiphon) ? EnergySiphon : EnergyDrain; ;
+                    else if (!ActionReady(SearingLight)) 
+                        return LevelChecked(EnergySiphon) ? EnergySiphon : EnergyDrain; ;
                 }
 
                 // Demi Nuke
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiExists && (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || waitForSearing) && (GetCooldown(EnergyDrain).CooldownRemaining >= 3 || !ActionReady(Fester)))
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiExists && 
+                    (HasStatusEffect(Buffs.SearingLight, anyOwner: true) || dontWaitForSearing) && 
+                    (GetCooldown(EnergyDrain).CooldownRemaining >= 3 || !ActionReady(OriginalHook(Painflare))))
                 {
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
@@ -763,7 +756,6 @@ internal partial class SMN : Caster
                 }
 
                 // Fester Logic
-
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_ESPainflare) && ActionReady(OriginalHook(Fester)) && !HasStatusEffect(Buffs.TitansFavor))
                 {                    
                     if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_oGCDPooling))
@@ -804,7 +796,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Titan Phase
-
             if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
                 if (TitanAstralFlow && ActionReady(AstralFlow) && CanSpellWeave())
@@ -858,7 +849,6 @@ internal partial class SMN : Caster
             #endregion
 
             #region Egi Priority
-
             foreach (var prio in Config.SMN_AoE_Egi_Priority.Items.OrderBy(x => x))
             {
                 var index = Config.SMN_AoE_Egi_Priority.IndexOf(prio);
@@ -870,7 +860,6 @@ internal partial class SMN : Caster
                 if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
                     return spell;
             }
-
             #endregion
 
             #region Ruin 4 Dump

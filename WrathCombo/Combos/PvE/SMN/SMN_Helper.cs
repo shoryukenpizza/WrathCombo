@@ -170,7 +170,9 @@ internal partial class SMN
     internal static bool DemiExists => CurrentDemiSummon is not DemiSummon.None;
     internal static bool DemiNotPheonix => CurrentDemiSummon is not DemiSummon.Phoenix;
     internal static bool DemiPheonix => CurrentDemiSummon is DemiSummon.Phoenix;
+    #endregion
 
+    #region Carbuncle Summoner
     private static DateTime SummonTime
     {
         get
@@ -181,8 +183,10 @@ internal partial class SMN
             return field;
         }
     }
+    public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent() && ActionReady(SummonCarbuncle);
+    #endregion
 
-    public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent();
+    #region Demi Summon Detector
 
     internal static DemiSummon CurrentDemiSummon
     {
