@@ -303,26 +303,28 @@ internal partial class PCT
             StrikingMuse,
             HolyInWhite,
             PomMuse,
-            WingMotif,
+            WingMotif, //5 
             StarryMuse,
             HammerStamp,
             SubtractivePalette,
             BlizzardinCyan,
-            BlizzardinCyan,
+            BlizzardinCyan, //10
             BlizzardinCyan,
             CometinBlack,
             WingedMuse,
             MogoftheAges,
-            StarPrism,
+            StarPrism, //15
             HammerBrush,
             PolishingHammer,
             RainbowDrip,
             FireInRed,
-            Role.Swiftcast,
+            Role.Swiftcast, //20
             ClawMotif,
             ClawedMuse
         ];
         internal override UserData? ContentCheckConfig => Config.PCT_Balance_Content;
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([18], () => !HasStatusEffect(Buffs.RainbowBright))];
 
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [
