@@ -664,6 +664,7 @@ internal class Debug : ConfigWindow, IDisposable
                 ? "Select Type"
                 : _sheetType.Value.ToString();
 
+            // Type Dropdown Menu
             ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X * 0.3f);
             using (var comboBoxSheet = ImRaii.Combo("###SheetCombo", prevSheet))
             {
@@ -689,6 +690,8 @@ internal class Debug : ConfigWindow, IDisposable
             }
 
             ImGui.SameLine();
+
+            // Custom Action Input
             if (_sheetType == SheetType.Custom)
             {
                 ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
@@ -711,6 +714,7 @@ internal class Debug : ConfigWindow, IDisposable
                     _ => null,
                 };
 
+                // Action Dropdown Menu
                 ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
                 using var comboBoxAction = ImRaii.Combo("###ActionCombo", prevAction);
                 if (comboBoxAction)
@@ -733,6 +737,7 @@ internal class Debug : ConfigWindow, IDisposable
                 }
             }
 
+            // Display Action Info
             if (_debugSpell != null)
             {
                 var actionStatus = ActionManager.Instance()->GetActionStatus(ActionType.Action, _debugSpell.Value.RowId);
