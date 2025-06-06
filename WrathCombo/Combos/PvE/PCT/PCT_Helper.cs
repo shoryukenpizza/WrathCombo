@@ -19,10 +19,10 @@ internal partial class PCT
 
 
     //Useful Bools
-    internal static bool ScenicMuseReady => gauge.LandscapeMotifDrawn && LevelChecked(ScenicMuse);
-    internal static bool LivingMuseReady => LevelChecked(LivingMuse) && gauge.CreatureMotifDrawn;
-    internal static bool SteelMuseReady => LevelChecked(SteelMuse) && !HasStatusEffect(Buffs.HammerTime) && gauge.WeaponMotifDrawn;
-    internal static bool PortraitReady => MogoftheAges.LevelChecked() && (gauge.MooglePortraitReady || gauge.MadeenPortraitReady);
+    internal static bool ScenicMuseReady => gauge.LandscapeMotifDrawn && ActionReady(ScenicMuse);
+    internal static bool LivingMuseReady => ActionReady(LivingMuse) && gauge.CreatureMotifDrawn;
+    internal static bool SteelMuseReady => ActionReady(SteelMuse) && !HasStatusEffect(Buffs.HammerTime) && gauge.WeaponMotifDrawn;
+    internal static bool PortraitReady => ActionReady(MogoftheAges) && (gauge.MooglePortraitReady || gauge.MadeenPortraitReady);
     internal static bool CreatureMotifReady => !gauge.CreatureMotifDrawn && LevelChecked(CreatureMotif) && !HasStatusEffect(Buffs.StarryMuse);
     internal static bool WeaponMotifReady => !gauge.WeaponMotifDrawn && LevelChecked(WeaponMotif) && !HasStatusEffect(Buffs.StarryMuse) && !HasStatusEffect(Buffs.HammerTime);
     internal static bool LandscapeMotifReady => !gauge.LandscapeMotifDrawn && LevelChecked(LandscapeMotif) && !HasStatusEffect(Buffs.StarryMuse);
