@@ -101,7 +101,7 @@ internal partial class AST
             }
 
             var card = Gauge.DrawnCards[0];
-            var party = GetPartyMembers()
+            var party = GetPartyMembers(false)
                 .Select(member => member.BattleChara)
                 .Where(member => !member.IsDead && member.IsNotThePlayer())
                 .Where(InCardRange)
