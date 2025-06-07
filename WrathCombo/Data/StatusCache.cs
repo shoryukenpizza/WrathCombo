@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Status = Dalamud.Game.ClientState.Statuses.Status; // conflicts with structs if not defined
 
@@ -24,7 +25,7 @@ namespace WrathCombo.Data
         /// <returns> Status object or null. </returns>
         internal Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
         {
-            if (obj is null)
+            if (obj is null || !obj.IsStillAround())
                 return null;
 
             var key = (statusID, obj.GameObjectId, sourceID);
@@ -214,7 +215,7 @@ namespace WrathCombo.Data
         /// <returns></returns>
         internal static bool HasStatusInCacheList(HashSet<uint> statusList, IGameObject? gameObject = null)
         {
-            if (gameObject is not IBattleChara chara)
+            if (gameObject is not IBattleChara chara || !gameObject.IsStillAround())
                 return false;
 
             StatusList? statuses;
