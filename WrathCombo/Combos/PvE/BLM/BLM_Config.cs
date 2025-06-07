@@ -31,6 +31,9 @@ internal partial class BLM
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
 
+        public static UserIntArray
+            BLM_ST_Movement_Priority = new("BLM_ST_Movement_Priority");
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -54,19 +57,26 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
-
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 0);
+                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 0, $"{Triplecast.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 4, 1);
+                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 1, $"{Paradox.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 2);
+                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 2, $"{Role.Swiftcast.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 3);
+                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 3, $"{Xenoglossy.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.BLM_ST_UsePolyglot:
                     DrawSliderInt(0, 3, BLM_ST_Polyglot_Save,
                         "How many charges to save for manual use?");
-                    if (BLM_ST_MovementOption[3])
-                        DrawSliderInt(1, 3, BLM_ST_Polyglot_Movement,
-                            "How many charges to save for movement?");
+
+                    DrawSliderInt(0, 3 - BLM_ST_Polyglot_Save, BLM_ST_Polyglot_Movement,
+                        "How many charges to save for movement?");
+
+                    if (BLM_ST_Polyglot_Movement > 3 - BLM_ST_Polyglot_Save)
+                        BLM_ST_Polyglot_Movement.Value = 3 - BLM_ST_Polyglot_Save;
+
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
