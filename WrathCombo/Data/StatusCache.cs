@@ -25,7 +25,7 @@ namespace WrathCombo.Data
         /// <returns> Status object or null. </returns>
         internal Status? GetStatus(uint statusID, IGameObject? obj, ulong? sourceID)
         {
-            if (obj is null || !obj.IsStillAround())
+            if (obj is null)
                 return null;
 
             var key = (statusID, obj.GameObjectId, sourceID);
