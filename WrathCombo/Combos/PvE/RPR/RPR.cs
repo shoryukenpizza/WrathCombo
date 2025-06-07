@@ -138,16 +138,14 @@ internal partial class RPR : Melee
             {
                 //Gibbet
                 if (HasStatusEffect(Buffs.EnhancedGibbet))
-                    return Role.CanTrueNorth() && !OnTargetsFlank() &&
-                           CanDelayedWeave()
+                    return Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : OriginalHook(Gibbet);
 
                 //Gallows
                 if (HasStatusEffect(Buffs.EnhancedGallows) ||
                     !HasStatusEffect(Buffs.EnhancedGibbet) && !HasStatusEffect(Buffs.EnhancedGallows))
-                    return Role.CanTrueNorth() && !OnTargetsRear() &&
-                           CanDelayedWeave()
+                    return Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(Gallows);
             }
@@ -338,7 +336,7 @@ internal partial class RPR : Melee
                            (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
                             GetRemainingCharges(Role.TrueNorth) < 2 ||
                             IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                           Role.CanTrueNorth() && !OnTargetsFlank() && CanDelayedWeave()
+                           Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : OriginalHook(Gibbet);
                 }
@@ -352,7 +350,7 @@ internal partial class RPR : Melee
                            (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
                             GetRemainingCharges(Role.TrueNorth) < 2 ||
                             IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                           Role.CanTrueNorth() && !OnTargetsRear() && CanDelayedWeave()
+                           Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(Gallows);
                 }
@@ -821,7 +819,7 @@ internal partial class RPR : Melee
             {
                 case Enshroud when IsEnabled(CustomComboPreset.RPR_TrueNorthEnshroud) &&
                                    (GetStatusEffectStacks(Buffs.SoulReaver) is 2 || HasStatusEffect(Buffs.Executioner)) &&
-                                   Role.CanTrueNorth() && CanDelayedWeave():
+                                   Role.CanTrueNorth():
                     return Role.TrueNorth;
 
                 case Enshroud:
