@@ -71,13 +71,14 @@ internal partial class RPR : Melee
                     !HasStatusEffect(Buffs.IdealHost) && !HasStatusEffect(Buffs.PerfectioParata) &&
                     !IsComboExpiring(3))
                 {
+                    if (GetCooldownRemainingTime(Gluttony) <= GCD && Role.CanTrueNorth())
+                        return Role.TrueNorth;
+
                     //Gluttony
                     if (LevelChecked(Gluttony) &&
-                        GetCooldownRemainingTime(Gluttony) <= GCD)
+                        GetCooldownRemainingTime(Gluttony) <= GCD / 2)
                         return Gluttony;
 
-                    if (JustUsed(Gluttony) && Role.CanTrueNorth())
-                        return Role.TrueNorth;
 
                     //Bloodstalk
                     if (LevelChecked(BloodStalk) &&
@@ -250,15 +251,15 @@ internal partial class RPR : Melee
                     !HasStatusEffect(Buffs.IdealHost) && !HasStatusEffect(Buffs.PerfectioParata) &&
                     !IsComboExpiring(3))
                 {
+                    if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
+                        GetCooldownRemainingTime(Gluttony) <= GCD && Role.CanTrueNorth())
+                        return Role.TrueNorth;
+
                     //Gluttony
                     if (IsEnabled(CustomComboPreset.RPR_ST_Gluttony) &&
                         LevelChecked(Gluttony) &&
-                        GetCooldownRemainingTime(Gluttony) <= GCD)
+                        GetCooldownRemainingTime(Gluttony) <= GCD / 2)
                         return Gluttony;
-
-                    if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                        JustUsed(Gluttony) && Role.CanTrueNorth())
-                        return Role.TrueNorth;
 
                     //Bloodstalk
                     if (IsEnabled(CustomComboPreset.RPR_ST_Bloodstalk) &&
