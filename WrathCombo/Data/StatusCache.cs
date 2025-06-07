@@ -37,7 +37,15 @@ namespace WrathCombo.Data
                 return statusCache[key] = null;
 
             StatusList? statuses;
-            try { statuses = chara.StatusList; }
+            try
+            {
+                statuses = Svc.Objects
+                    .Select(x => x as IBattleChara)
+                    .FirstOrDefault(x => x.GameObjectId == chara.GameObjectId)?
+                    .StatusList;
+                if (statuses is null)
+                    throw new NullReferenceException("StatusList is null for the given character.");
+            }
             catch { return statusCache[key] = null; }
 
             foreach (var status in statuses)
@@ -107,12 +115,9 @@ namespace WrathCombo.Data
         {
             if (target is not IBattleChara tar)
                 return false;
-            StatusList? statuses;
-            try { statuses = tar.StatusList; }
-            catch { return false; }
 
             // Turn Target's status to uint hashset
-            var targetStatuses = statuses.Select(s => s.StatusId).ToHashSet();
+            var targetStatuses = tar.StatusList.Select(s => s.StatusId).ToHashSet();
             uint targetID = tar.DataId;
 
             switch (Svc.ClientState.TerritoryType)
@@ -215,11 +220,19 @@ namespace WrathCombo.Data
         /// <returns></returns>
         internal static bool HasStatusInCacheList(HashSet<uint> statusList, IGameObject? gameObject = null)
         {
-            if (gameObject is not IBattleChara chara || !gameObject.IsStillAround())
+            if (gameObject is not IBattleChara chara)
                 return false;
 
             StatusList? statuses;
-            try { statuses = chara.StatusList; }
+            try
+            {
+                statuses = Svc.Objects
+                    .Select(x => x as IBattleChara)
+                    .FirstOrDefault(x => x.GameObjectId == chara.GameObjectId)?
+                    .StatusList;
+                if (statuses is null)
+                    throw new NullReferenceException("StatusList is null for the given character.");
+            }
             catch { return false; }
 
             var targetStatuses = statuses.Select(s => s.StatusId).ToHashSet();
