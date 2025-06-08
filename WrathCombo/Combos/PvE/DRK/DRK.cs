@@ -8,8 +8,8 @@ using WrathCombo.Extensions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
-// ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable CheckNamespace
 
 #endregion
