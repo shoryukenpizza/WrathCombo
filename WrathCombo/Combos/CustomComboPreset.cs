@@ -415,6 +415,10 @@ public enum CustomComboPreset
     AST_AoE_SimpleHeals_Horoscope = 1026,
 
     [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign.", AST.JobID)]
+    AST_AoE_SimpleHeals_NeutralSect =1067,
+
+    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
     [CustomComboInfo("Aspected Helios Option",
         "In Helios mode: Will Cast Aspected Helios/Helios Conjunction when the HoT is missing on yourself."
         + "\nIn Aspected Helios mode: Is considered enabled regardless.", AST.JobID)]

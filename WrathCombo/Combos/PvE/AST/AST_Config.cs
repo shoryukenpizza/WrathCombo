@@ -19,6 +19,10 @@ internal partial class AST
             AST_Ewer = new("AST_Ewer", 80),
             AST_Arrow = new("AST_Arrow", 80),
             AST_Bole = new("AST_Bole", 80),
+            AST_AoE_SimpleHeals_LazyLadyThreshold = new("AST_AoE_SimpleHeals_LazyLadyThreshold", 80),
+            AST_AoE_SimpleHeals_HoroscopeThreshold = new("AST_AoE_SimpleHeals_HoroscopeThreshold", 80),
+            AST_AoE_SimpleHeals_CelestialOppositionThreshold = new("AST_AoE_SimpleHeals_CelestialOppositionThreshold", 80),
+            AST_AoE_SimpleHeals_NeutralSectThreshold = new("AST_AoE_SimpleHeals_NeutralSectThreshold", 80),
             AST_ST_SimpleHeals_Esuna = new("AST_ST_SimpleHeals_Esuna", 100),
             AST_DPS_AltMode = new("AST_DPS_AltMode"),
             AST_AoEHeals_AltMode = new("AST_AoEHeals_AltMode"),
@@ -46,6 +50,7 @@ internal partial class AST
             AST_AoE_SimpleHeals_WeaveLady = new("AST_AoE_SimpleHeals_WeaveLady"),
             AST_AoE_SimpleHeals_Opposition = new("AST_AoE_SimpleHeals_Opposition"),
             AST_AoE_SimpleHeals_Horoscope = new("AST_AoE_SimpleHeals_Horoscope"),
+            AST_AoE_SimpleHeals_NeutralSectWeave = new("AST_AoE_SimpleHeals_NeutralSectWeave"),
             AST_ST_DPS_OverwriteCards = new("AST_ST_DPS_OverwriteCards"),
             AST_AOE_DPS_OverwriteCards = new("AST_AOE_DPS_OverwriteCards");
         public static UserFloat
@@ -183,15 +188,24 @@ internal partial class AST
                     break;
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_LazyLady:
+                    DrawSliderInt(0, 100, AST_AoE_SimpleHeals_LazyLadyThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveLady, "Only Weave", "Will only weave this action.");
                     break;
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_Horoscope:
+                    DrawSliderInt(0, 100, AST_AoE_SimpleHeals_HoroscopeThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_Horoscope, "Only Weave", "Will only weave this action.");
                     break;
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_CelestialOpposition:
+                    DrawSliderInt(0, 100, AST_AoE_SimpleHeals_CelestialOppositionThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_Opposition, "Only Weave", "Will only weave this action.");
+                    break;
+
+
+                case CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect:
+                    DrawSliderInt(0, 100, AST_AoE_SimpleHeals_NeutralSectThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_NeutralSectWeave, "Only Weave", "Will only weave this action.");
                     break;
 
                 case CustomComboPreset.AST_Cards_QuickTargetCards:

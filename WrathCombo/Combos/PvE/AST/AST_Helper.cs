@@ -358,6 +358,8 @@ internal partial class AST
         Exaltation = 25873,
         Macrocosmos = 25874,
         Synastry = 3612,
+        NeutralSect = 16559,
+        SunSign = 37031,
         CollectiveUnconscious = 3613;
 
     //Action Groups

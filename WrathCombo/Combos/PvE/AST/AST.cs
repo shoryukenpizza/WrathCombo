@@ -306,9 +306,15 @@ internal partial class AST : Healer
                 (nonAspectedMode || actionID is not (AspectedHelios or HeliosConjuction)))
                 return actionID;
 
-            bool canLady = Config.AST_AoE_SimpleHeals_WeaveLady && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_WeaveLady;
-            bool canHoroscope = Config.AST_AoE_SimpleHeals_Horoscope && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_Horoscope;
-            bool canOppose = Config.AST_AoE_SimpleHeals_Opposition && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_Opposition;
+            bool weaveLady = Config.AST_AoE_SimpleHeals_WeaveLady && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_WeaveLady;            
+            bool weaveHoroscope = Config.AST_AoE_SimpleHeals_Horoscope && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_Horoscope;
+            bool weaveOppose = Config.AST_AoE_SimpleHeals_Opposition && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_Opposition;
+            bool weaveSect = Config.AST_AoE_SimpleHeals_NeutralSectWeave && CanSpellWeave() || !Config.AST_AoE_SimpleHeals_NeutralSectWeave;
+            bool healthLady = Config.AST_AoE_SimpleHeals_LazyLadyThreshold >= GetPartyAvgHPPercent();
+            bool healthHoroscope = Config.AST_AoE_SimpleHeals_HoroscopeThreshold >= GetPartyAvgHPPercent();
+            bool healthOppose = Config.AST_AoE_SimpleHeals_CelestialOppositionThreshold >= GetPartyAvgHPPercent();
+            bool healthSect = Config.AST_AoE_SimpleHeals_NeutralSectThreshold >= GetPartyAvgHPPercent();
+
 
             if (!LevelChecked(AspectedHelios)) //Level check to return helios immediately below 40
                 return Helios;
@@ -316,12 +322,12 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_LazyLady) &&
                 ActionReady(MinorArcana) &&
                 Gauge.DrawnCrownCard is CardType.Lady
-                && canLady)
+                && weaveLady && healthLady)
                 return OriginalHook(MinorArcana);
 
             if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_CelestialOpposition) &&
                 ActionReady(CelestialOpposition) &&
-                canOppose)
+                weaveOppose && healthOppose)
                 return CelestialOpposition;
 
             if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_Horoscope))
@@ -329,13 +335,17 @@ internal partial class AST : Healer
                 if (ActionReady(Horoscope) &&
                     !HasStatusEffect(Buffs.Horoscope) &&
                     !HasStatusEffect(Buffs.HoroscopeHelios) &&
-                    canHoroscope)
+                    weaveHoroscope && healthHoroscope)
                     return Horoscope;
 
                 if (HasStatusEffect(Buffs.HoroscopeHelios) &&
-                    canHoroscope)
+                    weaveHoroscope && healthHoroscope)
                     return HoroscopeHeal;
             }
+
+            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect) &&
+                ActionReady(OriginalHook(NeutralSect)) && weaveSect && healthSect)                
+                return OriginalHook(NeutralSect);
 
             // Only check for our own HoTs
             Status? hotCheck = HeliosConjuction.LevelChecked() ? GetStatusEffect(Buffs.HeliosConjunction) : GetStatusEffect(Buffs.AspectedHelios);
