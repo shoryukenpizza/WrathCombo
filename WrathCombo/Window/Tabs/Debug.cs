@@ -381,7 +381,7 @@ internal class Debug : ConfigWindow, IDisposable
 
                     // Extract Lumina Data
                     var charaSpell = castChara.CastActionId > 0
-                        ? Svc.Data.GetExcelSheet<Action>()?.GetRow(castChara.CastActionId)
+                        ? Svc.Data.GetExcelSheet<Action>()?.GetRowOrDefault(castChara.CastActionId)
                         : null;
 
                     CustomStyleText("Cast 100ms:", $"{charaSpell?.Cast100ms * 0.1f ?? 0f:F2} + {charaSpell?.ExtraCastTime100ms * 0.1f ?? 0f:F2}");
@@ -389,6 +389,7 @@ internal class Debug : ConfigWindow, IDisposable
                     CustomStyleText("Action Type:", $"{castChara.CastActionType}");
                     CustomStyleText("Action Range:", $"{ActionWatching.GetActionRange(charaSpell?.RowId ?? 0)}y");
                     CustomStyleText("Effect Range:", $"{charaSpell?.EffectRange ?? 0}y");
+                    CustomStyleText("Interruptible:", $"{castChara.IsCastInterruptible}");
                 }
                 else CustomStyleText("No valid target.", "");
 
