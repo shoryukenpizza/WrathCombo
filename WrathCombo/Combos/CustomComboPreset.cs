@@ -225,6 +225,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Lightspeed Weave Option", "Adds Lightspeed when moving", AST.JobID)]
     AST_DPS_LightSpeed = 1020,
 
+    [ParentCombo(AST_DPS_LightSpeed)]
+    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
+    AST_DPS_LightSpeedHold = 1061,
+
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID)]
     AST_DPS_Lucid = 1008,
@@ -232,6 +236,10 @@ public enum CustomComboPreset
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Divination Weave Option", "Adds Divination", AST.JobID)]
     AST_DPS_Divination = 1016,
+
+    [ParentCombo(AST_DPS_Divination)]
+    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
+    AST_DPS_LightspeedBurst = 1064,
 
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Card Draw Weave Option", "Draws your cards", AST.JobID)]
@@ -278,6 +286,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Lightspeed Weave Option", "Adds Lightspeed when moving", AST.JobID)]
     AST_AOE_LightSpeed = 1048,
 
+    [ParentCombo(AST_AOE_LightSpeed)]
+    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
+    AST_AOE_LightSpeedHold = 1062,
+
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID
     )]
@@ -286,6 +298,10 @@ public enum CustomComboPreset
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Divination Weave Option", "Adds Divination", AST.JobID)]
     AST_AOE_Divination = 1043,
+
+    [ParentCombo(AST_AOE_Divination)]
+    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
+    AST_AOE_LightspeedBurst = 1063,
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Card Draw Weave Option", "Draws your cards", AST.JobID)]

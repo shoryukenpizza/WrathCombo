@@ -80,8 +80,11 @@ internal partial class AST : Healer
                     ActionReady(Lightspeed) &&
                     GetTargetHPPercent() > Config.AST_DPS_LightSpeedOption &&
                     IsMoving() &&
-                    !HasStatusEffect(Buffs.Lightspeed))
-                    return Lightspeed;
+                    !HasStatusEffect(Buffs.Lightspeed) &&
+                    (IsNotEnabled(CustomComboPreset.AST_DPS_LightSpeedHold) ||
+                    GetCooldownChargeRemainingTime(Lightspeed) < GetCooldownRemainingTime(Divination) ||
+                    !LevelChecked(Divination)))
+                    return Lightspeed;                
 
                 if (IsEnabled(CustomComboPreset.AST_DPS_Lucid) &&
                     Role.CanLucidDream(Config.AST_LucidDreaming))
@@ -116,6 +119,14 @@ internal partial class AST : Healer
                      (DrawnDPSCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)) &&
                     CanDelayedWeave())
                     return OriginalHook(AstralDraw);
+
+                //Lightspeed Burst
+                if (IsEnabled(CustomComboPreset.AST_DPS_LightspeedBurst) &&
+                    ActionReady(Lightspeed) &&
+                    !HasStatusEffect(Buffs.Lightspeed) &&
+                    GetCooldownRemainingTime(Divination) < 5 &&
+                    CanSpellWeave())
+                    return Lightspeed;
 
                 //Divination
                 if (IsEnabled(CustomComboPreset.AST_DPS_Divination) &&
@@ -188,8 +199,11 @@ internal partial class AST : Healer
                 ActionReady(Lightspeed) &&
                 GetTargetHPPercent() > Config.AST_AOE_LightSpeedOption &&
                 IsMoving() &&
-                !HasStatusEffect(Buffs.Lightspeed))
-                return Lightspeed;
+                !HasStatusEffect(Buffs.Lightspeed) &&
+                (IsNotEnabled(CustomComboPreset.AST_AOE_LightSpeedHold) ||
+                GetCooldownChargeRemainingTime(Lightspeed) < GetCooldownRemainingTime(Divination)  ||
+                !LevelChecked(Divination)))
+                return Lightspeed;            
 
             if (IsEnabled(CustomComboPreset.AST_AOE_Lucid) &&
                 Role.CanLucidDream(Config.AST_LucidDreaming))
@@ -224,6 +238,14 @@ internal partial class AST : Healer
                  (DrawnDPSCard == CardType.None && Config.AST_AOE_DPS_OverwriteCards)) &&
                 CanDelayedWeave())
                 return OriginalHook(AstralDraw);
+            
+            //Lightspeed Burst
+            if (IsEnabled(CustomComboPreset.AST_AOE_LightspeedBurst) &&
+                ActionReady(Lightspeed) &&
+                !HasStatusEffect(Buffs.Lightspeed) &&
+                GetCooldownRemainingTime(Divination) < 5 &&
+                CanSpellWeave())
+                return Lightspeed;
 
             //Divination
             if (IsEnabled(CustomComboPreset.AST_AOE_Divination) &&
