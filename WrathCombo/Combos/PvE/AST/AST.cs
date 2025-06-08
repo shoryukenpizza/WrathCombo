@@ -152,7 +152,8 @@ internal partial class AST : Healer
                         float refreshTimer = Config.AST_ST_DPS_CombustUptime_Threshold;
                         int hpThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_DPS_CombustOption : 0;
                         if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
-                            GetTargetHPPercent() > hpThreshold)
+                            GetTargetHPPercent() > hpThreshold &&
+                            CanApplyStatus(CurrentTarget,dotDebuffID))
                             return OriginalHook(Combust);
 
                         //Alternate Mode (idles as Malefic)
