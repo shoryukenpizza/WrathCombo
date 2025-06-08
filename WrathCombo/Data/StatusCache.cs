@@ -36,18 +36,7 @@ namespace WrathCombo.Data
             if (obj is not IBattleChara chara)
                 return statusCache[key] = null;
 
-            StatusList? statuses;
-            try
-            {
-                statuses = Svc.Objects
-                    .Select(x => x as IBattleChara)
-                    .FirstOrDefault(x => x.GameObjectId == chara.GameObjectId)?
-                    .StatusList;
-                if (statuses is null)
-                    throw new NullReferenceException("StatusList is null for the given character.");
-            }
-            catch { return statusCache[key] = null; }
-
+            var statuses = chara.StatusList;
             foreach (var status in statuses)
             {
                 if (status.StatusId == InvalidStatusID)
@@ -223,18 +212,7 @@ namespace WrathCombo.Data
             if (gameObject is not IBattleChara chara)
                 return false;
 
-            StatusList? statuses;
-            try
-            {
-                statuses = Svc.Objects
-                    .Select(x => x as IBattleChara)
-                    .FirstOrDefault(x => x.GameObjectId == chara.GameObjectId)?
-                    .StatusList;
-                if (statuses is null)
-                    throw new NullReferenceException("StatusList is null for the given character.");
-            }
-            catch { return false; }
-
+            var statuses = chara.StatusList;
             var targetStatuses = statuses.Select(s => s.StatusId).ToHashSet();
             return statusList.Count switch
             {

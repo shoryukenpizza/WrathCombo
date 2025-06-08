@@ -3,7 +3,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
-using WrathCombo.Extensions;
 using WrathCombo.Services;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -15,7 +14,7 @@ using TS = System.TimeSpan;
 namespace WrathCombo.Combos.PvE;
 
 /// <summary>
-///     Should be the same as <see cref="Core.UIntExtensions" />, but with checking
+///     Should be the same as <see cref="UIntExtensions" />, but with checking
 ///     the <see cref="PluginConfiguration.RetargetHealingActionsToStack" /> setting,
 ///     and automatically setting the target to the
 ///     <see cref="SimpleTarget.Stack.AllyToHeal">Heal Stack</see>.
@@ -54,12 +53,12 @@ public static class HealRetargeting
     ///     </see>
     ///     is enabled, and there is no target override.
     /// </summary>
-    /// <seealso cref="Core.UIntExtensions.Retarget(uint,IGameObject?,bool)" />
+    /// <seealso cref="UIntExtensions.Retarget(uint,IGameObject?,bool)" />
     public static uint RetargetIfEnabled
     (this uint actionID,
         IGameObject? optionalTarget,
         bool dontCull = false) =>
-        RetargetSettingOn && optionalTarget.IfStillInParty() is null
+        RetargetSettingOn && optionalTarget is null
             ? actionID.Retarget(
                 actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
                 dontCull)
@@ -72,13 +71,13 @@ public static class HealRetargeting
     ///     </see>
     ///     is enabled, and there is no target override.
     /// </summary>
-    /// <seealso cref="Core.UIntExtensions.Retarget(uint,uint,IGameObject?,bool)" />
+    /// <seealso cref="UIntExtensions.Retarget(uint,uint,IGameObject?,bool)" />
     public static uint RetargetIfEnabled
     (this uint actionID,
         IGameObject? optionalTarget,
         uint replaced,
         bool dontCull = false) =>
-        RetargetSettingOn && optionalTarget.IfStillInParty() is null
+        RetargetSettingOn && optionalTarget is null
             ? actionID.Retarget(replaced,
                 actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
                 dontCull)
@@ -91,13 +90,13 @@ public static class HealRetargeting
     ///     </see>
     ///     is enabled, and there is no target override.
     /// </summary>
-    /// <seealso cref="Core.UIntExtensions.Retarget(uint,uint[],IGameObject?,bool)" />
+    /// <seealso cref="UIntExtensions.Retarget(uint,uint[],IGameObject?,bool)" />
     public static uint RetargetIfEnabled
     (this uint actionID,
         IGameObject? optionalTarget,
         uint[] replaced,
         bool dontCull = false) =>
-        RetargetSettingOn && optionalTarget.IfStillInParty() is null
+        RetargetSettingOn && optionalTarget is null
             ? actionID.Retarget(replaced,
                 actionID == RoleActions.Healer.Esuna ? EsunaStack : HealStack,
                 dontCull)
