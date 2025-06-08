@@ -1,6 +1,5 @@
 ﻿#region
 
-using ECommons.Logging;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Core;
