@@ -176,7 +176,8 @@ internal partial class DRK
     {
         switch (restrictToHostile)
         {
-            case true when SimpleTarget.HardTarget.IsHostile():
+            case true when SimpleTarget.HardTarget is not null &&
+                           SimpleTarget.HardTarget.IsHostile():
             case false when SimpleTarget.HardTarget is not null:
                 return SimpleTarget.HardTarget;
         }
