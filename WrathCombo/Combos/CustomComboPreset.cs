@@ -82,7 +82,7 @@ public enum CustomComboPreset
     [ReplaceSkill(RoleActions.Healer.Esuna)]
     [ParentCombo(ALL_Healer_Menu)]
     [CustomComboInfo("Healer: Esuna Retargeting",
-        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each person has a cleansable debuff.", ADV.JobID)]
+        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", ADV.JobID)]
     [Retargeted]
     ALL_Healer_EsunaRetargeting = 100012,
 
