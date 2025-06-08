@@ -177,7 +177,7 @@ internal partial class DRK
                         outputValue: (int) BossAvoidance.Off, itemWidth: 125f);
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_ST_TBNBossRestriction, "Avoid Bosses",
-                        "Will try not to use Blackest Night when your target is a boss.\n" +
+                        "Will try not to use Blackest Night when in a boss fight.\n" +
                         "(Note: don't rely on this 100%, square sometimes marks enemies inconsistently)",
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();

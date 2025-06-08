@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ECommons.GameFunctions;
 using WrathCombo.AutoRotation;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -1189,14 +1190,13 @@ internal partial class DRK
         if (hpRemaining > hpThreshold)
             return false;
 
-        var targetIsBoss = TargetIsBoss();
         var bossRestriction = !aoe
             ? (int)Config.DRK_ST_TBNBossRestriction
             : (int)BossAvoidance.Off; // Don't avoid bosses in AoE
 
-        // Bail if we're trying to avoid bosses and the target is one
+        // Bail if we're trying to avoid bosses and we're in a boss fight
         if (bossRestriction is (int)BossAvoidance.On
-            && targetIsBoss)
+            && InBossEncounter())
             return false;
 
         // Bail if we have a TBN and burst is >30s away ()
