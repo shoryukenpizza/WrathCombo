@@ -254,6 +254,7 @@ internal partial class AST : Healer
                 ActionReady(Lightspeed) &&
                 !HasStatusEffect(Buffs.Lightspeed) &&
                 GetCooldownRemainingTime(Divination) < 5 &&
+                ActionWatching.NumberOfGcdsUsed >= 3 &&
                 CanSpellWeave())
                 return Lightspeed;
 
@@ -271,14 +272,23 @@ internal partial class AST : Healer
                 !HasStatusEffect(Buffs.EarthlyDominance) &&
                 ActionReady(EarthlyStar) &&
                 IsOffCooldown(EarthlyStar) &&
-                CanSpellWeave())
+                CanSpellWeave() &&
+                ActionWatching.NumberOfGcdsUsed >= 3)
                 return EarthlyStar.Retarget(GravityList.ToArray(),
-                    SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
-
+                    SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);            
+                
             if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) &&
                 HasStatusEffect(Buffs.Divining) &&
                 CanSpellWeave())
                 return Oracle;
+
+            if (IsEnabled(CustomComboPreset.AST_AOE_DPS_MacroCosmos) &&
+                ActionReady(Macrocosmos) &&
+                !HasStatusEffect(Buffs.Macrocosmos) &&
+                ActionWatching.NumberOfGcdsUsed >= 3 &&
+                (Config.AST_AOE_DPS_MacroCosmos_SubOption == 1 ||
+                !InBossEncounter()))
+                return Macrocosmos;
 
             return actionID;
         }

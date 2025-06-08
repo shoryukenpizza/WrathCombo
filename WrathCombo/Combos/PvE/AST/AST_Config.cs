@@ -29,7 +29,8 @@ internal partial class AST
             AST_DPS_CombustOption = new("AST_DPS_CombustOption"),
             AST_QuickTarget_Override = new("AST_QuickTarget_Override"),
             AST_ST_DPS_Balance_Content = new("AST_ST_DPS_Balance_Content", 1),
-            AST_ST_DPS_CombustSubOption = new("AST_ST_DPS_CombustSubOption", 0);            
+            AST_ST_DPS_CombustSubOption = new("AST_ST_DPS_CombustSubOption", 0),
+            AST_AOE_DPS_MacroCosmos_SubOption = new("AST_AOE_DPS_MacroCosmos_SubOption", 0);            
 
         public static UserBool
             AST_QuickTarget_Manuals = new("AST_QuickTarget_Manuals", true),
@@ -113,6 +114,17 @@ internal partial class AST
 
                 case CustomComboPreset.AST_AOE_AutoDraw:
                     DrawAdditionalBoolChoice(AST_AOE_DPS_OverwriteCards, "Overwrite Non-DPS Cards", "Will draw even if you have healing cards remaining.");
+                    break;
+
+                case CustomComboPreset.AST_AOE_DPS_MacroCosmos:
+
+                    DrawHorizontalRadioButton(AST_AOE_DPS_MacroCosmos_SubOption,
+                        "Non-boss Encounters Only", $"Will not use on bosses", 0);
+                    DrawHorizontalRadioButton(AST_AOE_DPS_MacroCosmos_SubOption,
+                        "All Content", $"Will use in all content", 1);
+
+                    ImGui.Unindent();
+
                     break;
 
                 //end aoe added

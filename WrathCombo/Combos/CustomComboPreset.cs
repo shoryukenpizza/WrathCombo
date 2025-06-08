@@ -335,6 +335,10 @@ public enum CustomComboPreset
     [Retargeted]
     AST_AOE_DPS_EarthlyStar = 1052,
 
+    [ParentCombo(AST_AOE_DPS)]
+    [CustomComboInfo("MacroCosmos Option", "Adds Macrocosmos to the Aoe rotation after 3 GCDs", AST.JobID)]    
+    AST_AOE_DPS_MacroCosmos = 1066,
+
     #endregion
 
     #region Healing
@@ -467,7 +471,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 1060
+    // Last value = 1065
 
     #endregion
 
