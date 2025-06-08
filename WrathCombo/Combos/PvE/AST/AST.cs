@@ -20,6 +20,16 @@ internal partial class AST : Healer
                 : actionID;
     }
 
+    internal class AST_Lightspeed : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Lightspeed_Protection;       
+
+        protected override uint Invoke(uint actionID) =>
+           actionID is Lightspeed && HasStatusEffect(Buffs.Lightspeed)
+               ? All.SavageBlade
+               : actionID;
+    }
+
     internal class AST_Raise_Alternative : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Raise_Alternative;

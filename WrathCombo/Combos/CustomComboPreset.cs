@@ -435,6 +435,10 @@ public enum CustomComboPreset
     [Retargeted]
     AST_Raise_Alternative_Retarget = 1060,
 
+    [ReplaceSkill(AST.Lightspeed)]
+    [CustomComboInfo("Lightspeed Overwrite Protection Feature", "Blocks the Lightspeed Button while buff is active.", AST.JobID)]
+    AST_Lightspeed_Protection = 1065,    
+
     [ReplaceSkill(AST.EssentialDignity)]
     [CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
     [Retargeted]
