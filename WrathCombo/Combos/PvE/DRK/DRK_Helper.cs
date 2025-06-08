@@ -13,6 +13,8 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 using Preset = WrathCombo.Combos.CustomComboPreset;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -76,7 +78,7 @@ internal partial class DRK
         get
         {
             // Only run every 1 seconds at most (should be every other burst check)
-            if ((DateTime.Now - lastBuffCheck).TotalSeconds < 1)
+            if (!EZ.Throttle("drkBurstBuffCheck", TS.FromSeconds(1)))
                 return field;
 
             field = TargetBuffRemainingTime(SCH.Debuffs.ChainStratagem) > 0 ||
@@ -104,9 +106,6 @@ internal partial class DRK
         }
     }
 
-    /// The last time burst phase was checked for.
-    private static DateTime lastBurstCheck = DateTime.MinValue;
-
     #endregion
 
     /// <summary>
@@ -117,7 +116,7 @@ internal partial class DRK
         get
         {
             // Only run every .8 seconds at most
-            if ((DateTime.Now - lastBurstCheck).TotalSeconds < 0.8)
+            if (!EZ.Throttle("drkBurstCheck", TS.FromSeconds(0.8)))
                 return field;
 
             var burstAbility = LivingShadow;
@@ -162,7 +161,6 @@ internal partial class DRK
                 field = false;
             }
 
-            lastBurstCheck = DateTime.Now;
             return field;
         }
     }
