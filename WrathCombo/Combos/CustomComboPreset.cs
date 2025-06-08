@@ -1850,6 +1850,10 @@ public enum CustomComboPreset
     DRK_AoE_Mit_Reprisal = 5070,
 
     [ParentCombo(DRK_AoE_Mitigation)]
+    [CustomComboInfo("Dark Mind Option", "Adds Dark Mind to the rotation.", DRK.JobID)]
+    DRK_AoE_Mit_DarkMind = 5075,
+
+    [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Rampart Option", "Adds Rampart to the rotation.", DRK.JobID)]
     DRK_AoE_Mit_Rampart = 5071,
 
@@ -1868,7 +1872,7 @@ public enum CustomComboPreset
     #endregion
 
     #endregion
-    // Last value = 5074
+    // Last value = 5075
 
     #region Basic combo
 

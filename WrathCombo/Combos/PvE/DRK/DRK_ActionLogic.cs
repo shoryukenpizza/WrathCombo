@@ -355,6 +355,7 @@ internal partial class DRK
     private static bool JustUsedMitigation =>
         JustUsed(BlackestNight, (InSavagePlus ? 3f : 4f)) ||
         JustUsed(Oblation, (InSavagePlus ? 6f : 4f)) ||
+        JustUsed(DarkMind, (InSavagePlus ? 6f : 4f)) ||
         JustUsed(Role.Reprisal, (InSavagePlus ? 1f : 4f)) ||
         JustUsed(DarkMissionary, (InSavagePlus ? 0f : 5f)) ||
         JustUsed(Role.Rampart, 6f) ||
@@ -552,6 +553,26 @@ internal partial class DRK
                     Preset.DRK_Hid_R6SNoAutoGroupMits,
                     () => !HiddenFeaturesData.Content.InR6S))
                 return (action = DarkMissionary) != 0;
+
+            #endregion
+
+            #region Dark Mind (AoE only)
+
+            #region Variables
+
+            var darkMindThreshold =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE)
+                    ? Config.DRK_AoE_Mit_DarkMindThreshold
+                    : 100;
+
+            #endregion
+
+            if (flags.HasFlag(Combo.AoE) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 IsEnabled(Preset.DRK_AoE_Mit_DarkMind)) &&
+                ActionReady(DarkMind) &&
+                PlayerHealthPercentageHp() <= darkMindThreshold)
+                return (action = DarkMind) != 0;
 
             #endregion
 

@@ -304,6 +304,12 @@ internal partial class DRK
 
                     break;
 
+                case CustomComboPreset.DRK_AoE_Mit_DarkMind:
+                    UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_DarkMindThreshold,
+                        startUsingAtDescriptionPlusDisable,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
+                    break;
+
                 case CustomComboPreset.DRK_AoE_Mit_Rampart:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_RampartThreshold,
                         startUsingAtDescriptionPlusDisable,
@@ -1031,7 +1037,19 @@ internal partial class DRK
             new("DRK_AoE_ReprisalEnemyCount", 3);
 
         /// <summary>
-        ///     Self HP\% to use Rampart below for AoE.
+        ///     Self HP% to use Dark Mind below for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 75 <br />
+        ///     <b>Range</b>: 10 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_DarkMind" />
+        public static readonly UserInt DRK_AoE_Mit_DarkMindThreshold =
+            new("DRK_AoE_Mit_DarkMindThreshold", 75);
+
+        /// <summary>
+        ///     Self HP% to use Rampart below for AoE.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 50 <br />
