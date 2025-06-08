@@ -5709,7 +5709,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ConflictingCombos(SMN_ST_Advanced_Combo)]
-    [ReplaceSkill(SMN.Ruin, SMN.Ruin2)]
+    [ReplaceSkill(SMN.Ruin, SMN.Ruin2, SMN.Ruin3)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Ruin with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.",
         SMN.JobID)]
@@ -5727,7 +5727,7 @@ public enum CustomComboPreset
 
     #region Advanced ST
     [AutoAction(false, false)]
-    [ReplaceSkill(SMN.Ruin, SMN.Ruin2)]
+    [ReplaceSkill(SMN.Ruin, SMN.Ruin2, SMN.Ruin3)]
     [ConflictingCombos(SMN_ST_Simple_Combo)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Ruin with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
