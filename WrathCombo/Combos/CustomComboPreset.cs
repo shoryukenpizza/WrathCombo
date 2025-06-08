@@ -1654,12 +1654,12 @@ public enum CustomComboPreset
     #region Blood
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Bloodspiller Option", "Adds Bloodspiller to the rotation when Delirium is active or well outside of burst.", DRK.JobID)]
+    [CustomComboInfo("Bloodspiller Option", "Adds Bloodspiller to the rotation when under Delirium, or just after Burst.", DRK.JobID)]
     DRK_ST_Sp_Bloodspiller = 5025,
 
     [ParentCombo(DRK_ST_Spenders)]
     [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation before Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
+        "Adds Bloodspiller to the rotation before Souleater when the blood gauge is above the chosen threshold.", DRK.JobID)]
     DRK_ST_Sp_BloodOvercap = 5026,
 
     #endregion
@@ -1808,7 +1808,7 @@ public enum CustomComboPreset
     #region Blood
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Quietus Option", "Adds Quietus to the rotation when Delirium is active or well outside of burst.", DRK.JobID)]
+    [CustomComboInfo("Quietus Option", "Adds Quietus to the rotation when under Delirium, or just after Burst..", DRK.JobID)]
     DRK_AoE_Sp_Quietus = 5063,
 
     [ParentCombo(DRK_AoE_Spenders)]
