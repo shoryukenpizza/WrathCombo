@@ -28,14 +28,11 @@ internal partial class DRK : Tank
             if (actionID is not Souleater)
                 return actionID;
 
-            if (ComboTimer > 0)
-            {
-                if (ComboAction is HardSlash && LevelChecked(SyphonStrike))
-                    return SyphonStrike;
+            const Combo comboFlags = Combo.ST | Combo.Basic;
+            var newAction = HardSlash;
 
-                if (ComboAction is SyphonStrike && LevelChecked(Souleater))
-                    return Souleater;
-            }
+            if (TryGetAction<Core>(comboFlags, ref newAction))
+                return newAction;
 
             return HardSlash;
         }
@@ -81,7 +78,12 @@ internal partial class DRK : Tank
             }
 
             // Bail if not in combat
-            if (!InCombat()) return HardSlash;
+            if (!InCombat())
+            {
+                if (TryGetAction<Core>(comboFlags, ref newAction))
+                    return newAction;
+                return HardSlash;
+            }
 
             // Unmend Option for Uptime
             if (IsEnabled(Preset.DRK_ST_RangedUptime) &&
@@ -150,7 +152,12 @@ internal partial class DRK : Tank
                 return Unmend;
 
             // Bail if not in combat
-            if (!InCombat()) return HardSlash;
+            if (!InCombat())
+            {
+                if (TryGetAction<Core>(comboFlags, ref newAction))
+                    return newAction;
+                return HardSlash;
+            }
 
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
@@ -187,7 +194,12 @@ internal partial class DRK : Tank
             var newAction = Unleash;
 
             // Bail if not in combat
-            if (!InCombat()) return Unleash;
+            if (!InCombat())
+            {
+                if (TryGetAction<Core>(comboFlags, ref newAction))
+                    return newAction;
+                return Unleash;
+            }
 
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
@@ -224,7 +236,12 @@ internal partial class DRK : Tank
             var newAction = Unleash;
 
             // Bail if not in combat
-            if (!InCombat()) return Unleash;
+            if (!InCombat())
+            {
+                if (TryGetAction<Core>(comboFlags, ref newAction))
+                    return newAction;
+                return Unleash;
+            }
 
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;

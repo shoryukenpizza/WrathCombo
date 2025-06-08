@@ -1123,6 +1123,7 @@ internal partial class DRK
         // Complexity of combo
         Adv = 1 << 2, // 4
         Simple = 1 << 3, // 8
+        Basic = 1 << 4, // 16
     }
 
     private interface IActionProvider
