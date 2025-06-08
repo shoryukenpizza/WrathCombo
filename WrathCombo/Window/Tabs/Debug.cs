@@ -366,8 +366,35 @@ internal class Debug : ConfigWindow, IDisposable
             CustomStyleText("Requires Positionals:", TargetNeedsPositionals());
             CustomStyleText("Is Invincible:", TargetIsInvincible(target!));
 
-
             ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+
+            if (ImGui.TreeNode("Cast Data"))
+            {
+                if (target is IBattleChara castChara)
+                {
+                    CustomStyleText("Cast Action:", castChara.CastActionId == 0
+                        ? string.Empty
+                        : $"{(string.IsNullOrEmpty(ActionWatching.GetActionName(castChara.CastActionId))
+                            ? "Unknown"
+                            : ActionWatching.GetActionName(castChara.CastActionId))} (ID: {castChara.CastActionId})");
+                    CustomStyleText("Cast Time:", $"{castChara.CurrentCastTime:F2} / {castChara.TotalCastTime:F2}");
+
+                    // Extract Lumina Data
+                    var charaSpell = castChara.CastActionId > 0
+                        ? Svc.Data.GetExcelSheet<Action>()?.GetRow(castChara.CastActionId)
+                        : null;
+
+                    CustomStyleText("Cast 100ms:", $"{charaSpell?.Cast100ms * 0.1f ?? 0f:F2} + {charaSpell?.ExtraCastTime100ms * 0.1f ?? 0f:F2}");
+                    CustomStyleText("Cast Type:", $"{charaSpell?.CastType ?? 0}");
+                    CustomStyleText("Action Type:", $"{castChara.CastActionType}");
+                    CustomStyleText("Action Range:", $"{ActionWatching.GetActionRange(charaSpell?.RowId ?? 0)}y");
+                    CustomStyleText("Effect Range:", $"{charaSpell?.EffectRange ?? 0}y");
+                }
+                else CustomStyleText("No valid target.", "");
+
+                ImGuiEx.Spacing(new Vector2(0f, SpacingSmall));
+                ImGui.TreePop();
+            }
 
             if (ImGui.TreeNode("Object Data"))
             {
