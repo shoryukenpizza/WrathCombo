@@ -964,10 +964,10 @@ internal partial class DRK
     /// <returns>Whether TBN should be used on self.</returns>
     /// <seealso cref="BlackestNight" />
     /// <seealso cref="Buffs.BlackestNightShield" />
-    /// <seealso cref="CustomComboPreset.DRK_ST_Mit_TBN" />
+    /// <seealso cref="Preset.DRK_ST_Mit_TBN" />
     /// <seealso cref="Config.DRK_ST_TBNThreshold" />
     /// <seealso cref="Config.DRK_ST_TBNBossRestriction" />
-    /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_TBN" />
+    /// <seealso cref="Preset.DRK_AoE_Mit_TBN" />
     private static bool ShouldTBNSelf(bool aoe = false)
     {
         // Bail if we're dead or unloaded
@@ -1022,7 +1022,7 @@ internal partial class DRK
     /// <summary>
     ///     The list of Mitigations to use in the One-Button Mitigation combo.<br />
     ///     The order of the list needs to match the order in
-    ///     <see cref="CustomComboPreset" />.
+    ///     <see cref="Preset" />.
     /// </summary>
     /// <value>
     ///     <c>Action</c> is the action to use.<br />
