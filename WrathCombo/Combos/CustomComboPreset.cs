@@ -489,10 +489,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Foul/Xenoglossy Option", "Add Foul/Xenoglossy to the rotation.", BLM.JobID)]
     BLM_ST_UsePolyglot = 2104,
 
-    [ParentCombo(BLM_ST_UsePolyglot)]
-    [CustomComboInfo("Spend ASAP", "Use Foul/Xenoglossy whenever available.\nWill NOT save a proc for Movement!", BLM.JobID)]
-    BLM_ST_UsePolyglotAsap = 2117,
-
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Movement Option", "Add chosen options for movement.", BLM.JobID)]
     BLM_ST_Movement = 2113,
@@ -3975,8 +3971,12 @@ public enum CustomComboPreset
     PLD_ST_Interrupt = 11058,
 
     [ParentCombo(PLD_ST_AdvancedMode)]
-    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", PLD.JobID)]
-    PLD_ST_Stun = 11062,
+    [CustomComboInfo("Interrupt with Low Blow Option", "Adds Low Blow to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of Low Blows on un-stun-able enemies, etc. Will try to not use it in boss fights.", PLD.JobID)]
+    PLD_ST_LowBlow = 11062,
+
+    [ParentCombo(PLD_ST_AdvancedMode)]
+    [CustomComboInfo("Interrupt with Shield Bash Option", "Adds Shield Bash to the rotation when your target is casting.\nNot advised outside of overworld content, as it can waste a lot of GCDs on un-stun-able enemies, etc. Will try to not use it in boss fights.", PLD.JobID)]
+    PLD_ST_ShieldBash = 11066,
 
     [ParentCombo(PLD_ST_AdvancedMode)]
     [CustomComboInfo("Fight or Flight Option",
@@ -4091,8 +4091,12 @@ public enum CustomComboPreset
     PLD_AoE_Interrupt = 11059,
 
     [ParentCombo(PLD_AoE_AdvancedMode)]
-    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow or Shield Bash to the rotation when your target is casting, interruptible or not.", PLD.JobID)]
-    PLD_AoE_Stun = 11060,
+    [CustomComboInfo("Interrupt with Low Blow Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", PLD.JobID)]
+    PLD_AoE_LowBlow = 11060,
+
+    [ParentCombo(PLD_AoE_AdvancedMode)]
+    [CustomComboInfo("Interrupt with Shield Bash Option", "Adds Shield Bash to the rotation when your target is casting, interruptible or not.", PLD.JobID)]
+    PLD_AoE_ShieldBash = 11065,
 
     [ParentCombo(PLD_AoE_AdvancedMode)]
     [CustomComboInfo("Fight or Flight Option",
