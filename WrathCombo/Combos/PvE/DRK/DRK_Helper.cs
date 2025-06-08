@@ -68,9 +68,6 @@ internal partial class DRK
     /// When the current burst phase is set to end.
     private static long burstEndTime;
 
-    /// The last time other jobs' buffs were checked for.
-    private static DateTime lastBuffCheck = DateTime.MinValue;
-
     /// <summary>
     ///     Whether the player is being affected by other jobs' buffs.
     /// </summary>
@@ -96,7 +93,6 @@ internal partial class DRK
                     BuffRemainingTime(RDM.Buffs.EmboldenOthers) > 0 ||
                     BuffRemainingTime(PCT.Buffs.StarryMuse) > 0;
 
-            lastBuffCheck = DateTime.Now;
             return field;
 
             // Just a shorter name for the methods
