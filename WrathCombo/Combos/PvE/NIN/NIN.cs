@@ -561,8 +561,8 @@ internal partial class NIN : Melee
             int bloodbathThreshold = 50;
             double playerHP = PlayerHealthPercentageHp();
             bool phantomUptime = true;
-            bool trueNorthArmor = TargetNeedsPositionals() && !OnTargetsFlank() && Role.CanTrueNorth();
-            bool trueNorthEdge = TargetNeedsPositionals() && !OnTargetsRear() && Role.CanTrueNorth();
+            bool trueNorthArmor = !OnTargetsFlank() && Role.CanTrueNorth();
+            bool trueNorthEdge = !OnTargetsRear() && Role.CanTrueNorth();
             bool dynamic = true;
 
             if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat())
