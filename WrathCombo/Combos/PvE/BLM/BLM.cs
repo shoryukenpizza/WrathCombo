@@ -257,7 +257,7 @@ internal partial class BLM : Caster
                 return Scathe;
 
             //Overcap protection
-            if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) && 
+            if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                 HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
@@ -297,10 +297,11 @@ internal partial class BLM : Caster
             {
                 // TODO: Revisit when Raid Buff checks are in place
                 if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                    BLM_ST_MovementOption[3] &&
-                    PolyglotStacks > BLM_ST_Polyglot_Movement ||
-                    !BLM_ST_MovementOption[3] &&
-                    PolyglotStacks > BLM_ST_Polyglot_Save)
+                    ((BLM_ST_MovementOption[3] &&
+                      PolyglotStacks > BLM_ST_Polyglot_Movement &&
+                      PolyglotStacks > BLM_ST_Polyglot_Save) ||
+                     (!BLM_ST_MovementOption[3] &&
+                      PolyglotStacks > BLM_ST_Polyglot_Save)))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
