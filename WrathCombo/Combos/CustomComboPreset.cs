@@ -56,6 +56,30 @@ public enum CustomComboPreset
         "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Tank_Reprisal = 100001,
 
+    [Role(JobRole.Tank)]
+    [ReplaceSkill(RoleActions.Tank.Shirk)]
+    [ParentCombo(ALL_Tank_Menu)]
+    [CustomComboInfo("Tank: Shirk Retargeting",
+        "Retargets Shirk to the other tank if there is one.", ADV.JobID)]
+    [Retargeted]
+    ALL_Tank_ShirkRetargeting = 100002,
+
+    [Role(JobRole.Tank)]
+    [ReplaceSkill(RoleActions.Tank.Shirk)]
+    [ParentCombo(ALL_Tank_ShirkRetargeting)]
+    [CustomComboInfo("Use Healers instead",
+        "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", ADV.JobID)]
+    [Retargeted]
+    ALL_Tank_ShirkRetargeting_Healer = 100003,
+
+    [Role(JobRole.Tank)]
+    [ReplaceSkill(RoleActions.Tank.Shirk)]
+    [ParentCombo(ALL_Tank_ShirkRetargeting)]
+    [CustomComboInfo("Fallback to Any Support",
+        "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", ADV.JobID)]
+    [Retargeted]
+    ALL_Tank_ShirkRetargeting_Fallback = 100004,
+
     #endregion
 
     #region Global Healer Features

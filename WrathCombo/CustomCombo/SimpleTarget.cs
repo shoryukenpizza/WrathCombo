@@ -450,6 +450,15 @@ internal static class SimpleTarget
             .FirstOrDefault(x => x?.GetRole() is
                 CombatRole.Tank or CombatRole.Healer);
 
+    /// Gets any living Tank or Healer that is not the player.
+    public static IGameObject? AnyLivingSupport =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer() && !x.IsDead)
+            .FirstOrDefault(x => x?.GetRole() is
+                CombatRole.Tank or CombatRole.Healer);
+
     /// Gets any DPS that is not the player.
     public static IGameObject? AnyDPS =>
         CustomComboFunctions
@@ -468,12 +477,28 @@ internal static class SimpleTarget
             .Where(x => x.IsNotThePlayer())
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Tank);
 
+    /// Gets any living Tank that is not the player.
+    public static IGameObject? AnyLivingTank =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer() && !x.IsDead)
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.Tank);
+
     /// Gets any Healer that is not the player.
     public static IGameObject? AnyHealer =>
         CustomComboFunctions
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .Where(x => x.IsNotThePlayer())
+            .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
+
+    /// Gets any living Healer that is not the player.
+    public static IGameObject? AnyLivingHealer =>
+        CustomComboFunctions
+            .GetPartyMembers()
+            .Select(x => x.BattleChara)
+            .Where(x => x.IsNotThePlayer() && !x.IsDead)
             .FirstOrDefault(x => x?.GetRole() is CombatRole.Healer);
 
     /// Gets any Raiser (Healer or DPS) that is not the player.
