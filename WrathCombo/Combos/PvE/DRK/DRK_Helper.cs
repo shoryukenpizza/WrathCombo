@@ -186,15 +186,14 @@ internal partial class DRK
     {
         switch (restrictToHostile)
         {
-            case true when LocalPlayer.TargetObject is IBattleChara:
-            case false when LocalPlayer.TargetObject is not null:
-                return LocalPlayer.TargetObject;
+            case true when SimpleTarget.HardTarget.IsHostile():
+            case false when SimpleTarget.HardTarget is not null:
+                return SimpleTarget.HardTarget;
         }
 
         if (flags.HasFlag(Combo.AoE))
             return AutoRotationController.DPSTargeting.BaseSelection
-                .OrderByDescending(
-                    x => GetTargetDistance(x))
+                .OrderByDescending(x => GetTargetDistance(x))
                 .FirstOrDefault();
 
         return null;
@@ -259,7 +258,7 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Dart))) &&
                 ActionReady(Variant.SpiritDart) &&
-                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage, CurrentTarget) <=3)
+                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage, Target(flags)) <=3)
                 return (action = Variant.SpiritDart) != 0;
 
             #endregion
@@ -731,7 +730,7 @@ internal partial class DRK
                 flags.HasFlag(Combo.AoE) ||
                 flags.HasFlag(Combo.Simple) ||
                 IsNotEnabled(Preset.DRK_ST_Mit_MissionaryAvoid) ||
-                !HasStatusEffect(Role.Debuffs.Reprisal, CurrentTarget, true);
+                !HasStatusEffect(Role.Debuffs.Reprisal, Target(flags), true);
 
             #endregion
 
