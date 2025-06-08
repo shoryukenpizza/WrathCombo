@@ -145,6 +145,21 @@ internal partial class All
         }
     }
 
+    internal class ALL_Healer_EsunaRetargeting : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Healer_EsunaRetargeting;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not RoleActions.Healer.Esuna)
+                return actionID;
+
+            RoleActions.Healer.Esuna.Retarget(SimpleTarget.Stack.AllyToEsuna, dontCull: true);
+
+            return actionID;
+        }
+    }
+
     //Caster Features
     internal class ALL_Caster_Addle : CustomCombo
     {
