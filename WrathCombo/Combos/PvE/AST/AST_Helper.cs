@@ -183,6 +183,7 @@ internal partial class AST
                     .OrderBy(x =>
                         _cardPriorities.GetValueOrDefault(
                             (byte)x.ClassJob.RowId, byte.MaxValue))
+                    .ThenByDescending(x => x.MaxHp)
                     .ToList();
 
                 bestTarget = filter.First();
