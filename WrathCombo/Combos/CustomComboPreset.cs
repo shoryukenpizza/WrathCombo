@@ -4607,9 +4607,14 @@ public enum CustomComboPreset
     [CustomComboInfo("Unbalance Mana Option", "Use Acceleration to unbalance mana prior to starting melee combo.",
         RDM.JobID)]
     RDM_ST_MeleeCombo_UnbalanceMana = 13440,
+    
+    [ParentCombo(RDM_ST_MeleeCombo)]
+    [CustomComboInfo("Melee combo overcap protection",
+        "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
+    RDM_ST_Melee_Overcap_Protection = 13660,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Melee Finisher Option", "Add Verflare/Verholy and other finishing moves.", RDM.JobID)]
+    [CustomComboInfo("Melee Spell Finisher Option", "Adds Verflare, Verholy, Scorch, & Resolution.", RDM.JobID)]
     RDM_ST_MeleeFinisher = 13510,
 
     #endregion
@@ -4618,11 +4623,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
     RDM_ST_Lucid = 13610,
-
-    [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Melee combo overcap protection",
-        "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
-    RDM_ST_Melee_Overcap_Protection = 13660,
 
     #region AoE DPS
 
@@ -4669,8 +4669,8 @@ public enum CustomComboPreset
     RDM_AoE_MeleeCombo_CorpsGapCloser = 13422,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Melee Finisher Option", "Add Verflare/Verholy and other finishing moves.", RDM.JobID)]
-    RDM_AoE_MeleeFinisher = 13424,
+    [CustomComboInfo("Melee Spell Finisher Option", "Adds Verflare, Verholy, Scorch, & Resolution.", RDM.JobID)]
+    RDM_AoE_MeleeFinisher = 13424,    
 
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
