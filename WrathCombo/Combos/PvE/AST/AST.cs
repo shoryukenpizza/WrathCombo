@@ -372,7 +372,7 @@ internal partial class AST : Healer
         {
             if (actionID is not Benefic2)
                 return actionID;
-
+            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
             bool canDignity = Config.AST_ST_SimpleHeals_WeaveDignity && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveDignity;
             bool canIntersect = Config.AST_ST_SimpleHeals_WeaveIntersection && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveIntersection;
             bool canExalt = Config.AST_ST_SimpleHeals_WeaveExalt && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveExalt;
@@ -380,9 +380,12 @@ internal partial class AST : Healer
             bool canSpire = Config.AST_ST_SimpleHeals_WeaveSpire && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveSpire;
             bool canBole = Config.AST_ST_SimpleHeals_WeaveBole && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveBole;
             bool canArrow = Config.AST_ST_SimpleHeals_WeaveArrow && CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveArrow;
+            bool startHot = Config.AST_ST_SimpleHeals_AspectedBeneficHigh >= GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields);
+            bool stopHot = Config.AST_ST_SimpleHeals_AspectedBeneficLow <= GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields);
+            int refreshTime = Config.AST_ST_SimpleHeals_AspectedBeneficRefresh;
 
             //Grab our target
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) >= Config.AST_ST_SimpleHeals_Esuna &&
@@ -442,14 +445,15 @@ internal partial class AST : Healer
                 return CelestialIntersection
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_AspectedBenefic) && ActionReady(AspectedBenefic))
+            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_AspectedBenefic) && ActionReady(AspectedBenefic) &&
+                startHot && stopHot)
             {
                 //Possibly a good use for new HasStatusEffect with Status Out
                 //HasStatusEffect(Buffs.AspectedBenefic, out Status? aspectedBeneficHoT, healTarget);
                 Status? aspectedBeneficHoT = GetStatusEffect(Buffs.AspectedBenefic, healTarget);
                 Status? neutralSectShield = GetStatusEffect(Buffs.NeutralSectShield, healTarget);
                 Status? neutralSectBuff = GetStatusEffect(Buffs.NeutralSect, healTarget);
-                if (aspectedBeneficHoT is null || aspectedBeneficHoT.RemainingTime <= 3
+                if (aspectedBeneficHoT is null || aspectedBeneficHoT.RemainingTime <= refreshTime
                                                || neutralSectShield is null && neutralSectBuff is not null)
                     return AspectedBenefic
                         .RetargetIfEnabled(OptionalTarget, Benefic2);
