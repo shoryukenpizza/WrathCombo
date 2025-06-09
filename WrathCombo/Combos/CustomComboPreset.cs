@@ -227,11 +227,7 @@ public enum CustomComboPreset
 
     [ParentCombo(AST_DPS_LightSpeed)]
     [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
-    AST_DPS_LightSpeedHold = 1061,
-
-    [ParentCombo(AST_ST_DPS)]
-    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID)]
-    AST_DPS_Lucid = 1008,
+    AST_DPS_LightSpeedHold = 1061,   
 
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Divination Weave Option", "Adds Divination", AST.JobID)]
@@ -239,7 +235,7 @@ public enum CustomComboPreset
 
     [ParentCombo(AST_DPS_Divination)]
     [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
-    AST_DPS_LightspeedBurst = 1064,
+    AST_DPS_LightspeedBurst = 1064,   
 
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Card Draw Weave Option", "Draws your cards", AST.JobID)]
@@ -273,6 +269,10 @@ public enum CustomComboPreset
     [Retargeted]
     AST_ST_DPS_EarthlyStar = 1051,
 
+    [ParentCombo(AST_ST_DPS)]
+    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID)]
+    AST_DPS_Lucid = 1008,
+
     #endregion
 
     #region AOE DPS
@@ -288,12 +288,7 @@ public enum CustomComboPreset
 
     [ParentCombo(AST_AOE_LightSpeed)]
     [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
-    AST_AOE_LightSpeedHold = 1062,
-
-    [ParentCombo(AST_AOE_DPS)]
-    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID
-    )]
-    AST_AOE_Lucid = 1042,
+    AST_AOE_LightSpeedHold = 1062,    
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Divination Weave Option", "Adds Divination", AST.JobID)]
@@ -301,7 +296,7 @@ public enum CustomComboPreset
 
     [ParentCombo(AST_AOE_Divination)]
     [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
-    AST_AOE_LightspeedBurst = 1063,
+    AST_AOE_LightspeedBurst = 1063,    
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Card Draw Weave Option", "Draws your cards", AST.JobID)]
@@ -338,6 +333,10 @@ public enum CustomComboPreset
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("MacroCosmos Option", "Adds Macrocosmos to the Aoe rotation after 3 GCDs", AST.JobID)]    
     AST_AOE_DPS_MacroCosmos = 1066,
+
+    [ParentCombo(AST_AOE_DPS)]
+    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value", AST.JobID)]
+    AST_AOE_Lucid = 1042,
 
     #endregion
 
