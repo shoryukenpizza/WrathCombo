@@ -124,7 +124,7 @@ internal partial class RDM : Caster
                 return Role.LucidDreaming;
 
             // SCORCH & RESOLUTION
-            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+            if ((actionID is Jolt or Jolt2 or Jolt3) && MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
 
             // VERFLARE & VERHOLY
             if (IsEnabled(CustomComboPreset.RDM_ST_MeleeFinisher))
@@ -284,7 +284,7 @@ internal partial class RDM : Caster
             }
 
             // SCORCH & RESOLUTION
-            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+            if ((actionID is Scatter or Impact) && MeleeCombo.CanScorchResolution()) return OriginalHook(Scatter);
 
             // VERFLARE & VERHOLY
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeFinisher))

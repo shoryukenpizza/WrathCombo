@@ -378,16 +378,14 @@ internal partial class RDM
             if (GetTargetDistance() <= 3 || MeleeEnforced)
             {
                 if ((ComboAction is Riposte or EnchantedRiposte)
-                    && LevelChecked(Zwerchhau)
-                    && ComboTimer > 0f)
+                    && LevelChecked(Zwerchhau))
                 {
                     newActionID = OriginalHook(Zwerchhau);
                     return true;
                 }
 
                 if (ComboAction is Zwerchhau
-                    && LevelChecked(Redoublement)
-                    && ComboTimer > 0f)
+                    && LevelChecked(Redoublement))
                 {
                     newActionID = OriginalHook(Redoublement);
                     return true;
@@ -533,8 +531,7 @@ internal partial class RDM
             {
                 //Finish the combo
                 if (LevelChecked(Moulinet)
-                && ComboAction is EnchantedMoulinet or EnchantedMoulinetDeux
-                && ComboTimer > 0f)
+                && ComboAction is EnchantedMoulinet or EnchantedMoulinetDeux)
                 {
                     newActionID = OriginalHook(Moulinet);
                     return true;
