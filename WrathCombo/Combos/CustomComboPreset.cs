@@ -4618,7 +4618,7 @@ public enum CustomComboPreset
     #region Simple Mode
 
     [AutoAction(false, false)]
-    [ConflictingCombos(RDM_ST_DPS)]
+    [ConflictingCombos(RDM_ST_DPS, RDM_ST_Jolt_Combo)]
     [ReplaceSkill(RDM.Jolt, RDM.Jolt2, RDM.Jolt3)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Jolt with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.\nTo start the melee combo, you must be within melee range.",
@@ -4639,7 +4639,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(RDM.Jolt, RDM.Jolt2, RDM.Jolt3)]
-    [ConflictingCombos(RDM_ST_SimpleMode)]
+    [ConflictingCombos(RDM_ST_SimpleMode, RDM_ST_Jolt_Combo)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Jolt with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         RDM.JobID)]
@@ -4704,8 +4704,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Melee Finisher Option", "Add Verflare/Verholy and other finishing moves.", RDM.JobID)]
     RDM_ST_MeleeFinisher = 13510,
 
-    #endregion
-
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
@@ -4715,6 +4713,21 @@ public enum CustomComboPreset
     [CustomComboInfo("Melee combo overcap protection",
         "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
     RDM_ST_Melee_Overcap_Protection = 13660,
+
+    #endregion
+
+    #region ST DPS Indivdual Combos
+
+    [ConflictingCombos(RDM_ST_DPS, RDM_ST_SimpleMode)]
+    [ReplaceSkill(RDM.Jolt, RDM.Jolt2, RDM.Jolt3)]
+    [CustomComboInfo($"Jolt Combo", "Replaces Jolt with the basic Jolt combo logic.", RDM.JobID)]
+    RDM_ST_Jolt_Combo = 13840,
+
+    [ParentCombo(RDM_ST_Jolt_Combo)]
+    [CustomComboInfo("Add Verfire/Verstone", "Adds Verfire and Verstone to the combo logic.", RDM.JobID)]
+    RDM_ST_Jolt_Combo_VerFireStone = 13841,
+
+    #endregion
 
     #region AoE DPS
 

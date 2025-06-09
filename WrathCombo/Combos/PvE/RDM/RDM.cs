@@ -417,4 +417,36 @@ internal partial class RDM : Caster
             ActionReady(MagickBarrier) &&
             HasStatusEffect(Buffs.MagickBarrier, anyOwner: true) ? All.SavageBlade : actionID;
     }
+
+    internal class RDM_Jolt_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_Jolt_Combo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Jolt or Jolt2 or Jolt3))
+                return actionID;
+
+            if (IsEnabled(CustomComboPreset.RDM_ST_Jolt_Combo_VerFireStone))
+            {
+                if (HasStatusEffect(Buffs.VerfireReady))
+                    return OriginalHook(Verfire);
+
+                if (HasStatusEffect(Buffs.VerstoneReady))
+                    return OriginalHook(Verstone);
+            }
+
+
+            if (HasStatusEffect(Buffs.Dualcast))
+            {
+                if ((RDMMana.Black <= RDMMana.White || !ActionReady(Veraero)) && ActionReady(Verthunder))
+                    return OriginalHook(Verthunder);
+
+                if (RDMMana.White < RDMMana.Black && ActionReady(Veraero))
+                    return OriginalHook(Veraero);
+            }
+
+            return actionID;
+        }
+    }
 }
