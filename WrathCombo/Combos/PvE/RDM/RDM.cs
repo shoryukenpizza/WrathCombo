@@ -41,8 +41,11 @@ internal partial class RDM : Caster
             if (TryLucidDreaming(6500, ComboAction))
                 return Role.LucidDreaming;
 
-            //Melee Finisher
-            if (MeleeCombo.TryMeleeFinisher(ref NewActionID))
+            // SCORCH & RESOLUTION
+            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+
+            // VERFLARE & VERHOLY
+            if (MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
                 return NewActionID;
 
             //Melee Combo
@@ -120,7 +123,10 @@ internal partial class RDM : Caster
                 && TryLucidDreaming(Config.RDM_ST_Lucid_Threshold, ComboAction)) //Don't interupt certain combos
                 return Role.LucidDreaming;
 
-            //RDM_MELEEFINISHER
+            // SCORCH & RESOLUTION
+            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+
+            // VERFLARE & VERHOLY
             if (IsEnabled(CustomComboPreset.RDM_ST_MeleeFinisher))
             {
                 bool isJoltAction = actionID is Jolt or Jolt2 or Jolt3;
@@ -133,10 +139,9 @@ internal partial class RDM : Caster
                     (Config.RDM_ST_MeleeFinisher_Adv &&
                         (useJoltsAdv || useRiposteAdv || useVerMagicAdv));
 
-                if (ActionFound && MeleeCombo.TryMeleeFinisher(ref NewActionID))
+                if (ActionFound && MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
                     return NewActionID;
             }
-            //END_RDM_MELEEFINISHER
 
             //RDM_ST_MELEECOMBO
             if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo)
@@ -224,8 +229,11 @@ internal partial class RDM : Caster
             if (TryLucidDreaming(6500, ComboAction))
                 return Role.LucidDreaming;
 
-            //RDM_MELEEFINISHER
-            if (MeleeCombo.TryMeleeFinisher(ref NewActionID))
+            // SCORCH & RESOLUTION
+            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+
+            // VERFLARE & VERHOLY
+            if (MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
                 return NewActionID;
 
             if (MeleeCombo.TryAoEManaEmbolden(ref NewActionID))
@@ -275,7 +283,10 @@ internal partial class RDM : Caster
                     return Role.LucidDreaming;
             }
 
-            //RDM_MELEEFINISHER
+            // SCORCH & RESOLUTION
+            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+
+            // VERFLARE & VERHOLY
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeFinisher))
             {
                 bool ActionFound =
@@ -285,12 +296,11 @@ internal partial class RDM : Caster
                          (Config.RDM_AoE_MeleeFinisher_OnAction[1] && actionID is Moulinet) ||
                          (Config.RDM_AoE_MeleeFinisher_OnAction[2] && actionID is Veraero2 or Verthunder2)));
 
-                if (ActionFound && MeleeCombo.TryMeleeFinisher(ref NewActionID))
+                if (ActionFound && MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
                     return NewActionID;
             }
-            //END_RDM_MELEEFINISHER
 
-            //RDM_AOE_MELEECOMBO
+            // RDM_AOE_MELEECOMBO
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
             {
                 bool ActionFound =
@@ -311,6 +321,7 @@ internal partial class RDM : Caster
                 }
             }
 
+            // SPELL ROTATION
             if (actionID is Scatter or Impact)
             {
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Accel)
@@ -427,24 +438,10 @@ internal partial class RDM : Caster
             if (actionID is not (Jolt or Jolt2 or Jolt3))
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.RDM_ST_Jolt_Combo_VerFireStone))
-            {
-                if (HasStatusEffect(Buffs.VerfireReady))
-                    return OriginalHook(Verfire);
-
-                if (HasStatusEffect(Buffs.VerstoneReady))
-                    return OriginalHook(Verstone);
-            }
-
-
-            if (HasStatusEffect(Buffs.Dualcast))
-            {
-                if ((RDMMana.Black <= RDMMana.White || !ActionReady(Veraero)) && ActionReady(Verthunder))
-                    return OriginalHook(Verthunder);
-
-                if (RDMMana.White < RDMMana.Black && ActionReady(Veraero))
-                    return OriginalHook(Veraero);
-            }
+            bool verFireStone = IsEnabled(CustomComboPreset.RDM_ST_Jolt_Combo_VerFireStone);
+            uint spellActionID = 0;
+            
+            if (SpellCombo.TrySTSpellRotation(ref spellActionID, verFireStone)) return spellActionID;
 
             return actionID;
         }
@@ -459,11 +456,8 @@ internal partial class RDM : Caster
             if (actionID is not Riposte)
                 return actionID;
 
-            if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
-                return OriginalHook(Zwerchhau);
-
-            if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))
-                return OriginalHook(Redoublement);
+            uint newMeleeID = 0;
+            if (MeleeCombo.TrySTMeleeCombo(ref newMeleeID, false)) return newMeleeID;
 
             return actionID;
         }

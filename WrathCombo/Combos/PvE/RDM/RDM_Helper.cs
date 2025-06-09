@@ -567,7 +567,7 @@ internal partial class RDM
             return false;
         }
 
-        internal static bool TryMeleeFinisher(ref uint newActionID)
+        internal static bool TryVerFlareVerHoly(ref uint newActionID)
         {
             if (RDMMana.ManaStacks >= 3)
             {
@@ -617,6 +617,12 @@ internal partial class RDM
             //Else
             return false;
         }
+
+        // Makes sure we return Scorch or Resolution
+        internal static bool CanScorchResolution() =>
+            ((ComboAction is Verflare or Verholy) && LevelChecked(Scorch))
+            ||
+            (ComboAction is Scorch && LevelChecked(Resolution));
     }
 
     private class SpellCombo

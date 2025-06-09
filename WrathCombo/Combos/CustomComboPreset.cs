@@ -4701,7 +4701,7 @@ public enum CustomComboPreset
     RDM_ST_MeleeCombo_UnbalanceMana = 13440,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Melee Spell Finisher Option", "Adds Verflare, Verholy, Scorch, & Resolution.", RDM.JobID)]
+    [CustomComboInfo("Verflare / Verholy Option", "Replace Jolt with Verflare & Verholy.", RDM.JobID)]
     RDM_ST_MeleeFinisher = 13510,
 
     [ParentCombo(RDM_ST_DPS)]
@@ -4778,7 +4778,7 @@ public enum CustomComboPreset
     RDM_AoE_MeleeCombo_CorpsGapCloser = 13422,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Melee Spell Finisher Option", "Adds Verflare, Verholy, Scorch, & Resolution.", RDM.JobID)]
+    [CustomComboInfo("Verflare / Verholy Option", "Replace Jolt with Verflare & Verholy.", RDM.JobID)]
     RDM_AoE_MeleeFinisher = 13424,
 
     [ParentCombo(RDM_AoE_DPS)]
