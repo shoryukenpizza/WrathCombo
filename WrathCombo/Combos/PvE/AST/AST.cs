@@ -67,6 +67,9 @@ internal partial class AST : Healer
             {
                 if (actionID is (Balance or Spear) && IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards))
                     return actionID.Retarget(replacedActions, CardResolver);
+                if (actionID is EarthlyStar && IsEnabled(CustomComboPreset.AST_ST_DPS_EarthlyStar))
+                    return actionID.Retarget(replacedActions,
+                        SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
                 return actionID;
             }

@@ -272,12 +272,6 @@ internal partial class AST
 
         public override bool HasCooldowns()
         {
-            if (ActionReady(EarthlyStar))
-                EarthlyStar.Retarget(Config.AST_DPS_AltMode > 0
-                        ? CombustList.Keys.ToArray()
-                        : MaleficList.ToArray(),
-                    SimpleTarget.Stack.Allies);
-
             if (GetCooldown(EarthlyStar).CooldownElapsed >= 4f)
                 return false;
 
