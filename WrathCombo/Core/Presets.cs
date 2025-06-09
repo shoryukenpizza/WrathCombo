@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using static FFXIVClientStructs.FFXIV.Client.UI.RaptureAtkHistory.Delegates;
@@ -76,7 +77,7 @@ namespace WrathCombo.Core
         /// <param name="preset"></param>
         /// <returns></returns>
         public static bool ShouldBeHidden(CustomComboPreset preset) =>
-            preset.GetAttribute<HiddenAttribute>() != null &&
+            preset.Attributes().Hidden != null &&
             !Service.Configuration.ShowHiddenFeatures;
 
         /// <summary> Gets a value indicating whether a preset is secret. </summary>
@@ -88,6 +89,24 @@ namespace WrathCombo.Core
         /// <param name="preset"> Preset to check. </param>
         /// <returns> The boolean representation. </returns>
         public static bool IsVariant(CustomComboPreset preset) => VariantCombos.Contains(preset);
+
+        /// <summary>
+        ///     Gets a value indicating whether a preset can be retargeted under some
+        ///     settings, with <see cref="ActionRetargeting" />.
+        /// </summary>
+        /// <param name="preset"> Preset to check. </param>
+        /// <returns> The boolean representation. </returns>
+        public static bool IsPossiblyRetargeted(CustomComboPreset preset) =>
+            preset.GetAttribute<RetargetedAttribute>() != null;
+
+        /// <summary>
+        ///     Gets a value indicating whether a preset is possibly retargeted with
+        ///     <see cref="ActionRetargeting" />.
+        /// </summary>
+        /// <param name="preset"> Preset to check. </param>
+        /// <returns> The boolean representation. </returns>
+        public static bool IsRetargeted(CustomComboPreset preset) =>
+            preset.GetAttribute<RetargetedAttribute>() != null;
 
         /// <summary> Gets a value indicating whether a preset is secret. </summary>
         /// <param name="preset"> Preset to check. </param>

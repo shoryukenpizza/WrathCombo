@@ -1,6 +1,9 @@
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class WAR : Tank
@@ -27,30 +30,25 @@ internal partial class WAR : Tank
             #endregion
 
             #region Mitigations
-            if (Config.WAR_ST_MitsOptions != 1)
+            if (Config.WAR_ST_MitsOptions == 0 && InCombat() && !MitUsed)
             {
-                if (!InCombat() || MitUsed)
-                    return 0;
-                else
+                if (ActionReady(Holmgang) && PlayerHealthPercentageHp() < 30)
+                    return Holmgang;
+                if (IsPlayerTargeted())
                 {
-                    if (ActionReady(Holmgang) && PlayerHealthPercentageHp() < 30)
-                        return Holmgang;
-                    if (IsPlayerTargeted())
-                    {
-                        if (ActionReady(OriginalHook(Vengeance)) && PlayerHealthPercentageHp() < 60)
-                            return OriginalHook(Vengeance);
-                        if (Role.CanRampart(80))
-                            return Role.Rampart;
-                        if (Role.CanReprisal(90))
-                            return Role.Reprisal;
-                    }
-                    if (ActionReady(ThrillOfBattle) && PlayerHealthPercentageHp() < 70)
-                        return ThrillOfBattle;
-                    if (ActionReady(Equilibrium) && PlayerHealthPercentageHp() < 50)
-                        return Equilibrium;
-                    if (ActionReady(OriginalHook(RawIntuition)) && PlayerHealthPercentageHp() < 90)
-                        return OriginalHook(Bloodwhetting);
+                    if (ActionReady(OriginalHook(Vengeance)) && PlayerHealthPercentageHp() < 60)
+                        return OriginalHook(Vengeance);
+                    if (Role.CanRampart(80))
+                        return Role.Rampart;
+                    if (Role.CanReprisal(90))
+                        return Role.Reprisal;
                 }
+                if (ActionReady(ThrillOfBattle) && PlayerHealthPercentageHp() < 70)
+                    return ThrillOfBattle;
+                if (ActionReady(Equilibrium) && PlayerHealthPercentageHp() < 50)
+                    return Equilibrium;
+                if (ActionReady(OriginalHook(RawIntuition)) && PlayerHealthPercentageHp() < 90)
+                    return OriginalHook(Bloodwhetting);
             }
             #endregion
 
@@ -356,21 +354,40 @@ internal partial class WAR : Tank
     }
     #endregion
 
+    #region Fell Cleave Features
+    internal class WAR_FC_Features : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_FC_Features;
+        protected override uint Invoke(uint action)
+        {
+            if (action is not InnerBeast or FellCleave)
+                return action;
+            if (IsEnabled(CustomComboPreset.WAR_FC_InnerRelease) && ShouldUseInnerRelease(Config.WAR_FC_IRStop))
+                return OriginalHook(Berserk);
+            if (IsEnabled(CustomComboPreset.WAR_FC_Infuriate) && ShouldUseInfuriate(Config.WAR_FC_Infuriate_Gauge, Config.WAR_FC_Infuriate_Charges))
+                return Infuriate;
+            if (IsEnabled(CustomComboPreset.WAR_FC_Upheaval) && ShouldUseUpheaval)
+                return Upheaval;
+            if (IsEnabled(CustomComboPreset.WAR_FC_PrimalWrath) && ShouldUsePrimalWrath)
+                return PrimalWrath;
+            if (IsEnabled(CustomComboPreset.WAR_FC_Onslaught) && ShouldUseOnslaught(Config.WAR_FC_Onslaught_Charges, Config.WAR_FC_Onslaught_Distance, Config.WAR_FC_Onslaught_Movement == 1 || (Config.WAR_FC_Onslaught_Movement == 0 && !IsMoving())))
+                return Onslaught;
+            if (IsEnabled(CustomComboPreset.WAR_FC_PrimalRend) &&
+                ShouldUsePrimalRend(Config.WAR_FC_PrimalRend_Distance, Config.WAR_FC_PrimalRend_Movement == 1 || (Config.WAR_FC_PrimalRend_Movement == 0 && !IsMoving())) &&
+                (Config.WAR_FC_PrimalRend_EarlyLate == 0 || (Config.WAR_FC_PrimalRend_EarlyLate == 1 && (GetStatusEffectRemainingTime(Buffs.PrimalRendReady) <= 15 || (!HasIR.Stacks && !HasBF.Stacks && !HasWrath)))))
+                return PrimalRend;
+            if (IsEnabled(CustomComboPreset.WAR_FC_PrimalRuination) && ShouldUsePrimalRuination)
+                return PrimalRuination;
+            return action;
+        }
+    }
+    #endregion
+
     #region Storm's Eye -> Storm's Path
     internal class WAR_EyePath : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_EyePath;
         protected override uint Invoke(uint action) => action != StormsPath ? action : GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= Config.WAR_EyePath_Refresh ? StormsEye : action;
-    }
-    #endregion
-
-    #region Storm's Eye Combo -> Storm's Eye
-    internal class WAR_StormsEye : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_StormsEye;
-        protected override uint Invoke(uint action) => action != StormsEye ? action :
-            ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim) ? Maim :
-            ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye) ? StormsEye : HeavySwing;
     }
     #endregion
 
@@ -398,7 +415,42 @@ internal partial class WAR : Tank
     internal class WAR_NascentFlash : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_NascentFlash;
-        protected override uint Invoke(uint action) => action != RawIntuition ? action : ActionReady(NascentFlash) ? NascentFlash : action;
+        protected override uint Invoke(uint actionID) => actionID != NascentFlash ? actionID : LevelChecked(NascentFlash) ? NascentFlash : RawIntuition;
+    }
+    #endregion
+
+    #region Bloodwhetting -> Nascent Flash or Raw Intuition
+    internal class WAR_Bloodwhetting : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_Bloodwhetting;
+
+        protected override uint Invoke(uint action)
+        {
+            if (action != Bloodwhetting)
+                return action;
+
+            var target =
+                (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting_MO)
+                    ? SimpleTarget.UIMouseOverTarget.IfFriendly()
+                    : null) ??
+                SimpleTarget.HardTarget.IfFriendly() ??
+                (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting_TT) && !PlayerHasAggro
+                    ? SimpleTarget.TargetsTarget.IfFriendly().IfNotThePlayer()
+                    : null);
+
+            // Nascent if trying to heal an ally
+            if (IsEnabled(CustomComboPreset.WAR_Bloodwhetting_Targeting) &&
+                LevelChecked(NascentFlash) &&
+                target != null)
+                return NascentFlash.Retarget(Bloodwhetting, target);
+
+            // Raw Intuition if too low for Bloodwhetting, and not trying to heal an ally
+            if (!LevelChecked(Bloodwhetting) &&
+                LevelChecked(RawIntuition))
+                return RawIntuition;
+
+            return action;
+        }
     }
     #endregion
 
@@ -415,6 +467,15 @@ internal partial class WAR : Tank
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_Mit_Party;
         protected override uint Invoke(uint action) => action != ShakeItOff ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
+    }
+    #endregion
+
+    #region MyRegion
+    internal class WAR_RetargetHolmgang : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_RetargetHolmgang;
+
+        protected override uint Invoke(uint actionID) => actionID != Holmgang ? actionID : actionID.Retarget(SimpleTarget.Self, dontCull: true);
     }
     #endregion
 

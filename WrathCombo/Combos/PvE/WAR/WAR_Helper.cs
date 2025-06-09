@@ -55,15 +55,15 @@ internal partial class WAR : Tank
             InnerChaos,
             Upheaval,
             Onslaught,
-            PrimalRend,
-            Onslaught,
-            PrimalRuination,
+            FellCleave,
             Onslaught,
             FellCleave,
-            FellCleave,
+            Onslaught,
             FellCleave,
             PrimalWrath,
             Infuriate,
+            PrimalRend,
+            PrimalRuination,
             InnerChaos,
             HeavySwing,
             Maim,
@@ -173,7 +173,7 @@ internal partial class WAR : Tank
     internal static bool ShouldUseInnerRelease(int targetHP = 0) => ActionReady(OriginalHook(Berserk)) && !HasWrath && CanWeave() && (HasST || !LevelChecked(StormsEye)) && Minimal && GetTargetHPPercent() >= targetHP;
     internal static bool ShouldUseInfuriate(int gauge = 40, int charges = 0) => CanInfuriate() && CanWeave() && !HasNC && !HasIR.Stacks && BeastGauge <= gauge && GetRemainingCharges(Infuriate) > charges && Minimal;
     internal static bool ShouldUseUpheaval => ActionReady(Upheaval) && CanWeave() && HasST && InMeleeRange() && Minimal;
-    internal static bool ShouldUsePrimalWrath => LevelChecked(PrimalWrath) && HasWrath && HasST && GetTargetDistance() <= 4.99f && Minimal;
+    internal static bool ShouldUsePrimalWrath => LevelChecked(PrimalWrath) && CanWeave() && HasWrath && HasST && GetTargetDistance() <= 4.99f && Minimal;
     internal static bool ShouldUseOnslaught(int charges = 0, float distance = 20, bool movement = true) => CanOnslaught(charges, distance, movement) && CanWeave() && HasST && (IR.Cooldown > 40 || GetRemainingCharges(Onslaught) == MaxDashCharges);
     internal static bool ShouldUsePrimalRuination => LevelChecked(PrimalRuination) && HasStatusEffect(Buffs.PrimalRuinationReady) && HasST;
     internal static bool ShouldUsePrimalRend(float distance = 20, bool movement = true) => CanPRend(distance, movement) && !JustUsed(InnerRelease) && HasST;
@@ -182,7 +182,7 @@ internal partial class WAR : Tank
     internal static uint STCombo 
         => ComboTimer > 0 ? LevelChecked(Maim) && ComboAction == HeavySwing ? Maim
         : LevelChecked(StormsPath) && ComboAction == Maim
-        ? (LevelChecked(StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29
+        ? (LevelChecked(StormsEye) && ((IsEnabled(CustomComboPreset.WAR_ST_Simple) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29) || (IsEnabled(CustomComboPreset.WAR_ST_Advanced) && IsEnabled(CustomComboPreset.WAR_ST_StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= Config.WAR_SurgingRefreshRange))
         ? StormsEye : StormsPath) : HeavySwing : HeavySwing;
     internal static uint AOECombo => (ComboTimer > 0 && LevelChecked(MythrilTempest) && ComboAction == Overpower) ? MythrilTempest : Overpower;
     #endregion

@@ -29,8 +29,6 @@ internal partial class BLM
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
 
-    internal static bool HasMaxPolyglotStacks => PolyglotStacks == MaxPolyglot;
-
     internal static bool EndOfFirePhase => FirePhase && !ActionReady(Despair) && !ActionReady(FireSpam) && !ActionReady(FlareStar);
 
     internal static bool EndOfIcePhase => IcePhase && CurMp == MP.MaxMP && HasMaxUmbralHeartStacks;
@@ -43,15 +41,61 @@ internal partial class BLM
 
     internal static Status? ThunderDebuffAoE => GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
 
+    internal static float TimeSinceFirestarterBuff => HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
+
+    internal static bool HasMaxPolyglotStacks => PolyglotStacks == MaxPolyglot;
+
     internal static uint FireSpam => LevelChecked(Fire4) ? Fire4 : Fire;
 
     internal static uint BlizzardSpam => LevelChecked(Blizzard4) ? Blizzard4 : Blizzard;
 
-    internal static float TimeSinceFirestarterBuff => HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
-
     internal static bool HasMaxUmbralHeartStacks => !TraitLevelChecked(Traits.UmbralHeart) || UmbralHearts is 3; //Returns true before you can have Umbral Hearts out of design
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
+
+    #region Movement Prio
+
+    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
+        PrioritizedMovement =>
+    [
+        //Triplecast
+        (Triplecast, CustomComboPreset.BLM_ST_Movement,
+            () => Config.BLM_ST_MovementOption[0] &&
+                  ActionReady(Triplecast) &&
+                  !HasStatusEffect(Buffs.Triplecast) &&
+                  !HasStatusEffect(Role.Buffs.Swiftcast) &&
+                  !HasStatusEffect(Buffs.LeyLines)),
+        // Paradox
+        (OriginalHook(Paradox), CustomComboPreset.BLM_ST_Movement,
+            () => Config.BLM_ST_MovementOption[1] &&
+                  ActionReady(Paradox) &&
+                  FirePhase && ActiveParadox &&
+                  !HasStatusEffect(Buffs.Firestarter) &&
+                  !HasStatusEffect(Buffs.Triplecast) &&
+                  !HasStatusEffect(Role.Buffs.Swiftcast)),
+        //Swiftcast
+        (Role.Swiftcast, CustomComboPreset.BLM_ST_Movement,
+            () => Config.BLM_ST_MovementOption[2] &&
+                  ActionReady(Role.Swiftcast) &&
+                  !HasStatusEffect(Buffs.Triplecast)),
+        //Xeno
+        (Xenoglossy, CustomComboPreset.BLM_ST_Movement,
+            () => Config.BLM_ST_MovementOption[3] &&
+                  HasPolyglotStacks() &&
+                  !HasStatusEffect(Buffs.Triplecast) &&
+                  !HasStatusEffect(Role.Buffs.Swiftcast))
+    ];
+
+    private static bool CheckMovementConfigMeetsRequirements
+        (int index, out uint action)
+    {
+        action = PrioritizedMovement[index].Action;
+        return ActionReady(action) && LevelChecked(action) &&
+               PrioritizedMovement[index].Logic() &&
+               IsEnabled(PrioritizedMovement[index].Preset);
+    }
+
+    #endregion
 
     #region Openers
 

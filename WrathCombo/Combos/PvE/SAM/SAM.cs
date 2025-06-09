@@ -193,14 +193,14 @@ internal partial class SAM : Melee
                 if (LevelChecked(Gekko) &&
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
-                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                    return Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : Gekko;
 
                 if (LevelChecked(Kasha) &&
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
-                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                    return Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : Kasha;
 
@@ -256,6 +256,11 @@ internal partial class SAM : Melee
             int kenkiOvercap = SAM_ST_KenkiOvercapAmount;
             int shintenTreshhold = SAM_ST_ExecuteThreshold;
 
+            // Opener for SAM
+            if (IsEnabled(CustomComboPreset.SAM_ST_Opener) &&
+                Opener().FullOpener(ref actionID))
+                return actionID;
+
             //Meikyo to start before combat
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
                 IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
@@ -269,11 +274,6 @@ internal partial class SAM : Melee
 
             if (Variant.CanRampart(CustomComboPreset.SAM_Variant_Rampart, WeaveTypes.Weave))
                 return Variant.Rampart;
-
-            // Opener for SAM
-            if (IsEnabled(CustomComboPreset.SAM_ST_Opener) &&
-                Opener().FullOpener(ref actionID))
-                return actionID;
 
             if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
@@ -386,7 +386,7 @@ internal partial class SAM : Melee
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
                     return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                           Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : Gekko;
 
@@ -395,7 +395,7 @@ internal partial class SAM : Melee
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
                     return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                           Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : Kasha;
 
@@ -496,7 +496,6 @@ internal partial class SAM : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            // Don't change anything if not basic skill
             if (actionID is not (Fuga or Fuko))
                 return actionID;
 

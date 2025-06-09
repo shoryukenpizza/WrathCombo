@@ -1,3 +1,4 @@
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
@@ -343,18 +344,27 @@ internal partial class RDM : Caster
                 return actionID;
 
             if (Variant.CanRaise(CustomComboPreset.RDM_Variant_Raise))
-                return Variant.Raise;
+                return IsEnabled(CustomComboPreset.RDM_Raise_Retarget)
+                    ? Variant.Raise.Retarget(Role.Swiftcast,
+                        SimpleTarget.Stack.AllyToRaise)
+                    : Variant.Raise;
 
             if (LevelChecked(Verraise))
             {
                 bool schwifty = HasStatusEffect(Role.Buffs.Swiftcast);
                 if (schwifty || HasStatusEffect(Buffs.Dualcast))
-                    return Verraise;
+                    return IsEnabled(CustomComboPreset.RDM_Raise_Retarget)
+                        ? Verraise.Retarget(Role.Swiftcast,
+                            SimpleTarget.Stack.AllyToRaise)
+                        : Verraise;
                 if (IsEnabled(CustomComboPreset.RDM_Raise_Vercure) &&
                     !schwifty &&
                     ActionReady(Vercure) &&
                     IsOnCooldown(Role.Swiftcast))
-                    return Vercure;
+                    return IsEnabled(CustomComboPreset.RDM_Raise_Retarget)
+                        ? Vercure.Retarget(Role.Swiftcast,
+                            SimpleTarget.Stack.AllyToHeal)
+                        : Vercure;
             }
 
             // Else we just exit normally and return Swiftcast
@@ -406,5 +416,56 @@ internal partial class RDM : Caster
             actionID is MagickBarrier &&
             ActionReady(MagickBarrier) &&
             HasStatusEffect(Buffs.MagickBarrier, anyOwner: true) ? All.SavageBlade : actionID;
+    }
+
+    internal class RDM_Jolt_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_Jolt_Combo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Jolt or Jolt2 or Jolt3))
+                return actionID;
+
+            if (IsEnabled(CustomComboPreset.RDM_ST_Jolt_Combo_VerFireStone))
+            {
+                if (HasStatusEffect(Buffs.VerfireReady))
+                    return OriginalHook(Verfire);
+
+                if (HasStatusEffect(Buffs.VerstoneReady))
+                    return OriginalHook(Verstone);
+            }
+
+
+            if (HasStatusEffect(Buffs.Dualcast))
+            {
+                if ((RDMMana.Black <= RDMMana.White || !ActionReady(Veraero)) && ActionReady(Verthunder))
+                    return OriginalHook(Verthunder);
+
+                if (RDMMana.White < RDMMana.Black && ActionReady(Veraero))
+                    return OriginalHook(Veraero);
+            }
+
+            return actionID;
+        }
+    }
+
+    internal class RDM_ST_Melee_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_Melee_Combo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Riposte)
+                return actionID;
+
+            if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
+                return OriginalHook(Zwerchhau);
+
+            if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))
+                return OriginalHook(Redoublement);
+
+            return actionID;
+        }
     }
 }
