@@ -475,7 +475,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 1065
+    // Last value = 1067
 
     #endregion
 
