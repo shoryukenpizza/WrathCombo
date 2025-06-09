@@ -4727,6 +4727,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Add Verfire/Verstone", "Adds Verfire and Verstone to the combo logic.", RDM.JobID)]
     RDM_ST_Jolt_Combo_VerFireStone = 13841,
 
+    [ReplaceSkill(RDM.Riposte)]
+    [CustomComboInfo("Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
+    RDM_ST_Melee_Combo = 13842,
+
     #endregion
 
     #region AoE DPS

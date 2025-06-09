@@ -449,4 +449,23 @@ internal partial class RDM : Caster
             return actionID;
         }
     }
+
+    internal class RDM_ST_Melee_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_Melee_Combo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Riposte)
+                return actionID;
+
+            if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
+                return OriginalHook(Zwerchhau);
+
+            if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))
+                return OriginalHook(Redoublement);
+
+            return actionID;
+        }
+    }
 }
