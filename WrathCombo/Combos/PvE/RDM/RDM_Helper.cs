@@ -599,19 +599,32 @@ internal partial class RDM
                     return true;
                 }
             }
-            if ((ComboAction is Verflare or Verholy)
-                && LevelChecked(Scorch))
+
+            if ((JustUsed(Verflare) || JustUsed(Verholy)) && (ActionReady(Scorch)))
             {
                 newActionID = Scorch;
                 return true;
             }
 
-            if (ComboAction is Scorch
-                && LevelChecked(Resolution))
+            if (JustUsed(Scorch) && ActionReady(Resolution))
             {
                 newActionID = Resolution;
                 return true;
             }
+
+            //if ((ComboAction is Verflare or Verholy)
+            //    && LevelChecked(Scorch))
+            //{
+            //    newActionID = Scorch;
+            //    return true;
+            //}
+
+            //if (ComboAction is Scorch
+            //    && LevelChecked(Resolution))
+            //{
+            //    newActionID = Resolution;
+            //    return true;
+            //}
 
             //Else
             return false;
