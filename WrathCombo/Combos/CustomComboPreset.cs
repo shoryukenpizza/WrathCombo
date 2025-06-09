@@ -226,7 +226,7 @@ public enum CustomComboPreset
     AST_DPS_LightSpeed = 1020,
 
     [ParentCombo(AST_DPS_LightSpeed)]
-    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
+    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for manual use", AST.JobID)]
     AST_DPS_LightSpeedHold = 1061,   
 
     [ParentCombo(AST_ST_DPS)]
@@ -234,7 +234,7 @@ public enum CustomComboPreset
     AST_DPS_Divination = 1016,
 
     [ParentCombo(AST_DPS_Divination)]
-    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
+    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination \nCombine with Lightspeed Hold Options to ensure you have a charge to use", AST.JobID)]
     AST_DPS_LightspeedBurst = 1064,   
 
     [ParentCombo(AST_ST_DPS)]
@@ -287,7 +287,7 @@ public enum CustomComboPreset
     AST_AOE_LightSpeed = 1048,
 
     [ParentCombo(AST_AOE_LightSpeed)]
-    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for use in the burst window", AST.JobID)]
+    [CustomComboInfo("Lightspeed Hold Option", "Retains 1 Lightspeed charge for manual use", AST.JobID)]
     AST_AOE_LightSpeedHold = 1062,    
 
     [ParentCombo(AST_AOE_DPS)]
@@ -295,7 +295,7 @@ public enum CustomComboPreset
     AST_AOE_Divination = 1043,
 
     [ParentCombo(AST_AOE_Divination)]
-    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination", AST.JobID)]
+    [CustomComboInfo("Lightspeed Burst Option", "Add Lightspeed before Divination. \nCombine with Lightspeed Hold Options to ensure you have a charge to use", AST.JobID)]
     AST_AOE_LightspeedBurst = 1063,    
 
     [ParentCombo(AST_AOE_DPS)]
