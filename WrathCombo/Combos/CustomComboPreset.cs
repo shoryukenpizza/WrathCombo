@@ -22,7 +22,7 @@ public enum CustomComboPreset
     #region PvE Combos
 
     #region PHANTOM ACTIONS
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Freelancer)]
     [CustomComboInfo("Freelancer Job Actions", "Enable this to add Freelancer-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Freelancer = 110000,
 
@@ -36,7 +36,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Occult Treasuresight", "Adds Occult Treasuresight into the rotation.", OccultCrescent.JobID)]
     Phantom_Freelancer_OccultTreasuresight = 110002,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Knight)]
     [CustomComboInfo("Knight Job Actions", "Enable this to add Knight-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Knight = 110003,
 
@@ -60,7 +60,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Pledge", "Adds Pledge into the rotation.", OccultCrescent.JobID)]
     Phantom_Knight_Pledge = 110007,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Monk)]
     [CustomComboInfo("Monk Job Actions", "Enable this to add Monk-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Monk = 110008,
 
@@ -84,7 +84,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Occult Chakra", "Adds Occult Chakra into the rotation.", OccultCrescent.JobID)]
     Phantom_Monk_OccultChakra = 110012,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Thief)]
     [CustomComboInfo("Thief Job Actions", "Enable this to add Thief-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Thief = 110013,
 
@@ -113,7 +113,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Pilfer Weapon", "Adds Pilfer Weapon into the rotation.", OccultCrescent.JobID)]
     Phantom_Thief_PilferWeapon = 110018,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Samurai)]
     [CustomComboInfo("Samurai Job Actions", "Enable this to add Samurai-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Samurai = 110053,
 
@@ -137,7 +137,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Phantom Zeninage", "Adds Phantom Zeninage into the rotation.", OccultCrescent.JobID)]
     Phantom_Samurai_Zeninage = 110057,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Berserker)]
     [CustomComboInfo("Berserker Job Actions", "Enable this to add Berserker-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Berserker = 110019,
 
@@ -151,7 +151,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Deadly Blow", "Adds Deadly Blow into the rotation.", OccultCrescent.JobID)]
     Phantom_Berserker_DeadlyBlow = 110021,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Ranger)]
     [CustomComboInfo("Ranger Job Actions", "Enable this to add Ranger-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Ranger = 110022,
 
@@ -175,7 +175,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Occult Unicorn", "Adds Occult Unicorn into the rotation.", OccultCrescent.JobID)]
     Phantom_Ranger_OccultUnicorn = 110026,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.TimeMage)]
     [CustomComboInfo("Time Mage Job Actions", "Enable this to add Time Mage-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_TimeMage = 110027,
 
@@ -204,7 +204,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Occult Quick", "Adds Occult Quick into the rotation.", OccultCrescent.JobID)]
     Phantom_TimeMage_OccultQuick = 110032,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Chemist)]
     [CustomComboInfo("Chemist Job Actions", "Enable this to add Chemist-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Chemist = 110033,
 
@@ -228,7 +228,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Occult Elixir", "Adds Occult Elixir into the rotation. \nRequires Occult Elixir in inventory. \n300k At vendor", OccultCrescent.JobID)]
     Phantom_Chemist_OccultElixir = 110037,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Bard)]
     [CustomComboInfo("Bard Job Actions", "Enable this to add Bard-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Bard = 110038,
 
@@ -252,7 +252,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Hero’s Rime", "Adds Hero’s Rime into the rotation.", OccultCrescent.JobID)]
     Phantom_Bard_HerosRime = 110042,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Oracle)]
     [CustomComboInfo("Oracle Job Actions", "Enable this to add Oracle-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Oracle = 110043,
 
@@ -301,7 +301,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Invulnerability", "Adds Invulnerability into the rotation.", OccultCrescent.JobID)]
     Phantom_Oracle_Invulnerability = 110052,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Cannoneer)]
     [CustomComboInfo("Cannoneer Job Actions", "Enable this to add Cannoneer-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Cannoneer = 110058,
 
@@ -330,7 +330,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Silver Cannon", "Adds Silver Cannon into the rotation.", OccultCrescent.JobID)]
     Phantom_Cannoneer_SilverCannon = 110063,
 
-    [OccultCrescent]
+    [OccultCrescent(OccultCrescent.JobIDs.Geomancer)]
     [CustomComboInfo("Geomancer Job Actions", "Enable this to add Geomancer-specific actions into the rotation.", OccultCrescent.JobID)]
     Phantom_Geomancer = 110064,
 

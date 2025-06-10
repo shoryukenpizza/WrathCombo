@@ -6,5 +6,11 @@ namespace WrathCombo.Attributes
     [AttributeUsage(AttributeTargets.Field)]
     internal class OccultCrescentAttribute : Attribute
     {
+        internal OccultCrescentAttribute(int jobId = -1)
+        {
+            JobId = jobId;
+        }
+
+        public int JobId { get; }
     }
 }
