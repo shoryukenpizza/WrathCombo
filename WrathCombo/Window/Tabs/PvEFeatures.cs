@@ -35,7 +35,8 @@ namespace WrathCombo.Window.Tabs
             {
                 var indentwidth = 12f.Scale();
                 var indentwidth2 = indentwidth + 42f.Scale();
-                var iconMaxSize = 32f.Scale();
+                var iconMaxSize = 34f.Scale();
+                var verticalCenteringPadding = (iconMaxSize - ImGui.GetTextLineHeight()) / 2f;
 
                 if (OpenJob == string.Empty)
                 {
@@ -79,6 +80,7 @@ namespace WrathCombo.Window.Tabs
                                     ImGui.SameLine(indentwidth2);
                                 }
 
+                                ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
                                 ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
 
                                 if (!string.IsNullOrEmpty(abbreviation) &&
@@ -119,6 +121,7 @@ namespace WrathCombo.Window.Tabs
                                 ImGui.Image(icon.ImGuiHandle, imgSize);
                                 ImGui.SameLine();
                             }
+                            ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding-2f.Scale()));
                             ImGuiEx.Text($"{OpenJob}");
                         });
 
