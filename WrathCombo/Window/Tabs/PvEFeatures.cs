@@ -35,6 +35,8 @@ namespace WrathCombo.Window.Tabs
             {
                 var indentwidth = 12f.Scale();
                 var indentwidth2 = indentwidth + 42f.Scale();
+                var iconMaxSize = 32f.Scale();
+
                 if (OpenJob == string.Empty)
                 {
                     ImGui.SameLine(indentwidth);
