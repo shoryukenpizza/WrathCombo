@@ -15,7 +15,7 @@ namespace WrathCombo.Window
     {
         public static Dictionary<uint, IDalamudTextureWrap> CachedModdedIcons = new();
         public static Dictionary<int, IDalamudTextureWrap?> OccultIcons = [];
-        private static int OccultIdx = 0;
+        private static int OccultIdx = -1; // Instead of 0 to show Freelancer
         public static IDalamudTextureWrap? GetJobIcon(uint jobId)
         {
             switch (jobId)
@@ -43,7 +43,7 @@ namespace WrathCombo.Window
             if (EzThrottler.Throttle("OccultAnimateIdx", 800))
                 OccultIdx++;
 
-            if (OccultIdx == 26)
+            if (OccultIdx == 13) // Only cycle through the current ones, set to 26 after new ones added
                 OccultIdx = 0;
 
             return OccultIcons[OccultIdx];
