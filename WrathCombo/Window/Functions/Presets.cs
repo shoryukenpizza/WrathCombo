@@ -144,7 +144,8 @@ namespace WrathCombo.Window.Functions
 
             DrawRetargetedAttribute(preset);
 
-            DrawOccultJobIcon(preset);
+            if (DrawOccultJobIcon(preset))
+                ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 8f.Scale());
 
             Vector2 length = new();
             using (var styleCol = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
@@ -576,10 +577,10 @@ namespace WrathCombo.Window.Functions
             }
         }
 
-        private static void DrawOccultJobIcon(CustomComboPreset preset)
+        private static bool DrawOccultJobIcon(CustomComboPreset preset)
         {
-            if (preset.Attributes().OccultCrescentJob == null) return;
-            if (preset.Attributes().OccultCrescentJob.JobId == -1) return;
+            if (preset.Attributes().OccultCrescentJob == null) return false;
+            if (preset.Attributes().OccultCrescentJob.JobId == -1) return false;
             ImGui.SameLine();
 
             var iconMaxSize = 32f.Scale();
@@ -591,7 +592,9 @@ namespace WrathCombo.Window.Functions
             var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
             var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
 
+            ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 6f.Scale());
             ImGui.Image(icon.ImGuiHandle, imgSize);
+            return true;
         }
 
         internal static int AllChildren((CustomComboPreset Preset, CustomComboInfoAttribute Info)[] children)
