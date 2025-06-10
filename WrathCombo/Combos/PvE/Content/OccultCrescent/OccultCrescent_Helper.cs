@@ -16,6 +16,39 @@ internal partial class OccultCrescent
 {
     internal static bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && HasActionEquipped(action) && ActionReady(action);
 
+    public static class JobIDs
+    {
+        public const int
+            Freelancer = 0,
+            Knight = 1,
+            Berserker = 2,
+            Monk = 3,
+            Ranger = 4,
+            Samurai = 5,
+            Bard = 6,
+            Geomancer = 7,
+            TimeMage = 8,
+            Cannoneer = 9,
+            Chemist = 10,
+            Oracle = 11,
+            Thief = 12,
+            #region Not Yet Added
+            Dragoon = 13,
+            WhiteMage = 14,
+            BlackMage = 15,
+            Ninja = 16,
+            Summoner = 17,
+            Dancer = 18,
+            RedMage = 19,
+            BlueMage = 20,
+            Gladiator = 21,
+            MysticKnight = 22,
+            BeastMaster = 23,
+            Necromancer = 24,
+            Mime = 25;
+            #endregion
+    }
+
     public static ushort
     //Freelancer
     OccultResuscitation = 41650,
