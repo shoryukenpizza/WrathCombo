@@ -65,7 +65,6 @@ public enum CustomComboPreset
     ALL_Tank_ShirkRetargeting = 100002,
 
     [Role(JobRole.Tank)]
-    [ReplaceSkill(RoleActions.Tank.Shirk)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Use Healers instead",
         "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", ADV.JobID)]
@@ -73,7 +72,6 @@ public enum CustomComboPreset
     ALL_Tank_ShirkRetargeting_Healer = 100003,
 
     [Role(JobRole.Tank)]
-    [ReplaceSkill(RoleActions.Tank.Shirk)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Fallback to Any Support",
         "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", ADV.JobID)]
@@ -2011,6 +2009,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_Retarget_TBN)]
     [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget The Blackest Night onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", DRK.JobID)]
+    [Retargeted]
     DRK_Retarget_TBN_TT = 5131,
 
     [ReplaceSkill(DRK.Oblation)]
@@ -2020,13 +2019,18 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_Retarget_Oblation)]
     [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Oblation onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", DRK.JobID)]
+    [Retargeted]
     DRK_Retarget_Oblation_TT = 5133,
 
-    #endregion
-    // Last value = 5133
+    [ParentCombo(DRK_Retarget_Oblation)]
+    [CustomComboInfo("Prevent Double Oblations", "Will change Oblation to Savage Blade when your target already has Oblation on them.", DRK.JobID)]
+    DRK_Retarget_Oblation_DoubleProtection = 5134,
 
     #endregion
-    // Last value = 5133
+    // Last value = 5134
+
+    #endregion
+    // Last value = 5134
 
     #region Variant
 
