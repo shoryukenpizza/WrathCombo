@@ -833,6 +833,38 @@ internal partial class PLD : Tank
             return actionID;
         }
     }
+    internal class PLD_RetargetSheltron : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PLD_RetargetSheltron;
+
+        protected override uint Invoke(uint action)
+        {
+            if (action != OriginalHook(Sheltron))
+                return action;
+            
+            var target =
+                //Mouseover retarget option
+                (IsEnabled(CustomComboPreset.PLD_RetargetSheltron_MO) 
+                    ? SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty()
+                    : null) ??
+                
+                //Hard target retarget
+                SimpleTarget.HardTarget.IfInParty() ??
+                
+                //Targets target retarget option
+                (IsEnabled(CustomComboPreset.PLD_RetargetSheltron_TT)
+                    && !PlayerHasAggro
+                    ? SimpleTarget.TargetsTarget.IfNotThePlayer().IfInParty()
+                    : null);
+
+            // Intervention if trying to Buff an ally
+            if (ActionReady(Intervention) && 
+                target != null)
+                return Intervention.Retarget(OriginalHook(Sheltron), target);
+
+            return action;
+        }
+    }
     #region One-Button Mitigation
 
     internal class PLD_Mit_OneButton : CustomCombo

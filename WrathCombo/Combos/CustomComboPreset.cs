@@ -4303,6 +4303,22 @@ public enum CustomComboPreset
     [CustomComboInfo("Retarget Clemency Feature", "Will retarget Clemency to lowest hp ally unless you fall below set threshold.", PLD.JobID)]
     [Retargeted]
     PLD_RetargetClemency = 11067,
+    
+    [ReplaceSkill(PLD.Sheltron)]
+    [CustomComboInfo("Sheltron to Invervention Feature", "Will use intervention on your Hard Target if target is a friendly party member, if not then Sheltron." +
+                                                         "\n- UI Mousover > Hard target > Target's target > Self Sheltron", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetSheltron = 11068,
+    
+    [ParentCombo(PLD_RetargetSheltron)]
+    [CustomComboInfo("Mouseover Invervention Option", "Adds UI mouseover to the priority.", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetSheltron_MO = 11069,
+    
+    [ParentCombo(PLD_RetargetSheltron)]
+    [CustomComboInfo("Target's Target Invervention Option", "Adds Target's Target to the priority when you do not have agro.", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetSheltron_TT = 11070,
 
     // Variant Features
 
@@ -4326,7 +4342,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11067
+    //// Last value = 11070
 
     #endregion
 
