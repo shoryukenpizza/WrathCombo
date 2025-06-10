@@ -63,15 +63,19 @@ namespace WrathCombo.Window.Tabs
                             ImGuiEx.Spacing(new Vector2(0, 2f.Scale()));
                             using (var disabled = ImRaii.Disabled(DisabledJobsPVE.Any(x => x == id)))
                             {
-                                if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None,
-                                        icon == null ? new Vector2(0, 32f.Scale()) : new Vector2(0, (icon.Size.Y / 2f).Scale())))
+                                if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None, new Vector2(0, iconMaxSize)))
                                 {
                                     OpenJob = jobName;
                                 }
                                 ImGui.SameLine(indentwidth);
                                 if (icon != null)
                                 {
-                                    ImGui.Image(icon.ImGuiHandle, new Vector2(icon.Size.X.Scale(), icon.Size.Y.Scale()) / 2f);
+                                    var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
+                                    var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
+                                    var padSize = (iconMaxSize - imgSize.X) / 2f;
+                                    if (padSize > 0)
+                                        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
+                                    ImGui.Image(icon.ImGuiHandle, imgSize);
                                     ImGui.SameLine(indentwidth2);
                                 }
 
@@ -95,9 +99,9 @@ namespace WrathCombo.Window.Tabs
                     var id = groupedPresets[OpenJob].First().Info.JobID;
                     IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
 
-                    using (var headingTab = ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, icon is null ? 24f.Scale() : (icon.Size.Y / 2f).Scale() + 4f)))
+                    using (ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, iconMaxSize)))
                     {
-                        if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
+                        if (ImGui.Button("Back", new Vector2(0, iconMaxSize-8f.Scale())))
                         {
                             OpenJob = "";
                             return;
@@ -107,7 +111,12 @@ namespace WrathCombo.Window.Tabs
                         {
                             if (icon != null)
                             {
-                                ImGui.Image(icon.ImGuiHandle, new Vector2(icon.Size.X, icon.Size.Y).Scale() / 2f);
+                                var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
+                                var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
+                                var padSize = (iconMaxSize - imgSize.X) / 2f;
+                                if (padSize > 0)
+                                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
+                                ImGui.Image(icon.ImGuiHandle, imgSize);
                                 ImGui.SameLine();
                             }
                             ImGuiEx.Text($"{OpenJob}");
