@@ -77,8 +77,12 @@ namespace WrathCombo.Window.Tabs
                                     if (padSize > 0)
                                         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
                                     ImGui.Image(icon.ImGuiHandle, imgSize);
-                                    ImGui.SameLine(indentwidth2);
                                 }
+                                else
+                                {
+                                    ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
+                                }
+                                ImGui.SameLine(indentwidth2);
 
                                 ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding));
                                 ImGui.Text($"{header} {(disabled ? "(Disabled due to update)" : "")}");
@@ -103,7 +107,7 @@ namespace WrathCombo.Window.Tabs
 
                     using (ImRaii.Child("HeadingTab", new Vector2(ImGui.GetContentRegionAvail().X, iconMaxSize)))
                     {
-                        if (ImGui.Button("Back", new Vector2(0, iconMaxSize-8f.Scale())))
+                        if (ImGui.Button("Back", new Vector2(0, 24f.Scale())))
                         {
                             OpenJob = "";
                             return;
@@ -119,8 +123,12 @@ namespace WrathCombo.Window.Tabs
                                 if (padSize > 0)
                                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padSize);
                                 ImGui.Image(icon.ImGuiHandle, imgSize);
-                                ImGui.SameLine();
                             }
+                            else
+                            {
+                                ImGui.Dummy(new Vector2(iconMaxSize, iconMaxSize));
+                            }
+                            ImGui.SameLine();
                             ImGuiEx.Spacing(new Vector2(0, verticalCenteringPadding-2f.Scale()));
                             ImGuiEx.Text($"{OpenJob}");
                         });
