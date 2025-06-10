@@ -1,6 +1,7 @@
-﻿using System.Reflection.Metadata;
-using WrathCombo.CustomComboNS;
+﻿using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using ContentHelper = ECommons.GameHelpers;
+using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
 
 
 namespace WrathCombo.Combos.PvE;
@@ -10,6 +11,9 @@ internal partial class OccultCrescent
     public const byte JobID = 100;
     internal static uint BestPhantomAction()
     {
+        if (!IsInOccult)
+            return 0; //not in Occult Crescent
+
         #region Bard
         if (IsEnabled(CustomComboPreset.Phantom_Bard) &&
             CanWeave())
@@ -208,6 +212,10 @@ internal partial class OccultCrescent
 
         return 0; //no conditions met
     }
+
     public static bool ShouldUsePhantomActions() => BestPhantomAction() != 0;
+
+    /// In Occult Crescent, in the field or a field raid.
+    public static bool IsInOccult => ContentHelper.Content.TerritoryIntendedUse == IntendedUse.Occult_Crescent && (ContentCheck.IsInFieldOperations || ContentCheck.IsInFieldRaids);
 
 }
