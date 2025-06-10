@@ -40,7 +40,7 @@ namespace WrathCombo.Window
                 }
             }
 
-            if (EzThrottler.Throttle("OccultAnimateIdx"))
+            if (EzThrottler.Throttle("OccultAnimateIdx", 800))
                 OccultIdx++;
 
             if (OccultIdx == 26)
