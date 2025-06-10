@@ -58,6 +58,7 @@ namespace WrathCombo.Window.Tabs
                             string header = string.IsNullOrEmpty(abbreviation) ? jobName : $"{jobName} - {abbreviation}";
                             var id = groupedPresets[jobName].First().Info.JobID;
                             IDalamudTextureWrap? icon = Icons.GetJobIcon(id);
+                            ImGuiEx.Spacing(new Vector2(0, 2f.Scale()));
                             using (var disabled = ImRaii.Disabled(DisabledJobsPVE.Any(x => x == id)))
                             {
                                 if (ImGui.Selectable($"###{header}", OpenJob == jobName, ImGuiSelectableFlags.None,
