@@ -65,7 +65,12 @@ internal partial class AST : Healer
 
             if (IsEnabled(CustomComboPreset.AST_ST_DPS_Opener) &&
                 Opener().FullOpener(ref actionID))
+            {
+                if (actionID is (Balance or Spear) && IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards))
+                    return actionID.Retarget(replacedActions, CardResolver);
+
                 return actionID;
+            }
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();

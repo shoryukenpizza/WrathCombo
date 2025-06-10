@@ -44,7 +44,7 @@ internal partial class PCT : Caster
                 return OccultCrescent.BestPhantomAction();
 
             #region Burst Window lvl 100 only
-            if (LevelChecked(StarPrism) &&InCombat() && (ScenicCD <= 5 || HasStatusEffect(Buffs.StarryMuse)))
+            if (BurstPhaseReady)
                 return BurstWindow(actionID);
 
             #endregion
@@ -261,7 +261,7 @@ internal partial class PCT : Caster
             #endregion
 
             #region Burst Window
-            if (burstPhaseEnabled && LevelChecked(StarPrism) && InCombat() && (ScenicCD <= 5 || HasStatusEffect(Buffs.StarryMuse)))
+            if (burstPhaseEnabled && BurstPhaseReady)
                 return BurstWindow(actionID);
 
             #endregion

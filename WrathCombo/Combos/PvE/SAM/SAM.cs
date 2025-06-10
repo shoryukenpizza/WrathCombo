@@ -197,14 +197,14 @@ internal partial class SAM : Melee
                 if (LevelChecked(Gekko) &&
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
-                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                    return Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : Gekko;
 
                 if (LevelChecked(Kasha) &&
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
-                    return Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                    return Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : Kasha;
 
@@ -393,7 +393,7 @@ internal partial class SAM : Melee
                     (!HasStatusEffect(Buffs.Fugetsu) ||
                      !HasGetsu && HasStatusEffect(Buffs.Fuka)))
                     return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsRear()
+                           Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : Gekko;
 
@@ -402,7 +402,7 @@ internal partial class SAM : Melee
                     (!HasStatusEffect(Buffs.Fuka) ||
                      !HasKa && HasStatusEffect(Buffs.Fugetsu)))
                     return IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                           Role.CanTrueNorth() && CanDelayedWeave() && !OnTargetsFlank()
+                           Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : Kasha;
 

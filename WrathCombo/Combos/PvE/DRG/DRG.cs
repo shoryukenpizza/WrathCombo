@@ -19,8 +19,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
-                            GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
+                           ((LevelChecked(ChaosThrust) && ChaosDebuff is null &&
+                             CanApplyStatus(CurrentTarget, ChaoticList[OriginalHook(ChaosThrust)])) ||
+                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
 
@@ -89,15 +90,17 @@ internal partial class DRG : Melee
                 if (ActionReady(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
                     HasStatusEffect(Buffs.DiveReady) &&
-                    LoTDActive)
+                    ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
+                      (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                       GetCooldownRemainingTime(Geirskogul) > 3))) ||
+                    !TraitLevelChecked(Traits.LifeOfTheDragon))
                     return MirageDive;
 
                 //Wyrmwind Thrust Feature
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
                     FirstmindsFocus is 2 &&
-                    (LoTDActive ||
-                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
@@ -111,7 +114,7 @@ internal partial class DRG : Melee
                     CanDRGWeave(OriginalHook(Jump)) &&
                     !HasStatusEffect(Buffs.DiveReady) &&
                     (LevelChecked(HighJump) &&
-                     (GetCooldownRemainingTime(Geirskogul) < 15 ||
+                     (GetCooldownRemainingTime(Geirskogul) < 13 ||
                       LoTDActive) ||
                      !LevelChecked(HighJump)))
                     return OriginalHook(Jump);
@@ -120,6 +123,7 @@ internal partial class DRG : Melee
                 if (ActionReady(DragonfireDive) &&
                     CanDRGWeave(DragonfireDive) &&
                     !HasStatusEffect(Buffs.DragonsFlight) &&
+                    (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)) &&
                     InMeleeRange())
                     return DragonfireDive;
 
@@ -161,8 +165,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
-                            GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
+                           ((LevelChecked(ChaosThrust) && ChaosDebuff is null &&
+                             CanApplyStatus(CurrentTarget, ChaoticList[OriginalHook(ChaosThrust)])) ||
+                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
 
@@ -260,8 +265,11 @@ internal partial class DRG : Melee
                         ActionReady(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
                         HasStatusEffect(Buffs.DiveReady) &&
-                        (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && LoTDActive ||
-                         IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
+                        (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
+                         ((TraitLevelChecked(Traits.LifeOfTheDragon) && LoTDActive) ||
+                          (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                           GetCooldownRemainingTime(Geirskogul) > 3))) ||
+                        IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage))
                         return MirageDive;
 
                     //Wyrmwind Thrust Feature
@@ -269,8 +277,7 @@ internal partial class DRG : Melee
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
                         FirstmindsFocus is 2 &&
-                        (LoTDActive ||
-                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
@@ -287,7 +294,7 @@ internal partial class DRG : Melee
                         !HasStatusEffect(Buffs.DiveReady) &&
                         (LevelChecked(HighJump) &&
                          (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                          (GetCooldownRemainingTime(Geirskogul) < 15 || LoTDActive) ||
+                          (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive) ||
                           IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)) ||
                          !LevelChecked(HighJump)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) ||
@@ -299,9 +306,9 @@ internal partial class DRG : Melee
                         ActionReady(DragonfireDive) &&
                         CanDRGWeave(DragonfireDive) &&
                         !HasStatusEffect(Buffs.DragonsFlight) &&
+                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) &&
-                         InMeleeRange()))
+                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) && InMeleeRange()))
                         return DragonfireDive;
 
                     //StarDiver Feature
@@ -353,8 +360,9 @@ internal partial class DRG : Melee
             {
                 if (ComboAction is TrueThrust or RaidenThrust && LevelChecked(VorpalThrust))
                     return LevelChecked(Disembowel) &&
-                           (LevelChecked(ChaosThrust) && ChaosDoTDebuff is null ||
-                            GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
+                           ((LevelChecked(ChaosThrust) && ChaosDebuff is null &&
+                             CanApplyStatus(CurrentTarget, ChaoticList[OriginalHook(ChaosThrust)])) ||
+                             GetStatusEffectRemainingTime(Buffs.PowerSurge) < 15)
                         ? OriginalHook(Disembowel)
                         : OriginalHook(VorpalThrust);
 
@@ -442,8 +450,7 @@ internal partial class DRG : Melee
                 if (ActionReady(WyrmwindThrust) &&
                     CanDRGWeave(WyrmwindThrust) &&
                     FirstmindsFocus is 2 &&
-                    (LoTDActive ||
-                     !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                     return WyrmwindThrust;
 
                 //Geirskogul Feature
@@ -461,7 +468,8 @@ internal partial class DRG : Melee
                 //Dragonfire Dive Feature
                 if (ActionReady(DragonfireDive) &&
                     CanDRGWeave(DragonfireDive) &&
-                    !HasStatusEffect(Buffs.DragonsFlight) && InMeleeRange())
+                    !HasStatusEffect(Buffs.DragonsFlight) && InMeleeRange() &&
+                    (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
                     return DragonfireDive;
 
                 //StarDiver Feature
@@ -486,7 +494,10 @@ internal partial class DRG : Melee
                 //Mirage Feature
                 if (ActionReady(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
-                    HasStatusEffect(Buffs.DiveReady))
+                    HasStatusEffect(Buffs.DiveReady) &&
+                    ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
+                      (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
+                     !TraitLevelChecked(Traits.LifeOfTheDragon)))
                     return MirageDive;
 
                 //Nastrond Feature
@@ -589,8 +600,7 @@ internal partial class DRG : Melee
                         ActionReady(WyrmwindThrust) &&
                         CanDRGWeave(WyrmwindThrust) &&
                         FirstmindsFocus is 2 &&
-                        (LoTDActive ||
-                         !LoTDActive && HasStatusEffect(Buffs.DraconianFire)))
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
                         return WyrmwindThrust;
 
                     //Geirskogul Feature
@@ -615,7 +625,8 @@ internal partial class DRG : Melee
                         CanDRGWeave(DragonfireDive) &&
                         !HasStatusEffect(Buffs.DragonsFlight) &&
                         (IsNotEnabled(CustomComboPreset.DRG_AoE_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive_Melee) && InMeleeRange()))
+                         IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive_Melee) && InMeleeRange()) &&
+                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
                         return DragonfireDive;
 
                     //StarDiver Feature
@@ -646,7 +657,10 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Mirage) &&
                         ActionReady(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
-                        HasStatusEffect(Buffs.DiveReady))
+                        HasStatusEffect(Buffs.DiveReady) &&
+                        ((TraitLevelChecked(Traits.LifeOfTheDragon) &&
+                          (LoTDActive || GetStatusEffectRemainingTime(Buffs.DiveReady) <= 3)) ||
+                         !TraitLevelChecked(Traits.LifeOfTheDragon)))
                         return MirageDive;
 
                     //Nastrond Feature
