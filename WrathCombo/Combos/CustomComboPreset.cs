@@ -4298,6 +4298,11 @@ public enum CustomComboPreset
         "Replaces Shield Lob with Holy Spirit when available.\n- Must be under the effect of Divine Might or not moving.",
         PLD.JobID)]
     PLD_ShieldLob_Feature = 11027,
+    
+    [ReplaceSkill(PLD.Clemency)]
+    [CustomComboInfo("Retarget Clemency Feature", "Will retarget Clemency to lowest hp ally unless you fall below set threshold.", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetClemency = 11067,
 
     // Variant Features
 
@@ -4321,7 +4326,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11064
+    //// Last value = 11067
 
     #endregion
 

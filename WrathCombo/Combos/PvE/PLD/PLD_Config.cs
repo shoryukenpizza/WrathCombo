@@ -42,6 +42,7 @@ internal partial class PLD
             PLD_ShieldLob_SubOption = new("PLD_ShieldLob_SubOption", 1),
             PLD_Requiescat_SubOption = new("PLD_Requiescat_SubOption", 1),
             PLD_SpiritsWithin_SubOption = new("PLD_SpiritsWithin_SubOption", 1),
+            PLD_RetargetClemency_Health = new("PLD_RetargetClemency_Health", 30),
             PLD_VariantCure = new("PLD_VariantCure"),
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_MitsOptions = new("PLD_ST_MitsOptions", 0),
@@ -245,6 +246,12 @@ internal partial class PLD
 
                     UserConfig.DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Add Drift Prevention",
                         "Prevents Spirits Within and Circle of Scorn from drifting.\n- Actions must be used within 5 seconds of each other.", 2);
+
+                    break;
+                
+                // Retarget Clemency Feature
+                case CustomComboPreset.PLD_RetargetClemency:
+                    UserConfig.DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
 
                     break;
 

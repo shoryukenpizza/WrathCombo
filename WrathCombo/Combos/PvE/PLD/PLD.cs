@@ -1,6 +1,9 @@
 ﻿using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD : Tank
@@ -812,6 +815,24 @@ internal partial class PLD : Tank
         }
     }
 
+    internal class PLD_RetargetClemency : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PLD_RetargetClemency;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != Clemency)
+                return actionID;
+
+            int healthThreshold = Config.PLD_RetargetClemency_Health;
+
+            if (PlayerHealthPercentageHp() > healthThreshold)
+                return actionID.Retarget(
+                    SimpleTarget.LowestHPPAlly.IfMissingHP() ??
+                    SimpleTarget.Self);
+            return actionID;
+        }
+    }
     #region One-Button Mitigation
 
     internal class PLD_Mit_OneButton : CustomCombo
