@@ -42,6 +42,7 @@ namespace WrathCombo.Window.Functions
             public RetargetedAttribute? RetargetedAttribute;
             public BozjaParentAttribute? BozjaParent;
             public EurekaParentAttribute? EurekaParent;
+            public OccultCrescentAttribute? OccultCrescentJob;
             public HoverInfoAttribute? HoverInfo;
             public ReplaceSkillAttribute? ReplaceSkill;
             public CustomComboInfoAttribute? CustomComboInfo;
@@ -61,6 +62,7 @@ namespace WrathCombo.Window.Functions
                 RetargetedAttribute = preset.GetAttribute<RetargetedAttribute>();
                 BozjaParent = preset.GetAttribute<BozjaParentAttribute>();
                 EurekaParent = preset.GetAttribute<EurekaParentAttribute>();
+                OccultCrescentJob = preset.GetAttribute<OccultCrescentAttribute>();
                 HoverInfo = preset.GetAttribute<HoverInfoAttribute>();
                 ReplaceSkill = preset.GetAttribute<ReplaceSkillAttribute>();
                 CustomComboInfo = preset.GetAttribute<CustomComboInfoAttribute>();
@@ -141,6 +143,8 @@ namespace WrathCombo.Window.Functions
             DrawReplaceAttribute(preset);
 
             DrawRetargetedAttribute(preset);
+
+            DrawOccultJobIcon(preset);
 
             Vector2 length = new();
             using (var styleCol = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
@@ -570,6 +574,24 @@ namespace WrathCombo.Window.Functions
                     }
                 }
             }
+        }
+
+        private static void DrawOccultJobIcon(CustomComboPreset preset)
+        {
+            if (preset.Attributes().OccultCrescentJob == null) return;
+            if (preset.Attributes().OccultCrescentJob.JobId == -1) return;
+            ImGui.SameLine();
+
+            var iconMaxSize = 32f.Scale();
+            var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
+
+            var jobID = preset.Attributes().OccultCrescentJob.JobId;
+            var icon = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", jobID);
+
+            var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
+            var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
+
+            ImGui.Image(icon.ImGuiHandle, imgSize);
         }
 
         internal static int AllChildren((CustomComboPreset Preset, CustomComboInfoAttribute Info)[] children)
