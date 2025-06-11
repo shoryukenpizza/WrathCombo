@@ -6663,24 +6663,21 @@ public enum CustomComboPreset
     [ReplaceSkill(WAR.NascentFlash)]
     [CustomComboInfo("Nascent Flash Feature", "Replace Nascent Flash with Raw intuition when level synced below 76.", WAR.JobID)]
     WAR_NascentFlash = 18017,
+    
+    [ReplaceSkill(WAR.RawIntuition, WAR.Bloodwhetting)]
+    [CustomComboInfo("Raw Intuition to Nascent Flash Retargeting Feature", "If available, will replace the combo with Nascent Flash if you are hard targeting an ally.", WAR.JobID)]
+    [Retargeted]
+    WAR_RawIntuition_Targeting = 18119,
 
-    [ReplaceSkill(WAR.Bloodwhetting)]
-    [CustomComboInfo("Bloodwhetting Feature", "Replaces Bloodwhetting with Raw Intuition, when level synced below 82.", WAR.JobID)]
-    WAR_Bloodwhetting = 18118,
-
-    [ParentCombo(WAR_Bloodwhetting)]
-    [CustomComboInfo("Nascent When Targeting Option", "If available, will replace the combo with Nascent Flash if you are hard targeting an ally.", WAR.JobID)]
-    WAR_Bloodwhetting_Targeting = 18119,
-
-    [ParentCombo(WAR_Bloodwhetting_Targeting)]
+    [ParentCombo(WAR_RawIntuition_Targeting)]
     [CustomComboInfo("Include MouseOver Target", "If mousing over an ally in the UI, will Retarget Nascent Flash onto them.", WAR.JobID)]
     [Retargeted]
-    WAR_Bloodwhetting_Targeting_MO = 18120,
+    WAR_RawIntuition_Targeting_MO = 18120,
 
-    [ParentCombo(WAR_Bloodwhetting_Targeting)]
+    [ParentCombo(WAR_RawIntuition_Targeting)]
     [CustomComboInfo("Include Target's Target", "If your target's target is not you, will Retarget Nascent Flash onto them.\n(if you're not top aggro, and not mousing over or hard targeting an ally)", WAR.JobID)]
     [Retargeted]
-    WAR_Bloodwhetting_Targeting_TT = 18121,
+    WAR_RawIntuition_Targeting_TT = 18121,
 
     [ReplaceSkill(WAR.Holmgang)]
     [CustomComboInfo("Retarget Holmgang Feature", "Will Retarget Holmgang to yourself, instead of letting it go on enemies.", WAR.JobID)]

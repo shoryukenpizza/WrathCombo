@@ -839,7 +839,7 @@ internal partial class PLD : Tank
 
         protected override uint Invoke(uint action)
         {
-            if (action != OriginalHook(Sheltron))
+            if (action is not (Sheltron or HolySheltron))
                 return action;
             
             var target =
@@ -860,7 +860,7 @@ internal partial class PLD : Tank
             // Intervention if trying to Buff an ally
             if (ActionReady(Intervention) && 
                 target != null)
-                return Intervention.Retarget(OriginalHook(Sheltron), target);
+                return Intervention.Retarget([Sheltron, HolySheltron], target);
 
             return action;
         }
