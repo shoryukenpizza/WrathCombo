@@ -2746,8 +2746,21 @@ public enum CustomComboPreset
     #endregion
 
     #region Aurora Protection
+    [ReplaceSkill(GNB.Aurora)]
     [CustomComboInfo("Aurora Protection Feature", "Locks out Aurora if Aurora's effect is on the target by replacing it with Savage Blade.", GNB.JobID)]
     GNB_AuroraProtection = 7023,
+    
+    [ParentCombo(GNB_AuroraProtection)]
+    [CustomComboInfo("Aurora Mouseover Option", "Retargets Aurora to your mouseover target if they do not have the HoT", GNB.JobID)]
+    [Retargeted]
+    GNB_RetargetAurora_MO = 7087,
+    
+    [ParentCombo(GNB_AuroraProtection)]
+    [CustomComboInfo("Aurora Target's Target Option", "Retargets Aurora to the Target's Target if they do not have the HoT and you do not have Aggro", GNB.JobID)]
+    [Retargeted]
+    GNB_RetargetAurora_OtherTank = 7088,
+    
+    
     #endregion
 
     #region Variant Skills
