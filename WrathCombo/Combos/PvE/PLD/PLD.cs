@@ -825,12 +825,25 @@ internal partial class PLD : Tank
                 return actionID;
 
             int healthThreshold = Config.PLD_RetargetClemency_Health;
+            
+            var target =
+                //Mouseover retarget option
+                (IsEnabled(CustomComboPreset.PLD_RetargetClemency_MO) 
+                    ? SimpleTarget.UIMouseOverTarget.IfNotThePlayer().IfInParty()
+                    : null) ??
+                
+                //Hard target
+                SimpleTarget.HardTarget ??
+                
+                //Lowest HP option
+                (IsEnabled(CustomComboPreset.PLD_RetargetClemency_LowHP)
+                 && PlayerHealthPercentageHp() > healthThreshold
+                    ? SimpleTarget.LowestHPAlly.IfNotThePlayer().IfAlive()
+                    : null);
 
-            if (PlayerHealthPercentageHp() > healthThreshold)
-                return actionID.Retarget(
-                    SimpleTarget.LowestHPPAlly.IfMissingHP() ??
-                    SimpleTarget.Self);
-            return actionID;
+            return target != null
+                ? actionID.Retarget(target)
+                : actionID;
         }
     }
     internal class PLD_RetargetSheltron : CustomCombo

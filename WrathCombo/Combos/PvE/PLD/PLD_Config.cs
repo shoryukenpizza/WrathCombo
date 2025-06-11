@@ -252,7 +252,7 @@ internal partial class PLD
                     break;
                 
                 // Retarget Clemency Feature
-                case CustomComboPreset.PLD_RetargetClemency:
+                case CustomComboPreset.PLD_RetargetClemency_LowHP:
                     UserConfig.DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
 
                     break;

@@ -4304,9 +4304,19 @@ public enum CustomComboPreset
     PLD_ShieldLob_Feature = 11027,
     
     [ReplaceSkill(PLD.Clemency)]
-    [CustomComboInfo("Retarget Clemency Feature", "Will retarget Clemency to lowest hp ally unless you fall below set threshold.", PLD.JobID)]
+    [CustomComboInfo("Retarget Clemency Feature", "Will retarget Clemency according to following Suboptions", PLD.JobID)]
     [Retargeted]
     PLD_RetargetClemency = 11067,
+    
+    [ParentCombo(PLD_RetargetClemency)]
+    [CustomComboInfo("Mouseover Clemency Option", "Adds UI mouseover to the priority. Above LowHP option.", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetClemency_MO = 11071,
+    
+    [ParentCombo(PLD_RetargetClemency)]
+    [CustomComboInfo("Low hp Clemency Option", "Will Heal Lowest Health Party member until you fall below set threshold", PLD.JobID)]
+    [Retargeted]
+    PLD_RetargetClemency_LowHP = 11072,
     
     [ReplaceSkill(PLD.Sheltron)]
     [CustomComboInfo("Sheltron to Intervention Feature", "Will use intervention on your Hard Target if target is a friendly party member, if not then Sheltron." +
@@ -4346,7 +4356,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11070
+    //// Last value = 11071
 
     #endregion
 
