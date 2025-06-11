@@ -833,7 +833,7 @@ internal partial class PLD : Tank
                     : null) ??
                 
                 //Hard target
-                SimpleTarget.HardTarget ??
+                SimpleTarget.HardTarget.IfFriendly() ??
                 
                 //Lowest HP option
                 (IsEnabled(CustomComboPreset.PLD_RetargetClemency_LowHP)
