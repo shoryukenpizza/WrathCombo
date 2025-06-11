@@ -849,7 +849,7 @@ internal partial class PLD : Tank
                     : null) ??
                 
                 //Hard target retarget
-                SimpleTarget.HardTarget.IfInParty() ??
+                SimpleTarget.HardTarget.IfInParty().IfNotThePlayer() ??
                 
                 //Targets target retarget option
                 (IsEnabled(CustomComboPreset.PLD_RetargetSheltron_TT)

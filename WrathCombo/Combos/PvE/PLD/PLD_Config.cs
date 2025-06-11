@@ -1,5 +1,7 @@
 using ImGuiNET;
 using System.Numerics;
+using Dalamud.Interface.Colors;
+using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
@@ -281,6 +283,16 @@ internal partial class PLD
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
                         "Exclude Mitigations",
                         "Disables the use of mitigations in Simple Mode.", 1);
+                    break;
+                
+                case CustomComboPreset.PLD_RetargetSheltron_TT:
+                    ImGui.Indent();
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
+                        "Note: If you are Off-Tanking, and want to use Sheltron on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +
+                        "You could also mouseover yourself in the party to use Sheltron in this case.\n" +
+                        "If you don't, intervention would replace the combo, and it would go to the main tank.\n" +
+                        "If you don't use those Features for your personal mitigation, you may not want to enable this.");
+                    ImGui.Unindent();
                     break;
                
                 #region One-Button Mitigation
