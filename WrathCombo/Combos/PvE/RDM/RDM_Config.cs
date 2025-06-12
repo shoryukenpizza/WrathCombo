@@ -48,12 +48,12 @@ internal partial class RDM
 
         private static void DrawOGCDOptions(UserBoolArray oGCDs, UserBool engagementPool, UserBool corpPool, UserBool corpMelee)
         {
-            DrawHorizontalMultiChoice(oGCDs, Fleche.ActionName(), "", 6, 0, descriptionColor: ImGuiColors.DalamudYellow);
-            DrawHorizontalMultiChoice(oGCDs, ContreSixte.ActionName(), "", 6, 1, descriptionColor: ImGuiColors.DalamudYellow);
-            DrawHorizontalMultiChoice(oGCDs, Engagement.ActionName(), "", 6, 2, descriptionColor: ImGuiColors.DalamudYellow);
-            DrawHorizontalMultiChoice(oGCDs, Corpsacorps.ActionName(), "", 6, 3, descriptionColor: ImGuiColors.DalamudYellow);
-            DrawHorizontalMultiChoice(oGCDs, ViceOfThorns.ActionName(), "", 6, 4, descriptionColor: ImGuiColors.DalamudYellow);
-            DrawHorizontalMultiChoice(oGCDs, Prefulgence.ActionName(), "", 6, 5, descriptionColor: ImGuiColors.DalamudYellow);
+            DrawHorizontalMultiChoice(oGCDs, Fleche.ActionName(),       "", 6, 0);
+            DrawHorizontalMultiChoice(oGCDs, ContreSixte.ActionName(),  "", 6, 1);
+            DrawHorizontalMultiChoice(oGCDs, Engagement.ActionName(),   "", 6, 2);
+            DrawHorizontalMultiChoice(oGCDs, Corpsacorps.ActionName(),  "", 6, 3);
+            DrawHorizontalMultiChoice(oGCDs, ViceOfThorns.ActionName(), "", 6, 4);
+            DrawHorizontalMultiChoice(oGCDs, Prefulgence.ActionName(),  "", 6, 5);
 
             if (oGCDs[2]) // Engagment
             {
