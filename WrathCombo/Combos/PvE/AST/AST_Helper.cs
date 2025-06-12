@@ -182,9 +182,8 @@ internal partial class AST
                 filter = filter
                     .OrderBy(x =>
                         _cardPriorities.GetValueOrDefault(
-
                             (byte)x.RealJob!.Value.RowId, byte.MaxValue))
-                    .ThenByDescending(x => x.MaxHp)
+                    .ThenByDescending(x => x.BattleChara.MaxHp)
                     .ToList();
 
                 bestTarget = filter.First().BattleChara;
