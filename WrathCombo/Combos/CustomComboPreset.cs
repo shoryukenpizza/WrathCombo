@@ -2758,9 +2758,20 @@ public enum CustomComboPreset
     [ParentCombo(GNB_AuroraProtection)]
     [CustomComboInfo("Aurora Target's Target Option", "Retargets Aurora to the Target's Target if they do not have the HoT and you do not have Aggro", GNB.JobID)]
     [Retargeted]
-    GNB_RetargetAurora_OtherTank = 7088,
+    GNB_RetargetAurora_TT = 7088,
     
+    #endregion
     
+    #region Heart Of Stone Retarget
+    [ReplaceSkill(GNB.HeartOfCorundum, GNB.HeartOfStone)]
+    [CustomComboInfo("Heart Of Stone Feature", "Will retarget Heart of Stone/Corundum to your mouseover target or hard target outside of other combos", GNB.JobID)]
+    [Retargeted]
+    GNB_RetargetHeartofStone = 7089,
+    
+    [ParentCombo(GNB_RetargetHeartofStone)]
+    [CustomComboInfo("Heart of Stone Target's Target Option", "Retargets Heart of Stone/Corundum to the Target's Target you do not have Aggro, can bypass this by using mouseover at yourself", GNB.JobID)]
+    [Retargeted]
+    GNB_RetargetHeartofStone_TT = 7090,
     #endregion
 
     #region Variant Skills
@@ -2947,7 +2958,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last Value = 7086
+    // Last Value = 7090
     #endregion
 
     #region MACHINIST
