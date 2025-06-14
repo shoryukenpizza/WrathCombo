@@ -571,20 +571,6 @@ internal partial class RDM
                 }
             }
 
-            if ((ComboAction is Verflare or Verholy)
-                && LevelChecked(Scorch))
-            {
-                newActionID = Scorch;
-                return true;
-            }
-
-            if (ComboAction is Scorch
-                && LevelChecked(Resolution))
-            {
-                newActionID = Resolution;
-                return true;
-            }
-
             //Else
             return false;
         }

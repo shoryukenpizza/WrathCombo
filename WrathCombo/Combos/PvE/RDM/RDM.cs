@@ -138,7 +138,7 @@ internal partial class RDM : Caster
                     return NewActionID;
 
                 // Start the Combo (Riposte)
-                if (IsNotEnabled(CustomComboPreset.RDM_ST_MeleeCombo_ExcludeRiposte) &&
+                if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_IncludeRiposte) &&
                     MeleeCombo.TrySTMeleeStart(ref NewActionID, IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_CorpsGapCloser),
                         IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_UnbalanceMana)))
                     return NewActionID;
@@ -412,6 +412,34 @@ internal partial class RDM : Caster
             if (MeleeCombo.TrySTMeleeCombo(ref newActionID, false)) return newActionID;
 
             return actionID;
+        }
+    }
+
+    internal class RDM_VerSpell : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_VerSpell;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Veraero or Veraero3 or Verthunder or Verthunder3))
+                return actionID;
+
+            uint newActionID = 0;
+
+            if (IsEnabled(CustomComboPreset.RDM_VerSpell_JoltFinisher) && MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
+
+            if (RDMMana.ManaStacks >= 3) return OriginalHook(actionID); //Verholy verflare
+
+            if (SpellCombo.TrySTSpellRotation(ref newActionID,
+                IsEnabled(CustomComboPreset.RDM_VerSpell_StoneFire), false))
+            {
+                if ((actionID is Veraero or Veraero3) && newActionID == Verstone) return Verstone;
+                if ((actionID is Verthunder or Verthunder3) && newActionID == Verfire) return Verfire;
+            }
+
+            if (HasStatusEffect(Buffs.Dualcast) || HasStatusEffect(Role.Buffs.Swiftcast) || 
+                MeleeCombo.CanScorchResolution()) return actionID; //Don't "force" scorch resolution by OriginalHook(Jolt)
+            else return OriginalHook(Jolt);
         }
     }
 

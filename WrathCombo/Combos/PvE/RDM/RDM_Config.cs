@@ -81,6 +81,17 @@ internal partial class RDM
                     DrawBossOnlyChoice(RDM_BalanceOpener_Content);
                     break;
 
+                case CustomComboPreset.RDM_ST_MeleeCombo:
+                    if (P.IPCSearch.AutoActions[CustomComboPreset.RDM_ST_DPS] == true && 
+                        CustomComboFunctions.IsNotEnabled(CustomComboPreset.RDM_ST_MeleeCombo_IncludeRiposte))
+                    {
+                        ImGui.Indent();
+                        ImGui.TextColored(ImGuiColors.DalamudRed, "WARNING: RIPOSTE IS NOT ENABLED.");
+                        ImGui.TextColored(ImGuiColors.DalamudRed, "AUTO ROTATION WILL NOT START THE MELEE COMBO AUTOMATICALLY");
+                        ImGui.Unindent();
+                    }
+                    break;
+
                 case CustomComboPreset.RDM_ST_oGCD:
                     DrawOGCDOptions(RDM_ST_oGCD_Actions, RDM_ST_oGCD_Engagement_Pooling, RDM_ST_oGCD_CorpACorps_Pooling, RDM_ST_oGCD_CorpACorps_Melee);
                     break;

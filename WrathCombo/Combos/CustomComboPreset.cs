@@ -4676,9 +4676,15 @@ public enum CustomComboPreset
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Melee Combo Option",
-    "Adds Riposte, Zwerchhau & Redoublement, and burst abilities.\n" +
+    "Adds Zwerchhau & Redoublement, and burst abilities.\n" +
     "**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
     RDM_ST_MeleeCombo = 13410,
+
+    [ParentCombo(RDM_ST_MeleeCombo)]
+    [CustomComboInfo("Include Riposte",
+        "Adds Riposte to start the combo. Recommended for Auto Rotation",
+        RDM.JobID)]
+    RDM_ST_MeleeCombo_IncludeRiposte = 13413,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Use Manafication and Embolden Option", "Add Manafication and Embolden.",
@@ -4705,13 +4711,6 @@ public enum CustomComboPreset
         RDM.JobID)]
     RDM_ST_MeleeCombo_MeleeEnforced = 13414,
 
-    [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Exclude Riposte",
-        "Prevents Riposte from being used, allowing manual melee combo starting.\n" +
-        "Not recommended for Auto Rotation",
-        RDM.JobID)]
-    RDM_ST_MeleeCombo_ExcludeRiposte = 13413,
-
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Verflare / Verholy Option", "Adds Verflare & Verholy.", RDM.JobID)]
     RDM_ST_MeleeFinisher = 13510,
@@ -4729,22 +4728,6 @@ public enum CustomComboPreset
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
     RDM_ST_oGCD = 13240,
-
-    #endregion
-
-    #region ST DPS Indivdual Combos
-
-    [ReplaceSkill(RDM.Riposte)]
-    [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
-    RDM_Riposte = 13842,
-
-    [ParentCombo(RDM_Riposte)]
-    [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Riposte_oGCD = 13002,
-
-    [ReplaceSkill(RDM.Reprise)]
-    [CustomComboInfo("Reprise Movement oGCDs", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Reprise = 13003,
 
     #endregion
 
@@ -4800,6 +4783,35 @@ public enum CustomComboPreset
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
     RDM_AoE_Lucid = 13425,
+
+    #endregion
+
+    #region ST DPS Indivdual Combos
+
+    [ReplaceSkill(RDM.Veraero, RDM.Veraero3, RDM.Verthunder, RDM.Verthunder3)]
+    [CustomComboInfo("Spell Combo on Veraero / Verthunder", "Replaces Veraero & Verthunder with jolt.", RDM.JobID)]
+    RDM_VerSpell = 13004,
+
+    [ParentCombo(RDM_VerSpell)]
+    [CustomComboInfo("Add Verstone & Verfire", "Replaces Veraero with Verstone, and Verthunder with Verfire", RDM.JobID)]
+    RDM_VerSpell_StoneFire = 13005,
+
+    [ParentCombo(RDM_VerSpell)]
+    [CustomComboInfo("Add Scorch & Resolution", "Adds Scorch and Resolution", RDM.JobID)]
+    RDM_VerSpell_JoltFinisher = 13006,
+
+
+    [ReplaceSkill(RDM.Riposte)]
+    [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
+    RDM_Riposte = 13842,
+
+    [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
+    RDM_Riposte_oGCD = 13002,
+
+    [ReplaceSkill(RDM.Reprise)]
+    [CustomComboInfo("Reprise Movement oGCDs", "Weave the following oGCD actions.", RDM.JobID)]
+    RDM_Reprise = 13003,
 
     #endregion
 
