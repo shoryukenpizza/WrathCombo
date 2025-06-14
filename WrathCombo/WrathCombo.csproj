@@ -31,26 +31,11 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
-    <!-- Build Parameter Overrides for Debug -->
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <OutputPath>$(DalamudDevPlugins)</OutputPath>
-    </PropertyGroup>
-
-    <!-- Build Parameter Overrides for Release -->
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <OutputPath>bin\Release</OutputPath>
-    </PropertyGroup>
-
-    <!-- Build Parameter Overrides for Optimization even in Debug -->
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-        <Optimize>True</Optimize>
-    </PropertyGroup>
-
     <!-- Styling Rules -->
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig"/>
     </ItemGroup>
-    
+
     <!-- Required Paths -->
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
@@ -68,6 +53,21 @@
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
         <DalamudLibPath>$(HOME)/Library/Application Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
         <DalamudDevPlugins>$(HOME)/Library/Application Support/XIV on Mac/devPlugins/</DalamudDevPlugins>
+    </PropertyGroup>
+
+    <!-- Build Parameter Overrides for Debug -->
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <OutputPath>$(DalamudDevPlugins)</OutputPath>
+    </PropertyGroup>
+
+    <!-- Build Parameter Overrides for Release -->
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <OutputPath>bin\Release</OutputPath>
+    </PropertyGroup>
+
+    <!-- Build Parameter Overrides for Optimization even in Debug -->
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <Optimize>True</Optimize>
     </PropertyGroup>
 
     <!-- Logo -->
