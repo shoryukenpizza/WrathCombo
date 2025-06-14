@@ -19,7 +19,9 @@
         <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.xlcore/dalamud/Hooks/dev/</DalamudLibPath>
         <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
         <DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\WrathCombo\$(version)</DalamudPluginPath>
-        <DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\WrathCombo\</DalamudDevPlugins>
+        <DalamudDevPlugins Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(appdata)\XIVLauncher\devPlugins\WrathCombo\</DalamudDevPlugins>
+        <DalamudDevPlugins Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.xlcore/devPlugins/</DalamudDevPlugins>
+        <DalamudDevPlugins Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application Support/XIV on Mac/devPlugins/</DalamudDevPlugins>
         <AssemblyName>WrathCombo</AssemblyName>
         <PackageId>WrathCombo</PackageId>
         <Product>WrathCombo</Product>
