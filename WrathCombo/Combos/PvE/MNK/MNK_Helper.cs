@@ -86,7 +86,8 @@ internal partial class MNK
 
     //Brotherhood
     internal static bool UseBrotherhood() =>
-        ActionReady(Brotherhood);
+        ActionReady(Brotherhood) &&
+        GetCooldownRemainingTime(RiddleOfFire) < 1;
 
     //RoW
     internal static bool UseRoW() =>
