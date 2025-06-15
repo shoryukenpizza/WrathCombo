@@ -6699,7 +6699,7 @@ public enum CustomComboPreset
     WAR_NascentFlash = 18017,
     
     [ReplaceSkill(WAR.RawIntuition, WAR.Bloodwhetting)]
-    [CustomComboInfo("Raw Intuition to Nascent Flash Retargeting Feature", "If available, will replace the combo with Nascent Flash if you are hard targeting an ally.", WAR.JobID)]
+    [CustomComboInfo("Raw Intuition to Nascent Flash Retargeting Feature", "If available, will replace the Raw Intuition/Bloodwhetting with Nascent Flash if you are hard targeting an ally.", WAR.JobID)]
     [Retargeted]
     WAR_RawIntuition_Targeting = 18119,
 
