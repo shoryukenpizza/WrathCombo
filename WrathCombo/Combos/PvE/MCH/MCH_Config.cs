@@ -114,7 +114,7 @@ internal partial class MCH
                     break;
 
                 case CustomComboPreset.MCH_ST_Adv_QueenOverdrive:
-                    DrawSliderInt(1, 10, MCH_ST_QueenOverDrive,
+                    DrawSliderInt(0, 100, MCH_ST_QueenOverDrive,
                         "HP% for the target to be at or under");
 
                     break;
@@ -127,7 +127,7 @@ internal partial class MCH
 
                 //AoE
                 case CustomComboPreset.MCH_AoE_Adv_Reassemble:
-                    DrawSliderInt(0, 1, MCH_AoE_ReassemblePool,
+                    DrawSliderInt(0, 2, MCH_AoE_ReassemblePool,
                         "Number of Charges to Save for Manual Use");
 
                     DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {SpreadShot.ActionName()}/{Scattergun.ActionName()}", "", 4, 0);
@@ -138,7 +138,7 @@ internal partial class MCH
                     break;
 
                 case CustomComboPreset.MCH_AoE_Adv_QueenOverdrive:
-                    DrawSliderInt(1, 10, MCH_AoE_QueenOverDrive,
+                    DrawSliderInt(0, 100, MCH_AoE_QueenOverDrive,
                         "HP% for the target to be at or under");
 
                     break;
