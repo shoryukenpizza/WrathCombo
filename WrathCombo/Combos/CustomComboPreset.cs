@@ -2769,7 +2769,7 @@ public enum CustomComboPreset
     GNB_RetargetHeartofStone = 7089,
     
     [ParentCombo(GNB_RetargetHeartofStone)]
-    [CustomComboInfo("Heart of Stone Target's Target Option", "Retargets Heart of Stone/Corundum to the Target's Target you do not have Aggro, can bypass this by using mouseover at yourself", GNB.JobID)]
+    [CustomComboInfo("Heart of Stone Target's Target Option", "Retargets Heart of Stone/Corundum to the Target's Target you do not have Aggro, can still be overridden with mouseover.", GNB.JobID)]
     [Retargeted]
     GNB_RetargetHeartofStone_TT = 7090,
     #endregion
