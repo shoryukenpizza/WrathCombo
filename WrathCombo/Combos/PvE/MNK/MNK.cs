@@ -39,11 +39,11 @@ internal partial class MNK : Melee
             // OGCDs
             if (CanWeave() && !HasDoubleWeaved())
             {
-                if (UseRoF())
-                    return RiddleOfFire;
-
                 if (UseBrotherhood())
                     return Brotherhood;
+
+                if (UseRoF())
+                    return RiddleOfFire;
 
                 if (UseRoW())
                     return RiddleOfWind;
@@ -143,17 +143,17 @@ internal partial class MNK : Melee
             {
                 if (IsEnabled(CustomComboPreset.MNK_STUseBuffs))
                 {
-                    if (IsEnabled(CustomComboPreset.MNK_STUseROF) &&
-                        UseRoF() &&
-                        (MNK_ST_RiddleOfFire_SubOption == 0 ||
-                         MNK_ST_RiddleOfFire_SubOption == 1 && InBossEncounter()))
-                        return RiddleOfFire;
-
                     if (IsEnabled(CustomComboPreset.MNK_STUseBrotherhood) &&
                         UseBrotherhood() &&
                         (MNK_ST_Brotherhood_SubOption == 0 ||
                          MNK_ST_Brotherhood_SubOption == 1 && InBossEncounter()))
                         return Brotherhood;
+
+                    if (IsEnabled(CustomComboPreset.MNK_STUseROF) &&
+                        UseRoF() &&
+                        (MNK_ST_RiddleOfFire_SubOption == 0 ||
+                         MNK_ST_RiddleOfFire_SubOption == 1 && InBossEncounter()))
+                        return RiddleOfFire;
 
                     if (IsEnabled(CustomComboPreset.MNK_STUseROW) &&
                         UseRoW() &&
@@ -256,11 +256,11 @@ internal partial class MNK : Melee
             // OGCD's
             if (CanWeave() && !HasDoubleWeaved())
             {
-                if (UseRoF())
-                    return RiddleOfFire;
-
                 if (UseBrotherhood())
                     return Brotherhood;
+
+                if (UseRoF())
+                    return RiddleOfFire;
 
                 if (UseRoW())
                     return RiddleOfWind;
@@ -361,15 +361,15 @@ internal partial class MNK : Melee
             {
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
                 {
-                    if (IsEnabled(CustomComboPreset.MNK_AoEUseROF) &&
-                        UseRoF() &&
-                        GetTargetHPPercent() >= MNK_AoE_RiddleOfFire_HP)
-                        return RiddleOfFire;
-
                     if (IsEnabled(CustomComboPreset.MNK_AoEUseBrotherhood) &&
                         UseBrotherhood() &&
                         GetTargetHPPercent() >= MNK_AoE_Brotherhood_HP)
                         return Brotherhood;
+
+                    if (IsEnabled(CustomComboPreset.MNK_AoEUseROF) &&
+                        UseRoF() &&
+                        GetTargetHPPercent() >= MNK_AoE_RiddleOfFire_HP)
+                        return RiddleOfFire;
 
                     if (IsEnabled(CustomComboPreset.MNK_AoEUseROW) &&
                         UseRoW() &&
