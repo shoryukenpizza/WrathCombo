@@ -84,6 +84,7 @@ internal partial class DRG : Melee
                 if (ActionReady(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
                     HasStatusEffect(Buffs.DiveReady) &&
+                    (OriginalHook(Jump) is MirageDive) &&
                     (LoTDActive ||
                      (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
                       GetCooldownRemainingTime(Geirskogul) > 3)))
@@ -257,6 +258,7 @@ internal partial class DRG : Melee
                         ActionReady(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
                         HasStatusEffect(Buffs.DiveReady) &&
+                        (OriginalHook(Jump) is MirageDive) &&
                         ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
                           (LoTDActive ||
                            (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
@@ -487,6 +489,7 @@ internal partial class DRG : Melee
                 if (ActionReady(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
                     HasStatusEffect(Buffs.DiveReady) &&
+                    (OriginalHook(Jump) is MirageDive) &&
                     (LoTDActive ||
                      (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
                       GetCooldownRemainingTime(Geirskogul) > 3)))
@@ -648,6 +651,7 @@ internal partial class DRG : Melee
                         ActionReady(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
                         HasStatusEffect(Buffs.DiveReady) &&
+                        (OriginalHook(Jump) is MirageDive) &&
                         (LoTDActive ||
                          (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
                           GetCooldownRemainingTime(Geirskogul) > 3)))
