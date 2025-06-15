@@ -415,7 +415,7 @@ public enum CustomComboPreset
 
     [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
     [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign.", AST.JobID)]
-    AST_AoE_SimpleHeals_NeutralSect =1067,
+    AST_AoE_SimpleHeals_NeutralSect = 1067,
 
     [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
     [CustomComboInfo("Aspected Helios Option",
