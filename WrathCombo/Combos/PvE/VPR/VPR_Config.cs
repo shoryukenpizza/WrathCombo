@@ -88,7 +88,7 @@ internal partial class VPR
                     break;
 
                 case CustomComboPreset.VPR_AoE_Reawaken:
-                    DrawRoundedSliderFloat(0, 100, VPR_AoE_Reawaken_Usage,
+                    DrawSliderInt(0, 100, VPR_AoE_Reawaken_Usage,
                         $"Stop using {Reawaken.ActionName()} at Enemy HP %. Set to Zero to disable this check.");
 
                     break;
