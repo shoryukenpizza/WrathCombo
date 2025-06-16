@@ -422,7 +422,7 @@ internal partial class WHM
             new("WHM_STHeals_RegenHPLower", 30);
         
         /// <summary>
-        ///     Upper HP threshold to stop using Regen.
+        ///     Upper HP threshold to start using Regen.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 30 <br />
