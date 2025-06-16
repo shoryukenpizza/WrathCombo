@@ -40,14 +40,17 @@ Presets are all defined in [`CustomComboPreset.cs`](/WrathCombo/Combos/CustomCom
     but rather a set of related actions; typically they are actions that combo 
     together, but sometimes they are only similar, like the Mitigation features.
 
-## Preset Templates
+<details>
+
+<summary><h2>Preset Templates</h2></summary>
+
 ### Standard Preset Naming Template
 - Simple Mode - Single Target
 - Simple Mode - AoE
 - Advanced Mode - Single Target
 - Advanced Mode - AoE
 - `<combo name>` Feature
-  - `<option name>` Option
+    - `<option name>` Option
 
 ### [Healers] Healing Feature Naming Template
 - Simple Heals - Single Target
@@ -55,29 +58,31 @@ Presets are all defined in [`CustomComboPreset.cs`](/WrathCombo/Combos/CustomCom
 
 ### [Tanks] Mitigations Option template:
 - Simple Mode - Single Target
-  - Include Mitigation Options (Content Difficulty Filtering)
+    - Include Mitigation Options (Content Difficulty Filtering)
 - Simple Mode - AoE
-  - Include Mitigation Options
+    - Include Mitigation Options
 - Advanced Mode - Single Target
-  - Mitigation Options (Content Difficulty Filtering)
-    - All <60s mitigations (HP% slider, boss filtering)
-    - All heals/mitigations that heal (HP% slider, boss filtering)
-    - Invuln (enemy HP% slider, self HP% slider, boss filtering)
+    - Mitigation Options (Content Difficulty Filtering)
+        - All <60s mitigations (HP% slider, boss filtering)
+        - All heals/mitigations that heal (HP% slider, boss filtering)
+        - Invuln (enemy HP% slider, self HP% slider, boss filtering)
 - Advanced Mode - AoE
-  - Mitigation Options
-    - All heals/mitigations that heal (HP% slider)
-    - Invuln (enemy HP% slider, self HP% slider)
-    - All other mitigations, including `Reprisal`, `Arm's Length`, etc without options
+    - Mitigation Options
+        - All heals/mitigations that heal (HP% slider)
+        - Invuln (enemy HP% slider, self HP% slider)
+        - All other mitigations, including `Reprisal`, `Arm's Length`, etc without options
 - One-Button Mitigation Feature (User-Prioritized)
-  - Emergency Invuln Option (Content Difficulty Filtering)
-  - Spammable Mitigation Options (Content Difficulty Filtering)
-  - Reprisal
-  - Group Mitigation (Party-check Option)
-  - Bigger Mitigation Options (HP% slider)
-  - Arm's Length (boss filtering, Nearby-Enemy-Count slider)
-    - Mitigation should be roughly ordered by default from lowest mit to highest,
-      shortest to longest cooldown.
-    - Any mitigation options that have charges should have a charge slider.
+    - Emergency Invuln Option (Content Difficulty Filtering)
+    - Spammable Mitigation Options (Content Difficulty Filtering)
+    - Reprisal
+    - Group Mitigation (Party-check Option)
+    - Bigger Mitigation Options (HP% slider)
+    - Arm's Length (boss filtering, Nearby-Enemy-Count slider)
+        - Mitigation should be roughly ordered by default from lowest mit to highest,
+          shortest to longest cooldown.
+        - Any mitigation options that have charges should have a charge slider.
+
+</details>
 
 ## Regarding Conflicts
 - Conflicts should always go both ways. If X conflicts with Y, Y must conflict with X.
