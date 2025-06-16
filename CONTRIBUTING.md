@@ -24,7 +24,6 @@ If you are unsure how to set up your development environment, you can start at
 Wrath team members for that.
 
 # Submitting your Contribution
-
 If you then want to contribute your additions upstream into Wrath, we have few
 requirements to submit a Pull Request for what you've made:
 - New or edited code must follow the styling of the surrounding code.
@@ -41,7 +40,8 @@ You can then expect a review from the owner of the job, or from another team mem
 within a couple of weeks (where you should probably expect changes to be requested),
 and after it is approved it will be merged in our next release cycle.\
 The release cycle is typically every Sunday (or shortly thereafter), and involves
-the majority of our code reviews taking place on Saturday.\
+the majority of our code reviews taking place on Saturday, and then merging just 
+before release time.\
 Depending on the size of your PR and if there is an existing team member's PR,
 yours may be merged into theirs or edited by a team member at release time to handle
 conflicts.
