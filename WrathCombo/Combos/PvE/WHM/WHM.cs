@@ -335,7 +335,7 @@ internal partial class WHM : Healer
                 ActionReady(DivineCaress))
                 return OriginalHook(DivineCaress);
 
-            var liturgyTarget =
+            var bellTarget =
                 (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Enemy)
                     ? SimpleTarget.HardTarget
                     : null) ??
@@ -345,9 +345,10 @@ internal partial class WHM : Healer
                 SimpleTarget.Self;
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell) &&
                 ActionReady(LiturgyOfTheBell) &&
-                !IsMoving() &&
+                !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
+                !JustUsed(LiturgyOfTheBell) &&
                 (!Config.WHM_AoEHeals_LiturgyRaidwideOnly || RaidWideCasting()))
-                return LiturgyOfTheBell.Retarget(Medica1, liturgyTarget);
+                return LiturgyOfTheBell.Retarget(Medica1, bellTarget);
 
             var asylumTarget =
                 (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Enemy)
