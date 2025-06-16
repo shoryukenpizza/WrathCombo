@@ -184,7 +184,10 @@ namespace WrathCombo.Window.Tabs
                                 ImGui.EndTabBar();
                             }
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            PluginLog.Error($"Error while drawing Job's UI:\n{e}");
+                        }
 
                     }
                 }

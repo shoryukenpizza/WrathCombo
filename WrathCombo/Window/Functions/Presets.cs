@@ -589,6 +589,12 @@ namespace WrathCombo.Window.Functions
             var jobID = preset.Attributes().OccultCrescentJob.JobId;
             var icon = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", jobID);
 
+            if (icon is null)
+            {
+                PluginLog.Error($"Failed to load Occult Crescent job icon for Preset {preset} using JobID {jobID}");
+                return false;
+            }
+
             var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
             var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
 
