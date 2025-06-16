@@ -872,7 +872,8 @@ internal partial class PLD : Tank
 
             // Intervention if trying to Buff an ally
             if (ActionReady(Intervention) && 
-                target != null)
+                target != null &&
+                CanApplyStatus(target, Buffs.Intervention))
                 return Intervention.Retarget([Sheltron, HolySheltron], target);
 
             return action;
