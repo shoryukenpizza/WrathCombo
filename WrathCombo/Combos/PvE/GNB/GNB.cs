@@ -632,7 +632,7 @@ internal partial class GNB : Tank
                     ? SimpleTarget.TargetsTarget.IfFriendly()
                     : null);
 
-            if (target != null)
+            if (target != null && CanApplyStatus(target, Buffs.Aurora))
             {
                 return !HasStatusEffect(Buffs.Aurora, target, true)
                     ? actionID.Retarget(target)
@@ -663,7 +663,7 @@ internal partial class GNB : Tank
                     ? SimpleTarget.TargetsTarget.IfNotThePlayer().IfInParty()
                     : null);
 
-            if (target is not null)
+            if (target is not null && CanApplyStatus(target, Buffs.HeartOfStone))
                 return OriginalHook(actionID).Retarget([HeartOfStone,HeartOfCorundum], target);
 
             return actionID;
