@@ -33,13 +33,13 @@ internal partial class WHM : Healer
             if (Config.WHM_ST_MainCombo_Adv &&
                 Config.WHM_ST_MainCombo_Adv_Actions.Count > 0)
             {
-                var onStones = Config.WHM_ST_MainCombo_Adv_Actions[0] &&
-                               StoneGlareList.Contains(actionID);
-                var onAeros = Config.WHM_ST_MainCombo_Adv_Actions[1] &&
-                              AeroList.ContainsKey(actionID);
-                var onStone2 = Config.WHM_ST_MainCombo_Adv_Actions[2] &&
+                var isStoneGlare = Config.WHM_ST_MainCombo_Adv_Actions[0] &&
+                                   StoneGlareList.Contains(actionID);
+                var isAero = Config.WHM_ST_MainCombo_Adv_Actions[1] &&
+                             AeroList.ContainsKey(actionID);
+                var isStone2 = Config.WHM_ST_MainCombo_Adv_Actions[2] &&
                                actionID is Stone2;
-                actionFound = onStones || onAeros || onStone2;
+                actionFound = isStoneGlare || isAero || isStone2;
             }
             else
             {
@@ -210,17 +210,17 @@ internal partial class WHM : Healer
 
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
-            var thinAirReady = LevelChecked(ThinAir) &&
-                               !HasStatusEffect(Buffs.ThinAir) &&
-                               GetRemainingCharges(ThinAir) >
-                               Config.WHM_STHeals_ThinAir;
+            var canThinAir = LevelChecked(ThinAir) &&
+                             !HasStatusEffect(Buffs.ThinAir) &&
+                             GetRemainingCharges(ThinAir) >
+                             Config.WHM_STHeals_ThinAir;
 
-            var regenReady = ActionReady(Regen) &&
-                             !JustUsedOn(Regen, healTarget) &&
-                             GetStatusEffectRemainingTime(Buffs.Regen, healTarget) 
-                                <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
-                             GetTargetHPPercent(healTarget,Config.WHM_STHeals_IncludeShields) 
-                                >= Config.WHM_STHeals_RegenHP; // Regen use threshold for low health
+            var canRegen = ActionReady(Regen) &&
+                           !JustUsedOn(Regen, healTarget) &&
+                           GetStatusEffectRemainingTime(Buffs.Regen, healTarget) 
+                              <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
+                           GetTargetHPPercent(healTarget,Config.WHM_STHeals_IncludeShields) 
+                              >= Config.WHM_STHeals_RegenHP; // Regen use threshold for low health
 
             #endregion
 
@@ -263,7 +263,7 @@ internal partial class WHM : Healer
 
             #region GCD Tools
 
-            if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && regenReady)
+            if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && canRegen)
                 return Regen
                     .RetargetIfEnabled(OptionalTarget, Cure);
 
@@ -274,7 +274,7 @@ internal partial class WHM : Healer
 
             if (ActionReady(Cure2))
             {
-                if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && thinAirReady)
+                if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && canThinAir)
                     return ThinAir;
                 return Cure2
                     .RetargetIfEnabled(OptionalTarget, Cure);
@@ -299,20 +299,20 @@ internal partial class WHM : Healer
 
             #region Variables
 
-            var thinAirReady = LevelChecked(ThinAir) &&
-                               !HasStatusEffect(Buffs.ThinAir) &&
-                               GetRemainingCharges(ThinAir) >
-                               Config.WHM_AoEHeals_ThinAir;
+            var canThinAir = LevelChecked(ThinAir) &&
+                             !HasStatusEffect(Buffs.ThinAir) &&
+                             GetRemainingCharges(ThinAir) >
+                             Config.WHM_AoEHeals_ThinAir;
 
-            var plenaryReady = ActionReady(PlenaryIndulgence) &&
-                               (!Config.WHM_AoEHeals_PlenaryWeave ||
-                                Config.WHM_AoEHeals_PlenaryWeave &&
-                                CanSpellWeave());
+            var canPlenary = ActionReady(PlenaryIndulgence) &&
+                             (!Config.WHM_AoEHeals_PlenaryWeave ||
+                              Config.WHM_AoEHeals_PlenaryWeave &&
+                              CanSpellWeave());
 
-            var assizeReady = ActionReady(Assize) &&
-                              (!Config.WHM_AoEHeals_AssizeWeave ||
-                               Config.WHM_AoEHeals_AssizeWeave &&
-                               CanSpellWeave());
+            var canAssize = ActionReady(Assize) &&
+                            (!Config.WHM_AoEHeals_AssizeWeave ||
+                             Config.WHM_AoEHeals_AssizeWeave &&
+                             CanSpellWeave());
 
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
@@ -324,16 +324,30 @@ internal partial class WHM : Healer
             #region OGCD Tools
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Assize) &&
-                assizeReady)
+                canAssize)
                 return Assize;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Plenary) &&
-                plenaryReady)
+                canPlenary)
                 return PlenaryIndulgence;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
                 ActionReady(DivineCaress))
                 return OriginalHook(DivineCaress);
+
+            var liturgyTarget =
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Enemy)
+                    ? SimpleTarget.HardTarget
+                    : null) ??
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Allies)
+                    ? SimpleTarget.Stack.OverridesAllies
+                    : null) ??
+                SimpleTarget.Self;
+            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell) &&
+                ActionReady(LiturgyOfTheBell) &&
+                !IsMoving() &&
+                (!Config.WHM_AoEHeals_LiturgyRaidwideOnly || RaidWideCasting()))
+                return LiturgyOfTheBell.Retarget(Medica1, liturgyTarget);
 
             var asylumTarget =
                 (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Enemy)
@@ -368,7 +382,7 @@ internal partial class WHM : Healer
                 ActionReady(AfflatusRapture) && CanLily)
                 return AfflatusRapture;
 
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_ThinAir) && thinAirReady)
+            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_ThinAir) && canThinAir)
                 return ThinAir;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Medica2)
@@ -439,11 +453,11 @@ internal partial class WHM : Healer
             if (actionID != Role.Swiftcast)
                 return actionID;
 
-            var thinAirReady = !HasStatusEffect(Buffs.ThinAir) && ActionReady
+            var canThinAir = !HasStatusEffect(Buffs.ThinAir) && ActionReady
                 (ThinAir);
 
             if (HasStatusEffect(Role.Buffs.Swiftcast))
-                return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
+                return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && canThinAir
                     ? ThinAir
                     : IsEnabled(CustomComboPreset.WHM_Raise_Retarget)
                         ? Raise.Retarget(Role.Swiftcast,

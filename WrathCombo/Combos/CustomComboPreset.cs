@@ -7059,6 +7059,21 @@ public enum CustomComboPreset
     WHM_AoEHeals_DivineCaress = 19207,
 
     [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation.\nPrioritizes heavy damage phases and raidwides for maximum value.", WHM.JobID)]
+    [Retargeted]
+    WHM_AoEHeals_LiturgyOfTheBell = 19206,
+
+    [ParentCombo(WHM_AoEHeals_LiturgyOfTheBell)]
+    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority placement for Liturgy of the Bell.", WHM.JobID)]
+    [Retargeted]
+    WHM_AoEHeals_LiturgyOfTheBell_Enemy = 19208,
+
+    [ParentCombo(WHM_AoEHeals_LiturgyOfTheBell)]
+    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority placement for Liturgy of the Bell.\nBeneath the Enemy placement option, but above yourself.", WHM.JobID)]
+    [Retargeted]
+    WHM_AoEHeals_LiturgyOfTheBell_Allies = 19209,
+
+    [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", WHM.JobID)]
     [Retargeted]
     WHM_AoEHeals_Asylum = 19028,

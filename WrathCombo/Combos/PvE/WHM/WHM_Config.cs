@@ -219,6 +219,12 @@ internal partial class WHM
                     ImGui.Unindent();
                     break;
 
+                case CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell:
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyRaidwideOnly,
+                        "Only use when a Raidwide is casting",
+                        "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.");
+                    break;
+
                 case CustomComboPreset.WHM_AoEHeals_Asylum:
                     DrawAdditionalBoolChoice(WHM_AoEHeals_AsylumRaidwideOnly,
                         "Only use when a Raidwide is casting",
@@ -614,6 +620,16 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Medica2" />
         internal static UserFloat WHM_AoEHeals_MedicaTime =
             new("WHM_AoEHeals_MedicaTime");
+
+        /// <summary>
+        ///     Only use Liturgy of the Bell vs a Raidwide.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        internal static UserBool WHM_AoEHeals_LiturgyRaidwideOnly =
+            new("WHM_AoEHeals_LiturgyRaidwideOnly");
 
         /// <summary>
         ///     Only use Asylum vs a Raidwide.
