@@ -362,9 +362,16 @@ internal partial class SCH : Healer
             {
                 int index = Config.SCH_AoE_Heals_Priority.IndexOf(i + 1);
                 int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
+                bool onIdom = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Recitation) && 
+                              Config.SCH_AoE_Heal_Recitation_Actions[0] && spell is Indomitability;
+                bool onSuccor = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Recitation) && 
+                                Config.SCH_AoE_Heal_Recitation_Actions[1] && spell is Succor or Concitation;
 
                 if (enabled && averagePartyHP <= config && ActionReady(spell))
-                    return spell;
+                     return ActionReady(Recitation) && (onIdom || onSuccor) ? 
+                        Recitation :
+                        spell;
+
             }
 
             return actionID;
