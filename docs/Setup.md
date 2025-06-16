@@ -6,6 +6,11 @@ You can download the required SDK from the [.NET downloads page](https://dotnet.
 <sup>At the time of writing, this is .Net 9. You may find you need to restart 
 after installing it.</sup>
 
+Click "All .NET downloads" under whichever .NET version you are looking for, and 
+only look on the left side of the page (the SDKs), and the top-most table on the 
+left side (the most recent release), and choose the link for your OS and system;
+the most likely SDK you'll want is **Windows**' `x64`.
+
 # Cloning Wrath
 It is recommended you clone Wrath via [GitHub Desktop](https://github.com/apps/desktop) if you are unfamiliar
 with using Git from the command line, this will clone (read: download) our code, 
