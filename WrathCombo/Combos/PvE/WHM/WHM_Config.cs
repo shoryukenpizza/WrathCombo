@@ -223,6 +223,9 @@ internal partial class WHM
                     DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyRaidwideOnly,
                         "Only use when a Raidwide is casting",
                         "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.");
+                    
+                    DrawDifficultyMultiChoice(WHM_AoEHeals_LiturgyDifficulty, WHM_AoEHeals_LiturgyDifficultyListSet,
+                        "Select what content difficulties Liturgy of the Bell should be used in:");
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Asylum:
@@ -630,6 +633,23 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static UserBool WHM_AoEHeals_LiturgyRaidwideOnly =
             new("WHM_AoEHeals_LiturgyRaidwideOnly");
+
+        /// <summary>
+        ///     Content difficulty selector for Liturgy of the Bell.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: [true, false]
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        internal static UserBoolArray WHM_AoEHeals_LiturgyDifficulty =
+            new("WHM_AoEHeals_LiturgyDifficulty", [true, false]);
+
+        /// <summary>
+        ///     Content difficulty list set for Liturgy of the Bell.
+        /// </summary>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        internal static readonly ContentCheck.ListSet WHM_AoEHeals_LiturgyDifficultyListSet =
+            ContentCheck.ListSet.Halved;
 
         /// <summary>
         ///     Only use Asylum vs a Raidwide.
