@@ -232,8 +232,9 @@ internal partial class WHM
 
                     if (WHM_AoEHeals_LiturgyRaidwideOnly)
                     {
-                        ImGuiEx.Spacing(new Vector2(40f, 0f));
+                        ImGuiEx.Spacing(new Vector2(30f, 0f));
                         ImGui.Text("Against what enemies should we check for Raidwides:");
+                        ImGui.NewLine();
                         DrawRadioButton(
                             WHM_AoEHeals_LiturgyRaidwideOnlyBoss, "All Enemies",
                             "Will check for a Raidwide before using Bell at all times, on all enemies.",
