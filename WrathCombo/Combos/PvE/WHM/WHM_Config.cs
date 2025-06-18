@@ -1,6 +1,8 @@
 ﻿#region
 
+using System.Numerics;
 using Dalamud.Interface.Colors;
+using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -229,12 +231,32 @@ internal partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell:
+                    DrawDifficultyMultiChoice(WHM_AoEHeals_LiturgyDifficulty, WHM_AoEHeals_LiturgyDifficultyListSet,
+                        "Select what content difficulties Liturgy of the Bell should be used in:");
+                    ImGui.NewLine();
+
                     DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyRaidwideOnly,
                         "Only use when a Raidwide is casting",
                         "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.");
-                    
-                    DrawDifficultyMultiChoice(WHM_AoEHeals_LiturgyDifficulty, WHM_AoEHeals_LiturgyDifficultyListSet,
-                        "Select what content difficulties Liturgy of the Bell should be used in:");
+
+                    if (WHM_AoEHeals_LiturgyRaidwideOnly)
+                    {
+                        ImGuiEx.Spacing(new Vector2(30f, 0f));
+                        ImGui.Text("Against what enemies should we check for Raidwides:");
+                        ImGui.NewLine();
+                        DrawRadioButton(
+                            WHM_AoEHeals_LiturgyRaidwideOnlyBoss, "All Enemies",
+                            "Will check for a Raidwide before using Bell at all times, on all enemies.",
+                            outputValue: (int) BossRequirement.Off, itemWidth: 125f,
+                            descriptionAsTooltip: true);
+                        DrawRadioButton(
+                            WHM_AoEHeals_LiturgyRaidwideOnlyBoss, "Only Bosses",
+                            "Will try to only check for Raidwide when fighting bosses.\n" +
+                            "(will use on cooldown versus regular enemies)\n" +
+                            "(Note: don't rely on this 100%, square sometimes marks enemies inconsistently)",
+                            outputValue: (int) BossRequirement.On, itemWidth: 125f,
+                            descriptionAsTooltip: true);
+                    }
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Asylum:
@@ -281,6 +303,15 @@ internal partial class WHM
 
         private const string mouseoverCheckingDescription =
             "Party UI Mouseover Checking";
+
+        /// <summary>
+        ///     Whether abilities should be restricted to bosses or not.
+        /// </summary>
+        internal enum BossRequirement
+        {
+            Off = 1,
+            On = 2,
+        }
 
         /// <summary>
         ///     Enemy type restriction for HP threshold checks.
@@ -664,21 +695,40 @@ internal partial class WHM
             new("WHM_AoEHeals_LiturgyRaidwideOnly");
 
         /// <summary>
+        ///     Boss Requirement for Liturgy of the Bell, to only check for raidwides
+        ///     in boss fights, or not.<br />
+        ///     Raidwides check controlled by
+        ///     <see cref="WHM_AoEHeals_LiturgyRaidwideOnly" />.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="BossRequirement.On" /> <br />
+        ///     <b>Options</b>: <see cref="BossRequirement">BossRequirement Enum</see>
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        public static readonly UserInt
+            WHM_AoEHeals_LiturgyRaidwideOnlyBoss =
+                new("WHM_AoEHeals_LiturgyRaidwideOnlyBoss", (int) BossRequirement.On);
+
+        /// <summary>
         ///     Content difficulty selector for Liturgy of the Bell.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: [true, false]
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
+        ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_AoEHeals_LiturgyDifficulty =
             new("WHM_AoEHeals_LiturgyDifficulty", [true, false]);
 
         /// <summary>
-        ///     Content difficulty list set for Liturgy of the Bell.
+        ///     Content difficulty list set for Liturgy of the Bell, set by
+        ///     <see cref="WHM_AoEHeals_LiturgyDifficulty" />.
         /// </summary>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
-        internal static readonly ContentCheck.ListSet WHM_AoEHeals_LiturgyDifficultyListSet =
-            ContentCheck.ListSet.Halved;
+        internal static readonly ContentCheck.ListSet
+            WHM_AoEHeals_LiturgyDifficultyListSet =
+                ContentCheck.ListSet.Halved;
 
         /// <summary>
         ///     Only use Asylum vs a Raidwide.

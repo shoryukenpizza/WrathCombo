@@ -7173,7 +7173,7 @@ public enum CustomComboPreset
     WHM_AoEHeals_DivineCaress = 19207,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation.\nFocuses on raidwide damage detection for optimal placement timing.", WHM.JobID)]
+    [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation.", WHM.JobID)]
     [Retargeted]
     WHM_AoEHeals_LiturgyOfTheBell = 19206,
 
