@@ -41,6 +41,30 @@ internal partial class WHM
                dotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold;
     }
 
+    internal static bool BellRaidwideCheckPassed
+    {
+        get
+        {
+            if (!IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell))
+                return false;
+            
+            // Skip any checks if Raidwide checking is not enabled
+            if (!Config.WHM_AoEHeals_LiturgyRaidwideOnly)
+                return true;
+
+            // Skip Raidwide check if not in a boss fight, and that check is restricted to bosses
+            if (Config.WHM_AoEHeals_LiturgyRaidwideOnlyBoss ==
+                (int)Config.BossRequirement.On &&
+                !InBossEncounter())
+                return true;
+            
+            if (!RaidWideCasting())
+                return false;
+            
+            return true;
+        }
+    }
+
     #region Heal Priority
 
     public static int GetMatchingConfigST(
