@@ -220,12 +220,13 @@ internal partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell:
+                    DrawDifficultyMultiChoice(WHM_AoEHeals_LiturgyDifficulty, WHM_AoEHeals_LiturgyDifficultyListSet,
+                        "Select what content difficulties Liturgy of the Bell should be used in:");
+                    ImGui.NewLine();
+
                     DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyRaidwideOnly,
                         "Only use when a Raidwide is casting",
                         "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.");
-                    
-                    DrawDifficultyMultiChoice(WHM_AoEHeals_LiturgyDifficulty, WHM_AoEHeals_LiturgyDifficultyListSet,
-                        "Select what content difficulties Liturgy of the Bell should be used in:");
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Asylum:
