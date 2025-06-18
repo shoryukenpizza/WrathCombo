@@ -134,7 +134,7 @@ internal partial class WHM
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_BenedictionHP,
                         targetStartUsingAtDescription);
-                    DrawPriorityInput(WHM_ST_Heals_Priority, 4, 0,
+                    DrawPriorityInput(WHM_ST_Heals_Priority, 5, 0,
                         $"{Benediction.ActionName()} Priority: ");
                     break;
 
@@ -148,7 +148,7 @@ internal partial class WHM
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_TetraHP,
                         targetStartUsingAtDescription);
-                    DrawPriorityInput(WHM_ST_Heals_Priority, 4, 1,
+                    DrawPriorityInput(WHM_ST_Heals_Priority, 5, 1,
                         $"{Tetragrammaton.ActionName()} Priority: ");
                     break;
 
@@ -157,7 +157,7 @@ internal partial class WHM
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_BenisonHP,
                         targetStartUsingAtDescription);
-                    DrawPriorityInput(WHM_ST_Heals_Priority, 4, 2,
+                    DrawPriorityInput(WHM_ST_Heals_Priority, 5, 2,
                         $"{DivineBenison.ActionName()} Priority: ");
                     break;
 
@@ -166,7 +166,7 @@ internal partial class WHM
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_AquaveilHP,
                         targetStartUsingAtDescription);
-                    DrawPriorityInput(WHM_ST_Heals_Priority, 4, 3,
+                    DrawPriorityInput(WHM_ST_Heals_Priority, 5, 3,
                         $"{Aquaveil.ActionName()} Priority: ");
                     break;
 
@@ -174,6 +174,17 @@ internal partial class WHM
                     DrawSliderInt(4000, 9500, WHM_STHeals_Lucid,
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
+                    break;
+
+                case CustomComboPreset.WHM_STHeals_Temperance:
+                    DrawAdditionalBoolChoice(WHM_STHeals_TemperanceWeave,
+                        weaveDescription, "");
+                    DrawSliderInt(1, 100, WHM_STHeals_TemperanceHP,
+                        targetStartUsingAtDescription);
+                    DrawDifficultyMultiChoice(WHM_STHeals_TemperanceDifficulty, WHM_STHeals_TemperanceDifficultyListSet,
+                        "Select what content difficulties Temperance should be used in:");
+                    DrawPriorityInput(WHM_ST_Heals_Priority, 5, 4,
+                        $"{Temperance.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.WHM_STHeals_Esuna:
@@ -218,6 +229,13 @@ internal partial class WHM
                         "Average party HP% to use at or below");
                     DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceDifficulty, WHM_AoEHeals_TemperanceDifficultyListSet,
                         "Select what content difficulties Temperance should be used in:");
+                    if (WHM_AoEHeals_TemperanceRaidwideOnly)
+                    {
+                        ImGui.Indent();
+                        DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceRaidwideDifficulty, WHM_AoEHeals_TemperanceRaidwideDifficultyListSet,
+                            "Select what content difficulties the Raidwide option should be used in:");
+                        ImGui.Unindent();
+                    }
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Lucid:
@@ -585,6 +603,49 @@ internal partial class WHM
             new("WHM_STHeals_Lucid", 6500);
 
         /// <summary>
+        ///     Only use Temperance when weaving.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        internal static UserBool WHM_STHeals_TemperanceWeave =
+            new("WHM_STHeals_TemperanceWeave", false);
+
+        /// <summary>
+        ///     HP threshold to use Temperance.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 75 <br />
+        ///     <b>Range</b>: 1 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        internal static UserInt WHM_STHeals_TemperanceHP =
+            new("WHM_STHeals_TemperanceHP", 75);
+
+        /// <summary>
+        ///     Content difficulty selector for ST Temperance.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
+        ///     and/or <see cref="ContentCheck.TopHalfContent" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        internal static UserBoolArray WHM_STHeals_TemperanceDifficulty =
+            new("WHM_STHeals_TemperanceDifficulty", [true, false]);
+
+        /// <summary>
+        ///     Content difficulty list set for ST Temperance, set by
+        ///     <see cref="WHM_STHeals_TemperanceDifficulty" />.
+        /// </summary>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        internal static readonly ContentCheck.ListSet
+            WHM_STHeals_TemperanceDifficultyListSet =
+                ContentCheck.ListSet.Halved;
+
+        /// <summary>
         ///     HP threshold to stop using Esuna.
         /// </summary>
         /// <value>
@@ -765,6 +826,27 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_TemperanceDifficultyListSet =
+                ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Content difficulty selector for Temperance raidwide option.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
+        ///     and/or <see cref="ContentCheck.TopHalfContent" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserBoolArray WHM_AoEHeals_TemperanceRaidwideDifficulty =
+            new("WHM_AoEHeals_TemperanceRaidwideDifficulty", [true, false]);
+
+        /// <summary>
+        ///     Content difficulty list set for Temperance raidwide option, set by
+        ///     <see cref="WHM_AoEHeals_TemperanceRaidwideDifficulty" />.
+        /// </summary>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static readonly ContentCheck.ListSet
+            WHM_AoEHeals_TemperanceRaidwideDifficultyListSet =
                 ContentCheck.ListSet.Halved;
 
         /// <summary>

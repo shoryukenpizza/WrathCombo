@@ -115,6 +115,18 @@ internal partial class WHM
                            Config.WHM_STHeals_AquaveilWeave && canWeave);
 
                 return Config.WHM_STHeals_AquaveilHP;
+
+            case 4:
+                action = Temperance;
+
+                enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Temperance) &&
+                          (!Config.WHM_STHeals_TemperanceWeave ||
+                           Config.WHM_STHeals_TemperanceWeave && canWeave) &&
+                          ContentCheck.IsInConfiguredContent(
+                              Config.WHM_STHeals_TemperanceDifficulty,
+                              Config.WHM_STHeals_TemperanceDifficultyListSet);
+
+                return Config.WHM_STHeals_TemperanceHP;
         }
 
         enabled = false;

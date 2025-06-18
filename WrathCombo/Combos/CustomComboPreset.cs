@@ -7118,6 +7118,11 @@ public enum CustomComboPreset
     WHM_STHeals_Lucid = 19308,
 
     [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("Temperance Option", "Uses Temperance when available for mitigation and healing boost.", WHM.JobID)]
+    [PossiblyRetargeted]
+    WHM_STHeals_Temperance = 19310,
+
+    [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
     [PossiblyRetargeted]
     WHM_STHeals_Esuna = 19309,
