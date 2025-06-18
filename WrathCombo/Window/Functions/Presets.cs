@@ -584,10 +584,13 @@ namespace WrathCombo.Window.Functions
             ImGui.SameLine();
 
             var iconMaxSize = 32f.Scale();
-            var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
-
             var jobID = preset.Attributes().OccultCrescentJob.JobId;
-            var icon = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", jobID);
+
+            if (!Icons.OccultIcons.TryGetValue(jobID, out var icon))
+            {
+                PluginLog.Error($"Failed to find Occult Crescent job icon for Preset {preset} using JobID {jobID}");
+                return false;
+            }
 
             if (icon is null)
             {
