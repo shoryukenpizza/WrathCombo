@@ -6,6 +6,7 @@ using System.Text;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
@@ -580,24 +581,24 @@ namespace WrathCombo.Window.Functions
         private static bool DrawOccultJobIcon(CustomComboPreset preset)
         {
             if (preset.Attributes().OccultCrescentJob == null) return false;
-            if (preset.Attributes().OccultCrescentJob.JobId == -1) return false;
-            ImGui.SameLine();
+            var jobID = preset.Attributes().OccultCrescentJob.JobId;
+            if (jobID == -1) return false;
+            
+            #region Error Handling
+            string? error = null;
+            if (!Icons.OccultIcons.TryGetValue(jobID, out var icon))
+                error = "FIND";
+            if (icon is null)
+                error = "LOAD";
+            if (error is not null)
+            {
+                PluginLog.Error($"Failed to {error} Occult Crescent job icon for Preset:{preset} using JobID:{jobID}");
+                return false;
+            }
+            #endregion
 
             var iconMaxSize = 32f.Scale();
-            var jobID = preset.Attributes().OccultCrescentJob.JobId;
-
-            if (!Icons.OccultIcons.TryGetValue(jobID, out var icon))
-            {
-                PluginLog.Error($"Failed to find Occult Crescent job icon for Preset {preset} using JobID {jobID}");
-                return false;
-            }
-
-            if (icon is null)
-            {
-                PluginLog.Error($"Failed to load Occult Crescent job icon for Preset {preset} using JobID {jobID}");
-                return false;
-            }
-
+            ImGui.SameLine();
             var scale = Math.Min(iconMaxSize / icon.Size.X, iconMaxSize / icon.Size.Y);
             var imgSize = new Vector2(icon.Size.X * scale, icon.Size.Y * scale);
 
