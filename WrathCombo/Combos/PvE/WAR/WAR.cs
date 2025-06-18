@@ -371,10 +371,10 @@ internal partial class WAR : Tank
                 return Upheaval;
             if (IsEnabled(CustomComboPreset.WAR_FC_PrimalWrath) && ShouldUsePrimalWrath)
                 return PrimalWrath;
-            if (IsEnabled(CustomComboPreset.WAR_FC_Onslaught) && ShouldUseOnslaught(Config.WAR_FC_Onslaught_Charges, Config.WAR_FC_Onslaught_Distance, Config.WAR_FC_Onslaught_Movement == 1 || (Config.WAR_FC_Onslaught_Movement == 0 && !IsMoving())))
+            if (IsEnabled(CustomComboPreset.WAR_FC_Onslaught) && ShouldUseOnslaught(Config.WAR_FC_Onslaught_Charges, Config.WAR_FC_Onslaught_Distance, Config.WAR_FC_Onslaught_Movement == 1 || (Config.WAR_FC_Onslaught_Movement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(Config.WAR_FC_Onslaught_TimeStill))))
                 return Onslaught;
             if (IsEnabled(CustomComboPreset.WAR_FC_PrimalRend) &&
-                ShouldUsePrimalRend(Config.WAR_FC_PrimalRend_Distance, Config.WAR_FC_PrimalRend_Movement == 1 || (Config.WAR_FC_PrimalRend_Movement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(Config.WAR_AoE_PrimalRend_TimeStill))) &&
+                ShouldUsePrimalRend(Config.WAR_FC_PrimalRend_Distance, Config.WAR_FC_PrimalRend_Movement == 1 || (Config.WAR_FC_PrimalRend_Movement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(Config.WAR_FC_PrimalRend_TimeStill))) &&
                 (Config.WAR_FC_PrimalRend_EarlyLate == 0 || (Config.WAR_FC_PrimalRend_EarlyLate == 1 && (GetStatusEffectRemainingTime(Buffs.PrimalRendReady) <= 15 || (!HasIR.Stacks && !HasBF.Stacks && !HasWrath)))))
                 return PrimalRend;
             if (IsEnabled(CustomComboPreset.WAR_FC_PrimalRuination) && ShouldUsePrimalRuination)
