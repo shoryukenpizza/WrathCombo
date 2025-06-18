@@ -177,12 +177,12 @@ internal partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_STHeals_Temperance:
-                    DrawAdditionalBoolChoice(WHM_STHeals_TemperanceWeave,
-                        weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_TemperanceHP,
                         targetStartUsingAtDescription);
                     DrawDifficultyMultiChoice(WHM_STHeals_TemperanceDifficulty, WHM_STHeals_TemperanceDifficultyListSet,
                         "Select what content difficulties Temperance should be used in:");
+                    DrawAdditionalBoolChoice(WHM_STHeals_TemperanceWeave,
+                        weaveDescription, "");
                     DrawPriorityInput(WHM_ST_Heals_Priority, 5, 4,
                         $"{Temperance.ActionName()} Priority: ");
                     break;
@@ -219,21 +219,25 @@ internal partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Temperance:
-                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceWeave,
-                        weaveDescription,
-                        "");
-                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwideOnly,
-                        "Only use when a Raidwide is casting",
-                        "Will not use Temperance in the rotation unless we detect a Raidwide is casting.");
-                    DrawSliderInt(1, 50, WHM_AoEHeals_TemperanceHP,
+                    DrawSliderInt(1, 100, WHM_AoEHeals_TemperanceHP,
                         "Average party HP% to use at or below");
                     DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceDifficulty, WHM_AoEHeals_TemperanceDifficultyListSet,
                         "Select what content difficulties Temperance should be used in:");
+                    ImGui.Spacing();
+                    
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceWeave,
+                        weaveDescription,
+                        "");
+                    
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwideOnly,
+                        "Only use when a Raidwide is casting",
+                        "Will not use Temperance in the rotation unless we detect a Raidwide is casting.",
+                        indentDescription: true);
                     if (WHM_AoEHeals_TemperanceRaidwideOnly)
                     {
                         ImGui.Indent();
                         DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceRaidwideDifficulty, WHM_AoEHeals_TemperanceRaidwideDifficultyListSet,
-                            "Select what content difficulties the Raidwide option should be used in:");
+                            "Select what content difficulties the Raidwide restriction should apply to:");
                         ImGui.Unindent();
                     }
                     break;
@@ -259,7 +263,8 @@ internal partial class WHM
 
                     DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyRaidwideOnly,
                         "Only use when a Raidwide is casting",
-                        "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.");
+                        "Will not use Liturgy of the Bell in the rotation unless we detect a Raidwide is casting.",
+                        indentDescription: true);
 
                     if (WHM_AoEHeals_LiturgyRaidwideOnly)
                     {
@@ -799,8 +804,8 @@ internal partial class WHM
         ///     Average party HP% threshold to use Temperance.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: 75 <br />
-        ///     <b>Range</b>: 1 - 50 <br />
+        ///     <b>Default</b>: 30 <br />
+        ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
@@ -832,13 +837,14 @@ internal partial class WHM
         ///     Content difficulty selector for Temperance raidwide option.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> and
+        ///     <see cref="ContentCheck.TopHalfContent" /> <br />
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
         internal static UserBoolArray WHM_AoEHeals_TemperanceRaidwideDifficulty =
-            new("WHM_AoEHeals_TemperanceRaidwideDifficulty", [true, false]);
+            new("WHM_AoEHeals_TemperanceRaidwideDifficulty", [true, true]);
 
         /// <summary>
         ///     Content difficulty list set for Temperance raidwide option, set by
