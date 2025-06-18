@@ -205,6 +205,15 @@ internal partial class WHM
                         "");
                     break;
 
+                case CustomComboPreset.WHM_AoEHeals_Temperance:
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceWeave,
+                        weaveDescription,
+                        "");
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwideOnly,
+                        "Only use when a Raidwide is casting",
+                        "Will not use Temperance in the rotation unless we detect a Raidwide is casting.");
+                    break;
+
                 case CustomComboPreset.WHM_AoEHeals_Lucid:
                     DrawSliderInt(4000, 9500, WHM_AoEHeals_Lucid,
                         mpThresholdDescription,
@@ -599,6 +608,26 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Plenary" />
         internal static UserBool WHM_AoEHeals_PlenaryWeave =
             new("WHM_AoEHeals_PlenaryWeave");
+
+        /// <summary>
+        ///     Only use Temperance when weaving.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserBool WHM_AoEHeals_TemperanceWeave =
+            new("WHM_AoEHeals_TemperanceWeave");
+
+        /// <summary>
+        ///     Only use Temperance vs a Raidwide.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserBool WHM_AoEHeals_TemperanceRaidwideOnly =
+            new("WHM_AoEHeals_TemperanceRaidwideOnly");
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in AoE healing.

@@ -331,6 +331,12 @@ internal partial class WHM : Healer
                 canPlenary)
                 return PlenaryIndulgence;
 
+            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Temperance) &&
+                ActionReady(Temperance) &&
+                (!Config.WHM_AoEHeals_TemperanceWeave || CanSpellWeave()) &&
+                (!Config.WHM_AoEHeals_TemperanceRaidwideOnly || RaidWideCasting()))
+                return Temperance;
+
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
                 ActionReady(DivineCaress))
                 return OriginalHook(DivineCaress);

@@ -7156,6 +7156,10 @@ public enum CustomComboPreset
     WHM_AoEHeals_Plenary = 19203,
 
     [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Temperance Option", "Uses Temperance when available for mitigation and healing boost.", WHM.JobID)]
+    WHM_AoEHeals_Temperance = 19210,
+
+    [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
     WHM_AoEHeals_Lucid = 19204,
 

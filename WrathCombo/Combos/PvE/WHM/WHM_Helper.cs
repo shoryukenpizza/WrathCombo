@@ -225,7 +225,8 @@ internal partial class WHM
         // Buffs
         ThinAir = 7430,
         PresenceOfMind = 136,
-        PlenaryIndulgence = 7433;
+        PlenaryIndulgence = 7433,
+        Temperance = 16536;
 
 
     public static class Buffs
@@ -240,7 +241,8 @@ internal partial class WHM
             Aquaveil = 2708,
             SacredSight = 3879,
             LiturgyOfTheBell = 2709,
-            DivineGrace = 3881;
+            DivineGrace = 3881,
+            Temperance = 1872;
     }
 
     public static class Debuffs
