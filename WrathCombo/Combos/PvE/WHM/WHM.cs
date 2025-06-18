@@ -347,8 +347,10 @@ internal partial class WHM : Healer
                 ActionReady(LiturgyOfTheBell) &&
                 !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
                 !JustUsed(LiturgyOfTheBell) &&
-                (!Config.WHM_AoEHeals_LiturgyRaidwideOnly || RaidWideCasting()) &&
-                ContentCheck.IsInConfiguredContent(Config.WHM_AoEHeals_LiturgyDifficulty, Config.WHM_AoEHeals_LiturgyDifficultyListSet))
+                BellRaidwideCheckPassed &&
+                ContentCheck.IsInConfiguredContent(
+                    Config.WHM_AoEHeals_LiturgyDifficulty,
+                    Config.WHM_AoEHeals_LiturgyDifficultyListSet))
                 return LiturgyOfTheBell.Retarget(Medica1, bellTarget);
 
             var asylumTarget =
