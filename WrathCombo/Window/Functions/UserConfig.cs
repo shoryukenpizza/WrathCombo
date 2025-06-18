@@ -152,8 +152,7 @@ namespace WrathCombo.Window.Functions
         /// <param name="hasAdditionalChoice"></param>
         /// <param name="additonalChoiceCondition"></param>
         /// <param name="decimals">Number of decimal places shown in the slider and input box (e.g. 1 = 0.0f, 3 = 0.000f)</param>
-        public static void DrawSliderFloat(float minValue, float maxValue, string config, string sliderDescription, float itemWidth = 150, bool hasAdditionalChoice = false, string additonalChoiceCondition = "", int decimals = 3
-        )
+        public static void DrawSliderFloat(float minValue, float maxValue, string config, string sliderDescription, float itemWidth = 150, bool hasAdditionalChoice = false, string additonalChoiceCondition = "", int decimals = 3)
         {
             float output = PluginConfiguration.GetCustomFloatValue(config, minValue);
             if (output < minValue)
