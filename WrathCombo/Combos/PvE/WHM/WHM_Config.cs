@@ -214,6 +214,10 @@ internal partial class WHM
                     DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwideOnly,
                         "Only use when a Raidwide is casting",
                         "Will not use Temperance in the rotation unless we detect a Raidwide is casting.");
+                    DrawSliderInt(1, 50, WHM_AoEHeals_TemperanceHP,
+                        "Average party HP% to use at or below");
+                    DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceDifficulty, WHM_AoEHeals_TemperanceDifficultyListSet,
+                        "Select what content difficulties Temperance should be used in:");
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Lucid:
@@ -728,6 +732,39 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_LiturgyDifficultyListSet =
+                ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Average party HP% threshold to use Temperance.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 75 <br />
+        ///     <b>Range</b>: 1 - 50 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserInt WHM_AoEHeals_TemperanceHP =
+            new("WHM_AoEHeals_TemperanceHP", 30);
+
+        /// <summary>
+        ///     Content difficulty selector for Temperance.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
+        ///     and/or <see cref="ContentCheck.TopHalfContent" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserBoolArray WHM_AoEHeals_TemperanceDifficulty =
+            new("WHM_AoEHeals_TemperanceDifficulty", [true, false]);
+
+        /// <summary>
+        ///     Content difficulty list set for Temperance, set by
+        ///     <see cref="WHM_AoEHeals_TemperanceDifficulty" />.
+        /// </summary>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static readonly ContentCheck.ListSet
+            WHM_AoEHeals_TemperanceDifficultyListSet =
                 ContentCheck.ListSet.Halved;
 
         /// <summary>

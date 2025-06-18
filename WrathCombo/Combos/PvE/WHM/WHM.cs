@@ -334,7 +334,11 @@ internal partial class WHM : Healer
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Temperance) &&
                 ActionReady(Temperance) &&
                 (!Config.WHM_AoEHeals_TemperanceWeave || CanSpellWeave()) &&
-                (!Config.WHM_AoEHeals_TemperanceRaidwideOnly || RaidWideCasting()))
+                (!Config.WHM_AoEHeals_TemperanceRaidwideOnly || RaidWideCasting()) &&
+                GetPartyAvgHPPercent() <= Config.WHM_AoEHeals_TemperanceHP &&
+                ContentCheck.IsInConfiguredContent(
+                    Config.WHM_AoEHeals_TemperanceDifficulty,
+                    Config.WHM_AoEHeals_TemperanceDifficultyListSet))
                 return Temperance;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
