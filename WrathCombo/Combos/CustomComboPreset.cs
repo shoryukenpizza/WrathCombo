@@ -4737,33 +4737,21 @@ public enum CustomComboPreset
     RDM_Balance_Opener = 13110,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Basic Spell Combo Options", "Replace Jolt with various Spells.", RDM.JobID)]
-    RDM_ST_Spells = 13001,
-
-    [ParentCombo(RDM_ST_Spells)]
     [CustomComboInfo("Verthunder / Veraero Option", "Adds Verthunder & Veraero.", RDM.JobID)]
     RDM_ST_Spells_ThunderAero = 13210,
 
-    [ParentCombo(RDM_ST_Spells)]
+    [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Verfire / Verstone Option", "Adds Verfire & Verstone.", RDM.JobID)]
     RDM_ST_Spells_FireStone = 13220,
-
-    [ParentCombo(RDM_ST_Spells)]
-    [CustomComboInfo("Acceleration Option", "Add Acceleration when no Verfire/Verstone proc is available.", RDM.JobID)]
-    RDM_ST_Spell_Accel = 13211,
-
-    [ParentCombo(RDM_ST_Spell_Accel)]
-    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
-    RDM_ST_Spell_Accel_Movement = 13213,
-
-    [ParentCombo(RDM_ST_Spell_Accel)]
-    [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used.", RDM.JobID)]
-    RDM_ST_Spell_Accel_Swiftcast = 13212,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Verflare / Verholy Option", "Adds Verflare & Verholy when available.", RDM.JobID)]
+    RDM_ST_HolyFlare = 13510,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Melee Combo Option",
-    "Adds Zwerchhau & Redoublement, and burst abilities.\n" +
-    "**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
+        "Adds Zwerchhau & Redoublement, and burst abilities.\n" +
+        "**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
     RDM_ST_MeleeCombo = 13410,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
@@ -4771,49 +4759,101 @@ public enum CustomComboPreset
         "Adds Riposte to start the combo. Recommended for Auto Rotation",
         RDM.JobID)]
     RDM_ST_MeleeCombo_IncludeRiposte = 13413,
-
-    [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Use Manafication and Embolden Option", "Add Manafication and Embolden.",
-        RDM.JobID)]
-    RDM_ST_MeleeCombo_ManaEmbolden = 13411,
-
-    [ParentCombo(RDM_ST_MeleeCombo_ManaEmbolden)]
-    [CustomComboInfo("Hold for Double Melee Combo Option [Lv.90+]",
-        "Hold both actions until you can perform a double melee combo.", RDM.JobID)]
-    RDM_ST_MeleeCombo_ManaEmbolden_DoubleCombo = 13412,
-
+    
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Gap close with Corps-a-corps Option",
-        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", RDM.JobID)]
-    RDM_ST_MeleeCombo_CorpsGapCloser = 13430,
-
-    [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Unbalance Mana Option", "Use Acceleration to unbalance mana prior to starting melee combo.",
-        RDM.JobID)]
-    RDM_ST_MeleeCombo_UnbalanceMana = 13440,
-
+        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo or starting Manafication Burst", RDM.JobID)]
+    RDM_ST_MeleeCombo_GapCloser = 13430,
+    
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Enforced Melee Check", "Once the melee combo has started, don't switch away even if target is out of range.",
         RDM.JobID)]
-    RDM_ST_MeleeCombo_MeleeEnforced = 13414,
+    RDM_ST_MeleeCombo_MeleeCheck = 13414,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Embolden Option", "Add Embolden when Available.", RDM.JobID)]
+    RDM_ST_Embolden = 13411,
+    
+    [ParentCombo(RDM_ST_Embolden)]
+    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst", RDM.JobID)]
+    RDM_ST_Manafication = 13412,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available", RDM.JobID)]
+    RDM_ST_ViceOfThorns = 13710,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available", RDM.JobID)]
+    RDM_ST_Prefulgence = 13711,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Fleche Option", "Add Fleche when available", RDM.JobID)]
+    RDM_ST_Fleche = 13712,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available", RDM.JobID)]
+    RDM_ST_ContreSixte = 13713,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
+    RDM_ST_Engagement = 13714,
+    
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retian a charge for gapclosing.", RDM.JobID)]
+    RDM_ST_Corpsacorps = 13715,
+    
+    [ParentCombo(RDM_ST_Corpsacorps)]
+    [CustomComboInfo("Corpsacorps No Movement Option", "Will only use when it will result in no movement", RDM.JobID)]
+    RDM_ST_Corpsacorps_MeleeOnly = 13716,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Verflare / Verholy Option", "Adds Verflare & Verholy.", RDM.JobID)]
-    RDM_ST_MeleeFinisher = 13510,
+    [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
+    RDM_ST_Acceleration = 13211,
 
+    [ParentCombo(RDM_ST_Acceleration)]
+    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement", RDM.JobID)]
+    RDM_ST_Acceleration_Movement = 13213,
+
+    [ParentCombo(RDM_ST_DPS)]
+    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available", RDM.JobID)]
+    RDM_ST_Swiftcast = 13212,
+    
+    [ParentCombo(RDM_ST_Swiftcast)]
+    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only", RDM.JobID)]
+    RDM_ST_SwiftcastMovement = 13214,
+    
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
     RDM_ST_Lucid = 13610,
+    
+    
+    //[ParentCombo(RDM_ST_DPS)]
+    //[CustomComboInfo("Basic Spell Combo Options", "Replace Jolt with various Spells.", RDM.JobID)]
+    //RDM_ST_Spells = 13001,
 
-    [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Melee combo overcap protection",
-        "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
-    RDM_ST_Melee_Overcap_Protection = 13660,
+    //[ParentCombo(RDM_ST_MeleeCombo_ManaEmbolden)]
+    //[CustomComboInfo("Hold for Double Melee Combo Option [Lv.90+]",
+    //    "Hold both actions until you can perform a double melee combo.", RDM.JobID)]
+    //RDM_ST_MeleeCombo_ManaEmbolden_DoubleCombo = 13412,
 
-    [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_ST_oGCD = 13240,
+    //[ParentCombo(RDM_ST_MeleeCombo)]
+    //[CustomComboInfo("Unbalance Mana Option", "Use Acceleration to unbalance mana prior to starting melee combo.",
+     //   RDM.JobID)]
+    //RDM_ST_MeleeCombo_UnbalanceMana = 13440,
+
+    //[ParentCombo(RDM_ST_MeleeCombo)]
+    //[CustomComboInfo("Melee combo overcap protection",
+     //   "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
+    //RDM_ST_Melee_Overcap_Protection = 13660,
+
+    //[ParentCombo(RDM_ST_DPS)]
+    //[CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
+    //RDM_ST_oGCD = 13240,
+    
+    
+    
+    
 
     #endregion
 

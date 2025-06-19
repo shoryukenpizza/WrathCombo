@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using ECommons.GameHelpers;
 using System;
@@ -13,11 +13,10 @@ namespace WrathCombo.Combos.PvE;
 internal partial class RDM
 {
     #region ID's
-
-    //7.0 Note
-    //Gauge information is available via RDMMana
+    
     public const byte JobID = 35;
-
+    
+    #region Spells
     public const uint
         Verthunder = 7505,
         Veraero = 7507,
@@ -57,16 +56,17 @@ internal partial class RDM
         ViceOfThorns = 37005,
         GrandImpact = 37006,
         Prefulgence = 37007,
-
-        //Buffs
         Acceleration = 7518,
         Manafication = 7521,
         Embolden = 7520,
         MagickBarrier = 25857;
-
+    #endregion
+    
+    #region Buffs & Debuffs
     public static class Buffs
     {
         public const ushort
+            Swiftcast = 167,
             VerfireReady = 1234,
             VerstoneReady = 1235,
             Dualcast = 1249,
@@ -79,14 +79,16 @@ internal partial class RDM
             MagickedSwordPlay = 3875,
             ThornedFlourish = 3876,
             GrandImpactReady = 3877,
-            PrefulugenceReady = 3878;
+            PrefulgenceReady = 3878;
     }
 
     public static class Debuffs
     {
         // public const short placeholder = 0;
     }
-
+    #endregion
+    
+    #region Traits
     public static class Traits
     {
         public const uint
@@ -95,18 +97,157 @@ internal partial class RDM
             EnhancedManaficationIII = 622,
             EnhancedAccelerationII = 624;
     }
-
     #endregion
 
-    internal static RDMOpenerMaxLevel1 Opener1 = new();
-    internal static WrathOpener Opener()
+    #endregion
+    
+    #region Variables
+
+    // Combo List
+    internal static readonly List<uint>
+    ComboActionsList =
+    [
+        Riposte, EnchantedRiposte, Zwerchhau, EnchantedZwerchhau, Redoublement, EnchantedRedoublement, Verholy,
+        Verflare, Scorch, Moulinet, EnchantedMoulinet, EnchantedMoulinetDeux, EnchantedMoulinetTrois
+    ];
+    internal static bool InCombo => ComboActionsList.Contains(ComboAction);
+    
+    // Gauge Stuff
+    private static RDMGauge Gauge => GetJobGauge<RDMGauge>();
+    internal static bool BlackHigher => Gauge.BlackMana >= Gauge.WhiteMana;
+    internal static bool WhiteHigher => Gauge.BlackMana < Gauge.WhiteMana;
+    internal static bool HasEnoughManaST => Gauge.BlackMana >= ManaLevelST() && Gauge.WhiteMana >= ManaLevelST();
+    internal static bool HasManaStacks => Gauge.ManaStacks == 3;
+    
+    //Floats
+    internal static float EmboldenCD => GetCooldownRemainingTime(Embolden);
+    internal static float VerFireRemaining => GetStatusEffectRemainingTime(Buffs.VerfireReady);
+    internal static float VerStoneRemaining => GetStatusEffectRemainingTime(Buffs.VerstoneReady);
+    internal static float GrandImpactRemaining => GetStatusEffectRemainingTime(Buffs.GrandImpactReady);
+    internal static float AccelerationChargeCD => GetCooldownChargeRemainingTime(Acceleration);
+    
+    //Bools
+    internal static bool CanVerStone => HasStatusEffect(Buffs.VerstoneReady);
+    internal static bool CanVerFire => HasStatusEffect(Buffs.VerfireReady);
+    internal static bool CanVerFireAndStone => HasStatusEffect(Buffs.VerstoneReady) && HasStatusEffect(Buffs.VerfireReady);
+    internal static bool CanGrandImpact => HasStatusEffect(Buffs.GrandImpactReady);
+    internal static bool CanMagickedSwordplay => HasStatusEffect(Buffs.MagickedSwordPlay);
+    internal static bool CanPrefulgence => HasStatusEffect(Buffs.PrefulgenceReady);
+    internal static bool CanViceOfThorns => HasStatusEffect(Buffs.ThornedFlourish) && !JustUsed(Embolden, 6f);
+    internal static bool HasDualcast => HasStatusEffect(Buffs.Dualcast);
+    internal static bool HasAccelerate => HasStatusEffect(Buffs.Acceleration);
+    internal static bool HasSwiftcast => HasStatusEffect(Buffs.Swiftcast);
+    internal static bool HasEmbolden => HasStatusEffect(Buffs.Embolden);
+    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && EmboldenCD > 10;
+    internal static bool CanAccelerationMovement => IsMoving() && HasCharges(Acceleration) && (!HasDualcast || !HasAccelerate || !InCombo);
+    internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && EmboldenCD > 10;
+    internal static bool CanSwiftcastMovement => Role.CanSwiftcast() && CanInstantCD && IsMoving();
+    internal static bool CanInstantCD => !InCombo && !HasSwiftcast && !CanGrandImpact && !HasEmbolden && !HasDualcast && !HasAccelerate && !InCombo;
+    internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && 
+                                          (HasEmbolden || GetRemainingCharges(Engagement) >= 1 && GetCooldownChargeRemainingTime(Engagement) < 3);
+    internal static bool CanCorps => GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
+
+    internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
+    
+    
+    
+    #endregion
+    
+    #region Functions
+    
+    #region Melee Mana Start Calculator
+    internal static int ManaLevelST()
     {
-        if (Opener1.LevelChecked)
-            return Opener1;
-
-        return WrathOpener.Dummy;
+        if (LevelChecked(Embolden)) // Pooling Config
+        {
+            if (HasEmbolden)
+                return 50;
+            switch (EmboldenCD)
+            {
+                case > 80:
+                    return 60;
+                case > 40 and <80:
+                    return 50;
+                case >= 15 and <= 35:
+                    return 70;
+                case < 15:
+                    return 90;
+            }
+        }
+        if (LevelChecked(Redoublement))
+            return 50;
+        return LevelChecked(Zwerchhau) ? 35 : 20;
     }
+    #endregion
+    
+    #region Spell Casts
+    internal static bool UseVerStone()
+    {
+        if (!CanVerStone || HasDualcast || HasAccelerate || HasSwiftcast || VerStoneRemaining < 2.5 ||
+            (CanVerFire && VerFireRemaining < 10 && VerFireRemaining < VerStoneRemaining)) 
+            return false;
+        
+        if (BlackHigher || WhiteHigher && !CanVerFire) return true;
 
+        return false;
+    }
+    internal static bool UseVerFire()
+    {
+        if (!CanVerFire || HasDualcast || HasAccelerate || HasSwiftcast || VerFireRemaining < 2.5 ||
+            (CanVerStone && VerStoneRemaining < 10 && VerStoneRemaining < VerFireRemaining)) 
+            return false;
+        
+        if (WhiteHigher || BlackHigher && !CanVerStone) return true;
+
+        return false;
+    }
+    internal static bool UseGrandImpact()
+    {
+        if (HasDualcast || HasAccelerate || HasSwiftcast) return false;
+
+        if (VerFireRemaining < 5 || VerStoneRemaining < 5) return false;
+        
+        if (CanGrandImpact) return true;
+
+        return false;
+    }
+    
+    internal static uint UseInstantCast(uint actionID)
+    {
+        if (BlackHigher)
+            return CanVerStone ?
+                OriginalHook(Verthunder) :
+                OriginalHook(Veraero);
+
+        if (WhiteHigher)
+            return CanVerFire ?
+                OriginalHook(Veraero):
+                OriginalHook(Verthunder);
+    
+        return actionID;
+    }
+    
+    internal static uint UseHolyFlare(uint actionID)
+    {
+        if (BlackHigher)
+        {
+            if (CanVerStone)
+                return CanVerFire ? Verholy : Verflare;
+            return Verholy;
+        }
+        if (WhiteHigher)
+        {
+            if (CanVerFire)
+                return CanVerStone ? Verflare : Verholy;
+            return Verflare;
+        }
+        return actionID;
+    }
+    #endregion
+    
+    #endregion
+    
+    #region Old Shit
     private class RDMMana
     {
         private static RDMGauge Gauge => GetJobGauge<RDMGauge>();
@@ -115,6 +256,8 @@ internal partial class RDM
         internal static int White => AdjustMana(Gauge.WhiteMana);
         internal static int Min => AdjustMana(Math.Min(Gauge.BlackMana, Gauge.WhiteMana));
         internal static int Max => AdjustMana(Math.Max(Gauge.BlackMana, Gauge.WhiteMana));
+        
+        
         private static int AdjustMana(byte mana)
         {
             if (LevelChecked(Manafication))
@@ -167,7 +310,7 @@ internal partial class RDM
         if (newActionID == 0
             && prefulg
             && TraitLevelChecked(Traits.EnhancedManaficationIII)
-            && HasStatusEffect(Buffs.PrefulugenceReady))
+            && HasStatusEffect(Buffs.PrefulgenceReady))
             newActionID = Prefulgence;
 
         if (newActionID == 0
@@ -783,46 +926,54 @@ internal partial class RDM
             return (useFire, useStone, useThunder, useAero, useThunder2, useAero2);
         }
     }
+#endregion
 
+    #region Opener
+    
+    internal static RDMOpenerMaxLevel1 Opener1 = new();
+    internal static WrathOpener Opener()
+    {
+        return  (Opener1.LevelChecked) ? Opener1 : WrathOpener.Dummy;
+    }
     internal class RDMOpenerMaxLevel1 : WrathOpener
     {
         public override List<uint> OpenerActions { get; set; } =
         [
-            Veraero3,
+            Veraero3, 
             Verthunder3,
             Role.Swiftcast,
             Verthunder3,
-            Fleche,
+            Fleche, // 5
             Acceleration,
             Verthunder3,
             Embolden,
             Manafication,
-            EnchantedRiposte,
+            EnchantedRiposte, //10
             ContreSixte,
             EnchantedZwerchhau,
             Engagement,
             EnchantedRedoublement,
-            Corpsacorps,
+            Corpsacorps, //15
             Verholy,
             ViceOfThorns,
             Scorch,
             Engagement,
-            Corpsacorps,
+            Corpsacorps, //20
             Resolution,
             Prefulgence,
             GrandImpact,
             Acceleration,
-            Verfire,
+            Verfire,   //25
             GrandImpact,
             Verthunder3,
             Fleche,
             Veraero3,
-            Verfire,
+            Verfire,  //30
             Verthunder3,
             Verstone,
             Veraero3,
             Role.Swiftcast,
-            Veraero3,
+            Veraero3, //35
             ContreSixte
         ];
         public override int MinOpenerLevel => 100;
@@ -846,4 +997,5 @@ internal partial class RDM
             return true;
         }
     }
+    #endregion
 }
