@@ -620,5 +620,38 @@ internal partial class RDM : Caster
         }
     }
     
+    internal class RDM_OGCDs : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_OGCDs;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Fleche)
+                return actionID;
+
+            if (ActionReady(Fleche))
+                return Fleche;
+            
+            if (ActionReady(ContreSixte)) 
+                return ContreSixte;
+            
+            if (HasStatusEffect(Buffs.ThornedFlourish))
+                return ViceOfThorns;
+            
+            if (CanPrefulgence)
+                return Prefulgence;
+                
+            if (GetRemainingCharges(Engagement) == 2 || 
+                (HasEmbolden || !LevelChecked(Embolden) || IsNotEnabled(CustomComboPreset.RDM_OGCDs_EngagementPool)) & HasCharges(Engagement) ||
+                GetRemainingCharges(Engagement) == 1 && GetCooldownChargeRemainingTime(Engagement) < EmboldenCD)
+                return Engagement;
+                
+            if (GetRemainingCharges(Corpsacorps) == 2 && (InMeleeRange() || IsNotEnabled(CustomComboPreset.RDM_OGCDs_CorpsMelee)))
+                return Corpsacorps;
+
+            return GetCooldownRemainingTime(ContreSixte) < GetCooldownRemainingTime(Fleche) ? ContreSixte : actionID;
+        }
+    }
+    
     #endregion 
 }

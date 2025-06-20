@@ -4981,6 +4981,21 @@ public enum CustomComboPreset
     [CustomComboInfo("Magick Barrier Overlap Protection",
         "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier by replacing it with Savage Blade. \nApplies to suboption for Addle as well.", RDM.JobID)]
     RDM_MagickProtection = 13413,
+    
+    [ReplaceSkill(RDM.Fleche)]
+    [CustomComboInfo("OGCDs One Button Feature",
+        "Replaces Fleche with Contre Sixte, Vice of Thorns, Prefulgence, Engagement, and One charge of Corps-a-corps", RDM.JobID)]
+    RDM_OGCDs = 13420,
+    
+    [ParentCombo(RDM_OGCDs)]
+    [CustomComboInfo("Engagement Pooling Option",
+        "Will not spend both Engagement Charges unless you have Embolden ", RDM.JobID)]
+    RDM_OGCDs_EngagementPool = 13421,
+    
+    [ParentCombo(RDM_OGCDs)]
+    [CustomComboInfo("Corps-a-corps Melee only Option",
+        "Needs to be in melee range to use Corps-a-corps", RDM.JobID)]
+    RDM_OGCDs_CorpsMelee = 13422,
 
     [Variant]
     [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
@@ -5002,7 +5017,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13419
+    //Last Used 13422
     #endregion
 
     #endregion
