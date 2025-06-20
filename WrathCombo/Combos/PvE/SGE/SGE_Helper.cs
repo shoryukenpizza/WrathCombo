@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -192,6 +193,12 @@ internal partial class SGE
             Dosis3,
             Dosis3
         ];
+
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
+        [
+            ([2], () => 3)
+        ];
+        
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
         public override bool HasCooldowns() =>
@@ -227,13 +234,18 @@ internal partial class SGE
             Dosis3,
             Dosis3
         ];
+
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
+        [
+            ([2], () => 3)
+        ];
+        
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
         public override bool HasCooldowns() =>
             GetRemainingCharges(Phlegma3) is 2 &&
             IsOffCooldown(Psyche) &&
-            IsOffCooldown(Pneuma) &&
-            (CountdownRemaining is < 2);
+            IsOffCooldown(Pneuma);
     }
 
     #endregion
