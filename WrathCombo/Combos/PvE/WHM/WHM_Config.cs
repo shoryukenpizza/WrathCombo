@@ -231,7 +231,7 @@ internal partial class WHM
                     
                     DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwide,
                         "Also use for Raidwides",
-                        "Will also use for mitigation before raidwides (and a healing boost after them), if the party is low enough",
+                        "Will also use for mitigation before raidwides (and a healing boost after them), if the party is low enough.",
                         indentDescription: true);
                     if (WHM_AoEHeals_TemperanceRaidwide)
                     {
