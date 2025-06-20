@@ -35,7 +35,7 @@ internal partial class RDM : Caster
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
-                if (ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                if (ActionReady(Embolden) && !HasEmbolden) 
                     return Embolden;
                 
                 if (ActionReady(ContreSixte)) 
@@ -76,10 +76,10 @@ internal partial class RDM : Caster
             
             if (InMeleeRange())
             {
-                if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                     return EnchantedRedoublement;
                 
-                if (ComboAction is Riposte or EnchantedRiposte)
+                if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                     return EnchantedZwerchhau;
                 
                 if (ActionReady(EnchantedRiposte) && InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
@@ -135,7 +135,7 @@ internal partial class RDM : Caster
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
-                if (ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                if (ActionReady(Embolden) && !HasEmbolden) 
                     return Embolden;
                 
                 if (ActionReady(ContreSixte)) 
@@ -182,9 +182,9 @@ internal partial class RDM : Caster
                 
                 if (!ActionReady(Moulinet) && InMeleeRange())
                 {
-                    if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                    if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
                         return EnchantedRedoublement;
-                    if (ComboAction is Riposte or EnchantedRiposte)
+                    if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                         return EnchantedZwerchhau;
                     if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
                         return EnchantedRiposte; 
@@ -202,7 +202,7 @@ internal partial class RDM : Caster
             if (!CanInstantCast)
                 return UseThunderAeroAoE(actionID);
             
-            return actionID;
+            return !LevelChecked(Scatter) ? UseInstantCastST(actionID) : actionID;
             
             #endregion
            
@@ -245,7 +245,7 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_ST_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Embolden) && ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                if (IsEnabled(CustomComboPreset.RDM_ST_Embolden) && ActionReady(Embolden) && !HasEmbolden) 
                     return Embolden;
                 
                 if (IsEnabled(CustomComboPreset.RDM_ST_ContreSixte) && ActionReady(ContreSixte)) 
@@ -293,9 +293,9 @@ internal partial class RDM : Caster
             {
                 if (InMeleeRange() || IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_MeleeCheck))
                 {
-                    if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                    if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                         return EnchantedRedoublement;
-                    if (ComboAction is Riposte or EnchantedRiposte)
+                    if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                         return EnchantedZwerchhau;
                 }
                 
@@ -354,7 +354,7 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
                     return Manafication;
                 
-                if (IsEnabled(CustomComboPreset.RDM_AoE_Embolden) && ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Embolden) && ActionReady(Embolden) && !HasEmbolden) 
                     return Embolden;
                 
                 if (IsEnabled(CustomComboPreset.RDM_AoE_ContreSixte) && ActionReady(ContreSixte)) 
@@ -408,9 +408,9 @@ internal partial class RDM : Caster
                 
                 if (!ActionReady(Moulinet) && InMeleeRange())
                 {
-                    if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                    if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                         return EnchantedRedoublement;
-                    if (ComboAction is Riposte or EnchantedRiposte)
+                    if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                         return EnchantedZwerchhau;
                     if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
                         return EnchantedRiposte; 
@@ -427,8 +427,8 @@ internal partial class RDM : Caster
             
             if (IsEnabled(CustomComboPreset.RDM_AoE_ThunderAero) && !CanInstantCast)
                 return UseThunderAeroAoE(actionID);
-            
-            return actionID;
+
+            return !LevelChecked(Scatter) ? UseInstantCastST(actionID) : actionID;
             
             #endregion
         }
@@ -552,12 +552,13 @@ internal partial class RDM : Caster
             if (actionID is not Riposte)
                 return actionID;
 
-            return ComboAction switch
-            {
-                Zwerchhau or EnchantedZwerchhau => EnchantedRedoublement,
-                Riposte or EnchantedRiposte => EnchantedZwerchhau,
-                _ => actionID
-            };
+            if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
+                return EnchantedRedoublement;
+            
+            if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
+                return EnchantedZwerchhau;
+
+            return actionID;
         }
     }
 

@@ -139,14 +139,16 @@ internal partial class RDM
     internal static bool HasAccelerate => HasStatusEffect(Buffs.Acceleration);
     internal static bool HasSwiftcast => HasStatusEffect(Buffs.Swiftcast);
     internal static bool HasEmbolden => HasStatusEffect(Buffs.Embolden);
-    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && (EmboldenCD > 15 || LevelChecked(Embolden));
-    internal static bool CanAccelerationMovement => IsMoving() && HasCharges(Acceleration) && (!HasDualcast || !HasAccelerate || !InCombo);
+    internal static bool CanAcceleration => LevelChecked(Acceleration) && !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && 
+                                            (EmboldenCD > 15 || LevelChecked(Embolden));
+    internal static bool CanAccelerationMovement => LevelChecked(Acceleration) && IsMoving() && HasCharges(Acceleration) 
+                                                    && (!HasDualcast || !HasAccelerate || !InCombo);
     internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && (EmboldenCD > 10 || LevelChecked(Embolden));
     internal static bool CanSwiftcastMovement => Role.CanSwiftcast() && CanInstantCD && IsMoving();
     internal static bool CanInstantCD => !InCombo && !HasSwiftcast && !CanGrandImpact && !HasEmbolden && !HasDualcast && !HasAccelerate && !InCombo;
-    internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && 
+    internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && LevelChecked(Engagement) &&
                                           (HasEmbolden || GetRemainingCharges(Engagement) >= 1 && GetCooldownChargeRemainingTime(Engagement) < 3);
-    internal static bool CanCorps => GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
+    internal static bool CanCorps => LevelChecked(Corpsacorps) && GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
     internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
     internal static bool CanNotMagickBarrier => !ActionReady(MagickBarrier) || HasStatusEffect(Buffs.MagickBarrier, anyOwner: true);
     
