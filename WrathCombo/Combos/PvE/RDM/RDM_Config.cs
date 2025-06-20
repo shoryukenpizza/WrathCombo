@@ -15,21 +15,15 @@ internal partial class RDM
             RDM_VariantCure = new("RDM_VariantCure"),
             RDM_ST_Lucid_Threshold = new("RDM_LucidDreaming_Threshold", 6500),
             RDM_AoE_Lucid_Threshold = new("RDM_AoE_Lucid_Threshold", 6500),
-            RDM_AoE_MoulinetRange = new("RDM_MoulinetRange"),
             RDM_BalanceOpener_Content = new("RDM_BalanceOpener_Content", 1),
             RDM_ST_Acceleration_Charges = new("RDM_ST_Acceleration_Charges", 0),
             RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0);
 
         public static UserBool
-            RDM_Riposte_oGCD_Engagement_Pooling = new ("RDM_Riposte_oGCD_Engagement_Pooling"),
-            RDM_Riposte_oGCD_CorpACorps_Melee =   new ("RDM_Riposte_oGCD_CorpACorps_Melee"),
-            RDM_Riposte_oGCD_CorpACorps_Pooling = new ("RDM_Riposte_oGCD_CorpACorps_Pooling"),
-
             RDM_Reprise_oGCD_Engagement_Pooling = new("RDM_Reprise_oGCD_Engagement_Pooling"),
             RDM_Reprise_oGCD_CorpACorps_Melee =   new("RDM_Reprise_oGCD_CorpACorps_Melee"),
             RDM_Reprise_oGCD_CorpACorps_Pooling = new("RDM_Reprise_oGCD_CorpACorps_Pooling");
         public static UserBoolArray
-            RDM_Riposte_oGCD_Actions = new("RDM_Riposte_oGCD_Actions"),
             RDM_Reprise_oGCD_Actions = new("RDM_Reprise_oGCD_Actions");
 
         internal static void Draw(CustomComboPreset preset)

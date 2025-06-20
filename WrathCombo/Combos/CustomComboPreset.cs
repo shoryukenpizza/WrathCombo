@@ -4915,30 +4915,25 @@ public enum CustomComboPreset
 
     #region Stand Alone Features
 
-    [ReplaceSkill(RDM.Veraero, RDM.Veraero3, RDM.Verthunder, RDM.Verthunder3)]
-    [CustomComboInfo("Spell Combo on Veraero / Verthunder", "Replaces Veraero & Verthunder with jolt.", RDM.JobID)]
-    RDM_VerSpell = 13400,
+    [ReplaceSkill(RDM.Veraero, RDM.Veraero3)]
+    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with jolt.", RDM.JobID)]
+    RDM_VerAero = 13400,
 
-    [ParentCombo(RDM_VerSpell)]
-    [CustomComboInfo("Add Verstone & Verfire", "Replaces Veraero with Verstone, and Verthunder with Verfire", RDM.JobID)]
-    RDM_VerSpell_StoneFire = 13401,
+    [ParentCombo(RDM_VerAero)]
+    [CustomComboInfo("Add Verstone", "Replaces Veraero with Verstone", RDM.JobID)]
+    RDM_VerAero_Stone = 13401,
+    
+    [ReplaceSkill(RDM.Verthunder, RDM.Verthunder3)]
+    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with jolt.", RDM.JobID)]
+    RDM_VerThunder = 13418,
 
-    [ParentCombo(RDM_VerSpell)]
-    [CustomComboInfo("Add Scorch & Resolution", "Adds Scorch and Resolution", RDM.JobID)]
-    RDM_VerSpell_JoltFinisher = 13402,
-
+    [ParentCombo(RDM_VerThunder)]
+    [CustomComboInfo("Add Verfire", "Replaces Verthunder With Verfire", RDM.JobID)]
+    RDM_VerThunder_Fire = 13419,
 
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
     RDM_Riposte = 13403,
-
-    [ParentCombo(RDM_Riposte)]
-    [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Riposte_oGCD = 13404,
-
-    [ReplaceSkill(RDM.Reprise)]
-    [CustomComboInfo("Reprise Movement oGCDs", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Reprise = 13405,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Caster_Raise)]
