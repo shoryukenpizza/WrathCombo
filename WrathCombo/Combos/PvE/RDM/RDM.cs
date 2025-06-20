@@ -6,7 +6,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class RDM : Caster
 {
-
     #region Simple Modes
     
     internal class RDM_ST_SimpleMode : CustomCombo

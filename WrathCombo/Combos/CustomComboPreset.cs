@@ -4725,7 +4725,7 @@ public enum CustomComboPreset
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Balance Opener (Level 100)",
-        "Adds the Balance opener at level 100..\n**Must move into melee range before melee combo**", RDM.JobID)]
+        "Adds the Balance opener at level 100..\n**Must move into melee range before melee combo for standard**", RDM.JobID)]
     RDM_Balance_Opener = 13002,
 
     [ParentCombo(RDM_ST_DPS)]

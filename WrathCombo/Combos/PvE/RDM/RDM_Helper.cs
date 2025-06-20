@@ -246,12 +246,16 @@ internal partial class RDM
 
     #region Opener
     
-    internal static RDMOpenerMaxLevel1 Opener1 = new();
+    internal static Standard Opener1 = new();
+    internal static GapClosing Opener2 = new();
     internal static WrathOpener Opener()
     {
+        if (Config.RDM_Opener_Selection == 0 && Opener1.LevelChecked) return Opener1;
+        if (Config.RDM_Opener_Selection == 1 && Opener2.LevelChecked) return Opener2;
+        
         return  (Opener1.LevelChecked) ? Opener1 : WrathOpener.Dummy;
     }
-    internal class RDMOpenerMaxLevel1 : WrathOpener
+    internal class Standard : WrathOpener
     {
         public override List<uint> OpenerActions { get; set; } =
         [
@@ -309,6 +313,69 @@ internal partial class RDM
                     GetRemainingCharges(Engagement) < 2 ||
                     GetRemainingCharges(Corpsacorps) < 2)
                     return false;
+
+            return true;
+        }
+    }
+    
+    internal class GapClosing : WrathOpener
+    {
+        public override List<uint> OpenerActions { get; set; } =
+        [
+            Veraero3, 
+            Verthunder3,
+            Role.Swiftcast,
+            Verthunder3,
+            Fleche, // 5
+            Acceleration,
+            Verthunder3,
+            Embolden,
+            Manafication,
+            GrandImpact, //10
+            Corpsacorps,
+            ContreSixte,
+            EnchantedRiposte,
+            Engagement,
+            EnchantedZwerchhau, //15
+            EnchantedRedoublement,
+            Verholy,
+            ViceOfThorns,
+            Scorch,
+            Engagement, //20
+            Corpsacorps, 
+            Resolution,
+            Prefulgence,
+            Acceleration,
+            Verfire,   //25
+            GrandImpact,
+            Verthunder3,
+            Fleche,
+            Veraero3,
+            Verfire,  //30
+            Verthunder3,
+            Verstone,
+            Veraero3,
+            Role.Swiftcast,
+            Veraero3, //35
+            ContreSixte
+        ];
+        public override int MinOpenerLevel => 100;
+        public override int MaxOpenerLevel => 109;
+
+        public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
+        [
+            ([1], Jolt3, () => PartyInCombat() && !Player.Object.IsCasting)
+        ];
+
+        internal override UserData? ContentCheckConfig => Config.RDM_BalanceOpener_Content;
+
+        public override bool HasCooldowns()
+        {
+            if (!ActionsReady([Role.Swiftcast, Fleche, Embolden, ContreSixte]) || GetRemainingCharges(Acceleration) < 2 ||
+                !IsOffCooldown(Manafication) ||
+                GetRemainingCharges(Engagement) < 2 ||
+                GetRemainingCharges(Corpsacorps) < 2)
+                return false;
 
             return true;
         }

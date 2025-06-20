@@ -17,14 +17,20 @@ internal partial class RDM
             RDM_AoE_Lucid_Threshold = new("RDM_AoE_Lucid_Threshold", 6500),
             RDM_BalanceOpener_Content = new("RDM_BalanceOpener_Content", 1),
             RDM_ST_Acceleration_Charges = new("RDM_ST_Acceleration_Charges", 0),
-            RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0);
+            RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0),
+            RDM_Opener_Selection = new("RDM_Opener_Selection", 0);
 
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
             {
                 case CustomComboPreset.RDM_Balance_Opener:
+                    DrawHorizontalRadioButton(RDM_Opener_Selection, "Standard Opener", "Balance Standard Opener", 0);
+                    DrawHorizontalRadioButton(RDM_Opener_Selection, "GapClosing Adjusted Standard Opener", "Shifts the melee a little bit to put a gapcloser in", 1);
+
+                    ImGui.Indent();
                     DrawBossOnlyChoice(RDM_BalanceOpener_Content);
+                    ImGui.Unindent();
                     break;
                 
                 case CustomComboPreset.RDM_Variant_Cure:
