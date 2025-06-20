@@ -18,14 +18,9 @@ internal partial class RDM
             RDM_AoE_MoulinetRange = new("RDM_MoulinetRange"),
             RDM_BalanceOpener_Content = new("RDM_BalanceOpener_Content", 1),
             RDM_ST_Acceleration_Charges = new("RDM_ST_Acceleration_Charges", 0),
-            RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0),
-            RDM_AoE_AccelerationMovement_Charges = new("RDM_AoE_AccelerationMovement_Charges", 0);
+            RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0);
 
         public static UserBool
-            RDM_AoE_oGCD_Engagement_Pooling = new("RDM_AoE_oGCD_Engagement_Pooling"),
-            RDM_AoE_oGCD_CorpACorps_Melee = new("RDM_AoE_oGCD_CorpACorps_Melee"),
-            RDM_AoE_oGCD_CorpACorps_Pooling = new("RDM_AoE_oGCD_CorpACorps_Pooling"),
-
             RDM_Riposte_oGCD_Engagement_Pooling = new ("RDM_Riposte_oGCD_Engagement_Pooling"),
             RDM_Riposte_oGCD_CorpACorps_Melee =   new ("RDM_Riposte_oGCD_CorpACorps_Melee"),
             RDM_Riposte_oGCD_CorpACorps_Pooling = new ("RDM_Riposte_oGCD_CorpACorps_Pooling"),
@@ -34,7 +29,6 @@ internal partial class RDM
             RDM_Reprise_oGCD_CorpACorps_Melee =   new("RDM_Reprise_oGCD_CorpACorps_Melee"),
             RDM_Reprise_oGCD_CorpACorps_Pooling = new("RDM_Reprise_oGCD_CorpACorps_Pooling");
         public static UserBoolArray
-            RDM_AoE_oGCD_Actions = new("RDM_AoE_oGCD_Actions"),
             RDM_Riposte_oGCD_Actions = new("RDM_Riposte_oGCD_Actions"),
             RDM_Reprise_oGCD_Actions = new("RDM_Reprise_oGCD_Actions");
 
@@ -61,10 +55,6 @@ internal partial class RDM
                     DrawSliderInt(0, 10000, RDM_ST_Lucid_Threshold, $"Add {Role.LucidDreaming.ActionName()} when below this MP", sliderIncrement: Hundreds);
                     break;
 
-                case CustomComboPreset.RDM_AoE_MeleeCombo:
-                    DrawSliderInt(3, 8, RDM_AoE_MoulinetRange, $"Range to use first {Moulinet.ActionName()}, no range restrictions after first {Moulinet.ActionName()}", sliderIncrement: Ones);
-                    break;
-
                 case CustomComboPreset.RDM_AoE_Lucid:
                     DrawSliderInt(0, 10000, RDM_AoE_Lucid_Threshold, $"Add {Role.LucidDreaming.ActionName()} when below this MP", sliderIncrement: Hundreds);
                     break;
@@ -77,12 +67,8 @@ internal partial class RDM
                     DrawSliderInt(0, 1, RDM_ST_Acceleration_Charges, "How many charges to keep ready\n (0 = Use All)");
                     break;
 
-                case CustomComboPreset.RDM_AoE_Accel:
+                case CustomComboPreset.RDM_AoE_Acceleration:
                     DrawSliderInt(0, 1, RDM_AoE_Acceleration_Charges, "How many charges to keep ready?\n (0 = Use All)");
-                    break;
-
-                case CustomComboPreset.RDM_AoE_Accel_Movement:
-                    DrawSliderInt(0, 1, RDM_AoE_AccelerationMovement_Charges, "How many charges to keep ready?\n (0 = Use All)");
                     break;
 
             }

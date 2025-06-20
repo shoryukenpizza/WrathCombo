@@ -116,7 +116,7 @@ internal partial class RDM
     private static RDMGauge Gauge => GetJobGauge<RDMGauge>();
     internal static bool BlackHigher => Gauge.BlackMana >= Gauge.WhiteMana;
     internal static bool WhiteHigher => Gauge.BlackMana < Gauge.WhiteMana;
-    internal static bool HasEnoughManaST => Gauge.BlackMana >= ManaLevelST() && Gauge.WhiteMana >= ManaLevelST();
+    internal static bool HasEnoughMana => Gauge.BlackMana >= ManaLevel() && Gauge.WhiteMana >= ManaLevel();
     internal static bool HasManaStacks => Gauge.ManaStacks == 3;
     internal static bool CanFlare => BlackHigher && Gauge.BlackMana - Gauge.WhiteMana < 18;
     internal static bool CanHoly => WhiteHigher && Gauge.WhiteMana - Gauge.BlackMana < 18;
@@ -140,9 +140,9 @@ internal partial class RDM
     internal static bool HasAccelerate => HasStatusEffect(Buffs.Acceleration);
     internal static bool HasSwiftcast => HasStatusEffect(Buffs.Swiftcast);
     internal static bool HasEmbolden => HasStatusEffect(Buffs.Embolden);
-    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && EmboldenCD > 10;
+    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && (EmboldenCD > 10 || LevelChecked(Embolden));
     internal static bool CanAccelerationMovement => IsMoving() && HasCharges(Acceleration) && (!HasDualcast || !HasAccelerate || !InCombo);
-    internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && EmboldenCD > 10;
+    internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && (EmboldenCD > 10 || LevelChecked(Embolden));
     internal static bool CanSwiftcastMovement => Role.CanSwiftcast() && CanInstantCD && IsMoving();
     internal static bool CanInstantCD => !InCombo && !HasSwiftcast && !CanGrandImpact && !HasEmbolden && !HasDualcast && !HasAccelerate && !InCombo;
     internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && 
@@ -158,25 +158,25 @@ internal partial class RDM
     #region Functions
     
     #region Melee Mana Start Calculator
-    internal static int ManaLevelST()
+    internal static int ManaLevel()
     {
-        if (LevelChecked(Embolden)) // Pooling Config
+        if (LevelChecked(Embolden)) // Level checks for Embolden then pools certain amounts of mana throughout the cd. 
         {
             if (HasEmbolden)
                 return 50;
             switch (EmboldenCD)
             {
                 case > 80:
-                    return 60;
+                    return 60; //Fresh out of Embolden window requiring slightly higher to keep a third melee combo from happening before a few of the procs can be used
                 case > 40 and <80:
-                    return 50;
+                    return 50; // Normal operating fire at 50
                 case >= 15 and <= 35:
-                    return 70;
+                    return 70; // As it gets closer increases level so if we do a melee combo we still have enough for double melee burst
                 case < 15:
-                    return 90;
+                    return 90; // to prevent it from firing unless it is about to cap, should only fire for manual embolden users. 
             }
         }
-        if (LevelChecked(Redoublement))
+        if (LevelChecked(Redoublement)) // Low level stuff
             return 50;
         return LevelChecked(Zwerchhau) ? 35 : 20;
     }
@@ -214,8 +214,11 @@ internal partial class RDM
         return false;
     }
     
-    internal static uint UseInstantCast(uint actionID)
+    internal static uint UseInstantCastST(uint actionID)
     {
+        if (!LevelChecked(Verthunder) && LevelChecked(Veraero)) // Low level Check
+            return OriginalHook(Veraero);
+        
         if (BlackHigher)
             return CanVerStone ?
                 OriginalHook(Verthunder) :
@@ -231,6 +234,9 @@ internal partial class RDM
     
     internal static uint UseHolyFlare(uint actionID)
     {
+        if (!LevelChecked(Verholy))
+            return Verflare;
+        
         if (BlackHigher)
         {
             if (CanVerStone && CanFlare)
@@ -244,6 +250,15 @@ internal partial class RDM
             return Verflare;
         }
         return actionID;
+    }
+    
+    internal static uint UseThunderAeroAoE(uint actionID)
+    {
+        if (!LevelChecked(Verthunder2))
+            return OriginalHook(Jolt);
+        if (BlackHigher)
+            return LevelChecked(Veraero2) ? Veraero2 : Verthunder2;
+        return WhiteHigher ? Verthunder2 : actionID;
     }
     #endregion
     

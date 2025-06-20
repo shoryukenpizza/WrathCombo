@@ -4693,14 +4693,6 @@ public enum CustomComboPreset
 
     #region RED MAGE
 
-    /*
-     RDM Feature Numbering Scheme:
-     13[Section][Feature Number][Sub-Feature]
-     Example: 13110 (Section 1: Openers, Feature Number 1, Sub-feature 0)
-     New features should be added to the appropriate sections.
-     If more than 10 sub features, use the next feature number if available.
-    */
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -4709,7 +4701,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Jolt with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.\nTo start the melee combo, you must be within melee range.",
         RDM.JobID)]
-    RDM_ST_SimpleMode = 13837,
+    RDM_ST_SimpleMode = 13000,
 
     [AutoAction(true, false)]
     [ReplaceSkill(RDM.Scatter, RDM.Impact)]
@@ -4717,7 +4709,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Simple Mode - AoE",
         "Replaces Scatter with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.\nTo start the melee combo, you must be within melee range.",
         RDM.JobID)]
-    RDM_AoE_SimpleMode = 13838,
+    RDM_AoE_SimpleMode = 13200,
 
     #endregion
 
@@ -4729,104 +4721,105 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Jolt with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         RDM.JobID)]
-    RDM_ST_DPS = 13000,
+    RDM_ST_DPS = 13001,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Balance Opener (Level 100)",
         "Adds the Balance opener at level 100..\n**Must move into melee range before melee combo**", RDM.JobID)]
-    RDM_Balance_Opener = 13110,
+    RDM_Balance_Opener = 13002,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Verthunder / Veraero Option", "Adds Verthunder & Veraero.", RDM.JobID)]
-    RDM_ST_Spells_ThunderAero = 13210,
+    RDM_ST_ThunderAero = 13003,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Verfire / Verstone Option", "Adds Verfire & Verstone.", RDM.JobID)]
-    RDM_ST_Spells_FireStone = 13220,
+    RDM_ST_FireStone = 13004,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Verflare / Verholy Option", "Adds Verflare & Verholy when available.", RDM.JobID)]
-    RDM_ST_HolyFlare = 13510,
+    RDM_ST_HolyFlare = 13005,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Melee Combo Option",
         "Adds Zwerchhau & Redoublement, and burst abilities.\n" +
         "**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
-    RDM_ST_MeleeCombo = 13410,
+    RDM_ST_MeleeCombo = 13006,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Include Riposte",
         "Adds Riposte to start the combo. Recommended for Auto Rotation",
         RDM.JobID)]
-    RDM_ST_MeleeCombo_IncludeRiposte = 13413,
+    RDM_ST_MeleeCombo_IncludeRiposte = 13007,
     
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Gap close with Corps-a-corps Option",
         "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo or starting Manafication Burst", RDM.JobID)]
-    RDM_ST_MeleeCombo_GapCloser = 13430,
+    RDM_ST_MeleeCombo_GapCloser = 13008,
     
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Enforced Melee Check", "Once the melee combo has started, don't switch away even if target is out of range.",
         RDM.JobID)]
-    RDM_ST_MeleeCombo_MeleeCheck = 13414,
+    RDM_ST_MeleeCombo_MeleeCheck = 13009,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Embolden Option", "Add Embolden when Available.", RDM.JobID)]
-    RDM_ST_Embolden = 13411,
+    RDM_ST_Embolden = 13010,
     
     [ParentCombo(RDM_ST_Embolden)]
     [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst", RDM.JobID)]
-    RDM_ST_Manafication = 13412,
+    RDM_ST_Manafication = 13011,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available", RDM.JobID)]
-    RDM_ST_ViceOfThorns = 13710,
+    RDM_ST_ViceOfThorns = 13012,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available", RDM.JobID)]
-    RDM_ST_Prefulgence = 13711,
+    RDM_ST_Prefulgence = 13013,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Fleche Option", "Add Fleche when available", RDM.JobID)]
-    RDM_ST_Fleche = 13712,
+    RDM_ST_Fleche = 13014,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available", RDM.JobID)]
-    RDM_ST_ContreSixte = 13713,
+    RDM_ST_ContreSixte = 13015,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
-    RDM_ST_Engagement = 13714,
+    RDM_ST_Engagement = 13016,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retian a charge for gapclosing.", RDM.JobID)]
-    RDM_ST_Corpsacorps = 13715,
+    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    RDM_ST_Corpsacorps = 13017,
     
     [ParentCombo(RDM_ST_Corpsacorps)]
     [CustomComboInfo("Corpsacorps No Movement Option", "Will only use when it will result in no movement", RDM.JobID)]
-    RDM_ST_Corpsacorps_MeleeOnly = 13716,
+    RDM_ST_Corpsacorps_MeleeOnly = 13018,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
-    RDM_ST_Acceleration = 13211,
+    RDM_ST_Acceleration = 13019,
 
     [ParentCombo(RDM_ST_Acceleration)]
     [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement", RDM.JobID)]
-    RDM_ST_Acceleration_Movement = 13213,
+    RDM_ST_Acceleration_Movement = 13020,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available", RDM.JobID)]
-    RDM_ST_Swiftcast = 13212,
+    RDM_ST_Swiftcast = 13021,
     
     [ParentCombo(RDM_ST_Swiftcast)]
     [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only", RDM.JobID)]
-    RDM_ST_SwiftcastMovement = 13214,
+    RDM_ST_SwiftcastMovement = 13022,
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
-    RDM_ST_Lucid = 13610,
+    RDM_ST_Lucid = 13023,
 
+    //Last Used 13023
     #endregion
 
     #region AoE DPS
@@ -4837,150 +4830,177 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Scatter with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         RDM.JobID)]
-    RDM_AoE_DPS = 13310,
-
+    RDM_AoE_DPS = 13201,
+    
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Acceleration Option", "Add Acceleration into the AoE rotation.", RDM.JobID)]
-    RDM_AoE_Accel = 13320,
-
-    [ParentCombo(RDM_AoE_Accel)]
-    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
-    RDM_AoE_Accel_Movement = 13223,
-
-    [ParentCombo(RDM_AoE_Accel)]
-    [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID)]
-    RDM_AoE_Accel_Swiftcast = 13321,
-
-    [ParentCombo(RDM_AoE_Accel)]
-    [CustomComboInfo("Weave Acceleration Option", "Only use acceleration during weave windows.", RDM.JobID)]
-    RDM_AoE_Accel_Weave = 13322,
-
+    [CustomComboInfo("Thunder/Aero Option", "Adds Verthunder 2 and Veraero 2 into the Aoe Rotation.", RDM.JobID)]
+    RDM_AoE_ThunderAero = 13202,
+    
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Moulinet Melee Combo Option", "Use Moulinet when over 50/50 mana", RDM.JobID)]
-    RDM_AoE_MeleeCombo = 13420,
-
+    [CustomComboInfo("Verflare/Verholy Option", "Adds Verflare and Verholy into the Aoe Rotation.", RDM.JobID)]
+    RDM_AoE_HolyFlare = 13203,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Moulinet Melee Combo Option", "Addes Moulinet into the Aoe Rotation. \nWill use Regular Melee combo below 52", RDM.JobID)]
+    RDM_AoE_MeleeCombo = 13204,
+    
     [ParentCombo(RDM_AoE_MeleeCombo)]
-    [CustomComboInfo("Use Manafication and Embolden Option",
-        "Add Manafication and Embolden.\n**Must be in range of Moulinet**", RDM.JobID)]
-    RDM_AoE_MeleeCombo_ManaEmbolden = 13421,
-
+    [CustomComboInfo("Require Target Option", "Requires a target within 8 Yalms. \nSkill itself requires none usually, this is for the range check.", RDM.JobID)]
+    RDM_AoE_MeleeCombo_Target = 13205,
+    
     [ParentCombo(RDM_AoE_MeleeCombo)]
     [CustomComboInfo("Gap close with Corps-a-corps Option",
         "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", RDM.JobID)]
-    RDM_AoE_MeleeCombo_CorpsGapCloser = 13422,
+    RDM_AoE_MeleeCombo_GapCloser = 13206,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Embolden Option", "Add Embolden when Available.", RDM.JobID)]
+    RDM_AoE_Embolden = 13207,
+    
+    [ParentCombo(RDM_AoE_Embolden)]
+    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst", RDM.JobID)]
+    RDM_AoE_Manafication = 13208,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available", RDM.JobID)]
+    RDM_AoE_ViceOfThorns = 13209,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available", RDM.JobID)]
+    RDM_AoE_Prefulgence = 13210,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Fleche Option", "Add Fleche when available", RDM.JobID)]
+    RDM_AoE_Fleche = 13211,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available", RDM.JobID)]
+    RDM_AoE_ContreSixte = 13212,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
+    RDM_AoE_Engagement = 13213,
+    
+    [ParentCombo(RDM_AoE_DPS)]
+    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    RDM_AoE_Corpsacorps = 13214,
+    
+    [ParentCombo(RDM_AoE_Corpsacorps)]
+    [CustomComboInfo("Corpsacorps No Movement Option", "Will only use when it will result in no movement", RDM.JobID)]
+    RDM_AoE_Corpsacorps_MeleeOnly = 13215,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Verflare / Verholy Option", "Replace Jolt with Verflare & Verholy.", RDM.JobID)]
-    RDM_AoE_MeleeFinisher = 13424,
+    [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
+    RDM_AoE_Acceleration = 13216,
+
+    [ParentCombo(RDM_AoE_Acceleration)]
+    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement", RDM.JobID)]
+    RDM_AoE_Acceleration_Movement = 13217,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions:", RDM.JobID)]
-    RDM_AoE_oGCD = 13241,
+    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available", RDM.JobID)]
+    RDM_AoE_Swiftcast = 13218,
+    
+    [ParentCombo(RDM_AoE_Swiftcast)]
+    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only", RDM.JobID)]
+    RDM_AoE_SwiftcastMovement = 13219,
 
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
-    RDM_AoE_Lucid = 13425,
-
+    RDM_AoE_Lucid = 13220,
+    
+    //Last Used 13220
     #endregion
 
-    #region ST DPS Indivdual Combos
+    #region Stand Alone Features
 
     [ReplaceSkill(RDM.Veraero, RDM.Veraero3, RDM.Verthunder, RDM.Verthunder3)]
     [CustomComboInfo("Spell Combo on Veraero / Verthunder", "Replaces Veraero & Verthunder with jolt.", RDM.JobID)]
-    RDM_VerSpell = 13004,
+    RDM_VerSpell = 13400,
 
     [ParentCombo(RDM_VerSpell)]
     [CustomComboInfo("Add Verstone & Verfire", "Replaces Veraero with Verstone, and Verthunder with Verfire", RDM.JobID)]
-    RDM_VerSpell_StoneFire = 13005,
+    RDM_VerSpell_StoneFire = 13401,
 
     [ParentCombo(RDM_VerSpell)]
     [CustomComboInfo("Add Scorch & Resolution", "Adds Scorch and Resolution", RDM.JobID)]
-    RDM_VerSpell_JoltFinisher = 13006,
+    RDM_VerSpell_JoltFinisher = 13402,
 
 
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
-    RDM_Riposte = 13842,
+    RDM_Riposte = 13403,
 
     [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Riposte_oGCD = 13002,
+    RDM_Riposte_oGCD = 13404,
 
     [ReplaceSkill(RDM.Reprise)]
     [CustomComboInfo("Reprise Movement oGCDs", "Weave the following oGCD actions.", RDM.JobID)]
-    RDM_Reprise = 13003,
-
-    #endregion
-
-    #region QoL
+    RDM_Reprise = 13405,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Caster_Raise)]
     [CustomComboInfo("Verraise Feature",
         "Changes Swiftcast to Verraise when under the effect of Swiftcast or Dualcast.", RDM.JobID)]
-    RDM_Raise = 13620,
+    RDM_Raise = 13406,
 
     [ParentCombo(RDM_Raise)]
     [CustomComboInfo("Vercure Option", "If Swiftcast is on cooldown, change to Vercure to proc Dualcast.", RDM.JobID)]
-    RDM_Raise_Vercure = 13621,
+    RDM_Raise_Vercure = 13407,
 
     [ParentCombo(RDM_Raise)]
     [CustomComboInfo("Retarget Raise and Vercure", "Will Retarget the Raise and Vercure affected here to your Heal Stack.", RDM.JobID)]
     [Retargeted]
-    RDM_Raise_Retarget = 13839,
-
-    #endregion
-
-    #region Sections 8 to 9 - Miscellaneous
+    RDM_Raise_Retarget = 13408,
 
     [ReplaceSkill(RDM.Displacement)]
     [CustomComboInfo("Displacement <> Corps-a-corps Feature",
         "Replace Displacement with Corps-a-corps when out of range.", RDM.JobID)]
-    RDM_CorpsDisplacement = 13810,
+    RDM_CorpsDisplacement = 13409,
 
     [ReplaceSkill(RDM.Embolden)]
     [CustomComboInfo("Embolden to Manafication Feature", "Changes Embolden to Manafication when on cooldown.",
         RDM.JobID)]
-    RDM_EmboldenManafication = 13820,
+    RDM_EmboldenManafication = 13410,
 
     [ReplaceSkill(RDM.MagickBarrier)]
     [CustomComboInfo("Magick Barrier to Addle Feature", "Changes Magick Barrier to Addle when on cooldown.", RDM.JobID)]
-    RDM_MagickBarrierAddle = 13821,
+    RDM_MagickBarrierAddle = 13411,
 
     [ReplaceSkill(RDM.Embolden)]
     [CustomComboInfo("Embolden Overlap Protection", "Disables Embolden when buffed by another Red Mage's Embolden by replacing it with Savage Blade.",
         RDM.JobID)]
-    RDM_EmboldenProtection = 13835,
+    RDM_EmboldenProtection = 13412,
 
     [ReplaceSkill(RDM.MagickBarrier)]
     [CustomComboInfo("Magick Barrier Overlap Protection",
         "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier by replacing it with Savage Blade.", RDM.JobID)]
-    RDM_MagickProtection = 13836,
+    RDM_MagickProtection = 13413,
 
     [Variant]
     [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown. Replaces Jolts.", RDM.JobID)]
-    RDM_Variant_Rampart = 13830,
+    RDM_Variant_Rampart = 13414,
 
     [Variant]
     [VariantParent(RDM_Raise)]
     [CustomComboInfo("Raise Option",
         "Turn Swiftcast into Variant Raise whenever you have the Swiftcast or Dualcast buffs.", RDM.JobID)]
-    RDM_Variant_Raise = 13831,
+    RDM_Variant_Raise = 13415,
 
     [Variant]
     [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold. Replaces Jolts.", RDM.JobID)]
-    RDM_Variant_Cure = 13832,
+    RDM_Variant_Cure = 13416,
 
     [Variant]
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
-    RDM_Variant_Cure2 = 13833,
-
+    RDM_Variant_Cure2 = 13417,
+    
+    //Last Used 13417
     #endregion
-
-    //Last Used 13838
 
     #endregion
 

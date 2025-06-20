@@ -7,16 +7,9 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class RDM : Caster
 {
-    internal class RDM_VariantVerCure : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Variant_Cure2;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Vercure && Variant.CanCure(Preset, 100)
-            ? Variant.Cure
-            : actionID;
-    }
-
+    #region Simple Modes
+    
     internal class RDM_ST_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_SimpleMode;
@@ -26,11 +19,19 @@ internal partial class RDM : Caster
             if (actionID is not (Jolt or Jolt2 or Jolt3))
                 return actionID;
             
+            #region Variants
+            if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
+                return Variant.Rampart;
+            #endregion
+            
             #region OGCDs
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 //Gap Closer
-                if (ActionReady(Corpsacorps) && (HasEnoughManaST || CanMagickedSwordplay) && !InMeleeRange()) 
+                if (ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -86,7 +87,7 @@ internal partial class RDM : Caster
                     return EnchantedZwerchhau;
                 
                 if (ActionReady(EnchantedRiposte) && InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
-                    (HasEnoughManaST || CanMagickedSwordplay)) 
+                    (HasEnoughMana || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
             
@@ -96,7 +97,7 @@ internal partial class RDM : Caster
 
             //Verthunder and Veraero
             if (CanInstantCast)
-                return UseInstantCast(actionID);
+                return UseInstantCastST(actionID);
             
             if (UseGrandImpact()) 
                 return GrandImpact;
@@ -112,6 +113,112 @@ internal partial class RDM : Caster
             #endregion
         }
     }
+    
+    internal class RDM_AoE_SimpleMode : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_AoE_SimpleMode;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Scatter or Impact))
+                return actionID;
+            
+            #region Variants
+            if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
+                return Variant.Rampart;
+            #endregion
+
+            #region OGCDs
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            {
+                //Gap Closer Option
+                if (ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                    return Corpsacorps;
+                 
+                if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
+                    return Manafication;
+                
+                if (ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                    return Embolden;
+                
+                if (ActionReady(ContreSixte)) 
+                    return ContreSixte;
+                
+                if (ActionReady(Fleche)) 
+                    return Fleche;
+                
+                if (CanEngagement)  
+                    return Engagement;
+                
+                if (CanCorps && GetTargetDistance() == 0)
+                    return Corpsacorps;
+                
+                if (CanPrefulgence)
+                    return Prefulgence;
+                
+                if (CanViceOfThorns)
+                    return ViceOfThorns;
+                
+                if (Role.CanLucidDream(8000))
+                    return Role.LucidDreaming;
+                
+                if (CanAcceleration && GetRemainingCharges(Acceleration) > 1 || CanAccelerationMovement) 
+                    return Acceleration;
+                
+                if (CanSwiftcast || CanSwiftcastMovement)
+                    return Role.Swiftcast;
+            }
+            #endregion
+            
+            #region Melee Combo and Finishers 
+            //Replaces Scatter, Needs no enable
+            if (ComboAction is Scorch or Verholy or Verflare) 
+                return actionID;
+            
+            //VerHoly and Verflare
+            if (HasManaStacks) 
+                return UseHolyFlare(actionID);
+            
+            //Melee Combo 
+            if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
+            {
+                if (ActionReady(Moulinet) && HasBattleTarget() && GetTargetDistance() < 8 && 
+                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux))
+                    return OriginalHook(Moulinet);
+                
+                if (!ActionReady(Moulinet) && InMeleeRange())
+                {
+                    if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                        return EnchantedRedoublement;
+                    if (ComboAction is Riposte or EnchantedRiposte)
+                        return EnchantedZwerchhau;
+                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
+                        return EnchantedRiposte; 
+                }
+                
+            }
+            
+            #endregion
+            
+            #region GCD Casts
+            
+            if (UseGrandImpact()) 
+                return GrandImpact;
+            
+            if (!CanInstantCast)
+                return UseThunderAeroAoE(actionID);
+            
+            return actionID;
+            
+            #endregion
+           
+        }
+    }
+    #endregion
+    
+    #region Advanced Modes
 
     internal class RDM_ST_DPS : CustomCombo
     {
@@ -128,13 +235,21 @@ internal partial class RDM : Caster
                 Opener().FullOpener(ref actionID)) 
                 return actionID;
             #endregion
+            
+            #region Variants
+            if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
+                return Variant.Cure;
+
+            if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
+                return Variant.Rampart;
+            #endregion
 
             #region OGCDs
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 //Gap Closer Option
                 if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_GapCloser) && 
-                    ActionReady(Corpsacorps) && (HasEnoughManaST || CanMagickedSwordplay) && !InMeleeRange()) 
+                    ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (IsEnabled(CustomComboPreset.RDM_ST_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -209,7 +324,7 @@ internal partial class RDM : Caster
                 //Riposte Option for Manual Starting
                 if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_IncludeRiposte) && ActionReady(EnchantedRiposte) && 
                     InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
-                    (HasEnoughManaST || CanMagickedSwordplay)) 
+                    (HasEnoughMana || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
             
@@ -218,15 +333,15 @@ internal partial class RDM : Caster
             #region GCD Casts
 
             //Verthunder and Veraero
-            if (IsEnabled(CustomComboPreset.RDM_ST_Spells_ThunderAero) && CanInstantCast)
-                return UseInstantCast(actionID);
+            if (IsEnabled(CustomComboPreset.RDM_ST_ThunderAero) && CanInstantCast)
+                return UseInstantCastST(actionID);
             
             //Replaces Jolt, Needs no enable
             if (UseGrandImpact()) 
                 return GrandImpact;
 
             //Verstone and Verfire
-            if (IsEnabled(CustomComboPreset.RDM_ST_Spells_FireStone))
+            if (IsEnabled(CustomComboPreset.RDM_ST_FireStone))
             {
                 if (UseVerStone())
                     return Verstone;
@@ -238,54 +353,7 @@ internal partial class RDM : Caster
             #endregion
         }
     }
-
-    internal class RDM_AoE_SimpleMode : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_AoE_SimpleMode;
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Scatter or Impact))
-                return actionID;
-
-            //VARIANTS
-            if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
-                return Variant.Rampart;
-
-            uint NewActionID = 0;
-
-            //RDM_OGCD
-            if (TryOGCDs(ref NewActionID))
-                return NewActionID;
-
-            // LUCID
-            if (TryLucidDreaming(6500, ComboAction))
-                return Role.LucidDreaming;
-
-            // SCORCH & RESOLUTION
-            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
-
-            // VERFLARE & VERHOLY
-            if (MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
-                return NewActionID;
-
-            if (MeleeCombo.TryAoEManaEmbolden(ref NewActionID))
-                return NewActionID;
-
-            if (MeleeCombo.TryAoEMeleeCombo(ref NewActionID))
-                return NewActionID;
-
-            if (SpellCombo.TryAcceleration(ref NewActionID))
-                return NewActionID;
-
-            if (SpellCombo.TryAoESpellRotation(ref NewActionID))
-                return NewActionID;
-            return actionID;
-        }
-    }
-
+   
     internal class RDM_AoE_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_AoE_DPS;
@@ -294,87 +362,133 @@ internal partial class RDM : Caster
             if (actionID is not (Scatter or Impact))
                 return actionID;
 
-            uint NewActionID = 0;
-
-            //VARIANTS
+            #region Variants
             if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
                 return Variant.Rampart;
+            #endregion
 
-            // oGCDs
-            if (IsEnabled(CustomComboPreset.RDM_AoE_oGCD)
-                && LevelChecked(Corpsacorps)
-                && TryOGCDs(ref NewActionID,
-                    Config.RDM_AoE_oGCD_Engagement_Pooling,
-                    Config.RDM_AoE_oGCD_CorpACorps_Pooling,
-                    Config.RDM_AoE_oGCD_CorpACorps_Melee,
-                    Config.RDM_AoE_oGCD_Actions))
-                return NewActionID;
-
-
-            // LUCID
-            if (IsEnabled(CustomComboPreset.RDM_AoE_Lucid)
-                && TryLucidDreaming(Config.RDM_AoE_Lucid_Threshold, ComboAction))
-                return Role.LucidDreaming;
-
-
-            // SCORCH & RESOLUTION
-            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Scatter);
-
-
-            // VERFLARE & VERHOLY
-            if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeFinisher) &&
-                MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
-                return NewActionID;
-
-
-            // MELEE COMBO
+            #region OGCDs
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            {
+                //Gap Closer Option
+                if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_GapCloser) && 
+                    ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                    return Corpsacorps;
+                 
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
+                    return Manafication;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Embolden) && ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                    return Embolden;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_ContreSixte) && ActionReady(ContreSixte)) 
+                    return ContreSixte;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Fleche) && ActionReady(Fleche)) 
+                    return Fleche;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Engagement) && CanEngagement)  
+                    return Engagement;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps && 
+                    (IsNotEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_MeleeOnly) || GetTargetDistance() == 0))
+                    return Corpsacorps;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Prefulgence) && CanPrefulgence)
+                    return Prefulgence;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_ViceOfThorns) && CanViceOfThorns)
+                    return ViceOfThorns;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Lucid) && Role.CanLucidDream(Config.RDM_AoE_Lucid_Threshold))
+                    return Role.LucidDreaming;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Acceleration) && 
+                    (CanAcceleration && GetRemainingCharges(Acceleration) > Config.RDM_AoE_Acceleration_Charges || 
+                    CanAccelerationMovement && IsEnabled(CustomComboPreset.RDM_AoE_Acceleration_Movement))) 
+                    return Acceleration;
+                
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Swiftcast) && 
+                    (!IsEnabled(CustomComboPreset.RDM_AoE_SwiftcastMovement) && CanSwiftcast || CanSwiftcastMovement))
+                    return Role.Swiftcast;
+            }
+            #endregion
+            
+            #region Melee Combo and Finishers 
+            //Replaces Scatter, Needs no enable
+            if (ComboAction is Scorch or Verholy or Verflare) 
+                return actionID;
+            
+            //VerHoly and Verflare
+            if (IsEnabled(CustomComboPreset.RDM_AoE_HolyFlare) && HasManaStacks) 
+                return UseHolyFlare(actionID);
+            
+            //Melee Combo 
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
             {
-                // BURST?
-                if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_ManaEmbolden)
-                    && MeleeCombo.TryAoEManaEmbolden(ref NewActionID, Config.RDM_AoE_MoulinetRange))
-                    return NewActionID;
-
-                // MOULINET    
-                if (MeleeCombo.TryAoEMeleeCombo(ref NewActionID, Config.RDM_AoE_MoulinetRange, IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_CorpsGapCloser),
-                    false)) //Melee range enforced
-                    return NewActionID;
+                if (ActionReady(Moulinet) && 
+                    (IsNotEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_Target) && !HasBattleTarget() || HasBattleTarget() && GetTargetDistance() < 8) && 
+                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux))
+                    return OriginalHook(Moulinet);
+                
+                if (!ActionReady(Moulinet) && InMeleeRange())
+                {
+                    if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                        return EnchantedRedoublement;
+                    if (ComboAction is Riposte or EnchantedRiposte)
+                        return EnchantedZwerchhau;
+                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
+                        return EnchantedRiposte; 
+                }
+                
             }
-
-
-            // SPELL ROTATION
-            if (IsEnabled(CustomComboPreset.RDM_AoE_Accel)
-                && SpellCombo.TryAcceleration(
-                    ref NewActionID, IsEnabled(CustomComboPreset.RDM_AoE_Accel_Swiftcast),
-                    IsEnabled(CustomComboPreset.RDM_AoE_Accel_Weave),
-                    IsEnabled(CustomComboPreset.RDM_AoE_Accel_Movement),
-                    Config.RDM_AoE_Acceleration_Charges,
-                    Config.RDM_AoE_AccelerationMovement_Charges))
-                return NewActionID;
-
-            if (SpellCombo.TryAoESpellRotation(ref NewActionID))
-                return NewActionID;
-
+            
+            #endregion
+            
+            #region GCD Casts
+            
+            if (UseGrandImpact()) 
+                return GrandImpact;
+            
+            if (IsEnabled(CustomComboPreset.RDM_AoE_ThunderAero) && !CanInstantCast)
+                return UseThunderAeroAoE(actionID);
+            
             return actionID;
+            
+            #endregion
         }
     }
 
-    /*
-    RDM_Verraise
-    Swiftcast combos to Verraise when:
-    -Swiftcast is on cooldown.
-    -Swiftcast is available, but we we have Dualcast (Dualcasting Verraise)
-    Using this variation other than the alternate feature style, as Verraise is level 63
-    and swiftcast is unlocked way earlier and in theory, on a hotbar somewhere
-    */
+    #endregion
+    
+    #region Standalone Features
+    internal class RDM_VariantVerCure : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Variant_Cure2;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is Vercure && Variant.CanCure(Preset, 100)
+                ? Variant.Cure
+                : actionID;
+    }
+    
     internal class RDM_Verraise : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Raise;
         protected override uint Invoke(uint actionID)
         {
+            /*
+            RDM_Verraise
+            Swiftcast combos to Verraise when:
+            -Swiftcast is on cooldown.
+            -Swiftcast is available, but we we have Dualcast (Dualcasting Verraise)
+            Using this variation other than the alternate feature style, as Verraise is level 63
+            and swiftcast is unlocked way earlier and in theory, on a hotbar somewhere
+            */
+            
             if (actionID != Role.Swiftcast)
                 return actionID;
 
@@ -529,4 +643,6 @@ internal partial class RDM : Caster
                 : actionID;
         }
     }
+    
+    #endregion
 }
