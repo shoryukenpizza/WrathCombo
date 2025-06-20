@@ -7161,7 +7161,7 @@ public enum CustomComboPreset
     WHM_AoEHeals_Plenary = 19203,
 
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Temperance Option", "Uses Temperance when available for mitigation and healing boost.", WHM.JobID)]
+    [CustomComboInfo("Temperance Option", "Uses Temperance when available for a healing boost whenever the party average falls below the set threshold.", WHM.JobID)]
     WHM_AoEHeals_Temperance = 19210,
 
     [ParentCombo(WHM_AoEHeals)]

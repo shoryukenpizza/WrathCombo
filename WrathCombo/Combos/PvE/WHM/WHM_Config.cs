@@ -229,15 +229,21 @@ internal partial class WHM
                         weaveDescription,
                         "");
                     
-                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwideOnly,
-                        "Only use when a Raidwide is casting",
-                        "Will not use Temperance in the rotation unless we detect a Raidwide is casting.",
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwide,
+                        "Also use for Raidwides",
+                        "Will also use for mitigation before raidwides (and a healing boost after them), if the party is low enough",
                         indentDescription: true);
-                    if (WHM_AoEHeals_TemperanceRaidwideOnly)
+                    if (WHM_AoEHeals_TemperanceRaidwide)
                     {
                         ImGui.Indent();
                         DrawDifficultyMultiChoice(WHM_AoEHeals_TemperanceRaidwideDifficulty, WHM_AoEHeals_TemperanceRaidwideDifficultyListSet,
-                            "Select what content difficulties the Raidwide restriction should apply to:");
+                            "Select what content difficulties the Raidwide option should apply to:");
+                    
+                        DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceRaidwidePrioritization,
+                            "Prioritize use for Raidwides",
+                            "Will ignore the Party HP% check for Raidwides, essentially using Temperance for mitigation.\n" +
+                            "Not advised in higher-end content.",
+                            indentDescription: true);
                         ImGui.Unindent();
                     }
                     break;
@@ -721,14 +727,14 @@ internal partial class WHM
             new("WHM_AoEHeals_TemperanceWeave");
 
         /// <summary>
-        ///     Only use Temperance vs a Raidwide.
+        ///     Will also use Temperance for Raidwides, if the party is low enough.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
-        internal static UserBool WHM_AoEHeals_TemperanceRaidwideOnly =
-            new("WHM_AoEHeals_TemperanceRaidwideOnly");
+        internal static UserBool WHM_AoEHeals_TemperanceRaidwide =
+            new("WHM_AoEHeals_TemperanceRaidwide");
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in AoE healing.
@@ -816,13 +822,14 @@ internal partial class WHM
         ///     Content difficulty selector for Temperance.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> <br />
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" />
+        ///     and <see cref="ContentCheck.TopHalfContent" /><br />
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
         internal static UserBoolArray WHM_AoEHeals_TemperanceDifficulty =
-            new("WHM_AoEHeals_TemperanceDifficulty", [true, false]);
+            new("WHM_AoEHeals_TemperanceDifficulty", [true, true]);
 
         /// <summary>
         ///     Content difficulty list set for Temperance, set by
@@ -837,14 +844,13 @@ internal partial class WHM
         ///     Content difficulty selector for Temperance raidwide option.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /> and
-        ///     <see cref="ContentCheck.TopHalfContent" /> <br />
+        ///     <b>Default</b>: <see cref="ContentCheck.BottomHalfContent" /><br />
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
         internal static UserBoolArray WHM_AoEHeals_TemperanceRaidwideDifficulty =
-            new("WHM_AoEHeals_TemperanceRaidwideDifficulty", [true, true]);
+            new("WHM_AoEHeals_TemperanceRaidwideDifficulty", [true, false]);
 
         /// <summary>
         ///     Content difficulty list set for Temperance raidwide option, set by
@@ -854,6 +860,16 @@ internal partial class WHM
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_TemperanceRaidwideDifficultyListSet =
                 ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Prioritizes Temperance for raidwides, by ignoring the HP% check then.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: false
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        internal static UserBool WHM_AoEHeals_TemperanceRaidwidePrioritization =
+            new("WHM_AoEHeals_TemperanceRaidwidePrioritization");
 
         /// <summary>
         ///     Only use Asylum vs a Raidwide.

@@ -318,6 +318,35 @@ internal partial class WHM : Healer
 
             var hasMedica2 = GetStatusEffect(Buffs.Medica2, healTarget);
             var hasMedica3 = GetStatusEffect(Buffs.Medica3, healTarget);
+            
+            
+            var temperanceInRaidwideContent =
+                ContentCheck.IsInConfiguredContent(
+                    Config.WHM_AoEHeals_TemperanceRaidwideDifficulty,
+                    Config.WHM_AoEHeals_TemperanceRaidwideDifficultyListSet);
+            var temperanceHPCheckPassed =
+                (Config.WHM_AoEHeals_TemperanceRaidwide &&
+                 Config.WHM_AoEHeals_TemperanceRaidwidePrioritization &&
+                 temperanceInRaidwideContent &&
+                 RaidWideCasting()) ||
+                GetPartyAvgHPPercent() <= Config.WHM_AoEHeals_TemperanceHP;
+            
+            var bellTarget =
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Enemy)
+                    ? SimpleTarget.HardTarget
+                    : null) ??
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Allies)
+                    ? SimpleTarget.Stack.OverridesAllies
+                    : null) ??
+                SimpleTarget.Self;
+            var asylumTarget =
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Enemy)
+                    ? SimpleTarget.HardTarget
+                    : null) ??
+                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Allies)
+                    ? SimpleTarget.Stack.OverridesAllies
+                    : null) ??
+                SimpleTarget.Self;
 
             #endregion
 
@@ -334,28 +363,18 @@ internal partial class WHM : Healer
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Temperance) &&
                 ActionReady(Temperance) &&
                 (!Config.WHM_AoEHeals_TemperanceWeave || CanSpellWeave()) &&
-                GetPartyAvgHPPercent() <= Config.WHM_AoEHeals_TemperanceHP &&
+                temperanceHPCheckPassed &&
                 ContentCheck.IsInConfiguredContent(
                     Config.WHM_AoEHeals_TemperanceDifficulty,
                     Config.WHM_AoEHeals_TemperanceDifficultyListSet) &&
-                (!Config.WHM_AoEHeals_TemperanceRaidwideOnly || 
-                 (RaidWideCasting() && ContentCheck.IsInConfiguredContent(
-                     Config.WHM_AoEHeals_TemperanceRaidwideDifficulty,
-                     Config.WHM_AoEHeals_TemperanceRaidwideDifficultyListSet))))
+                (!Config.WHM_AoEHeals_TemperanceRaidwide || 
+                 (RaidWideCasting() && temperanceInRaidwideContent)))
                 return Temperance;
 
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
                 ActionReady(DivineCaress))
                 return OriginalHook(DivineCaress);
 
-            var bellTarget =
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Enemy)
-                    ? SimpleTarget.HardTarget
-                    : null) ??
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Allies)
-                    ? SimpleTarget.Stack.OverridesAllies
-                    : null) ??
-                SimpleTarget.Self;
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell) &&
                 ActionReady(LiturgyOfTheBell) &&
                 !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
@@ -366,14 +385,6 @@ internal partial class WHM : Healer
                     Config.WHM_AoEHeals_LiturgyDifficultyListSet))
                 return LiturgyOfTheBell.Retarget(Medica1, bellTarget);
 
-            var asylumTarget =
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Enemy)
-                    ? SimpleTarget.HardTarget
-                    : null) ??
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Allies)
-                    ? SimpleTarget.Stack.OverridesAllies
-                    : null) ??
-                SimpleTarget.Self;
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum) &&
                 ActionReady(Asylum) &&
                 !IsMoving() &&
