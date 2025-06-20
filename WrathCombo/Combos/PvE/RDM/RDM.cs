@@ -7,11 +7,9 @@ namespace WrathCombo.Combos.PvE;
 internal partial class RDM : Caster
 {
     #region Simple Modes
-    
     internal class RDM_ST_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_SimpleMode;
-
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not (Jolt or Jolt2 or Jolt3))
@@ -86,11 +84,9 @@ internal partial class RDM : Caster
                     (HasEnoughMana || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
-            
             #endregion
             
             #region GCD Casts
-
             if (CanInstantCast)
                 return UseInstantCastST(actionID);
             
@@ -104,7 +100,6 @@ internal partial class RDM : Caster
                 return Verfire;
             
             return actionID;
-            
             #endregion
         }
     }
@@ -189,13 +184,10 @@ internal partial class RDM : Caster
                     if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
                         return EnchantedRiposte; 
                 }
-                
             }
-            
             #endregion
             
             #region GCD Casts
-            
             if (CanGrandImpact)  
                 return GrandImpact;
             
@@ -203,19 +195,15 @@ internal partial class RDM : Caster
                 return UseThunderAeroAoE(actionID);
             
             return !LevelChecked(Scatter) ? UseInstantCastST(actionID) : actionID;
-            
             #endregion
-           
         }
     }
     #endregion
     
     #region Advanced Modes
-
     internal class RDM_ST_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_ST_DPS;
-
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not (Jolt or Jolt2 or Jolt3))
@@ -304,11 +292,9 @@ internal partial class RDM : Caster
                     (HasEnoughMana || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
-            
             #endregion
             
             #region GCD Casts
-
             if (IsEnabled(CustomComboPreset.RDM_ST_ThunderAero) && CanInstantCast)
                 return UseInstantCastST(actionID);
             
@@ -323,7 +309,6 @@ internal partial class RDM : Caster
                     return Verfire;
             }
             return actionID;
-            
             #endregion
         }
     }
@@ -392,7 +377,6 @@ internal partial class RDM : Caster
             #endregion
             
             #region Melee Combo and Finishers 
-            
             if (ComboAction is Scorch or Verholy or Verflare) 
                 return actionID;
             
@@ -415,13 +399,10 @@ internal partial class RDM : Caster
                     if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
                         return EnchantedRiposte; 
                 }
-                
             }
-            
             #endregion
             
             #region GCD Casts
-            
             if (CanGrandImpact) 
                 return GrandImpact;
             
@@ -429,11 +410,9 @@ internal partial class RDM : Caster
                 return UseThunderAeroAoE(actionID);
 
             return !LevelChecked(Scatter) ? UseInstantCastST(actionID) : actionID;
-            
             #endregion
         }
     }
-
     #endregion
     
     #region Standalone Features
@@ -653,6 +632,5 @@ internal partial class RDM : Caster
             return GetCooldownRemainingTime(ContreSixte) < GetCooldownRemainingTime(Fleche) ? ContreSixte : actionID;
         }
     }
-    
     #endregion 
 }

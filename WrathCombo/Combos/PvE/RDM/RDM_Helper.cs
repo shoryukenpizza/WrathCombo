@@ -13,7 +13,6 @@ namespace WrathCombo.Combos.PvE;
 internal partial class RDM
 {
     #region ID's
-    
     public const byte JobID = 35;
     
     #region Spells
@@ -81,7 +80,6 @@ internal partial class RDM
             GrandImpactReady = 3877,
             PrefulgenceReady = 3878;
     }
-
     public static class Debuffs
     {
         public const ushort
@@ -99,7 +97,6 @@ internal partial class RDM
             EnhancedAccelerationII = 624;
     }
     #endregion
-
     #endregion
     
     #region Variables
@@ -151,7 +148,6 @@ internal partial class RDM
     internal static bool CanCorps => LevelChecked(Corpsacorps) && GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
     internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
     internal static bool CanNotMagickBarrier => !ActionReady(MagickBarrier) || HasStatusEffect(Buffs.MagickBarrier, anyOwner: true);
-    
     #endregion
     
     #region Functions
@@ -177,7 +173,6 @@ internal partial class RDM
             return 50;
         return LevelChecked(Zwerchhau) ? 35 : 20;
     }
-    
     internal static bool UseVerStone()
     {
         if (!CanVerStone || HasDualcast || HasAccelerate || HasSwiftcast || VerStoneRemaining < 2.5 ||
@@ -215,7 +210,6 @@ internal partial class RDM
     
         return actionID;
     }
-    
     internal static uint UseHolyFlare(uint actionID)
     {
         if (!LevelChecked(Verholy))
@@ -235,7 +229,6 @@ internal partial class RDM
         }
         return actionID;
     }
-    
     internal static uint UseThunderAeroAoE(uint actionID)
     {
         if (!LevelChecked(Verthunder2))
@@ -247,7 +240,6 @@ internal partial class RDM
     #endregion
 
     #region Opener
-    
     internal static Standard Opener1 = new();
     internal static GapClosing Opener2 = new();
     internal static WrathOpener Opener()
@@ -319,7 +311,6 @@ internal partial class RDM
             return true;
         }
     }
-    
     internal class GapClosing : WrathOpener
     {
         public override List<uint> OpenerActions { get; set; } =

@@ -6,7 +6,6 @@ using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
 
 namespace WrathCombo.Combos.PvE;
-
 internal partial class RDM
 {
     internal static class Config
@@ -63,7 +62,6 @@ internal partial class RDM
                 case CustomComboPreset.RDM_AoE_Acceleration:
                     DrawSliderInt(0, 1, RDM_AoE_Acceleration_Charges, "How many charges to keep ready?\n (0 = Use All)");
                     break;
-
             }
         }
     }
