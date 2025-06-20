@@ -249,7 +249,7 @@ internal partial class SCH : Healer
                      Config.SCH_ST_DPS_ChainStratagemSubOption == 1 && InBossEncounter()))
                 {
                     // If CS is available and usable, or if the Impact Buff is on Player
-                    if (ActionReady(ChainStratagem) &&
+                    if (ActionReady(ChainStratagem) && CanApplyStatus(CurrentTarget, Debuffs.ChainStratagem) &&
                         !HasStatusEffect(Debuffs.ChainStratagem, CurrentTarget, true) &&
                         GetTargetHPPercent() > Config.SCH_ST_DPS_ChainStratagemOption &&
                         InCombat() &&
@@ -273,7 +273,7 @@ internal partial class SCH : Healer
 
                     float refreshTimer = Config.SCH_DPS_BioUptime_Threshold;
                     int hpThreshold = Config.SCH_DPS_BioSubOption == 1 || !InBossEncounter() ? Config.SCH_DPS_BioOption : 0;
-                    if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
+                    if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer && CanApplyStatus(CurrentTarget, dotDebuffID) &&
                         GetTargetHPPercent() > hpThreshold)
                         return OriginalHook(Bio);
                 }
