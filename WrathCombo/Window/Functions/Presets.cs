@@ -25,12 +25,14 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
+using ECommons.Throttlers;
 
 namespace WrathCombo.Window.Functions
 {
     internal class Presets : ConfigWindow
     {
         internal static Dictionary<CustomComboPreset, PresetAttributes> Attributes = new();
+        private static bool _animFrame = false;
         internal class PresetAttributes
         {
             public bool IsPvP;
@@ -586,6 +588,13 @@ namespace WrathCombo.Window.Functions
             
             #region Error Handling
             string? error = null;
+
+            if (_animFrame)
+                jobID += 30;
+
+            if (EzThrottler.Throttle("AnimFrameUpdater", 400))
+                _animFrame = !_animFrame;
+
             if (!Icons.OccultIcons.TryGetValue(jobID, out var icon))
                 error = "FIND";
             if (icon is null)

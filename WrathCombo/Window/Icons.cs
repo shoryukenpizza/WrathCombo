@@ -38,6 +38,11 @@ namespace WrathCombo.Window
                     var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
                     OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
                 }
+                for (int i = 30; i <= 55; i++)
+                {
+                    var uld = Svc.PluginInterface.UiBuilder.LoadUld("ui/uld/MKDSupportJob.uld");
+                    OccultIcons[i] = uld.LoadTexturePart("ui/uld/MKDSupportJob_hr1.tex", i);
+                }
             }
 
             if (EzThrottler.Throttle("OccultAnimateIdx", 800))
