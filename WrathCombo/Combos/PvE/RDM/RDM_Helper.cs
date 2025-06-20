@@ -1,3 +1,4 @@
+#region Dependencies
 using Dalamud.Game.ClientState.JobGauge.Types;
 using ECommons.GameHelpers;
 using System;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+#endregion
 
 namespace WrathCombo.Combos.PvE;
 
@@ -124,8 +126,6 @@ internal partial class RDM
     internal static float EmboldenCD => GetCooldownRemainingTime(Embolden);
     internal static float VerFireRemaining => GetStatusEffectRemainingTime(Buffs.VerfireReady);
     internal static float VerStoneRemaining => GetStatusEffectRemainingTime(Buffs.VerstoneReady);
-    internal static float GrandImpactRemaining => GetStatusEffectRemainingTime(Buffs.GrandImpactReady);
-    internal static float AccelerationChargeCD => GetCooldownChargeRemainingTime(Acceleration);
     
     //Bools
     internal static bool CanVerStone => HasStatusEffect(Buffs.VerstoneReady);
@@ -150,13 +150,9 @@ internal partial class RDM
     internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
     internal static bool CanNotMagickBarrier => !ActionReady(MagickBarrier) || HasStatusEffect(Buffs.MagickBarrier, anyOwner: true);
     
-    
-    
     #endregion
     
     #region Functions
-    
-    #region Melee Mana Start Calculator
     internal static int ManaLevel()
     {
         if (LevelChecked(Embolden)) // Level checks for Embolden then pools certain amounts of mana throughout the cd. 
@@ -179,9 +175,7 @@ internal partial class RDM
             return 50;
         return LevelChecked(Zwerchhau) ? 35 : 20;
     }
-    #endregion
     
-    #region Spell Casts
     internal static bool UseVerStone()
     {
         if (!CanVerStone || HasDualcast || HasAccelerate || HasSwiftcast || VerStoneRemaining < 2.5 ||
@@ -248,8 +242,6 @@ internal partial class RDM
             return LevelChecked(Veraero2) ? Veraero2 : Verthunder2;
         return WhiteHigher ? Verthunder2 : actionID;
     }
-    #endregion
-    
     #endregion
 
     #region Opener
