@@ -4826,34 +4826,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
         RDM.JobID)]
     RDM_ST_Lucid = 13610,
-    
-    
-    //[ParentCombo(RDM_ST_DPS)]
-    //[CustomComboInfo("Basic Spell Combo Options", "Replace Jolt with various Spells.", RDM.JobID)]
-    //RDM_ST_Spells = 13001,
-
-    //[ParentCombo(RDM_ST_MeleeCombo_ManaEmbolden)]
-    //[CustomComboInfo("Hold for Double Melee Combo Option [Lv.90+]",
-    //    "Hold both actions until you can perform a double melee combo.", RDM.JobID)]
-    //RDM_ST_MeleeCombo_ManaEmbolden_DoubleCombo = 13412,
-
-    //[ParentCombo(RDM_ST_MeleeCombo)]
-    //[CustomComboInfo("Unbalance Mana Option", "Use Acceleration to unbalance mana prior to starting melee combo.",
-     //   RDM.JobID)]
-    //RDM_ST_MeleeCombo_UnbalanceMana = 13440,
-
-    //[ParentCombo(RDM_ST_MeleeCombo)]
-    //[CustomComboInfo("Melee combo overcap protection",
-     //   "Adds melee combo to the rotation when mana is at a certain threshold.", RDM.JobID)]
-    //RDM_ST_Melee_Overcap_Protection = 13660,
-
-    //[ParentCombo(RDM_ST_DPS)]
-    //[CustomComboInfo("Weave oGCD Damage Option", "Weave the following oGCD actions.", RDM.JobID)]
-    //RDM_ST_oGCD = 13240,
-    
-    
-    
-    
 
     #endregion
 

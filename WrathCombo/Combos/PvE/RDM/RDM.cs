@@ -25,48 +25,91 @@ internal partial class RDM : Caster
         {
             if (actionID is not (Jolt or Jolt2 or Jolt3))
                 return actionID;
+            
+            #region OGCDs
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            {
+                //Gap Closer
+                if (ActionReady(Corpsacorps) && (HasEnoughManaST || CanMagickedSwordplay) && !InMeleeRange()) 
+                    return Corpsacorps;
+                 
+                if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
+                    return Manafication;
+                
+                if (ActionReady(Embolden) && !HasEmbolden && CanDelayedWeave()) 
+                    return Embolden;
+                
+                if (ActionReady(ContreSixte)) 
+                    return ContreSixte;
+                
+                if (ActionReady(Fleche)) 
+                    return Fleche;
+                
+                if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement)  
+                    return Engagement;
+                
+                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps && InMeleeRange())
+                    return Corpsacorps;
+                
+                if (CanPrefulgence)
+                    return Prefulgence;
+               
+                if (CanViceOfThorns)
+                    return ViceOfThorns;
+               
+                if (Role.CanLucidDream(8000))
+                    return Role.LucidDreaming;
+               
+                if (CanAcceleration || CanAccelerationMovement) 
+                    return Acceleration;
+               
+                if (CanSwiftcast || CanSwiftcastMovement)
+                    return Role.Swiftcast;
+            }
+            #endregion
+            
+            #region Melee Combo and Finishers 
+            // Verholy, Verflare, Scorch, Resolution
+            if (ComboAction is Scorch or Verholy or Verflare) 
+                return actionID;
+            
+            if (HasManaStacks) 
+                return UseHolyFlare(actionID);
+            
+            //Melee Combo 
+            if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo) && InMeleeRange())
+            {
+                if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
+                    return EnchantedRedoublement;
+                
+                if (ComboAction is Riposte or EnchantedRiposte)
+                    return EnchantedZwerchhau;
+                
+                if (ActionReady(EnchantedRiposte) && InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
+                    (HasEnoughManaST || CanMagickedSwordplay)) 
+                    return EnchantedRiposte;
+            }
+            
+            #endregion
+            
+            #region GCD Casts
 
-            //VARIANTS
-            if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
-                return Variant.Cure;
-
-            if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
-                return Variant.Rampart;
-
-            uint NewActionID = 0;
-
-            //oGCDs
-            if (TryOGCDs(ref NewActionID))
-                return NewActionID;
-
-            //Lucid Dreaming
-            if (TryLucidDreaming(6500, ComboAction))
-                return Role.LucidDreaming;
-
-            // SCORCH & RESOLUTION
-            if (MeleeCombo.CanScorchResolution()) return OriginalHook(Jolt);
-
-            // VERFLARE & VERHOLY
-            if (MeleeCombo.TryVerFlareVerHoly(ref NewActionID))
-                return NewActionID;
-
-            //Melee Combo
-            //  Manafication/Embolden Code
-            if (MeleeCombo.TrySTManaEmbolden(ref NewActionID))
-                return NewActionID;
-            if (MeleeCombo.TrySTMeleeCombo(ref NewActionID))
-                return NewActionID;
-            if (MeleeCombo.TrySTMeleeStart(ref NewActionID))
-                return NewActionID;
-
-            //Normal Spell Rotation
-            if (SpellCombo.TryAcceleration(ref NewActionID))
-                return NewActionID;
-            if (SpellCombo.TrySTSpellRotation(ref NewActionID))
-                return NewActionID;
-
-            //NO_CONDITIONS_MET
+            //Verthunder and Veraero
+            if (CanInstantCast)
+                return UseInstantCast(actionID);
+            
+            if (UseGrandImpact()) 
+                return GrandImpact;
+            
+            if (UseVerStone())
+                return Verstone;
+            
+            if (UseVerFire())
+                return Verfire;
+            
             return actionID;
+            
+            #endregion
         }
     }
 

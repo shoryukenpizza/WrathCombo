@@ -118,6 +118,8 @@ internal partial class RDM
     internal static bool WhiteHigher => Gauge.BlackMana < Gauge.WhiteMana;
     internal static bool HasEnoughManaST => Gauge.BlackMana >= ManaLevelST() && Gauge.WhiteMana >= ManaLevelST();
     internal static bool HasManaStacks => Gauge.ManaStacks == 3;
+    internal static bool CanFlare => BlackHigher && Gauge.BlackMana - Gauge.WhiteMana < 18;
+    internal static bool CanHoly => WhiteHigher && Gauge.WhiteMana - Gauge.BlackMana < 18;
     
     //Floats
     internal static float EmboldenCD => GetCooldownRemainingTime(Embolden);
@@ -231,13 +233,13 @@ internal partial class RDM
     {
         if (BlackHigher)
         {
-            if (CanVerStone)
-                return CanVerFire ? Verholy : Verflare;
+            if (CanVerStone && CanFlare)
+                return CanVerFire? Verholy : Verflare;
             return Verholy;
         }
         if (WhiteHigher)
         {
-            if (CanVerFire)
+            if (CanVerFire && CanHoly)
                 return CanVerStone ? Verflare : Verholy;
             return Verflare;
         }
