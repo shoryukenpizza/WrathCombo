@@ -2,7 +2,6 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class RDM : Caster
@@ -46,10 +45,10 @@ internal partial class RDM : Caster
                 if (ActionReady(Fleche)) 
                     return Fleche;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement)  
+                if (CanEngagement)  
                     return Engagement;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps && InMeleeRange())
+                if (CanCorps && InMeleeRange())
                     return Corpsacorps;
                 
                 if (CanPrefulgence)
@@ -78,7 +77,7 @@ internal partial class RDM : Caster
                 return UseHolyFlare(actionID);
             
             //Melee Combo 
-            if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo) && InMeleeRange())
+            if (InMeleeRange())
             {
                 if (ComboAction is Zwerchhau or EnchantedZwerchhau) 
                     return EnchantedRedoublement;
@@ -99,7 +98,7 @@ internal partial class RDM : Caster
             if (CanInstantCast)
                 return UseInstantCastST(actionID);
             
-            if (UseGrandImpact()) 
+            if (CanGrandImpact)  
                 return GrandImpact;
             
             if (UseVerStone())
@@ -152,7 +151,7 @@ internal partial class RDM : Caster
                 if (CanEngagement)  
                     return Engagement;
                 
-                if (CanCorps && GetTargetDistance() == 0)
+                if (CanCorps && InMeleeRange())
                     return Corpsacorps;
                 
                 if (CanPrefulgence)
@@ -204,7 +203,7 @@ internal partial class RDM : Caster
             
             #region GCD Casts
             
-            if (UseGrandImpact()) 
+            if (CanGrandImpact)  
                 return GrandImpact;
             
             if (!CanInstantCast)
@@ -269,9 +268,11 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement)  
                     return Engagement;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps && 
-                    (IsNotEnabled(CustomComboPreset.RDM_ST_Corpsacorps_MeleeOnly) || GetTargetDistance() == 0))
-                    return Corpsacorps;
+                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps)
+                {
+                    if (IsNotEnabled(CustomComboPreset.RDM_ST_Corpsacorps_MeleeOnly) || IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps_AllowMove) && InMeleeRange() || GetTargetDistance() < .1)
+                        return Corpsacorps;
+                }
                 
                 //Prefulgence Option
                 if (IsEnabled(CustomComboPreset.RDM_ST_Prefulgence) && CanPrefulgence)
@@ -337,7 +338,7 @@ internal partial class RDM : Caster
                 return UseInstantCastST(actionID);
             
             //Replaces Jolt, Needs no enable
-            if (UseGrandImpact()) 
+            if (CanGrandImpact) 
                 return GrandImpact;
 
             //Verstone and Verfire
@@ -392,11 +393,12 @@ internal partial class RDM : Caster
                 
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Engagement) && CanEngagement)  
                     return Engagement;
-                
-                if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps && 
-                    (IsNotEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_MeleeOnly) || GetTargetDistance() == 0))
-                    return Corpsacorps;
-                
+
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps)
+                {
+                    if (IsNotEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_MeleeOnly) || IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_AllowMove) && InMeleeRange() || GetTargetDistance() < .1)
+                        return Corpsacorps;
+                }
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Prefulgence) && CanPrefulgence)
                     return Prefulgence;
                 
@@ -450,7 +452,7 @@ internal partial class RDM : Caster
             
             #region GCD Casts
             
-            if (UseGrandImpact()) 
+            if (CanGrandImpact) 
                 return GrandImpact;
             
             if (IsEnabled(CustomComboPreset.RDM_AoE_ThunderAero) && !CanInstantCast)
@@ -483,8 +485,8 @@ internal partial class RDM : Caster
             /*
             RDM_Verraise
             Swiftcast combos to Verraise when:
-            -Swiftcast is on cooldown.
-            -Swiftcast is available, but we we have Dualcast (Dualcasting Verraise)
+            - Swiftcast is on cooldown.
+            - Swiftcast is available, but we have Dualcast (Dualcasting Verraise)
             Using this variation other than the alternate feature style, as Verraise is level 63
             and swiftcast is unlocked way earlier and in theory, on a hotbar somewhere
             */
@@ -520,71 +522,7 @@ internal partial class RDM : Caster
             return actionID;
         }
     }
-
-    internal class RDM_CorpsDisplacement : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_CorpsDisplacement;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Displacement
-            && LevelChecked(Displacement)
-            && HasTarget()
-            && GetTargetDistance() >= 5 ? Corpsacorps : actionID;
-    }
-
-    internal class RDM_EmboldenManafication : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_EmboldenManafication;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Embolden
-            && IsOnCooldown(Embolden)
-            && ActionReady(Manafication) ? Manafication : actionID;
-    }
-
-    internal class RDM_MagickBarrierAddle : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_MagickBarrierAddle;
-        protected override uint Invoke(uint actionID) =>
-            actionID is MagickBarrier
-            && (IsOnCooldown(MagickBarrier) || !LevelChecked(MagickBarrier))
-            && Role.CanAddle() ? Role.Addle : actionID;
-    }
-
-    internal class RDM_EmboldenProtection : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_EmboldenProtection;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Embolden &&
-            ActionReady(Embolden) &&
-            HasStatusEffect(Buffs.EmboldenOthers, anyOwner: true) ? All.SavageBlade : actionID;
-    }
-
-    internal class RDM_MagickProtection : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_MagickProtection;
-        protected override uint Invoke(uint actionID) =>
-            actionID is MagickBarrier &&
-            ActionReady(MagickBarrier) &&
-            HasStatusEffect(Buffs.MagickBarrier, anyOwner: true) ? All.SavageBlade : actionID;
-    }
-
-    internal class RDM_ST_Melee_Combo : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Riposte;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Riposte)
-                return actionID;
-
-            return ComboAction switch
-            {
-                Zwerchhau or EnchantedZwerchhau => EnchantedRedoublement,
-                Riposte or EnchantedRiposte => EnchantedZwerchhau,
-                _ => actionID
-            };
-        }
-    }
-
+    
     internal class RDM_VerAero : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_VerAero;
@@ -634,5 +572,92 @@ internal partial class RDM : Caster
             return actionID;
         }
     }
+    
+    internal class RDM_ST_Melee_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Riposte;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Riposte)
+                return actionID;
+
+            return ComboAction switch
+            {
+                Zwerchhau or EnchantedZwerchhau => EnchantedRedoublement,
+                Riposte or EnchantedRiposte => EnchantedZwerchhau,
+                _ => actionID
+            };
+        }
+    }
+
+    internal class RDM_CorpsDisplacement : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_CorpsDisplacement;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Displacement
+            && LevelChecked(Displacement)
+            && HasTarget()
+            && GetTargetDistance() >= 5 ? Corpsacorps : actionID;
+    }
+
+    internal class RDM_EmboldenProtection: CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_EmboldenProtection;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Embolden)
+                return actionID;
+
+            if (CanViceOfThorns)
+                return ViceOfThorns;
+            
+            if (IsEnabled(CustomComboPreset.RDM_EmboldenManafication) && ActionReady(Manafication) &&
+                (IsOnCooldown(Embolden) || HasStatusEffect(Buffs.Embolden, SimpleTarget.Self, true)))
+                return Manafication;
+
+            return ActionReady(Embolden) &&
+                   HasStatusEffect(Buffs.EmboldenOthers, anyOwner: true)
+                ? All.SavageBlade
+                : actionID;
+        }
+    }
+    
+    internal class RDM_MagickBarrierAddle : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_MagickBarrierAddle;
+        protected override uint Invoke(uint actionID) =>
+            actionID is MagickBarrier
+            && (IsOnCooldown(MagickBarrier) || !LevelChecked(MagickBarrier))
+            && Role.CanAddle() ? Role.Addle : actionID;
+    }
+
+    internal class RDM_MagickProtection : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_MagickProtection;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not MagickBarrier)
+                return actionID;
+            
+            if (IsEnabled(CustomComboPreset.RDM_MagickBarrierAddle))
+            {
+                if (Role.CanAddle() && CanNotMagickBarrier || 
+                    GetCooldownRemainingTime(Role.Addle) < GetCooldownRemainingTime(MagickBarrier))
+                    return HasStatusEffect(Debuffs.Addle, CurrentTarget, anyOwner: true) ? All.SavageBlade : Role.Addle;
+            }
+            
+            if (ActionReady(MagickBarrier) && HasStatusEffect(Buffs.MagickBarrier, anyOwner: true))
+                return All.SavageBlade;
+            
+            if (IsEnabled(CustomComboPreset.RDM_MagickBarrierAddle) && GetCooldownRemainingTime(Role.Addle) < GetCooldownRemainingTime(MagickBarrier))
+                return Role.Addle;
+            
+            return actionID;
+        }
+    }
+    
     #endregion 
 }

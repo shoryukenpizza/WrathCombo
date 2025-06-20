@@ -4795,8 +4795,12 @@ public enum CustomComboPreset
     RDM_ST_Corpsacorps = 13017,
     
     [ParentCombo(RDM_ST_Corpsacorps)]
-    [CustomComboInfo("Corpsacorps No Movement Option", "Will only use when it will result in no movement", RDM.JobID)]
-    RDM_ST_Corpsacorps_MeleeOnly = 13018,
+    [CustomComboInfo("Corpsacorps Melee Only Option", "Will use as long as you are in Melee range. 3 Yalms", RDM.JobID)]
+    RDM_ST_Corpsacorps_MeleeOnly = 13024,
+    
+    [ParentCombo(RDM_ST_Corpsacorps_MeleeOnly)]
+    [CustomComboInfo("Corpsacorps Allow Movement Option", "If Disabled, will only use when it will result in no movement.", RDM.JobID)]
+    RDM_ST_Corpsacorps_AllowMove = 13018,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
@@ -4819,7 +4823,7 @@ public enum CustomComboPreset
         RDM.JobID)]
     RDM_ST_Lucid = 13023,
 
-    //Last Used 13023
+    //Last Used 13024
     #endregion
 
     #region AoE DPS
@@ -4886,8 +4890,12 @@ public enum CustomComboPreset
     RDM_AoE_Corpsacorps = 13214,
     
     [ParentCombo(RDM_AoE_Corpsacorps)]
-    [CustomComboInfo("Corpsacorps No Movement Option", "Will only use when it will result in no movement", RDM.JobID)]
-    RDM_AoE_Corpsacorps_MeleeOnly = 13215,
+    [CustomComboInfo("Corpsacorps Melee Range Option", "Will only use when in melee range. 3 Yalms", RDM.JobID)]
+    RDM_AoE_Corpsacorps_MeleeOnly = 13221,
+    
+    [ParentCombo(RDM_AoE_Corpsacorps_MeleeOnly)]
+    [CustomComboInfo("Corpsacorps Allow Movement Option", "If Disabled, will only use when it will result in no movement.", RDM.JobID)]
+    RDM_AoE_Corpsacorps_AllowMove = 13215,
 
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
@@ -4910,7 +4918,7 @@ public enum CustomComboPreset
         RDM.JobID)]
     RDM_AoE_Lucid = 13220,
     
-    //Last Used 13220
+    //Last Used 13221
     #endregion
 
     #region Stand Alone Features
@@ -4954,24 +4962,24 @@ public enum CustomComboPreset
     [CustomComboInfo("Displacement <> Corps-a-corps Feature",
         "Replace Displacement with Corps-a-corps when out of range.", RDM.JobID)]
     RDM_CorpsDisplacement = 13409,
-
-    [ReplaceSkill(RDM.Embolden)]
-    [CustomComboInfo("Embolden to Manafication Feature", "Changes Embolden to Manafication when on cooldown.",
-        RDM.JobID)]
-    RDM_EmboldenManafication = 13410,
-
-    [ReplaceSkill(RDM.MagickBarrier)]
-    [CustomComboInfo("Magick Barrier to Addle Feature", "Changes Magick Barrier to Addle when on cooldown.", RDM.JobID)]
-    RDM_MagickBarrierAddle = 13411,
-
+    
     [ReplaceSkill(RDM.Embolden)]
     [CustomComboInfo("Embolden Overlap Protection", "Disables Embolden when buffed by another Red Mage's Embolden by replacing it with Savage Blade.",
         RDM.JobID)]
     RDM_EmboldenProtection = 13412,
 
+    [ParentCombo(RDM_EmboldenProtection)]
+    [CustomComboInfo("Embolden to Manafication Option", "Changes Embolden to Manafication when on cooldown or under the effect of anyones embolden",
+        RDM.JobID)]
+    RDM_EmboldenManafication = 13410,
+
+    [ParentCombo(RDM_MagickProtection)]
+    [CustomComboInfo("Magick Barrier to Addle Option", "Changes Magick Barrier to Addle when on cooldown. \nWill Display the lowest cooldown skill if both are on cooldown.", RDM.JobID)]
+    RDM_MagickBarrierAddle = 13411,
+
     [ReplaceSkill(RDM.MagickBarrier)]
     [CustomComboInfo("Magick Barrier Overlap Protection",
-        "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier by replacing it with Savage Blade.", RDM.JobID)]
+        "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier by replacing it with Savage Blade. \nApplies to suboption for Addle as well.", RDM.JobID)]
     RDM_MagickProtection = 13413,
 
     [Variant]
@@ -4994,7 +5002,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13417
+    //Last Used 13419
     #endregion
 
     #endregion

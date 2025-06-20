@@ -1,11 +1,9 @@
-using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE;
@@ -84,7 +82,8 @@ internal partial class RDM
 
     public static class Debuffs
     {
-        // public const short placeholder = 0;
+        public const ushort
+            Addle = 1203;
     }
     #endregion
     
@@ -140,7 +139,7 @@ internal partial class RDM
     internal static bool HasAccelerate => HasStatusEffect(Buffs.Acceleration);
     internal static bool HasSwiftcast => HasStatusEffect(Buffs.Swiftcast);
     internal static bool HasEmbolden => HasStatusEffect(Buffs.Embolden);
-    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && (EmboldenCD > 10 || LevelChecked(Embolden));
+    internal static bool CanAcceleration => !CanVerFireAndStone && HasCharges(Acceleration) && CanInstantCD && (EmboldenCD > 15 || LevelChecked(Embolden));
     internal static bool CanAccelerationMovement => IsMoving() && HasCharges(Acceleration) && (!HasDualcast || !HasAccelerate || !InCombo);
     internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && (EmboldenCD > 10 || LevelChecked(Embolden));
     internal static bool CanSwiftcastMovement => Role.CanSwiftcast() && CanInstantCD && IsMoving();
@@ -148,8 +147,8 @@ internal partial class RDM
     internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && 
                                           (HasEmbolden || GetRemainingCharges(Engagement) >= 1 && GetCooldownChargeRemainingTime(Engagement) < 3);
     internal static bool CanCorps => GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
-
     internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
+    internal static bool CanNotMagickBarrier => !ActionReady(MagickBarrier) || HasStatusEffect(Buffs.MagickBarrier, anyOwner: true);
     
     
     
@@ -168,11 +167,11 @@ internal partial class RDM
             {
                 case > 80:
                     return 60; //Fresh out of Embolden window requiring slightly higher to keep a third melee combo from happening before a few of the procs can be used
-                case > 40 and <80:
+                case > 40 and <= 80:
                     return 50; // Normal operating fire at 50
-                case >= 15 and <= 35:
+                case > 15 and <= 40:
                     return 70; // As it gets closer increases level so if we do a melee combo we still have enough for double melee burst
-                case < 15:
+                case <= 15:
                     return 90; // to prevent it from firing unless it is about to cap, should only fire for manual embolden users. 
             }
         }
@@ -203,17 +202,6 @@ internal partial class RDM
 
         return false;
     }
-    internal static bool UseGrandImpact()
-    {
-        if (HasDualcast || HasAccelerate || HasSwiftcast) return false;
-
-        if (VerFireRemaining < 5 || VerStoneRemaining < 5) return false;
-        
-        if (CanGrandImpact) return true;
-
-        return false;
-    }
-    
     internal static uint UseInstantCastST(uint actionID)
     {
         if (!LevelChecked(Verthunder) && LevelChecked(Veraero)) // Low level Check
