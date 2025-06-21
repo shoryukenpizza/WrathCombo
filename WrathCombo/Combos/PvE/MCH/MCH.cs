@@ -9,7 +9,7 @@ internal partial class MCH : PhysicalRanged
 {
     internal class MCH_ST_BasicCombo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_ST_BasicCombo;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_ST_BasicCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -31,7 +31,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_ST_SimpleMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_ST_SimpleMode;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_ST_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -174,7 +174,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_ST_AdvancedMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_ST_AdvancedMode;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_ST_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -350,7 +350,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_AoE_SimpleMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_AoE_SimpleMode;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -462,7 +462,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_AoE_AdvancedMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_AoE_AdvancedMode;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_AoE_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -628,7 +628,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_HeatblastGaussRicochet : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_Heatblast;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_Heatblast;
 
         protected override uint Invoke(uint actionID)
         {
@@ -672,7 +672,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_AutoCrossbowGaussRicochet : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_AutoCrossbow;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_AutoCrossbow;
 
         protected override uint Invoke(uint actionID)
         {
@@ -708,7 +708,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_GaussRoundRicochet : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_GaussRoundRicochet;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_GaussRoundRicochet;
 
         protected override uint Invoke(uint actionID)
         {
@@ -728,7 +728,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_Overdrive : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_Overdrive;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_Overdrive;
 
         protected override uint Invoke(uint actionID) =>
             actionID is RookAutoturret or AutomatonQueen && RobotActive
@@ -738,7 +738,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_HotShotDrillChainsawExcavator : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_HotShotDrillChainsawExcavator;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_HotShotDrillChainsawExcavator;
 
         protected override uint Invoke(uint actionID) =>
             actionID is not (Drill or HotShot or AirAnchor or Chainsaw)
@@ -758,7 +758,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_DismantleTactician : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_DismantleTactician;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_DismantleTactician;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle &&
@@ -770,7 +770,7 @@ internal partial class MCH : PhysicalRanged
 
     internal class MCH_DismantleProtection : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_DismantleProtection;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_DismantleProtection;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle && HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) && IsOffCooldown(Dismantle)
