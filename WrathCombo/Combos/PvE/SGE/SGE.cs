@@ -93,20 +93,19 @@ internal partial class SGE : Healer
                 // Phlegma
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma) &&
                     InCombat() && InActionRange(OriginalHook(Phlegma)) &&
-                    ActionReady(Phlegma) && GetRemainingCharges(Phlegma) > Config.SGE_ST_DPS_Phlegma)
-                    return OriginalHook(Phlegma);
+                    ActionReady(OriginalHook(Phlegma)))
+                {
+                    //If not enabled or not high enough level, follow slider
+                    if ((IsNotEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) || !LevelChecked(Psyche)) &&
+                        GetRemainingCharges(OriginalHook(Phlegma)) > Config.SGE_ST_DPS_Phlegma)
+                        return OriginalHook(OriginalHook(Phlegma));
 
-                //Phlegma burst
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma) &&
-                    InCombat() && InActionRange(OriginalHook(Phlegma)) &&
-                    ActionReady(Phlegma) &&
-                    ((LevelChecked(Psyche) &&
-                      ((GetCooldownRemainingTime(Psyche) > 40 &&
-                        (GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma)))) ||
-                       IsOffCooldown(Psyche) ||
-                       JustUsed(Psyche))) ||
-                     (!LevelChecked(Psyche) && ActionReady(OriginalHook(Phlegma)))))
-                    return OriginalHook(Phlegma);
+                    //If enabled and high enough level, burst
+                    if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) &&
+                        (GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma ||
+                         IsOffCooldown(Psyche) || JustUsed(Psyche)))
+                        return OriginalHook(Phlegma);
+                }
 
                 // Movement Options
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Movement) &&

@@ -18,6 +18,8 @@ internal partial class SGE
 
     internal static Status? DyskrasiaDebuff => GetStatusEffect(Debuffs.EukrasianDyskrasia, CurrentTarget);
 
+    internal static bool MaxPhlegma => GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma));
+
     internal static bool HasAddersgall() => Addersgall > 0;
 
     internal static bool HasAddersting() => Addersting > 0;
@@ -198,7 +200,7 @@ internal partial class SGE
         [
             ([2], () => 3)
         ];
-        
+
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
         public override bool HasCooldowns() =>
@@ -239,7 +241,7 @@ internal partial class SGE
         [
             ([2], () => 3)
         ];
-        
+
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
         public override bool HasCooldowns() =>
