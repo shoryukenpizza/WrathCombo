@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -195,6 +196,11 @@ internal partial class SGE
             Dosis3
         ];
 
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([2], () => HasStatusEffect(Buffs.Eukrasia))
+        ];
+
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
         public override bool HasCooldowns() =>
@@ -230,6 +236,12 @@ internal partial class SGE
             Dosis3,
             Dosis3
         ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([2], () => HasStatusEffect(Buffs.Eukrasia))
+        ];
+
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 
