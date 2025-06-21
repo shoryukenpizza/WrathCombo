@@ -103,7 +103,8 @@ internal partial class SGE : Healer
                     //If enabled and high enough level, burst
                     if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) &&
                         (GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma ||
-                         IsOffCooldown(Psyche) || JustUsed(Psyche)))
+                         IsOffCooldown(Psyche) ||
+                         JustUsed(Psyche, 5f)))
                         return OriginalHook(Phlegma);
                 }
 
@@ -112,15 +113,18 @@ internal partial class SGE : Healer
                     InCombat() && IsMoving())
                 {
                     // Toxikon
-                    if (Config.SGE_ST_DPS_Movement[0] && LevelChecked(Toxikon) && HasAddersting())
+                    if (Config.SGE_ST_DPS_Movement[0] &&
+                        LevelChecked(Toxikon) && HasAddersting())
                         return OriginalHook(Toxikon);
 
                     // Dyskrasia
-                    if (Config.SGE_ST_DPS_Movement[1] && LevelChecked(Dyskrasia) && InActionRange(Dyskrasia))
+                    if (Config.SGE_ST_DPS_Movement[1] &&
+                        LevelChecked(Dyskrasia) && InActionRange(Dyskrasia))
                         return OriginalHook(Dyskrasia);
 
                     // Eukrasia
-                    if (Config.SGE_ST_DPS_Movement[2] && LevelChecked(Eukrasia))
+                    if (Config.SGE_ST_DPS_Movement[2] &&
+                        LevelChecked(Eukrasia))
                         return Eukrasia;
                 }
             }
