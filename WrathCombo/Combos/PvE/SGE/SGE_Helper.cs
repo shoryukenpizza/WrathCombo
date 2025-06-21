@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-using System;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -176,8 +175,8 @@ internal partial class SGE
 
         public override List<uint> OpenerActions { get; set; } =
         [
-            Eukrasia,
             Toxikon2,
+            Eukrasia,
             EukrasianDosis3,
             Dosis3,
             Dosis3,
@@ -194,11 +193,6 @@ internal partial class SGE
             Dosis3,
             Dosis3,
             Dosis3
-        ];
-
-        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
-        [
-            ([2], () => 3)
         ];
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
@@ -217,8 +211,8 @@ internal partial class SGE
 
         public override List<uint> OpenerActions { get; set; } =
         [
-            Eukrasia,
             Pneuma,
+            Eukrasia,
             EukrasianDosis3,
             Dosis3,
             Dosis3,
@@ -235,11 +229,6 @@ internal partial class SGE
             Dosis3,
             Dosis3,
             Dosis3
-        ];
-
-        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
-        [
-            ([2], () => 3)
         ];
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
