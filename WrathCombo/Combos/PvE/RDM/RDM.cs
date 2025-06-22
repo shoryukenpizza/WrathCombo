@@ -1,4 +1,5 @@
 using System;
+using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -17,11 +18,15 @@ internal partial class RDM : Caster
                 return actionID;
             
             #region Variants
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+                
             if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
                 return Variant.Rampart;
+
             #endregion
             
             #region OGCDs
@@ -99,7 +104,7 @@ internal partial class RDM : Caster
             
             if (UseVerFire())
                 return Verfire;
-            
+
             return actionID;
             #endregion
         }
@@ -114,6 +119,9 @@ internal partial class RDM : Caster
                 return actionID;
             
             #region Variants
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+                
             if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
                 return Variant.Cure;
 
@@ -121,8 +129,9 @@ internal partial class RDM : Caster
                 return Variant.Rampart;
             #endregion
 
+
             #region OGCDs
-            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
+            if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())  
             {
                 //Gap Closer Option
                 if (ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
@@ -217,6 +226,10 @@ internal partial class RDM : Caster
             #endregion
             
             #region Variants
+            
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+                
             if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
                 return Variant.Cure;
 
@@ -309,6 +322,7 @@ internal partial class RDM : Caster
                 if (UseVerFire())
                     return Verfire;
             }
+
             return actionID;
             #endregion
         }
@@ -323,12 +337,16 @@ internal partial class RDM : Caster
                 return actionID;
 
             #region Variants
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+                
             if (Variant.CanCure(CustomComboPreset.RDM_Variant_Cure, Config.RDM_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
                 return Variant.Rampart;
             #endregion
+
 
             #region OGCDs
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
@@ -382,8 +400,8 @@ internal partial class RDM : Caster
                 return actionID;
             
             if (IsEnabled(CustomComboPreset.RDM_AoE_HolyFlare) && HasManaStacks) 
-                return UseHolyFlare(actionID);
-            
+                return UseHolyFlare(actionID);   
+
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
             {
                 if (ActionReady(Moulinet) && 
