@@ -12,6 +12,7 @@ using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using EZ = ECommons.Throttlers.EzThrottler;
@@ -341,6 +342,14 @@ internal static class SimpleTarget
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange() && x.IsNotInvincible())
             .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .FirstOrDefault();
+
+    public static IGameObject? InterruptableEnemy =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable &&
+                        x.IsWithinRange(3) && x.IsCastInterruptible)
+            .OrderBy(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
     #endregion

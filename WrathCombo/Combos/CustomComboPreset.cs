@@ -49,6 +49,11 @@ public enum CustomComboPreset
         ADV.JobID)]
     ALL_Tank_Interrupt = 100000,
 
+    [ParentCombo(ALL_Tank_Interrupt)]
+    [Retargeted]
+    [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", ADV.JobID)]
+    ALL_Tank_Interrupt_Retarget = 100005,
+
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.Reprisal)]
     [ParentCombo(ALL_Tank_Menu)]
