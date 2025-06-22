@@ -1,4 +1,6 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Interface.Colors;
+using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -24,6 +26,7 @@ internal partial class OccultCrescent
             Phantom_Monk_OccultChakra_Health = new("Phantom_Monk_OccultChakra_Health", 29),
             Phantom_Chemist_OccultPotion_Health = new("Phantom_Chemist_OccultPotion_Health", 50),
             Phantom_Chemist_OccultEther_MP = new("Phantom_Chemist_OccultEther_MP", 50),
+            Phantom_Chemist_OccultElixir_HP = new("Phantom_Chemist_OccultElixir_HP", 25),
             Phantom_Oracle_Blessing_Health = new("Phantom_Oracle_Blessing_Health", 50),
             Phantom_Oracle_Starfall_Health = new("Phantom_Oracle_Starfall_Health", 100),
             Phantom_Ranger_OccultUnicorn_Health = new("Phantom_Ranger_OccultUnicorn_Health", 50),
@@ -103,6 +106,15 @@ internal partial class OccultCrescent
                 case CustomComboPreset.Phantom_Chemist_OccultEther:
                     UserConfig.DrawSliderInt(1, 10000, Phantom_Chemist_OccultEther_MP,
                         "Player MP to be \nless than or equal to:", sliderIncrement: SliderIncrements.Hundreds);
+                    break;
+
+                case CustomComboPreset.Phantom_Chemist_OccultElixir:
+                    UserConfig.DrawSliderInt(1, 100, Phantom_Chemist_OccultElixir_HP,
+                        "Avg Party HP to be \nless than or equal to:", 200);
+                    ImGui.Indent();
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "Not advisable in most situations!");
+                    ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "The slider value should be rather low, if you do use it!");
+                    ImGui.Unindent();
                     break;
             }
         }
