@@ -1,4 +1,3 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SAM.Config;
 using static WrathCombo.Data.ActionWatching;
@@ -104,7 +103,7 @@ internal partial class SAM : Melee
             if (Variant.CanCure(CustomComboPreset.SAM_Variant_Cure, SAM_VariantCure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.SAM_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(CustomComboPreset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -276,7 +275,7 @@ internal partial class SAM : Melee
             if (Variant.CanCure(CustomComboPreset.SAM_Variant_Cure, SAM_VariantCure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.SAM_Variant_Rampart, WeaveTypes.Weave))
+            if (Variant.CanRampart(CustomComboPreset.SAM_Variant_Rampart))
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())

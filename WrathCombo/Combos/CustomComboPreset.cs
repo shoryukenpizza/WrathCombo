@@ -6610,7 +6610,7 @@ public enum CustomComboPreset
     VPR_ST_VicewinderCombo = 30007,
     
     [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Vicewinder Weaves", "Adds Twinfang and Twinblood to the rotation.", VPR.JobID)]
+    [CustomComboInfo("Vicewinder Weaves", "Adds Twinfang Bite and Twinblood Bite to the rotation.", VPR.JobID)]
     VPR_ST_VicewinderWeaves = 30013,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
@@ -6684,7 +6684,7 @@ public enum CustomComboPreset
     VPR_AoE_VicepitCombo_DisableRange = 30113,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Vicepit Weaves", "Adds Twinfang and Twinblood to the rotation.", VPR.JobID)]
+    [CustomComboInfo("Vicepit Weaves", "Adds Twinfang Thresh and Twinblood Thresh to the rotation.", VPR.JobID)]
     VPR_AoE_VicepitWeaves = 30115,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
@@ -6708,7 +6708,7 @@ public enum CustomComboPreset
     VPR_AoE_Reawaken_DisableRange = 30114,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]
-    [CustomComboInfo("Reawaken Combo", "Adds Generation and Legacy to the rotation.", VPR.JobID)]
+    [CustomComboInfo("Reawaken Combo", "Adds Generations and Legacy weaves to the rotation.", VPR.JobID)]
     VPR_AoE_ReawakenCombo = 30112,
 
     [ParentCombo(VPR_AoE_AdvancedMode)]

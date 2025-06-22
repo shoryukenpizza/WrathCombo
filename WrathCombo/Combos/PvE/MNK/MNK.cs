@@ -1,4 +1,3 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.MNK.Config;
 using static WrathCombo.Data.ActionWatching;
@@ -89,7 +88,11 @@ internal partial class MNK : Melee
                 return FiresReply;
 
             if (HasStatusEffect(Buffs.WindsRumination) &&
-                (!InMeleeRange() || !HasStatusEffect(Buffs.PerfectBalance)))
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                ((GetCooldownRemainingTime(RiddleOfFire) > 10) ||
+                 HasStatusEffect(Buffs.RiddleOfFire) ||
+                 (GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2) ||
+                 !InMeleeRange()))
                 return WindsReply;
 
             // Perfect Balance
@@ -210,13 +213,17 @@ internal partial class MNK : Melee
                     !JustUsed(RiddleOfFire, 4) &&
                     (JustUsed(OriginalHook(Bootshine)) ||
                      JustUsed(DragonKick) ||
-                     GetStatusEffectRemainingTime(Buffs.FiresRumination) < 4 ||
+                     (GetStatusEffectRemainingTime(Buffs.FiresRumination) < GCD * 2) ||
                      !InMeleeRange()))
                     return FiresReply;
 
                 if (IsEnabled(CustomComboPreset.MNK_STUseWindsReply) &&
                     HasStatusEffect(Buffs.WindsRumination) &&
-                    (!InMeleeRange() || !HasStatusEffect(Buffs.PerfectBalance)))
+                    !HasStatusEffect(Buffs.PerfectBalance) &&
+                    ((GetCooldownRemainingTime(RiddleOfFire) > 10) ||
+                     HasStatusEffect(Buffs.RiddleOfFire) ||
+                     (GetStatusEffectRemainingTime(Buffs.WindsRumination) < GCD * 2) ||
+                     !InMeleeRange()))
                     return WindsReply;
             }
 
@@ -305,8 +312,9 @@ internal partial class MNK : Melee
                 return FiresReply;
 
             if (HasStatusEffect(Buffs.WindsRumination) &&
-                HasStatusEffect(Buffs.RiddleOfWind) &&
-                !HasStatusEffect(Buffs.PerfectBalance))
+                !HasStatusEffect(Buffs.PerfectBalance) &&
+                ((GetCooldownRemainingTime(RiddleOfFire) > 10) ||
+                 HasStatusEffect(Buffs.RiddleOfFire)))
                 return WindsReply;
 
             // Perfect Balance
@@ -428,8 +436,9 @@ internal partial class MNK : Melee
 
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseWindsReply) &&
                     HasStatusEffect(Buffs.WindsRumination) &&
-                    HasStatusEffect(Buffs.RiddleOfWind) &&
-                    !HasStatusEffect(Buffs.PerfectBalance))
+                    !HasStatusEffect(Buffs.PerfectBalance) &&
+                    ((GetCooldownRemainingTime(RiddleOfFire) > 10) ||
+                     HasStatusEffect(Buffs.RiddleOfFire)))
                     return WindsReply;
             }
 
