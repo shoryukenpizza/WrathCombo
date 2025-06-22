@@ -43,7 +43,7 @@ internal partial class RDM : Caster
                 if (ActionReady(Fleche)) 
                     return Fleche;
                 
-                if (CanEngagement)  
+                if (CanEngagement && PoolEngagement)  
                     return Engagement;
                 
                 if (CanCorps && InMeleeRange())
@@ -140,7 +140,7 @@ internal partial class RDM : Caster
                 if (ActionReady(Fleche)) 
                     return Fleche;
                 
-                if (CanEngagement)  
+                if (CanEngagement && PoolEngagement)  
                     return Engagement;
                 
                 if (CanCorps && InMeleeRange())
@@ -243,7 +243,7 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_ST_Fleche) && ActionReady(Fleche)) 
                     return Fleche;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement)  
+                if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement && (IsNotEnabled(CustomComboPreset.RDM_ST_Engagement_Pooling) || PoolEngagement))  
                     return Engagement;
                 
                 if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps && 
@@ -349,7 +349,7 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Fleche) && ActionReady(Fleche)) 
                     return Fleche;
                 
-                if (IsEnabled(CustomComboPreset.RDM_AoE_Engagement) && CanEngagement)  
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Engagement) && CanEngagement && (IsNotEnabled(CustomComboPreset.RDM_AoE_Engagement_Pooling) || PoolEngagement))  
                     return Engagement;
 
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps &&

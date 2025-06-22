@@ -4790,6 +4790,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
     RDM_ST_Engagement = 13016,
     
+    [ParentCombo(RDM_ST_Engagement)]
+    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window", RDM.JobID)]
+    RDM_ST_Engagement_Pooling = 13018,
+    
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
     RDM_ST_Corpsacorps = 13017,
@@ -4876,6 +4880,10 @@ public enum CustomComboPreset
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
     RDM_AoE_Engagement = 13213,
+    
+    [ParentCombo(RDM_AoE_Engagement)]
+    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window", RDM.JobID)]
+    RDM_AoE_Engagement_Pooling = 13215,
     
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]

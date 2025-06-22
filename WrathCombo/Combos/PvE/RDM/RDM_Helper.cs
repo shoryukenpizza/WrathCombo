@@ -143,8 +143,8 @@ internal partial class RDM
     internal static bool CanSwiftcast => Role.CanSwiftcast() && CanInstantCD && !CanVerFireAndStone && (EmboldenCD > 10 || LevelChecked(Embolden));
     internal static bool CanSwiftcastMovement => Role.CanSwiftcast() && CanInstantCD && IsMoving();
     internal static bool CanInstantCD => !InCombo && !HasSwiftcast && !CanGrandImpact && !HasEmbolden && !HasDualcast && !HasAccelerate && !InCombo;
-    internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && LevelChecked(Engagement) &&
-                                          (HasEmbolden || GetRemainingCharges(Engagement) >= 1 && GetCooldownChargeRemainingTime(Engagement) < 3);
+    internal static bool CanEngagement => InMeleeRange() && HasCharges(Engagement) && LevelChecked(Engagement);
+    internal static bool PoolEngagement => !LevelChecked(Embolden) || HasEmbolden || GetRemainingCharges(Engagement) >= 1 && GetCooldownChargeRemainingTime(Engagement) < 3;
     internal static bool CanCorps => LevelChecked(Corpsacorps) && GetRemainingCharges(Corpsacorps) >= 1 && GetCooldownChargeRemainingTime(Corpsacorps) < 1;
     internal static bool CanInstantCast => HasDualcast || HasAccelerate || HasSwiftcast;
     internal static bool CanNotMagickBarrier => !ActionReady(MagickBarrier) || HasStatusEffect(Buffs.MagickBarrier, anyOwner: true);
