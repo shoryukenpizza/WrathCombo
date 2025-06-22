@@ -942,7 +942,7 @@ internal partial class PLD : Tank
             if (actionID is not ShieldBash)
                 return actionID;
 
-            var tar = SimpleTarget.StunnableEnemy;
+            var tar = SimpleTarget.StunnableEnemy(Config.PLD_RetargetStunLockout ? Config.PLD_RetargetShieldBash_Strength : 3);
 
             if (tar is not null)
                 return ShieldBash.Retarget(actionID, tar);
