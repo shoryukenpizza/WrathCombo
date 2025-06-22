@@ -201,7 +201,7 @@ public enum CustomComboPreset
 
     [OccultCrescent]
     [ParentCombo(Phantom_TimeMage)]
-    [CustomComboInfo("Occult Dispel", "Adds Occult Dispel into the rotation.", OccultCrescent.JobID)]
+    [CustomComboInfo("Occult Dispel", "Adds Occult Dispel into the rotation if the target has a known-dispellable status.", OccultCrescent.JobID)]
     Phantom_TimeMage_OccultDispel = 110031,
 
     [OccultCrescent]
