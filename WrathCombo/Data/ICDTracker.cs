@@ -16,11 +16,14 @@ namespace WrathCombo.Data
 
         public DateTime ICDClearedTime;
 
+        public int TimesApplied;
+
         public ICDTracker(uint statusID, ulong gameObjectId, TimeSpan icdDuration)
         {
             StatusID = statusID;
             GameObjectId = gameObjectId;
             ICDClearedTime = DateTime.Now + icdDuration;
+            TimesApplied = 1;
         }
 
         public static List<ICDTracker> Trackers = new();
