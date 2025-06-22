@@ -174,7 +174,7 @@ internal partial class OccultCrescent
                 return Shirahadori; //inv against physical
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Zeninage, Zeninage) && ActionReady(Zeninage))
                 return Zeninage; //burst
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Iainuki, Iainuki) && HasStatusEffect(Buffs.Shirahadori) && ActionReady(Iainuki))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Iainuki, Iainuki) && ActionReady(Iainuki) && !IsMoving())
                 return Iainuki; //cone
         }
         #endregion
