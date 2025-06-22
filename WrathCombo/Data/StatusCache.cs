@@ -76,7 +76,7 @@ namespace WrathCombo.Data
         private static readonly HashSet<uint> DamageUpStatuses =
             ENStatusSheet.TryGetValue(61, out var refRow)
                  ? [.. ENStatusSheet
-                .Where(x => x.Value.Name.ToString().Equals(refRow.Name.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                .Where(x => x.Value.Name.ToString().Contains(refRow.Name.ToString(), StringComparison.CurrentCultureIgnoreCase))
                 .Select(x => x.Key)] : [];
 
         public static bool HasDamageUp(IGameObject? target) => HasStatusInCacheList(DamageUpStatuses, target);
@@ -90,6 +90,16 @@ namespace WrathCombo.Data
                 .Select(kvp => kvp.Key)];
 
         public static bool HasCleansableDebuff(IGameObject? target) => HasStatusInCacheList(DispellableStatuses, target);
+
+        /// <summary>
+        /// A cached set of beneficial status IDs for quick lookup.
+        /// </summary>
+        private static readonly HashSet<uint> BeneficialStatuses = [..
+            StatusSheet
+                .Where(kvp => kvp.Value.StatusCategory == 1)
+                .Select(kvp => kvp.Key)];
+
+        public static bool HasBeneficialStatus(IGameObject? targt) => HasStatusInCacheList(BeneficialStatuses, targt);
 
         /// <summary>
         /// A set of status effect IDs that grant general invincibility.
