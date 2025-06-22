@@ -48,6 +48,7 @@ internal partial class PLD
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_MitsOptions = new("PLD_ST_MitsOptions", 0),
             PLD_AoE_MitsOptions = new("PLD_AoE_MitsOptions", 0),
+            PLD_RetargetShieldBash_Strength = new("PLD_RetargetShieldBash_Strength", 3),
 
             //One-Button Mitigation
             PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
@@ -299,6 +300,8 @@ internal partial class PLD
                     break;
                 case CustomComboPreset.PLD_RetargetShieldBash:
                     UserConfig.DrawAdditionalBoolChoice(Config.PLD_RetargetStunLockout, "Lockout Action", "If no stunnable targets are found, lock the action with Savage Blade");
+                    if (Config.PLD_RetargetStunLockout)
+                        UserConfig.DrawSliderInt(1, 3, Config.PLD_RetargetShieldBash_Strength, "Lockout when stun has been applied this many times");
                     break;
 
                 #region One-Button Mitigation

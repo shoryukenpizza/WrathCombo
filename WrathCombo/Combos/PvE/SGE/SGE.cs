@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Linq;
+using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Data.ActionWatching;
@@ -31,10 +32,14 @@ internal partial class SGE : Healer
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
-
+            
             // Variant
             if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
                 return Variant.Rampart;
+
+            //Occult skills
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             if (CanSpellWeave() && !HasDoubleWeaved() && !HasStatusEffect(Buffs.Eukrasia))
             {
@@ -56,7 +61,7 @@ internal partial class SGE : Healer
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Psyche) &&
                     ActionReady(Psyche) && InCombat())
                     return Psyche;
-
+                
                 // Rhizomata
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Rhizo) &&
                     ActionReady(Rhizomata) && Addersgall < Config.SGE_ST_DPS_Rhizo)
@@ -141,6 +146,10 @@ internal partial class SGE : Healer
             // Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
                 return Variant.Rampart;
+
+            //Occult skills
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             if (CanSpellWeave() && !HasDoubleWeaved())
             {
