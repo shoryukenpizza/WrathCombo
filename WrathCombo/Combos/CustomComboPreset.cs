@@ -4791,7 +4791,7 @@ public enum CustomComboPreset
     RDM_ST_Engagement = 13016,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
     RDM_ST_Corpsacorps = 13017,
 
     [ParentCombo(RDM_ST_DPS)]
@@ -4878,7 +4878,7 @@ public enum CustomComboPreset
     RDM_AoE_Engagement = 13213,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
     RDM_AoE_Corpsacorps = 13214,
 
     [ParentCombo(RDM_AoE_DPS)]
