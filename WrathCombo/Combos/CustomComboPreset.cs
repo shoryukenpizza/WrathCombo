@@ -230,7 +230,7 @@ public enum CustomComboPreset
 
     [OccultCrescent]
     [ParentCombo(Phantom_Chemist)]
-    [CustomComboInfo("Occult Elixir", "Adds Occult Elixir into the rotation.\nRequires Occult Elixir in inventory.\nThis is a very costly option!", OccultCrescent.JobID)]
+    [CustomComboInfo("Occult Elixir", "Adds Occult Elixir into the rotation.\nRequires Occult Elixir in inventory.", OccultCrescent.JobID)]
     Phantom_Chemist_OccultElixir = 110037,
 
     [OccultCrescent(OccultCrescent.JobIDs.Bard)]

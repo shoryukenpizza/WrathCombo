@@ -71,7 +71,7 @@ internal partial class OccultCrescent
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultEther, OccultEther) && LocalPlayer.CurrentMp <= Config.Phantom_Chemist_OccultEther_MP)
                 return OccultEther;
 
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir) && GetPartyAvgHPPercent() <= Config.Phantom_Chemist_OccultElixir_HP)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_OccultElixir, OccultElixir) && GetPartyAvgHPPercent() <= Config.Phantom_Chemist_OccultElixir_HP && InCombat() && (!Config.Phantom_Chemist_OccultElixir_RequireParty || IsInParty()))
                 return OccultElixir;
         }
         #endregion
