@@ -207,7 +207,6 @@ internal partial class OccultCrescent
                 return OccultMageMasher; //weaken target's magic attack
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultComet, OccultComet))
                 return OccultComet; //damage
-            ICDTracker.ClearExpiredTrackers();
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !HasStatusEffect(Debuffs.Slow, CurrentTarget) &&
                 (IsNotEnabled(CustomComboPreset.Phantom_TimeMage_OccultSlowga_Wait) || (ICDTracker.TimeUntilExpired(Debuffs.Slow, CurrentTarget.GameObjectId) < TimeSpan.FromSeconds(1.5) || ICDTracker.NumberOfTimesApplied(Debuffs.Slow, CurrentTarget.GameObjectId) < 3)))
                 return OccultSlowga; //aoe slow
