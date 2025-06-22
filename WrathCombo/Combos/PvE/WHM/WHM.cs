@@ -272,7 +272,7 @@ internal partial class WHM : Healer
 
             #region GCD Tools
 
-            if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && canRegen)
+            if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && regenReady)
                 return Regen
                     .RetargetIfEnabled(OptionalTarget, Cure);
 
