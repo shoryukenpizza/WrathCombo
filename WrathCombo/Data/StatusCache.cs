@@ -61,14 +61,25 @@ namespace WrathCombo.Data
         private static readonly Dictionary<uint, Lumina.Excel.Sheets.Status> StatusSheet = 
             Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>().ToDictionary(i => i.RowId, i => i);
 
+        private static readonly Dictionary<uint, Lumina.Excel.Sheets.Status> ENStatusSheet =
+            Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Status>(Dalamud.Game.ClientLanguage.English).ToDictionary(i => i.RowId, i => i);
+
 
         private static readonly HashSet<uint> DamageDownStatuses =
-            StatusSheet.TryGetValue(62, out var refRow)
-                ? [.. StatusSheet
+            ENStatusSheet.TryGetValue(62, out var refRow)
+                ? [.. ENStatusSheet
                 .Where(x => x.Value.Name.ToString().Equals(refRow.Name.ToString(), StringComparison.CurrentCultureIgnoreCase))
                 .Select(x => x.Key)] : [];
 
         public static bool HasDamageDown(IGameObject? target) => HasStatusInCacheList(DamageDownStatuses, target);
+
+        private static readonly HashSet<uint> DamageUpStatuses =
+            ENStatusSheet.TryGetValue(61, out var refRow)
+                 ? [.. ENStatusSheet
+                .Where(x => x.Value.Name.ToString().Equals(refRow.Name.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                .Select(x => x.Key)] : [];
+
+        public static bool HasDamageUp(IGameObject? target) => HasStatusInCacheList(DamageUpStatuses, target);
 
         /// <summary>
         /// A cached set of dispellable status IDs for quick lookup.

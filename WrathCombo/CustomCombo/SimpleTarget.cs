@@ -348,17 +348,17 @@ internal static class SimpleTarget
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange(3) && x.IsCastInterruptible)
-            .OrderBy(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
+            .OrderByDescending(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
-    public static IGameObject? StunnableEnemy =>
+    public static IGameObject? StunnableEnemy(int restunCheck = 3) =>
         Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         !x.IsBoss() && x.IsWithinRange(3) && 
                         !CustomComboFunctions.HasStatusEffect(All.Debuffs.Stun, x) && 
-                           (ICDTracker.StatusIsExpired(All.Debuffs.Stun, x.GameObjectId) || ICDTracker.Trackers.FirstOrDefault(y => y.StatusID == All.Debuffs.Stun && x.GameObjectId == y.GameObjectId)?.TimesApplied < 3))
-            .OrderBy(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
+                           (ICDTracker.StatusIsExpired(All.Debuffs.Stun, x.GameObjectId) || ICDTracker.Trackers.FirstOrDefault(y => y.StatusID == All.Debuffs.Stun && x.GameObjectId == y.GameObjectId)?.TimesApplied < restunCheck))
+            .OrderByDescending(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
     #endregion

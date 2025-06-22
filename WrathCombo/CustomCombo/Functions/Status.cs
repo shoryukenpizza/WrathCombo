@@ -105,6 +105,8 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static bool TargetHasDamageDown(IGameObject? target) => StatusCache.HasDamageDown(target);
 
+        public static bool TargetHasDamageUp(IGameObject? target) => StatusCache.HasDamageUp(target);
+
         public static bool TargetHasRezWeakness(IGameObject? target, bool checkForWeakness = true)
         {
             if (checkForWeakness && HasStatusEffect(43, target, true)) //Weakness = 43

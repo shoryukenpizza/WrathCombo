@@ -6606,7 +6606,7 @@ public enum CustomComboPreset
     VPR_ST_VicewinderCombo = 30007,
     
     [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Vicewinder Weaves", "Adds Twinfang and Bloodfang to the rotation.", VPR.JobID)]
+    [CustomComboInfo("Vicewinder Weaves", "Adds Twinfang and Twinblood to the rotation.", VPR.JobID)]
     VPR_ST_VicewinderWeaves = 30013,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
