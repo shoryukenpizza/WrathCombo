@@ -201,12 +201,32 @@ internal partial class OccultCrescent
         {
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick))
                 return OccultQuick; //damage buff
+            
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel) && TargetIsHostile() && HasPhantomDispelStatus(CurrentTarget))
                 return OccultDispel; //cleanse
+            
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultMageMasher, OccultMageMasher) && !HasStatusEffect(Debuffs.OccultMageMasher, CurrentTarget))
                 return OccultMageMasher; //weaken target's magic attack
+            
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultComet, OccultComet))
-                return OccultComet; //damage
+            {
+                // Make comet fast
+                if (Config.Phantom_TimeMage_Comet_RequireSpeed &&
+                    !HasStatusEffect(Buffs.OccultQuick) &&
+                    !JustUsed(OccultQuick) && 
+                    !HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) &&
+                    !JustUsed(RoleActions.Magic.Swiftcast))
+                    if (HasActionEquipped(OccultQuick) && ActionReady(OccultQuick))
+                        return OccultQuick;
+                    else if (ActionReady(RoleActions.Magic.Swiftcast))
+                        return RoleActions.Magic.Swiftcast;
+                
+                if (!Config.Phantom_TimeMage_Comet_RequireSpeed ||
+                    (HasStatusEffect(Buffs.OccultQuick) ||
+                     HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast)))
+                    return OccultComet; // damage
+            }
+            
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !HasStatusEffect(Debuffs.Slow, CurrentTarget) &&
                 (IsNotEnabled(CustomComboPreset.Phantom_TimeMage_OccultSlowga_Wait) || (ICDTracker.TimeUntilExpired(Debuffs.Slow, CurrentTarget.GameObjectId) < TimeSpan.FromSeconds(1.5) || ICDTracker.NumberOfTimesApplied(Debuffs.Slow, CurrentTarget.GameObjectId) < 3)))
                 return OccultSlowga; //aoe slow

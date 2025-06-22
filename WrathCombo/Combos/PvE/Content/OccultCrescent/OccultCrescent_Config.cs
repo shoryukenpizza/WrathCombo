@@ -33,7 +33,9 @@ internal partial class OccultCrescent
             Phantom_Ranger_PhantomAim_Stop = new("Phantom_Ranger_PhantomAim_Stop", 30),
             Phantom_Thief_Steal_Health = new("Phantom_Thief_Steal_Health", 10);
         
-        public static UserBool Phantom_Chemist_OccultElixir_RequireParty = new("Phantom_Chemist_OccultElixir_RequireParty", true);
+        public static UserBool
+            Phantom_Chemist_OccultElixir_RequireParty = new("Phantom_Chemist_OccultElixir_RequireParty", true),
+            Phantom_TimeMage_Comet_RequireSpeed = new("Phantom_TimeMage_Comet_RequireSpeed", true);
 
         internal static void Draw(CustomComboPreset preset)
         {
@@ -122,6 +124,11 @@ internal partial class OccultCrescent
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "Not advisable in most situations!");
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudYellow, "The slider value should be rather low, if you do use it!");
                     ImGui.Unindent();
+                    break;
+                
+                case CustomComboPreset.Phantom_TimeMage_OccultComet:
+                    UserConfig.DrawAdditionalBoolChoice(Phantom_TimeMage_Comet_RequireSpeed,
+                        "Require Swiftcast or Occult Quick", "");
                     break;
             }
         }
