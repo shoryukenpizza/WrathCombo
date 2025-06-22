@@ -123,6 +123,15 @@ namespace WrathCombo.CustomComboNS.Functions
         public static bool HasCleansableDebuff(IGameObject? target) => StatusCache.HasCleansableDebuff(target);
 
         /// <summary>
+        /// Checks if the target has a beneficial status.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static bool HasBeneficialStatus(IGameObject? target) => StatusCache.HasBeneficialStatus(target);
+
+        public static bool HasPhantomDispelStatus(IGameObject? target) => StatusCache.HasDamageUp(target) || HasStatusEffect(4355, target);
+
+        /// <summary>
         /// Checks if the target is invincible due to status effects or encounter-specific mechanics.
         /// </summary>
         /// <param name="target">The game object to check.</param>
