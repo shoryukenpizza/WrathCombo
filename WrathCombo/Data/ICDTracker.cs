@@ -50,5 +50,11 @@ namespace WrathCombo.Data
             var remaining = ICDClearedTime - DateTime.Now;
             return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
         }
+        
+        public static int NumberOfTimesApplied(uint statusId, ulong gameObjectId)
+        {
+            ClearExpiredTrackers();
+            return Trackers.FirstOrDefault(x => x.GameObjectId == gameObjectId && x.StatusID == statusId)?.TimesApplied ?? 0;
+        }
     }
 }

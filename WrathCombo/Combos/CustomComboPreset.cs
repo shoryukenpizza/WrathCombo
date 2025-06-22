@@ -185,6 +185,11 @@ public enum CustomComboPreset
     Phantom_TimeMage_OccultSlowga = 110028,
 
     [OccultCrescent]
+    [ParentCombo(Phantom_TimeMage_OccultSlowga)]
+    [CustomComboInfo("Wait to get Full(-ish) Effect", "Will not use Slowga if the diminishing return from repeated use is substantial, or there would be no diminishing return at all.", OccultCrescent.JobID)]
+    Phantom_TimeMage_OccultSlowga_Wait = 110075,
+
+    [OccultCrescent]
     [ParentCombo(Phantom_TimeMage)]
     [CustomComboInfo("Occult Comet", "Adds Occult Comet into the rotation.", OccultCrescent.JobID)]
     Phantom_TimeMage_OccultComet = 110029,
@@ -384,7 +389,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Aetherial Gain", "Adds Aetherial Gain into the rotation.", OccultCrescent.JobID)]
     Phantom_Geomancer_AetherialGain = 110072,
 
-    //Last Value = 110074
+    //Last Value = 110075
     #endregion
 
     #region GLOBAL FEATURES

@@ -1,4 +1,6 @@
-﻿using WrathCombo.Data;
+﻿using System;
+using System.Linq;
+using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using ContentHelper = ECommons.GameHelpers;
 using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
@@ -204,7 +206,9 @@ internal partial class OccultCrescent
                 return OccultMageMasher; //weaken target's magic attack
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultComet, OccultComet))
                 return OccultComet; //damage
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !HasStatusEffect(Debuffs.Slow, CurrentTarget) && !JustUsed(OccultSlowga, 30f)) //shitty hack, fix later Perhaps a count of casts? it 
+            ICDTracker.ClearExpiredTrackers();
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultSlowga, OccultSlowga) && !HasStatusEffect(Debuffs.Slow, CurrentTarget) &&
+                (IsNotEnabled(CustomComboPreset.Phantom_TimeMage_OccultSlowga_Wait) || (ICDTracker.TimeUntilExpired(Debuffs.Slow, CurrentTarget.GameObjectId) < TimeSpan.FromSeconds(1.5) || ICDTracker.NumberOfTimesApplied(Debuffs.Slow, CurrentTarget.GameObjectId) < 3)))
                 return OccultSlowga; //aoe slow
         }
         #endregion
