@@ -172,7 +172,7 @@ internal partial class OccultCrescent
                 return Mineuchi; //stun
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Shirahadori, Shirahadori) && CanWeave() && TargetIsCasting(0.7f))
                 return Shirahadori; //inv against physical
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Zeninage, Zeninage) && CanWeave() && ActionReady(Zeninage))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Zeninage, Zeninage) && ActionReady(Zeninage))
                 return Zeninage; //burst
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Samurai_Iainuki, Iainuki) && HasStatusEffect(Buffs.Shirahadori) && ActionReady(Iainuki))
                 return Iainuki; //cone
