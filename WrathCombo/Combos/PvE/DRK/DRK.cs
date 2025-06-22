@@ -385,7 +385,8 @@ internal partial class DRK : Tank
                     ? SimpleTarget.TargetsTarget.IfInParty().IfNotThePlayer()
                     : null);
 
-            if (target is not null)
+            if (target is not null &&
+                CanApplyStatus(target, Buffs.BlackestNightShield))
                 return actionID.Retarget(target, dontCull: true);
 
             return actionID;
@@ -409,10 +410,12 @@ internal partial class DRK : Tank
             var checkTarget = target ?? SimpleTarget.Self;
             if (IsEnabled(Preset.DRK_Retarget_Oblation_DoubleProtection) &&
                 (HasStatusEffect(Buffs.Oblation, checkTarget, anyOwner: true) ||
-                 JustUsedOn(Oblation, checkTarget)))
+                 JustUsedOn(Oblation, checkTarget)) &&
+                CanApplyStatus(checkTarget, Buffs.Oblation))
                 return All.SavageBlade;
 
-            if (target is not null)
+            if (target is not null &&
+                CanApplyStatus(target, Buffs.Oblation))
                 return actionID.Retarget(target, dontCull: true);
 
             return actionID;
