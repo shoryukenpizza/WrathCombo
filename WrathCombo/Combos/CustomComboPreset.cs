@@ -4724,8 +4724,8 @@ public enum CustomComboPreset
     RDM_ST_DPS = 13001,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Balance Opener (Level 100)",
-        "Adds the Balance opener at level 100..\n**Must move into melee range before melee combo for standard**", RDM.JobID)]
+    [CustomComboInfo("Opener (Level 100)",
+        "Adds the opener at level 100.\n**Must move into melee range before melee combo for standard**", RDM.JobID)]
     RDM_Balance_Opener = 13002,
 
     [ParentCombo(RDM_ST_DPS)]
@@ -4742,19 +4742,17 @@ public enum CustomComboPreset
     
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Melee Combo Option",
-        "Adds Zwerchhau & Redoublement, and burst abilities.\n" +
-        "**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
+        "Adds Zwerchhau & Redoublement. \n**Must be in melee range or have Gap close with Corps-a-corps enabled**", RDM.JobID)]
     RDM_ST_MeleeCombo = 13006,
 
     [ParentCombo(RDM_ST_MeleeCombo)]
     [CustomComboInfo("Include Riposte",
-        "Adds Riposte to start the combo. Recommended for Auto Rotation",
-        RDM.JobID)]
+        "Adds Riposte to start the combo. Recommended for Auto Rotation. \n**Must be in melee range or have gap-close with Corps-a-corps enabled**", RDM.JobID)]
     RDM_ST_MeleeCombo_IncludeRiposte = 13007,
     
     [ParentCombo(RDM_ST_MeleeCombo)]
-    [CustomComboInfo("Gap close with Corps-a-corps Option",
-        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo or starting Manafication Burst", RDM.JobID)]
+    [CustomComboInfo("Gap-Close with Corps-a-corps Option",
+        "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo or starting Manafication Burst.", RDM.JobID)]
     RDM_ST_MeleeCombo_GapCloser = 13008,
     
     [ParentCombo(RDM_ST_MeleeCombo)]
@@ -4767,35 +4765,35 @@ public enum CustomComboPreset
     RDM_ST_Embolden = 13010,
     
     [ParentCombo(RDM_ST_Embolden)]
-    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst", RDM.JobID)]
+    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst.", RDM.JobID)]
     RDM_ST_Manafication = 13011,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available", RDM.JobID)]
+    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available.", RDM.JobID)]
     RDM_ST_ViceOfThorns = 13012,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available", RDM.JobID)]
+    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available.", RDM.JobID)]
     RDM_ST_Prefulgence = 13013,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Fleche Option", "Add Fleche when available", RDM.JobID)]
+    [CustomComboInfo("Fleche Option", "Add Fleche when available.", RDM.JobID)]
     RDM_ST_Fleche = 13014,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available", RDM.JobID)]
+    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available.", RDM.JobID)]
     RDM_ST_ContreSixte = 13015,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
+    [CustomComboInfo("Engagement Option", "Add Engagement when available.", RDM.JobID)]
     RDM_ST_Engagement = 13016,
     
     [ParentCombo(RDM_ST_Engagement)]
-    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window", RDM.JobID)]
+    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window.", RDM.JobID)]
     RDM_ST_Engagement_Pooling = 13018,
     
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for DPS. \nWill retain a charge for gap-closing.", RDM.JobID)]
     RDM_ST_Corpsacorps = 13017,
 
     [ParentCombo(RDM_ST_DPS)]
@@ -4803,15 +4801,15 @@ public enum CustomComboPreset
     RDM_ST_Acceleration = 13019,
 
     [ParentCombo(RDM_ST_Acceleration)]
-    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement", RDM.JobID)]
+    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement.", RDM.JobID)]
     RDM_ST_Acceleration_Movement = 13020,
 
     [ParentCombo(RDM_ST_DPS)]
-    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available", RDM.JobID)]
+    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available.", RDM.JobID)]
     RDM_ST_Swiftcast = 13021,
     
     [ParentCombo(RDM_ST_Swiftcast)]
-    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only", RDM.JobID)]
+    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only.", RDM.JobID)]
     RDM_ST_SwiftcastMovement = 13022,
     
     [ParentCombo(RDM_ST_DPS)]
@@ -4841,7 +4839,7 @@ public enum CustomComboPreset
     RDM_AoE_HolyFlare = 13203,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Moulinet Melee Combo Option", "Addes Moulinet into the Aoe Rotation. \nWill use Regular Melee combo below 52", RDM.JobID)]
+    [CustomComboInfo("Moulinet Melee Combo Option", "Addes Moulinet into the Aoe Rotation. \nWill use ST Melee combo below 52.", RDM.JobID)]
     RDM_AoE_MeleeCombo = 13204,
     
     [ParentCombo(RDM_AoE_MeleeCombo)]
@@ -4849,7 +4847,7 @@ public enum CustomComboPreset
     RDM_AoE_MeleeCombo_Target = 13205,
     
     [ParentCombo(RDM_AoE_MeleeCombo)]
-    [CustomComboInfo("Gap close with Corps-a-corps Option",
+    [CustomComboInfo("Gap-close with Corps-a-corps Option",
         "Use Corp-a-corps when out of melee range and you have enough mana to start the melee combo.", RDM.JobID)]
     RDM_AoE_MeleeCombo_GapCloser = 13206,
     
@@ -4858,35 +4856,35 @@ public enum CustomComboPreset
     RDM_AoE_Embolden = 13207,
     
     [ParentCombo(RDM_AoE_Embolden)]
-    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst", RDM.JobID)]
+    [CustomComboInfo("Use Manafication", "Add Manafication before embolden for burst.", RDM.JobID)]
     RDM_AoE_Manafication = 13208,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available", RDM.JobID)]
+    [CustomComboInfo("Vice Of Thorns Option", "Add Vice of Thorns when available.", RDM.JobID)]
     RDM_AoE_ViceOfThorns = 13209,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available", RDM.JobID)]
+    [CustomComboInfo("Prefulgence Option", "Add Prefulgence when available.", RDM.JobID)]
     RDM_AoE_Prefulgence = 13210,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Fleche Option", "Add Fleche when available", RDM.JobID)]
+    [CustomComboInfo("Fleche Option", "Add Fleche when available.", RDM.JobID)]
     RDM_AoE_Fleche = 13211,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available", RDM.JobID)]
+    [CustomComboInfo("Contre Sixte Option", "Add Contre Sixte when available.", RDM.JobID)]
     RDM_AoE_ContreSixte = 13212,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Engagement Option", "Add Engagement when available", RDM.JobID)]
+    [CustomComboInfo("Engagement Option", "Add Engagement when available.", RDM.JobID)]
     RDM_AoE_Engagement = 13213,
     
     [ParentCombo(RDM_AoE_Engagement)]
-    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window", RDM.JobID)]
+    [CustomComboInfo("Engagement Pooling Option", "Prevents overcap but pools at least one charge for burst window.", RDM.JobID)]
     RDM_AoE_Engagement_Pooling = 13215,
     
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
+    [CustomComboInfo("Corps-a-corps Option", "Add Corps-a-corps when available for DPS. \nWill retain a charge for gap-closing.", RDM.JobID)]
     RDM_AoE_Corpsacorps = 13214,
 
     [ParentCombo(RDM_AoE_DPS)]
@@ -4894,15 +4892,15 @@ public enum CustomComboPreset
     RDM_AoE_Acceleration = 13216,
 
     [ParentCombo(RDM_AoE_Acceleration)]
-    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement", RDM.JobID)]
+    [CustomComboInfo("Acceleration Movement Option", "Uses Acceleration for movement.", RDM.JobID)]
     RDM_AoE_Acceleration_Movement = 13217,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available", RDM.JobID)]
+    [CustomComboInfo("Swiftcast Option", "Add Swiftcast when available.", RDM.JobID)]
     RDM_AoE_Swiftcast = 13218,
     
     [ParentCombo(RDM_AoE_Swiftcast)]
-    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only", RDM.JobID)]
+    [CustomComboInfo("Swiftcast Option", "Use Swiftcast for movement only.", RDM.JobID)]
     RDM_AoE_SwiftcastMovement = 13219,
 
     [ParentCombo(RDM_AoE_DPS)]
@@ -4916,23 +4914,23 @@ public enum CustomComboPreset
     #region Stand Alone Features
 
     [ReplaceSkill(RDM.Veraero, RDM.Veraero3)]
-    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with jolt.", RDM.JobID)]
+    [CustomComboInfo("Spell Combo on Veraero", "Replaces Veraero with Jolt.", RDM.JobID)]
     RDM_VerAero = 13400,
 
     [ParentCombo(RDM_VerAero)]
-    [CustomComboInfo("Add Verstone", "Replaces Veraero with Verstone", RDM.JobID)]
+    [CustomComboInfo("Add Verstone", "Replaces Veraero with Verstone.", RDM.JobID)]
     RDM_VerAero_Stone = 13401,
     
     [ReplaceSkill(RDM.Verthunder, RDM.Verthunder3)]
-    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with jolt.", RDM.JobID)]
+    [CustomComboInfo("Spell Combo on Verthunder", "Replaces Verthunder with Jolt.", RDM.JobID)]
     RDM_VerThunder = 13418,
 
     [ParentCombo(RDM_VerThunder)]
-    [CustomComboInfo("Add Verfire", "Replaces Verthunder With Verfire", RDM.JobID)]
+    [CustomComboInfo("Add Verfire", "Replaces Verthunder With Verfire.", RDM.JobID)]
     RDM_VerThunder_Fire = 13419,
 
     [ReplaceSkill(RDM.Riposte)]
-    [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo logic.", RDM.JobID)]
+    [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo.", RDM.JobID)]
     RDM_Riposte = 13403,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
@@ -4961,7 +4959,7 @@ public enum CustomComboPreset
     RDM_EmboldenProtection = 13412,
 
     [ParentCombo(RDM_EmboldenProtection)]
-    [CustomComboInfo("Embolden to Manafication Option", "Changes Embolden to Manafication when on cooldown or under the effect of anyones embolden",
+    [CustomComboInfo("Embolden to Manafication Option", "Changes Embolden to Manafication when on cooldown or under the effect of anyones Embolden.",
         RDM.JobID)]
     RDM_EmboldenManafication = 13410,
 
@@ -4976,17 +4974,17 @@ public enum CustomComboPreset
     
     [ReplaceSkill(RDM.Fleche)]
     [CustomComboInfo("OGCDs One Button Feature",
-        "Replaces Fleche with Contre Sixte, Vice of Thorns, Prefulgence, Engagement, and One charge of Corps-a-corps", RDM.JobID)]
+        "Replaces Fleche with Contre Sixte, Vice of Thorns, Prefulgence, Engagement, and 1 charge of Corps-a-corps.", RDM.JobID)]
     RDM_OGCDs = 13420,
     
     [ParentCombo(RDM_OGCDs)]
     [CustomComboInfo("Engagement Pooling Option",
-        "Will not spend both Engagement Charges unless you have Embolden ", RDM.JobID)]
+        "Will not spend both Engagement Charges unless you have Embolden.", RDM.JobID)]
     RDM_OGCDs_EngagementPool = 13421,
     
     [ParentCombo(RDM_OGCDs)]
     [CustomComboInfo("Corps-a-corps Melee only Option",
-        "Needs to be in melee range to use Corps-a-corps", RDM.JobID)]
+        "Needs to be in melee range to use Corps-a-corps.", RDM.JobID)]
     RDM_OGCDs_CorpsMelee = 13422,
 
     [Variant]
