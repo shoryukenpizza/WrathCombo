@@ -110,7 +110,7 @@ internal partial class OccultCrescent
         #region Knight
         if (IsEnabled(CustomComboPreset.Phantom_Knight))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_PhantomGuard, PhantomGuard) && GetTargetHPPercent() <= Config.Phantom_Knight_PhantomGuard_Health && InCombat())
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_PhantomGuard, PhantomGuard) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_PhantomGuard_Health && InCombat())
                 return PhantomGuard; //mit
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Knight_Pray, Pray) && PlayerHealthPercentageHp() <= Config.Phantom_Knight_Pray_Health && !HasStatusEffect(Buffs.Pray))
                 return Pray; //regen
