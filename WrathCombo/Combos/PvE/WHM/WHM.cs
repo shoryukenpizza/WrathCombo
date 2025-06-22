@@ -222,13 +222,15 @@ internal partial class WHM : Healer
                              GetRemainingCharges(ThinAir) >
                              Config.WHM_STHeals_ThinAir;
 
-            var canRegen = ActionReady(Regen) &&
-                           !JustUsedOn(Regen, healTarget) &&
-                           GetStatusEffectRemainingTime(Buffs.Regen, healTarget) 
-                              <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
-                           GetTargetHPPercent(healTarget,Config.WHM_STHeals_IncludeShields) 
-                              >= Config.WHM_STHeals_RegenHP; // Regen use threshold for low health
 
+            var regenReady = ActionReady(Regen) &&
+                             !JustUsedOn(Regen, healTarget) &&
+                             GetStatusEffectRemainingTime(Buffs.Regen, healTarget)
+                             <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
+                             GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields)
+                             >= Config.WHM_STHeals_RegenHPLower &&
+                             GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields)
+                             <= Config.WHM_STHeals_RegenHPUpper;  
             #endregion
 
             #region Priority Cleansing
