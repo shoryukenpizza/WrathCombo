@@ -1,3 +1,4 @@
+using System;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -245,11 +246,11 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_ST_Engagement) && CanEngagement)  
                     return Engagement;
                 
-                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps)
-                {
-                    if (IsNotEnabled(CustomComboPreset.RDM_ST_Corpsacorps_MeleeOnly) || IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps_AllowMove) && InMeleeRange() || GetTargetDistance() < .1)
-                        return Corpsacorps;
-                }
+                if (IsEnabled(CustomComboPreset.RDM_ST_Corpsacorps) && CanCorps && 
+                    GetTargetDistance()<= Config.RDM_ST_Corpsacorps_Distance &&
+                    TimeStoodStill >= TimeSpan.FromSeconds(Config.RDM_ST_Corpsacorps_Time))
+                    return Corpsacorps;
+                
                 if (IsEnabled(CustomComboPreset.RDM_ST_Prefulgence) && CanPrefulgence)
                     return Prefulgence;
                 
@@ -351,11 +352,11 @@ internal partial class RDM : Caster
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Engagement) && CanEngagement)  
                     return Engagement;
 
-                if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps)
-                {
-                    if (IsNotEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_MeleeOnly) || IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps_AllowMove) && InMeleeRange() || GetTargetDistance() < .1)
-                        return Corpsacorps;
-                }
+                if (IsEnabled(CustomComboPreset.RDM_AoE_Corpsacorps) && CanCorps &&
+                    GetTargetDistance() <= Config.RDM_AoE_Corpsacorps_Distance &&
+                    TimeStoodStill >= TimeSpan.FromSeconds(Config.RDM_AoE_Corpsacorps_Time))
+                    return Corpsacorps;
+                    
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Prefulgence) && CanPrefulgence)
                     return Prefulgence;
                 

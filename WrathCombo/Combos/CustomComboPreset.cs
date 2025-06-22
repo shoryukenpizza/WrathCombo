@@ -4793,14 +4793,6 @@ public enum CustomComboPreset
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
     RDM_ST_Corpsacorps = 13017,
-    
-    [ParentCombo(RDM_ST_Corpsacorps)]
-    [CustomComboInfo("Corpsacorps Melee Only Option", "Will use as long as you are in Melee range. 3 Yalms", RDM.JobID)]
-    RDM_ST_Corpsacorps_MeleeOnly = 13024,
-    
-    [ParentCombo(RDM_ST_Corpsacorps_MeleeOnly)]
-    [CustomComboInfo("Corpsacorps Allow Movement Option", "If Disabled, will only use when it will result in no movement.", RDM.JobID)]
-    RDM_ST_Corpsacorps_AllowMove = 13018,
 
     [ParentCombo(RDM_ST_DPS)]
     [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]
@@ -4888,14 +4880,6 @@ public enum CustomComboPreset
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Corpsacorps Option", "Add Corpsacorps when available for dps. \nWill retain a charge for gapclosing.", RDM.JobID)]
     RDM_AoE_Corpsacorps = 13214,
-    
-    [ParentCombo(RDM_AoE_Corpsacorps)]
-    [CustomComboInfo("Corpsacorps Melee Range Option", "Will only use when in melee range. 3 Yalms", RDM.JobID)]
-    RDM_AoE_Corpsacorps_MeleeOnly = 13221,
-    
-    [ParentCombo(RDM_AoE_Corpsacorps_MeleeOnly)]
-    [CustomComboInfo("Corpsacorps Allow Movement Option", "If Disabled, will only use when it will result in no movement.", RDM.JobID)]
-    RDM_AoE_Corpsacorps_AllowMove = 13215,
 
     [ParentCombo(RDM_AoE_DPS)]
     [CustomComboInfo("Acceleration Option", "Add Acceleration when available.", RDM.JobID)]

@@ -17,6 +17,10 @@ internal partial class RDM
             RDM_BalanceOpener_Content = new("RDM_BalanceOpener_Content", 1),
             RDM_ST_Acceleration_Charges = new("RDM_ST_Acceleration_Charges", 0),
             RDM_AoE_Acceleration_Charges = new("RDM_AoE_Acceleration_Charges", 0),
+            RDM_ST_Corpsacorps_Distance = new("RDM_ST_Corpsacorps_Distance", 25),
+            RDM_ST_Corpsacorps_Time = new("RDM_ST_Corpsacorps_Time", 0),
+            RDM_AoE_Corpsacorps_Distance = new("RDM_AoE_Corpsacorps_Distance", 25),
+            RDM_AoE_Corpsacorps_Time = new("RDM_AoE_Corpsacorps_Time", 0),
             RDM_Opener_Selection = new("RDM_Opener_Selection", 0);
 
         internal static void Draw(CustomComboPreset preset)
@@ -45,6 +49,21 @@ internal partial class RDM
                         ImGui.TextColored(ImGuiColors.DalamudRed, "AUTO ROTATION WILL NOT START THE MELEE COMBO AUTOMATICALLY");
                         ImGui.Unindent();
                     }
+                    break;
+                
+                case CustomComboPreset.RDM_ST_Corpsacorps:
+                    DrawSliderInt(0, 25, RDM_ST_Corpsacorps_Distance,
+                        " Use when Distance from target is less than or equal to:");
+                    
+                    DrawSliderInt(0, 3, RDM_ST_Corpsacorps_Time,
+                        " How long you need to be stationary to use. Zero to disable");
+                    break;
+                
+                case CustomComboPreset.RDM_AoE_Corpsacorps:
+                    DrawSliderInt(0, 25, RDM_AoE_Corpsacorps_Distance,
+                        " Use when Distance from target is less than or equal to:");
+                    DrawSliderInt(0, 3, RDM_AoE_Corpsacorps_Time,
+                        " How long you need to be stationary to use. Zero to disable");
                     break;
 
                 case CustomComboPreset.RDM_ST_Lucid:
