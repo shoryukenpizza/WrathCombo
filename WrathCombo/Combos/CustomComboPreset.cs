@@ -43,6 +43,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.LowBlow, PLD.ShieldBash)]
+    [ConflictingCombos(PLD_RetargetShieldBash)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Interrupt Feature",
         "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.",
@@ -4389,6 +4390,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Target's Target Intervention Option", "Adds Target's Target to the priority when you do not have agro.", PLD.JobID)]
     [Retargeted]
     PLD_RetargetSheltron_TT = 11070,
+
+    [Retargeted]
+    [ConflictingCombos(ALL_Tank_Interrupt)]
+    [CustomComboInfo("Retarget Shield Bash", "Redirects your Shield Bash to a stunnable enemy if your current target cannot be stunned.", PLD.JobID)]
+    PLD_RetargetShieldBash = 11073,
 
     // Variant Features
 

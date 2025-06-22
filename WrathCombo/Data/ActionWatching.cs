@@ -109,7 +109,10 @@ namespace WrathCombo.Data
                         if (eff.Type is ActionEffectType.ApplyStatusEffectTarget)
                         {
                             if (ICDTracker.Trackers.TryGetFirst(x => x.StatusID == eff.Value && x.GameObjectId == (eff.AtSource ? casterEntityId : target.id), out var icd))
+                            {
                                 icd.ICDClearedTime = DateTime.Now + TimeSpan.FromSeconds(60);
+                                icd.TimesApplied += 1;
+                            }
                             else
                                 ICDTracker.Trackers.Add(new(eff.Value, (eff.AtSource ? casterEntityId : target.id), TimeSpan.FromSeconds(60)));
                         }

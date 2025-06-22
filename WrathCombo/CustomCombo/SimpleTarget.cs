@@ -1,13 +1,12 @@
 #region
 
-using System;
-using System.Linq;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Logging;
+using System;
+using System.Linq;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -223,7 +222,7 @@ internal static class SimpleTarget
 
             return null;
 
-            IGameObject? CustomLogic (IGameObject? target)
+            IGameObject? CustomLogic(IGameObject? target)
             {
                 if (target is null) return null;
                 if (logicForEachEntryInStack is null) return target;
@@ -232,7 +231,7 @@ internal static class SimpleTarget
             }
         }
 
-        private static IGameObject? GetSimpleTargetValueFromName (string name)
+        private static IGameObject? GetSimpleTargetValueFromName(string name)
         {
             try
             {
@@ -349,6 +348,16 @@ internal static class SimpleTarget
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange(3) && x.IsCastInterruptible)
+            .OrderBy(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
+            .FirstOrDefault();
+
+    public static IGameObject? StunnableEnemy =>
+        Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable &&
+                        !x.IsBoss() && x.IsWithinRange(3) && 
+                        !CustomComboFunctions.HasStatusEffect(All.Debuffs.Stun, x) && 
+                           (ICDTracker.StatusIsExpired(All.Debuffs.Stun, x.GameObjectId) || ICDTracker.Trackers.FirstOrDefault(y => y.StatusID == All.Debuffs.Stun && x.GameObjectId == y.GameObjectId)?.TimesApplied < 3))
             .OrderBy(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
@@ -642,7 +651,7 @@ internal static class SimpleTarget
         {
             var raisers = CustomComboFunctions
                 .GetPartyMembers()
-                .Select(x => new { x.BattleChara, x.RealJob})
+                .Select(x => new { x.BattleChara, x.RealJob })
                 .Where(x => x.BattleChara.IsNotThePlayer() &&
                             x?.RealJob?.RowId is SMN.JobID or RDM.JobID)
                 .ToArray();
