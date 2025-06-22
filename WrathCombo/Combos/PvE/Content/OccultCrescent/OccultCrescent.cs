@@ -30,12 +30,11 @@ internal partial class OccultCrescent
         #endregion
 
         #region Berserker
-        if (IsEnabled(CustomComboPreset.Phantom_Berserker) &&
-            CanWeave())
+        if (IsEnabled(CustomComboPreset.Phantom_Berserker))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_Rage, Rage))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_Rage, Rage) && CanWeave())
                 return Rage; //buff
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_DeadlyBlow, DeadlyBlow) && GetStatusEffectRemainingTime(Buffs.Rage) <= 3f)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_DeadlyBlow, DeadlyBlow) && GetStatusEffectRemainingTime(Buffs.PentupRage) <= 3f)
                 return DeadlyBlow; //action that is better when buff timer is low
         }
         #endregion
