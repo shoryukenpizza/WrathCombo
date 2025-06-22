@@ -1,5 +1,4 @@
 using System;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -128,8 +127,7 @@ internal partial class RDM : Caster
             if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
                 return Variant.Rampart;
             #endregion
-
-
+            
             #region OGCDs
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())  
             {
@@ -346,7 +344,6 @@ internal partial class RDM : Caster
             if (Variant.CanRampart(CustomComboPreset.RDM_Variant_Rampart))
                 return Variant.Rampart;
             #endregion
-
 
             #region OGCDs
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
