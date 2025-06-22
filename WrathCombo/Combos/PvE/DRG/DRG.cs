@@ -56,9 +56,12 @@ internal partial class DRG : Melee
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) && 
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             // Piercing Talon Uptime Option
             if (ActionReady(PiercingTalon) &&
@@ -215,6 +218,9 @@ internal partial class DRG : Melee
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             // Opener for DRG
             if (IsEnabled(CustomComboPreset.DRG_ST_Opener) &&
@@ -416,6 +422,9 @@ internal partial class DRG : Melee
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             // Piercing Talon Uptime Option
             if (LevelChecked(PiercingTalon) &&
                 !InMeleeRange() && HasBattleTarget())
@@ -553,6 +562,9 @@ internal partial class DRG : Melee
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             // Piercing Talon Uptime Option
             if (IsEnabled(CustomComboPreset.DRG_AoE_RangedUptime) &&

@@ -15,7 +15,7 @@ internal partial class BLM
             BLM_ST_LeyLinesCharges = new("BLM_ST_LeyLinesCharges", 1),
             BLM_ST_ThunderOption = new("BLM_ST_ThunderOption", 10),
             BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 0),
-            BLM_ST_ThunderUptime_Threshold = new("BLM_ST_ThunderUptime_Threshold",5),
+            BLM_ST_ThunderUptime_Threshold = new("BLM_ST_ThunderUptime_Threshold", 5),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_ST_Polyglot_Save = new("BLM_ST_Polyglot_Save", 0),

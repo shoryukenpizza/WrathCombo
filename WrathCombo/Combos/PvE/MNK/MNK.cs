@@ -22,6 +22,9 @@ internal partial class MNK : Melee
             if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
                 return Variant.Rampart;
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             if (LevelChecked(SteeledMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Chakra < 5 &&
@@ -117,6 +120,9 @@ internal partial class MNK : Melee
             //Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
                 return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             if (IsEnabled(CustomComboPreset.MNK_STUseMeditation) &&
                 LevelChecked(SteeledMeditation) &&
@@ -247,6 +253,9 @@ internal partial class MNK : Melee
             if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
                 return Variant.Rampart;
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             if (LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Chakra < 5 &&
@@ -348,6 +357,9 @@ internal partial class MNK : Melee
             //Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
                 return Variant.Rampart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             if (IsEnabled(CustomComboPreset.MNK_AoEUseMeditation) &&
                 LevelChecked(InspiritedMeditation) &&
