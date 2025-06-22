@@ -42,7 +42,7 @@ internal partial class OccultCrescent
         #region Cannoneer
         if (IsEnabled(CustomComboPreset.Phantom_Cannoneer))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon) && !HasStatusEffect(Debuffs.SilverSickness, CurrentTarget))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_SilverCannon, SilverCannon))
                 return SilverCannon; //debuff
             //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
             //    return HolyCannon; //better on Undead targets____ they dont share a cooldown you fire all the cannons so doesnt really matter if undead. 
