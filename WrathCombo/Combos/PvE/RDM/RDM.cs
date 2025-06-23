@@ -71,7 +71,7 @@ internal partial class RDM : Caster
             #endregion
             
             #region Melee Combo and Finishers 
-            if (ComboAction is Scorch or Verholy or Verflare) 
+            if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
                 return actionID;
             
             if (HasManaStacks) 
@@ -171,7 +171,7 @@ internal partial class RDM : Caster
             #endregion
             
             #region Melee Combo and Finishers 
-            if (ComboAction is Scorch or Verholy or Verflare) 
+            if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
                 return actionID;
             
             if (HasManaStacks) 
@@ -283,9 +283,9 @@ internal partial class RDM : Caster
             #endregion
             
             #region Melee Combo and Finishers 
-            if (ComboAction is Scorch or Verholy or Verflare) 
+            if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
                 return actionID;
-            
+
             if (IsEnabled(CustomComboPreset.RDM_ST_HolyFlare) && HasManaStacks) 
                 return UseHolyFlare(actionID);
             
@@ -393,7 +393,7 @@ internal partial class RDM : Caster
             #endregion
             
             #region Melee Combo and Finishers 
-            if (ComboAction is Scorch or Verholy or Verflare) 
+            if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
                 return actionID;
             
             if (IsEnabled(CustomComboPreset.RDM_AoE_HolyFlare) && HasManaStacks) 
@@ -546,10 +546,21 @@ internal partial class RDM : Caster
         {
             if (actionID is not Riposte)
                 return actionID;
+            
+            if (IsEnabled(CustomComboPreset.RDM_Riposte_Finisher))
+            {
+                if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
+                    return OriginalHook(Jolt);
+                            
+                if (HasManaStacks) 
+                    return UseHolyFlare(actionID);
+            }
 
+            if (!HasEnoughManaForCombo && !CanMagickedSwordplay) return actionID;
+            
             if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
                 return EnchantedRedoublement;
-            
+                                           
             if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                 return EnchantedZwerchhau;
 

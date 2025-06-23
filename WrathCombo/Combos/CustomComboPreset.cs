@@ -5311,6 +5311,10 @@ public enum CustomComboPreset
     [ReplaceSkill(RDM.Riposte)]
     [CustomComboInfo("Riposte Melee Combo", "Replaces Riposte with the basic melee combo.", RDM.JobID)]
     RDM_Riposte = 13403,
+    
+    [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Riposte Finisher Option", "Adds Verholy/Verflare, Scorch, and Resolution", RDM.JobID)]
+    RDM_Riposte_Finisher = 13423,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Caster_Raise)]
@@ -5386,7 +5390,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13422
+    //Last Used 13423
     #endregion
 
     #endregion
