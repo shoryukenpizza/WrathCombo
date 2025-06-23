@@ -35,7 +35,8 @@ internal partial class OccultCrescent
         
         public static UserBool
             Phantom_Chemist_OccultElixir_RequireParty = new("Phantom_Chemist_OccultElixir_RequireParty", true),
-            Phantom_TimeMage_Comet_RequireSpeed = new("Phantom_TimeMage_Comet_RequireSpeed", true);
+            Phantom_TimeMage_Comet_RequireSpeed = new("Phantom_TimeMage_Comet_RequireSpeed", true),
+            Phantom_TimeMage_Comet_UseSpeed = new("Phantom_TimeMage_Comet_UseSpeed", true);
 
         internal static void Draw(CustomComboPreset preset)
         {
@@ -128,7 +129,15 @@ internal partial class OccultCrescent
                 
                 case CustomComboPreset.Phantom_TimeMage_OccultComet:
                     UserConfig.DrawAdditionalBoolChoice(Phantom_TimeMage_Comet_RequireSpeed,
-                        "Require Swiftcast or Occult Quick", "");
+                        "Require Swiftcast or Occult Quick to use Comet", "");
+                    if (Phantom_TimeMage_Comet_RequireSpeed)
+                    {
+                        ImGui.Indent();
+                        UserConfig.DrawAdditionalBoolChoice(
+                            Phantom_TimeMage_Comet_UseSpeed,
+                            "Add Swiftcast or Occult Quick prior to using Comet", "");
+                        ImGui.Unindent();
+                    }
                     break;
             }
         }

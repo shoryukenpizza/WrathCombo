@@ -212,6 +212,7 @@ internal partial class OccultCrescent
             {
                 // Make comet fast
                 if (Config.Phantom_TimeMage_Comet_RequireSpeed &&
+                    Config.Phantom_TimeMage_Comet_UseSpeed &&
                     !HasStatusEffect(Buffs.OccultQuick) &&
                     !JustUsed(OccultQuick) && 
                     !HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) &&
