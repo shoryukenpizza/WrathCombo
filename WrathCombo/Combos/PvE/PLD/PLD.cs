@@ -424,6 +424,9 @@ internal partial class PLD : Tank
 
             #endregion
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_ST_Interrupt)
                 && Role.CanInterject())
