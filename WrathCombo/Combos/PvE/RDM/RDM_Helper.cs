@@ -115,6 +115,7 @@ internal partial class RDM
     internal static bool BlackHigher => Gauge.BlackMana >= Gauge.WhiteMana;
     internal static bool WhiteHigher => Gauge.BlackMana < Gauge.WhiteMana;
     internal static bool HasEnoughMana => Gauge.BlackMana >= ManaLevel() && Gauge.WhiteMana >= ManaLevel();
+    internal static bool HasEnoughManaForCombo => Gauge is { BlackMana: >= 15, WhiteMana: >= 15 };
     internal static bool HasManaStacks => Gauge.ManaStacks == 3;
     internal static bool CanFlare => BlackHigher && Gauge.BlackMana - Gauge.WhiteMana < 18;
     internal static bool CanHoly => WhiteHigher && Gauge.WhiteMana - Gauge.BlackMana < 18;

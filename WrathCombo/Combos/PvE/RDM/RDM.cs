@@ -77,7 +77,7 @@ internal partial class RDM : Caster
             if (HasManaStacks) 
                 return UseHolyFlare(actionID);
             
-            if (InMeleeRange())
+            if (InMeleeRange() && (HasEnoughManaForCombo || CanMagickedSwordplay))
             {
                 if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                     return EnchantedRedoublement;
@@ -180,10 +180,10 @@ internal partial class RDM : Caster
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
             {
                 if (ActionReady(Moulinet) && HasBattleTarget() && GetTargetDistance() < 8 && 
-                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux))
+                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
                     return OriginalHook(Moulinet);
                 
-                if (!ActionReady(Moulinet) && InMeleeRange())
+                if (!ActionReady(Moulinet) && InMeleeRange() && HasEnoughManaForCombo)
                 {
                     if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
                         return EnchantedRedoublement;
@@ -291,7 +291,7 @@ internal partial class RDM : Caster
             
             if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo) )
             {
-                if (InMeleeRange() || IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_MeleeCheck))
+                if ((InMeleeRange() || IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_MeleeCheck)) && (HasEnoughManaForCombo || CanMagickedSwordplay))
                 {
                     if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                         return EnchantedRedoublement;
@@ -403,10 +403,10 @@ internal partial class RDM : Caster
             {
                 if (ActionReady(Moulinet) && 
                     (IsNotEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_Target) && !HasBattleTarget() || HasBattleTarget() && GetTargetDistance() < 8) && 
-                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux))
+                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
                     return OriginalHook(Moulinet);
                 
-                if (!ActionReady(Moulinet) && InMeleeRange())
+                if (!ActionReady(Moulinet) && InMeleeRange() && HasEnoughManaForCombo)
                 {
                     if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement)) 
                         return EnchantedRedoublement;
