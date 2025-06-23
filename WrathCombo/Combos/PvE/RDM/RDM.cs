@@ -32,7 +32,7 @@ internal partial class RDM : Caster
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 //Gap Closer
-                if (ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                if (ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -86,7 +86,7 @@ internal partial class RDM : Caster
                     return EnchantedZwerchhau;
                 
                 if (ActionReady(EnchantedRiposte) && InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
-                    (HasEnoughMana || CanMagickedSwordplay)) 
+                    (HasEnoughManaToStart || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
             #endregion
@@ -132,7 +132,7 @@ internal partial class RDM : Caster
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())  
             {
                 //Gap Closer Option
-                if (ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                if (ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -180,7 +180,7 @@ internal partial class RDM : Caster
             if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo))
             {
                 if (ActionReady(Moulinet) && HasBattleTarget() && GetTargetDistance() < 8 && 
-                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
+                    (CanMagickedSwordplay ||HasEnoughManaToStart || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
                     return OriginalHook(Moulinet);
                 
                 if (!ActionReady(Moulinet) && InMeleeRange() && HasEnoughManaForCombo)
@@ -189,7 +189,7 @@ internal partial class RDM : Caster
                         return EnchantedRedoublement;
                     if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                         return EnchantedZwerchhau;
-                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
+                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughManaToStart) 
                         return EnchantedRiposte; 
                 }
             }
@@ -239,7 +239,7 @@ internal partial class RDM : Caster
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_GapCloser) && 
-                    ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                    ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (IsEnabled(CustomComboPreset.RDM_ST_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -301,7 +301,7 @@ internal partial class RDM : Caster
                 
                 if (IsEnabled(CustomComboPreset.RDM_ST_MeleeCombo_IncludeRiposte) && ActionReady(EnchantedRiposte) && 
                     InMeleeRange() && !HasDualcast && !HasAccelerate && !HasSwiftcast &&
-                    (HasEnoughMana || CanMagickedSwordplay)) 
+                    (HasEnoughManaToStart || CanMagickedSwordplay)) 
                     return EnchantedRiposte;
             }
             #endregion
@@ -349,7 +349,7 @@ internal partial class RDM : Caster
             if (CanSpellWeave() && !ActionWatching.HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_GapCloser) && 
-                    ActionReady(Corpsacorps) && (HasEnoughMana || CanMagickedSwordplay) && !InMeleeRange()) 
+                    ActionReady(Corpsacorps) && (HasEnoughManaToStart || CanMagickedSwordplay) && !InMeleeRange()) 
                     return Corpsacorps;
                  
                 if (IsEnabled(CustomComboPreset.RDM_AoE_Manafication) && ActionReady(Manafication) && (EmboldenCD <= 5 || HasEmbolden) && !CanPrefulgence) 
@@ -403,7 +403,7 @@ internal partial class RDM : Caster
             {
                 if (ActionReady(Moulinet) && 
                     (IsNotEnabled(CustomComboPreset.RDM_AoE_MeleeCombo_Target) && !HasBattleTarget() || HasBattleTarget() && GetTargetDistance() < 8) && 
-                    (CanMagickedSwordplay ||HasEnoughMana || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
+                    (CanMagickedSwordplay ||HasEnoughManaToStart || ComboAction is EnchantedMoulinet or Moulinet or EnchantedMoulinetDeux && HasEnoughManaForCombo))
                     return OriginalHook(Moulinet);
                 
                 if (!ActionReady(Moulinet) && InMeleeRange() && HasEnoughManaForCombo)
@@ -412,7 +412,7 @@ internal partial class RDM : Caster
                         return EnchantedRedoublement;
                     if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
                         return EnchantedZwerchhau;
-                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughMana) 
+                    if (ActionReady(EnchantedRiposte) && !HasDualcast && !HasAccelerate && !HasSwiftcast && HasEnoughManaToStart) 
                         return EnchantedRiposte; 
                 }
             }
@@ -547,6 +547,10 @@ internal partial class RDM : Caster
             if (actionID is not Riposte)
                 return actionID;
             
+            if (IsEnabled(CustomComboPreset.RDM_Riposte_GapCloser) && ActionReady(Corpsacorps) && 
+                (HasEnoughManaToStartStandalone || CanMagickedSwordplay) && !InMeleeRange()) 
+                return Corpsacorps;
+            
             if (IsEnabled(CustomComboPreset.RDM_Riposte_Finisher))
             {
                 if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
@@ -556,14 +560,48 @@ internal partial class RDM : Caster
                     return UseHolyFlare(actionID);
             }
 
-            if (!HasEnoughManaForCombo && !CanMagickedSwordplay) return actionID;
+            if (HasEnoughManaForCombo || CanMagickedSwordplay)
+            {
+                if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
+                    return EnchantedRedoublement;
+                                               
+                if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
+                    return EnchantedZwerchhau;
+            }
             
-            if (ComboAction is Zwerchhau or EnchantedZwerchhau && LevelChecked(Redoublement))  
-                return EnchantedRedoublement;
-                                           
-            if (ComboAction is Riposte or EnchantedRiposte && LevelChecked(Zwerchhau))
-                return EnchantedZwerchhau;
+            if (IsEnabled(CustomComboPreset.RDM_Riposte_NoWaste) && !HasEnoughManaToStartStandalone && !CanMagickedSwordplay)
+                return All.SavageBlade;
 
+            return actionID;
+        }
+    }
+    
+    internal class RDM_AOE_Melee_Combo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Moulinet;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Moulinet)
+                return actionID;
+            
+            if (IsEnabled(CustomComboPreset.RDM_Moulinet_GapCloser) && ActionReady(Corpsacorps) && 
+                (HasEnoughManaToStartStandalone || CanMagickedSwordplay) && !InMeleeRange()) 
+                return Corpsacorps;
+            
+            if (IsEnabled(CustomComboPreset.RDM_Moulinet_Finisher))
+            {
+                if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
+                    return OriginalHook(Jolt);
+                            
+                if (HasManaStacks) 
+                    return UseHolyFlare(actionID);
+            }
+            
+            if (IsEnabled(CustomComboPreset.RDM_Moulinet_NoWaste) && 
+                ComboAction is not (Moulinet or EnchantedMoulinet or EnchantedMoulinetDeux) && !HasEnoughManaToStartStandalone && !CanMagickedSwordplay)
+                return All.SavageBlade;
+            
             return actionID;
         }
     }

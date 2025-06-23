@@ -5313,8 +5313,34 @@ public enum CustomComboPreset
     RDM_Riposte = 13403,
     
     [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Gap-Close with Corps-a-corps Option",
+        "Use Corp-a-corps when out of melee range and you have enough mana or Magicked Swordplay to start the melee combo", RDM.JobID)]
+    RDM_Riposte_GapCloser = 13424,
+    
+    [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Riposte Finisher Option", "Adds Verholy/Verflare, Scorch, and Resolution", RDM.JobID)]
     RDM_Riposte_Finisher = 13423,
+    
+    [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Riposte Waste Prevention Option", "Replaces Riposte with Savage Blade when resources are too low to complete combo", RDM.JobID)]
+    RDM_Riposte_NoWaste = 13429,
+    
+    [ReplaceSkill(RDM.Moulinet)]
+    [CustomComboInfo("Moulinet Melee Combo", "Replaces Moulinet with the basic melee aoe combo.", RDM.JobID)]
+    RDM_Moulinet= 13425,
+    
+    [ParentCombo(RDM_Moulinet)]
+    [CustomComboInfo("Gap-Close with Corps-a-corps Option",
+        "Use Corp-a-corps when out of melee range and you have enough mana or Magicked Swordplay to start the melee combo", RDM.JobID)]
+    RDM_Moulinet_GapCloser = 13426,
+    
+    [ParentCombo(RDM_Moulinet)]
+    [CustomComboInfo("Moulinet Finisher Option", "Adds Verholy/Verflare, Scorch, and Resolution", RDM.JobID)]
+    RDM_Moulinet_Finisher = 13427,
+    
+    [ParentCombo(RDM_Moulinet)]
+    [CustomComboInfo("Moulinet Waste Prevention Option", "Replaces Moulinet with Savage Blade when resources are too low to complete combo", RDM.JobID)]
+    RDM_Moulinet_NoWaste = 13428,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Caster_Raise)]

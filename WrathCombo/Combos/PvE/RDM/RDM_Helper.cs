@@ -114,7 +114,8 @@ internal partial class RDM
     private static RDMGauge Gauge => GetJobGauge<RDMGauge>();
     internal static bool BlackHigher => Gauge.BlackMana >= Gauge.WhiteMana;
     internal static bool WhiteHigher => Gauge.BlackMana < Gauge.WhiteMana;
-    internal static bool HasEnoughMana => Gauge.BlackMana >= ManaLevel() && Gauge.WhiteMana >= ManaLevel();
+    internal static bool HasEnoughManaToStart => Gauge.BlackMana >= ManaLevel() && Gauge.WhiteMana >= ManaLevel();
+    internal static bool HasEnoughManaToStartStandalone => Gauge.BlackMana >= ManaLevelStandalone() && Gauge.WhiteMana >= ManaLevelStandalone();
     internal static bool HasEnoughManaForCombo => Gauge is { BlackMana: >= 15, WhiteMana: >= 15 };
     internal static bool HasManaStacks => Gauge.ManaStacks == 3;
     internal static bool CanFlare => BlackHigher && Gauge.BlackMana - Gauge.WhiteMana < 18;
@@ -170,6 +171,13 @@ internal partial class RDM
                     return 90; // to prevent it from firing unless it is about to cap, should only fire for manual embolden users. 
             }
         }
+        if (LevelChecked(Redoublement)) // Low level stuff
+            return 50;
+        return LevelChecked(Zwerchhau) ? 35 : 20;
+    }
+    
+    internal static int ManaLevelStandalone()
+    {
         if (LevelChecked(Redoublement)) // Low level stuff
             return 50;
         return LevelChecked(Zwerchhau) ? 35 : 20;
