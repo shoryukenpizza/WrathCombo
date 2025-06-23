@@ -85,7 +85,7 @@ internal partial class OccultCrescent
 
                 case CustomComboPreset.Phantom_Oracle_Starfall:
                     UserConfig.DrawSliderInt(91, 100, Phantom_Oracle_Starfall_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
+                        "Player HP% to be \ngreater than or equal to:", 200);
                     break;
 
                 case CustomComboPreset.Phantom_Ranger_OccultUnicorn:

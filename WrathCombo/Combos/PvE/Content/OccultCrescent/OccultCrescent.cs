@@ -149,7 +149,7 @@ internal partial class OccultCrescent
                 return PhantomJudgment; //damage + heal
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Cleansing, Cleansing) && HasStatusEffect(Buffs.PredictionOfCleansing)) // removed interupt. it hits 20% harder than Judgement. 120k aoe.
                 return Cleansing; //damage plus interrupt
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Starfall, Starfall) && HasStatusEffect(Buffs.PredictionOfStarfall) && PlayerHealthPercentageHp() <= Config.Phantom_Oracle_Starfall_Health)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Oracle_Starfall, Starfall) && HasStatusEffect(Buffs.PredictionOfStarfall) && PlayerHealthPercentageHp() >= Config.Phantom_Oracle_Starfall_Health)
                 return Starfall; //damage to targets + 90% total HP damage to self
         }
         #endregion
