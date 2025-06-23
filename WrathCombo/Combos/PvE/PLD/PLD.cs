@@ -71,6 +71,9 @@ internal partial class PLD : Tank
 
             #endregion
 
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
             // Interrupt
             if (Role.CanInterject())
                 return Role.Interject;
@@ -269,6 +272,9 @@ internal partial class PLD : Tank
                               JustUsed(HallowedGround, 9f);
 
             #endregion
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             // Interrupt
             if (Role.CanInterject())
@@ -635,6 +641,9 @@ internal partial class PLD : Tank
                                     IsEnabled(CustomComboPreset.PLD_AoE_AdvancedMode_MP_Reserve) && playerMP >= GetResourceCost(HolySpirit) + Config.PLD_AoE_MP_Reserve;
 
             #endregion
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_AoE_Interrupt)
