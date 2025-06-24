@@ -23,6 +23,9 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Gets the current target or null. </summary>
     public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
+    /// <summary> Gets the current mouseover target or null. </summary>
+    public static IGameObject? CurrentMouseOverTarget => Svc.Targets.MouseOverTarget;
+
     #region Target Checks
 
     /// <summary> Find if the player has a target. </summary>
@@ -37,7 +40,10 @@ internal abstract partial class CustomComboFunctions
 
     internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
 
+    [Obsolete("Use HasBattleTarget")]
     internal static bool TargetIsHostile() => HasTarget() && CurrentTarget.IsHostile();
+
+    public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
     public static bool TargetIsFriendly(IGameObject? OurTarget = null)
     {
@@ -52,8 +58,6 @@ internal abstract partial class CustomComboFunctions
             _ => false
         };
     }
-
-    public static bool HasBattleTarget() => CurrentTarget is not null && CurrentTarget.IsHostile();
 
     public static bool TargetNeedsPositionals(IGameObject? ourTarget = null)
     {
@@ -136,7 +140,7 @@ internal abstract partial class CustomComboFunctions
         if (OurTarget is not IBattleChara chara)
             return 0;
 
-        float percent = (float)chara.CurrentHp / chara.MaxHp * 100f;
+        float percent = chara.CurrentHp * 100f / chara.MaxHp;
         if (includeShield) percent += chara.ShieldPercentage;
         return Math.Clamp(percent, 0f, 100f);
     }
@@ -149,15 +153,16 @@ internal abstract partial class CustomComboFunctions
 
     #region Distance Checks
 
-    /// <summary> Gets a value indicating whether you are in melee range from the current target. </summary>
+    /// <summary>
+    ///     Checks if the current target is within melee range. <br/>
+    ///     Base melee range differs between PvE and PvP.
+    /// </summary>
     public static bool InMeleeRange()
     {
-        if (Svc.Targets.Target == null)
+        if (CurrentTarget is null)
             return false;
 
-        float distance = GetTargetDistance();
-
-        return distance <= 3.0 + Service.Configuration.MeleeOffset;
+        return GetTargetDistance() <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
     }
 
     /// <summary> Checks if target is in appropriate range for targeting </summary>
@@ -174,13 +179,13 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Gets the distance from the target. </summary>
     public static float GetTargetDistance(IGameObject? optionalTarget = null, IGameObject? source = null)
     {
-        if (LocalPlayer is null)
+        if (LocalPlayer is not { } player)
             return 0;
 
         IGameObject? chara = optionalTarget ?? CurrentTarget;
         if (chara is null) return 0;
 
-        IGameObject? sourceChara = source ?? LocalPlayer;
+        IGameObject? sourceChara = source ?? player;
 
         if (chara.GameObjectId == sourceChara.GameObjectId)
             return 0;
@@ -193,13 +198,13 @@ internal abstract partial class CustomComboFunctions
 
     public static float GetTargetHeightDifference(IGameObject? target = null, IGameObject? source = null)
     {
-        if (LocalPlayer is null)
+        if (LocalPlayer is not { } player)
             return 0;
 
         IGameObject? chara = target ?? CurrentTarget;
         if (chara is null) return 0;
 
-        IGameObject? sourceChara = source ?? LocalPlayer;
+        IGameObject? sourceChara = source ?? player;
 
         if (chara.GameObjectId == sourceChara.GameObjectId)
             return 0;
