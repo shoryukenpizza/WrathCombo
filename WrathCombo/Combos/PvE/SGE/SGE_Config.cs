@@ -78,9 +78,13 @@ internal partial class SGE
 
                 case CustomComboPreset.SGE_ST_DPS_Movement:
                     DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Toxikon.ActionName(), $"Use {Toxikon.ActionName()} when Addersting == available.", 4, 0);
+                    DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 4, 0, $"{Toxikon.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Dyskrasia.ActionName(), $"Use {Dyskrasia.ActionName()} when in range of a selected enemy target.", 4, 1);
+                    DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 4, 1, $"{Dyskrasia.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Eukrasia.ActionName(), $"Use {Eukrasia.ActionName()}.", 4, 2);
+                    DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 4, 2, $"{Eukrasia.ActionName()} Priority: ");
                     break;
+
 
                 case CustomComboPreset.SGE_AoE_DPS_Lucid:
                     DrawSliderInt(4000, 9500, SGE_AoE_DPS_Lucid,
@@ -271,6 +275,9 @@ internal partial class SGE
             SGE_Balance_Content = new("SGE_Balance_Content", 1);
         public static UserFloat
             SGE_ST_DPS_EDosisThreshold = new("SGE_ST_Dosis_EDosisThreshold", 5.0f);
+
+        public static UserIntArray
+            SGE_ST_DPS_Movement_Priority = new("SGE_ST_Movement_Priority");
 
         #endregion
 

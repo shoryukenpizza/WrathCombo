@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -155,6 +156,39 @@ internal partial class SGE
 
     #endregion
 
+        #region Movement Prio
+
+    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
+        PrioritizedMovement =>
+    [
+        //Toxikon
+        (OriginalHook(Toxikon), CustomComboPreset.SGE_ST_DPS_Movement,
+            () => SGE_ST_DPS_Movement[0] &&
+                  ActionReady(Toxikon) &&
+                  HasAddersting()),
+        // Dyskrasia
+        (OriginalHook(Dyskrasia), CustomComboPreset.SGE_ST_DPS_Movement,
+            () => SGE_ST_DPS_Movement[1] &&
+                  ActionReady(Dyskrasia) &&
+                  InActionRange(Dyskrasia)),
+        //Eukrasia
+        (Eukrasia, CustomComboPreset.SGE_ST_DPS_Movement,
+            () => SGE_ST_DPS_Movement[2] &&
+                  ActionReady(Eukrasia) &&
+                  !HasStatusEffect(Buffs.Eukrasia))
+    ];
+
+    private static bool CheckMovementConfigMeetsRequirements
+        (int index, out uint action)
+    {
+        action = PrioritizedMovement[index].Action;
+        return ActionReady(action) && LevelChecked(action) &&
+               PrioritizedMovement[index].Logic() &&
+               IsEnabled(PrioritizedMovement[index].Preset);
+    }
+
+    #endregion
+
     #region Openers
 
     internal static WrathOpener Opener()
@@ -266,13 +300,15 @@ internal partial class SGE
         AddersgallList = [Taurochole, Druochole, Ixochole, Kerachole],
         DyskrasiaList = [Dyskrasia, Dyskrasia2];
 
-    internal static readonly Dictionary<uint, ushort>
-        DosisList = new()
-        {
-            { Dosis, Debuffs.EukrasianDosis },
-            { Dosis2, Debuffs.EukrasianDosis2 },
-            { Dosis3, Debuffs.EukrasianDosis3 }
-        };
+    internal static readonly FrozenDictionary<uint, ushort> DosisList = new Dictionary<uint, ushort>
+    {
+        { Dosis, Debuffs.EukrasianDosis },
+        { Dosis2, Debuffs.EukrasianDosis2 },
+        { Dosis3, Debuffs.EukrasianDosis3 },
+        { EukrasianDosis, Debuffs.EukrasianDosis },
+        { EukrasianDosis2, Debuffs.EukrasianDosis2 },
+        { EukrasianDosis3, Debuffs.EukrasianDosis3 }
+    }.ToFrozenDictionary();
 
     #endregion
 
