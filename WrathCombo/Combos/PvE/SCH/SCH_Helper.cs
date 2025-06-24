@@ -34,6 +34,7 @@ internal partial class SCH
     internal static bool HasAetherflow => Gauge.Aetherflow > 0;
     internal static bool FairyDismissed => Gauge.DismissedFairy > 0;
     
+    
     #region Eos Summoner
     public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent() && !FairyDismissed;
     private static DateTime SummonTime
@@ -70,8 +71,20 @@ internal partial class SCH
     #endregion
     
     #region Get ST Heals
-    public static int GetMatchingConfigST(int i, out uint action, out bool enabled)
+    internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {
+        IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+        bool ShieldCheck = !Config.SCH_ST_Heal_AldoquimOpts[0] || 
+                           !HasStatusEffect(Buffs.Galvanize, healTarget, true) || 
+                           HasStatusEffect(Buffs.EmergencyTactics);
+        bool SageShieldCheck = !Config.SCH_ST_Heal_AldoquimOpts[1] ||
+                               !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) || 
+                               !HasStatusEffect(SGE.Buffs.EukrasianPrognosis, healTarget, true) ||
+                               HasStatusEffect(Buffs.EmergencyTactics);
+        bool EmergencyAdlo = Config.SCH_ST_Heal_AldoquimOpts[2] && ActionReady(EmergencyTactics) &&
+                             GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <=
+                             Config.SCH_ST_Heal_AdloquiumOption_Emergency;
+        
         switch (i)
         {
             case 0:
@@ -90,6 +103,13 @@ internal partial class SCH
                 action = Aetherpact;
                 enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && Gauge.FairyGauge >= Config.SCH_ST_Heal_AetherpactFairyGauge && IsOriginal(Aetherpact);
                 return Config.SCH_ST_Heal_AetherpactOption;
+            case 4:
+                action = Adloquium;
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Adloquium) &&
+                          ActionReady(Adloquium) &&
+                          GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= Config.SCH_ST_Heal_AdloquiumOption &&
+                          (EmergencyAdlo || ShieldCheck && SageShieldCheck);
+                return Config.SCH_ST_Heal_AdloquiumOption;
         }
 
         enabled = false;
@@ -267,6 +287,7 @@ internal partial class SCH
             Galvanize = 297,
             SacredSoil = 299,
             Dissipation = 791,
+            EmergencyTactics = 792,
             Recitation = 1896,
             ImpactImminent = 3882;
     }

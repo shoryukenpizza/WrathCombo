@@ -166,8 +166,7 @@ internal partial class SCH : Healer
                     .RetargetIfEnabled(OptionalTarget, Physick);
 
             #endregion
-
-            #region OGCD Tools
+            
             // Aetherflow
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherflow) &&
                 ActionReady(Aetherflow) && !HasAetherflow &&
@@ -197,39 +196,23 @@ internal partial class SCH : Healer
             for(int i = 0; i < Config.SCH_ST_Heals_Priority.Count; i++)
             {
                 int index = Config.SCH_ST_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigST(index, out uint spell, out bool enabled);
+                int config = GetMatchingConfigST(index, OptionalTarget, out uint spell, out bool enabled);
 
                 if (enabled)
                 {
+                    if (Config.SCH_ST_Heal_AldoquimOpts[2] && ActionReady(EmergencyTactics) &&
+                        spell is Adloquium && 
+                        GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <=
+                        Config.SCH_ST_Heal_AdloquiumOption_Emergency)
+                        return EmergencyTactics;
+                    
                     if (GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= config &&
                         ActionReady(spell))
-                        return spell
-                            .RetargetIfEnabled(OptionalTarget, Physick);
+                        return spell.RetargetIfEnabled(OptionalTarget, Physick);
                 }
             }
-
-            #endregion
-            
-            #region GCD Tools
-            //Check for the Galvanize shield buff. Start applying if it doesn't exist or Target HP is below %
-            if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Adloquium) &&
-                ActionReady(Adloquium) &&
-                GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= Config.SCH_ST_Heal_AdloquiumOption)
-            {
-                if (Config.SCH_ST_Heal_AldoquimOpts[2] && ActionReady(EmergencyTactics))
-                    return EmergencyTactics;
-
-                if ((Config.SCH_ST_Heal_AldoquimOpts[0] || !HasStatusEffect(Buffs.Galvanize, healTarget, true)) && //Ignore existing shield check
-                    (!Config.SCH_ST_Heal_AldoquimOpts[1] ||
-                     !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && !HasStatusEffect(SGE.Buffs.EukrasianPrognosis, healTarget, true)
-                    )) //Eukrasia Shield Check
-                    return OriginalHook(Adloquium)
-                        .RetargetIfEnabled(OptionalTarget, Physick);
-            }
-
             return actionID
                 .RetargetIfEnabled(OptionalTarget, Physick);
-            #endregion
         }
     }
     #endregion

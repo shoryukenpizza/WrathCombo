@@ -111,33 +111,42 @@ internal partial class SCH
                     DrawSliderInt(4000, 9500, SCH_ST_Heal_LucidOption, "MP Threshold", 150, Hundreds);
                     break;
 
-                case CustomComboPreset.SCH_ST_Heal_Adloquium:
-                    DrawSliderInt(0, 100, SCH_ST_Heal_AdloquiumOption, "Start using when below HP %. Set to 100 to disable this check.");
-                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts, "Ignore Shield Check", $"Warning, will force the use of {Adloquium.ActionName()}, and normal {Physick.ActionName()} maybe unavailable.", 3, 0);
-                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts, "Sage Shield Check", "Enable to not override an existing Sage's shield.", 3, 1);
-                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts, $"{EmergencyTactics.ActionName()}", $"Use {EmergencyTactics.ActionName()} before {Adloquium.ActionName()}", 3, 2);
-                    break;
-
                 case CustomComboPreset.SCH_ST_Heal_Lustrate:
                     DrawSliderInt(0, 100, SCH_ST_Heal_LustrateOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 4, 0, $"{Lustrate.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 0, $"{Lustrate.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Excogitation:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ExcogitationOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 4, 1, $"{Excogitation.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 1, $"{Excogitation.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Protraction:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ProtractionOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 4, 2, $"{Protraction.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 2, $"{Protraction.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Aetherpact:
                     DrawSliderInt(0, 100, SCH_ST_Heal_AetherpactOption, "Start using when below HP %. Set to 100 to disable this check");
                     DrawSliderInt(0, 100, SCH_ST_Heal_AetherpactDissolveOption, "Stop using when above HP %.");
                     DrawSliderInt(10, 100, SCH_ST_Heal_AetherpactFairyGauge, "Minimal Fairy Gauge to start using Aetherpact", sliderIncrement: Tens);
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 4, 3, $"{Aetherpact.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 3, $"{Aetherpact.ActionName()} Priority: ");
+                    break;
+                
+                case CustomComboPreset.SCH_ST_Heal_Adloquium:
+                    DrawSliderInt(0, 100, SCH_ST_Heal_AdloquiumOption,"Start using when below HP %. Set to 100 to disable this check.");
+                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts,"Scholar Shield Check", "Enable to not override an existing Scholar's shield.", 3, 0);
+                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts,"Sage Shield Check", "Enable to not override an existing Sage's shield.", 3, 1);
+                    DrawHorizontalMultiChoice(SCH_ST_Heal_AldoquimOpts,"Emergency Tactics","Will use Emergency tactics before Adloquim when below set threshold", 3, 2);
+                    
+                    if (SCH_ST_Heal_AldoquimOpts[2])
+                    {
+                        ImGui.Indent();
+                        DrawSliderInt(0, 100, SCH_ST_Heal_AdloquiumOption_Emergency,"Start using when below HP %. Set to 100 to disable this check.");
+                        ImGui.Unindent();
+                    }
+                    
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 4, $"{Adloquium.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Esuna:
@@ -260,23 +269,24 @@ internal partial class SCH
 
         public static UserInt
             
-            SCH_AoE_Heal_LucidOption = new("SCH_AoE_Heal_LucidOption", 6500),
-            SCH_AoE_Heal_SuccorShieldOption = new("SCH_AoE_Heal_SuccorShieldCount"),
+            SCH_AoE_Heal_LucidOption = new("SCH_AoE_Heal_LucidOption", 8000),
+            SCH_AoE_Heal_SuccorShieldOption = new("SCH_AoE_Heal_SuccorShieldCount", 50),
             SCH_AoE_Heal_WhisperingDawnOption = new("SCH_AoE_Heal_WhisperingDawnOption", 70),
             SCH_AoE_Heal_FeyIlluminationOption = new("SCH_AoE_Heal_FeyIlluminationOption", 70),
             SCH_AoE_Heal_ConsolationOption = new("SCH_AoE_Heal_ConsolationOption", 70),
             SCH_AoE_Heal_FeyBlessingOption = new("SCH_AoE_Heal_FeyBlessingOption", 70),
             SCH_AoE_Heal_SeraphismOption = new("SCH_AoE_Heal_SeraphismOption", 70),
             SCH_AoE_Heal_IndomitabilityOption = new("SCH_AoE_Heal_IndomitabilityOption", 70),
-            SCH_ST_Heal_LucidOption = new("SCH_ST_Heal_LucidOption", 6500),
-            SCH_ST_Heal_AdloquiumOption = new("SCH_ST_Heal_AdloquiumOption", 99),
-            SCH_ST_Heal_LustrateOption = new("SCH_ST_Heal_LustrateOption", 99),
-            SCH_ST_Heal_ExcogitationOption = new("SCH_ST_Heal_ExcogitationOption", 99),
-            SCH_ST_Heal_ProtractionOption = new("SCH_ST_Heal_ProtractionOption", 99),
-            SCH_ST_Heal_AetherpactOption = new("SCH_ST_Heal_AetherpactOption", 99),
-            SCH_ST_Heal_AetherpactDissolveOption = new("SCH_ST_Heal_AetherpactDissolveOption", 99),
-            SCH_ST_Heal_AetherpactFairyGauge = new("SCH_ST_Heal_AetherpactFairyGauge", 99),
-            SCH_ST_Heal_EsunaOption = new("SCH_ST_Heal_EsunaOption", 100);
+            SCH_ST_Heal_LucidOption = new("SCH_ST_Heal_LucidOption", 8000),
+            SCH_ST_Heal_AdloquiumOption = new("SCH_ST_Heal_AdloquiumOption", 70),
+            SCH_ST_Heal_AdloquiumOption_Emergency= new("SCH_ST_Heal_AdloquiumOption_Emergency", 30),
+            SCH_ST_Heal_LustrateOption = new("SCH_ST_Heal_LustrateOption", 70),
+            SCH_ST_Heal_ExcogitationOption = new("SCH_ST_Heal_ExcogitationOption", 50),
+            SCH_ST_Heal_ProtractionOption = new("SCH_ST_Heal_ProtractionOption", 30),
+            SCH_ST_Heal_AetherpactOption = new("SCH_ST_Heal_AetherpactOption", 60),
+            SCH_ST_Heal_AetherpactDissolveOption = new("SCH_ST_Heal_AetherpactDissolveOption", 90),
+            SCH_ST_Heal_AetherpactFairyGauge = new("SCH_ST_Heal_AetherpactFairyGauge", 50),
+            SCH_ST_Heal_EsunaOption = new("SCH_ST_Heal_EsunaOption", 30);
         public static UserIntArray
             SCH_ST_Heals_Priority = new("SCH_ST_Heals_Priority"),
             SCH_AoE_Heals_Priority = new("SCH_AoE_Heals_Priority");
