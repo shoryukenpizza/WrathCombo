@@ -235,11 +235,6 @@ internal partial class SCH : Healer
     #endregion
     
     #region Aoe Heal 
-    /*
-     * SCH_AoE_Heal
-     * Overrides main AoE Healing abiility, Succor
-     * Lucid Dreaming and Atherflow weave options
-     */
     internal class SCH_AoE_Heal : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_Heal;
@@ -248,24 +243,20 @@ internal partial class SCH : Healer
             if (actionID is not Succor)
                 return actionID;
 
-            // Aetherflow
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Aetherflow) &&
-                ActionReady(Aetherflow) && !HasAetherflow &&
-                !(IsEnabled(CustomComboPreset.SCH_AoE_Heal_Aetherflow_Indomitability) && GetCooldownRemainingTime(Indomitability) <= 0.6f) &&
-                InCombat())
-                return Aetherflow;
+            if (!HasAetherflow && InCombat())
+            {
+                if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Aetherflow) && ActionReady(Aetherflow) && 
+                    (!IsEnabled(CustomComboPreset.SCH_AoE_Heal_Aetherflow_Indomitability) || GetCooldownRemainingTime(Indomitability) <= 1))
+                    return Aetherflow;
 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation)
-                && ActionReady(Dissipation)
-                && !HasAetherflow
-                && InCombat())
-                return Dissipation;
-
-            // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Lucid)
-                && Role.CanLucidDream(Config.SCH_AoE_Heal_LucidOption))
+                if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation) && ActionReady(Dissipation) &&
+                    (!IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation_Indomitability) || GetCooldownRemainingTime(Indomitability) <= 1))
+                    return Dissipation;
+            }
+            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Lucid) && Role.CanLucidDream(Config.SCH_AoE_Heal_LucidOption))
                 return Role.LucidDreaming;
 
+            //Priority List
             float averagePartyHP = GetPartyAvgHPPercent();
             for(int i = 0; i < Config.SCH_AoE_Heals_Priority.Count; i++)
             {
@@ -280,9 +271,7 @@ internal partial class SCH : Healer
                      return ActionReady(Recitation) && (onIdom || onSuccor) ? 
                         Recitation :
                         spell;
-
             }
-
             return actionID;
         }
     }

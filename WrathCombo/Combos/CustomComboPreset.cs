@@ -6149,13 +6149,18 @@ public enum CustomComboPreset
     SCH_AoE_Heal_Aetherflow = 16020,
 
     [ParentCombo(SCH_AoE_Heal_Aetherflow)]
-    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Aetherflow is Indomitability is ready to use.",
+    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Aetherflow if Indomitability is ready to use.",
         SCH.JobID)]
     SCH_AoE_Heal_Aetherflow_Indomitability = 16021,
 
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Disspation Option", "Use Dissipation when out of Aetherflow stacks.", SCH.JobID)]
     SCH_AoE_Heal_Dissipation = 16041,
+    
+    [ParentCombo(SCH_AoE_Heal_Dissipation)]
+    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Dissipation if Indomitability is ready to use.",
+        SCH.JobID)]
+    SCH_AoE_Heal_Dissipation_Indomitability = 16058,
     
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Recitation Option", "Use Recitation to buff the selected heals", SCH.JobID)]
@@ -6291,7 +6296,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 16057
+    // Last value = 16058
 
     #endregion
 
