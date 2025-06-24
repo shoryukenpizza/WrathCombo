@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
+﻿#region Dependencies
+using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using System;
@@ -7,14 +8,18 @@ using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-namespace WrathCombo.Combos.PvE;
 
+#endregion
+
+namespace WrathCombo.Combos.PvE;
 internal partial class SCH
 {
+    #region Lists
     internal static readonly List<uint>
         BroilList = [Ruin, Broil, Broil2, Broil3, Broil4],
         AetherflowList = [EnergyDrain, Lustrate, SacredSoil, Indomitability, Excogitation],
         FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph];
+    
     internal static readonly Dictionary<uint, ushort>
         BioList = new()
         {
@@ -22,13 +27,15 @@ internal partial class SCH
             { Bio2, Debuffs.Bio2 },
             { Biolysis, Debuffs.Biolysis }
         };
-    internal static SCHOpenerMaxLevel1 Opener1 = new();
-
-    // Class Gauge
+    #endregion
     internal static SCHGauge Gauge => GetJobGauge<SCHGauge>();
-
-    public static bool FairyDismissed => Gauge.DismissedFairy > 0;
-
+    
+    internal static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
+    internal static bool HasAetherflow => Gauge.Aetherflow > 0;
+    internal static bool FairyDismissed => Gauge.DismissedFairy > 0;
+    
+    #region Eos Summoner
+    public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent() && !FairyDismissed;
     private static DateTime SummonTime
     {
         get
@@ -39,31 +46,39 @@ internal partial class SCH
             return field;
         }
     }
-
-    public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent() && !FairyDismissed;
-
-    public static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
-
-    internal static bool HasAetherflow() => Gauge.Aetherflow > 0;
-    internal static WrathOpener Opener()
+    
+    #endregion
+    
+    internal static bool NeedsDoT()
     {
-        if (Opener1.LevelChecked)
-            return Opener1;
+        var dotAction = OriginalHook(Bio);
+        var hpThreshold = Config.SCH_DPS_BioSubOption == 1 ||
+                          !InBossEncounter()
+            ? Config.SCH_DPS_BioSubOption
+            : 0;
+        BioList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
 
-        return WrathOpener.Dummy;
+        return ActionReady(dotAction) &&
+               CanApplyStatus(CurrentTarget, dotDebuffID) &&
+               !JustUsedOn(dotAction, CurrentTarget, 5f) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= Config.SCH_DPS_BioUptime_Threshold;
     }
-
+    
+    #region Get ST Heals
     public static int GetMatchingConfigST(int i, out uint action, out bool enabled)
     {
         switch (i)
         {
             case 0:
                 action = Lustrate;
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Lustrate) && HasAetherflow();
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Lustrate) && HasAetherflow;
                 return Config.SCH_ST_Heal_LustrateOption;
             case 1:
                 action = Excogitation;
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Excogitation) && (HasAetherflow() || HasStatusEffect(Buffs.Recitation));
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Excogitation) && (HasAetherflow || HasStatusEffect(Buffs.Recitation));
                 return Config.SCH_ST_Heal_ExcogitationOption;
             case 2:
                 action = Protraction;
@@ -79,7 +94,9 @@ internal partial class SCH
         action = 0;
         return 0;
     }
-
+    #endregion
+    
+    #region Get Aoe Heals
     public static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
     {
         switch (i)
@@ -106,7 +123,7 @@ internal partial class SCH
                 return Config.SCH_AoE_Heal_SeraphismOption;
             case 5:
                 action = Indomitability;
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Indomitability) && HasAetherflow();
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Indomitability) && HasAetherflow;
                 return Config.SCH_AoE_Heal_IndomitabilityOption;
             case 6:
                 action = OriginalHook(Succor);
@@ -117,6 +134,18 @@ internal partial class SCH
         enabled = false;
         action = 0;
         return 0;
+    }
+    #endregion
+    
+    #region Openers
+    
+    internal static SCHOpenerMaxLevel1 Opener1 = new();
+    internal static WrathOpener Opener()
+    {
+        if (Opener1.LevelChecked)
+            return Opener1;
+
+        return WrathOpener.Dummy;
     }
 
     internal class SCHOpenerMaxLevel1 : WrathOpener
@@ -171,6 +200,8 @@ internal partial class SCH
             return true;
         }
     }
+    
+    #endregion
 
     #region ID's
 

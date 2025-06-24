@@ -6007,29 +6007,20 @@ public enum CustomComboPreset
 
     #region SCHOLAR
 
-    #region DPS
+    #region ST DPS
 
     [AutoAction(false, false)]
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4, SCH.Bio, SCH.Bio2, SCH.Biolysis)]
-    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below", SCH.JobID)]
+    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
     SCH_DPS = 16001,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", SCH.JobID)]
     SCH_DPS_Balance_Opener = 16009,
-
+    
     [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
-    SCH_DPS_FairyReminder = 16048,
-
-    [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
-    SCH_DPS_Lucid = 16002,
-
-    [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Chain Stratagem / Baneful Impact Weave Option",
-        "Adds Chain Stratagem & Baneful Impact on cooldown with overlap protection", SCH.JobID)]
-    SCH_DPS_ChainStrat = 16003,
+    [CustomComboInfo("Bio / Biolysis Option", "Automatic DoT uptime.", SCH.JobID)]
+    SCH_DPS_Bio = 16008,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Aetherflow Weave Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
@@ -6045,19 +6036,63 @@ public enum CustomComboPreset
     [CustomComboInfo("Energy Drain Burst Option",
         "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
     SCH_DPS_EnergyDrain_BurstSaver = 16006,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Chain Stratagem",
+        "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
+    SCH_DPS_ChainStrat = 16003,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Baneful Impact",
+        "Adds Baneful Impact when available.", SCH.JobID)]
+    SCH_DPS_BanefulImpact = 16052,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Ruin II Moving Option", "Use Ruin II when you have to move.", SCH.JobID)]
     SCH_DPS_Ruin2Movement = 16007,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
+    SCH_DPS_FairyReminder = 16048,
 
     [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Bio / Biolysis Option", "Automatic DoT uptime.", SCH.JobID)]
-    SCH_DPS_Bio = 16008,
+    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
+    SCH_DPS_Lucid = 16002,
+    
+    #endregion
+    
+    #region AoE DPS
 
     [AutoAction(true, false)]
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
     [CustomComboInfo("AoE DPS Feature", "Replaces Art of War with options below.", SCH.JobID)]
     SCH_AoE = 16010,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Energy Drain Weave Option",
+        "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
+        SCH.JobID)]
+    SCH_AoE_EnergyDrain = 16056,
+
+    [ParentCombo(SCH_AoE_EnergyDrain)]
+    [CustomComboInfo("Energy Drain Burst Option",
+        "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
+    SCH_AoE_EnergyDrain_BurstSaver = 16055,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Chain Stratagem",
+        "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
+    SCH_AoE_ChainStrat = 16054,
+    
+    [ParentCombo(SCH_AoE_ChainStrat)]
+    [CustomComboInfo("Chain Stratagem",
+        "Will only use Chain Strategem when high enough level for Baneful Impaction and it is enabled.", SCH.JobID)]
+    SCH_AoE_ChainStrat_BanefulOnly = 16057,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Baneful Impact",
+        "Adds Baneful Impact when available.", SCH.JobID)]
+    SCH_AoE_BanefulImpact = 16053,
 
     [ParentCombo(SCH_AoE)]
     [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
@@ -6256,7 +6291,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 16050
+    // Last value = 16052
 
     #endregion
 
