@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
@@ -14,12 +15,11 @@ internal partial class DRG
     internal static StandardOpenerLogic StandardOpener = new();
     internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
 
-    internal static readonly Dictionary<uint, ushort>
-        ChaoticList = new()
-        {
-            { ChaosThrust, Debuffs.ChaosThrust },
-            { ChaoticSpring, Debuffs.ChaoticSpring }
-        };
+    internal static readonly FrozenDictionary<uint, ushort> ChaoticList = new Dictionary<uint, ushort>
+    {
+        { ChaosThrust, Debuffs.ChaosThrust },
+        { ChaoticSpring, Debuffs.ChaoticSpring }
+    }.ToFrozenDictionary();
 
     internal static Status? ChaosDebuff => GetStatusEffect(ChaoticList[OriginalHook(ChaosThrust)], CurrentTarget);
 

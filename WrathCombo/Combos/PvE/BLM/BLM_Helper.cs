@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.CustomComboNS;
@@ -12,16 +13,15 @@ internal partial class BLM
     internal static BLMStandardOpener StandardOpener = new();
     internal static BLMFlareOpener FlareOpener = new();
 
-    internal static readonly Dictionary<uint, ushort>
-        ThunderList = new()
-        {
-            { Thunder, Debuffs.Thunder },
-            { Thunder2, Debuffs.Thunder2 },
-            { Thunder3, Debuffs.Thunder3 },
-            { Thunder4, Debuffs.Thunder4 },
-            { HighThunder, Debuffs.HighThunder },
-            { HighThunder2, Debuffs.HighThunder2 }
-        };
+    internal static readonly FrozenDictionary<uint, ushort> ThunderList = new Dictionary<uint, ushort>
+    {
+        { Thunder, Debuffs.Thunder },
+        { Thunder2, Debuffs.Thunder2 },
+        { Thunder3, Debuffs.Thunder3 },
+        { Thunder4, Debuffs.Thunder4 },
+        { HighThunder, Debuffs.HighThunder },
+        { HighThunder2, Debuffs.HighThunder2 }
+    }.ToFrozenDictionary();
 
     internal static uint CurMp => GetPartyMembers().First().CurrentMP;
 
