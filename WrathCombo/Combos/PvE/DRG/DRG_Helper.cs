@@ -12,16 +12,10 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
 {
-    internal static StandardOpenerLogic StandardOpener = new();
-    internal static PiercingTalonOpenerLogic PiercingTalonOpener = new();
+    internal static Status? ChaosDebuff =>
+        GetStatusEffect(ChaoticList[OriginalHook(ChaosThrust)], CurrentTarget);
 
-    internal static readonly FrozenDictionary<uint, ushort> ChaoticList = new Dictionary<uint, ushort>
-    {
-        { ChaosThrust, Debuffs.ChaosThrust },
-        { ChaoticSpring, Debuffs.ChaoticSpring }
-    }.ToFrozenDictionary();
-
-    internal static Status? ChaosDebuff => GetStatusEffect(ChaoticList[OriginalHook(ChaosThrust)], CurrentTarget);
+    #region Lifesurge
 
     internal static bool UseLifeSurge()
     {
@@ -43,6 +37,8 @@ internal partial class DRG
 
         return false;
     }
+
+    #endregion
 
     #region Animation Locks
 
@@ -96,16 +92,21 @@ internal partial class DRG
 
     internal static WrathOpener Opener()
     {
-        if (StandardOpener.LevelChecked && DRG_SelectedOpener == 0)
+        if (StandardOpener.LevelChecked &&
+            DRG_SelectedOpener == 0)
             return StandardOpener;
 
-        if (PiercingTalonOpener.LevelChecked && DRG_SelectedOpener == 1)
+        if (PiercingTalonOpener.LevelChecked &&
+            DRG_SelectedOpener == 1)
             return PiercingTalonOpener;
 
         return WrathOpener.Dummy;
     }
 
-    internal class StandardOpenerLogic : WrathOpener
+    internal static DRGStandardOpener StandardOpener = new();
+    internal static DRGPiercingTalonOpener PiercingTalonOpener = new();
+
+    internal class DRGStandardOpener : WrathOpener
     {
         public override int MinOpenerLevel => 100;
 
@@ -148,7 +149,7 @@ internal partial class DRG
             IsOffCooldown(LanceCharge);
     }
 
-    internal class PiercingTalonOpenerLogic : WrathOpener
+    internal class DRGPiercingTalonOpener : WrathOpener
     {
         public override int MinOpenerLevel => 100;
 
@@ -201,6 +202,12 @@ internal partial class DRG
     internal static bool LoTDActive => Gauge.IsLOTDActive;
 
     internal static byte FirstmindsFocus => Gauge.FirstmindsFocusCount;
+
+    internal static readonly FrozenDictionary<uint, ushort> ChaoticList = new Dictionary<uint, ushort>
+    {
+        { ChaosThrust, Debuffs.ChaosThrust },
+        { ChaoticSpring, Debuffs.ChaoticSpring }
+    }.ToFrozenDictionary();
 
     #endregion
 

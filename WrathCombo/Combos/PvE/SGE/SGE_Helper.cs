@@ -12,18 +12,20 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE
 {
-    internal static SGEToxikonOpener toxikonOpener = new();
-    internal static SGEPneumaOpener pneumaOpener = new();
+    internal static Status? DosisDebuff =>
+        GetStatusEffect(DosisList[OriginalHook(Dosis)], CurrentTarget);
 
-    internal static Status? DosisDebuff => GetStatusEffect(DosisList[OriginalHook(Dosis)], CurrentTarget);
+    internal static Status? DyskrasiaDebuff =>
+        GetStatusEffect(Debuffs.EukrasianDyskrasia, CurrentTarget);
 
-    internal static Status? DyskrasiaDebuff => GetStatusEffect(Debuffs.EukrasianDyskrasia, CurrentTarget);
+    internal static bool MaxPhlegma =>
+        GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma));
 
-    internal static bool MaxPhlegma => GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma));
+    internal static bool HasAddersgall() =>
+        Addersgall > 0;
 
-    internal static bool HasAddersgall() => Addersgall > 0;
-
-    internal static bool HasAddersting() => Addersting > 0;
+    internal static bool HasAddersting() =>
+        Addersting > 0;
 
     #region Healing
 
@@ -156,7 +158,7 @@ internal partial class SGE
 
     #endregion
 
-        #region Movement Prio
+    #region Movement Prio
 
     private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
         PrioritizedMovement =>
@@ -193,14 +195,19 @@ internal partial class SGE
 
     internal static WrathOpener Opener()
     {
-        if (SGE_SelectedOpener == 0)
-            return toxikonOpener;
+        if (ToxikonOpener.LevelChecked &&
+            SGE_SelectedOpener == 0)
+            return ToxikonOpener;
 
-        if (SGE_SelectedOpener == 1)
-            return pneumaOpener;
+        if (PneumaOpener.LevelChecked &&
+            SGE_SelectedOpener == 1)
+            return PneumaOpener;
 
         return WrathOpener.Dummy;
     }
+
+    internal static SGEToxikonOpener ToxikonOpener = new();
+    internal static SGEPneumaOpener PneumaOpener = new();
 
     internal class SGEToxikonOpener : WrathOpener
     {
@@ -294,7 +301,6 @@ internal partial class SGE
     internal static byte Addersgall => Gauge.Addersgall;
 
     internal static byte Addersting => Gauge.Addersting;
-
 
     internal static readonly List<uint>
         AddersgallList = [Taurochole, Druochole, Ixochole, Kerachole],
