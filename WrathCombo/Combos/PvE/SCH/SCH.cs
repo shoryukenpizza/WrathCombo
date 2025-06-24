@@ -152,13 +152,29 @@ internal partial class SCH : Healer
         {
             if (actionID is not Physick)
                 return actionID;
+            
+            #region Variables
+            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            #endregion
+            
+            #region Priority Cleansing
+            
+            if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Esuna) && 
+                ActionReady(Role.Esuna) && HasCleansableDebuff(healTarget) &&
+                GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) >= Config.SCH_ST_Heal_EsunaOption)
+                return Role.Esuna
+                    .RetargetIfEnabled(OptionalTarget, Physick);
 
+            #endregion
+
+            #region OGCD Tools
             // Aetherflow
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherflow) &&
                 ActionReady(Aetherflow) && !HasAetherflow &&
                 InCombat() && CanSpellWeave())
                 return Aetherflow;
 
+            // Dissipation
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Dissipation)
                 && ActionReady(Dissipation)
                 && !HasAetherflow
@@ -177,15 +193,7 @@ internal partial class SCH : Healer
                 && GetTargetHPPercent(AetherPactTarget) >= Config.SCH_ST_Heal_AetherpactDissolveOption)
                 return DissolveUnion;
 
-            //Grab our target
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-
-            if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Esuna) && ActionReady(Role.Esuna) &&
-                GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) >= Config.SCH_ST_Heal_EsunaOption &&
-                HasCleansableDebuff(healTarget))
-                return Role.Esuna
-                    .RetargetIfEnabled(OptionalTarget, Physick);
-
+            //Priority List
             for(int i = 0; i < Config.SCH_ST_Heals_Priority.Count; i++)
             {
                 int index = Config.SCH_ST_Heals_Priority.IndexOf(i + 1);
@@ -200,6 +208,9 @@ internal partial class SCH : Healer
                 }
             }
 
+            #endregion
+            
+            #region GCD Tools
             //Check for the Galvanize shield buff. Start applying if it doesn't exist or Target HP is below %
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Adloquium) &&
                 ActionReady(Adloquium) &&
@@ -218,6 +229,7 @@ internal partial class SCH : Healer
 
             return actionID
                 .RetargetIfEnabled(OptionalTarget, Physick);
+            #endregion
         }
     }
     #endregion
