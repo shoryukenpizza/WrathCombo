@@ -49,6 +49,7 @@ internal partial class SCH
     
     #endregion
     
+    #region Dot Checker
     internal static bool NeedsDoT()
     {
         var dotAction = OriginalHook(Bio);
@@ -66,6 +67,7 @@ internal partial class SCH
                GetTargetHPPercent() > hpThreshold &&
                dotRemaining <= Config.SCH_DPS_BioUptime_Threshold;
     }
+    #endregion
     
     #region Get ST Heals
     public static int GetMatchingConfigST(int i, out uint action, out bool enabled)
