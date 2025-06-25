@@ -19,6 +19,7 @@ internal partial class SCH
     internal static readonly List<uint>
         BroilList = [Ruin, Broil, Broil2, Broil3, Broil4],
         AetherflowList = [EnergyDrain, Lustrate, SacredSoil, Indomitability, Excogitation],
+        ReplacedActionsList = [Ruin, Broil, Broil2, Broil3, Broil4, Bio, Biolysis, Bio2, Ruin2, Succor, Concitation, Accession, Physick],
         FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph];
     
     internal static readonly Dictionary<uint, ushort>
@@ -34,6 +35,8 @@ internal partial class SCH
     internal static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
     internal static bool HasAetherflow => Gauge.Aetherflow > 0;
     internal static bool FairyDismissed => Gauge.DismissedFairy > 0;
+    internal static bool FairyBusy => JustUsed(WhisperingDawn, 2f) || JustUsed(FeyIllumination, 2f) || JustUsed(FeyBlessing, 2f) || 
+                                      JustUsed(Aetherpact, 2f) || JustUsed(Dissipation, 2f) || JustUsed(Consolation, 2f) || JustUsed(SummonSeraph, 2f);
     internal static bool EndAetherpact => IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && IsEnabled(CustomComboPreset.SCH_ST_Heal)
                                             && OriginalHook(Aetherpact) is DissolveUnion //Quick check to see if Fairy Aetherpact is Active
                                             && AetherPactTarget is not null //Null checking so GetTargetHPPercent doesn't fall back to CurrentTarget
@@ -47,7 +50,7 @@ internal partial class SCH
     {
         if (IsEnabled(CustomComboPreset.SCH_Hidden_SacredSoil) && ActionReady(SacredSoil) &&
             !IsMoving() && CanSpellWeave())
-            return SacredSoil.Retarget(Succor, SimpleTarget.Self);
+            return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
                 
         if (IsEnabled(CustomComboPreset.SCH_Hidden_Expedient) &&
             ActionReady(Expedient) && CanSpellWeave())
@@ -127,7 +130,7 @@ internal partial class SCH
                 return Config.SCH_ST_Heal_ProtractionOption;
             case 3:
                 action = Aetherpact;
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && Gauge.FairyGauge >= Config.SCH_ST_Heal_AetherpactFairyGauge && IsOriginal(Aetherpact);
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && Gauge.FairyGauge >= Config.SCH_ST_Heal_AetherpactFairyGauge && IsOriginal(Aetherpact) && !FairyBusy;
                 return Config.SCH_ST_Heal_AetherpactOption;
             case 4:
                 action = OriginalHook(Adloquium);
@@ -138,17 +141,17 @@ internal partial class SCH
                 return Config.SCH_ST_Heal_AdloquiumOption;
             case 5:
                 action = OriginalHook(WhisperingDawn);
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_WhisperingDawn) && HasPetPresent() && 
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_WhisperingDawn) && HasPetPresent() && !FairyBusy &&
                           (!Config.SCH_ST_Heal_WhisperingDawnBossOption || !InBossEncounter());
                 return Config.SCH_ST_Heal_WhisperingDawnOption;
             case 6:
                 action = OriginalHook(FeyIllumination);
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyIllumination) && HasPetPresent() && 
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyIllumination) && HasPetPresent() && !FairyBusy &&
                           (!Config.SCH_ST_Heal_FeyIlluminationBossOption || !InBossEncounter());
                 return Config.SCH_ST_Heal_FeyIlluminationOption;
             case 7:
                 action = FeyBlessing;
-                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyBlessing) && HasPetPresent() && 
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyBlessing) && HasPetPresent() && !FairyBusy &&
                           (!Config.SCH_ST_Heal_FeyBlessingBossOption || !InBossEncounter());
                 return Config.SCH_ST_Heal_FeyBlessingOption;
         }
@@ -166,19 +169,19 @@ internal partial class SCH
         {
             case 0:
                 action = OriginalHook(WhisperingDawn);
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_WhisperingDawn) && HasPetPresent();
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_WhisperingDawn) && HasPetPresent() && !FairyBusy;
                 return Config.SCH_AoE_Heal_WhisperingDawnOption;
             case 1:
                 action = OriginalHook(FeyIllumination);
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_FeyIllumination) && HasPetPresent();
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_FeyIllumination) && HasPetPresent() && !FairyBusy;
                 return Config.SCH_AoE_Heal_FeyIlluminationOption;
             case 2:
                 action = FeyBlessing;
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_FeyBlessing) && HasPetPresent();
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_FeyBlessing) && HasPetPresent() && !FairyBusy;
                 return Config.SCH_AoE_Heal_FeyBlessingOption;
             case 3:
                 action = Consolation;
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Consolation) && Gauge.SeraphTimer > 0;
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Consolation) && Gauge.SeraphTimer > 0 && !FairyBusy;
                 return Config.SCH_AoE_Heal_ConsolationOption;
             case 4:
                 action = Seraphism;
@@ -190,7 +193,7 @@ internal partial class SCH
                 return Config.SCH_AoE_Heal_IndomitabilityOption;
             case 6:
                 action = SummonSeraph;
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_SummonSeraph) && HasPetPresent();
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_SummonSeraph) && HasPetPresent() && !FairyBusy;
                 return Config.SCH_AoE_Heal_SummonSeraph;
             
             case 7:

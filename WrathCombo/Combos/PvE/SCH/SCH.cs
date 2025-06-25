@@ -212,7 +212,8 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Dissipation)
                 && ActionReady(Dissipation)
                 && !HasAetherflow
-                && InCombat())
+                && InCombat()
+                && !FairyBusy)
                 return Dissipation;
 
             // Lucid Dreaming
@@ -251,7 +252,7 @@ internal partial class SCH : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_Heal;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Succor)
+            if (actionID is not (Succor or Concitation or Accession))
                 return actionID;
             
             #region Dissolve Union
@@ -272,7 +273,7 @@ internal partial class SCH : Healer
                     (!IsEnabled(CustomComboPreset.SCH_AoE_Heal_Aetherflow_Indomitability) || GetCooldownRemainingTime(Indomitability) <= 1))
                     return Aetherflow;
 
-                if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation) && ActionReady(Dissipation) &&
+                if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation) && ActionReady(Dissipation) && !FairyBusy &&
                     (!IsEnabled(CustomComboPreset.SCH_AoE_Heal_Dissipation_Indomitability) || GetCooldownRemainingTime(Indomitability) <= 1))
                     return Dissipation;
             }
