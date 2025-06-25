@@ -298,7 +298,9 @@ internal partial class SCH : Healer
             if (Config.SCH_AoE_Heal_Succor_Options[0] && ActionReady(EmergencyTactics))
                 return OriginalHook(EmergencyTactics);
             
-            return actionID;
+            return !LevelChecked(Succor)?
+                WhisperingDawn:
+                actionID;
         }
     }
     
