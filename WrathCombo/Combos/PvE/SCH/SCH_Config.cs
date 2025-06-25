@@ -202,12 +202,6 @@ internal partial class SCH
                     DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 5, $"{Indomitability.ActionName()} Priority: ");
                     break;
                 
-                
-                case CustomComboPreset.SCH_AoE_Heal_SacredSoil:
-                    DrawAdditionalBoolChoice(SCH_AoE_Heal_SacredSoil_RaidwideOnly,
-                        "Only use when a Raidwide is casting",
-                        "Will not use Sacred Soil in the rotation unless we detect a Raidwide is casting.");
-                    break;
                 #endregion
                 
                 #region Standalones
@@ -302,11 +296,11 @@ internal partial class SCH
         public static UserIntArray
             SCH_ST_Heals_Priority = new("SCH_ST_Heals_Priority"),
             SCH_AoE_Heals_Priority = new("SCH_AoE_Heals_Priority");
+
         public static UserBool
             SCH_ST_Heal_Adv = new("SCH_ST_Heal_Adv"),
             SCH_ST_Heal_IncludeShields = new("SCH_ST_Heal_IncludeShields"),
-            SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation"),
-            SCH_AoE_Heal_SacredSoil_RaidwideOnly = new("SCH_AoE_Heal_SacredSoil_RaidwideOnly");
+            SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation");
 
         public static UserBoolArray
             SCH_ST_Heal_AldoquimOpts = new("SCH_ST_Heal_AldoquimOpts"),

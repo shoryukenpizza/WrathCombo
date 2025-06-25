@@ -51,6 +51,13 @@ internal partial class SCH : Healer
             if (EndAetherpact)
                 return DissolveUnion;
             #endregion
+            
+            #region Hidden Feature Raidwide
+
+            if (RaidWideCasting())
+                return HiddenRaidwides(actionID);
+           
+            #endregion
 
             if (InCombat() && CanSpellWeave())
             {
@@ -121,6 +128,13 @@ internal partial class SCH : Healer
                 return DissolveUnion;
             #endregion
             
+            #region Hidden Feature Raidwide
+
+            if (RaidWideCasting())
+                return HiddenRaidwides(actionID);
+           
+            #endregion
+            
             if (!InCombat() || !CanSpellWeave()) return actionID;
             
             if (IsEnabled(CustomComboPreset.SCH_AoE_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
@@ -181,6 +195,13 @@ internal partial class SCH : Healer
                 return DissolveUnion;
             #endregion
             
+            #region Hidden Feature Raidwide
+
+            if (RaidWideCasting())
+                return HiddenRaidwides(actionID);
+           
+            #endregion
+            
             // Aetherflow
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherflow) &&
                 ActionReady(Aetherflow) && !HasAetherflow &&
@@ -233,20 +254,16 @@ internal partial class SCH : Healer
             if (actionID is not Succor)
                 return actionID;
             
-            #region Variables
-            var sacredSoilTarget =
-                (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil_Enemy)
-                    ? SimpleTarget.HardTarget
-                    : null) ??
-                (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil_Allies)
-                    ? SimpleTarget.Stack.OverridesAllies
-                    : null) ??
-                SimpleTarget.Self;
-            #endregion
-            
             #region Dissolve Union
             if (EndAetherpact)
                 return DissolveUnion;
+            #endregion
+            
+            #region Hidden Feature Raidwide
+
+            if (RaidWideCasting())
+                return HiddenRaidwides(actionID);
+           
             #endregion
 
             if (!HasAetherflow && InCombat())
@@ -261,22 +278,6 @@ internal partial class SCH : Healer
             }
             if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Lucid) && Role.CanLucidDream(Config.SCH_AoE_Heal_LucidOption))
                 return Role.LucidDreaming;
-            
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil) &&
-                ActionReady(SacredSoil) && ActionWatching.NumberOfGcdsUsed > 3 &&
-                !IsMoving() && CanSpellWeave() &&
-                (!Config.SCH_AoE_Heal_SacredSoil_RaidwideOnly || RaidWideCasting()))
-                return SacredSoil.Retarget(Succor, sacredSoilTarget);
-            
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Expedient) &&
-                ActionReady(Expedient) && CanSpellWeave() && RaidWideCasting())
-                return Expedient;
-
-            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Succor_Raidwide) && ActionReady(OriginalHook(Succor)) &&
-                RaidWideCasting())
-                return IsEnabled(CustomComboPreset.SCH_AoE_Heal_Succor_Raidwide_Recitation) && ActionReady(Recitation)
-                    ? Recitation
-                    : OriginalHook(Succor);
 
             //Priority List
             float averagePartyHP = GetPartyAvgHPPercent();
@@ -304,27 +305,39 @@ internal partial class SCH : Healer
     
     #region Standalone Features
     
-    #region Consolation
-    /*
-     * SCH_Consolation
-     * Even though Summon Seraph becomes Consolation,
-     * This Feature also places Seraph's AoE heal+barrier ontop of the existing fairy AoE skill, Fey Blessing
-     */
+    #region Sacred Soil Retarget
+    internal class SCH_SacredSoil : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_SacredSoil;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not SacredSoil)
+                return actionID;
+            
+            var sacredSoilTarget =
+                    (IsEnabled(CustomComboPreset.SCH_SacredSoil_Enemy)
+                        ? SimpleTarget.HardTarget
+                        : null) ??
+                    (IsEnabled(CustomComboPreset.SCH_SacredSoil_Allies)
+                        ? SimpleTarget.Stack.OverridesAllies
+                        : null) ??
+                    SimpleTarget.Self;
+                
+            return IsEnabled(CustomComboPreset.SCH_SacredSoil)? SacredSoil.Retarget(sacredSoilTarget) : actionID;
+        }
+    }
+    #endregion
+    
+    #region Fey Blessing to Consolation
     internal class SCH_Consolation : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Consolation;
         protected override uint Invoke(uint actionID)
             => actionID is FeyBlessing && LevelChecked(SummonSeraph) && Gauge.SeraphTimer > 0 ? Consolation : actionID;
     }
-    
     #endregion
     
-    #region Lustrate
-
-    /*
-     * SCH_Lustrate
-     * Replaces Lustrate with Excogitation when Excogitation is ready.
-     */
+    #region Lustrate to Excogitation
     internal class SCH_Lustrate : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Lustrate;
@@ -334,15 +347,9 @@ internal partial class SCH : Healer
                 ? Excogitation
                 : actionID;
     }
-    
     #endregion
     
-    #region Recitation
-
-    /*
-     * SCH_Recitation
-     * Replaces Recitation with selected one of its combo skills.
-     */
+    #region Recitation to Selected Option
     internal class SCH_Recitation : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Recitation;
@@ -362,16 +369,9 @@ internal partial class SCH : Healer
             return actionID;
         }
     }
-    
     #endregion
 
-    #region Aetherflow
-    /*
-     * SCH_Aetherflow
-     * Replaces all Energy Drain actions with Aetherflow when depleted, or just Energy Drain
-     * Dissipation option to show if Aetherflow is on Cooldown
-     * Recitation also an option
-     */
+    #region Aetherflow Reminder
     internal class SCH_Aetherflow : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Aetherflow;
@@ -429,14 +429,9 @@ internal partial class SCH : Healer
             return actionID;
         }
     }
-
     #endregion
     
-    #region Raise
-    /*
-     * SCH_Raise (Swiftcast Raise combo)
-     * Swiftcast changes to Raise when swiftcast is on cooldown
-     */
+    #region Swiftcast to Raise
     internal class SCH_Raise : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Raise;
@@ -448,29 +443,18 @@ internal partial class SCH : Healer
                     : Resurrection
                 : actionID;
     }
-    
     #endregion
     
     #region Fairy Reminder
-
-    // Replaces Fairy abilities with Fairy summoning with Eos
     internal class SCH_FairyReminder : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_FairyReminder;
         protected override uint Invoke(uint actionID)
             => FairyList.Contains(actionID) && NeedToSummon ? SummonEos : actionID;
     }
-    
     #endregion
     
-    #region Deployment Tactics
-
-    /*
-     * SCH_DeploymentTactics
-     * Combos Deployment Tactics with Adloquium by showing Adloquim when Deployment Tactics is ready,
-     * Recitation is optional, if one wishes to Crit the shield first
-     * Supports soft targetting and self as a fallback.
-     */
+    #region Deployment Tactics to Adloquium
     internal class SCH_DeploymentTactics : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DeploymentTactics;
@@ -493,15 +477,9 @@ internal partial class SCH : Healer
             return actionID;
         }
     }
-    
     #endregion
     
-    #region Fairy Combo
-
-    /*
-     * SCH_Fairy_Combo
-     * Overrides Whispering Dawn
-     */
+    #region Whispering Dawn to Fairy Abilities
     internal class SCH_Fairy_Combo : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Fairy_Combo;
@@ -526,11 +504,9 @@ internal partial class SCH : Healer
                 if (IsEnabled(CustomComboPreset.SCH_Fairy_Combo_Consolation) && Gauge.SeraphTimer > 0 && GetRemainingCharges(Consolation) > 0)
                     return OriginalHook(Consolation);
             }
-
             return actionID;
         }
     }
-    
     #endregion
     
     #endregion

@@ -6191,33 +6191,6 @@ public enum CustomComboPreset
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Consolation Option", "Use Consolation", SCH.JobID)]
     SCH_AoE_Heal_Consolation = 16046,
-    
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected", SCH.JobID)]
-    SCH_AoE_Heal_Succor_Raidwide = 16062,
-    
-    [ParentCombo(SCH_AoE_Heal_Succor_Raidwide)]
-    [CustomComboInfo("Recitation Option", "Use Recitation to buff before the Raidwide Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Succor_Raidwide_Recitation = 16051,
-    
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Sacred Soil Option", "Adds Sacred Soil placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", SCH.JobID)]
-    [Retargeted]
-    SCH_AoE_Heal_SacredSoil = 16059,
-    
-    [ParentCombo(SCH_AoE_Heal_SacredSoil)]
-    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Asylum.", SCH.JobID)]
-    [Retargeted]
-    SCH_AoE_Heal_SacredSoil_Enemy = 16060,
-
-    [ParentCombo(SCH_AoE_Heal_SacredSoil)]
-    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Asylum.\nBeneath the Enemy placement option, but above yourself.", SCH.JobID)]
-    [Retargeted]
-    SCH_AoE_Heal_SacredSoil_Allies = 16061,
-    
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected", SCH.JobID)]
-    SCH_AoE_Heal_Expedient = 16064,
 
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Aetherflow Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
@@ -6263,6 +6236,21 @@ public enum CustomComboPreset
     [CustomComboInfo("Lustrate to Excogitation Feature",
         "Change Lustrate into Excogitation when Excogitation is ready.", SCH.JobID)]
     SCH_Lustrate = 16014,
+    
+    [ReplaceSkill(SCH.SacredSoil)]
+    [CustomComboInfo("Sacred Soil Retargetting", "Adds Self retargetting to Sacred Soil", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil = 16066,
+    
+    [ParentCombo(SCH_SacredSoil)]
+    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Sacred Soil.\nBeneath the Enemy placement option, but above yourself.", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil_Allies = 16061,
+    
+    [ParentCombo(SCH_SacredSoil)]
+    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Sacred Soil", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil_Enemy = 16060,
     
     [ReplaceSkill(SCH.Recitation)]
     [CustomComboInfo("Recitation Combo Feature",
@@ -6322,8 +6310,35 @@ public enum CustomComboPreset
     SCH_DPS_Variant_Rampart = 16037,
 
     #endregion
+    
+    #region Hidden Features
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden = 16065,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Succor_Raidwide = 16062,
+    
+    [ParentCombo(SCH_Hidden_Succor_Raidwide)]
+    [CustomComboInfo("Recitation Option", "Use Recitation to buff before the Raidwide Succor.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Succor_Raidwide_Recitation = 16051,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 main combos", SCH.JobID)]
+    [Hidden]
+    [Retargeted]
+    SCH_Hidden_SacredSoil = 16059,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Expedient = 16064,
+    #endregion
 
-    // Last value = 16064
+    // Last value = 16066
 
     #endregion
 

@@ -5,6 +5,7 @@ using ECommons.DalamudServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -38,7 +39,27 @@ internal partial class SCH
                                             && AetherPactTarget is not null //Null checking so GetTargetHPPercent doesn't fall back to CurrentTarget
                                             && GetTargetHPPercent(AetherPactTarget) >= Config.SCH_ST_Heal_AetherpactDissolveOption;
     
+    internal static bool ShieldCheck => GetPartyBuffPercent(Buffs.Galvanize) <= Config.SCH_AoE_Heal_SuccorShieldOption &&
+                                       GetPartyBuffPercent(SGE.Buffs.EukrasianPrognosis) <= Config.SCH_AoE_Heal_SuccorShieldOption;
     
+    #region Hidden Raidwides
+    internal static uint HiddenRaidwides(uint actionId)
+    {
+        if (IsEnabled(CustomComboPreset.SCH_Hidden_SacredSoil) && ActionReady(SacredSoil) &&
+            !IsMoving() && CanSpellWeave())
+            return SacredSoil.Retarget(Succor, SimpleTarget.Self);
+                
+        if (IsEnabled(CustomComboPreset.SCH_Hidden_Expedient) &&
+            ActionReady(Expedient) && CanSpellWeave())
+            return Expedient;
+
+        if (IsEnabled(CustomComboPreset.SCH_Hidden_Succor_Raidwide) && ActionReady(OriginalHook(Succor)) && ShieldCheck)
+            return IsEnabled(CustomComboPreset.SCH_Hidden_Succor_Raidwide_Recitation) && ActionReady(Recitation)
+                ? Recitation : OriginalHook(Succor);
+        
+        return actionId;
+    }
+    #endregion
     
     #region Eos Summoner
     public static bool NeedToSummon => DateTime.Now > SummonTime && !HasPetPresent() && !FairyDismissed;
@@ -126,8 +147,6 @@ internal partial class SCH
     #region Get Aoe Heals
     public static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
     {
-        bool shieldCheck = GetPartyBuffPercent(Buffs.Galvanize) <= Config.SCH_AoE_Heal_SuccorShieldOption &&
-                           GetPartyBuffPercent(SGE.Buffs.EukrasianPrognosis) <= Config.SCH_AoE_Heal_SuccorShieldOption;
         switch (i)
         {
             case 0:
@@ -161,7 +180,7 @@ internal partial class SCH
             
             case 7:
                 action = OriginalHook(Succor);
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal) && shieldCheck;
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal) && ShieldCheck;
                 return 100; //Don't HP Check
         }
 
