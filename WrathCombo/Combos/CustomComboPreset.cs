@@ -6163,11 +6163,61 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Succor)]
     [CustomComboInfo("Simple Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
     SCH_AoE_Heal = 16018,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Indomitability Option", "Use Indomitabilty", SCH.JobID)]
+    SCH_AoE_Heal_Indomitability = 16022,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", SCH.JobID)]
+    SCH_AoE_Heal_WhisperingDawn = 16043,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", SCH.JobID)]
+    SCH_AoE_Heal_FeyIllumination = 16042,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", SCH.JobID)]
+    SCH_AoE_Heal_FeyBlessing = 16045,
 
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP isn't high enough to cast Succor.",
-        SCH.JobID)]
-    SCH_AoE_Heal_Lucid = 16019,
+    [CustomComboInfo("Seraphism Option", "Use Seraphism", SCH.JobID)]
+    SCH_AoE_Heal_Seraphism = 16044,
+
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph", SCH.JobID)]
+    SCH_AoE_Heal_SummonSeraph = 16063,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Consolation Option", "Use Consolation", SCH.JobID)]
+    SCH_AoE_Heal_Consolation = 16046,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected", SCH.JobID)]
+    SCH_AoE_Heal_Succor_Raidwide = 16062,
+    
+    [ParentCombo(SCH_AoE_Heal_Succor_Raidwide)]
+    [CustomComboInfo("Recitation Option", "Use Recitation to buff before the Raidwide Succor.", SCH.JobID)]
+    SCH_AoE_Heal_Succor_Raidwide_Recitation = 16051,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Sacred Soil Option", "Adds Sacred Soil placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", SCH.JobID)]
+    [Retargeted]
+    SCH_AoE_Heal_SacredSoil = 16059,
+    
+    [ParentCombo(SCH_AoE_Heal_SacredSoil)]
+    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Asylum.", SCH.JobID)]
+    [Retargeted]
+    SCH_AoE_Heal_SacredSoil_Enemy = 16060,
+
+    [ParentCombo(SCH_AoE_Heal_SacredSoil)]
+    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Asylum.\nBeneath the Enemy placement option, but above yourself.", SCH.JobID)]
+    [Retargeted]
+    SCH_AoE_Heal_SacredSoil_Allies = 16061,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected", SCH.JobID)]
+    SCH_AoE_Heal_Expedient = 16064,
 
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Aetherflow Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
@@ -6188,35 +6238,10 @@ public enum CustomComboPreset
     SCH_AoE_Heal_Dissipation_Indomitability = 16058,
     
     [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Recitation Option", "Use Recitation to buff the selected heals", SCH.JobID)]
-    SCH_AoE_Heal_Recitation = 16051,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Indomitability Option", "Use Indomitability before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Indomitability = 16022,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_FeyIllumination = 16042,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_WhisperingDawn = 16043,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Seraphism Option", "Use Seraphism before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Seraphism = 16044,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_FeyBlessing = 16045,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Consolation", "Use Consolation before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Consolation = 16046,
-
+    [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP isn't high enough to cast Succor.",
+        SCH.JobID)]
+    SCH_AoE_Heal_Lucid = 16019,
     
-
     #endregion
 
     #region Utilities
@@ -6298,7 +6323,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 16058
+    // Last value = 16064
 
     #endregion
 

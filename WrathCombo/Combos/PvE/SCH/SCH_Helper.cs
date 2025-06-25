@@ -104,9 +104,9 @@ internal partial class SCH
                 enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && Gauge.FairyGauge >= Config.SCH_ST_Heal_AetherpactFairyGauge && IsOriginal(Aetherpact);
                 return Config.SCH_ST_Heal_AetherpactOption;
             case 4:
-                action = Adloquium;
+                action = OriginalHook(Adloquium);
                 enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_Adloquium) &&
-                          ActionReady(Adloquium) &&
+                          ActionReady(OriginalHook(Adloquium)) &&
                           GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= Config.SCH_ST_Heal_AdloquiumOption &&
                           (EmergencyAdlo || ShieldCheck && SageShieldCheck);
                 return Config.SCH_ST_Heal_AdloquiumOption;
@@ -121,6 +121,8 @@ internal partial class SCH
     #region Get Aoe Heals
     public static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
     {
+        bool shieldCheck = GetPartyBuffPercent(Buffs.Galvanize) <= Config.SCH_AoE_Heal_SuccorShieldOption &&
+                           GetPartyBuffPercent(SGE.Buffs.EukrasianPrognosis) <= Config.SCH_AoE_Heal_SuccorShieldOption;
         switch (i)
         {
             case 0:
@@ -148,8 +150,13 @@ internal partial class SCH
                 enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Indomitability) && HasAetherflow;
                 return Config.SCH_AoE_Heal_IndomitabilityOption;
             case 6:
+                action = SummonSeraph;
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal_SummonSeraph) && HasPetPresent();
+                return Config.SCH_AoE_Heal_SummonSeraph;
+            
+            case 7:
                 action = OriginalHook(Succor);
-                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal) && GetPartyBuffPercent(Buffs.Galvanize) <= Config.SCH_AoE_Heal_SuccorShieldOption;
+                enabled = IsEnabled(CustomComboPreset.SCH_AoE_Heal) && shieldCheck;
                 return 100; //Don't HP Check
         }
 
@@ -245,6 +252,8 @@ internal partial class SCH
         Resurrection = 173,
         Protraction = 25867,
         Seraphism = 37014,
+        Manifestation = 37015,
+        Accession = 37016,
 
         // Offense
         Bio = 17864,
@@ -276,6 +285,7 @@ internal partial class SCH
         Recitation = 16542,
         ChainStratagem = 7436,
         DeploymentTactics = 3585,
+        Expedient = 25868,
         EmergencyTactics = 3586;
 
     //Action Groups

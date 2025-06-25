@@ -200,11 +200,11 @@ internal partial class SCH : Healer
 
                 if (enabled)
                 {
-                    if (Config.SCH_ST_Heal_AldoquimOpts[2] && ActionReady(EmergencyTactics) &&
-                        spell is Adloquium && 
+                    if (Config.SCH_ST_Heal_AldoquimOpts[2] && ActionReady(OriginalHook(EmergencyTactics)) &&
+                        spell is Adloquium or Manifestation && 
                         GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <=
                         Config.SCH_ST_Heal_AdloquiumOption_Emergency)
-                        return EmergencyTactics;
+                        return OriginalHook(EmergencyTactics);
                     
                     if (GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= config &&
                         ActionReady(spell))
@@ -225,6 +225,17 @@ internal partial class SCH : Healer
         {
             if (actionID is not Succor)
                 return actionID;
+            
+            #region Variables
+            var sacredSoilTarget =
+                (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil_Enemy)
+                    ? SimpleTarget.HardTarget
+                    : null) ??
+                (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil_Allies)
+                    ? SimpleTarget.Stack.OverridesAllies
+                    : null) ??
+                SimpleTarget.Self;
+            #endregion
 
             if (!HasAetherflow && InCombat())
             {
@@ -238,6 +249,22 @@ internal partial class SCH : Healer
             }
             if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Lucid) && Role.CanLucidDream(Config.SCH_AoE_Heal_LucidOption))
                 return Role.LucidDreaming;
+            
+            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_SacredSoil) &&
+                ActionReady(SacredSoil) && ActionWatching.NumberOfGcdsUsed > 3 &&
+                !IsMoving() && CanSpellWeave() &&
+                (!Config.SCH_AoE_Heal_SacredSoil_RaidwideOnly || RaidWideCasting()))
+                return SacredSoil.Retarget(Succor, sacredSoilTarget);
+            
+            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Expedient) &&
+                ActionReady(Expedient) && CanSpellWeave() && RaidWideCasting())
+                return Expedient;
+
+            if (IsEnabled(CustomComboPreset.SCH_AoE_Heal_Succor_Raidwide) && ActionReady(OriginalHook(Succor)) &&
+                RaidWideCasting())
+                return IsEnabled(CustomComboPreset.SCH_AoE_Heal_Succor_Raidwide_Recitation) && ActionReady(Recitation)
+                    ? Recitation
+                    : OriginalHook(Succor);
 
             //Priority List
             float averagePartyHP = GetPartyAvgHPPercent();
@@ -245,16 +272,18 @@ internal partial class SCH : Healer
             {
                 int index = Config.SCH_AoE_Heals_Priority.IndexOf(i + 1);
                 int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
-                bool onIdom = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Recitation) && 
-                              Config.SCH_AoE_Heal_Recitation_Actions[0] && spell is Indomitability;
-                bool onSuccor = IsEnabled(CustomComboPreset.SCH_AoE_Heal_Recitation) && 
-                                Config.SCH_AoE_Heal_Recitation_Actions[1] && spell is Succor or Concitation;
+                bool onIdom = Config.SCH_AoE_Heal_Indomitability_Recitation && spell is Indomitability;
+                bool onSuccor = Config.SCH_AoE_Heal_Succor_Options[1] && spell is Succor or Concitation or Accession;
 
                 if (enabled && averagePartyHP <= config && ActionReady(spell))
                      return ActionReady(Recitation) && (onIdom || onSuccor) ? 
                         Recitation :
                         spell;
             }
+
+            if (Config.SCH_AoE_Heal_Succor_Options[0] && ActionReady(EmergencyTactics))
+                return OriginalHook(EmergencyTactics);
+            
             return actionID;
         }
     }

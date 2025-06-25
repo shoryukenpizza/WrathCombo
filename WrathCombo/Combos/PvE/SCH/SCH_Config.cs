@@ -158,44 +158,55 @@ internal partial class SCH
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal:
-                    ImGui.TextUnformatted("Note: Succor will always be available. These options are to provide optional priority to Succor.");
-                    DrawSliderInt(0, 100, SCH_AoE_Heal_SuccorShieldOption, "Shield Check: Percentage of Party Members without shields to check for.", sliderIncrement: 25);
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 6, $"{Succor.ActionName()} Priority: ");
+                    ImGui.TextUnformatted("Note: Succor will always be available.");
+                    ImGui.TextUnformatted("These options are to provide optional priority to Succor or to set up Emergency tactics option.");
+                    DrawSliderInt(0, 100, SCH_AoE_Heal_SuccorShieldOption, "Shield Check: Will use when less than set percentage of party have shields.", sliderIncrement: 25);
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 7, $"{Succor.ActionName()} Priority: ");
+                    DrawHorizontalMultiChoice(SCH_AoE_Heal_Succor_Options,"Emergency Tactics","If more than the set percentage of the party has shields, will use Emergency Tactics before Succor", 2, 0);
+                    DrawHorizontalMultiChoice(SCH_AoE_Heal_Succor_Options,"Recitation","Will use Recitation to buff Succor", 2, 1);
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_WhisperingDawn:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_WhisperingDawnOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 0, $"{WhisperingDawn.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 0, $"{WhisperingDawn.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_FeyIllumination:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_FeyIlluminationOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 1, $"{FeyIllumination.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 1, $"{FeyIllumination.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_FeyBlessing:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_FeyBlessingOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 2, $"{FeyBlessing.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 2, $"{FeyBlessing.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_Consolation:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_ConsolationOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 3, $"{Consolation.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 3, $"{Consolation.ActionName()} Priority: ");
+                    break;
+                
+                case CustomComboPreset.SCH_AoE_Heal_SummonSeraph:
+                    DrawSliderInt(0, 100, SCH_AoE_Heal_SummonSeraph, "Start using when below party average HP %. Set to 100 to disable this check");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 6, $"{SummonSeraph.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_Seraphism:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_SeraphismOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 4, $"{Seraphism.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 4, $"{Seraphism.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_AoE_Heal_Indomitability:
                     DrawSliderInt(0, 100, SCH_AoE_Heal_IndomitabilityOption, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_AoE_Heals_Priority, 7, 5, $"{Indomitability.ActionName()} Priority: ");
+                    DrawAdditionalBoolChoice(SCH_AoE_Heal_Indomitability_Recitation, "Recitation Option", "Will use Recitation to buff Indomitability.");
+                    DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 5, $"{Indomitability.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.SCH_AoE_Heal_Recitation:
-                    DrawHorizontalMultiChoice(SCH_AoE_Heal_Recitation_Actions, "On Indomitability", "", 2, 0);
-                    DrawHorizontalMultiChoice(SCH_AoE_Heal_Recitation_Actions, "On Succor/Concitation", "", 2, 1);
+                
+                case CustomComboPreset.SCH_AoE_Heal_SacredSoil:
+                    DrawAdditionalBoolChoice(SCH_AoE_Heal_SacredSoil_RaidwideOnly,
+                        "Only use when a Raidwide is casting",
+                        "Will not use Sacred Soil in the rotation unless we detect a Raidwide is casting.");
                     break;
                 #endregion
                 
@@ -272,11 +283,12 @@ internal partial class SCH
             SCH_AoE_Heal_LucidOption = new("SCH_AoE_Heal_LucidOption", 8000),
             SCH_AoE_Heal_SuccorShieldOption = new("SCH_AoE_Heal_SuccorShieldCount", 50),
             SCH_AoE_Heal_WhisperingDawnOption = new("SCH_AoE_Heal_WhisperingDawnOption", 70),
-            SCH_AoE_Heal_FeyIlluminationOption = new("SCH_AoE_Heal_FeyIlluminationOption", 70),
-            SCH_AoE_Heal_ConsolationOption = new("SCH_AoE_Heal_ConsolationOption", 70),
-            SCH_AoE_Heal_FeyBlessingOption = new("SCH_AoE_Heal_FeyBlessingOption", 70),
-            SCH_AoE_Heal_SeraphismOption = new("SCH_AoE_Heal_SeraphismOption", 70),
+            SCH_AoE_Heal_FeyIlluminationOption = new("SCH_AoE_Heal_FeyIlluminationOption", 50),
+            SCH_AoE_Heal_ConsolationOption = new("SCH_AoE_Heal_ConsolationOption", 60),
+            SCH_AoE_Heal_FeyBlessingOption = new("SCH_AoE_Heal_FeyBlessingOption", 60),
+            SCH_AoE_Heal_SeraphismOption = new("SCH_AoE_Heal_SeraphismOption", 30),
             SCH_AoE_Heal_IndomitabilityOption = new("SCH_AoE_Heal_IndomitabilityOption", 70),
+            SCH_AoE_Heal_SummonSeraph = new("SCH_AoE_Heal_SummonSeraph", 40),
             SCH_ST_Heal_LucidOption = new("SCH_ST_Heal_LucidOption", 8000),
             SCH_ST_Heal_AdloquiumOption = new("SCH_ST_Heal_AdloquiumOption", 70),
             SCH_ST_Heal_AdloquiumOption_Emergency= new("SCH_ST_Heal_AdloquiumOption_Emergency", 30),
@@ -292,10 +304,13 @@ internal partial class SCH
             SCH_AoE_Heals_Priority = new("SCH_AoE_Heals_Priority");
         public static UserBool
             SCH_ST_Heal_Adv = new("SCH_ST_Heal_Adv"),
-            SCH_ST_Heal_IncludeShields = new("SCH_ST_Heal_IncludeShields");
+            SCH_ST_Heal_IncludeShields = new("SCH_ST_Heal_IncludeShields"),
+            SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation"),
+            SCH_AoE_Heal_SacredSoil_RaidwideOnly = new("SCH_AoE_Heal_SacredSoil_RaidwideOnly");
+
         public static UserBoolArray
             SCH_ST_Heal_AldoquimOpts = new("SCH_ST_Heal_AldoquimOpts"),
-            SCH_AoE_Heal_Recitation_Actions = new ("SCH_AoE_Heal_Recitation_Actions");
+            SCH_AoE_Heal_Succor_Options = new("SCH_AoE_Heal_Succor_Options");
 
         #endregion
 
