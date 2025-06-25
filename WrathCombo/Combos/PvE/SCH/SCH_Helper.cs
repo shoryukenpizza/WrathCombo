@@ -33,6 +33,11 @@ internal partial class SCH
     internal static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
     internal static bool HasAetherflow => Gauge.Aetherflow > 0;
     internal static bool FairyDismissed => Gauge.DismissedFairy > 0;
+    internal static bool EndAetherpact => IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact) && IsEnabled(CustomComboPreset.SCH_ST_Heal)
+                                            && OriginalHook(Aetherpact) is DissolveUnion //Quick check to see if Fairy Aetherpact is Active
+                                            && AetherPactTarget is not null //Null checking so GetTargetHPPercent doesn't fall back to CurrentTarget
+                                            && GetTargetHPPercent(AetherPactTarget) >= Config.SCH_ST_Heal_AetherpactDissolveOption;
+    
     
     
     #region Eos Summoner

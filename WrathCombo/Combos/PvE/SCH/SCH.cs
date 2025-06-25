@@ -32,7 +32,10 @@ internal partial class SCH : Healer
 
             if (IsEnabled(CustomComboPreset.SCH_DPS_FairyReminder) && NeedToSummon)
                 return SummonEos;
-
+            //Opener
+            if (IsEnabled(CustomComboPreset.SCH_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
+                return actionID;
+            
             #region Variant
             if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
                 return Variant.Rampart;
@@ -43,10 +46,11 @@ internal partial class SCH : Healer
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
-
-            //Opener
-            if (IsEnabled(CustomComboPreset.SCH_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
-                return actionID;
+            
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
+            #endregion
 
             if (InCombat() && CanSpellWeave())
             {
@@ -112,6 +116,11 @@ internal partial class SCH : Healer
                 return OccultCrescent.BestPhantomAction();
             #endregion
             
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
+            #endregion
+            
             if (!InCombat() || !CanSpellWeave()) return actionID;
             
             if (IsEnabled(CustomComboPreset.SCH_AoE_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
@@ -167,6 +176,11 @@ internal partial class SCH : Healer
 
             #endregion
             
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
+            #endregion
+            
             // Aetherflow
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherflow) &&
                 ActionReady(Aetherflow) && !HasAetherflow &&
@@ -184,13 +198,6 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Lucid) &&
                 Role.CanLucidDream(Config.SCH_ST_Heal_LucidOption))
                 return Role.LucidDreaming;
-
-            // Dissolve Union if needed
-            if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherpact)
-                && OriginalHook(Aetherpact) is DissolveUnion //Quick check to see if Fairy Aetherpact is Active
-                && AetherPactTarget is not null //Null checking so GetTargetHPPercent doesn't fall back to CurrentTarget
-                && GetTargetHPPercent(AetherPactTarget) >= Config.SCH_ST_Heal_AetherpactDissolveOption)
-                return DissolveUnion;
 
             //Priority List
             for(int i = 0; i < Config.SCH_ST_Heals_Priority.Count; i++)
@@ -235,6 +242,11 @@ internal partial class SCH : Healer
                     ? SimpleTarget.Stack.OverridesAllies
                     : null) ??
                 SimpleTarget.Self;
+            #endregion
+            
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
             #endregion
 
             if (!HasAetherflow && InCombat())
