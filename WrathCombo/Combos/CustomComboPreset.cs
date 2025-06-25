@@ -6135,29 +6135,41 @@ public enum CustomComboPreset
     SCH_ST_Heal_Esuna = 16026,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Adloquium Option", "Use Adloquium when missing Galvanize or target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Adloquium Option", "Use Adloquium", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Adloquium = 16027,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Lustrate Option", "Use Lustrate when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Lustrate Option", "Use Lustrate", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Lustrate = 16028,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Excogitation Option", "Use Excogitation when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Excogitation Option", "Use Excogitation", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Excogitation = 16038,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Protraction Option", "Use Protraction when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Protraction Option", "Use Protraction", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Protraction = 16039,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Aetherpact Option", "Use Aetherpact when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Aetherpact Option", "Use Aetherpact", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Aetherpact = 16047,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", SCH.JobID)]
+    SCH_ST_Heal_WhisperingDawn = 16067,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", SCH.JobID)]
+    SCH_ST_Heal_FeyIllumination = 16068,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", SCH.JobID)]
+    SCH_ST_Heal_FeyBlessing = 16069,
 
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
@@ -6338,7 +6350,7 @@ public enum CustomComboPreset
     SCH_Hidden_Expedient = 16064,
     #endregion
 
-    // Last value = 16066
+    // Last value = 16069
 
     #endregion
 

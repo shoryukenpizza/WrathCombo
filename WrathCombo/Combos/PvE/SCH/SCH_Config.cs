@@ -113,24 +113,42 @@ internal partial class SCH
 
                 case CustomComboPreset.SCH_ST_Heal_Lustrate:
                     DrawSliderInt(0, 100, SCH_ST_Heal_LustrateOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 0, $"{Lustrate.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 0, $"{Lustrate.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Excogitation:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ExcogitationOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 1, $"{Excogitation.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 1, $"{Excogitation.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Protraction:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ProtractionOption, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 2, $"{Protraction.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 2, $"{Protraction.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Aetherpact:
                     DrawSliderInt(0, 100, SCH_ST_Heal_AetherpactOption, "Start using when below HP %. Set to 100 to disable this check");
                     DrawSliderInt(0, 100, SCH_ST_Heal_AetherpactDissolveOption, "Stop using when above HP %.");
                     DrawSliderInt(10, 100, SCH_ST_Heal_AetherpactFairyGauge, "Minimal Fairy Gauge to start using Aetherpact", sliderIncrement: Tens);
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 3, $"{Aetherpact.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 3, $"{Aetherpact.ActionName()} Priority: ");
+                    break;
+                
+                case CustomComboPreset.SCH_ST_Heal_WhisperingDawn:
+                    DrawSliderInt(0, 100, SCH_ST_Heal_WhisperingDawnOption, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(SCH_ST_Heal_WhisperingDawnBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 5, $"{WhisperingDawn.ActionName()} Priority: ");
+                    break;
+
+                case CustomComboPreset.SCH_ST_Heal_FeyIllumination:
+                    DrawSliderInt(0, 100, SCH_ST_Heal_FeyIlluminationOption, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(SCH_ST_Heal_FeyIlluminationBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 6, $"{FeyIllumination.ActionName()} Priority: ");
+                    break;
+
+                case CustomComboPreset.SCH_ST_Heal_FeyBlessing:
+                    DrawSliderInt(0, 100, SCH_ST_Heal_FeyBlessingOption, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(SCH_ST_Heal_FeyBlessingBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 7, $"{FeyBlessing.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.SCH_ST_Heal_Adloquium:
@@ -146,7 +164,7 @@ internal partial class SCH
                         ImGui.Unindent();
                     }
                     
-                    DrawPriorityInput(SCH_ST_Heals_Priority, 5, 4, $"{Adloquium.ActionName()} Priority: ");
+                    DrawPriorityInput(SCH_ST_Heals_Priority, 8, 4, $"{Adloquium.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Esuna:
@@ -292,6 +310,9 @@ internal partial class SCH
             SCH_ST_Heal_AetherpactOption = new("SCH_ST_Heal_AetherpactOption", 60),
             SCH_ST_Heal_AetherpactDissolveOption = new("SCH_ST_Heal_AetherpactDissolveOption", 90),
             SCH_ST_Heal_AetherpactFairyGauge = new("SCH_ST_Heal_AetherpactFairyGauge", 50),
+            SCH_ST_Heal_WhisperingDawnOption = new("SCH_ST_Heal_WhisperingDawnOption", 70),
+            SCH_ST_Heal_FeyIlluminationOption = new("SCH_ST_Heal_FeyIlluminationOption", 70),
+            SCH_ST_Heal_FeyBlessingOption = new("SCH_ST_Heal_FeyBlessingOption", 70),
             SCH_ST_Heal_EsunaOption = new("SCH_ST_Heal_EsunaOption", 30);
         public static UserIntArray
             SCH_ST_Heals_Priority = new("SCH_ST_Heals_Priority"),
@@ -300,6 +321,9 @@ internal partial class SCH
         public static UserBool
             SCH_ST_Heal_Adv = new("SCH_ST_Heal_Adv"),
             SCH_ST_Heal_IncludeShields = new("SCH_ST_Heal_IncludeShields"),
+            SCH_ST_Heal_WhisperingDawnBossOption = new("SCH_ST_Heal_WhisperingDawnBossOption"),
+            SCH_ST_Heal_FeyIlluminationBossOption = new("SCH_ST_Heal_FeyIlluminationBossOption"),
+            SCH_ST_Heal_FeyBlessingBossOption = new("SCH_ST_Heal_FeyBlessingBossOption"),
             SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation");
 
         public static UserBoolArray

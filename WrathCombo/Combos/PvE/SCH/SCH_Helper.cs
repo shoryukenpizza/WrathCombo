@@ -136,6 +136,21 @@ internal partial class SCH
                           GetTargetHPPercent(healTarget, Config.SCH_ST_Heal_IncludeShields) <= Config.SCH_ST_Heal_AdloquiumOption &&
                           (EmergencyAdlo || ShieldCheck && SageShieldCheck);
                 return Config.SCH_ST_Heal_AdloquiumOption;
+            case 5:
+                action = OriginalHook(WhisperingDawn);
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_WhisperingDawn) && HasPetPresent() && 
+                          (!Config.SCH_ST_Heal_WhisperingDawnBossOption || !InBossEncounter());
+                return Config.SCH_ST_Heal_WhisperingDawnOption;
+            case 6:
+                action = OriginalHook(FeyIllumination);
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyIllumination) && HasPetPresent() && 
+                          (!Config.SCH_ST_Heal_FeyIlluminationBossOption || !InBossEncounter());
+                return Config.SCH_ST_Heal_FeyIlluminationOption;
+            case 7:
+                action = FeyBlessing;
+                enabled = IsEnabled(CustomComboPreset.SCH_ST_Heal_FeyBlessing) && HasPetPresent() && 
+                          (!Config.SCH_ST_Heal_FeyBlessingBossOption || !InBossEncounter());
+                return Config.SCH_ST_Heal_FeyBlessingOption;
         }
 
         enabled = false;
