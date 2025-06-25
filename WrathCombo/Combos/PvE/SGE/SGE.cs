@@ -219,20 +219,20 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID)
         {
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+
             if (actionID is not Diagnosis)
                 return actionID;
-
-            if (HasStatusEffect(Buffs.Eukrasia))
-                return EukrasianDiagnosis
-                    .RetargetIfEnabled(OptionalTarget, Diagnosis);
-
-            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
                 HasCleansableDebuff(healTarget))
                 return Role.Esuna
+                    .RetargetIfEnabled(OptionalTarget, Diagnosis);
+
+            if (HasStatusEffect(Buffs.Eukrasia))
+                return EukrasianDiagnosis
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Rhizomata) &&
@@ -245,6 +245,11 @@ internal partial class SGE : Healer
                 !HasStatusEffect(Buffs.Kardion, healTarget))
                 return Kardia
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
+
+            // Lucid Dreaming
+            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Lucid) &&
+                Role.CanLucidDream(SGE_ST_Heal_LucidOption))
+                return Role.LucidDreaming;
 
             for(int i = 0; i < SGE_ST_Heals_Priority.Count; i++)
             {
@@ -284,6 +289,10 @@ internal partial class SGE : Healer
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Rhizomata) &&
                 ActionReady(Rhizomata) && !HasAddersgall())
                 return Rhizomata;
+
+            if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Lucid) &&
+                Role.CanLucidDream(SGE_AoE_Heal_LucidOption))
+                return Role.LucidDreaming;
 
             float averagePartyHP = GetPartyAvgHPPercent();
             for(int i = 0; i < SGE_AoE_Heals_Priority.Count; i++)

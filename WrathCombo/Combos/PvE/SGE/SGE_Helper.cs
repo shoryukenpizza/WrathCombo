@@ -29,9 +29,20 @@ internal partial class SGE
 
     #region Healing
 
+    #region ST
+
     internal static int GetMatchingConfigST(int i, IGameObject? optionalTarget, out uint action, out bool enabled)
     {
         IGameObject? healTarget = optionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+
+        bool shieldCheck = !SGE_ST_Heal_EDiagnosisOpts[0] ||
+                           !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget, true) ||
+                           !HasStatusEffect(Buffs.EukrasianPrognosis, healTarget, true);
+
+        bool scholarShieldCheck = !SGE_ST_Heal_EDiagnosisOpts[1] ||
+                                  !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget, true) ||
+                                  !HasStatusEffect(Buffs.EukrasianPrognosis, healTarget, true) ||
+                                  HasStatusEffect(SCH.Buffs.Galvanize);
 
         switch (i)
         {
@@ -81,10 +92,9 @@ internal partial class SGE
 
             case 7:
                 action = Eukrasia;
-                enabled = (IsEnabled(CustomComboPreset.SGE_ST_Heal_EDiagnosis) &&
-                           (SGE_ST_Heal_EDiagnosisOpts[0] || // Ignore Any Shield check
-                            !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget, true) && //Shield Check
-                            (!SGE_ST_Heal_EDiagnosisOpts[1] || !HasStatusEffect(SCH.Buffs.Galvanize, healTarget, true)))); //Galvanize Check
+                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_EDiagnosis) &&
+                          GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) <= SGE_ST_Heal_EDiagnosisHP &&
+                          shieldCheck && scholarShieldCheck;
 
                 return SGE_ST_Heal_EDiagnosisHP;
         }
@@ -95,8 +105,14 @@ internal partial class SGE
         return 0;
     }
 
+    #endregion
+
+    #region AoE
+
     internal static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
     {
+        bool shieldCheck = GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_AoE_Heal_EPrognosisOption &&
+                           GetPartyBuffPercent(SCH.Buffs.Galvanize) <= SGE_AoE_Heal_EPrognosisOption;
         switch (i)
         {
             case 0:
@@ -147,7 +163,7 @@ internal partial class SGE
             case 8:
                 action = Eukrasia;
                 enabled = IsEnabled(CustomComboPreset.SGE_AoE_Heal_EPrognosis)
-                          && GetPartyBuffPercent(Buffs.EukrasianDiagnosis) + GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_AoE_Heal_EPrognosisOption;
+                          && shieldCheck;
                 return 100; //Don't HP Check
         }
 
@@ -155,6 +171,8 @@ internal partial class SGE
         action = 0;
         return 0;
     }
+
+    #endregion
 
     #endregion
 
