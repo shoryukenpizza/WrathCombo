@@ -54,8 +54,8 @@ namespace WrathCombo.AutoRotation
             get => _lockedST;
             set
             {
-                if (_lockedST != value)
-                    Svc.Log.Debug($"Locked ST updated to {value}");
+                //if (_lockedST != value)
+                //    Svc.Log.Debug($"Locked ST updated to {value}");
 
                 _lockedST = value;
             }
@@ -65,8 +65,8 @@ namespace WrathCombo.AutoRotation
             get => _lockedAoE;
             set
             {
-                if (_lockedAoE != value)
-                    Svc.Log.Debug($"Locked AoE updated to {value}");
+                //if (_lockedAoE != value)
+                //    Svc.Log.Debug($"Locked AoE updated to {value}");
 
                 _lockedAoE = value;
             }
@@ -208,7 +208,7 @@ namespace WrathCombo.AutoRotation
                     continue;
 
                 var outAct = OriginalHook(AutoRotationHelper.InvokeCombo(entry.Preset, attributes, ref _));
-                if (!CanQueue(outAct))
+                if (!CanQueue(outAct) && outAct is not All.SavageBlade)
                     continue;
 
                 if (action.IsHeal)
@@ -513,6 +513,7 @@ namespace WrathCombo.AutoRotation
                     }
 
                     uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct));
+                    if (outAct is All.SavageBlade) return true;
                     if (!CanQueue(outAct)) return false;
                     if (!ActionReady(outAct))
                         return false;
