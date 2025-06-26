@@ -365,7 +365,7 @@ internal partial class MCH : PhysicalRanged
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower))
+            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
 
             // Interrupt
@@ -498,7 +498,7 @@ internal partial class MCH : PhysicalRanged
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower))
+            if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
                 return All.SavageBlade;
 
             // Interrupt
