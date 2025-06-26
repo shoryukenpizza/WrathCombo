@@ -77,7 +77,7 @@ internal partial class SGE
                     break;
 
                 case CustomComboPreset.SGE_ST_DPS_Movement:
-                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Toxikon.ActionName(), $"Use {Toxikon.ActionName()} when u have Addersting charges.", 3, 0);
+                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Toxikon.ActionName(), $"Use {Toxikon.ActionName()} when Addersting charges are available.", 3, 0);
                     DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 3, 0, $"{Toxikon.ActionName()} Priority: ");
                     DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Dyskrasia.ActionName(), $"Use {Dyskrasia.ActionName()} when in range of a selected enemy target.", 3, 1);
                     DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 3, 1, $"{Dyskrasia.ActionName()} Priority: ");
@@ -190,7 +190,7 @@ internal partial class SGE
                     DrawSliderInt(0, 100, SGE_AoE_Heal_KeracholeOption,
                         "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(SGE_AoE_Heal_KeracholeTrait,
-                        "Check for Enhanced Kerachole Trait (Heal over Time)", $"Enabling this will prevent {Kerachole.ActionName()} from being used when the Heal over Time trait == unavailable.");
+                        "Check for Enhanced Kerachole Trait (Heal over Time)", $"Enabling this will prevent {Kerachole.ActionName()} from being used when the Heal over Time trait is unavailable.");
                     DrawPriorityInput(SGE_AoE_Heals_Priority,
                         9, 0, $"{Kerachole.ActionName()} Priority: ");
                     break;
