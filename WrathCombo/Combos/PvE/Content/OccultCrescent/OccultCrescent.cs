@@ -199,7 +199,7 @@ internal partial class OccultCrescent
         #region Time Mage
         if (IsEnabled(CustomComboPreset.Phantom_TimeMage))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick) && InCombat() && ActionWatching.NumberOfGcdsUsed > 3)
                 return OccultQuick; //damage buff
             
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel) && TargetIsHostile() && HasPhantomDispelStatus(CurrentTarget))
