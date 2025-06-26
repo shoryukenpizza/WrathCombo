@@ -77,11 +77,11 @@ internal partial class SGE
                     break;
 
                 case CustomComboPreset.SGE_ST_DPS_Movement:
-                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Toxikon.ActionName(), $"Use {Toxikon.ActionName()} when u have Addersting charges.", 4, 0);
+                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Toxikon.ActionName(), $"Use {Toxikon.ActionName()} when u have Addersting charges.", 3, 0);
                     DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 3, 0, $"{Toxikon.ActionName()} Priority: ");
-                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Dyskrasia.ActionName(), $"Use {Dyskrasia.ActionName()} when in range of a selected enemy target.", 4, 1);
+                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Dyskrasia.ActionName(), $"Use {Dyskrasia.ActionName()} when in range of a selected enemy target.", 3, 1);
                     DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 3, 1, $"{Dyskrasia.ActionName()} Priority: ");
-                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Eukrasia.ActionName(), $"Use {Eukrasia.ActionName()}.", 4, 2);
+                    DrawHorizontalMultiChoice(SGE_ST_DPS_Movement, Eukrasia.ActionName(), $"Use {Eukrasia.ActionName()}.", 3, 2);
                     DrawPriorityInput(SGE_ST_DPS_Movement_Priority, 3, 2, $"{Eukrasia.ActionName()} Priority: ");
                     break;
 
