@@ -40,9 +40,7 @@ internal partial class SGE
                            !HasStatusEffect(Buffs.EukrasianPrognosis, healTarget, true);
 
         bool scholarShieldCheck = !SGE_ST_Heal_EDiagnosisOpts[1] ||
-                                  !HasStatusEffect(Buffs.EukrasianDiagnosis, healTarget, true) ||
-                                  !HasStatusEffect(Buffs.EukrasianPrognosis, healTarget, true) ||
-                                  HasStatusEffect(SCH.Buffs.Galvanize);
+                                  !HasStatusEffect(SCH.Buffs.Galvanize);
 
         switch (i)
         {
