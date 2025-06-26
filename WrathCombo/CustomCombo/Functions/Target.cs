@@ -40,8 +40,8 @@ internal abstract partial class CustomComboFunctions
 
     internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
 
-    [Obsolete("Use HasBattleTarget")]
-    internal static bool TargetIsHostile() => HasTarget() && CurrentTarget.IsHostile();
+    [Obsolete("Use HasBattleTarget() instead")]
+    internal static bool TargetIsHostile() => HasBattleTarget();
 
     public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
@@ -133,21 +133,28 @@ internal abstract partial class CustomComboFunctions
 
     public static float PlayerHealthPercentageHp() => LocalPlayer is { } player ? player.CurrentHp * 100f / player.MaxHp : 0f;
 
-    /// <summary> Gets a value indicating target's HP Percent. CurrentTarget is default unless specified </summary>
+    /// <summary> Gets an object's HP percentage. Defaults to CurrentTarget unless specified. </summary>
     public static float GetTargetHPPercent(IGameObject? OurTarget = null, bool includeShield = false)
     {
         OurTarget ??= CurrentTarget;
         if (OurTarget is not IBattleChara chara)
-            return 0;
+            return 0f;
 
-        float percent = chara.CurrentHp * 100f / chara.MaxHp;
-        if (includeShield) percent += chara.ShieldPercentage;
-        return Math.Clamp(percent, 0f, 100f);
+        float charaHPPercent = chara.CurrentHp * 100f / chara.MaxHp;
+
+        return includeShield
+            ? Math.Clamp(charaHPPercent + chara.ShieldPercentage, 0f, 100f)
+            : charaHPPercent;
     }
 
-    public static float EnemyHealthCurrentHp() => CurrentTarget is IBattleChara chara ? chara.CurrentHp : 0;
+    /// <summary> Gets an object's maximum HP. Defaults to CurrentTarget unless specified. </summary>
+    public static uint GetTargetMaxHP(IGameObject? OurTarget = null) => (OurTarget ?? CurrentTarget) is IBattleChara chara ? chara.MaxHp : 0;
 
-    public static float GetTargetMaxHP() => CurrentTarget is IBattleChara chara ? chara.MaxHp : 0;
+    /// <summary> Gets an object's current HP. Defaults to CurrentTarget unless specified. </summary>
+    public static uint GetTargetCurrentHP(IGameObject? OurTarget = null) => (OurTarget ?? CurrentTarget) is IBattleChara chara ? chara.CurrentHp : 0;
+
+    [Obsolete("Use GetTargetCurrentHP() instead")]
+    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
 
     #endregion
 
