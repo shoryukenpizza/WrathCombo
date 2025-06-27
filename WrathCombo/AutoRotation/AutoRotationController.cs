@@ -648,16 +648,17 @@ namespace WrathCombo.AutoRotation
 
         public class DPSTargeting
         {
-            private static bool Query(IGameObject x) => x is IBattleChara chara &&
-                                                        chara.IsHostile() &&
-                                                        IsInRange(chara, cfg.DPSSettings.MaxDistance) &&
-                                                        GetTargetHeightDifference(chara) <= cfg.DPSSettings.MaxDistance &&
-                                                        !chara.IsDead &&
-                                                        chara.IsTargetable &&
-                                                        !TargetIsInvincible(chara) &&
-                                                        !Service.Configuration.IgnoredNPCs.Any(x => x.Key == chara.DataId) &&
-                                                        ((cfg.DPSSettings.OnlyAttackInCombat && chara.Struct()->InCombat) || !cfg.DPSSettings.OnlyAttackInCombat) &&
-                                                        IsInLineOfSight(chara);
+            private static bool Query(IGameObject x) =>
+                x is IBattleChara chara &&
+                !chara.IsDead &&
+                chara.IsTargetable &&
+                chara.IsHostile() &&
+                IsInRange(chara, cfg.DPSSettings.MaxDistance) &&
+                GetTargetHeightDifference(chara) <= cfg.DPSSettings.MaxDistance &&
+                !TargetIsInvincible(chara) &&
+                !Service.Configuration.IgnoredNPCs.Any(x => x.Key == chara.DataId) &&
+                ((cfg.DPSSettings.OnlyAttackInCombat && chara.Struct()->InCombat) || !cfg.DPSSettings.OnlyAttackInCombat) &&
+                IsInLineOfSight(chara);
 
             public static IEnumerable<IGameObject> BaseSelection => Svc.Objects.Any(x => Query(x) && IsPriority(x))
                                                                         ? Svc.Objects.Where(x => Query(x) && IsPriority(x))

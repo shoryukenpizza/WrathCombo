@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
@@ -20,11 +19,11 @@ namespace WrathCombo.CustomComboNS.Functions;
 
 internal abstract partial class CustomComboFunctions
 {
-    [Obsolete("Use GetTargetCurrentHP() instead")]
-    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
-
     [Obsolete("Use HasBattleTarget() instead")]
     internal static bool TargetIsHostile() => HasBattleTarget();
+
+    [Obsolete("Use GetTargetCurrentHP() instead")]
+    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
 
     /// <summary> Gets the current target or null. </summary>
     public static IGameObject? CurrentTarget => Svc.Targets.Target;
@@ -37,9 +36,6 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if the player has a target. </summary>
     public static bool HasTarget() => CurrentTarget is not null;
 
-    /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
-    public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer?.GameObjectId);
-
     /// <summary> Checks if the player's current target is hostile. </summary>
     public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
@@ -49,11 +45,14 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if an object is a boss. </summary>
     internal static bool IsBoss(IGameObject? target) => target is not null && Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
 
-    /// <summary> Gets the amount of bosses in the object table. </summary>
+    /// <summary> Gets all bosses from the object table. </summary>
     internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x));
 
     /// <summary> Checks if an object is quest-related. </summary>
     internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
+
+    /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
+    public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == LocalPlayer?.GameObjectId);
 
     /// <summary> Checks if an object is friendly. Defaults to CurrentTarget unless specified. </summary>
     public static bool TargetIsFriendly(IGameObject? optionalTarget = null)
@@ -79,7 +78,8 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary>
-    ///     Determines if the enemy is casting an action. Optionally, limit by percentage of cast time.
+    ///     Checks if the player's current target is casting an action.<br/>
+    ///     Optionally, limit by percentage of cast time.
     /// </summary>
     /// <param name="minCastPercent">
     ///     The minimum percentage of the cast time completed required.<br/>
@@ -96,15 +96,15 @@ internal abstract partial class CustomComboFunctions
         if (CurrentTarget is not IBattleChara chara || !chara.IsCasting)
             return false;
 
-        minCastPercent = Math.Clamp(minCastPercent, 0f, 1f);
+        float minThreshold = Math.Clamp(minCastPercent, 0f, 1f);
 
-        return minCastPercent <= chara.CurrentCastTime / chara.TotalCastTime;
+        return chara.CurrentCastTime >= chara.TotalCastTime * minThreshold;
     }
 
     /// <summary>
-    ///     Determines if the enemy is casting an action that can be interrupted.
-    ///     <br/>
-    ///     Optionally limited by percentage of cast time.
+    ///     Checks if an enemy is casting an interruptible action.<br/>
+    ///     Optionally, limit by percentage of cast time.<br/>
+    ///     Defaults to CurrentTarget unless specified.
     /// </summary>
     /// <param name="minCastPercent">
     ///     The minimum percentage of the cast time completed required.<br/>
@@ -121,9 +121,9 @@ internal abstract partial class CustomComboFunctions
         if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara || !chara.IsCasting || !chara.IsCastInterruptible)
             return false;
 
-        float actualCastPercent = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
+        float minThreshold = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
 
-        return actualCastPercent <= chara.CurrentCastTime / chara.TotalCastTime;
+        return chara.CurrentCastTime >= chara.TotalCastTime * minThreshold;
     }
 
     #endregion
@@ -165,7 +165,7 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if an object is within appropriate range for targeting. </summary>
     /// <param name="target"> The target object to check. </param>
     /// <param name="distance"> Optional distance to check. </param>
-    public static bool IsInRange(IGameObject? target, float distance = 25f) => target is not null && GetTargetDistance(target, LocalPlayer) <= distance;
+    public static bool IsInRange(IGameObject? target, float distance = 25f) => target is not null && GetTargetDistance(target) <= distance;
 
     /// <summary>
     ///     Gets the horizontal distance between two objects. <br/>
@@ -208,17 +208,19 @@ internal abstract partial class CustomComboFunctions
 
     public static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
     {
-        ActionWatching.ActionSheet.Values.TryGetFirst(x => x.RowId == aoeSpell, out var sheetSpell);
-        bool needsTarget = sheetSpell.CanTargetHostile;
+        if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
+            return 0;
 
-        if (needsTarget && GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId))
+        if (sheetSpell.CanTargetHostile && GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId))
             return 0;
 
         int count = sheetSpell.CastType switch
         {
             1 => 1,
-            2 => sheetSpell.CanTargetSelf ? CanCircleAoe(sheetSpell.EffectRange, checkIgnoredList) : CanRangedCircleAoe(sheetSpell.EffectRange, target, checkIgnoredList),
-            3 => CanConeAoe(target, sheetSpell.Range, sheetSpell.EffectRange, checkIgnoredList),
+            2 => sheetSpell.CanTargetSelf
+                ? CanCircleAoe(sheetSpell.EffectRange, checkIgnoredList)
+                : CanRangedCircleAoe(target, sheetSpell.EffectRange, checkIgnoredList),
+            3 => CanConeAoe(target, sheetSpell.Range, checkIgnoredList),
             4 => CanLineAoe(target, sheetSpell.Range, sheetSpell.XAxisModifier, checkIgnoredList),
             _ => 0
         };
@@ -228,11 +230,11 @@ internal abstract partial class CustomComboFunctions
 
     public static int NumberOfEnemiesInRange(float range)
     {
-        return Svc.Objects.Count(
-            o => o.ObjectKind == ObjectKind.BattleNpc &&
-                 o.IsHostile() &&
-                 o.IsTargetable &&
-                 GetTargetDistance(o) <= range);
+        return Svc.Objects.Count(o =>
+            o.ObjectKind == ObjectKind.BattleNpc &&
+            o.IsTargetable &&
+            o.IsHostile() &&
+            GetTargetDistance(o) <= range);
     }
 
     internal static unsafe bool IsInLineOfSight(IGameObject? target)
@@ -328,52 +330,60 @@ internal abstract partial class CustomComboFunctions
     // Circle Aoe
     public static int CanCircleAoe(float effectRange, bool checkIgnoredList = false)
     {
+        if (LocalPlayer is not { } player) return 0;
+
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
-                                      o.IsHostile() &&
                                       o.IsTargetable &&
+                                      o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
-                                      (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
-                                      PointInCircle(o.Position - LocalPlayer.Position, effectRange + o.HitboxRadius));
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      PointInCircle(o.Position - player.Position, effectRange + o.HitboxRadius));
     }
 
     // Ranged Circle Aoe
-    public static int CanRangedCircleAoe(float effectRange, IGameObject? target, bool checkIgnoredList = false)
+    public static int CanRangedCircleAoe(IGameObject? target, float effectRange, bool checkIgnoredList = false)
     {
-        if (target == null) return 0;
+        if (target is null) return 0;
+
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
-                                      o.IsHostile() &&
                                       o.IsTargetable &&
+                                      o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
-                                      (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
                                       PointInCircle(o.Position - target.Position, effectRange + o.HitboxRadius));
     }
 
     // Cone Aoe
-    public static int CanConeAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
+    public static int CanConeAoe(IGameObject? target, float range, bool checkIgnoredList = false)
     {
-        if (target is null) return 0;
-        float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+        if (LocalPlayer is not { } player || target is null) return 0;
+
+        float direction = PositionalMath.AngleXZ(player.Position, target.Position);
+
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
-                                      o.IsHostile() &&
                                       o.IsTargetable &&
+                                      o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
-                                      (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
-                                      PointInCone(o.Position - LocalPlayer.Position, dir, 45f));
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      PointInCone(o.Position - player.Position, direction, 45f));
     }
 
     // Line Aoe
     public static int CanLineAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
     {
-        if (target is null) return 0;
-        float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+        if (LocalPlayer is not { } player || target is null) return 0;
+
+        float halfWidth = effectRange * 0.5f;
+        float direction = PositionalMath.AngleXZ(player.Position, target.Position);
+
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
-                                      o.IsHostile() &&
                                       o.IsTargetable &&
+                                      o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
-                                      (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
-                                      HitboxInRect(o, dir, range, effectRange / 2));
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      HitboxInRect(o, direction, range, halfWidth));
     }
 
     #region Shape Helpers
@@ -403,17 +413,19 @@ internal abstract partial class CustomComboFunctions
 
     public static bool HitboxInRect(IGameObject o, float direction, float lenFront, float halfWidth)
     {
-        Vector2 A = new Vector2(LocalPlayer.Position.X, LocalPlayer.Position.Z);
-        Vector2 d = new Vector2(MathF.Sin(direction), MathF.Cos(direction));
-        Vector2 n = new Vector2(d.Y, -d.X);
-        Vector2 P = new Vector2(o.Position.X, o.Position.Z);
+        if (LocalPlayer is not { } player) return false;
+
+        Vector2 A = new(player.Position.X, player.Position.Z);
+        Vector2 d = new(MathF.Sin(direction), MathF.Cos(direction));
+        Vector2 n = new(d.Y, -d.X);
+        Vector2 P = new(o.Position.X, o.Position.Z);
         float R = o.HitboxRadius;
 
         Vector2 Q = A + d * (lenFront / 2);
         Vector2 P2 = P - Q;
-        Vector2 Ptrans = new Vector2(Vector2.Dot(P2, n), Vector2.Dot(P2, d));
-        Vector2 Pabs = new Vector2(Math.Abs(Ptrans.X), Math.Abs(Ptrans.Y));
-        Vector2 Pcorner = new Vector2(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - (lenFront / 2));
+        Vector2 Ptrans = new(Vector2.Dot(P2, n), Vector2.Dot(P2, d));
+        Vector2 Pabs = new(Math.Abs(Ptrans.X), Math.Abs(Ptrans.Y));
+        Vector2 Pcorner = new(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - (lenFront / 2));
 #if DEBUG
         if (Svc.GameGui.WorldToScreen(o.Position, out var screenCoords))
         {
