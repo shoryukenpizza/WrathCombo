@@ -20,6 +20,12 @@ namespace WrathCombo.CustomComboNS.Functions;
 
 internal abstract partial class CustomComboFunctions
 {
+    [Obsolete("Use GetTargetCurrentHP() instead")]
+    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
+
+    [Obsolete("Use HasBattleTarget() instead")]
+    internal static bool TargetIsHostile() => HasBattleTarget();
+
     /// <summary> Gets the current target or null. </summary>
     public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
@@ -28,50 +34,54 @@ internal abstract partial class CustomComboFunctions
 
     #region Target Checks
 
-    /// <summary> Find if the player has a target. </summary>
+    /// <summary> Checks if the player has a target. </summary>
     public static bool HasTarget() => CurrentTarget is not null;
 
-    /// <summary> Checks if the player is being targeted by a hostile target. </summary>
+    /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
     public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer?.GameObjectId);
 
-    internal static bool TargetIsBoss() => IsBoss(LocalPlayer.TargetObject);
-
-    internal static bool IsBoss(IGameObject? target) => target is not null && Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
-
-    internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
-
-    [Obsolete("Use HasBattleTarget() instead")]
-    internal static bool TargetIsHostile() => HasBattleTarget();
-
+    /// <summary> Checks if the player's current target is hostile. </summary>
     public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
-    public static bool TargetIsFriendly(IGameObject? OurTarget = null)
+    /// <summary> Checks if the player's current target is a boss. </summary>
+    internal static bool TargetIsBoss() => IsBoss(CurrentTarget);
+
+    /// <summary> Checks if an object is a boss. </summary>
+    internal static bool IsBoss(IGameObject? target) => target is not null && Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
+
+    /// <summary> Gets the amount of bosses in the object table. </summary>
+    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x));
+
+    /// <summary> Checks if an object is quest-related. </summary>
+    internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
+
+    /// <summary> Checks if an object is friendly. Defaults to CurrentTarget unless specified. </summary>
+    public static bool TargetIsFriendly(IGameObject? optionalTarget = null)
     {
-        OurTarget ??= CurrentTarget;
-        if (OurTarget is null)
+        if ((optionalTarget ?? CurrentTarget) is not { } target)
             return false;
 
-        return OurTarget.ObjectKind switch
+        return target.ObjectKind switch
         {
             ObjectKind.Player => true,
-            _ when OurTarget is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
+            _ when target is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
             _ => false
         };
     }
 
-    public static bool TargetNeedsPositionals(IGameObject? ourTarget = null)
+    /// <summary> Checks if an object requires positionals. Defaults to CurrentTarget unless specified. </summary>
+    public static bool TargetNeedsPositionals(IGameObject? optionalTarget = null)
     {
-        ourTarget ??= CurrentTarget;
-        if (ourTarget is not IBattleChara target || HasStatusEffect(3808, target, true))
+        if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara || HasStatusEffect(3808, chara, true))
             return false;
 
-        return Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && !dataRow.IsOmnidirectional;
+        return Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(chara.DataId, out var dataRow) && !dataRow.IsOmnidirectional;
     }
 
     /// <summary>
     ///     Determines if the enemy is casting an action. Optionally, limit by percentage of cast time.
     /// </summary>
-    /// <param name="minCastPercentage">
+    /// <param name="minCastPercent">
     ///     The minimum percentage of the cast time completed required.<br/>
     ///     Default is 0%.<br/>
     ///     As a float representation of a percentage, value should be between
@@ -81,18 +91,14 @@ internal abstract partial class CustomComboFunctions
     ///     Bool indicating whether they are casting an action or not.<br/>
     ///     (and if the cast time is over the percentage specified)
     /// </returns>
-    public static bool TargetIsCasting(double? minCastPercentage = null)
+    public static bool TargetIsCasting(float minCastPercent = 0f)
     {
-        if (CurrentTarget is not IBattleChara chara) return false;
+        if (CurrentTarget is not IBattleChara chara || !chara.IsCasting)
+            return false;
 
-        minCastPercentage ??= 0.0f;
-        minCastPercentage = Math.Clamp((double)minCastPercentage, 0.0d, 1.0d);
-        double castPercentage = chara.CurrentCastTime / chara.TotalCastTime;
+        minCastPercent = Math.Clamp(minCastPercent, 0f, 1f);
 
-        if (chara.IsCasting)
-            return minCastPercentage <= castPercentage;
-
-        return false;
+        return minCastPercent <= chara.CurrentCastTime / chara.TotalCastTime;
     }
 
     /// <summary>
@@ -100,7 +106,7 @@ internal abstract partial class CustomComboFunctions
     ///     <br/>
     ///     Optionally limited by percentage of cast time.
     /// </summary>
-    /// <param name="minCastPercentage">
+    /// <param name="minCastPercent">
     ///     The minimum percentage of the cast time completed required.<br/>
     ///     Default is 0%.<br/>
     ///     As a float representation of a percentage, value should be between
@@ -110,34 +116,27 @@ internal abstract partial class CustomComboFunctions
     ///     Bool indicating whether they can be interrupted or not.<br/>
     ///     (and if the cast time is over the percentage specified)
     /// </returns>
-    public static bool CanInterruptEnemy(double? minCastPercentage = null, IGameObject? otherTarget = null)
+    public static bool CanInterruptEnemy(float? minCastPercent = null, IGameObject? optionalTarget = null)
     {
-        otherTarget ??= CurrentTarget;
-        if (otherTarget is not IBattleChara chara) return false;
+        if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara || !chara.IsCasting || !chara.IsCastInterruptible)
+            return false;
 
-        minCastPercentage ??= Service.Configuration.InterruptDelay;
-        minCastPercentage = Math.Clamp((double)minCastPercentage, 0.0d, 1.0d);
-        double castPercentage = chara.CurrentCastTime / chara.TotalCastTime;
+        float actualCastPercent = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
 
-        if (chara is { IsCasting: true, IsCastInterruptible: true })
-            return minCastPercentage <= castPercentage;
-
-        return false;
+        return actualCastPercent <= chara.CurrentCastTime / chara.TotalCastTime;
     }
-
-    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x)).Cast<IBattleChara>();
 
     #endregion
 
     #region HP Checks
 
+    /// <summary> Gets the player's current HP as a percentage. </summary>
     public static float PlayerHealthPercentageHp() => LocalPlayer is { } player ? player.CurrentHp * 100f / player.MaxHp : 0f;
 
-    /// <summary> Gets an object's HP percentage. Defaults to CurrentTarget unless specified. </summary>
-    public static float GetTargetHPPercent(IGameObject? OurTarget = null, bool includeShield = false)
+    /// <summary> Gets an object's current HP as a percentage. Defaults to CurrentTarget unless specified. </summary>
+    public static float GetTargetHPPercent(IGameObject? optionalTarget = null, bool includeShield = false)
     {
-        OurTarget ??= CurrentTarget;
-        if (OurTarget is not IBattleChara chara)
+        if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara)
             return 0f;
 
         float charaHPPercent = chara.CurrentHp * 100f / chara.MaxHp;
@@ -148,13 +147,10 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary> Gets an object's maximum HP. Defaults to CurrentTarget unless specified. </summary>
-    public static uint GetTargetMaxHP(IGameObject? OurTarget = null) => (OurTarget ?? CurrentTarget) is IBattleChara chara ? chara.MaxHp : 0;
+    public static uint GetTargetMaxHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.MaxHp : 0;
 
     /// <summary> Gets an object's current HP. Defaults to CurrentTarget unless specified. </summary>
-    public static uint GetTargetCurrentHP(IGameObject? OurTarget = null) => (OurTarget ?? CurrentTarget) is IBattleChara chara ? chara.CurrentHp : 0;
-
-    [Obsolete("Use GetTargetCurrentHP() instead")]
-    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
+    public static uint GetTargetCurrentHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.CurrentHp : 0;
 
     #endregion
 
@@ -164,59 +160,50 @@ internal abstract partial class CustomComboFunctions
     ///     Checks if the current target is within melee range. <br/>
     ///     Base melee range differs between PvE and PvP.
     /// </summary>
-    public static bool InMeleeRange()
-    {
-        if (CurrentTarget is null)
-            return false;
+    public static bool InMeleeRange() => HasTarget() && GetTargetDistance() <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
 
-        return GetTargetDistance() <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
+    /// <summary> Checks if an object is within appropriate range for targeting. </summary>
+    /// <param name="target"> The target object to check. </param>
+    /// <param name="distance"> Optional distance to check. </param>
+    public static bool IsInRange(IGameObject? target, float distance = 25f) => target is not null && GetTargetDistance(target, LocalPlayer) <= distance;
+
+    /// <summary>
+    ///     Gets the horizontal distance between two objects. <br/>
+    ///     Defaults to LocalPlayer and CurrentTarget unless specified.
+    /// </summary>
+    public static float GetTargetDistance(IGameObject? optionalTarget = null, IGameObject? optionalSource = null)
+    {
+        if ((optionalSource ?? LocalPlayer) is not { } sourceChara)
+            return 0f;
+
+        if ((optionalTarget ?? CurrentTarget) is not { } targetChara)
+            return 0f;
+
+        if (targetChara.GameObjectId == sourceChara.GameObjectId)
+            return 0f;
+
+        Vector2 targetPosition = new(targetChara.Position.X, targetChara.Position.Z);
+        Vector2 sourcePosition = new(sourceChara.Position.X, sourceChara.Position.Z);
+
+        return Math.Max(0f, Vector2.Distance(targetPosition, sourcePosition) - targetChara.HitboxRadius - sourceChara.HitboxRadius);
     }
 
-    /// <summary> Checks if target is in appropriate range for targeting </summary>
-    /// <param name="target"> The target object to check </param>
-    /// <param name="distance">Optional distance to check</param>
-    public static bool IsInRange(IGameObject? target, float distance = 25f)
+    /// <summary>
+    ///     Gets the vertical distance between two objects. <br/>
+    ///     Defaults to LocalPlayer and CurrentTarget unless specified.
+    /// </summary>
+    public static float GetTargetHeightDifference(IGameObject? optionalTarget = null, IGameObject? optionalSource = null)
     {
-        if (target == null || GetTargetDistance(target, LocalPlayer) >= distance)
-            return false;
+        if ((optionalSource ?? LocalPlayer) is not { } sourceChara)
+            return 0f;
 
-        return true;
-    }
+        if ((optionalTarget ?? CurrentTarget) is not { } targetChara)
+            return 0f;
 
-    /// <summary> Gets the distance from the target. </summary>
-    public static float GetTargetDistance(IGameObject? optionalTarget = null, IGameObject? source = null)
-    {
-        if (LocalPlayer is not { } player)
-            return 0;
+        if (targetChara.GameObjectId == sourceChara.GameObjectId)
+            return 0f;
 
-        IGameObject? chara = optionalTarget ?? CurrentTarget;
-        if (chara is null) return 0;
-
-        IGameObject? sourceChara = source ?? player;
-
-        if (chara.GameObjectId == sourceChara.GameObjectId)
-            return 0;
-
-        Vector2 position = new(chara.Position.X, chara.Position.Z);
-        Vector2 selfPosition = new(sourceChara.Position.X, sourceChara.Position.Z);
-
-        return Math.Max(0, Vector2.Distance(position, selfPosition) - chara.HitboxRadius - sourceChara.HitboxRadius);
-    }
-
-    public static float GetTargetHeightDifference(IGameObject? target = null, IGameObject? source = null)
-    {
-        if (LocalPlayer is not { } player)
-            return 0;
-
-        IGameObject? chara = target ?? CurrentTarget;
-        if (chara is null) return 0;
-
-        IGameObject? sourceChara = source ?? player;
-
-        if (chara.GameObjectId == sourceChara.GameObjectId)
-            return 0;
-
-        return Math.Abs(chara.Position.Y - sourceChara.Position.Y);
+        return Math.Abs(targetChara.Position.Y - sourceChara.Position.Y);
     }
 
     public static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
@@ -226,7 +213,6 @@ internal abstract partial class CustomComboFunctions
 
         if (needsTarget && GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId))
             return 0;
-
 
         int count = sheetSpell.CastType switch
         {
@@ -240,7 +226,7 @@ internal abstract partial class CustomComboFunctions
         return count;
     }
 
-    public static int NumberOfEnemiesInRange(byte range)
+    public static int NumberOfEnemiesInRange(float range)
     {
         return Svc.Objects.Count(
             o => o.ObjectKind == ObjectKind.BattleNpc &&

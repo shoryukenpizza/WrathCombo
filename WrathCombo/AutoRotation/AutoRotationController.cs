@@ -765,9 +765,9 @@ namespace WrathCombo.AutoRotation
             {
                 if (GetPartyMembers().Count == 0) return Player.Object;
                 var target = GetPartyMembers()
-                    .Where(x => GetTargetDistance(x.BattleChara) <= QueryRange &&
-                        !x.BattleChara.IsDead &&
+                    .Where(x => !x.BattleChara.IsDead &&
                         x.BattleChara.IsTargetable &&
+                        GetTargetDistance(x.BattleChara) <= QueryRange &&
                         GetTargetHPPercent(x.BattleChara) <= (TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP : cfg.HealerSettings.SingleTargetHPP) &&
                         IsInLineOfSight(x.BattleChara))
                     .OrderByDescending(x => GetTargetHPPercent(x.BattleChara)).FirstOrDefault();
@@ -778,9 +778,9 @@ namespace WrathCombo.AutoRotation
             {
                 if (GetPartyMembers().Count == 0) return Player.Object;
                 var target = GetPartyMembers()
-                    .Where(x => GetTargetDistance(x.BattleChara) <= QueryRange &&
-                        !x.BattleChara.IsDead &&
+                    .Where(x => !x.BattleChara.IsDead &&
                         x.BattleChara.IsTargetable &&
+                        GetTargetDistance(x.BattleChara) <= QueryRange &&
                         GetTargetHPPercent(x.BattleChara) <= (TargetHasRegen(x.BattleChara) ? cfg.HealerSettings.SingleTargetRegenHPP : cfg.HealerSettings.SingleTargetHPP) &&
                         IsInLineOfSight(x.BattleChara))
                     .OrderBy(x => GetTargetHPPercent(x.BattleChara)).FirstOrDefault();
