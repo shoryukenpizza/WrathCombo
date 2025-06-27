@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
-using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using ImGuiNET;
@@ -162,10 +161,11 @@ internal abstract partial class CustomComboFunctions
     /// </summary>
     public static bool InMeleeRange() => HasTarget() && GetTargetDistance() <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
 
-    /// <summary> Checks if an object is within appropriate range for targeting. </summary>
-    /// <param name="target"> The target object to check. </param>
-    /// <param name="distance"> Optional distance to check. </param>
-    public static bool IsInRange(IGameObject? target, float distance = 25f) => target is not null && GetTargetDistance(target) <= distance;
+    /// <summary>
+    ///     Checks if an object is within a specified range from the player. <br/>
+    ///     Defaults to base spell range unless specified.
+    /// </summary>
+    public static bool IsInRange(IGameObject? target, float range = 25f) => target is not null && GetTargetDistance(target) <= range;
 
     /// <summary>
     ///     Gets the horizontal distance between two objects. <br/>
@@ -206,6 +206,7 @@ internal abstract partial class CustomComboFunctions
         return Math.Abs(targetChara.Position.Y - sourceChara.Position.Y);
     }
 
+    /// <summary> Gets the number of enemies within range of an action. </summary>
     public static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
     {
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
@@ -228,6 +229,7 @@ internal abstract partial class CustomComboFunctions
         return count;
     }
 
+    /// <summary> Gets the number of enemies within a specified range from the player. </summary>
     public static int NumberOfEnemiesInRange(float range)
     {
         return Svc.Objects.Count(o =>
@@ -237,46 +239,37 @@ internal abstract partial class CustomComboFunctions
             GetTargetDistance(o) <= range);
     }
 
-    internal static unsafe bool IsInLineOfSight(IGameObject? target)
+    /// <summary> Checks if an object is within line of sight of the player. </summary>
+    internal static unsafe bool IsInLineOfSight(IGameObject? obj)
     {
-        if (target is null) return false;
-        if (!Player.Available) return false;
+        if (LocalPlayer is not { } player || obj is null) return false;
 
-        var sourcePos = Player.Object.Struct()->Position;
-        sourcePos.Y += 2;
+        Vector3 sourcePos = player.Position with { Y = player.Position.Y + 2f };
+        Vector3 targetPos = obj.Position with { Y = obj.Position.Y + 2f };
+        Vector3 offset = targetPos - sourcePos;
 
-        var targetPos = target.Struct()->Position;
-        targetPos.Y += 2;
-
-        var direction = targetPos - sourcePos;
-        float distance = direction.Magnitude;
-
-        direction = direction.Normalized;
-
-        Vector3 originVect = new Vector3(sourcePos.X, sourcePos.Y, sourcePos.Z);
-        Vector3 directionVect = new Vector3(direction.X, direction.Y, direction.Z);
+        float distance = offset.Length();
+        Vector3 direction = distance > float.Epsilon
+            ? offset / distance
+            : Vector3.Zero;
 
         RaycastHit hit;
-        int* flags = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
-        bool isLoSBlocked = Framework.Instance()->BGCollisionModule->RaycastMaterialFilter(&hit, &originVect, &directionVect, distance, 1, flags);
+        var flags = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
 
-        return isLoSBlocked == false;
+        return !Framework.Instance()->BGCollisionModule->RaycastMaterialFilter(&hit, &sourcePos, &direction, distance, 1, flags);
     }
 
     #endregion
 
     #region Positional Checks
 
-    /// <summary> Is player on target's rear. </summary>
-    /// <returns> True or false. </returns>
+    /// <summary> Checks if the player is on target's rear. </summary>
     public static bool OnTargetsRear() => AngleToTarget() is AttackAngle.Rear;
 
-    /// <summary> Is player on target's flank. </summary>
-    /// <returns> True or false. </returns>
+    /// <summary> Checks if the player is on target's flank. </summary>
     public static bool OnTargetsFlank() => AngleToTarget() is AttackAngle.Flank;
 
-    /// <summary> Is player on target's front. </summary>
-    /// <returns> True or false. </returns>
+    /// <summary> Checks if the player is on target's front. </summary>
     public static bool OnTargetsFront() => AngleToTarget() is AttackAngle.Front;
 
     #region Positional Helpers
@@ -327,7 +320,7 @@ internal abstract partial class CustomComboFunctions
 
     #region Shape Checks
 
-    // Circle Aoe
+    /// <summary> Gets the number of enemies within range of a point-blank AoE. </summary>
     public static int CanCircleAoe(float effectRange, bool checkIgnoredList = false)
     {
         if (LocalPlayer is not { } player) return 0;
@@ -336,11 +329,11 @@ internal abstract partial class CustomComboFunctions
                                       o.IsTargetable &&
                                       o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
-                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
                                       PointInCircle(o.Position - player.Position, effectRange + o.HitboxRadius));
     }
 
-    // Ranged Circle Aoe
+    /// <summary> Gets the number of enemies within range of a targeted AoE. </summary>
     public static int CanRangedCircleAoe(IGameObject? target, float effectRange, bool checkIgnoredList = false)
     {
         if (target is null) return 0;
@@ -349,11 +342,11 @@ internal abstract partial class CustomComboFunctions
                                       o.IsTargetable &&
                                       o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
-                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
                                       PointInCircle(o.Position - target.Position, effectRange + o.HitboxRadius));
     }
 
-    // Cone Aoe
+    /// <summary> Gets the number of enemies within range of a cone AoE. </summary>
     public static int CanConeAoe(IGameObject? target, float range, bool checkIgnoredList = false)
     {
         if (LocalPlayer is not { } player || target is null) return 0;
@@ -365,16 +358,16 @@ internal abstract partial class CustomComboFunctions
                                       o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
-                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
                                       PointInCone(o.Position - player.Position, direction, 45f));
     }
 
-    // Line Aoe
-    public static int CanLineAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
+    /// <summary> Gets the number of enemies within range of a line AoE. </summary>
+    public static int CanLineAoe(IGameObject? target, float range, float xAxisModifier, bool checkIgnoredList = false)
     {
         if (LocalPlayer is not { } player || target is null) return 0;
 
-        float halfWidth = effectRange * 0.5f;
+        float halfWidth = xAxisModifier * 0.5f;
         float direction = PositionalMath.AngleXZ(player.Position, target.Position);
 
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
@@ -382,7 +375,7 @@ internal abstract partial class CustomComboFunctions
                                       o.IsHostile() &&
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
-                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId)) &&
+                                      (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
                                       HitboxInRect(o, direction, range, halfWidth));
     }
 
