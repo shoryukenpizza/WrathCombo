@@ -18,12 +18,6 @@ namespace WrathCombo.CustomComboNS.Functions;
 
 internal abstract partial class CustomComboFunctions
 {
-    [Obsolete("Use HasBattleTarget() instead")]
-    internal static bool TargetIsHostile() => HasBattleTarget();
-
-    [Obsolete("Use GetTargetCurrentHP() instead")]
-    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
-
     /// <summary> Gets the current target or null. </summary>
     public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
@@ -32,11 +26,11 @@ internal abstract partial class CustomComboFunctions
 
     #region Target Checks
 
-    /// <summary> Checks if the player has a target. </summary>
+    /// <summary> Find if the player has a target. </summary>
     public static bool HasTarget() => CurrentTarget is not null;
 
-    /// <summary> Checks if the player's current target is hostile. </summary>
-    public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
+    /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
+    public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == LocalPlayer?.GameObjectId);
 
     /// <summary> Checks if the player's current target is a boss. </summary>
     internal static bool TargetIsBoss() => IsBoss(CurrentTarget);
@@ -44,28 +38,28 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if an object is a boss. </summary>
     internal static bool IsBoss(IGameObject? target) => target is not null && Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
 
-    /// <summary> Gets all bosses from the object table. </summary>
-    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x));
-
     /// <summary> Checks if an object is quest-related. </summary>
     internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
 
-    /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
-    public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == LocalPlayer?.GameObjectId);
+    [Obsolete("Use HasBattleTarget instead")]
+    internal static bool TargetIsHostile() => HasBattleTarget();
 
     /// <summary> Checks if an object is friendly. Defaults to CurrentTarget unless specified. </summary>
     public static bool TargetIsFriendly(IGameObject? optionalTarget = null)
     {
-        if ((optionalTarget ?? CurrentTarget) is not { } target)
+        if ((optionalTarget ?? CurrentTarget) is not { } chara)
             return false;
 
-        return target.ObjectKind switch
+        return chara.ObjectKind switch
         {
             ObjectKind.Player => true,
-            _ when target is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
+            _ when chara is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
             _ => false
         };
     }
+
+    /// <summary> Checks if the player's current target is hostile. </summary>
+    public static bool HasBattleTarget() => HasTarget() && CurrentTarget.IsHostile();
 
     /// <summary> Checks if an object requires positionals. Defaults to CurrentTarget unless specified. </summary>
     public static bool TargetNeedsPositionals(IGameObject? optionalTarget = null)
@@ -125,6 +119,9 @@ internal abstract partial class CustomComboFunctions
         return chara.CurrentCastTime >= chara.TotalCastTime * minThreshold;
     }
 
+    /// <summary> Gets all bosses from the object table. </summary>
+    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x));
+
     #endregion
 
     #region HP Checks
@@ -144,6 +141,9 @@ internal abstract partial class CustomComboFunctions
             ? Math.Clamp(charaHPPercent + chara.ShieldPercentage, 0f, 100f)
             : charaHPPercent;
     }
+
+    [Obsolete("Use GetTargetCurrentHP instead")]
+    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
 
     /// <summary> Gets an object's maximum HP. Defaults to CurrentTarget unless specified. </summary>
     public static uint GetTargetMaxHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.MaxHp : 0;
@@ -367,6 +367,7 @@ internal abstract partial class CustomComboFunctions
     {
         if (LocalPlayer is not { } player || target is null) return 0;
 
+        float halfLength = range * 0.5f;
         float halfWidth = xAxisModifier * 0.5f;
         float direction = PositionalMath.AngleXZ(player.Position, target.Position);
 
@@ -376,7 +377,7 @@ internal abstract partial class CustomComboFunctions
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
                                       (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
-                                      HitboxInRect(o, direction, range, halfWidth));
+                                      HitboxInRect(o, direction, halfLength, halfWidth));
     }
 
     #region Shape Helpers
@@ -404,7 +405,7 @@ internal abstract partial class CustomComboFunctions
     #endregion
     #region Point in Rect
 
-    public static bool HitboxInRect(IGameObject o, float direction, float lenFront, float halfWidth)
+    public static bool HitboxInRect(IGameObject o, float direction, float halfLength, float halfWidth)
     {
         if (LocalPlayer is not { } player) return false;
 
@@ -414,11 +415,11 @@ internal abstract partial class CustomComboFunctions
         Vector2 P = new(o.Position.X, o.Position.Z);
         float R = o.HitboxRadius;
 
-        Vector2 Q = A + d * (lenFront / 2);
+        Vector2 Q = A + d * halfLength;
         Vector2 P2 = P - Q;
         Vector2 Ptrans = new(Vector2.Dot(P2, n), Vector2.Dot(P2, d));
         Vector2 Pabs = new(Math.Abs(Ptrans.X), Math.Abs(Ptrans.Y));
-        Vector2 Pcorner = new(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - (lenFront / 2));
+        Vector2 Pcorner = new(Math.Abs(Ptrans.X) - halfWidth, Math.Abs(Ptrans.Y) - halfLength);
 #if DEBUG
         if (Svc.GameGui.WorldToScreen(o.Position, out var screenCoords))
         {
