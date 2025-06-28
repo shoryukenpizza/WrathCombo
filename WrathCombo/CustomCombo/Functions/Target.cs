@@ -286,9 +286,10 @@ internal abstract partial class CustomComboFunctions
     /// <returns> Front, Flank, Rear or Unknown as AttackAngle type. </returns>
     public static AttackAngle AngleToTarget()
     {
-        if (LocalPlayer is not { } player || CurrentTarget is not IBattleChara target || target.ObjectKind != ObjectKind.BattleNpc) return AttackAngle.Unknown;
+        if (LocalPlayer is not { } player || CurrentTarget is not IBattleChara target || target.ObjectKind != ObjectKind.BattleNpc)
+            return AttackAngle.Unknown;
 
-        float rotation = PositionalMath.GetRotationXZ(target.Position, player.Position) - target.Rotation;
+        float rotation = PositionalMath.GetRotation(target.Position, player.Position) - target.Rotation;
         float regionDegrees = PositionalMath.ToDegrees(rotation) + (rotation < 0f ? 360f : 0f);
 
         return regionDegrees switch
@@ -310,8 +311,8 @@ internal abstract partial class CustomComboFunctions
         public static float ToRadians(float degrees) => degrees * DegToRad;
         public static float ToDegrees(float radians) => radians * RadToDeg;
 
-        public static float GetRotationXZ(Vector3 a, Vector3 b) => MathF.Atan2(b.X - a.X, b.Z - a.Z);
-        public static Vector3 GetDirectionXZ(Vector3 a, Vector3 b) => ToDirection(GetRotationXZ(a, b));
+        public static float GetRotation(Vector3 a, Vector3 b) => MathF.Atan2(b.X - a.X, b.Z - a.Z);
+        public static Vector3 GetDirection(Vector3 a, Vector3 b) => ToDirection(GetRotation(a, b));
 
         public static float ToRotation(Vector3 direction) => MathF.Atan2(direction.X, direction.Z);
         public static Vector3 ToDirection(float rotation) => new(MathF.Sin(rotation), 0f, MathF.Cos(rotation));
@@ -354,7 +355,7 @@ internal abstract partial class CustomComboFunctions
     {
         if (LocalPlayer is not { } player || target is null) return 0;
 
-        Vector3 direction = PositionalMath.GetDirectionXZ(player.Position, target.Position);
+        Vector3 direction = PositionalMath.GetDirection(player.Position, target.Position);
 
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                       o.IsTargetable &&
@@ -372,7 +373,7 @@ internal abstract partial class CustomComboFunctions
 
         float halfLength = range * 0.5f;
         float halfWidth = xAxisModifier * 0.5f;
-        float rotation = PositionalMath.GetRotationXZ(player.Position, target.Position);
+        float rotation = PositionalMath.GetRotation(player.Position, target.Position);
 
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                       o.IsTargetable &&
@@ -459,7 +460,6 @@ internal abstract partial class CustomComboFunctions
 
         return Pcorner.LengthSquared() <= R * R;
     }
-
     #endregion
 
     #endregion
