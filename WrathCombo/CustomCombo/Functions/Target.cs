@@ -288,8 +288,8 @@ internal abstract partial class CustomComboFunctions
     {
         if (LocalPlayer is not { } player || CurrentTarget is not IBattleChara target || target.ObjectKind != ObjectKind.BattleNpc) return AttackAngle.Unknown;
 
-        float angle = PositionalMath.AngleXZ(target.Position, player.Position) - target.Rotation;
-        float regionDegrees = PositionalMath.ToDegrees(angle) + (angle < 0f ? 360f : 0f);
+        float rotation = PositionalMath.GetRotationXZ(target.Position, player.Position) - target.Rotation;
+        float regionDegrees = PositionalMath.ToDegrees(rotation) + (rotation < 0f ? 360f : 0f);
 
         return regionDegrees switch
         {
@@ -304,14 +304,17 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Performs positional calculations. Based on the excellent Resonant plugin. </summary>
     internal static class PositionalMath
     {
-        public const float DegreesToRadians = MathF.PI / 180f;
-        public const float RadiansToDegrees = 180f / MathF.PI;
+        public const float DegToRad = MathF.PI / 180f;
+        public const float RadToDeg = 180f / MathF.PI;
 
-        public static float ToRadians(float degrees) => degrees * DegreesToRadians;
+        public static float ToRadians(float degrees) => degrees * DegToRad;
+        public static float ToDegrees(float radians) => radians * RadToDeg;
 
-        public static float ToDegrees(float radians) => radians * RadiansToDegrees;
+        public static float GetRotationXZ(Vector3 a, Vector3 b) => MathF.Atan2(b.X - a.X, b.Z - a.Z);
+        public static Vector3 GetDirectionXZ(Vector3 a, Vector3 b) => ToDirection(GetRotationXZ(a, b));
 
-        public static float AngleXZ(Vector3 a, Vector3 b) => MathF.Atan2(b.X - a.X, b.Z - a.Z);
+        public static float ToRotation(Vector3 direction) => MathF.Atan2(direction.X, direction.Z);
+        public static Vector3 ToDirection(float rotation) => new(MathF.Sin(rotation), 0f, MathF.Cos(rotation));
     }
 
     #endregion
@@ -351,7 +354,7 @@ internal abstract partial class CustomComboFunctions
     {
         if (LocalPlayer is not { } player || target is null) return 0;
 
-        float direction = PositionalMath.AngleXZ(player.Position, target.Position);
+        Vector3 direction = PositionalMath.GetDirectionXZ(player.Position, target.Position);
 
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                       o.IsTargetable &&
@@ -369,7 +372,7 @@ internal abstract partial class CustomComboFunctions
 
         float halfLength = range * 0.5f;
         float halfWidth = xAxisModifier * 0.5f;
-        float direction = PositionalMath.AngleXZ(player.Position, target.Position);
+        float rotation = PositionalMath.GetRotationXZ(player.Position, target.Position);
 
         return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                       o.IsTargetable &&
@@ -377,15 +380,10 @@ internal abstract partial class CustomComboFunctions
                                       !TargetIsInvincible(o) &&
                                       GetTargetDistance(o) <= range &&
                                       (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(o.DataId)) &&
-                                      HitboxInRect(o, direction, halfLength, halfWidth));
+                                      HitboxInRect(o, rotation, halfLength, halfWidth));
     }
 
     #region Shape Helpers
-
-    public static Vector3 DirectionToVec3(float direction)
-    {
-        return new(MathF.Sin(direction), 0, MathF.Cos(direction));
-    }
 
     #region Point in Circle
     public static bool PointInCircle(Vector3 offsetFromOrigin, float radius)
@@ -393,24 +391,21 @@ internal abstract partial class CustomComboFunctions
         return offsetFromOrigin.LengthSquared() <= radius * radius;
     }
     #endregion
+
     #region Point in Cone
     public static bool PointInCone(Vector3 offsetFromOrigin, Vector3 direction, float halfAngle)
     {
         return Vector3.Dot(Vector3.Normalize(offsetFromOrigin), direction) > MathF.Cos(halfAngle);
     }
-    public static bool PointInCone(Vector3 offsetFromOrigin, float direction, float halfAngle)
-    {
-        return PointInCone(offsetFromOrigin, DirectionToVec3(direction), halfAngle);
-    }
     #endregion
-    #region Point in Rect
 
-    public static bool HitboxInRect(IGameObject o, float direction, float halfLength, float halfWidth)
+    #region Point in Rect
+    public static bool HitboxInRect(IGameObject o, float rotation, float halfLength, float halfWidth)
     {
         if (LocalPlayer is not { } player) return false;
 
         Vector2 A = new(player.Position.X, player.Position.Z);
-        Vector2 d = new(MathF.Sin(direction), MathF.Cos(direction));
+        Vector2 d = new(MathF.Sin(rotation), MathF.Cos(rotation));
         Vector2 n = new(d.Y, -d.X);
         Vector2 P = new(o.Position.X, o.Position.Z);
         float R = o.HitboxRadius;
