@@ -55,8 +55,8 @@ internal partial class AST
             AST_AoE_SimpleHeals_Opposition = new("AST_AoE_SimpleHeals_Opposition"),
             AST_AoE_SimpleHeals_Horoscope = new("AST_AoE_SimpleHeals_Horoscope"),
             AST_AoE_SimpleHeals_NeutralSectWeave = new("AST_AoE_SimpleHeals_NeutralSectWeave"),
-            AST_ST_DPS_OverwriteCards = new("AST_ST_DPS_OverwriteCards"),
-            AST_AOE_DPS_OverwriteCards = new("AST_AOE_DPS_OverwriteCards");
+            AST_ST_DPS_OverwriteHealCards = new("AST_ST_DPS_OverwriteHealCards"),
+            AST_AOE_DPS_OverwriteHealCards = new("AST_AOE_DPS_OverwriteHealCards");
         public static UserFloat
             AST_ST_DPS_CombustUptime_Threshold = new("AST_ST_DPS_CombustUptime_Threshold");
 
@@ -122,7 +122,7 @@ internal partial class AST
                     break;
 
                 case CustomComboPreset.AST_AOE_AutoDraw:
-                    DrawAdditionalBoolChoice(AST_AOE_DPS_OverwriteCards, "Overwrite Non-DPS Cards", "Will draw even if you have healing cards remaining.");
+                    DrawAdditionalBoolChoice(AST_AOE_DPS_OverwriteHealCards, "Overwrite Non-DPS Cards", "Will draw even if you have healing cards remaining.");
                     break;
 
                 case CustomComboPreset.AST_AOE_DPS_MacroCosmos:
@@ -236,7 +236,7 @@ internal partial class AST
                     break;
 
                 case CustomComboPreset.AST_DPS_AutoDraw:
-                    DrawAdditionalBoolChoice(AST_ST_DPS_OverwriteCards, "Overwrite Non-DPS Cards", "Will draw even if you have healing cards remaining.");
+                    DrawAdditionalBoolChoice(AST_ST_DPS_OverwriteHealCards, "Overwrite Non-DPS Cards", "Will draw even if you have healing cards remaining.");
                     break;
 
                

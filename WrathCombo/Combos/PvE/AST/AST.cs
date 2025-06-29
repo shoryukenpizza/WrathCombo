@@ -11,65 +11,34 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class AST : Healer
 {
-    internal class AST_Benefic : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Benefic;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is Benefic2 && !ActionReady(Benefic2)
-                ? Benefic
-                : actionID;
-    }
-
-    internal class AST_Lightspeed : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Lightspeed_Protection;       
-
-        protected override uint Invoke(uint actionID) =>
-           actionID is Lightspeed && HasStatusEffect(Buffs.Lightspeed)
-               ? All.SavageBlade
-               : actionID;
-    }
-
-    internal class AST_Raise_Alternative : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Raise_Alternative;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
-                ? IsEnabled(CustomComboPreset.AST_Raise_Alternative_Retarget)
-                    ? Ascend.Retarget(Role.Swiftcast,
-                        SimpleTarget.Stack.AllyToRaise)
-                    : Ascend
-                : actionID;
-    }
-
     internal class AST_ST_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_DPS;
 
         protected override uint Invoke(uint actionID)
         {
+            #region Variables
             bool alternateMode = Config.AST_DPS_AltMode > 0; //(0 or 1 radio values)
             bool actionFound = !alternateMode && MaleficList.Contains(actionID) ||
                                alternateMode && CombustList.ContainsKey(actionID);
             bool cardPooling = IsEnabled(CustomComboPreset.AST_DPS_CardPool);
             bool lordPooling = IsEnabled(CustomComboPreset.AST_DPS_LordPool);
+            var replacedActions = alternateMode
+                ? CombustList.Keys.ToArray()
+                : MaleficList.ToArray();
+            float refreshTimer = Config.AST_ST_DPS_CombustUptime_Threshold;
+            int hpThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_DPS_CombustOption : 0;
+            #endregion
 
             if (!actionFound)
                 return actionID;
 
-            var replacedActions = alternateMode
-                ? CombustList.Keys.ToArray()
-                : MaleficList.ToArray();
-
-            // Out of combat Card Draw
+            // Out-of-combat Card Draw
             if (!InCombat())
             {
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                     ActionReady(OriginalHook(AstralDraw)) &&
-                    (Gauge.DrawnCards.All(x => x is CardType.None) ||
-                     (DrawnDPSCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)))
+                    (HasNoCards || HasNoDPSCard && Config.AST_ST_DPS_OverwriteHealCards))
                     return OriginalHook(AstralDraw);
             }
 
@@ -98,26 +67,28 @@ internal partial class AST : Healer
                 if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_SpiritDart) && HasBattleTarget())
                     return Variant.SpiritDart;
 
+                //Lightspeed Movement
                 if (IsEnabled(CustomComboPreset.AST_DPS_LightSpeed) &&
                     ActionReady(Lightspeed) &&
                     GetTargetHPPercent() > Config.AST_DPS_LightSpeedOption &&
                     IsMoving() &&
                     !HasStatusEffect(Buffs.Lightspeed) &&
                     (IsNotEnabled(CustomComboPreset.AST_DPS_LightSpeedHold) ||
-                    GetCooldownChargeRemainingTime(Lightspeed) < GetCooldownRemainingTime(Divination) ||
+                    LightspeedChargeCD < DivinationCD ||
                     !LevelChecked(Divination)))
                     return Lightspeed;                
 
+                //Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.AST_DPS_Lucid) &&
                     Role.CanLucidDream(Config.AST_LucidDreaming))
                     return Role.LucidDreaming;
 
-                //Play Card with pooling option
+                //Play Card
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) &&
                     ActionReady(Play1) &&
-                    Gauge.DrawnCards[0] is not CardType.None &&
+                    HasDPSCard &&
                     CanSpellWeave() &&
-                    (cardPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
+                    (cardPooling && HasDivination ||
                     !cardPooling ||
                     !LevelChecked(Divination)))
                     return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
@@ -127,9 +98,9 @@ internal partial class AST : Healer
                 //Minor Arcana / Lord of Crowns
                 if (ActionReady(OriginalHook(MinorArcana)) &&
                     IsEnabled(CustomComboPreset.AST_DPS_LazyLord) &&
-                    Gauge.DrawnCrownCard is CardType.Lord &&
-                    HasBattleTarget() && CanDelayedWeave() &&
-                    (lordPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
+                    HasLord &&
+                    HasBattleTarget() && CanSpellWeave() &&
+                    (lordPooling && HasDivination ||
                     !lordPooling ||
                     !LevelChecked(Divination)))
                     return OriginalHook(MinorArcana);
@@ -137,26 +108,26 @@ internal partial class AST : Healer
                 //Card Draw
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                     ActionReady(OriginalHook(AstralDraw)) &&
-                    (Gauge.DrawnCards.All(x => x is CardType.None) ||
-                     (DrawnDPSCard == CardType.None && Config.AST_ST_DPS_OverwriteCards)) &&
-                    CanDelayedWeave())
+                    (HasNoCards ||
+                     HasNoDPSCard && Config.AST_ST_DPS_OverwriteHealCards) &&
+                    CanSpellWeave())
                     return OriginalHook(AstralDraw);
 
                 //Lightspeed Burst
                 if (IsEnabled(CustomComboPreset.AST_DPS_LightspeedBurst) &&
                     ActionReady(Lightspeed) &&
                     !HasStatusEffect(Buffs.Lightspeed) &&
-                    GetCooldownRemainingTime(Divination) < 5 &&
+                    DivinationCD < 5 &&
                     CanSpellWeave())
                     return Lightspeed;
 
                 //Divination
                 if (IsEnabled(CustomComboPreset.AST_DPS_Divination) &&
                     ActionReady(Divination) &&
-                    !HasStatusEffect(Buffs.Divination, anyOwner: true) && //Overwrite protection
+                    !HasDivination && //Overwrite protection
                     !HasStatusEffect(Buffs.Divining) &&
                     GetTargetHPPercent() > Config.AST_DPS_DivinationOption &&
-                    CanDelayedWeave() &&
+                    CanSpellWeave() &&
                     ActionWatching.NumberOfGcdsUsed >= 3)
                     return Divination;
 
@@ -169,11 +140,13 @@ internal partial class AST : Healer
                     return EarthlyStar.Retarget(replacedActions,
                         SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
+                //Oracle
                 if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) &&
                     HasStatusEffect(Buffs.Divining) &&
                     CanSpellWeave())
                     return Oracle;
 
+                //Dot Code
                 if (HasBattleTarget())
                 {
                     //Combust
@@ -182,8 +155,6 @@ internal partial class AST : Healer
                         LevelChecked(Combust) &&
                         CombustList.TryGetValue(OriginalHook(Combust), out ushort dotDebuffID))
                     {   
-                        float refreshTimer = Config.AST_ST_DPS_CombustUptime_Threshold;
-                        int hpThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_DPS_CombustOption : 0;
                         if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
                             GetTargetHPPercent() > hpThreshold &&
                             CanApplyStatus(CurrentTarget,dotDebuffID))
@@ -260,7 +231,7 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) &&
                 ActionReady(OriginalHook(AstralDraw)) &&
                 (Gauge.DrawnCards.All(x => x is CardType.None) ||
-                 (DrawnDPSCard == CardType.None && Config.AST_AOE_DPS_OverwriteCards)) &&
+                 (DrawnDPSCard == CardType.None && Config.AST_AOE_DPS_OverwriteHealCards)) &&
                 CanDelayedWeave())
                 return OriginalHook(AstralDraw);
             
@@ -502,5 +473,38 @@ internal partial class AST : Healer
 
             return actionID;
         }
+    }
+    
+    internal class AST_Benefic : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Benefic;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is Benefic2 && !ActionReady(Benefic2)
+                ? Benefic
+                : actionID;
+    }
+
+    internal class AST_Lightspeed : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Lightspeed_Protection;       
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is Lightspeed && HasStatusEffect(Buffs.Lightspeed)
+                ? All.SavageBlade
+                : actionID;
+    }
+
+    internal class AST_Raise_Alternative : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Raise_Alternative;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
+                ? IsEnabled(CustomComboPreset.AST_Raise_Alternative_Retarget)
+                    ? Ascend.Retarget(Role.Swiftcast,
+                        SimpleTarget.Stack.AllyToRaise)
+                    : Ascend
+                : actionID;
     }
 }

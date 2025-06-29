@@ -31,37 +31,27 @@ internal partial class AST
             { Combust2, Debuffs.Combust2 },
             { Combust3, Debuffs.Combust3 }
         };
-    public static ASTOpenerMaxLevel1 Opener1 = new();
+    
 
     public static ASTGauge Gauge => GetJobGauge<ASTGauge>();
     public static CardType DrawnDPSCard => Gauge.DrawnCards[0];
 
-    public static int SpellsSinceDraw()
-    {
-        if (ActionWatching.CombatActions.Count == 0)
-            return 0;
+    internal static bool HasNoCards => Gauge.DrawnCards.All(x => x is CardType.None);
+    internal static bool HasNoDPSCard => DrawnDPSCard == CardType.None;
+    internal static bool HasDPSCard => Gauge.DrawnCards[0] is not CardType.None;
 
-        uint spellToCheck = Gauge.ActiveDraw == DrawType.Astral ? UmbralDraw : AstralDraw;
-        int idx = ActionWatching.CombatActions.LastIndexOf(spellToCheck);
-        if (idx == -1)
-            idx = 0;
+    internal static bool HasLord => Gauge.DrawnCrownCard is CardType.Lord;
+    internal static bool HasLady => Gauge.DrawnCrownCard is CardType.Lady;
 
-        int ret = 0;
-        for (int i = idx; i < ActionWatching.CombatActions.Count; i++)
-        {
-            if (ActionWatching.GetAttackType(ActionWatching.CombatActions[i]) == ActionWatching.ActionAttackType.Spell)
-                ret++;
-        }
-        return ret;
-    }
 
-    public static WrathOpener Opener()
-    {
-        if (Opener1.LevelChecked)
-            return Opener1;
+    
+    internal static bool HasDivination=> HasStatusEffect(Buffs.Divination, anyOwner: true);
+    
+    
+    internal static float DivinationCD => GetCooldownRemainingTime(Divination);
+    internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
 
-        return WrathOpener.Dummy;
-    }
+    
 
     #region Card Targeting
 
@@ -239,7 +229,18 @@ internal partial class AST
     #endregion
 
     #endregion
+    
+    #region Opener
+    public static WrathOpener Opener()
+    {
+        if (Opener1.LevelChecked)
+            return Opener1;
 
+        return WrathOpener.Dummy;
+    }
+    
+    public static ASTOpenerMaxLevel1 Opener1 = new();
+    
     internal class ASTOpenerMaxLevel1 : WrathOpener
     {
         public override List<uint> OpenerActions { get; set; } =
@@ -294,6 +295,7 @@ internal partial class AST
             return true;
         }
     }
+    #endregion
 
     #region ID's
 
