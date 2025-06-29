@@ -32,16 +32,25 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if the player is being targeted by a hostile, targetable object. </summary>
     public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == LocalPlayer?.GameObjectId);
 
-    /// <summary> Checks if the player's current target is a boss. </summary>
-    internal static bool TargetIsBoss() => IsBoss(CurrentTarget);
+    /// <summary> Checks if an object is dead. Defaults to CurrentTarget unless specified. </summary>
+    internal static bool TargetIsDead(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara && chara.IsDead;
 
-    /// <summary> Checks if an object is a boss. </summary>
-    internal static bool IsBoss(IGameObject? target) => target is not null && Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(target.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
+    /// <summary> Checks if an object is a boss. Defaults to CurrentTarget unless specified. </summary>
+    internal static bool TargetIsBoss(IGameObject? optionalTarget = null)
+    {
+        if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara)
+            return false;
+
+        return Svc.Data.GetExcelSheet<BNpcBase>().TryGetRow(chara.DataId, out var dataRow) && dataRow.Rank is 2 or 6;
+    }
+
+    [Obsolete("Use TargetIsBoss")]
+    internal static bool IsBoss(IGameObject? target) => TargetIsBoss(target);
 
     /// <summary> Checks if an object is quest-related. </summary>
     internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
 
-    [Obsolete("Use HasBattleTarget instead")]
+    [Obsolete("Use HasBattleTarget")]
     internal static bool TargetIsHostile() => HasBattleTarget();
 
     /// <summary> Checks if an object is friendly. Defaults to CurrentTarget unless specified. </summary>
@@ -120,7 +129,7 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary> Gets all bosses from the object table. </summary>
-    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x));
+    internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.OfType<IBattleChara>().Where(x => x.ObjectKind == ObjectKind.BattleNpc && TargetIsBoss(x));
 
     #endregion
 
@@ -142,7 +151,7 @@ internal abstract partial class CustomComboFunctions
             : charaHPPercent;
     }
 
-    [Obsolete("Use GetTargetCurrentHP instead")]
+    [Obsolete("Use GetTargetCurrentHP")]
     public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
 
     /// <summary> Gets an object's maximum HP. Defaults to CurrentTarget unless specified. </summary>

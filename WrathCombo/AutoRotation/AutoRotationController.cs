@@ -253,7 +253,7 @@ namespace WrathCombo.AutoRotation
 
             if (regenSpell != 0 && !JustUsed(regenSpell, 4) && Svc.Targets.FocusTarget != null && (!HasStatusEffect(regenBuff, out var regen, Svc.Targets.FocusTarget) || regen?.RemainingTime <= 5f))
             {
-                var query = Svc.Objects.Where(x => !x.IsDead && x.IsHostile() && x.IsTargetable);
+                var query = Svc.Objects.Where(x => !x.IsDead && x.IsTargetable && x.IsHostile());
                 if (!query.Any())
                     return;
 
@@ -569,7 +569,10 @@ namespace WrathCombo.AutoRotation
 
                 bool switched = SwitchOnDChole(attributes, outAct, ref target);
 
-                var canUseSelf = NIN.MudraSigns.Any(x => x == outAct) ? target is not null && target.IsHostile() : ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
+                var canUseSelf = NIN.MudraSigns.Contains(outAct)
+                    ? target is not null && target.IsHostile()
+                    : ActionManager.CanUseActionOnTarget(outAct, Player.GameObject);
+
                 var blockedSelfBuffs = GetCooldown(outAct).CooldownTotal >= 5;
 
                 if (cfg.InCombatOnly && NotInCombat && !(canUseSelf && cfg.BypassBuffs && !blockedSelfBuffs))
@@ -579,8 +582,13 @@ namespace WrathCombo.AutoRotation
                     return false;
 
                 var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
-                var canUseTarget = target is null ? false : ActionManager.CanUseActionOnTarget(outAct, target.Struct());
-                var inRange = target is null && canUseSelf ? true : target is null ? false : IsInLineOfSight(target) && NIN.MudraSigns.Any(x => x == outAct) ? GetTargetDistance(target) <= 20 : InActionRange(outAct, target);
+                var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
+
+                var inRange = target is null
+                    ? canUseSelf
+                    : IsInLineOfSight(target) && (NIN.MudraSigns.Contains(outAct)
+                        ? GetTargetDistance(target) <= 20f
+                        : InActionRange(outAct, target));
 
                 var canUse = (canUseSelf || canUseTarget || areaTargeted) && (outAct.ActionType() is { } type && (type is ActionType.Ability || type is not ActionType.Ability && RemainingGCD == 0));
 
@@ -656,7 +664,7 @@ namespace WrathCombo.AutoRotation
                 IsInRange(chara, cfg.DPSSettings.MaxDistance) &&
                 GetTargetHeightDifference(chara) <= cfg.DPSSettings.MaxDistance &&
                 !TargetIsInvincible(chara) &&
-                !Service.Configuration.IgnoredNPCs.Any(x => x.Key == chara.DataId) &&
+                !Service.Configuration.IgnoredNPCs.ContainsKey(chara.DataId) &&
                 ((cfg.DPSSettings.OnlyAttackInCombat && chara.Struct()->InCombat) || !cfg.DPSSettings.OnlyAttackInCombat) &&
                 IsInLineOfSight(chara);
 
