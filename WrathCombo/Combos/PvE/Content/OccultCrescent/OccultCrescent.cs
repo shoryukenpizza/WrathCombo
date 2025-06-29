@@ -202,7 +202,7 @@ internal partial class OccultCrescent
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick) && ActionWatching.NumberOfGcdsUsed > 3)
                 return OccultQuick; //damage buff
             
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel) && TargetIsHostile() && HasPhantomDispelStatus(CurrentTarget))
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel) && HasBattleTarget() && HasPhantomDispelStatus(CurrentTarget))
                 return OccultDispel; //cleanse
             
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultMageMasher, OccultMageMasher) && !HasStatusEffect(Debuffs.OccultMageMasher, CurrentTarget))
