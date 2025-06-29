@@ -111,6 +111,9 @@ internal partial class SGE
     {
         bool shieldCheck = GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_AoE_Heal_EPrognosisOption &&
                            GetPartyBuffPercent(SCH.Buffs.Galvanize) <= SGE_AoE_Heal_EPrognosisOption;
+
+        bool anyPanhaima = !SGE_ST_Heal_PanhaimaOpts[0] ||
+                           !HasStatusEffect(Buffs.Panhaima, null, true);
         switch (i)
         {
             case 0:
@@ -139,7 +142,7 @@ internal partial class SGE
 
             case 4:
                 action = Panhaima;
-                enabled = IsEnabled(CustomComboPreset.SGE_AoE_Heal_Panhaima);
+                enabled = IsEnabled(CustomComboPreset.SGE_AoE_Heal_Panhaima) && anyPanhaima;
                 return SGE_AoE_Heal_PanhaimaOption;
 
             case 5:

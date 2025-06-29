@@ -204,7 +204,9 @@ internal partial class SGE : Healer
                 return OriginalHook(Toxikon);
 
             //Pneuma
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS__Pneuma) &&
+            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Pneuma) &&
+                (SGE_AoE_DPS_Pneuma_SubOption == 0 ||
+                 SGE_AoE_DPS_Pneuma_SubOption == 1 && TargetIsBoss()) &&
                 ActionReady(Pneuma) && HasBattleTarget() &&
                 InActionRange(Pneuma))
                 return Pneuma;

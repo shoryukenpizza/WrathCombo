@@ -5439,7 +5439,7 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Pneuma Option", "Adds Pneuma if available.", SGE.JobID)]
-    SGE_AoE_DPS__Pneuma = 14059,
+    SGE_AoE_DPS_Pneuma = 14059,
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Soteria Option", "Weaves Soteria if you have the Kardia buff.", SGE.JobID)]
