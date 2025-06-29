@@ -21,9 +21,6 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Gets the current target or null. </summary>
     public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
-    /// <summary> Gets the current mouseover target or null. </summary>
-    public static IGameObject? CurrentMouseOverTarget => Svc.Targets.MouseOverTarget;
-
     #region Target Checks
 
     /// <summary> Find if the player has a target. </summary>
@@ -227,13 +224,16 @@ internal abstract partial class CustomComboFunctions
         return Math.Abs(targetChara.Position.Y - sourceChara.Position.Y);
     }
 
-    /// <summary> Gets the number of enemies within range of an action. </summary>
+    /// <summary>
+    ///     Gets the number of enemies within range of an AoE action. <br/>
+    ///     If the action requires a target, defaults to CurrentTarget unless specified.
+    /// </summary>
     public static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
     {
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
             return 0;
 
-        if (sheetSpell.CanTargetHostile && (target is null || GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId)))
+        if (sheetSpell.CanTargetHostile && ((target ??= CurrentTarget) is null || GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId)))
             return 0;
 
         int count = sheetSpell.CastType switch
