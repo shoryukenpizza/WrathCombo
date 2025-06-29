@@ -32,11 +32,11 @@ internal partial class OccultCrescent
         #endregion
 
         #region Berserker
-        if (IsEnabled(CustomComboPreset.Phantom_Berserker))
+        if (IsEnabled(CustomComboPreset.Phantom_Berserker) && HasBattleTarget())
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_Rage, Rage) && CanWeave())
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_Rage, Rage) && InMeleeRange() && CanWeave())
                 return Rage; //buff
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_DeadlyBlow, DeadlyBlow) && GetStatusEffectRemainingTime(Buffs.PentupRage) <= 3f)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_Berserker_DeadlyBlow, DeadlyBlow) && GetStatusEffectRemainingTime(Buffs.PentupRage) <= 3f && GetTargetDistance() <= 5f)
                 return DeadlyBlow; //action that is better when buff timer is low
         }
         #endregion
@@ -199,7 +199,7 @@ internal partial class OccultCrescent
         #region Time Mage
         if (IsEnabled(CustomComboPreset.Phantom_TimeMage))
         {
-            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick) && InCombat() && ActionWatching.NumberOfGcdsUsed > 3)
+            if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) && !HasStatusEffect(Buffs.OccultQuick) && ActionWatching.NumberOfGcdsUsed > 3)
                 return OccultQuick; //damage buff
             
             if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultDispel, OccultDispel) && TargetIsHostile() && HasPhantomDispelStatus(CurrentTarget))
@@ -213,18 +213,25 @@ internal partial class OccultCrescent
                 // Make comet fast
                 if (Config.Phantom_TimeMage_Comet_RequireSpeed &&
                     Config.Phantom_TimeMage_Comet_UseSpeed &&
-                    !HasStatusEffect(Buffs.OccultQuick) &&
-                    !JustUsed(OccultQuick) && 
-                    !HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) &&
-                    !JustUsed(RoleActions.Magic.Swiftcast))
+                    !HasStatusEffect(Buffs.OccultQuick) && !JustUsed(OccultQuick) &&
+                    !HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) && !JustUsed(RoleActions.Magic.Swiftcast) &&
+                    !HasStatusEffect(BLM.Buffs.Triplecast) && !JustUsed(BLM.Triplecast) &&
+                    !HasStatusEffect(PLD.Buffs.Requiescat) && !JustUsed(PLD.Imperator) &&
+                    !HasStatusEffect(RDM.Buffs.Dualcast))
+                {
                     if (HasActionEquipped(OccultQuick) && ActionReady(OccultQuick))
                         return OccultQuick;
+
                     else if (ActionReady(RoleActions.Magic.Swiftcast))
                         return RoleActions.Magic.Swiftcast;
+                }
                 
                 if (!Config.Phantom_TimeMage_Comet_RequireSpeed ||
-                    (HasStatusEffect(Buffs.OccultQuick) ||
-                     HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast)))
+                    HasStatusEffect(Buffs.OccultQuick) ||
+                    HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) ||
+                    HasStatusEffect(BLM.Buffs.Triplecast) ||
+                    HasStatusEffect(PLD.Buffs.Requiescat) ||
+                    HasStatusEffect(RDM.Buffs.Dualcast))
                     return OccultComet; // damage
             }
             
