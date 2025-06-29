@@ -2,7 +2,6 @@
 
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Combos.PvP;
 using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
 
@@ -2548,7 +2547,7 @@ public enum CustomComboPreset
     DRG_ST_HighJump = 6113,
 
     [ParentCombo(DRG_ST_HighJump)]
-    [CustomComboInfo("(High) Jump Melee option", "Adds (High) Jump to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("(High) Jump Melee option", "Adds (High) Jump to the rotation when in melee range.", DRG.JobID)]
     DRG_ST_HighJump_Melee = 6114,
 
     [ParentCombo(DRG_ST_CDs)]
@@ -2564,7 +2563,7 @@ public enum CustomComboPreset
     DRG_ST_DragonfireDive = 6107,
 
     [ParentCombo(DRG_ST_DragonfireDive)]
-    [CustomComboInfo("Dragonfire Dive Melee option", "Adds Dragonfire Dive to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("Dragonfire Dive Melee option", "Adds Dragonfire Dive to the rotation when in melee range.", DRG.JobID)]
     DRG_ST_DragonfireDive_Melee = 6108,
 
     [ParentCombo(DRG_ST_CDs)]
@@ -2580,7 +2579,7 @@ public enum CustomComboPreset
     DRG_ST_Stardiver = 6110,
 
     [ParentCombo(DRG_ST_Stardiver)]
-    [CustomComboInfo("Stardiver Melee option", "Adds Stardiver to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("Stardiver Melee option", "Adds Stardiver to the rotation when in melee range.", DRG.JobID)]
     DRG_ST_Stardiver_Melee = 6111,
 
     [ParentCombo(DRG_ST_CDs)]
@@ -2650,7 +2649,7 @@ public enum CustomComboPreset
     DRG_AoE_HighJump = 6213,
 
     [ParentCombo(DRG_AoE_HighJump)]
-    [CustomComboInfo("(High) Jump Melee option", "Adds (High) Jump to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("(High) Jump Melee option", "Adds (High) Jump to the rotation when in melee range.", DRG.JobID)]
     DRG_AoE_HighJump_Melee = 6214,
 
     [ParentCombo(DRG_AoE_CDs)]
@@ -2662,7 +2661,7 @@ public enum CustomComboPreset
     DRG_AoE_DragonfireDive = 6207,
 
     [ParentCombo(DRG_AoE_DragonfireDive)]
-    [CustomComboInfo("Dragonfire Dive Melee option", "Adds Dragonfire Dive to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("Dragonfire Dive Melee option", "Adds Dragonfire Dive to the rotation when in melee range.", DRG.JobID)]
     DRG_AoE_DragonfireDive_Melee = 6208,
 
     [ParentCombo(DRG_AoE_CDs)]
@@ -2678,7 +2677,7 @@ public enum CustomComboPreset
     DRG_AoE_Stardiver = 6210,
 
     [ParentCombo(DRG_AoE_Stardiver)]
-    [CustomComboInfo("Stardiver Melee option", "Adds Stardiver to the rotation when in melee range & when not moving.", DRG.JobID)]
+    [CustomComboInfo("Stardiver Melee option", "Adds Stardiver to the rotation when in melee range.", DRG.JobID)]
     DRG_AoE_Stardiver_Melee = 6211,
 
     [ParentCombo(DRG_AoE_CDs)]
@@ -5433,20 +5432,20 @@ public enum CustomComboPreset
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Balance Opener (Level 92)", "Use the Balance opener from level 92 onwards.", SGE.JobID)]
     SGE_ST_DPS_Opener = 14055,
-
-    [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.",
-        SGE.JobID)]
-    SGE_ST_DPS_Lucid = 14002,
-
+    
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Eukrasian Dosis Option", "Automatic DoT Uptime.", SGE.JobID)]
     SGE_ST_DPS_EDosis = 14003,
 
     [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Movement Options", "Use selected instant cast actions while moving.", SGE.JobID)]
-    SGE_ST_DPS_Movement = 14004,
+    [CustomComboInfo("Addersgall Overflow Protection", "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_DPS_AddersgallProtect = 14054,
 
+    [ParentCombo(SGE_ST_DPS)]
+    [CustomComboInfo("Rhizomata Option", "Weaves Rhizomata when Addersgall gauge falls below the specified value.", SGE.JobID)]
+    SGE_ST_DPS_Rhizo = 14007,
+    
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Phlegma Option", "Use Phlegma if available and within range.", SGE.JobID)]
     SGE_ST_DPS_Phlegma = 14005,
@@ -5456,27 +5455,24 @@ public enum CustomComboPreset
     SGE_ST_DPS_Phlegma_Burst = 14062,
 
     [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia when not under the effect.", SGE.JobID)]
-    SGE_ST_DPS_Kardia = 14006,
-
-    [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Rhizomata Option", "Weaves Rhizomata when Addersgall gauge falls below the specified value.",
-        SGE.JobID)]
-    SGE_ST_DPS_Rhizo = 14007,
-
-    [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Soteria Option", "Weaves Soteria if you have the Kardia buff.", SGE.JobID)]
-    SGE_ST_DPS_Soteria = 14056,
-
-    [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Psyche Option", "Weaves Psyche when available.", SGE.JobID)]
     SGE_ST_DPS_Psyche = 14008,
 
     [ParentCombo(SGE_ST_DPS)]
-    [CustomComboInfo("Addersgall Overflow Protection",
-        "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
-    [PossiblyRetargeted]
-    SGE_ST_DPS_AddersgallProtect = 14054,
+    [CustomComboInfo("Movement Options", "Use selected instant cast actions while moving.", SGE.JobID)]
+    SGE_ST_DPS_Movement = 14004,
+
+    [ParentCombo(SGE_ST_DPS)]
+    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia when not under the effect.", SGE.JobID)]
+    SGE_ST_DPS_Kardia = 14006,
+
+    [ParentCombo(SGE_ST_DPS)]
+    [CustomComboInfo("Soteria Option", "Weaves Soteria if you have the Kardia buff.", SGE.JobID)]
+    SGE_ST_DPS_Soteria = 14056,
+    
+    [ParentCombo(SGE_ST_DPS)]
+    [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP drops below the specified value.", SGE.JobID)]
+    SGE_ST_DPS_Lucid = 14002,
 
     #endregion
 
@@ -5488,8 +5484,24 @@ public enum CustomComboPreset
     SGE_AoE_DPS = 14009,
 
     [ParentCombo(SGE_AoE_DPS)]
+    [CustomComboInfo("Eukrasia Option", "Uses Eukrasia for Eukrasia Dyskrasia.", SGE.JobID)]
+    SGE_AoE_DPS_EDyskrasia = 14052,
+
+    [ParentCombo(SGE_AoE_DPS)]
+    [CustomComboInfo("Addersgall Overflow Protection", "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
+    SGE_AoE_DPS_AddersgallProtect = 14053,
+
+    [ParentCombo(SGE_AoE_DPS)]
+    [CustomComboInfo("Rhizomata Option", "Weaves Rhizomata when Addersgall gauge falls below the specified value.", SGE.JobID)]
+    SGE_AoE_DPS_Rhizo = 14013,
+
+    [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Phlegma Option", "Uses Phlegma if available.", SGE.JobID)]
     SGE_AoE_DPS_Phlegma = 14010,
+
+    [ParentCombo(SGE_AoE_DPS)]
+    [CustomComboInfo("Psyche Option", "Weaves Psyche if available.", SGE.JobID)]
+    SGE_AoE_DPS_Psyche = 14051,
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Toxikon Option", "Use Toxikon if available.", SGE.JobID)]
@@ -5497,45 +5509,38 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Pneuma Option", "Adds Pneuma if available.", SGE.JobID)]
-    SGE_AoE_DPS__Pneuma = 14059,
-
-    [ParentCombo(SGE_AoE_DPS)]
-    [CustomComboInfo("Psyche Option", "Weaves Psyche if available.", SGE.JobID)]
-    SGE_AoE_DPS_Psyche = 14051,
-
-    [ParentCombo(SGE_AoE_DPS)]
-    [CustomComboInfo("Eukrasia Option", "Uses Eukrasia for Eukrasia Dyskrasia.", SGE.JobID)]
-    SGE_AoE_DPS_EDyskrasia = 14052,
-
-    [ParentCombo(SGE_AoE_DPS)]
-    [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP falls below the specified value.",
-        SGE.JobID)]
-    SGE_AoE_DPS_Lucid = 14012,
-
-    [ParentCombo(SGE_AoE_DPS)]
-    [CustomComboInfo("Rhizomata Option", "Weaves Rhizomata when Addersgall gauge falls below the specified value.",
-        SGE.JobID)]
-    SGE_AoE_DPS_Rhizo = 14013,
+    SGE_AoE_DPS_Pneuma = 14059,
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Soteria Option", "Weaves Soteria if you have the Kardia buff.", SGE.JobID)]
     SGE_AoE_DPS_Soteria = 14057,
-
+    
     [ParentCombo(SGE_AoE_DPS)]
-    [CustomComboInfo("Addersgall Overflow Protection",
-        "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
-    SGE_AoE_DPS_AddersgallProtect = 14053,
-
+    [CustomComboInfo("Lucid Dreaming Option", "Weaves Lucid Dreaming when your MP falls below the specified value.", SGE.JobID)]
+    SGE_AoE_DPS_Lucid = 14012,
+    
     #endregion
 
-    #region Diagnosis Simple Single Target Heal
+    #region Single Target Heal
 
     [AutoAction(false, true)]
     [ReplaceSkill(SGE.Diagnosis)]
-    [CustomComboInfo("Simple Heals - Single Target", "Supports soft-targeting.\nOptions below are in priority order.",
-        SGE.JobID)]
+    [CustomComboInfo("Simple Heals - Single Target", "Change Diagnosis into various options.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_ST_Heal = 14014,
+
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SGE.JobID)]
+    SGE_ST_Heal_Lucid = 14063,
+
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Rhizomata Option", "Adds Rhizomata when Addersgall is 0.", SGE.JobID)]
+    SGE_ST_Heal_Rhizomata = 14023,
+
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Apply Kardia Option", "Applies Kardia to your target if it's not applied to anyone else.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Kardia = 14016,
 
     [ParentCombo(SGE_ST_Heal)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", SGE.JobID)]
@@ -5543,26 +5548,14 @@ public enum CustomComboPreset
     SGE_ST_Heal_Esuna = 14015,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Apply Kardia Option", "Applies Kardia to your target if it's not applied to anyone else.",
-        SGE.JobID)]
+    [CustomComboInfo("Eukrasian Diagnosis Option", "Diagnosis becomes Eukrasian Diagnosis if the shield is not applied to the target.", SGE.JobID)]
     [PossiblyRetargeted]
-    SGE_ST_Heal_Kardia = 14016,
+    SGE_ST_Heal_EDiagnosis = 14017,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Rhizomata Option", "Adds Rhizomata when Addersgall is 0.", SGE.JobID)]
-    SGE_ST_Heal_Rhizomata = 14023,
-
-    [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Soteria Option", "Applies Soteria.", SGE.JobID)]
-    SGE_ST_Heal_Soteria = 14018,
-
-    [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Zoe Option", "Applies Zoe.", SGE.JobID)]
-    SGE_ST_Heal_Zoe = 14019,
-
-    [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", SGE.JobID)]
-    SGE_ST_Heal_Pepsis = 14020,
+    [CustomComboInfo("Druochole Option", "Applies Druochole.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Druochole = 14025,
 
     [ParentCombo(SGE_ST_Heal)]
     [CustomComboInfo("Taurochole Option", "Adds Taurochole.", SGE.JobID)]
@@ -5573,60 +5566,64 @@ public enum CustomComboPreset
     [CustomComboInfo("Haima Option", "Applies Haima.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_ST_Heal_Haima = 14022,
+    
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Soteria Option", "Applies Soteria.", SGE.JobID)]
+    SGE_ST_Heal_Soteria = 14018,
 
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Zoe Option", "Applies Zoe.", SGE.JobID)]
+    SGE_ST_Heal_Zoe = 14019,
+    
     [ParentCombo(SGE_ST_Heal)]
     [CustomComboInfo("Krasis Option", "Applies Krasis.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_ST_Heal_Krasis = 14024,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Druochole Option", "Applies Druochole.", SGE.JobID)]
-    [PossiblyRetargeted]
-    SGE_ST_Heal_Druochole = 14025,
-
-    [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Eukrasian Diagnosis Option",
-        "Diagnosis becomes Eukrasian Diagnosis if the shield is not applied to the target.", SGE.JobID)]
-    [PossiblyRetargeted]
-    SGE_ST_Heal_EDiagnosis = 14017,
+    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", SGE.JobID)]
+    SGE_ST_Heal_Pepsis = 14020,
 
     #endregion
 
-    #region Sage Simple AoE Heal
+    #region AoE Heal
 
     [AutoAction(true, true)]
     [ReplaceSkill(SGE.Prognosis)]
-    [CustomComboInfo("Simple Heals - AoE", "Customize your AoE healing to your liking.", SGE
-        .JobID)]
+    [CustomComboInfo("Simple Heals - AoE", "Change Prognosis into various options.", SGE.JobID)]
     SGE_AoE_Heal = 14026,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Kerachole Option", "Adds Kerachole.", SGE.JobID)]
-    SGE_AoE_Heal_Kerachole = 14035,
+    [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP drops below slider value:", SGE.JobID)]
+    SGE_AoE_Heal_Lucid = 14064,
+
+    [ParentCombo(SGE_AoE_Heal)]
+    [CustomComboInfo("Rhizomata Option", "Adds Rhizomata when Addersgall is 0.", SGE.JobID)]
+    SGE_AoE_Heal_Rhizomata = 14036,
+
+    [ParentCombo(SGE_AoE_Heal)]
+    [CustomComboInfo("Eukrasian Prognosis Option", "Adds Eukrasian Prognosis.", SGE.JobID)]
+    SGE_AoE_Heal_EPrognosis = 14028,
 
     [ParentCombo(SGE_AoE_Heal)]
     [CustomComboInfo("Ixochole Option", "Adds Ixochole.", SGE.JobID)]
     SGE_AoE_Heal_Ixochole = 14033,
 
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Physis Option", "Adds Physis.", SGE.JobID)]
-    SGE_AoE_Heal_Physis = 14027,
+    [CustomComboInfo("Kerachole Option", "Adds Kerachole.", SGE.JobID)]
+    SGE_AoE_Heal_Kerachole = 14035,
 
     [ParentCombo(SGE_AoE_Heal)]
     [CustomComboInfo("Holos Option", "Adds Holos.", SGE.JobID)]
     SGE_AoE_Heal_Holos = 14030,
 
     [ParentCombo(SGE_AoE_Heal)]
+    [CustomComboInfo("Physis Option", "Adds Physis.", SGE.JobID)]
+    SGE_AoE_Heal_Physis = 14027,
+    
+    [ParentCombo(SGE_AoE_Heal)]
     [CustomComboInfo("Panhaima Option", "Adds Panhaima.", SGE.JobID)]
     SGE_AoE_Heal_Panhaima = 14031,
-
-    [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", SGE.JobID)]
-    SGE_AoE_Heal_Pepsis = 14032,
-
-    [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Philosophia Option", "Adds Philosophia.", SGE.JobID)]
-    SGE_AoE_Heal_Philosophia = 14050,
 
     [ParentCombo(SGE_AoE_Heal)]
     [CustomComboInfo("Zoe Option", "Adds Zoe.", SGE.JobID)]
@@ -5635,16 +5632,39 @@ public enum CustomComboPreset
     [ParentCombo(SGE_AoE_Heal_Zoe)]
     [CustomComboInfo("Pneuma Option", "Chain to Pneuma After.", SGE.JobID)]
     SGE_AoE_Heal_ZoePneuma = 14060,
-
+    
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Eukrasian Prognosis Option",
-        "Prognosis becomes Eukrasian Prognosis if the shield is not applied.", SGE.JobID)]
-    SGE_AoE_Heal_EPrognosis = 14028,
-
+    [CustomComboInfo("Philosophia Option", "Adds Philosophia.", SGE.JobID)]
+    SGE_AoE_Heal_Philosophia = 14050,
+    
     [ParentCombo(SGE_AoE_Heal)]
-    [CustomComboInfo("Rhizomata Option", "Adds Rhizomata when Addersgall is 0.", SGE.JobID)]
-    SGE_AoE_Heal_Rhizomata = 14036,
+    [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", SGE.JobID)]
+    SGE_AoE_Heal_Pepsis = 14032,
+    
+    #endregion
+    
+    #region Overprotect
 
+    [ReplaceSkill(SGE.Kerachole)]
+    [CustomComboInfo("Spell Overlap Protection", "Prevents you from wasting actions if under the effect of someone else's actions", SGE.JobID)]
+    SGE_OverProtect = 14043,
+
+    [ParentCombo(SGE_OverProtect)]
+    [CustomComboInfo("Under Kerachole", "Don't use Kerachole when under the effect of someone's Kerachole", SGE.JobID)]
+    SGE_OverProtect_Kerachole = 14044,
+
+    [ParentCombo(SGE_OverProtect_Kerachole)]
+    [CustomComboInfo("Under Sacred Soil", "Don't use Kerachole when under the effect of someone's Sacred Soil", SGE.JobID)]
+    SGE_OverProtect_SacredSoil = 14045,
+
+    [ParentCombo(SGE_OverProtect)]
+    [CustomComboInfo("Under Panhaima", "Don't use Panhaima when under the effect of someone's Panhaima", SGE.JobID)]
+    SGE_OverProtect_Panhaima = 14046,
+
+    [ParentCombo(SGE_OverProtect)]
+    [CustomComboInfo("Under Philosophia", "Don't use Philosophia when under the effect of someone's Philosophia", SGE.JobID)]
+    SGE_OverProtect_Philosophia = 14047,
+    
     #endregion
 
     #region Misc Healing
@@ -5660,8 +5680,6 @@ public enum CustomComboPreset
 
     [ReplaceSkill(SGE.Pneuma)]
     [CustomComboInfo("Zoe Pneuma Feature", "Places Zoe on top of Pneuma when both actions are on cooldown.", SGE.JobID)]
-
-    //Temporary to keep the order
     SGE_ZoePneuma = 14039,
 
     #endregion
@@ -5670,8 +5688,7 @@ public enum CustomComboPreset
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
-    [CustomComboInfo("Swiftcast Raise Feature", "Changes Swiftcast to Egeiro while Swiftcast is on cooldown.",
-        SGE.JobID)]
+    [CustomComboInfo("Swiftcast Raise Feature", "Changes Swiftcast to Egeiro while Swiftcast is on cooldown.", SGE.JobID)]
     SGE_Raise = 14040,
 
     [ParentCombo(SGE_Raise)]
@@ -5680,42 +5697,16 @@ public enum CustomComboPreset
     SGE_Raise_Retarget = 14061,
 
     [ReplaceSkill(SGE.Soteria)]
-    [CustomComboInfo("Soteria to Kardia Feature",
-        "Soteria turns into Kardia when not active or Soteria is on-cooldown.", SGE.JobID)]
+    [CustomComboInfo("Soteria to Kardia Feature", "Soteria turns into Kardia when not active or Soteria is on-cooldown.", SGE.JobID)]
     SGE_Kardia = 14041,
 
     [ReplaceSkill(SGE.Eukrasia)]
-    [CustomComboInfo("Eukrasia Feature", "Eukrasia turns into the selected Eukrasian-type action when active.",
-        SGE.JobID)]
+    [CustomComboInfo("Eukrasia Feature", "Eukrasia turns into the selected Eukrasian-type action when active.", SGE.JobID)]
     SGE_Eukrasia = 14042,
-
-    [ReplaceSkill(SGE.Kerachole)]
-    [CustomComboInfo("Spell Overlap Protection",
-        "Prevents you from wasting actions if under the effect of someone else's actions", SGE.JobID)]
-    SGE_OverProtect = 14043,
-
-    [ParentCombo(SGE_OverProtect)]
-    [CustomComboInfo("Under Kerachole", "Don't use Kerachole when under the effect of someone's Kerachole", SGE.JobID)]
-    SGE_OverProtect_Kerachole = 14044,
-
-    [ParentCombo(SGE_OverProtect_Kerachole)]
-    [CustomComboInfo("Under Sacred Soil", "Don't use Kerachole when under the effect of someone's Sacred Soil",
-        SGE.JobID)]
-    SGE_OverProtect_SacredSoil = 14045,
-
-    [ParentCombo(SGE_OverProtect)]
-    [CustomComboInfo("Under Panhaima", "Don't use Panhaima when under the effect of someone's Panhaima", SGE.JobID)]
-    SGE_OverProtect_Panhaima = 14046,
-
-    [ParentCombo(SGE_OverProtect)]
-    [CustomComboInfo("Under Philosophia", "Don't use Philosophia when under the effect of someone's Philosophia",
-        SGE.JobID)]
-    SGE_OverProtect_Philosophia = 14047,
-
+    
     [Variant]
     [VariantParent(SGE_ST_DPS_EDosis, SGE_AoE_DPS)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SGE.JobID)]
+    [CustomComboInfo("Spirit Dart Option", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SGE.JobID)]
     SGE_DPS_Variant_SpiritDart = 14048,
 
     [Variant]
@@ -5725,7 +5716,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last used number = 14062
+    // Last used number = 14064
 
     #endregion
 
