@@ -175,8 +175,10 @@ internal partial class AST : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AOE_DPS;
         protected override uint Invoke(uint actionID)
         {
+            #region Variables
             bool cardPooling = IsEnabled(CustomComboPreset.AST_AOE_CardPool);
             bool lordPooling = IsEnabled(CustomComboPreset.AST_AOE_LordPool);
+            #endregion
 
             if (!GravityList.Contains(actionID))
                 return actionID;
@@ -191,26 +193,28 @@ internal partial class AST : Healer
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
+            //Lightspeed Movement
             if (IsEnabled(CustomComboPreset.AST_AOE_LightSpeed) &&
                 ActionReady(Lightspeed) &&
                 GetTargetHPPercent() > Config.AST_AOE_LightSpeedOption &&
                 IsMoving() &&
                 !HasStatusEffect(Buffs.Lightspeed) &&
                 (IsNotEnabled(CustomComboPreset.AST_AOE_LightSpeedHold) ||
-                GetCooldownChargeRemainingTime(Lightspeed) < GetCooldownRemainingTime(Divination)  ||
+                LightspeedChargeCD < DivinationCD  ||
                 !LevelChecked(Divination)))
                 return Lightspeed;            
 
+            //Lucid Dreaming
             if (IsEnabled(CustomComboPreset.AST_AOE_Lucid) &&
                 Role.CanLucidDream(Config.AST_AOE_LucidDreaming))
                 return Role.LucidDreaming;
 
-            //Play Card with Pooling
+            //Play Card
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoPlay) &&
                 ActionReady(Play1) &&
-                Gauge.DrawnCards[0] is not CardType.None &&
+                HasDPSCard &&
                 CanSpellWeave() &&
-                (cardPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
+                (cardPooling && HasDivination ||
                 !cardPooling ||
                 !LevelChecked(Divination)))
                 return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
@@ -220,9 +224,9 @@ internal partial class AST : Healer
 
             //Minor Arcana / Lord of Crowns
             if (ActionReady(OriginalHook(MinorArcana)) &&
-                IsEnabled(CustomComboPreset.AST_AOE_LazyLord) && Gauge.DrawnCrownCard is CardType.Lord &&
-                HasBattleTarget() && CanDelayedWeave() &&
-                (lordPooling && HasStatusEffect(Buffs.Divination, anyOwner: true) ||
+                IsEnabled(CustomComboPreset.AST_AOE_LazyLord) && HasLord &&
+                HasBattleTarget() && CanSpellWeave() &&
+                (lordPooling && HasDivination ||
                 !lordPooling ||
                 !LevelChecked(Divination)))
                 return OriginalHook(MinorArcana);
@@ -230,16 +234,16 @@ internal partial class AST : Healer
             //Card Draw
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) &&
                 ActionReady(OriginalHook(AstralDraw)) &&
-                (Gauge.DrawnCards.All(x => x is CardType.None) ||
-                 (DrawnDPSCard == CardType.None && Config.AST_AOE_DPS_OverwriteHealCards)) &&
-                CanDelayedWeave())
+                (HasNoCards ||
+                 HasNoDPSCard && Config.AST_AOE_DPS_OverwriteHealCards) &&
+                CanSpellWeave())
                 return OriginalHook(AstralDraw);
             
             //Lightspeed Burst
             if (IsEnabled(CustomComboPreset.AST_AOE_LightspeedBurst) &&
                 ActionReady(Lightspeed) &&
                 !HasStatusEffect(Buffs.Lightspeed) &&
-                GetCooldownRemainingTime(Divination) < 5 &&
+                DivinationCD < 5 &&
                 ActionWatching.NumberOfGcdsUsed >= 3 &&
                 CanSpellWeave())
                 return Lightspeed;
@@ -247,9 +251,9 @@ internal partial class AST : Healer
             //Divination
             if (IsEnabled(CustomComboPreset.AST_AOE_Divination) &&
                 ActionReady(Divination) &&
-                !HasStatusEffect(Buffs.Divination, anyOwner: true) && //Overwrite protection
+                !HasDivination && //Overwrite protection
                 GetTargetHPPercent() > Config.AST_AOE_DivinationOption &&
-                CanDelayedWeave() &&
+                CanSpellWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return Divination;
 
@@ -262,12 +266,14 @@ internal partial class AST : Healer
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return EarthlyStar.Retarget(GravityList.ToArray(),
                     SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);            
-                
+            
+            //Oracle
             if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) &&
                 HasStatusEffect(Buffs.Divining) &&
                 CanSpellWeave())
                 return Oracle;
 
+            //MacroCosmos
             if (IsEnabled(CustomComboPreset.AST_AOE_DPS_MacroCosmos) &&
                 ActionReady(Macrocosmos) &&
                 !HasStatusEffect(Buffs.Macrocosmos) &&
