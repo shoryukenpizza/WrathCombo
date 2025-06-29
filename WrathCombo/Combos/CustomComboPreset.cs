@@ -6068,29 +6068,20 @@ public enum CustomComboPreset
 
     #region SCHOLAR
 
-    #region DPS
+    #region ST DPS
 
     [AutoAction(false, false)]
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4, SCH.Bio, SCH.Bio2, SCH.Biolysis)]
-    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below", SCH.JobID)]
+    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
     SCH_DPS = 16001,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", SCH.JobID)]
     SCH_DPS_Balance_Opener = 16009,
-
+    
     [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
-    SCH_DPS_FairyReminder = 16048,
-
-    [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
-    SCH_DPS_Lucid = 16002,
-
-    [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Chain Stratagem / Baneful Impact Weave Option",
-        "Adds Chain Stratagem & Baneful Impact on cooldown with overlap protection", SCH.JobID)]
-    SCH_DPS_ChainStrat = 16003,
+    [CustomComboInfo("Bio / Biolysis Option", "Automatic DoT uptime.", SCH.JobID)]
+    SCH_DPS_Bio = 16008,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Aetherflow Weave Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
@@ -6106,19 +6097,63 @@ public enum CustomComboPreset
     [CustomComboInfo("Energy Drain Burst Option",
         "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
     SCH_DPS_EnergyDrain_BurstSaver = 16006,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Chain Stratagem",
+        "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
+    SCH_DPS_ChainStrat = 16003,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Baneful Impact",
+        "Adds Baneful Impact when available.", SCH.JobID)]
+    SCH_DPS_BanefulImpact = 16052,
 
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Ruin II Moving Option", "Use Ruin II when you have to move.", SCH.JobID)]
     SCH_DPS_Ruin2Movement = 16007,
+    
+    [ParentCombo(SCH_DPS)]
+    [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
+    SCH_DPS_FairyReminder = 16048,
 
     [ParentCombo(SCH_DPS)]
-    [CustomComboInfo("Bio / Biolysis Option", "Automatic DoT uptime.", SCH.JobID)]
-    SCH_DPS_Bio = 16008,
+    [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
+    SCH_DPS_Lucid = 16002,
+    
+    #endregion
+    
+    #region AoE DPS
 
     [AutoAction(true, false)]
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
     [CustomComboInfo("AoE DPS Feature", "Replaces Art of War with options below.", SCH.JobID)]
     SCH_AoE = 16010,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Energy Drain Weave Option",
+        "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
+        SCH.JobID)]
+    SCH_AoE_EnergyDrain = 16056,
+
+    [ParentCombo(SCH_AoE_EnergyDrain)]
+    [CustomComboInfo("Energy Drain Burst Option",
+        "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
+    SCH_AoE_EnergyDrain_BurstSaver = 16055,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Chain Stratagem",
+        "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
+    SCH_AoE_ChainStrat = 16054,
+    
+    [ParentCombo(SCH_AoE_ChainStrat)]
+    [CustomComboInfo("Chain Stratagem",
+        "Will only use Chain Strategem when high enough level for Baneful Impaction and it is enabled.", SCH.JobID)]
+    SCH_AoE_ChainStrat_BanefulOnly = 16057,
+    
+    [ParentCombo(SCH_AoE)]
+    [CustomComboInfo("Baneful Impact",
+        "Adds Baneful Impact when available.", SCH.JobID)]
+    SCH_AoE_BanefulImpact = 16053,
 
     [ParentCombo(SCH_AoE)]
     [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
@@ -6135,81 +6170,6 @@ public enum CustomComboPreset
     #endregion
 
     #region Healing
-
-    [ReplaceSkill(SCH.FeyBlessing)]
-    [CustomComboInfo("Fey Blessing to Seraph's Consolation Feature",
-        "Change Fey Blessing into Consolation when Seraph is out.", SCH.JobID)]
-    SCH_Consolation = 16013,
-
-    [ReplaceSkill(SCH.Lustrate)]
-    [CustomComboInfo("Lustrate to Excogitation Feature",
-        "Change Lustrate into Excogitation when Excogitation is ready.", SCH.JobID)]
-    SCH_Lustrate = 16014,
-
-    [ReplaceSkill(SCH.Recitation)]
-    [CustomComboInfo("Recitation Combo Feature",
-        "Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.", SCH.JobID)]
-    SCH_Recitation = 16015,
-
-    [ReplaceSkill(SCH.WhisperingDawn)]
-    [CustomComboInfo("Fairy Healing Combo Feature",
-        "Change Whispering Dawn into Fey Illumination, Fey Blessing, then Whispering Dawn when used.", SCH.JobID)]
-    SCH_Fairy_Combo = 16016,
-
-    [ParentCombo(SCH_Fairy_Combo)]
-    [CustomComboInfo("Consolation During Seraph Option", "Adds Consolation during Seraph.", SCH.JobID)]
-    SCH_Fairy_Combo_Consolation = 16017,
-
-    [AutoAction(true, true)]
-    [ReplaceSkill(SCH.Succor)]
-    [CustomComboInfo("Simple Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
-    SCH_AoE_Heal = 16018,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP isn't high enough to cast Succor.",
-        SCH.JobID)]
-    SCH_AoE_Heal_Lucid = 16019,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Aetherflow Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
-    SCH_AoE_Heal_Aetherflow = 16020,
-
-    [ParentCombo(SCH_AoE_Heal_Aetherflow)]
-    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Aetherflow is Indomitability is ready to use.",
-        SCH.JobID)]
-    SCH_AoE_Heal_Aetherflow_Indomitability = 16021,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Disspation Option", "Use Dissipation when out of Aetherflow stacks.", SCH.JobID)]
-    SCH_AoE_Heal_Dissipation = 16041,
-    
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Recitation Option", "Use Recitation to buff the selected heals", SCH.JobID)]
-    SCH_AoE_Heal_Recitation = 16051,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Indomitability Option", "Use Indomitability before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Indomitability = 16022,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_FeyIllumination = 16042,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_WhisperingDawn = 16043,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Seraphism Option", "Use Seraphism before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Seraphism = 16044,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_FeyBlessing = 16045,
-
-    [ParentCombo(SCH_AoE_Heal)]
-    [CustomComboInfo("Consolation", "Use Consolation before using Succor.", SCH.JobID)]
-    SCH_AoE_Heal_Consolation = 16046,
 
     [AutoAction(false, true)]
     [ReplaceSkill(SCH.Physick)]
@@ -6236,46 +6196,169 @@ public enum CustomComboPreset
     SCH_ST_Heal_Esuna = 16026,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Adloquium Option", "Use Adloquium when missing Galvanize or target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Adloquium Option", "Use Adloquium", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Adloquium = 16027,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Lustrate Option", "Use Lustrate when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Lustrate Option", "Use Lustrate", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Lustrate = 16028,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Excogitation Option", "Use Excogitation when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Excogitation Option", "Use Excogitation", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Excogitation = 16038,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Protraction Option", "Use Protraction when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Protraction Option", "Use Protraction", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Protraction = 16039,
 
     [ParentCombo(SCH_ST_Heal)]
-    [CustomComboInfo("Aetherpact Option", "Use Aetherpact when target HP%% below:", SCH.JobID)]
+    [CustomComboInfo("Aetherpact Option", "Use Aetherpact", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal_Aetherpact = 16047,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", SCH.JobID)]
+    SCH_ST_Heal_WhisperingDawn = 16067,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", SCH.JobID)]
+    SCH_ST_Heal_FeyIllumination = 16068,
+    
+    [ParentCombo(SCH_ST_Heal)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", SCH.JobID)]
+    SCH_ST_Heal_FeyBlessing = 16069,
 
+    [AutoAction(true, true)]
+    [ReplaceSkill(SCH.Succor)]
+    [CustomComboInfo("Simple Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
+    SCH_AoE_Heal = 16018,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Indomitability Option", "Use Indomitabilty", SCH.JobID)]
+    SCH_AoE_Heal_Indomitability = 16022,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Whispering Dawn Option", "Use Whispering Dawn", SCH.JobID)]
+    SCH_AoE_Heal_WhisperingDawn = 16043,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Fey Illumination Option", "Use Fey Illumination", SCH.JobID)]
+    SCH_AoE_Heal_FeyIllumination = 16042,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Fey Blessing Option", "Use Fey Blessing", SCH.JobID)]
+    SCH_AoE_Heal_FeyBlessing = 16045,
+
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Seraphism Option", "Use Seraphism", SCH.JobID)]
+    SCH_AoE_Heal_Seraphism = 16044,
+
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Summon Seraph Option", "Use Summon Seraph", SCH.JobID)]
+    SCH_AoE_Heal_SummonSeraph = 16063,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Consolation Option", "Use Consolation", SCH.JobID)]
+    SCH_AoE_Heal_Consolation = 16046,
+
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Aetherflow Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
+    SCH_AoE_Heal_Aetherflow = 16020,
+
+    [ParentCombo(SCH_AoE_Heal_Aetherflow)]
+    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Aetherflow if Indomitability is ready to use.",
+        SCH.JobID)]
+    SCH_AoE_Heal_Aetherflow_Indomitability = 16021,
+
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Disspation Option", "Use Dissipation when out of Aetherflow stacks.", SCH.JobID)]
+    SCH_AoE_Heal_Dissipation = 16041,
+    
+    [ParentCombo(SCH_AoE_Heal_Dissipation)]
+    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Dissipation if Indomitability is ready to use.",
+        SCH.JobID)]
+    SCH_AoE_Heal_Dissipation_Indomitability = 16058,
+    
+    [ParentCombo(SCH_AoE_Heal)]
+    [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP isn't high enough to cast Succor.",
+        SCH.JobID)]
+    SCH_AoE_Heal_Lucid = 16019,
+    
     #endregion
 
     #region Utilities
-
+    
     [ReplaceSkill(SCH.EnergyDrain, SCH.Lustrate, SCH.SacredSoil, SCH.Indomitability, SCH.Excogitation)]
     [CustomComboInfo("Aetherflow Helper Feature",
         "Change Aetherflow-using skills to Aetherflow, Recitation, or Dissipation as selected.", SCH.JobID)]
     SCH_Aetherflow = 16029,
-
-    [ParentCombo(SCH_Aetherflow)]
-    [CustomComboInfo("Recitation Option", "Prioritizes Recitation usage on Excogitation or Indomitability.", SCH.JobID)]
-    SCH_Aetherflow_Recite = 16030,
-
+    
     [ParentCombo(SCH_Aetherflow)]
     [CustomComboInfo("Dissipation Option", "If Aetherflow is on cooldown, show Dissipation instead.", SCH.JobID)]
     SCH_Aetherflow_Dissipation = 16031,
+    
+    [ParentCombo(SCH_Aetherflow)]
+    [CustomComboInfo("Recitation Option", "Prioritizes Recitation usage on Excogitation or Indomitability.", SCH.JobID)]
+    SCH_Aetherflow_Recite = 16030,
+    
+    [ReplaceSkill(SCH.Lustrate)]
+    [CustomComboInfo("Lustrate to Excogitation Feature",
+        "Change Lustrate into Excogitation when Excogitation is ready.", SCH.JobID)]
+    SCH_Lustrate = 16014,
+    
+    [ReplaceSkill(SCH.SacredSoil)]
+    [CustomComboInfo("Sacred Soil Retargetting", "Adds Self retargetting to Sacred Soil", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil = 16066,
+    
+    [ParentCombo(SCH_SacredSoil)]
+    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Sacred Soil.\nBeneath the Enemy placement option, but above yourself.", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil_Allies = 16061,
+    
+    [ParentCombo(SCH_SacredSoil)]
+    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Sacred Soil", SCH.JobID)]
+    [Retargeted]
+    SCH_SacredSoil_Enemy = 16060,
+    
+    [ReplaceSkill(SCH.Recitation)]
+    [CustomComboInfo("Recitation Combo Feature",
+        "Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.", SCH.JobID)]
+    SCH_Recitation = 16015,
+    
+    [ReplaceSkill(SCH.DeploymentTactics)]
+    [CustomComboInfo("Deployment Tactics Feature",
+        "Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.", SCH.JobID)]
+    SCH_DeploymentTactics = 16034,
+
+    [ParentCombo(SCH_DeploymentTactics)]
+    [CustomComboInfo("Recitation Option",
+        "Adds Recitation when off cooldown to force a critical Galvanize buff on a party member.", SCH.JobID)]
+    SCH_DeploymentTactics_Recitation = 16035,
+    
+    [ReplaceSkill(SCH.WhisperingDawn, SCH.FeyIllumination, SCH.FeyBlessing, SCH.Aetherpact, SCH.Dissipation,
+        SCH.SummonSeraph)]
+    [CustomComboInfo("Fairy Feature", "Change all fairy actions into Summon Eos when the Fairy is not summoned.",
+        SCH.JobID)]
+    SCH_FairyReminder = 16033,
+    
+    [ReplaceSkill(SCH.FeyBlessing)]
+    [CustomComboInfo("Fey Blessing to Seraph's Consolation Feature",
+        "Change Fey Blessing into Consolation when Seraph is out.", SCH.JobID)]
+    SCH_Consolation = 16013,
+
+    [ReplaceSkill(SCH.WhisperingDawn)]
+    [CustomComboInfo("Fairy Healing Combo Feature",
+        "Change Whispering Dawn into Fey Illumination, Fey Blessing, then Whispering Dawn when used.", SCH.JobID)]
+    SCH_Fairy_Combo = 16016,
+
+    [ParentCombo(SCH_Fairy_Combo)]
+    [CustomComboInfo("Consolation During Seraph Option", "Adds Consolation during Seraph.", SCH.JobID)]
+    SCH_Fairy_Combo_Consolation = 16017,
 
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
@@ -6287,23 +6370,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", SCH.JobID)]
     [Retargeted]
     SCH_Raise_Retarget = 16050,
-
-    [ReplaceSkill(SCH.WhisperingDawn, SCH.FeyIllumination, SCH.FeyBlessing, SCH.Aetherpact, SCH.Dissipation,
-        SCH.SummonSeraph)]
-    [CustomComboInfo("Fairy Feature", "Change all fairy actions into Summon Eos when the Fairy is not summoned.",
-        SCH.JobID)]
-    SCH_FairyReminder = 16033,
-
-    [ReplaceSkill(SCH.DeploymentTactics)]
-    [CustomComboInfo("Deployment Tactics Feature",
-        "Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.", SCH.JobID)]
-    SCH_DeploymentTactics = 16034,
-
-    [ParentCombo(SCH_DeploymentTactics)]
-    [CustomComboInfo("Recitation Option",
-        "Adds Recitation when off cooldown to force a critical Galvanize buff on a party member.", SCH.JobID)]
-    SCH_DeploymentTactics_Recitation = 16035,
-
+    
     [Variant]
     [VariantParent(SCH_DPS_Bio, SCH_AoE)]
     [CustomComboInfo("Spirit Dart Option",
@@ -6316,8 +6383,35 @@ public enum CustomComboPreset
     SCH_DPS_Variant_Rampart = 16037,
 
     #endregion
+    
+    #region Hidden Features
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden = 16065,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Succor_Raidwide = 16062,
+    
+    [ParentCombo(SCH_Hidden_Succor_Raidwide)]
+    [CustomComboInfo("Recitation Option", "Use Recitation to buff before the Raidwide Succor.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Succor_Raidwide_Recitation = 16051,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 main combos", SCH.JobID)]
+    [Hidden]
+    [Retargeted]
+    SCH_Hidden_SacredSoil = 16059,
+    
+    [ParentCombo(SCH_Hidden)]
+    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [Hidden]
+    SCH_Hidden_Expedient = 16064,
+    #endregion
 
-    // Last value = 16050
+    // Last value = 16069
 
     #endregion
 
