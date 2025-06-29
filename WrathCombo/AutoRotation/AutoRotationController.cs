@@ -580,7 +580,7 @@ namespace WrathCombo.AutoRotation
 
                 var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
                 var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
-                var inRange = target is null && canUseSelf ? true : target is null ? false : IsInLineOfSight(target) && InActionRange(outAct, target);
+                var inRange = (target is null && canUseSelf) || (target is not null && InActionRange(outAct, target) && IsInLineOfSight(target));
 
                 var canUse = (canUseSelf || canUseTarget || areaTargeted) && (outAct.ActionType() is { } type && (type is ActionType.Ability || type is not ActionType.Ability && RemainingGCD == 0));
 
