@@ -47,8 +47,14 @@ internal abstract partial class CustomComboFunctions
     [Obsolete("Use TargetIsBoss")]
     internal static bool IsBoss(IGameObject? target) => TargetIsBoss(target);
 
-    /// <summary> Checks if an object is quest-related. </summary>
-    internal static unsafe bool IsQuestMob(IGameObject? target) => target is not null && target.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
+    /// <summary> Checks if an object is quest-related. Defaults to CurrentTarget unless specified. </summary>
+    internal static unsafe bool IsQuestMob(IGameObject? optionalTarget = null)
+    {
+        if ((optionalTarget ?? CurrentTarget) is not { } chara)
+            return false;
+
+        return chara.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
+    }
 
     [Obsolete("Use HasBattleTarget")]
     internal static bool TargetIsHostile() => HasBattleTarget();
@@ -164,17 +170,23 @@ internal abstract partial class CustomComboFunctions
 
     #region Distance Checks
 
-    /// <summary>
-    ///     Checks if the current target is within melee range. <br/>
-    ///     Base melee range differs between PvE and PvP.
-    /// </summary>
-    public static bool InMeleeRange() => HasTarget() && GetTargetDistance() <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
+    /// <summary> Checks if an object is within melee range. Defaults to CurrentTarget unless specified. </summary>
+    public static bool InMeleeRange(IGameObject? optionalTarget = null)
+    {
+        if ((optionalTarget ?? CurrentTarget) is not { } chara)
+            return false;
 
-    /// <summary>
-    ///     Checks if an object is within a specified range from the player. <br/>
-    ///     Defaults to base spell range unless specified.
-    /// </summary>
-    public static bool IsInRange(IGameObject? target, float range = 25f) => target is not null && GetTargetDistance(target) <= range;
+        return GetTargetDistance(chara) <= (InPvP() ? 5f : 3f) + (float)Service.Configuration.MeleeOffset;
+    }
+
+    /// <summary> Checks if an object is within a given range. Defaults to CurrentTarget unless specified. </summary>
+    public static bool IsInRange(IGameObject? optionalTarget = null, float range = 25f)
+    {
+        if ((optionalTarget ?? CurrentTarget) is not { } chara)
+            return false;
+
+        return GetTargetDistance(chara) <= range;
+    }
 
     /// <summary>
     ///     Gets the horizontal distance between two objects. <br/>
@@ -221,7 +233,7 @@ internal abstract partial class CustomComboFunctions
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
             return 0;
 
-        if (sheetSpell.CanTargetHostile && GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId))
+        if (sheetSpell.CanTargetHostile && (target is null || GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId)))
             return 0;
 
         int count = sheetSpell.CastType switch
@@ -238,7 +250,7 @@ internal abstract partial class CustomComboFunctions
         return count;
     }
 
-    /// <summary> Gets the number of enemies within a specified range from the player. </summary>
+    /// <summary> Gets the number of enemies within a given range from the player. </summary>
     public static int NumberOfEnemiesInRange(float range)
     {
         return Svc.Objects.Count(o =>
