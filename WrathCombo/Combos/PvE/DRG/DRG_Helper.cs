@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.Statuses;
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.DRG.Config;
@@ -42,7 +41,7 @@ internal partial class DRG
 
     #region Animation Locks
 
-    internal static readonly List<uint> FastLocks =
+    internal static readonly HashSet<uint> FastLocks =
     [
         BattleLitany,
         LanceCharge,
@@ -57,7 +56,7 @@ internal partial class DRG
         Role.TrueNorth
     ];
 
-    internal static readonly List<uint> MidLocks =
+    internal static readonly HashSet<uint> MidLocks =
     [
         Jump,
         HighJump,
@@ -68,19 +67,20 @@ internal partial class DRG
 
     internal static bool CanDRGWeave(uint oGCD)
     {
-        float gcdTimer = RemainingGCD;
+        var remainingGCD = RemainingGCD;
 
-        //GCD Ready - No Weave
-        if (IsOffCooldown(TrueThrust))
+        // Cannot Weave -or- Already Double-Weaved
+        if (remainingGCD < 0.6f || HasDoubleWeaved())
             return false;
 
-        if (FastLocks.Any(x => x == oGCD) && gcdTimer >= 0.6f && !HasDoubleWeaved())
+        // Guaranteed Weave
+        if (FastLocks.Contains(oGCD))
             return true;
 
-        if (MidLocks.Any(x => x == oGCD) && gcdTimer >= 0.8f && !HasDoubleWeaved())
+        if (MidLocks.Contains(oGCD) && remainingGCD >= 0.8f)
             return true;
 
-        if (SlowLock == oGCD && gcdTimer >= 1.5f && !HasDoubleWeaved())
+        if (SlowLock == oGCD && remainingGCD >= 1.5f)
             return true;
 
         return false;
