@@ -183,7 +183,7 @@ namespace WrathCombo.Combos.PvP
                             }
                             // Harvest Moon Execute 
                             if (IsEnabled(CustomComboPreset.RPRPvP_Burst_RangedHarvest) && GetRemainingCharges(HarvestMoon) > 0 &&
-                                EnemyHealthCurrentHp() < 12000)
+                                GetTargetCurrentHP() < 12000)
                                 return HarvestMoon;
                         }
                     }
