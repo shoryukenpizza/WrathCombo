@@ -442,7 +442,7 @@ internal partial class DRK
                  IsAoEEnabled(flags, Preset.DRK_AoE_Mit_TBN)) &&
                 ActionReady(BlackestNight) &&
                 LocalPlayer.CurrentMp >= 3000 &&
-                ShouldTBNSelf(flags.HasFlag(Combo.AoE)))
+                ShouldTBNSelf(flags.HasFlag(Combo.AoE), flags.HasFlag(Combo.Simple)))
                 return (action = BlackestNight) != 0;
 
             #endregion
@@ -781,6 +781,17 @@ internal partial class DRK
                     ? manaPooling ? (int)Config.DRK_ST_ManaSpenderPooling : 0
                     : (int)Config.DRK_AoE_ManaSpenderPooling
                 : 0;
+
+            // Set the pool to save a tbn in simple, if mitigation is enabled
+            if (flags.HasFlag(Combo.Simple) &&
+                ((flags.HasFlag(Combo.ST) &&
+                  (int)Config.DRK_ST_SimpleMitigation ==
+                  (int)Config.SimpleMitigation.On) ||
+                 (flags.HasFlag(Combo.AoE) &&
+                  (int)Config.DRK_AoE_SimpleMitigation ==
+                  (int)Config.SimpleMitigation.On)))
+                manaPool = 3000;
+
             var hasEnoughMana = mana >= (manaPool + 3000) || Gauge.HasDarkArts;
             var secondsBeforeBurst =
                 flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST)
@@ -982,6 +993,7 @@ internal partial class DRK
     ///     based on general rules and the player's configuration.
     /// </summary>
     /// <param name="aoe">Whether AoE or ST options should be checked.</param>
+    /// <param name="simple">Whether Simple mode options should be checked.</param>
     /// <returns>Whether TBN should be used on self.</returns>
     /// <seealso cref="BlackestNight" />
     /// <seealso cref="Buffs.BlackestNightShield" />
@@ -989,7 +1001,7 @@ internal partial class DRK
     /// <seealso cref="Config.DRK_ST_TBNThreshold" />
     /// <seealso cref="Config.DRK_ST_TBNBossRestriction" />
     /// <seealso cref="Preset.DRK_AoE_Mit_TBN" />
-    private static bool ShouldTBNSelf(bool aoe = false)
+    private static bool ShouldTBNSelf(bool aoe = false, bool simple = false)
     {
         // Bail if we're dead or unloaded
         if (LocalPlayer is null)
@@ -1000,12 +1012,20 @@ internal partial class DRK
             return false;
 
         // Bail if TBN is disabled
-        if ((!aoe
-             && (!IsEnabled(Preset.DRK_ST_Mitigation)
-                 || !IsEnabled(Preset.DRK_ST_Mit_TBN)))
-            || (aoe
-                && (!IsEnabled(Preset.DRK_AoE_Mitigation)
-                    || !IsEnabled(Preset.DRK_AoE_Mit_TBN))))
+        if ((!aoe &&
+             (simple &&
+              (int)Config.DRK_ST_SimpleMitigation !=
+              (int)Config.SimpleMitigation.On) ||
+             (!simple &&
+              (!IsEnabled(Preset.DRK_ST_Mitigation) ||
+               !IsEnabled(Preset.DRK_ST_Mit_TBN)))) ||
+            (aoe &&
+             (simple &&
+              (int)Config.DRK_AoE_SimpleMitigation !=
+              (int)Config.SimpleMitigation.On) ||
+             (!simple &&
+              (!IsEnabled(Preset.DRK_AoE_Mitigation) ||
+               !IsEnabled(Preset.DRK_AoE_Mit_TBN)))))
             return false;
 
         // Bail if we already have TBN
