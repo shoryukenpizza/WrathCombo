@@ -291,8 +291,10 @@ internal partial class DRG : Melee
 
                     //(High) Jump Feature   
                     if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) && InMeleeRange()) &&
+                        (!DRG_ST_Jump_Options[0] ||
+                         DRG_ST_Jump_Options[0] && !IsMoving()) &&
+                        (!DRG_ST_Jump_Options[1] ||
+                         DRG_ST_Jump_Options[1] && InMeleeRange()) &&
                         ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
                         CanDRGWeave(OriginalHook(Jump)))
                     {
@@ -308,8 +310,10 @@ internal partial class DRG : Melee
 
                     //Dragonfire Dive Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) && InMeleeRange()) &&
+                        (!DRG_ST_DragonfireDive_Options[0] ||
+                         DRG_ST_DragonfireDive_Options[0] && !IsMoving()) &&
+                        (!DRG_ST_DragonfireDive_Options[1] ||
+                         DRG_ST_DragonfireDive_Options[1] && InMeleeRange()) &&
                         ActionReady(DragonfireDive) &&
                         CanDRGWeave(DragonfireDive) &&
                         !HasStatusEffect(Buffs.DragonsFlight) &&
@@ -318,8 +322,10 @@ internal partial class DRG : Melee
 
                     //StarDiver Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Stardiver) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_ST_Stardiver_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_Stardiver_Melee) && InMeleeRange()) &&
+                        (!DRG_ST_Stardiver_Options[0] ||
+                         DRG_ST_Stardiver_Options[0] && !IsMoving()) &&
+                        (!DRG_ST_Stardiver_Options[1] ||
+                         DRG_ST_Stardiver_Options[1] && InMeleeRange()) &&
                         ActionReady(Stardiver) &&
                         CanDRGWeave(Stardiver) &&
                         LoTDActive &&
@@ -618,8 +624,10 @@ internal partial class DRG : Melee
 
                     //(High) Jump Feature   
                     if (IsEnabled(CustomComboPreset.DRG_AoE_HighJump) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_AoE_HighJump_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_AoE_HighJump_Melee) && InMeleeRange()) &&
+                        (!DRG_AoE_Jump_Options[0] ||
+                         DRG_AoE_Jump_Options[0] && !IsMoving()) &&
+                        (!DRG_AoE_Jump_Options[1] ||
+                         DRG_AoE_Jump_Options[1] && InMeleeRange()) &&
                         ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
                         CanDRGWeave(OriginalHook(Jump)))
                         return (LevelChecked(HighJump))
@@ -628,8 +636,10 @@ internal partial class DRG : Melee
 
                     //Dragonfire Dive Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_AoE_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive_Melee) && InMeleeRange()) &&
+                        (!DRG_AoE_DragonfireDive_Options[0] ||
+                         DRG_AoE_DragonfireDive_Options[0] && !IsMoving()) &&
+                        (!DRG_AoE_DragonfireDive_Options[1] ||
+                         DRG_AoE_DragonfireDive_Options[1] && InMeleeRange()) &&
                         ActionReady(DragonfireDive) &&
                         CanDRGWeave(DragonfireDive) &&
                         !HasStatusEffect(Buffs.DragonsFlight) &&
@@ -638,8 +648,10 @@ internal partial class DRG : Melee
 
                     //StarDiver Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Stardiver) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_AoE_Stardiver_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_AoE_Stardiver_Melee) && InMeleeRange()) &&
+                        (!DRG_AoE_Stardiver_Options[0] ||
+                         DRG_AoE_Stardiver_Options[0] && !IsMoving()) &&
+                        (!DRG_AoE_Stardiver_Options[1] ||
+                         DRG_AoE_Stardiver_Options[1] && InMeleeRange()) &&
                         ActionReady(Stardiver) &&
                         CanDRGWeave(Stardiver) &&
                         LoTDActive &&
