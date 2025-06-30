@@ -318,7 +318,7 @@ internal partial class AST : Healer
         }
     }
 
-    internal class AST_AoE_SimpleHeals_AspectedHelios : CustomCombo
+    internal class AST_AoE_SimpleHeals : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AoE_SimpleHeals;
 
