@@ -24,7 +24,8 @@ internal partial class AST : Healer
                 ? CombustList.Keys.ToArray()
                 : MaleficList.ToArray();
             float refreshTimer = Config.AST_ST_DPS_CombustUptime_Threshold;
-            int hpThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_CombustOption : 0;
+            int dotHPThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_CombustOption : 0;
+            int divHPThreshold = Config.AST_ST_DPS_DivinationSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_DivinationOption : 0;
             #endregion
 
             if (!actionFound)
@@ -123,7 +124,7 @@ internal partial class AST : Healer
                     ActionReady(Divination) &&
                     !HasDivination && //Overwrite protection
                     !HasStatusEffect(Buffs.Divining) &&
-                    GetTargetHPPercent() > Config.AST_ST_DPS_DivinationOption &&
+                    GetTargetHPPercent() > divHPThreshold &&
                     CanSpellWeave() &&
                     ActionWatching.NumberOfGcdsUsed >= 3)
                     return Divination;
@@ -153,7 +154,7 @@ internal partial class AST : Healer
                         CombustList.TryGetValue(OriginalHook(Combust), out ushort dotDebuffID))
                     {   
                         if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
-                            GetTargetHPPercent() > hpThreshold &&
+                            GetTargetHPPercent() > dotHPThreshold &&
                             CanApplyStatus(CurrentTarget,dotDebuffID))
                             return OriginalHook(Combust);
 
@@ -175,6 +176,7 @@ internal partial class AST : Healer
             #region Variables
             bool cardPooling = IsEnabled(CustomComboPreset.AST_AOE_CardPool);
             bool lordPooling = IsEnabled(CustomComboPreset.AST_AOE_LordPool);
+            int divHPThreshold = Config.AST_ST_DPS_DivinationSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_DivinationOption : 0;
             #endregion
 
             if (!GravityList.Contains(actionID))
@@ -249,7 +251,7 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_AOE_Divination) &&
                 ActionReady(Divination) &&
                 !HasDivination && //Overwrite protection
-                GetTargetHPPercent() > Config.AST_AOE_DivinationOption &&
+                GetTargetHPPercent() > divHPThreshold &&
                 CanSpellWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return Divination;

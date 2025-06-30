@@ -46,9 +46,11 @@ internal partial class AST
             AST_ST_DPS_LucidDreaming = new("AST_ST_DPS_LucidDreaming", 8000),
             AST_ST_DPS_LightSpeedOption = new("AST_ST_DPS_LightSpeedOption"),
             AST_ST_DPS_CombustOption = new("AST_ST_DPS_CombustOption"),
+            AST_ST_DPS_DivinationSubOption = new("AST_ST_DPS_DivinationSubOption", 0),
             AST_ST_DPS_Balance_Content = new("AST_ST_DPS_Balance_Content", 1),
             AST_ST_DPS_CombustSubOption = new("AST_ST_DPS_CombustSubOption", 0),
             AST_AOE_LucidDreaming = new("AST_AOE_LucidDreaming", 8000),
+            AST_AOE_DivinationSubOption = new("AST_AOE_DivinationSubOption", 0),
             AST_AOE_DivinationOption = new("AST_AOE_DivinationOption"),
             AST_AOE_LightSpeedOption = new("AST_AOE_LightSpeedOption"),
             AST_AOE_DPS_MacroCosmos_SubOption = new("AST_AOE_DPS_MacroCosmos_SubOption", 0),
@@ -116,6 +118,13 @@ internal partial class AST
 
                 case CustomComboPreset.AST_DPS_Divination:
                     DrawSliderInt(0, 100, AST_ST_DPS_DivinationOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(AST_ST_DPS_DivinationSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
+                    DrawHorizontalRadioButton(AST_ST_DPS_DivinationSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                    ImGui.Unindent();
                     break;
 
                 case CustomComboPreset.AST_DPS_LightSpeed:
@@ -132,6 +141,13 @@ internal partial class AST
 
                 case CustomComboPreset.AST_AOE_Divination:
                     DrawSliderInt(0, 100, AST_AOE_DivinationOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    DrawHorizontalRadioButton(AST_AOE_DivinationSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
+                    DrawHorizontalRadioButton(AST_AOE_DivinationSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                    ImGui.Unindent();
                     break;
 
                 case CustomComboPreset.AST_AOE_LightSpeed:
