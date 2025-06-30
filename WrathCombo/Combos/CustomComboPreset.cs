@@ -3781,6 +3781,8 @@ public enum CustomComboPreset
     MNK_Variant_Cure = 9026,
 
     #endregion
+    
+    #region Misc
 
     [ReplaceSkill(MNK.PerfectBalance)]
     [ConflictingCombos(MNK_PerfectBalanceProtection)]
@@ -3799,6 +3801,21 @@ public enum CustomComboPreset
     [ConflictingCombos(MNK_PerfectBalance)]
     [CustomComboInfo("Perfect Balance Protection", "Replaces Perfect Balance with Savage Blade when you already have Perfect Balance active.", MNK.JobID)]
     MNK_PerfectBalanceProtection = 9042,
+    
+    #endregion
+
+    #region Hidden Features
+
+    [Hidden]
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", MNK.JobID)]
+    MNK_Hidden = 9300,
+
+    [ParentCombo(MNK_Hidden)]
+    [Hidden]
+    [CustomComboInfo("M6S: Hold Burst on Squirrels", "When you're targeting Squirrels in M6S add phase, hold burst.\n(until about the time the first manta is dying)", MNK.JobID)]
+    MNK_Hid_M6SHoldSquirrelBurst = 9301,
+
+    #endregion
 
     // Last value = 9042
 
