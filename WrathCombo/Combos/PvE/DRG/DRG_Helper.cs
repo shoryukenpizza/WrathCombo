@@ -67,7 +67,7 @@ internal partial class DRG
 
     internal static bool CanDRGWeave(uint oGCD)
     {
-        var remainingGCD = RemainingGCD;
+        float remainingGCD = RemainingGCD;
 
         // Cannot Weave -or- Already Double-Weaved
         if (remainingGCD < 0.6f || HasDoubleWeaved())
