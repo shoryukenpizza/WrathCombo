@@ -821,8 +821,11 @@ public enum CustomComboPreset
     [ParentCombo(AST_AoE_SimpleHeals)]
     [CustomComboInfo("Stellar Detonation Option", "Adds Stellar Detonation when under the effect of Giant Dominance", AST.JobID)]
     AST_AoE_SimpleHeals_StellarDetonation = 1072,
-
     
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious for to regen, it will not hold it.", AST.JobID)]
+    [PossiblyRetargeted]
+    AST_AoE_SimpleHeals_CollectiveUnconscious = 1074,
 
     [ReplaceSkill(AST.Benefic2)]
     [CustomComboInfo("Benefic 2 Downgrade", "Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.",
@@ -875,7 +878,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 1072
+    // Last value = 1074
 
     #endregion
 

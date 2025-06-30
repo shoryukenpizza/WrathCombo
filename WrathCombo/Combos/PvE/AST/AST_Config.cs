@@ -34,6 +34,7 @@ internal partial class AST
             AST_AoE_SimpleHeals_LazyLady = new("AST_AoE_SimpleHeals_LazyLady", 80),
             AST_AoE_SimpleHeals_Horoscope = new("AST_AoE_SimpleHeals_Horoscope", 80),
             AST_AoE_SimpleHeals_CelestialOpposition = new("AST_AoE_SimpleHeals_CelestialOpposition", 80),
+            AST_AoE_SimpleHeals_CollectiveUnconscious = new("AST_AoE_SimpleHeals_CollectiveUnconscious", 80),
             AST_AoE_SimpleHeals_NeutralSect = new("AST_AoE_SimpleHeals_NeutralSect", 80),
             AST_AoE_SimpleHeals_HoroscopeHeal = new("AST_AoE_SimpleHeals_HoroscopeHeal", 80),
             AST_AoE_SimpleHeals_StellarDetonation = new("AST_AoE_SimpleHeals_StellarDetonation", 80),
@@ -66,6 +67,7 @@ internal partial class AST
             AST_ST_SimpleHeals_WeaveExalt = new("AST_ST_SimpleHeals_WeaveExalt"),
             AST_AoE_SimpleHeals_WeaveLady = new("AST_AoE_SimpleHeals_WeaveLady"),
             AST_AoE_SimpleHeals_WeaveOpposition = new("AST_AoE_SimpleHeals_WeaveOpposition"),
+            AST_AoE_SimpleHeals_WeaveCollectiveUnconscious = new("AST_AoE_SimpleHeals_WeaveCollectiveUnconscious"),
             AST_AoE_SimpleHeals_WeaveHoroscope = new("AST_AoE_SimpleHeals_WeaveHoroscope"),
             AST_AoE_SimpleHeals_WeaveNeutralSect = new("AST_AoE_SimpleHeals_WeaveNeutralSect"),
             AST_AoE_SimpleHeals_WeaveHoroscopeHeal = new("AST_AoE_SimpleHeals_WeaveHoroscopeHeal"),
@@ -246,48 +248,54 @@ internal partial class AST
                 case CustomComboPreset.AST_AoE_SimpleHeals_LazyLady:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_LazyLady, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveLady, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 0, $"{LadyOfCrown.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 0, $"{LadyOfCrown.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_Horoscope:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_Horoscope, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveHoroscope, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 1, $"{Horoscope.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 1, $"{Horoscope.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.AST_AoE_SimpleHeals_HoroscopeHeal:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_HoroscopeHeal, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveHoroscopeHeal, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 2, $"{HoroscopeHeal.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 2, $"{HoroscopeHeal.ActionName()} Priority: ");
                     break;
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_CelestialOpposition:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_CelestialOpposition, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveOpposition, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 3, $"{CelestialOpposition.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 3, $"{CelestialOpposition.ActionName()} Priority: ");
                     break;
 
 
                 case CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_NeutralSect, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveNeutralSect, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 4, $"{NeutralSect.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 4, $"{NeutralSect.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.AST_AoE_SimpleHeals_StellarDetonation:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_StellarDetonation, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveStellarDetonation, "Only Weave", "Will only weave this action.");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 5, $"{StellarDetonation.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 5, $"{StellarDetonation.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.AST_AoE_SimpleHeals_Aspected:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_Aspected, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 6, $"{AspectedHelios.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 6, $"{AspectedHelios.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.AST_AoE_SimpleHeals_Helios:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_Helios, "Start using when below party average HP %. Set to 100 to disable this check");
-                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 8, 7, $"{Helios.ActionName()} Priority: ");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 7, $"{Helios.ActionName()} Priority: ");
+                    break;
+                
+                case CustomComboPreset.AST_AoE_SimpleHeals_CollectiveUnconscious:
+                    DrawSliderInt(0, 100, AST_AoE_SimpleHeals_CollectiveUnconscious, "Start using when below party average HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveCollectiveUnconscious, "Only Weave", "Will only weave this action.");
+                    DrawPriorityInput(AST_AoE_SimpleHeals_Priority, 9, 8, $"{CollectiveUnconscious.ActionName()} Priority: ");
                     break;
                 
                 #endregion

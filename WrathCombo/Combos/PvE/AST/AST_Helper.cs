@@ -186,6 +186,13 @@ internal partial class AST
                 action = Helios;
                 enabled = IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_Helios);
                 return Config.AST_AoE_SimpleHeals_Helios;
+            
+            case 8:
+                action = CollectiveUnconscious;
+                enabled = IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_CollectiveUnconscious) &&
+                          ActionReady(CollectiveUnconscious) &&
+                          (CanSpellWeave() || !Config.AST_AoE_SimpleHeals_WeaveCollectiveUnconscious);
+                return Config.AST_AoE_SimpleHeals_CollectiveUnconscious;
         }
 
         enabled = false;
