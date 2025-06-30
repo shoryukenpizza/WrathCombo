@@ -328,10 +328,12 @@ internal partial class AST : Healer
             if ((!nonAspectedMode || actionID is not Helios) &&
                 (nonAspectedMode || actionID is not (AspectedHelios or HeliosConjuction)))
                 return actionID;
-
-            if (!LevelChecked(AspectedHelios)) //Level check to return helios immediately below 40
+            
+            //Level check to return helios immediately below 40
+            if (!LevelChecked(AspectedHelios)) 
                 return Helios;
             
+            //Horoscope check to trigger the ability to do the larger Horoscope Heal
             if (HasStatusEffect(Buffs.Horoscope))
                 return HasStatusEffect(Buffs.HeliosConjunction) || HasStatusEffect(Buffs.AspectedHelios)
                     ? Helios
@@ -348,6 +350,7 @@ internal partial class AST : Healer
                     return spell;
             }
             
+            //Hot Check for if you are in Aspected Helios Mode
             Status? hotCheck = HeliosConjuction.LevelChecked() ? GetStatusEffect(Buffs.HeliosConjunction) : GetStatusEffect(Buffs.AspectedHelios);
             if (!nonAspectedMode && hotCheck is not null && hotCheck.RemainingTime > GetActionCastTime(OriginalHook(AspectedHelios)) + 1f)
                 return Helios;
