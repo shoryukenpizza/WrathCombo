@@ -19,7 +19,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRK
 {
-
     /// <remarks>
     ///     Actions in this Provider:
     ///     <list type="bullet">
@@ -65,7 +64,8 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Dart))) &&
                 ActionReady(Variant.SpiritDart) &&
-                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage, Target(flags)) <=3)
+                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage,
+                    Target(flags)) <= 3)
                 return (action = Variant.SpiritDart) != 0;
 
             #endregion
@@ -227,7 +227,7 @@ internal partial class DRK
                  IsAoEEnabled(flags, Preset.DRK_AoE_CD_Delirium)) &&
                 deliriumHPMatchesThreshold &&
                 LevelChecked(BloodWeapon) &&
-                GetCooldownRemainingTime(BloodWeapon) < GCD*1.5)
+                GetCooldownRemainingTime(BloodWeapon) < GCD * 1.5)
                 ShouldDeliriumNext = true;
 
             if (ShouldDeliriumNext &&
@@ -343,27 +343,6 @@ internal partial class DRK
             return false;
         }
     }
-
-    #region JustUsedMit
-
-    private static bool InSavagePlus => ContentCheck.IsInSavagePlusContent;
-
-    /// <summary>
-    ///     Whether mitigation was very recently used, depending on the duration and
-    ///     strength of the mitigation.
-    /// </summary>
-    private static bool JustUsedMitigation =>
-        JustUsed(BlackestNight, (InSavagePlus ? 3f : 4f)) ||
-        JustUsed(Oblation, (InSavagePlus ? 6f : 4f)) ||
-        JustUsed(DarkMind, (InSavagePlus ? 6f : 4f)) ||
-        JustUsed(Role.Reprisal, (InSavagePlus ? 1f : 4f)) ||
-        JustUsed(DarkMissionary, (InSavagePlus ? 0f : 5f)) ||
-        JustUsed(Role.Rampart, 6f) ||
-        JustUsed(Role.ArmsLength, (InSavagePlus ? 0f : 4f)) ||
-        JustUsed(ShadowedVigil, (InSavagePlus ? 11f : 6f)) ||
-        JustUsed(LivingDead, (InSavagePlus ? 13f : 7f));
-
-    #endregion
 
     /// <remarks>
     ///     Actions in this Provider:
@@ -689,7 +668,7 @@ internal partial class DRK
 
             var bloodGCDReady =
                 LevelChecked(Bloodspiller) &&
-                GetCooldownRemainingTime(Bloodspiller) < GCD/2;
+                GetCooldownRemainingTime(Bloodspiller) < GCD / 2;
 
             if (!bloodGCDReady) return false;
 
@@ -780,7 +759,7 @@ internal partial class DRK
             return false;
         }
 
-        private bool TryGetManaAction(Combo flags, ref uint action, bool? specialOnly)
+        private bool TryGetManaAction(Combo flags, ref uint action, bool? onlyMaint)
         {
             // Bail if we can't weave anything else
             if (!CanWeave) return false;
@@ -851,7 +830,7 @@ internal partial class DRK
 
             #endregion
 
-            if (specialOnly == true) return false;
+            if (onlyMaint == true) return false;
 
             #region Burst Phase Spending
 
@@ -943,6 +922,27 @@ internal partial class DRK
         }
     }
 
+    #region JustUsedMit
+
+    private static bool InSavagePlus => ContentCheck.IsInSavagePlusContent;
+
+    /// <summary>
+    ///     Whether mitigation was very recently used, depending on the duration and
+    ///     strength of the mitigation.
+    /// </summary>
+    private static bool JustUsedMitigation =>
+        JustUsed(BlackestNight, (InSavagePlus ? 3f : 4f)) ||
+        JustUsed(Oblation, (InSavagePlus ? 6f : 4f)) ||
+        JustUsed(DarkMind, (InSavagePlus ? 6f : 4f)) ||
+        JustUsed(Role.Reprisal, (InSavagePlus ? 1f : 4f)) ||
+        JustUsed(DarkMissionary, (InSavagePlus ? 0f : 5f)) ||
+        JustUsed(Role.Rampart, 6f) ||
+        JustUsed(Role.ArmsLength, (InSavagePlus ? 0f : 4f)) ||
+        JustUsed(ShadowedVigil, (InSavagePlus ? 11f : 6f)) ||
+        JustUsed(LivingDead, (InSavagePlus ? 13f : 7f));
+
+    #endregion
+
     #region TBN
 
     /// <summary>
@@ -994,7 +994,7 @@ internal partial class DRK
         // Bail if we're dead or unloaded
         if (LocalPlayer is null)
             return false;
-        
+
         // Bail if we're at the status limit
         if (!CanApplyStatus(LocalPlayer, Buffs.BlackestNightShield))
             return false;
@@ -1061,26 +1061,29 @@ internal partial class DRK
     ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
-    private static (uint Action, Preset Preset, Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
         PrioritizedMitigation =>
     [
         (BlackestNight, Preset.DRK_Mit_TheBlackestNight,
             () => !HasAnyTBN && LocalPlayer.CurrentMp > 3000 &&
                   PlayerHealthPercentageHp() <= Config.DRK_Mit_TBN_Health),
         (Oblation, Preset.DRK_Mit_Oblation,
-            () => !((TargetIsFriendly() && HasStatusEffect(Buffs.Oblation, CurrentTarget, true)) ||
-                     (!TargetIsFriendly() && HasStatusEffect(Buffs.Oblation, anyOwner: true))) &&
+            () => !((TargetIsFriendly() &&
+                     HasStatusEffect(Buffs.Oblation, CurrentTarget, true)) ||
+                    (!TargetIsFriendly() &&
+                     HasStatusEffect(Buffs.Oblation, anyOwner: true))) &&
                   GetRemainingCharges(Oblation) > Config.DRK_Mit_Oblation_Charges),
         (Role.Reprisal, Preset.DRK_Mit_Reprisal,
-            () => Role.CanReprisal(checkTargetForDebuff:false)),
+            () => Role.CanReprisal(checkTargetForDebuff: false)),
         (DarkMissionary, Preset.DRK_Mit_DarkMissionary,
             () => Config.DRK_Mit_DarkMissionary_PartyRequirement ==
-                  (int)PartyRequirement.No || IsInParty()),
+                (int)PartyRequirement.No || IsInParty()),
         (Role.Rampart, Preset.DRK_Mit_Rampart,
             () => Role.CanRampart(Config.DRK_Mit_Rampart_Health)),
         (DarkMind, Preset.DRK_Mit_DarkMind, () => true),
         (Role.ArmsLength, Preset.DRK_Mit_ArmsLength,
-            () => Role.CanArmsLength(Config.DRK_Mit_ArmsLength_EnemyCount, Config.DRK_Mit_ArmsLength_Boss)),
+            () => Role.CanArmsLength(Config.DRK_Mit_ArmsLength_EnemyCount,
+                Config.DRK_Mit_ArmsLength_Boss)),
         (OriginalHook(ShadowWall), Preset.DRK_Mit_ShadowWall,
             () => PlayerHealthPercentageHp() <= Config.DRK_Mit_ShadowWall_Health),
     ];
@@ -1162,8 +1165,10 @@ internal partial class DRK
     /// <seealso cref="Spender" />
     /// <seealso cref="Cooldown" />
     /// <seealso cref="Core" />
-    private static bool TryGetAction<T> (Combo flags, ref uint action, bool? extraParam = null)
-        where T : IActionProvider, new() => new T().TryGetAction(flags, ref action, extraParam);
+    private static bool TryGetAction<T>(Combo flags, ref uint action,
+        bool? extraParam = null)
+        where T : IActionProvider, new() =>
+        new T().TryGetAction(flags, ref action, extraParam);
 
     #endregion
 }
