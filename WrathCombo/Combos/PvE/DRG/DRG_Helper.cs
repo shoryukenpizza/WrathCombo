@@ -68,7 +68,7 @@ internal partial class DRG
 
     internal static bool CanDRGWeave(uint oGCD)
     {
-        float gcdTimer = GetCooldownRemainingTime(TrueThrust);
+        float gcdTimer = RemainingGCD;
 
         //GCD Ready - No Weave
         if (IsOffCooldown(TrueThrust))
