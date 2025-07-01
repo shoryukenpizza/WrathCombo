@@ -79,7 +79,7 @@ internal partial class SGE : Healer
                     LevelChecked(Eukrasia) && InCombat() &&
                     !JustUsedOn(OriginalHook(EukrasianDosis), CurrentTarget))
                 {
-                    float refreshTimer = SGE_ST_DPS_EDosisThreshold;
+                    float refreshTimer = SGE_ST_DPS_EDosisRefresh;
                     int hpThreshold = SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? SGE_ST_DPS_EDosisOption : 0;
 
                     if (CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)]) &&

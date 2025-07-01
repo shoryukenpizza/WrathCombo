@@ -49,7 +49,7 @@ internal partial class SGE
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawRoundedSliderFloat(0, 4, SGE_ST_DPS_EDosisThreshold,
+                    DrawRoundedSliderFloat(0, 5, SGE_ST_DPS_EDosisRefresh,
                         "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     ImGui.Unindent();
@@ -90,7 +90,7 @@ internal partial class SGE
                     DrawSliderInt(4000, 9500, SGE_AoE_DPS_Lucid,
                         "MP Threshold", 150, Hundreds);
                     break;
-                
+
                 case CustomComboPreset.SGE_AoE_DPS_Pneuma:
                     DrawHorizontalRadioButton(SGE_AoE_DPS_Pneuma_SubOption,
                         "All content", $"Uses {Pneuma.ActionName()} regardless of content.", 0);
@@ -295,7 +295,7 @@ internal partial class SGE
             SGE_AoE_DPS_Pneuma_SubOption = new("SGE_AoE_DPS_Pneuma_SubOption", 1),
             SGE_Balance_Content = new("SGE_Balance_Content", 1);
         public static UserFloat
-            SGE_ST_DPS_EDosisThreshold = new("SGE_ST_Dosis_EDosisThreshold", 5.0f);
+            SGE_ST_DPS_EDosisRefresh = new("SGE_ST_DPS_EDosisRefresh", 5.0f);
 
         public static UserIntArray
             SGE_ST_DPS_Movement_Priority = new("SGE_ST_Movement_Priority");
