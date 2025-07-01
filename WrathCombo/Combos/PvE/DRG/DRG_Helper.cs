@@ -68,10 +68,8 @@ internal partial class DRG
 
     internal static bool CanDRGWeave(float weaveTime = 0.6f, bool forceFirst = false)
     {
-        float remainingGCD = RemainingGCD;
-
         // Cannot Weave
-        if (remainingGCD <= weaveTime)
+        if (RemainingGCD <= weaveTime)
             return false;
 
         // List Reference
