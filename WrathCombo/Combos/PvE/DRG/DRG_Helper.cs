@@ -59,9 +59,6 @@ internal partial class DRG
             return false;
 
         // Guaranteed Weave
-        if (MidLocks.Contains(oGCD) && remainingGCD >= 0.8f)
-            return true;
-
         if (SlowLock == oGCD && remainingGCD >= 1.5f)
             return true;
 

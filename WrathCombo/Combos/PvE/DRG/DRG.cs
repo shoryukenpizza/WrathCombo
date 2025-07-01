@@ -122,25 +122,26 @@ internal partial class DRG : Melee
                         return Nastrond;
                 }
 
-                //(High) Jump Feature   
-                if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
-                    CanDRGWeave(OriginalHook(Jump)))
+                if (CanWeave(0.8f) && !HasDoubleWeaved())
                 {
-                    if (!LevelChecked(HighJump))
-                        return Jump;
+                    //(High) Jump Feature   
+                    if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                    {
+                        if (!LevelChecked(HighJump))
+                            return Jump;
 
-                    if (LevelChecked(HighJump) &&
-                        (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive))
-                        return (HighJump);
+                        if (LevelChecked(HighJump) &&
+                            (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive))
+                            return (HighJump);
+                    }
+
+                    //Dragonfire Dive Feature
+                    if (ActionReady(DragonfireDive) &&
+                        !HasStatusEffect(Buffs.DragonsFlight) &&
+                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)) &&
+                        InMeleeRange())
+                        return DragonfireDive;
                 }
-
-                //Dragonfire Dive Feature
-                if (ActionReady(DragonfireDive) &&
-                    CanDRGWeave(DragonfireDive) &&
-                    !HasStatusEffect(Buffs.DragonsFlight) &&
-                    (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)) &&
-                    InMeleeRange())
-                    return DragonfireDive;
 
                 //StarDiver Feature
                 if (ActionReady(Stardiver) &&
@@ -305,36 +306,37 @@ internal partial class DRG : Melee
 
                 if (IsEnabled(CustomComboPreset.DRG_ST_CDs))
                 {
-                    //(High) Jump Feature   
-                    if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
-                        (!DRG_ST_Jump_Options[0] ||
-                         DRG_ST_Jump_Options[0] && !IsMoving()) &&
-                        (!DRG_ST_Jump_Options[1] ||
-                         DRG_ST_Jump_Options[1] && InMeleeRange()) &&
-                        ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
-                        CanDRGWeave(OriginalHook(Jump)))
+                    if (CanWeave(0.8f) && !HasDoubleWeaved())
                     {
-                        if (!LevelChecked(HighJump))
-                            return Jump;
+                        //(High) Jump Feature   
+                        if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
+                            (!DRG_ST_Jump_Options[0] ||
+                             DRG_ST_Jump_Options[0] && !IsMoving()) &&
+                            (!DRG_ST_Jump_Options[1] ||
+                             DRG_ST_Jump_Options[1] && InMeleeRange()) &&
+                            ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                        {
+                            if (!LevelChecked(HighJump))
+                                return Jump;
 
-                        if (LevelChecked(HighJump) &&
-                            ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                              (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive)) ||
-                             IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
-                            return (HighJump);
+                            if (LevelChecked(HighJump) &&
+                                ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
+                                  (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive)) ||
+                                 IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
+                                return (HighJump);
+                        }
+
+                        //Dragonfire Dive Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive) &&
+                            (!DRG_ST_DragonfireDive_Options[0] ||
+                             DRG_ST_DragonfireDive_Options[0] && !IsMoving()) &&
+                            (!DRG_ST_DragonfireDive_Options[1] ||
+                             DRG_ST_DragonfireDive_Options[1] && InMeleeRange()) &&
+                            ActionReady(DragonfireDive) &&
+                            !HasStatusEffect(Buffs.DragonsFlight) &&
+                            (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
+                            return DragonfireDive;
                     }
-
-                    //Dragonfire Dive Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive) &&
-                        (!DRG_ST_DragonfireDive_Options[0] ||
-                         DRG_ST_DragonfireDive_Options[0] && !IsMoving()) &&
-                        (!DRG_ST_DragonfireDive_Options[1] ||
-                         DRG_ST_DragonfireDive_Options[1] && InMeleeRange()) &&
-                        ActionReady(DragonfireDive) &&
-                        CanDRGWeave(DragonfireDive) &&
-                        !HasStatusEffect(Buffs.DragonsFlight) &&
-                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
-                        return DragonfireDive;
 
                     //StarDiver Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Stardiver) &&
@@ -486,19 +488,20 @@ internal partial class DRG : Melee
                         return Nastrond;
                 }
 
-                //(High) Jump Feature   
-                if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
-                    CanDRGWeave(OriginalHook(Jump)))
-                    return (LevelChecked(HighJump))
-                        ? HighJump
-                        : Jump;
+                if (CanWeave(0.8f) && !HasDoubleWeaved())
+                {
+                    //(High) Jump Feature   
+                    if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                        return (LevelChecked(HighJump))
+                            ? HighJump
+                            : Jump;
 
-                //Dragonfire Dive Feature
-                if (ActionReady(DragonfireDive) &&
-                    CanDRGWeave(DragonfireDive) &&
-                    !HasStatusEffect(Buffs.DragonsFlight) && InMeleeRange() &&
-                    (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
-                    return DragonfireDive;
+                    //Dragonfire Dive Feature
+                    if (ActionReady(DragonfireDive) &&
+                        !HasStatusEffect(Buffs.DragonsFlight) && InMeleeRange() &&
+                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
+                        return DragonfireDive;
+                }
 
                 //StarDiver Feature
                 if (ActionReady(Stardiver) &&
@@ -641,29 +644,30 @@ internal partial class DRG : Melee
 
                 if (IsEnabled(CustomComboPreset.DRG_AoE_CDs))
                 {
-                    //(High) Jump Feature   
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_HighJump) &&
-                        (!DRG_AoE_Jump_Options[0] ||
-                         DRG_AoE_Jump_Options[0] && !IsMoving()) &&
-                        (!DRG_AoE_Jump_Options[1] ||
-                         DRG_AoE_Jump_Options[1] && InMeleeRange()) &&
-                        ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
-                        CanDRGWeave(OriginalHook(Jump)))
-                        return (LevelChecked(HighJump))
-                            ? HighJump
-                            : Jump;
+                    if (CanWeave(0.8f) && !HasDoubleWeaved())
+                    {
+                        //(High) Jump Feature   
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_HighJump) &&
+                            (!DRG_AoE_Jump_Options[0] ||
+                             DRG_AoE_Jump_Options[0] && !IsMoving()) &&
+                            (!DRG_AoE_Jump_Options[1] ||
+                             DRG_AoE_Jump_Options[1] && InMeleeRange()) &&
+                            ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
+                            return (LevelChecked(HighJump))
+                                ? HighJump
+                                : Jump;
 
-                    //Dragonfire Dive Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive) &&
-                        (!DRG_AoE_DragonfireDive_Options[0] ||
-                         DRG_AoE_DragonfireDive_Options[0] && !IsMoving()) &&
-                        (!DRG_AoE_DragonfireDive_Options[1] ||
-                         DRG_AoE_DragonfireDive_Options[1] && InMeleeRange()) &&
-                        ActionReady(DragonfireDive) &&
-                        CanDRGWeave(DragonfireDive) &&
-                        !HasStatusEffect(Buffs.DragonsFlight) &&
-                        (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
-                        return DragonfireDive;
+                        //Dragonfire Dive Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_DragonfireDive) &&
+                            (!DRG_AoE_DragonfireDive_Options[0] ||
+                             DRG_AoE_DragonfireDive_Options[0] && !IsMoving()) &&
+                            (!DRG_AoE_DragonfireDive_Options[1] ||
+                             DRG_AoE_DragonfireDive_Options[1] && InMeleeRange()) &&
+                            ActionReady(DragonfireDive) &&
+                            !HasStatusEffect(Buffs.DragonsFlight) &&
+                            (LoTDActive || !TraitLevelChecked(Traits.LifeOfTheDragon)))
+                            return DragonfireDive;
+                    }
 
                     //StarDiver Feature
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Stardiver) &&
