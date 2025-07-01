@@ -53,7 +53,6 @@ internal partial class AST
         int refreshTime = Config.AST_ST_SimpleHeals_AspectedBeneficRefresh;
         Status? aspectedBeneficHoT = GetStatusEffect(Buffs.AspectedBenefic, healTarget);
         Status? neutralSectShield = GetStatusEffect(Buffs.NeutralSectShield, healTarget);
-        Status? neutralSectBuff = GetStatusEffect(Buffs.NeutralSect, healTarget);
         
         switch (i)
         {
@@ -78,25 +77,25 @@ internal partial class AST
             case 3:
                 action = Bole;
                 enabled = IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Bole) &&
-                          HasBole && ActionReady(Play2) &&
+                          HasBole &&
                           (CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveBole);
                 return Config.AST_ST_SimpleHeals_Bole;
             case 4:
                 action = Arrow;
                 enabled = IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Arrow) &&
-                          HasArrow && ActionReady(Play2) &&
+                          HasArrow &&
                           (CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveArrow);
                 return Config.AST_ST_SimpleHeals_Arrow;
             case 5:
                 action = Ewer;
                 enabled = IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Ewer) &&
-                          HasEwer && ActionReady(Play3) &&
+                          HasEwer &&
                           (CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveEwer);
                 return Config.AST_ST_SimpleHeals_Ewer;
             case 6:
                 action = Spire;
                 enabled = IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Spire) &&
-                          HasSpire && ActionReady(Play3) &&
+                          HasSpire &&
                           (CanSpellWeave() || !Config.AST_ST_SimpleHeals_WeaveSpire);
                 return Config.AST_ST_SimpleHeals_Spire;
             case 7:
@@ -105,7 +104,7 @@ internal partial class AST
                           ActionReady(AspectedBenefic) && stopHot &&
                           (aspectedBeneficHoT is null || 
                            aspectedBeneficHoT.RemainingTime <= refreshTime || 
-                           neutralSectShield is null && neutralSectBuff is not null);
+                           neutralSectShield is null && HasStatusEffect(Buffs.NeutralSect));
                 return Config.AST_ST_SimpleHeals_AspectedBeneficHigh;
             case 8:
                 action = CelestialOpposition;
@@ -253,7 +252,6 @@ internal partial class AST
 
             if (TryGetBestCardTarget(out var target))
                 field = target;
-
             return field;
 
             #region Status-checking shortcut methods
@@ -323,7 +321,8 @@ internal partial class AST
                             (byte)x.RealJob!.Value.RowId, byte.MaxValue))
                     .ThenByDescending(x => x.BattleChara.MaxHp)
                     .ToList();
-
+                
+                //PluginLog.Debug($"names of each person still in the filter after job ordering: {string.Join(", ", filter.Select(x => x.BattleChara.Name))}");
                 bestTarget = filter.First().BattleChara;
                 return true;
             }

@@ -83,9 +83,9 @@ internal partial class AST : Healer
 
                 //Play Card
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) &&
-                    ActionReady(Play1) &&
                     HasDPSCard &&
-                    CanSpellWeave() &&
+                    CanSpellWeave() && 
+                    !JustUsed(Divination, 2f) && //Added to slow the balance coming after divination to allow retarget to not shit itself
                     (cardPooling && HasDivination ||
                     !cardPooling ||
                     !LevelChecked(Divination)))
@@ -210,9 +210,8 @@ internal partial class AST : Healer
 
             //Play Card
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoPlay) &&
-                ActionReady(Play1) &&
                 HasDPSCard &&
-                CanSpellWeave() &&
+                CanSpellWeave() && !JustUsed(Divination, 2f) &&
                 (cardPooling && HasDivination ||
                 !cardPooling ||
                 !LevelChecked(Divination)))
