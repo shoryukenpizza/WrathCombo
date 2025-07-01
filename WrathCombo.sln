@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrathCombo", "WrathCombo\Wr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8948C02A-914E-4A51-B1FE-2C608492EBF5}"
 	ProjectSection(SolutionItems) = preProject
+		CODEOWNERS = docs\CODEOWNERS
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		README.md = README.md
