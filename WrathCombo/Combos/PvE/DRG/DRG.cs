@@ -58,7 +58,7 @@ internal partial class DRG : Melee
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
-                CanDRGWeave(Variant.Rampart))
+                CanDRGWeave())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -71,7 +71,7 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
-                if (CanWeave() && !HasDoubleWeaved())
+                if (CanDRGWeave())
                 {
                     //Battle Litany Feature
                     if (ActionReady(BattleLitany))
@@ -122,7 +122,7 @@ internal partial class DRG : Melee
                         return Nastrond;
                 }
 
-                if (CanWeave(0.8f) && !HasDoubleWeaved())
+                if (CanDRGWeave(0.8f))
                 {
                     //(High) Jump Feature   
                     if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
@@ -145,7 +145,7 @@ internal partial class DRG : Melee
 
                 //StarDiver Feature
                 if (ActionReady(Stardiver) &&
-                    CanDRGWeave(Stardiver) &&
+                    CanDRGWeave(1.5f, true) &&
                     !HasStatusEffect(Buffs.StarcrossReady) &&
                     LoTDActive && InMeleeRange())
                     return Stardiver;
@@ -170,14 +170,14 @@ internal partial class DRG : Melee
 
                 if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
                     return Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(ChaosThrust);
 
                 if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
                     return Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsRear()
                         ? Role.TrueNorth
                         : WheelingThrust;
@@ -187,7 +187,7 @@ internal partial class DRG : Melee
 
                 if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
                     return Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsFlank()
                         ? Role.TrueNorth
                         : FangAndClaw;
@@ -213,7 +213,7 @@ internal partial class DRG : Melee
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
-                CanDRGWeave(Variant.Rampart))
+                CanDRGWeave())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -232,7 +232,7 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
-                if (CanWeave() && !HasDoubleWeaved())
+                if (CanDRGWeave())
                 {
                     if (IsEnabled(CustomComboPreset.DRG_ST_Buffs))
                     {
@@ -306,7 +306,7 @@ internal partial class DRG : Melee
 
                 if (IsEnabled(CustomComboPreset.DRG_ST_CDs))
                 {
-                    if (CanWeave(0.8f) && !HasDoubleWeaved())
+                    if (CanDRGWeave(0.8f))
                     {
                         //(High) Jump Feature   
                         if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
@@ -345,7 +345,7 @@ internal partial class DRG : Melee
                         (!DRG_ST_Stardiver_Options[1] ||
                          DRG_ST_Stardiver_Options[1] && InMeleeRange()) &&
                         ActionReady(Stardiver) &&
-                        CanDRGWeave(Stardiver) &&
+                        CanDRGWeave(1.5f, true) &&
                         LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;
@@ -376,7 +376,7 @@ internal partial class DRG : Melee
                 if (ComboAction == OriginalHook(Disembowel) && LevelChecked(ChaosThrust))
                     return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
                            Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(ChaosThrust);
@@ -384,7 +384,7 @@ internal partial class DRG : Melee
                 if (ComboAction == OriginalHook(ChaosThrust) && LevelChecked(WheelingThrust))
                     return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
                            Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsRear()
                         ? Role.TrueNorth
                         : WheelingThrust;
@@ -395,7 +395,7 @@ internal partial class DRG : Melee
                 if (ComboAction == OriginalHook(FullThrust) && LevelChecked(FangAndClaw))
                     return IsEnabled(CustomComboPreset.DRG_TrueNorthDynamic) &&
                            Role.CanTrueNorth() &&
-                           CanDRGWeave(Role.TrueNorth) &&
+                           CanDRGWeave() &&
                            !OnTargetsFlank()
                         ? Role.TrueNorth
                         : FangAndClaw;
@@ -421,7 +421,7 @@ internal partial class DRG : Melee
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
-                CanDRGWeave(Variant.Rampart))
+                CanDRGWeave())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -434,7 +434,7 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge))
             {
-                if (CanWeave() && !HasDoubleWeaved())
+                if (CanDRGWeave())
                 {
                     //Lance Charge Feature
                     if (ActionReady(LanceCharge))
@@ -488,7 +488,7 @@ internal partial class DRG : Melee
                         return Nastrond;
                 }
 
-                if (CanWeave(0.8f) && !HasDoubleWeaved())
+                if (CanDRGWeave(0.8f))
                 {
                     //(High) Jump Feature   
                     if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump))
@@ -505,7 +505,7 @@ internal partial class DRG : Melee
 
                 //StarDiver Feature
                 if (ActionReady(Stardiver) &&
-                    CanDRGWeave(Stardiver) &&
+                    CanDRGWeave(1.5f, true) &&
                     !HasStatusEffect(Buffs.StarcrossReady) &&
                     LoTDActive && InMeleeRange())
                     return Stardiver;
@@ -557,7 +557,7 @@ internal partial class DRG : Melee
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart) &&
-                CanDRGWeave(Variant.Rampart))
+                CanDRGWeave())
                 return Variant.Rampart;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -570,7 +570,7 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge))
             {
-                if (CanWeave() && !HasDoubleWeaved())
+                if (CanDRGWeave())
                 {
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Buffs))
                     {
@@ -644,7 +644,7 @@ internal partial class DRG : Melee
 
                 if (IsEnabled(CustomComboPreset.DRG_AoE_CDs))
                 {
-                    if (CanWeave(0.8f) && !HasDoubleWeaved())
+                    if (CanDRGWeave(0.8f))
                     {
                         //(High) Jump Feature   
                         if (IsEnabled(CustomComboPreset.DRG_AoE_HighJump) &&
@@ -676,7 +676,7 @@ internal partial class DRG : Melee
                         (!DRG_AoE_Stardiver_Options[1] ||
                          DRG_AoE_Stardiver_Options[1] && InMeleeRange()) &&
                         ActionReady(Stardiver) &&
-                        CanDRGWeave(Stardiver) &&
+                        CanDRGWeave(1.5f, true) &&
                         LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;

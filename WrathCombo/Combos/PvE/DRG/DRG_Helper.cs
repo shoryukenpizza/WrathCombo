@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Statuses;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.DRG.Config;
@@ -50,19 +51,46 @@ internal partial class DRG
 
     internal static uint SlowLock => Stardiver;
 
-    internal static bool CanDRGWeave(uint oGCD)
+    //internal static bool CanDRGWeaveOld(uint oGCD)
+    //{
+    //    float remainingGCD = RemainingGCD;
+
+    //    // Cannot Weave -or- Already Double-Weaved
+    //    if (remainingGCD < 0.6f || HasDoubleWeaved())
+    //        return false;
+
+    //    // Guaranteed Weave
+    //    if (SlowLock == oGCD && remainingGCD >= 1.5f)
+    //        return true;
+
+    //    return false;
+    //}
+
+    internal static bool CanDRGWeave(float weaveTime = 0.6f, bool forceFirst = false)
     {
         float remainingGCD = RemainingGCD;
 
-        // Cannot Weave -or- Already Double-Weaved
-        if (remainingGCD < 0.6f || HasDoubleWeaved())
+        // Cannot Weave
+        if (remainingGCD <= weaveTime)
             return false;
 
-        // Guaranteed Weave
-        if (SlowLock == oGCD && remainingGCD >= 1.5f)
-            return true;
+        // List Reference
+        var currentWeaves = WeaveActions;
+        var weaveCount = currentWeaves.Count;
 
-        return false;
+        // Force First Weave
+        if (forceFirst && weaveCount > 0)
+            return false;
+
+        // Already Double-Weaved
+        if (weaveCount > 1)
+            return false;
+
+        // Already Weaved Stardiver
+        if (currentWeaves.Contains(Stardiver))
+            return false;
+
+        return true;
     }
 
     #endregion
