@@ -14,7 +14,6 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Lumina.Excel.Sheets;
 using Status = Dalamud.Game.ClientState.Statuses.Status;
 
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class AST
@@ -266,11 +265,13 @@ internal partial class AST
                 !HasStatusEffect(Buffs.BalanceBuff, thisTarget, true) &&
                 !HasStatusEffect(Buffs.SpearBuff, thisTarget, true);
 
-            bool IsMelee (ClassJob job) =>
-                JobIDs.Melee.Contains((byte)job.RowId);
+            bool IsMeleeOrTank (ClassJob job) =>
+                JobIDs.Melee.Contains((byte)job.RowId) ||
+                JobIDs.Tank.Contains((byte)job.RowId);
 
-            bool IsRanged(ClassJob job) =>
-                JobIDs.Ranged.Contains((byte)job.RowId);
+            bool IsRangedOrHealer(ClassJob job) =>
+                JobIDs.Ranged.Contains((byte)job.RowId) ||
+                JobIDs.Healer.Contains((byte)job.RowId);
 
             bool DamageDownFree(IGameObject? thisTarget) =>
                 !TargetHasDamageDown(thisTarget);
@@ -292,8 +293,8 @@ internal partial class AST
                 if (restrictions.HasFlag(Restrictions.CardsRole))
                     filter = card switch
                     {
-                        CardType.Balance => filter.Where(x => IsMelee(x.RealJob!.Value)).ToList(),
-                        CardType.Spear => filter.Where(x => IsRanged(x.RealJob!.Value)).ToList(),
+                        CardType.Balance => filter.Where(x => IsMeleeOrTank(x.RealJob!.Value)).ToList(),
+                        CardType.Spear => filter.Where(x => IsRangedOrHealer(x.RealJob!.Value)).ToList(),
                         _ => filter,
                     };
 
@@ -340,13 +341,20 @@ internal partial class AST
         { MNK.JobID, 5 },
         { DRK.JobID, 6 },
         { RPR.JobID, 7 },
-        { PCT.JobID, 8 },
-        { SMN.JobID, 9 },
-        { MCH.JobID, 10 },
-        { BRD.JobID, 11 },
-        { RDM.JobID, 12 },
-        { DNC.JobID, 13 },
-        { BLM.JobID, 14 }
+        { GNB.JobID, 8 },
+        { PLD.JobID, 9 },
+        { WAR.JobID, 10 },
+        { PCT.JobID, 11 },
+        { SMN.JobID, 12 },
+        { MCH.JobID, 13 },
+        { BRD.JobID, 14 },
+        { RDM.JobID, 15 },
+        { DNC.JobID, 16 },
+        { BLM.JobID, 17 },
+        { WHM.JobID, 18 },
+        { SGE.JobID, 19 },
+        { SCH.JobID, 20 },
+        
     };
 
     private static readonly Restrictions[] RestrictionSteps =
