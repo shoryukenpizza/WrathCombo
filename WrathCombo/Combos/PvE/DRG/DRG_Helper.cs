@@ -18,7 +18,7 @@ internal partial class DRG
 
     internal static bool UseLifeSurge()
     {
-        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
+        if (ActionReady(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
         {
             if (LevelChecked(Drakesbane) && LoTDActive &&
                 (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
@@ -41,21 +41,6 @@ internal partial class DRG
 
     #region Animation Locks
 
-    internal static readonly HashSet<uint> FastLocks =
-    [
-        BattleLitany,
-        LanceCharge,
-        LifeSurge,
-        Geirskogul,
-        Nastrond,
-        MirageDive,
-        WyrmwindThrust,
-        RiseOfTheDragon,
-        Starcross,
-        Variant.Rampart,
-        Role.TrueNorth
-    ];
-
     internal static readonly HashSet<uint> MidLocks =
     [
         Jump,
@@ -74,9 +59,6 @@ internal partial class DRG
             return false;
 
         // Guaranteed Weave
-        if (FastLocks.Contains(oGCD))
-            return true;
-
         if (MidLocks.Contains(oGCD) && remainingGCD >= 0.8f)
             return true;
 

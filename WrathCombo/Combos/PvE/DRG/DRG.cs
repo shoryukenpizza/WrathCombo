@@ -1,6 +1,7 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.DRG.Config;
+using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG : Melee
@@ -70,42 +71,56 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
-                //Battle Litany Feature
-                if (ActionReady(BattleLitany) &&
-                    CanDRGWeave(BattleLitany))
-                    return BattleLitany;
+                if (CanWeave() && !HasDoubleWeaved())
+                {
+                    //Battle Litany Feature
+                    if (ActionReady(BattleLitany))
+                        return BattleLitany;
 
-                //Lance Charge Feature
-                if (ActionReady(LanceCharge) &&
-                    CanDRGWeave(LanceCharge))
-                    return LanceCharge;
+                    //Lance Charge Feature
+                    if (ActionReady(LanceCharge))
+                        return LanceCharge;
 
-                //Life Surge Feature
-                if (UseLifeSurge())
-                    return LifeSurge;
+                    //Life Surge Feature
+                    if (UseLifeSurge())
+                        return LifeSurge;
 
-                //Mirage Feature
-                if (ActionReady(MirageDive) &&
-                    CanDRGWeave(MirageDive) &&
-                    HasStatusEffect(Buffs.DiveReady) &&
-                    (OriginalHook(Jump) is MirageDive) &&
-                    (LoTDActive ||
-                     (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
-                      GetCooldownRemainingTime(Geirskogul) > 3)))
-                    return MirageDive;
+                    //Mirage Feature
+                    if (ActionReady(MirageDive) &&
+                        HasStatusEffect(Buffs.DiveReady) &&
+                        (OriginalHook(Jump) is MirageDive) &&
+                        (LoTDActive ||
+                         (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                          GetCooldownRemainingTime(Geirskogul) > 3)))
+                        return MirageDive;
 
-                //Wyrmwind Thrust Feature
-                if (ActionReady(WyrmwindThrust) &&
-                    CanDRGWeave(WyrmwindThrust) &&
-                    FirstmindsFocus is 2 &&
-                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
-                    return WyrmwindThrust;
+                    //Wyrmwind Thrust Feature
+                    if (ActionReady(WyrmwindThrust) &&
+                        FirstmindsFocus is 2 &&
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
+                        return WyrmwindThrust;
 
-                //Geirskogul Feature
-                if (ActionReady(Geirskogul) &&
-                    CanDRGWeave(Geirskogul) &&
-                    !LoTDActive)
-                    return Geirskogul;
+                    //Geirskogul Feature
+                    if (ActionReady(Geirskogul) &&
+                        !LoTDActive)
+                        return Geirskogul;
+
+                    //Starcross Feature
+                    if (ActionReady(Starcross) &&
+                        HasStatusEffect(Buffs.StarcrossReady))
+                        return Starcross;
+
+                    //Rise of the Dragon Feature
+                    if (ActionReady(RiseOfTheDragon) &&
+                        HasStatusEffect(Buffs.DragonsFlight))
+                        return RiseOfTheDragon;
+
+                    //Nastrond Feature
+                    if (ActionReady(Nastrond) &&
+                        HasStatusEffect(Buffs.NastrondReady) &&
+                        LoTDActive)
+                        return Nastrond;
+                }
 
                 //(High) Jump Feature   
                 if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
@@ -133,25 +148,6 @@ internal partial class DRG : Melee
                     !HasStatusEffect(Buffs.StarcrossReady) &&
                     LoTDActive && InMeleeRange())
                     return Stardiver;
-
-                //Starcross Feature
-                if (ActionReady(Starcross) &&
-                    CanDRGWeave(Starcross) &&
-                    HasStatusEffect(Buffs.StarcrossReady))
-                    return Starcross;
-
-                //Rise of the Dragon Feature
-                if (ActionReady(RiseOfTheDragon) &&
-                    CanDRGWeave(RiseOfTheDragon) &&
-                    HasStatusEffect(Buffs.DragonsFlight))
-                    return RiseOfTheDragon;
-
-                //Nastrond Feature
-                if (ActionReady(Nastrond) &&
-                    CanDRGWeave(Nastrond) &&
-                    HasStatusEffect(Buffs.NastrondReady) &&
-                    LoTDActive)
-                    return Nastrond;
             }
 
             if (Role.CanSecondWind(25))
@@ -235,60 +231,80 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge) || !LevelChecked(Disembowel))
             {
-                if (IsEnabled(CustomComboPreset.DRG_ST_Buffs))
+                if (CanWeave() && !HasDoubleWeaved())
                 {
-                    //Battle Litany Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
-                        ActionReady(BattleLitany) &&
-                        CanDRGWeave(BattleLitany) &&
-                        (DRG_ST_Litany_SubOption == 0 ||
-                         DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
-                        return BattleLitany;
+                    if (IsEnabled(CustomComboPreset.DRG_ST_Buffs))
+                    {
+                        //Battle Litany Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
+                            ActionReady(BattleLitany) &&
+                            (DRG_ST_Litany_SubOption == 0 ||
+                             DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
+                            return BattleLitany;
 
-                    //Lance Charge Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
-                        ActionReady(LanceCharge) &&
-                        CanDRGWeave(LanceCharge) &&
-                        (DRG_ST_Lance_SubOption == 0 ||
-                         DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
-                        return LanceCharge;
+                        //Lance Charge Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
+                            ActionReady(LanceCharge) &&
+                            (DRG_ST_Lance_SubOption == 0 ||
+                             DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
+                            return LanceCharge;
+                    }
+
+                    if (IsEnabled(CustomComboPreset.DRG_ST_CDs))
+                    {
+                        //Life Surge Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_LifeSurge) &&
+                            UseLifeSurge())
+                            return LifeSurge;
+
+                        //Mirage Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Mirage) &&
+                            ActionReady(MirageDive) &&
+                            HasStatusEffect(Buffs.DiveReady) &&
+                            (OriginalHook(Jump) is MirageDive) &&
+                            ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
+                              (LoTDActive ||
+                               (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                                GetCooldownRemainingTime(Geirskogul) > 3))) ||
+                             IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
+                            return MirageDive;
+
+                        //Wyrmwind Thrust Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Wyrmwind) &&
+                            ActionReady(WyrmwindThrust) &&
+                            FirstmindsFocus is 2 &&
+                            (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
+                            return WyrmwindThrust;
+
+                        //Geirskogul Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Geirskogul) &&
+                            ActionReady(Geirskogul) &&
+                            !LoTDActive)
+                            return Geirskogul;
+
+                        //Starcross Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Starcross) &&
+                            ActionReady(Starcross) &&
+                            HasStatusEffect(Buffs.StarcrossReady))
+                            return Starcross;
+
+                        //Rise of the Dragon Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Dives_RiseOfTheDragon) &&
+                            ActionReady(RiseOfTheDragon) &&
+                            HasStatusEffect(Buffs.DragonsFlight))
+                            return RiseOfTheDragon;
+
+                        //Nastrond Feature
+                        if (IsEnabled(CustomComboPreset.DRG_ST_Nastrond) &&
+                            ActionReady(Nastrond) &&
+                            HasStatusEffect(Buffs.NastrondReady) &&
+                            LoTDActive)
+                            return Nastrond;
+                    }
                 }
 
                 if (IsEnabled(CustomComboPreset.DRG_ST_CDs))
                 {
-                    //Life Surge Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_LifeSurge) &&
-                        UseLifeSurge())
-                        return LifeSurge;
-
-                    //Mirage Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Mirage) &&
-                        ActionReady(MirageDive) &&
-                        CanDRGWeave(MirageDive) &&
-                        HasStatusEffect(Buffs.DiveReady) &&
-                        (OriginalHook(Jump) is MirageDive) &&
-                        ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
-                          (LoTDActive ||
-                           (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
-                            GetCooldownRemainingTime(Geirskogul) > 3))) ||
-                         IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
-                        return MirageDive;
-
-                    //Wyrmwind Thrust Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Wyrmwind) &&
-                        ActionReady(WyrmwindThrust) &&
-                        CanDRGWeave(WyrmwindThrust) &&
-                        FirstmindsFocus is 2 &&
-                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
-                        return WyrmwindThrust;
-
-                    //Geirskogul Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Geirskogul) &&
-                        ActionReady(Geirskogul) &&
-                        CanDRGWeave(Geirskogul) &&
-                        !LoTDActive)
-                        return Geirskogul;
-
                     //(High) Jump Feature   
                     if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
                         (!DRG_ST_Jump_Options[0] ||
@@ -331,28 +347,6 @@ internal partial class DRG : Melee
                         LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;
-
-                    //Starcross Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Starcross) &&
-                        ActionReady(Starcross) &&
-                        CanDRGWeave(Starcross) &&
-                        HasStatusEffect(Buffs.StarcrossReady))
-                        return Starcross;
-
-                    //Rise of the Dragon Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Dives_RiseOfTheDragon) &&
-                        ActionReady(RiseOfTheDragon) &&
-                        CanDRGWeave(RiseOfTheDragon) &&
-                        HasStatusEffect(Buffs.DragonsFlight))
-                        return RiseOfTheDragon;
-
-                    //Nastrond Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Nastrond) &&
-                        ActionReady(Nastrond) &&
-                        CanDRGWeave(Nastrond) &&
-                        HasStatusEffect(Buffs.NastrondReady) &&
-                        LoTDActive)
-                        return Nastrond;
                 }
             }
 
@@ -438,37 +432,59 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge))
             {
-                //Lance Charge Feature
-                if (ActionReady(LanceCharge) &&
-                    CanDRGWeave(LanceCharge))
-                    return LanceCharge;
+                if (CanWeave() && !HasDoubleWeaved())
+                {
+                    //Lance Charge Feature
+                    if (ActionReady(LanceCharge))
+                        return LanceCharge;
 
-                //Battle Litany Feature
-                if (ActionReady(BattleLitany) &&
-                    CanDRGWeave(BattleLitany))
-                    return BattleLitany;
+                    //Battle Litany Feature
+                    if (ActionReady(BattleLitany))
+                        return BattleLitany;
 
-                //Life Surge Feature
-                if (ActionReady(LifeSurge) &&
-                    CanDRGWeave(LifeSurge) &&
-                    !HasStatusEffect(Buffs.LifeSurge) &&
-                    (JustUsed(SonicThrust) && LevelChecked(CoerthanTorment) ||
-                     JustUsed(DoomSpike) && LevelChecked(SonicThrust) ||
-                     JustUsed(DoomSpike) && !LevelChecked(SonicThrust)))
-                    return LifeSurge;
+                    //Life Surge Feature
+                    if (ActionReady(LifeSurge) &&
+                        !HasStatusEffect(Buffs.LifeSurge) &&
+                        (JustUsed(SonicThrust) && LevelChecked(CoerthanTorment) ||
+                         JustUsed(DoomSpike) && LevelChecked(SonicThrust) ||
+                         JustUsed(DoomSpike) && !LevelChecked(SonicThrust)))
+                        return LifeSurge;
 
-                //Wyrmwind Thrust Feature
-                if (ActionReady(WyrmwindThrust) &&
-                    CanDRGWeave(WyrmwindThrust) &&
-                    FirstmindsFocus is 2 &&
-                    (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
-                    return WyrmwindThrust;
+                    //Wyrmwind Thrust Feature
+                    if (ActionReady(WyrmwindThrust) &&
+                        FirstmindsFocus is 2 &&
+                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
+                        return WyrmwindThrust;
 
-                //Geirskogul Feature
-                if (ActionReady(Geirskogul) &&
-                    CanDRGWeave(Geirskogul) &&
-                    !LoTDActive)
-                    return Geirskogul;
+                    //Geirskogul Feature
+                    if (ActionReady(Geirskogul) &&
+                        !LoTDActive)
+                        return Geirskogul;
+
+                    //Starcross Feature
+                    if (ActionReady(Starcross) &&
+                        HasStatusEffect(Buffs.StarcrossReady))
+                        return Starcross;
+
+                    //Rise of the Dragon Feature
+                    if (ActionReady(RiseOfTheDragon) &&
+                        HasStatusEffect(Buffs.DragonsFlight))
+                        return RiseOfTheDragon;
+
+                    if (ActionReady(MirageDive) &&
+                        HasStatusEffect(Buffs.DiveReady) &&
+                        (OriginalHook(Jump) is MirageDive) &&
+                        (LoTDActive ||
+                         (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                          GetCooldownRemainingTime(Geirskogul) > 3)))
+                        return MirageDive;
+
+                    //Nastrond Feature
+                    if (ActionReady(Nastrond) &&
+                        HasStatusEffect(Buffs.NastrondReady) &&
+                        LoTDActive)
+                        return Nastrond;
+                }
 
                 //(High) Jump Feature   
                 if (ActionReady(Jump) && (OriginalHook(Jump) is Jump or HighJump) &&
@@ -490,34 +506,6 @@ internal partial class DRG : Melee
                     !HasStatusEffect(Buffs.StarcrossReady) &&
                     LoTDActive && InMeleeRange())
                     return Stardiver;
-
-                //Starcross Feature
-                if (ActionReady(Starcross) &&
-                    CanDRGWeave(Starcross) &&
-                    HasStatusEffect(Buffs.StarcrossReady))
-                    return Starcross;
-
-                //Rise of the Dragon Feature
-                if (ActionReady(RiseOfTheDragon) &&
-                    CanDRGWeave(RiseOfTheDragon) &&
-                    HasStatusEffect(Buffs.DragonsFlight))
-                    return RiseOfTheDragon;
-
-                if (ActionReady(MirageDive) &&
-                    CanDRGWeave(MirageDive) &&
-                    HasStatusEffect(Buffs.DiveReady) &&
-                    (OriginalHook(Jump) is MirageDive) &&
-                    (LoTDActive ||
-                     (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
-                      GetCooldownRemainingTime(Geirskogul) > 3)))
-                    return MirageDive;
-
-                //Nastrond Feature
-                if (ActionReady(Nastrond) &&
-                    CanDRGWeave(Nastrond) &&
-                    HasStatusEffect(Buffs.NastrondReady) &&
-                    LoTDActive)
-                    return Nastrond;
             }
 
             if (Role.CanSecondWind(25))
@@ -579,49 +567,80 @@ internal partial class DRG : Melee
 
             if (HasStatusEffect(Buffs.PowerSurge))
             {
-                if (IsEnabled(CustomComboPreset.DRG_AoE_Buffs))
+                if (CanWeave() && !HasDoubleWeaved())
                 {
-                    //Lance Charge Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Lance) &&
-                        ActionReady(LanceCharge) &&
-                        CanDRGWeave(LanceCharge) &&
-                        GetTargetHPPercent() >= DRG_AoE_LanceChargeHP)
-                        return LanceCharge;
+                    if (IsEnabled(CustomComboPreset.DRG_AoE_Buffs))
+                    {
+                        //Lance Charge Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Lance) &&
+                            ActionReady(LanceCharge) &&
+                            GetTargetHPPercent() >= DRG_AoE_LanceChargeHP)
+                            return LanceCharge;
 
-                    //Battle Litany Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Litany) &&
-                        ActionReady(BattleLitany) &&
-                        CanDRGWeave(BattleLitany) &&
-                        GetTargetHPPercent() >= DRG_AoE_LitanyHP)
-                        return BattleLitany;
+                        //Battle Litany Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Litany) &&
+                            ActionReady(BattleLitany) &&
+                            GetTargetHPPercent() >= DRG_AoE_LitanyHP)
+                            return BattleLitany;
+                    }
+
+                    if (IsEnabled(CustomComboPreset.DRG_AoE_CDs))
+                    {
+                        //Life Surge Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_LifeSurge) &&
+                            ActionReady(LifeSurge) &&
+                            !HasStatusEffect(Buffs.LifeSurge) &&
+                            (JustUsed(SonicThrust) && LevelChecked(CoerthanTorment) ||
+                             JustUsed(DoomSpike) && LevelChecked(SonicThrust) ||
+                             JustUsed(DoomSpike) && !LevelChecked(SonicThrust)))
+                            return LifeSurge;
+
+                        //Wyrmwind Thrust Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Wyrmwind) &&
+                            ActionReady(WyrmwindThrust) &&
+                            FirstmindsFocus is 2 &&
+                            (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
+                            return WyrmwindThrust;
+
+                        //Geirskogul Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Geirskogul) &&
+                            ActionReady(Geirskogul) &&
+                            !LoTDActive)
+                            return Geirskogul;
+
+                        //Starcross Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Starcross) &&
+                            ActionReady(Starcross) &&
+                            HasStatusEffect(Buffs.StarcrossReady))
+                            return Starcross;
+
+                        //Rise of the Dragon Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_RiseOfTheDragon) &&
+                            ActionReady(RiseOfTheDragon) &&
+                            HasStatusEffect(Buffs.DragonsFlight))
+                            return RiseOfTheDragon;
+
+                        //Mirage Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Mirage) &&
+                            ActionReady(MirageDive) &&
+                            HasStatusEffect(Buffs.DiveReady) &&
+                            (OriginalHook(Jump) is MirageDive) &&
+                            (LoTDActive ||
+                             (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
+                              GetCooldownRemainingTime(Geirskogul) > 3)))
+                            return MirageDive;
+
+                        //Nastrond Feature
+                        if (IsEnabled(CustomComboPreset.DRG_AoE_Nastrond) &&
+                            ActionReady(Nastrond) &&
+                            HasStatusEffect(Buffs.NastrondReady) &&
+                            LoTDActive)
+                            return Nastrond;
+                    }
                 }
 
                 if (IsEnabled(CustomComboPreset.DRG_AoE_CDs))
                 {
-                    //Life Surge Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_LifeSurge) &&
-                        ActionReady(LifeSurge) &&
-                        CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge) &&
-                        (JustUsed(SonicThrust) && LevelChecked(CoerthanTorment) ||
-                         JustUsed(DoomSpike) && LevelChecked(SonicThrust) ||
-                         JustUsed(DoomSpike) && !LevelChecked(SonicThrust)))
-                        return LifeSurge;
-
-                    //Wyrmwind Thrust Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Wyrmwind) &&
-                        ActionReady(WyrmwindThrust) &&
-                        CanDRGWeave(WyrmwindThrust) &&
-                        FirstmindsFocus is 2 &&
-                        (LoTDActive || HasStatusEffect(Buffs.DraconianFire)))
-                        return WyrmwindThrust;
-
-                    //Geirskogul Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Geirskogul) &&
-                        ActionReady(Geirskogul) &&
-                        CanDRGWeave(Geirskogul) &&
-                        !LoTDActive)
-                        return Geirskogul;
-
                     //(High) Jump Feature   
                     if (IsEnabled(CustomComboPreset.DRG_AoE_HighJump) &&
                         (!DRG_AoE_Jump_Options[0] ||
@@ -657,39 +676,6 @@ internal partial class DRG : Melee
                         LoTDActive &&
                         !HasStatusEffect(Buffs.StarcrossReady))
                         return Stardiver;
-
-                    //Starcross Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Starcross) &&
-                        ActionReady(Starcross) &&
-                        CanDRGWeave(Starcross) &&
-                        HasStatusEffect(Buffs.StarcrossReady))
-                        return Starcross;
-
-                    //Rise of the Dragon Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_RiseOfTheDragon) &&
-                        ActionReady(RiseOfTheDragon) &&
-                        CanDRGWeave(RiseOfTheDragon) &&
-                        HasStatusEffect(Buffs.DragonsFlight))
-                        return RiseOfTheDragon;
-
-                    //Mirage Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Mirage) &&
-                        ActionReady(MirageDive) &&
-                        CanDRGWeave(MirageDive) &&
-                        HasStatusEffect(Buffs.DiveReady) &&
-                        (OriginalHook(Jump) is MirageDive) &&
-                        (LoTDActive ||
-                         (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
-                          GetCooldownRemainingTime(Geirskogul) > 3)))
-                        return MirageDive;
-
-                    //Nastrond Feature
-                    if (IsEnabled(CustomComboPreset.DRG_AoE_Nastrond) &&
-                        ActionReady(Nastrond) &&
-                        CanDRGWeave(Nastrond) &&
-                        HasStatusEffect(Buffs.NastrondReady) &&
-                        LoTDActive)
-                        return Nastrond;
                 }
             }
 
