@@ -1,7 +1,6 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.DRG.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG : Melee

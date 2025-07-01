@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.Statuses;
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.DRG.Config;
@@ -73,8 +72,8 @@ internal partial class DRG
             return false;
 
         // List Reference
-        var currentWeaves = WeaveActions;
-        var weaveCount = currentWeaves.Count;
+        List<uint> currentWeaves = WeaveActions;
+        int weaveCount = currentWeaves.Count;
 
         // Force First Weave
         if (forceFirst && weaveCount > 0)
