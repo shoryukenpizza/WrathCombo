@@ -77,13 +77,13 @@ internal partial class SGE : Healer
             {
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_EDosis) &&
                     LevelChecked(Eukrasia) && InCombat() &&
-                    !JustUsedOn(DosisToEDosisList[OriginalHook(Dosis)], CurrentTarget))
+                    !JustUsedOn(DosisToEDosisList[OriginalHook(Dosis)], CurrentTarget) &&
+                    CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)]))
                 {
                     float refreshTimer = SGE_ST_DPS_EDosisRefresh;
                     int hpThreshold = SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? SGE_ST_DPS_EDosisOption : 0;
 
-                    if (CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)]) &&
-                        GetTargetHPPercent() > hpThreshold &&
+                    if (GetTargetHPPercent() > hpThreshold &&
                         ((DosisDebuff is null && DyskrasiaDebuff is null) ||
                          DosisDebuff?.RemainingTime <= refreshTimer ||
                          DyskrasiaDebuff?.RemainingTime <= refreshTimer))
