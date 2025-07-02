@@ -82,8 +82,6 @@ namespace WrathCombo.Combos.PvP
                             "Target HP percent threshold to use Eagle Eye Shot Below.");
 
                         break;
-
-
                 }
             }            
         }

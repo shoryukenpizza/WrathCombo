@@ -31,8 +31,6 @@ namespace WrathCombo.Combos.PvP
             Guard = 29054,
             Drakesbane = 41449,
             Starcross = 41450;
-
-
         public static class Buffs
         {
             public const ushort

@@ -78,8 +78,6 @@ namespace WrathCombo.Combos.PvP
                             "Target HP% to smite, Max damage below 25%");
 
                         break;
-
-
         }
             }
         }
