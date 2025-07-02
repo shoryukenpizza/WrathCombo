@@ -339,7 +339,10 @@ internal partial class SGE
     {
         { Dosis, EukrasianDosis },
         { Dosis2, EukrasianDosis2 },
-        { Dosis3, EukrasianDosis3 }
+        { Dosis3, EukrasianDosis3 },
+        { EukrasianDosis, EukrasianDosis },
+        { EukrasianDosis2, EukrasianDosis2 },
+        { EukrasianDosis3, EukrasianDosis3 }
     }.ToFrozenDictionary();
 
     #endregion
