@@ -44,7 +44,7 @@ namespace WrathCombo.AutoRotation
             x.BattleChara is not null &&
             x.BattleChara.IsDead &&
             x.BattleChara.IsTargetable &&
-            (!cfg.HealerSettings.AutoRezOutOfParty || GetPartyMembers().Any(y => y.GameObjectId == x.BattleChara.GameObjectId)) &&
+            (cfg.HealerSettings.AutoRezOutOfParty || GetPartyMembers().Any(y => y.GameObjectId == x.BattleChara.GameObjectId)) &&
             GetTargetDistance(x.BattleChara) <= QueryRange &&
             !HasStatusEffect(2648, x.BattleChara, true) && // Transcendent Effect
             !HasStatusEffect(148, x.BattleChara, true) && // Raise Effect
