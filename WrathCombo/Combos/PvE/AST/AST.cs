@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Statuses;
+using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
@@ -252,7 +252,7 @@ internal partial class AST : Healer
             return actionID;
         }
     }
-    
+
     internal class AST_ST_SimpleHeals : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_SimpleHeals;
