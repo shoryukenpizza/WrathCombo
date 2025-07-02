@@ -335,6 +335,13 @@ internal partial class SGE
         { EukrasianDosis3, Debuffs.EukrasianDosis3 }
     }.ToFrozenDictionary();
 
+    internal static readonly FrozenDictionary<uint, uint> DosisToEDosisList = new Dictionary<uint, uint>
+    {
+        { Dosis, EukrasianDosis },
+        { Dosis2, EukrasianDosis2 },
+        { Dosis3, EukrasianDosis3 }
+    }.ToFrozenDictionary();
+
     #endregion
 
     #region ID's
