@@ -282,8 +282,9 @@ internal partial class AST : Healer
                         return spell.RetargetIfEnabled(OptionalTarget, Benefic2);
                 }
             }
-            return actionID
-                .RetargetIfEnabled(OptionalTarget, Benefic2);
+            return LevelChecked(Benefic2) ?
+                actionID.RetargetIfEnabled(OptionalTarget, Benefic2):
+                Benefic.RetargetIfEnabled(OptionalTarget, Benefic2);
         }
     }
 
