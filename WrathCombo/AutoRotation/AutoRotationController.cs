@@ -309,6 +309,7 @@ namespace WrathCombo.AutoRotation
                     if (resSpell == OccultCrescent.Revive)
                     {
                         ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
+                        return;
                     }
 
                     if (Player.Job is Job.RDM)
