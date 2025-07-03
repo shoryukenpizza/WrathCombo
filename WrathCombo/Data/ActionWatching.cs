@@ -11,6 +11,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using Lumina.Excel.Sheets;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -27,14 +28,14 @@ namespace WrathCombo.Data
     public static class ActionWatching
     {
         // Dictionaries
-        internal static Dictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
+        internal static readonly FrozenDictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
             Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Action>()!
-                .ToDictionary(i => i.RowId);
+                .ToFrozenDictionary(i => i.RowId);
 
-        internal static Dictionary<uint, Trait> TraitSheet =
+        internal static readonly FrozenDictionary<uint, Trait> TraitSheet =
             Svc.Data.GetExcelSheet<Trait>()!
                 .Where(i => i.ClassJobCategory.IsValid) // Player Traits Only
-                .ToDictionary(i => i.RowId);
+                .ToFrozenDictionary(i => i.RowId);
 
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
         internal static readonly Dictionary<uint, long> ActionTimestamps = [];
@@ -159,7 +160,6 @@ namespace WrathCombo.Data
                             }
                             else ICDTracker.Trackers.Add(new(effValue, effObjectId, TimeSpan.FromSeconds(60)));
                         }
-
                     }
                 }
 
@@ -379,7 +379,7 @@ namespace WrathCombo.Data
             }
         }
         public static int LastActionUseCount { get; set; } = 0;
-        public static uint LastActionType { get; set; } = 0;
+        public static int LastActionType { get; set; } = 0;
         public static uint LastWeaponskill { get; set; } = 0;
         public static uint LastAbility { get; set; } = 0;
         public static uint LastSpell { get; set; } = 0;
@@ -512,7 +512,8 @@ namespace WrathCombo.Data
 
         public static ActionAttackType GetAttackType(uint id)
         {
-            if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
+            if (!ActionSheet.TryGetValue(id, out var action))
+                return ActionAttackType.Unknown;
 
             return action.ActionCategory.RowId switch
             {
