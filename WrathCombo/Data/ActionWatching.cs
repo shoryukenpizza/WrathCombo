@@ -29,12 +29,12 @@ namespace WrathCombo.Data
         // Dictionaries
         internal static Dictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
             Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Action>()!
-                .ToDictionary(i => i.RowId, i => i);
+                .ToDictionary(i => i.RowId);
 
         internal static Dictionary<uint, Trait> TraitSheet =
             Svc.Data.GetExcelSheet<Trait>()!
-                .Where(i => i.ClassJobCategory.IsValid)
-                .ToDictionary(i => i.RowId, i => i);
+                .Where(i => i.ClassJobCategory.IsValid) // Player Traits Only
+                .ToDictionary(i => i.RowId);
 
         internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
         internal static readonly Dictionary<uint, long> ActionTimestamps = [];
@@ -114,52 +114,52 @@ namespace WrathCombo.Data
                         );
 #endif
 
-                        switch (effType)
+                        // Event: Heal or Damage
+                        if (effType is ActionEffectType.Heal or ActionEffectType.Damage)
                         {
-                            // Event: Heal or Damage
-                            case ActionEffectType.Heal:
-                            case ActionEffectType.Damage:
-                                if (partyMembers.TryGetValue(targetId, out var hpMember))
-                                {
-                                    hpMember.CurrentHP = effType == ActionEffectType.Damage
-                                        ? Math.Min(hpMember.BattleChara.MaxHp, hpMember.CurrentHP - effValue)
-                                        : Math.Min(hpMember.BattleChara.MaxHp, hpMember.CurrentHP + effValue);
-                                    hpMember.HPUpdatePending = true;
-                                    Svc.Framework.RunOnTick(() => hpMember.HPUpdatePending = false, TimeSpan.FromSeconds(1.5));
-                                }
-                                break;
-
-                            // Event: MP Gain or MP Loss
-                            case ActionEffectType.MpGain:
-                            case ActionEffectType.MpLoss:
-                                if (partyMembers.TryGetValue(effObjectId, out var mpMember))
-                                {
-                                    mpMember.CurrentMP = effType == ActionEffectType.MpLoss
-                                        ? Math.Min(mpMember.BattleChara.MaxMp, mpMember.CurrentMP - effValue)
-                                        : Math.Min(mpMember.BattleChara.MaxMp, mpMember.CurrentMP + effValue);
-                                    mpMember.MPUpdatePending = true;
-                                    Svc.Framework.RunOnTick(() => mpMember.MPUpdatePending = false, TimeSpan.FromSeconds(1.5));
-                                }
-                                break;
-
-                            // Event: Status Gain (Source)
-                            case ActionEffectType.ApplyStatusEffectSource:
-                                if (partyMembers.TryGetValue(effObjectId, out var statusMember))
-                                {
-                                    statusMember.BuffsGainedAt[effValue] = currentTick;
-                                }
-                                break;
-
-                            // Event: Status Gain (Target)
-                            case ActionEffectType.ApplyStatusEffectTarget:
-                                if (ICDTracker.Trackers.TryGetFirst(x => x.StatusID == effValue && x.GameObjectId == effObjectId, out var icd))
-                                {
-                                    icd.ICDClearedTime = dateNow + TimeSpan.FromSeconds(60);
-                                    icd.TimesApplied += 1;
-                                }
-                                else ICDTracker.Trackers.Add(new(effValue, effObjectId, TimeSpan.FromSeconds(60)));
-                                break;
+                            if (partyMembers.TryGetValue(targetId, out var member))
+                            {
+                                member.CurrentHP = effType == ActionEffectType.Damage
+                                    ? Math.Min(member.BattleChara.MaxHp, member.CurrentHP - effValue)
+                                    : Math.Min(member.BattleChara.MaxHp, member.CurrentHP + effValue);
+                                member.HPUpdatePending = true;
+                                Svc.Framework.RunOnTick(() => member.HPUpdatePending = false, TimeSpan.FromSeconds(1.5));
+                            }
                         }
+
+                        // Event: MP Gain or MP Loss
+                        if (effType is ActionEffectType.MpGain or ActionEffectType.MpLoss)
+                        {
+                            if (partyMembers.TryGetValue(effObjectId, out var member))
+                            {
+                                member.CurrentMP = effType == ActionEffectType.MpLoss
+                                    ? Math.Min(member.BattleChara.MaxMp, member.CurrentMP - effValue)
+                                    : Math.Min(member.BattleChara.MaxMp, member.CurrentMP + effValue);
+                                member.MPUpdatePending = true;
+                                Svc.Framework.RunOnTick(() => member.MPUpdatePending = false, TimeSpan.FromSeconds(1.5));
+                            }
+                        }
+
+                        // Event: Status Gain (Source)
+                        if (effType is ActionEffectType.ApplyStatusEffectSource)
+                        {
+                            if (partyMembers.TryGetValue(effObjectId, out var member))
+                            {
+                                member.BuffsGainedAt[effValue] = currentTick;
+                            }
+                        }
+
+                        // Event: Status Gain (Target)
+                        if (effType is ActionEffectType.ApplyStatusEffectTarget)
+                        {
+                            if (ICDTracker.Trackers.TryGetFirst(x => x.StatusID == effValue && x.GameObjectId == effObjectId, out var icd))
+                            {
+                                icd.ICDClearedTime = dateNow + TimeSpan.FromSeconds(60);
+                                icd.TimesApplied += 1;
+                            }
+                            else ICDTracker.Trackers.Add(new(effValue, effObjectId, TimeSpan.FromSeconds(60)));
+                        }
+
                     }
                 }
 
@@ -259,7 +259,7 @@ namespace WrathCombo.Data
                     $"Action: {actionId.ActionName()} (ID: {actionId}) | " +
                     $"Type: {actionType} | " +
                     $"Sequence: {sequence} | " +
-                    $"Target: {targetObjectId} | " +
+                    $"Target: {Svc.Objects.FirstOrDefault(x => x.GameObjectId == targetObjectId)?.Name ?? "Unknown"} | " +
                     $"Params: [{a5}, {a6}, {a7}, {a8}, {a9}]"
                 );
 #endif
