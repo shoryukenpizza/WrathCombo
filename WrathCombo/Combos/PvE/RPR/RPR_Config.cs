@@ -35,7 +35,9 @@ internal partial class RPR
                         "Normal Opener", $"Starts opener with {Harpe.ActionName()}", 0))
                     {
                         if (!CustomComboFunctions.InCombat())
+                        {
                             Opener().OpenerStep = 1;
+                        }
                     }
 
                     DrawHorizontalRadioButton(RPR_Opener_StartChoice,

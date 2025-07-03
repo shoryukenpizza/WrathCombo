@@ -113,8 +113,10 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Gekko_KenkiOvercap)
+                    {
                         DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    }
 
                     break;
 
@@ -123,8 +125,10 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Kasha_KenkiOvercap)
+                    {
                         DrawSliderInt(25, 100, SAM_Kasha_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    }
 
                     break;
 
@@ -133,8 +137,10 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Yukaze_KenkiOvercap)
+                    {
                         DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    }
 
                     break;
 
@@ -143,8 +149,10 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Oka_KenkiOvercap)
+                    {
                         DrawSliderInt(25, 100, SAM_Oka_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    }
 
                     break;
 
@@ -153,8 +161,10 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Mangetsu_KenkiOvercap)
+                    {
                         DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+                    }
 
                     break;
 

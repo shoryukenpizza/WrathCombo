@@ -20,31 +20,43 @@ internal partial class RPR
         {
             // Before Plentiful Harvest 
             if (!LevelChecked(PlentifulHarvest))
+            {
                 return true;
+            }
 
             // Shroud in Arcane Circle 
             if (HasStatusEffect(Buffs.ArcaneCircle))
+            {
                 return true;
+            }
 
             // Prep for double Enshroud
             if (LevelChecked(PlentifulHarvest) &&
                 GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5)
+            {
                 return true;
+            }
 
             //2nd part of Double Enshroud
             if (LevelChecked(PlentifulHarvest) &&
                 JustUsed(PlentifulHarvest, 5))
+            {
                 return true;
+            }
 
             //Natural Odd Minute Shrouds
             if (!HasStatusEffect(Buffs.ArcaneCircle) && !IsDebuffExpiring(5) &&
                 GetCooldownRemainingTime(ArcaneCircle) is >= 50 and <= 65)
+            {
                 return true;
+            }
 
             // Correction for 2 min windows 
             if (!HasStatusEffect(Buffs.ArcaneCircle) && !IsDebuffExpiring(5) &&
                 Soul >= 90)
+            {
                 return true;
+            }
         }
 
         return false;
@@ -66,31 +78,41 @@ internal partial class RPR
             {
                 if (!InBossEncounter() && LevelChecked(PlentifulHarvest) && !HasStatusEffect(Buffs.Enshrouded) &&
                     GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= 8)
+                {
                     return true;
+                }
 
                 if (InBossEncounter())
                 {
                     //1st part double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
+                    {
                         return true;
+                    }
 
                     //2nd part double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         (GetCooldownRemainingTime(ArcaneCircle) <= GCD || IsOffCooldown(ArcaneCircle)) &&
                         (JustUsed(VoidReaping) || JustUsed(CrossReaping)))
+                    {
                         return true;
+                    }
 
                     //lvl 88+ general use
                     if (LevelChecked(PlentifulHarvest) && !HasStatusEffect(Buffs.Enshrouded) &&
                         GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= 8 &&
                         (GetCooldownRemainingTime(ArcaneCircle) > GCD * 8 || IsOffCooldown(ArcaneCircle)))
+                    {
                         return true;
+                    }
 
                     //below lvl 88 use
                     if (!LevelChecked(PlentifulHarvest) &&
                         GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= 8)
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -100,7 +122,9 @@ internal partial class RPR
                 {
                     if (!HasStatusEffect(Buffs.Enshrouded) &&
                         GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= RPR_SoDRefreshRange)
+                    {
                         return true;
+                    }
                 }
 
                 if (RPR_ST_ArcaneCircle_SubOption == 0 ||
@@ -110,24 +134,32 @@ internal partial class RPR
                     //1st part double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
+                    {
                         return true;
+                    }
 
                     //2nd part double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         (GetCooldownRemainingTime(ArcaneCircle) <= GCD || IsOffCooldown(ArcaneCircle)) &&
                         (JustUsed(VoidReaping) || JustUsed(CrossReaping)))
+                    {
                         return true;
+                    }
 
                     //lvl 88+ general use
                     if (LevelChecked(PlentifulHarvest) && !HasStatusEffect(Buffs.Enshrouded) &&
                         GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= RPR_SoDRefreshRange &&
                         (GetCooldownRemainingTime(ArcaneCircle) > GCD * 8 || IsOffCooldown(ArcaneCircle)))
+                    {
                         return true;
+                    }
 
                     //below lvl 88 use
                     if (!LevelChecked(PlentifulHarvest) &&
                         GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) <= RPR_SoDRefreshRange)
+                    {
                         return true;
+                    }
                 }
             }
         }
@@ -162,7 +194,9 @@ internal partial class RPR
     internal static WrathOpener Opener()
     {
         if (StandardOpener.LevelChecked)
+        {
             return StandardOpener;
+        }
 
         return WrathOpener.Dummy;
     }

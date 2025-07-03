@@ -67,20 +67,30 @@ internal partial class BLM
                 case CustomComboPreset.BLM_ST_UsePolyglot:
                     if (DrawSliderInt(0, 3, BLM_ST_Polyglot_Save,
                         "How many charges to save for manual use?"))
+                    {
                         if (BLM_ST_Polyglot_Movement > 3 - BLM_ST_Polyglot_Save)
+                        {
                             BLM_ST_Polyglot_Movement.Value = 3 - BLM_ST_Polyglot_Save;
+                        }
+                    }
 
                     if (DrawSliderInt(0, 3, BLM_ST_Polyglot_Movement,
                         "How many charges to save for movement?"))
+                    {
                         if (BLM_ST_Polyglot_Save > 3 - BLM_ST_Polyglot_Movement)
+                        {
                             BLM_ST_Polyglot_Save.Value = 3 - BLM_ST_Polyglot_Movement;
+                        }
+                    }
 
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
                     if (BLM_ST_MovementOption[0])
+                    {
                         DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
                             "How many charges to save for movement?");
+                    }
                     break;
 
 

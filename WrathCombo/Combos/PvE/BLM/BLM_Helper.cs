@@ -107,11 +107,15 @@ internal partial class BLM
     {
         if (StandardOpener.LevelChecked &&
             Config.BLM_SelectedOpener == 0)
+        {
             return StandardOpener;
+        }
 
         if (FlareOpener.LevelChecked &&
             Config.BLM_SelectedOpener == 1)
+        {
             return FlareOpener;
+        }
 
         return WrathOpener.Dummy;
     }

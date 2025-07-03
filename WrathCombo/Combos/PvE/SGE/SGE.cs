@@ -20,57 +20,79 @@ internal partial class SGE : Healer
                 : DosisList.Keys.ToArray();
 
             if (!actionFound)
+            {
                 return actionID;
+            }
 
             // Kardia Reminder
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Kardia) &&
                 LevelChecked(Kardia) &&
                 !HasStatusEffect(Buffs.Kardia))
+            {
                 return Kardia;
+            }
 
             // Opener for SGE
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener) &&
                 Opener().FullOpener(ref actionID))
+            {
                 return actionID;
+            }
 
             // Variant
             if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             //Occult skills
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
             if (CanSpellWeave() && !HasDoubleWeaved() && !HasStatusEffect(Buffs.Eukrasia))
             {
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
+                {
                     return Variant.SpiritDart;
+                }
 
                 // Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_ST_DPS_Lucid))
+                {
                     return Role.LucidDreaming;
+                }
 
                 // Addersgall Protection
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_AddersgallProtect) &&
                     ActionReady(Druochole) && Addersgall >= SGE_ST_DPS_AddersgallProtect)
+                {
                     return Druochole
                         .RetargetIfEnabled(null, replacedActions);
+                }
 
                 // Psyche
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Psyche) &&
                     ActionReady(Psyche) && InCombat())
+                {
                     return Psyche;
+                }
 
                 // Rhizomata
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Rhizo) &&
                     ActionReady(Rhizomata) && Addersgall < SGE_ST_DPS_Rhizo)
+                {
                     return Rhizomata;
+                }
 
                 //Soteria
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Soteria) &&
                     ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
+                {
                     return Soteria;
+                }
             }
 
             if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
@@ -87,7 +109,9 @@ internal partial class SGE : Healer
                         ((DosisDebuff is null && DyskrasiaDebuff is null) ||
                          DosisDebuff?.RemainingTime <= refreshTimer ||
                          DyskrasiaDebuff?.RemainingTime <= refreshTimer))
+                    {
                         return Eukrasia;
+                    }
                 }
 
                 // Phlegma
@@ -98,14 +122,18 @@ internal partial class SGE : Healer
                     //If not enabled or not high enough level, follow slider
                     if ((IsNotEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) || !LevelChecked(Psyche)) &&
                         GetRemainingCharges(OriginalHook(Phlegma)) > SGE_ST_DPS_Phlegma)
+                    {
                         return OriginalHook(Phlegma);
+                    }
 
                     //If enabled and high enough level, burst
                     if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) &&
                         ((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
                          IsOffCooldown(Psyche) ||
                          JustUsed(Psyche, 5f)))
+                    {
                         return OriginalHook(Phlegma);
+                    }
                 }
 
                 // Movement Options
@@ -116,7 +144,9 @@ internal partial class SGE : Healer
                     {
                         int index = SGE_ST_DPS_Movement_Priority.IndexOf(priority);
                         if (CheckMovementConfigMeetsRequirements(index, out uint action))
+                        {
                             return action;
+                        }
                     }
                 }
             }
@@ -133,47 +163,67 @@ internal partial class SGE : Healer
         {
             if (!DyskrasiaList.Contains(actionID) ||
                 HasStatusEffect(Buffs.Eukrasia))
+            {
                 return actionID;
+            }
 
             // Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             //Occult skills
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
             if (CanSpellWeave() && !HasDoubleWeaved())
             {
                 // Variant Spirit Dart
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
+                {
                     return Variant.SpiritDart;
+                }
 
                 // Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_AoE_DPS_Lucid))
+                {
                     return Role.LucidDreaming;
+                }
 
                 // Addersgall Protection
                 if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_AddersgallProtect) &&
                     ActionReady(Druochole) && Addersgall >= SGE_AoE_DPS_AddersgallProtect)
+                {
                     return Druochole;
+                }
 
                 // Psyche
                 if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Psyche))
+                {
                     if (ActionReady(Psyche) && HasBattleTarget() &&
                         InActionRange(Psyche))
+                    {
                         return Psyche;
+                    }
+                }
 
                 // Rhizomata
                 if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Rhizo) &&
                     ActionReady(Rhizomata) && Addersgall <= SGE_AoE_DPS_Rhizo)
+                {
                     return Rhizomata;
+                }
 
                 //Soteria
                 if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Soteria) &&
                     ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
+                {
                     return Soteria;
+                }
             }
 
             //Eukrasia for DoT
@@ -187,21 +237,27 @@ internal partial class SGE : Healer
                 ((DyskrasiaDebuff is null && DosisDebuff is null) ||
                  DyskrasiaDebuff?.RemainingTime <= 3 ||
                  DosisDebuff?.RemainingTime <= 3))
+            {
                 return Eukrasia;
+            }
 
             //Phlegma
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Phlegma) &&
                 ActionReady(Phlegma) &&
                 HasBattleTarget() &&
                 InActionRange(OriginalHook(Phlegma)))
+            {
                 return OriginalHook(Phlegma);
+            }
 
             //Toxikon
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Toxikon) &&
                 ActionReady(Toxikon) &&
                 HasBattleTarget() && HasAddersting() &&
                 InActionRange(OriginalHook(Toxikon)))
+            {
                 return OriginalHook(Toxikon);
+            }
 
             //Pneuma
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Pneuma) &&
@@ -209,7 +265,9 @@ internal partial class SGE : Healer
                  SGE_AoE_DPS_Pneuma_SubOption == 1 && TargetIsBoss()) &&
                 ActionReady(Pneuma) && HasBattleTarget() &&
                 InActionRange(Pneuma))
+            {
                 return Pneuma;
+            }
 
             return actionID;
         }
@@ -224,34 +282,46 @@ internal partial class SGE : Healer
             IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
 
             if (actionID is not Diagnosis)
+            {
                 return actionID;
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
                 HasCleansableDebuff(healTarget))
+            {
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
+            }
 
             if (HasStatusEffect(Buffs.Eukrasia))
+            {
                 return EukrasianDiagnosis
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Rhizomata) &&
                 ActionReady(Rhizomata) && !HasAddersgall())
+            {
                 return Rhizomata;
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Kardia) &&
                 LevelChecked(Kardia) &&
                 !HasStatusEffect(Buffs.Kardia) &&
                 !HasStatusEffect(Buffs.Kardion, healTarget))
+            {
                 return Kardia
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
+            }
 
             // Lucid Dreaming
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Lucid) &&
                 Role.CanLucidDream(SGE_ST_Heal_LucidOption))
+            {
                 return Role.LucidDreaming;
+            }
 
             for(int i = 0; i < SGE_ST_Heals_Priority.Count; i++)
             {
@@ -259,10 +329,14 @@ internal partial class SGE : Healer
                 int config = GetMatchingConfigST(index, OptionalTarget, out uint spell, out bool enabled);
 
                 if (enabled)
+                {
                     if (GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) <= config &&
                         ActionReady(spell))
+                    {
                         return spell
                             .RetargetIfEnabled(OptionalTarget, Diagnosis);
+                    }
+                }
             }
 
             return actionID
@@ -277,24 +351,34 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Prognosis)
+            {
                 return actionID;
+            }
 
             //Zoe -> Pneuma like Eukrasia 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_ZoePneuma) &&
                 HasStatusEffect(Buffs.Zoe))
+            {
                 return Pneuma;
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_EPrognosis) &&
                 HasStatusEffect(Buffs.Eukrasia))
+            {
                 return OriginalHook(Prognosis);
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Rhizomata) &&
                 ActionReady(Rhizomata) && !HasAddersgall())
+            {
                 return Rhizomata;
+            }
 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Lucid) &&
                 Role.CanLucidDream(SGE_AoE_Heal_LucidOption))
+            {
                 return Role.LucidDreaming;
+            }
 
             float averagePartyHP = GetPartyAvgHPPercent();
             for(int i = 0; i < SGE_AoE_Heals_Priority.Count; i++)
@@ -303,7 +387,9 @@ internal partial class SGE : Healer
                 int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
 
                 if (enabled && averagePartyHP <= config && ActionReady(spell))
+                {
                     return spell;
+                }
             }
 
             return actionID;
@@ -317,7 +403,9 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not (Kerachole or Panhaima or Philosophia))
+            {
                 return actionID;
+            }
 
             switch (actionID)
             {
@@ -362,7 +450,9 @@ internal partial class SGE : Healer
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Eukrasia || !HasStatusEffect(Buffs.Eukrasia))
+            {
                 return actionID;
+            }
 
             return (int)SGE_Eukrasia_Mode switch
             {

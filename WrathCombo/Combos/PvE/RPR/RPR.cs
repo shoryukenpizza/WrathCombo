@@ -12,15 +12,21 @@ internal partial class RPR : Melee
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not InfernalSlice)
+            {
                 return actionID;
+            }
 
             if (ComboTimer > 0)
             {
                 if (ComboAction is Slice && LevelChecked(WaxingSlice))
+                {
                     return WaxingSlice;
+                }
 
                 if (ComboAction is WaxingSlice && LevelChecked(InfernalSlice))
+                {
                     return InfernalSlice;
+                }
             }
 
             return Slice;
@@ -35,24 +41,34 @@ internal partial class RPR : Melee
         {
             // Don't change anything if not basic skill
             if (actionID is not Slice)
+            {
                 return actionID;
+            }
 
             //Soulsow
             if (LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) &&
                 !PartyInCombat())
+            {
                 return Soulsow;
+            }
 
             //Variant Cure
             if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
+            {
                 return Variant.Cure;
+            }
 
             //Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
             //All Weaves
             if (CanWeave() && !HasDoubleWeaved())
@@ -61,11 +77,15 @@ internal partial class RPR : Melee
                 if (ActionReady(ArcaneCircle) &&
                     (LevelChecked(Enshroud) && JustUsed(ShadowOfDeath) ||
                      !LevelChecked(Enshroud)))
+                {
                     return ArcaneCircle;
+                }
 
                 //Enshroud
                 if (UseEnshroud())
+                {
                     return Enshroud;
+                }
 
                 //Gluttony/Bloodstalk
                 if (Soul >= 50 &&
@@ -75,12 +95,16 @@ internal partial class RPR : Melee
                     !IsComboExpiring(3))
                 {
                     if (GetCooldownRemainingTime(Gluttony) <= GCD && Role.CanTrueNorth())
+                    {
                         return Role.TrueNorth;
+                    }
 
                     //Gluttony
                     if (LevelChecked(Gluttony) &&
                         GetCooldownRemainingTime(Gluttony) <= GCD / 2)
+                    {
                         return Gluttony;
+                    }
 
 
                     //Bloodstalk
@@ -88,7 +112,9 @@ internal partial class RPR : Melee
                         (!LevelChecked(Gluttony) ||
                          LevelChecked(Gluttony) && IsOnCooldown(Gluttony) &&
                          (Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 4)))
+                    {
                         return OriginalHook(BloodStalk);
+                    }
                 }
 
                 //Enshroud Weaves
@@ -96,19 +122,27 @@ internal partial class RPR : Melee
                 {
                     //Sacrificium
                     if (Lemure <= 4 && HasStatusEffect(Buffs.Oblatio))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     //Lemure's Slice
                     if (Void >= 2 && LevelChecked(LemuresSlice))
+                    {
                         return OriginalHook(BloodStalk);
+                    }
                 }
 
                 //Healing
                 if (Role.CanSecondWind(25))
+                {
                     return Role.SecondWind;
+                }
 
                 if (Role.CanBloodBath(40))
+                {
                     return Role.Bloodbath;
+                }
             }
 
             //Ranged Attacks
@@ -118,7 +152,9 @@ internal partial class RPR : Melee
                 //Communio
                 if (HasStatusEffect(Buffs.Enshrouded) && Lemure is 1 &&
                     LevelChecked(Communio))
+                {
                     return Communio;
+                }
 
                 return HasStatusEffect(Buffs.Soulsow)
                     ? HarvestMoon
@@ -127,11 +163,15 @@ internal partial class RPR : Melee
 
             //Shadow Of Death
             if (UseShadowOfDeath())
+            {
                 return ShadowOfDeath;
+            }
 
             //Perfectio
             if (HasStatusEffect(Buffs.PerfectioParata) && !IsComboExpiring(1))
+            {
                 return OriginalHook(Communio);
+            }
 
             //Gibbet/Gallows
             if (LevelChecked(Gibbet) && !HasStatusEffect(Buffs.Enshrouded) &&
@@ -139,39 +179,51 @@ internal partial class RPR : Melee
             {
                 //Gibbet
                 if (HasStatusEffect(Buffs.EnhancedGibbet))
+                {
                     return Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : OriginalHook(Gibbet);
+                }
 
                 //Gallows
                 if (HasStatusEffect(Buffs.EnhancedGallows) ||
                     !HasStatusEffect(Buffs.EnhancedGibbet) && !HasStatusEffect(Buffs.EnhancedGallows))
+                {
                     return Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(Gallows);
+                }
             }
 
             //Plentiful Harvest
             if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.Executioner) && HasStatusEffect(Buffs.ImmortalSacrifice) &&
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
+            {
                 return PlentifulHarvest;
+            }
 
             //Enshroud Combo
             if (HasStatusEffect(Buffs.Enshrouded))
             {
                 //Communio
                 if (Lemure is 1 && LevelChecked(Communio))
+                {
                     return Communio;
+                }
 
                 //Void Reaping
                 if (HasStatusEffect(Buffs.EnhancedVoidReaping))
+                {
                     return OriginalHook(Gibbet);
+                }
 
                 //Cross Reaping
                 if (HasStatusEffect(Buffs.EnhancedCrossReaping) ||
                     !HasStatusEffect(Buffs.EnhancedCrossReaping) && !HasStatusEffect(Buffs.EnhancedVoidReaping))
+                {
                     return OriginalHook(Gallows);
+                }
             }
 
             //Soul Slice
@@ -180,16 +232,22 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.IdealHost) && !HasStatusEffect(Buffs.Executioner) &&
                 !HasStatusEffect(Buffs.PerfectioParata) && !HasStatusEffect(Buffs.ImmortalSacrifice))
+            {
                 return SoulSlice;
+            }
 
             //1-2-3 Combo
             if (ComboTimer > 0)
             {
                 if (ComboAction == OriginalHook(Slice) && LevelChecked(WaxingSlice))
+                {
                     return OriginalHook(WaxingSlice);
+                }
 
                 if (ComboAction == OriginalHook(WaxingSlice) && LevelChecked(InfernalSlice))
+                {
                     return OriginalHook(InfernalSlice);
+                }
             }
 
             return actionID;
@@ -203,7 +261,9 @@ internal partial class RPR : Melee
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Slice)
+            {
                 return actionID;
+            }
 
             int positionalChoice = RPR_Positional;
 
@@ -211,24 +271,34 @@ internal partial class RPR : Melee
             if (IsEnabled(CustomComboPreset.RPR_ST_SoulSow) &&
                 LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
+            {
                 return Soulsow;
+            }
 
             //Variant Cure
             if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
+            {
                 return Variant.Cure;
+            }
 
             //Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
 
             //RPR Opener
             if (IsEnabled(CustomComboPreset.RPR_ST_Opener) &&
                 Opener().FullOpener(ref actionID))
+            {
                 return actionID;
+            }
 
             //All Weaves
             if (CanWeave() && !HasDoubleWeaved())
@@ -240,12 +310,16 @@ internal partial class RPR : Melee
                      !LevelChecked(Enshroud)) &&
                     (RPR_ST_ArcaneCircle_SubOption == 0 ||
                      RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter()))
+                {
                     return ArcaneCircle;
+                }
 
                 //Enshroud
                 if (IsEnabled(CustomComboPreset.RPR_ST_Enshroud) &&
                     UseEnshroud())
+                {
                     return Enshroud;
+                }
 
                 //Gluttony/Bloodstalk
                 if (Soul >= 50 &&
@@ -256,13 +330,17 @@ internal partial class RPR : Melee
                 {
                     if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
                         GetCooldownRemainingTime(Gluttony) <= GCD && Role.CanTrueNorth())
+                    {
                         return Role.TrueNorth;
+                    }
 
                     //Gluttony
                     if (IsEnabled(CustomComboPreset.RPR_ST_Gluttony) &&
                         LevelChecked(Gluttony) &&
                         GetCooldownRemainingTime(Gluttony) <= GCD / 2)
+                    {
                         return Gluttony;
+                    }
 
                     //Bloodstalk
                     if (IsEnabled(CustomComboPreset.RPR_ST_Bloodstalk) &&
@@ -270,7 +348,9 @@ internal partial class RPR : Melee
                         (!LevelChecked(Gluttony) ||
                          LevelChecked(Gluttony) && IsOnCooldown(Gluttony) &&
                          (Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 4)))
+                    {
                         return OriginalHook(BloodStalk);
+                    }
                 }
 
                 //Enshroud Weaves
@@ -283,22 +363,30 @@ internal partial class RPR : Melee
                           (RPR_ST_ArcaneCircle_SubOption == 0 || RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter() ||
                            RPR_ST_ArcaneCircle_SubOption == 1 && !InBossEncounter() && IsOffCooldown(ArcaneCircle))) ||
                          IsNotEnabled(CustomComboPreset.RPR_ST_ArcaneCircle)))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     //Lemure's Slice
                     if (IsEnabled(CustomComboPreset.RPR_ST_Lemure) &&
                         Void >= 2 && LevelChecked(LemuresSlice))
+                    {
                         return OriginalHook(BloodStalk);
+                    }
                 }
 
                 //Healing
                 if (IsEnabled(CustomComboPreset.RPR_ST_ComboHeals))
                 {
                     if (Role.CanSecondWind(RPR_STSecondWindThreshold))
+                    {
                         return Role.SecondWind;
+                    }
 
                     if (Role.CanBloodBath(RPR_STBloodbathThreshold))
+                    {
                         return Role.Bloodbath;
+                    }
                 }
             }
 
@@ -310,7 +398,9 @@ internal partial class RPR : Melee
                 //Communio
                 if (HasStatusEffect(Buffs.Enshrouded) && Lemure is 1 &&
                     LevelChecked(Communio))
+                {
                     return Communio;
+                }
 
                 return IsEnabled(CustomComboPreset.RPR_ST_RangedFillerHarvestMoon) &&
                        HasStatusEffect(Buffs.Soulsow)
@@ -321,12 +411,16 @@ internal partial class RPR : Melee
             //Shadow Of Death
             if (IsEnabled(CustomComboPreset.RPR_ST_SoD) &&
                 UseShadowOfDeath() && GetTargetHPPercent() > RPR_SoDThreshold)
+            {
                 return ShadowOfDeath;
+            }
 
             //Perfectio
             if (IsEnabled(CustomComboPreset.RPR_ST_Perfectio) &&
                 HasStatusEffect(Buffs.PerfectioParata) && !IsComboExpiring(1))
+            {
                 return OriginalHook(Communio);
+            }
 
             //Gibbet/Gallows
             if (IsEnabled(CustomComboPreset.RPR_ST_GibbetGallows) &&
@@ -367,7 +461,9 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.Executioner) && HasStatusEffect(Buffs.ImmortalSacrifice) &&
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
+            {
                 return PlentifulHarvest;
+            }
 
             //Enshroud Combo
             if (HasStatusEffect(Buffs.Enshrouded))
@@ -375,18 +471,24 @@ internal partial class RPR : Melee
                 //Communio
                 if (IsEnabled(CustomComboPreset.RPR_ST_Communio) &&
                     Lemure is 1 && LevelChecked(Communio))
+                {
                     return Communio;
+                }
 
                 //Void Reaping
                 if (IsEnabled(CustomComboPreset.RPR_ST_Reaping) &&
                     HasStatusEffect(Buffs.EnhancedVoidReaping))
+                {
                     return OriginalHook(Gibbet);
+                }
 
                 //Cross Reaping
                 if (IsEnabled(CustomComboPreset.RPR_ST_Reaping) &&
                     (HasStatusEffect(Buffs.EnhancedCrossReaping) ||
                      !HasStatusEffect(Buffs.EnhancedCrossReaping) && !HasStatusEffect(Buffs.EnhancedVoidReaping)))
+                {
                     return OriginalHook(Gallows);
+                }
             }
 
             //Soul Slice
@@ -396,16 +498,22 @@ internal partial class RPR : Melee
                 !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.IdealHost) && !HasStatusEffect(Buffs.Executioner) &&
                 !HasStatusEffect(Buffs.PerfectioParata) && !HasStatusEffect(Buffs.ImmortalSacrifice))
+            {
                 return SoulSlice;
+            }
 
             //1-2-3 Combo
             if (ComboTimer > 0)
             {
                 if (ComboAction == OriginalHook(Slice) && LevelChecked(WaxingSlice))
+                {
                     return OriginalHook(WaxingSlice);
+                }
 
                 if (ComboAction == OriginalHook(WaxingSlice) && LevelChecked(InfernalSlice))
+                {
                     return OriginalHook(InfernalSlice);
+                }
             }
             return actionID;
         }
@@ -419,93 +527,133 @@ internal partial class RPR : Melee
         {
             // Don't change anything if not basic skill
             if (actionID is not SpinningScythe)
+            {
                 return actionID;
+            }
 
             //Soulsow
             if (LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
+            {
                 return Soulsow;
+            }
 
             if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
+            {
                 return Variant.Cure;
+            }
 
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
             if (CanWeave() && !HasDoubleWeaved())
             {
                 if (ActionReady(ArcaneCircle))
+                {
                     return ArcaneCircle;
+                }
 
                 if (!HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.Executioner) &&
                     ActionReady(Enshroud) && (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
                     !IsComboExpiring(6))
+                {
                     return Enshroud;
+                }
 
                 if (LevelChecked(Gluttony) && Soul >= 50 && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
                     GetCooldownRemainingTime(Gluttony) <= GCD)
+                {
                     return Gluttony;
+                }
 
                 if (LevelChecked(GrimSwathe) && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
                     !HasStatusEffect(Buffs.Executioner) && Soul >= 50 &&
                     (!LevelChecked(Gluttony) || LevelChecked(Gluttony) &&
                         (Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
+                {
                     return GrimSwathe;
+                }
 
                 if (HasStatusEffect(Buffs.Enshrouded))
                 {
                     if (Lemure is 2 && Void is 1 && HasStatusEffect(Buffs.Oblatio))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     if (Void >= 2 && LevelChecked(LemuresScythe))
+                    {
                         return OriginalHook(GrimSwathe);
+                    }
                 }
 
                 if (Role.CanSecondWind(25))
+                {
                     return Role.SecondWind;
+                }
 
                 if (Role.CanBloodBath(40))
+                {
                     return Role.Bloodbath;
+                }
             }
 
             if (LevelChecked(WhorlOfDeath) &&
                 CanApplyStatus(CurrentTarget, Debuffs.DeathsDesign) &&
                 GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
                 !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner))
+            {
                 return WhorlOfDeath;
+            }
 
             if (HasStatusEffect(Buffs.PerfectioParata))
+            {
                 return OriginalHook(Communio);
+            }
 
             if (HasStatusEffect(Buffs.ImmortalSacrifice) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.Executioner) &&
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
+            {
                 return PlentifulHarvest;
+            }
 
             if (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner) &&
                 !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+            {
                 return OriginalHook(Guillotine);
+            }
 
             if (HasStatusEffect(Buffs.Enshrouded))
             {
                 if (LevelChecked(Communio) &&
                     Lemure is 1 && Void is 0)
+                {
                     return Communio;
+                }
 
                 if (Lemure > 0)
+                {
                     return OriginalHook(Guillotine);
+                }
             }
 
             if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.PerfectioParata) &&
                 ActionReady(SoulScythe) && Soul <= 50)
+            {
                 return SoulScythe;
+            }
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
@@ -521,40 +669,56 @@ internal partial class RPR : Melee
         {
             // Don't change anything if not basic skill
             if (actionID is not SpinningScythe)
+            {
                 return actionID;
+            }
 
             //Soulsow
             if (IsEnabled(CustomComboPreset.RPR_AoE_SoulSow) &&
                 LevelChecked(Soulsow) &&
                 !HasStatusEffect(Buffs.Soulsow) && !PartyInCombat())
+            {
                 return Soulsow;
+            }
 
             if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, RPR_VariantCure))
+            {
                 return Variant.Cure;
+            }
 
             if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+            {
                 return Variant.Rampart;
+            }
 
             if (OccultCrescent.ShouldUsePhantomActions())
+            {
                 return OccultCrescent.BestPhantomAction();
+            }
 
             if (CanWeave() && !HasDoubleWeaved())
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ArcaneCircle) &&
                     ActionReady(ArcaneCircle))
+                {
                     return ArcaneCircle;
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Enshroud) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Enshrouded) &&
                     ActionReady(Enshroud) && (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost)) &&
                     !IsComboExpiring(6))
+                {
                     return Enshroud;
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Gluttony) &&
                     LevelChecked(Gluttony) && Soul >= 50 && !HasStatusEffect(Buffs.Enshrouded) &&
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
                     GetCooldownRemainingTime(Gluttony) <= GCD)
+                {
                     return Gluttony;
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_GrimSwathe) &&
                     LevelChecked(GrimSwathe) && !HasStatusEffect(Buffs.Enshrouded) &&
@@ -562,26 +726,36 @@ internal partial class RPR : Melee
                     Soul >= 50 &&
                     (!LevelChecked(Gluttony) || LevelChecked(Gluttony) &&
                         (Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
+                {
                     return GrimSwathe;
+                }
 
                 if (HasStatusEffect(Buffs.Enshrouded))
                 {
                     if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
                         Lemure is 2 && Void is 1 && HasStatusEffect(Buffs.Oblatio))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
                         Void >= 2 && LevelChecked(LemuresScythe))
+                    {
                         return OriginalHook(GrimSwathe);
+                    }
                 }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ComboHeals))
                 {
                     if (Role.CanSecondWind(RPR_AoESecondWindThreshold))
+                    {
                         return Role.SecondWind;
+                    }
 
                     if (Role.CanBloodBath(RPR_AoEBloodbathThreshold))
+                    {
                         return Role.Bloodbath;
+                    }
                 }
             }
 
@@ -591,40 +765,54 @@ internal partial class RPR : Melee
                 GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
                 !HasStatusEffect(Buffs.SoulReaver) &&
                 GetTargetHPPercent() > RPR_WoDThreshold)
+            {
                 return WhorlOfDeath;
+            }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_Perfectio) &&
                 HasStatusEffect(Buffs.PerfectioParata))
+            {
                 return OriginalHook(Communio);
+            }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_PlentifulHarvest) &&
                 HasStatusEffect(Buffs.ImmortalSacrifice) &&
                 !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Enshrouded) &&
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
+            {
                 return PlentifulHarvest;
+            }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
                 (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)) &&
                 !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+            {
                 return OriginalHook(Guillotine);
+            }
 
             if (HasStatusEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
                     LevelChecked(Communio) &&
                     Lemure is 1 && Void is 0)
+                {
                     return Communio;
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Reaping) &&
                     Lemure > 0)
+                {
                     return OriginalHook(Guillotine);
+                }
             }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
                 !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) &&
                 !HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.PerfectioParata) &&
                 ActionReady(SoulScythe) && Soul <= 50)
+            {
                 return SoulScythe;
+            }
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
@@ -645,24 +833,32 @@ internal partial class RPR : Melee
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_OGCD))
                     {
                         if (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost))
+                        {
                             return Enshroud;
+                        }
 
                         if (HasStatusEffect(Buffs.Enshrouded))
                         {
                             //Sacrificium
                             if (Lemure is 2 && HasStatusEffect(Buffs.Oblatio))
+                            {
                                 return OriginalHook(Gluttony);
+                            }
 
                             //Lemure's Slice
                             if (Void >= 2 && LevelChecked(LemuresScythe))
+                            {
                                 return OriginalHook(GrimSwathe);
+                            }
                         }
                     }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_Enshroud))
                     {
                         if (HasStatusEffect(Buffs.PerfectioParata))
+                        {
                             return OriginalHook(Communio);
+                        }
 
                         if (HasStatusEffect(Buffs.Enshrouded))
                         {
@@ -676,23 +872,33 @@ internal partial class RPR : Melee
                             }
 
                             if (Void >= 2 && LevelChecked(LemuresScythe))
+                            {
                                 return OriginalHook(GrimSwathe);
+                            }
 
                             if (Lemure > 1)
+                            {
                                 return OriginalHook(Guillotine);
+                            }
                         }
                     }
 
                     if (ActionReady(Gluttony) && !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver))
+                    {
                         return Gluttony;
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_Sacrificium) &&
                         HasStatusEffect(Buffs.Enshrouded) && HasStatusEffect(Buffs.Oblatio))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_BloodSwatheCombo) &&
                         (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)) && LevelChecked(Guillotine))
+                    {
                         return Guillotine;
+                    }
 
                     break;
                 }
@@ -702,29 +908,39 @@ internal partial class RPR : Melee
                 {
                     if (IsEnabled(CustomComboPreset.RPR_TrueNorthGluttony) && Role.CanTrueNorth() &&
                         (GetStatusEffectStacks(Buffs.SoulReaver) is 2 || HasStatusEffect(Buffs.Executioner)))
+                    {
                         return Role.TrueNorth;
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_OGCD))
                     {
                         if (Shroud >= 50 || HasStatusEffect(Buffs.IdealHost))
+                        {
                             return Enshroud;
+                        }
 
                         if (HasStatusEffect(Buffs.Enshrouded))
                         {
                             //Sacrificium
                             if (Lemure is 2 && HasStatusEffect(Buffs.Oblatio))
+                            {
                                 return OriginalHook(Gluttony);
+                            }
 
                             //Lemure's Slice
                             if (Void >= 2 && LevelChecked(LemuresSlice))
+                            {
                                 return OriginalHook(BloodStalk);
+                            }
                         }
                     }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_Enshroud))
                     {
                         if (HasStatusEffect(Buffs.PerfectioParata))
+                        {
                             return OriginalHook(Communio);
+                        }
 
                         if (HasStatusEffect(Buffs.Enshrouded))
                         {
@@ -738,33 +954,47 @@ internal partial class RPR : Melee
                             }
 
                             if (Void >= 2 && LevelChecked(LemuresSlice))
+                            {
                                 return OriginalHook(BloodStalk);
+                            }
 
                             if (HasStatusEffect(Buffs.EnhancedVoidReaping))
+                            {
                                 return OriginalHook(Gibbet);
+                            }
 
                             if (HasStatusEffect(Buffs.EnhancedCrossReaping) ||
                                 !HasStatusEffect(Buffs.EnhancedCrossReaping) && !HasStatusEffect(Buffs.EnhancedVoidReaping))
+                            {
                                 return OriginalHook(Gallows);
+                            }
                         }
                     }
 
                     if (ActionReady(Gluttony) && !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver))
+                    {
                         return Gluttony;
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_Sacrificium) &&
                         HasStatusEffect(Buffs.Enshrouded) && HasStatusEffect(Buffs.Oblatio))
+                    {
                         return OriginalHook(Gluttony);
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_BloodSwatheCombo) &&
                         (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)))
                     {
                         if (HasStatusEffect(Buffs.EnhancedGibbet))
+                        {
                             return OriginalHook(Gibbet);
+                        }
 
                         if (HasStatusEffect(Buffs.EnhancedGallows) ||
                             !HasStatusEffect(Buffs.EnhancedGibbet) && !HasStatusEffect(Buffs.EnhancedGallows))
+                        {
                             return OriginalHook(Gallows);
+                        }
                     }
 
                     break;
@@ -806,7 +1036,9 @@ internal partial class RPR : Melee
         {
             if (actionID is not (Harpe or Slice or SpinningScythe) &&
                 actionID is not (ShadowOfDeath or BloodStalk))
+            {
                 return actionID;
+            }
 
             bool[] soulSowOptions = RPR_SoulsowOptions;
             bool soulsowReady = ActionReady(Soulsow) && !HasStatusEffect(Buffs.Soulsow);
@@ -841,11 +1073,15 @@ internal partial class RPR : Melee
                     if (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner))
                     {
                         if (HasStatusEffect(Buffs.EnhancedGibbet))
+                        {
                             return OriginalHook(Gibbet);
+                        }
 
                         if (HasStatusEffect(Buffs.EnhancedGallows) ||
                             !HasStatusEffect(Buffs.EnhancedGibbet) && !HasStatusEffect(Buffs.EnhancedGallows))
+                        {
                             return OriginalHook(Gallows);
+                        }
                     }
 
                     break;
@@ -867,11 +1103,15 @@ internal partial class RPR : Melee
                 case Gibbet or Gallows when HasStatusEffect(Buffs.Enshrouded):
                 {
                     if (Gauge is { LemureShroud: 1, VoidShroud: 0 } && LevelChecked(Communio))
+                    {
                         return Communio;
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_LemureOnGGG) &&
                         Void >= 2 && LevelChecked(LemuresSlice) && CanWeave())
+                    {
                         return OriginalHook(BloodStalk);
+                    }
 
                     break;
                 }
@@ -879,11 +1119,15 @@ internal partial class RPR : Melee
                 case Guillotine when HasStatusEffect(Buffs.Enshrouded):
                 {
                     if (Gauge is { LemureShroud: 1, VoidShroud: 0 } && LevelChecked(Communio))
+                    {
                         return Communio;
+                    }
 
                     if (IsEnabled(CustomComboPreset.RPR_LemureOnGGG) &&
                         Void >= 2 && LevelChecked(LemuresScythe) && CanWeave())
+                    {
                         return OriginalHook(GrimSwathe);
+                    }
 
                     break;
                 }

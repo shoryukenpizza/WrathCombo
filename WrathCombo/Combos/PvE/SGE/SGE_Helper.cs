@@ -216,11 +216,15 @@ internal partial class SGE
     {
         if (ToxikonOpener.LevelChecked &&
             SGE_SelectedOpener == 0)
+        {
             return ToxikonOpener;
+        }
 
         if (PneumaOpener.LevelChecked &&
             SGE_SelectedOpener == 1)
+        {
             return PneumaOpener;
+        }
 
         return WrathOpener.Dummy;
     }
