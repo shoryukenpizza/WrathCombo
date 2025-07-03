@@ -480,7 +480,13 @@ public enum CustomComboPreset
         "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", ADV.JobID)]
     [Retargeted]
     ALL_Healer_EsunaRetargeting = 100012,
-
+    
+    [Role(JobRole.Healer)]
+    [ReplaceSkill(RoleActions.Healer.Rescue)]
+    [ParentCombo(ALL_Healer_Menu)]
+    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", ADV.JobID)]
+    [Retargeted]
+    ALL_Healer_RescueRetargeting = 100013,
     #endregion
 
     #region Global Magical Ranged Features
