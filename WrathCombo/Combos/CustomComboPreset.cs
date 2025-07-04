@@ -5576,6 +5576,26 @@ public enum CustomComboPreset
     [ParentCombo(SGE_ST_Heal)]
     [CustomComboInfo("Pepsis Option", "Triggers Pepsis if a shield is present.", SGE.JobID)]
     SGE_ST_Heal_Pepsis = 14020,
+    
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Physis Option", "Adds Physis.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Physis = 14065,
+    
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Kerachole Option", "Adds Kerachole.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Kerachole = 14066,
+    
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Holos Option", "Adds Holos.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Holos = 14067,
+    
+    [ParentCombo(SGE_ST_Heal)]
+    [CustomComboInfo("Panhaima Option", "Adds Panhaima.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_ST_Heal_Panhaima = 14068,
 
     #endregion
 
@@ -5708,8 +5728,30 @@ public enum CustomComboPreset
     SGE_DPS_Variant_Rampart = 14049,
 
     #endregion
+    
+    #region Hidden Features
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SGE.JobID)]
+    [Hidden]
+    SGE_Hidden = 14069,
+    
+    [ParentCombo(SGE_Hidden)]
+    [CustomComboInfo("Eukrasian Prognosis Option", "Will try to cast Shields when a raidwide casting is detected if shieldcheck from Eukrasian Prognosis setting passes. \nWill be used in all 4 main combos.", SGE.JobID)]
+    [Hidden]
+    SGE_Hidden_EPrognosis = 14070,
+    
+    [ParentCombo(SGE_Hidden)]
+    [CustomComboInfo("Kerachole Option", "Will try to cast Kerachole when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
+    [Hidden]
+    SGE_Hidden_Kerachole = 14071,
+    
+    [ParentCombo(SGE_Hidden)]
+    [CustomComboInfo("Holos Option", "Will try to cast Holos when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
+    [Hidden]
+    SGE_Hidden_Holos = 14072,
+    
+    #endregion
 
-    // Last used number = 14064
+    // Last used number = 14068
 
     #endregion
 
