@@ -72,7 +72,9 @@ public static class ActionWatching
             // Cache Data
             var dateNow = DateTime.Now;
             var actionId = header->ActionId;
+            var actionType = header->ActionType;
             var currentTick = Environment.TickCount64;
+            var playerObjectId = LocalPlayer.GameObjectId;
             var partyMembers = GetPartyMembers().ToDictionary(x => x.GameObjectId);
 #if DEBUG
             var debugObjectTable = Svc.Objects;
@@ -124,6 +126,7 @@ public static class ActionWatching
                             member.CurrentHP = effType == ActionEffectType.Damage
                                 ? Math.Min(member.BattleChara.MaxHp, member.CurrentHP - effValue)
                                 : Math.Min(member.BattleChara.MaxHp, member.CurrentHP + effValue);
+
                             member.HPUpdatePending = true;
                             Svc.Framework.RunOnTick(() => member.HPUpdatePending = false, TimeSpan.FromSeconds(1.5));
                         }
@@ -137,6 +140,7 @@ public static class ActionWatching
                             member.CurrentMP = effType == ActionEffectType.MpLoss
                                 ? Math.Min(member.BattleChara.MaxMp, member.CurrentMP - effValue)
                                 : Math.Min(member.BattleChara.MaxMp, member.CurrentMP + effValue);
+
                             member.MPUpdatePending = true;
                             Svc.Framework.RunOnTick(() => member.MPUpdatePending = false, TimeSpan.FromSeconds(1.5));
                         }
@@ -165,11 +169,11 @@ public static class ActionWatching
             }
 
             // Skip Mounting or Consumables
-            if (header->ActionType is ActionType.Mount or ActionType.Item)
+            if (actionType is ActionType.Mount or ActionType.Item)
                 return;
 
             // Event: Cast By Player (Excl. Auto-Attacks)
-            if (actionId is not (7 or 8) && casterEntityId == LocalPlayer.GameObjectId)
+            if (casterEntityId == playerObjectId && actionId is not (7 or 8))
             {
                 // Update Trackers
                 LastAction = actionId;
