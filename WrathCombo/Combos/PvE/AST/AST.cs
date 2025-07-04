@@ -108,7 +108,7 @@ internal partial class AST : Healer
                     return Lightspeed;
 
                 //Divination
-                if (IsEnabled(CustomComboPreset.AST_DPS_Divination) &&
+                if (IsEnabled(CustomComboPreset.AST_DPS_Divination) && HasBattleTarget() &&
                     ActionReady(Divination) && !HasDivination && //Overwrite protection
                     !HasStatusEffect(Buffs.Divining) &&
                     GetTargetHPPercent() > divHPThreshold &&
@@ -221,7 +221,7 @@ internal partial class AST : Healer
                 return Lightspeed;
 
             //Divination
-            if (IsEnabled(CustomComboPreset.AST_AOE_Divination) &&
+            if (IsEnabled(CustomComboPreset.AST_AOE_Divination) && HasBattleTarget() &&
                 ActionReady(Divination) && !HasDivination && //Overwrite protection
                 GetTargetHPPercent() > divHPThreshold && CanSpellWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
