@@ -52,9 +52,7 @@ internal partial class SAM
                 if ((IsEnabled(CustomComboPreset.SAM_ST_Opener) && SAM_Balance_Content == 1 && !InBossEncounter() ||
                      IsNotEnabled(CustomComboPreset.SAM_ST_Opener)) &&
                     meikyoUsed < 1 && !HasStatusEffect(Buffs.TsubameReady))
-                {
                     return true;
-                }
 
                 if (HasStatusEffect(Buffs.TsubameReady))
                 {
@@ -73,16 +71,12 @@ internal partial class SAM
 
                 // reset meikyo
                 if (gcd >= 2.09f && meikyoUsed % 7 is 0 && JustUsed(Yukikaze))
-                {
                     return true;
-                }
             }
 
             //Pre Enhanced Senei
             if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -115,9 +109,7 @@ internal partial class SAM
 
                  //Midare Setsugekka
                  (SAM_ST_CDs_IaijutsuOption[2] && SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
-            {
                 return true;
-            }
 
             if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) &&
 
@@ -132,9 +124,7 @@ internal partial class SAM
 
                  //Midare Setsugekka
                  (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasStatusEffect(Buffs.TsubameReady))))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -147,9 +137,7 @@ internal partial class SAM
     internal static WrathOpener Opener()
     {
         if (StandardOpener.LevelChecked)
-        {
             return StandardOpener;
-        }
 
         return WrathOpener.Dummy;
     }
@@ -236,19 +224,13 @@ internal partial class SAM
         int senCount = 0;
 
         if (HasGetsu)
-        {
             senCount++;
-        }
 
         if (HasSetsu)
-        {
             senCount++;
-        }
 
         if (HasKa)
-        {
             senCount++;
-        }
 
         return senCount;
     }

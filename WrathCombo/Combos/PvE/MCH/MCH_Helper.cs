@@ -42,42 +42,30 @@ internal partial class MCH
                 {
                     //1min
                     if (BSUsed == 1 && Battery >= 90)
-                    {
                         return true;
-                    }
 
                     //even mins
                     if (BSUsed >= 2 && Battery == 100)
-                    {
                         return true;
-                    }
 
                     //odd mins 1st queen
                     if (BSUsed >= 2 && Battery is 50 && LastSummonBattery is 100)
-                    {
                         return true;
-                    }
 
                     //odd mins 2nd queen
                     if ((BSUsed % 3 is 2 && Battery >= 60 ||
                          BSUsed % 3 is 0 && Battery >= 70 ||
                          BSUsed % 3 is 1 && Battery >= 80) && LastSummonBattery is 50)
-                    {
                         return true;
-                    }
                 }
 
                 if (!LevelChecked(BarrelStabilizer))
-                {
                     return true;
-                }
             }
 
             if (IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && !InBossEncounter() && Battery is 100 ||
                 MCH_ST_Adv_Turret_SubOption == 1 && !InBossEncounter() && Battery >= MCH_ST_TurretUsage)
-            {
                 return true;
-            }
         }
 
         return false;
@@ -121,9 +109,7 @@ internal partial class MCH
                  (MCH_ST_Adv_Excavator_SubOption == 1 && !InBossEncounter() ||
                   IsNotEnabled(CustomComboPreset.MCH_ST_Adv_TurretQueen))) &&
                 LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
-            {
                 return true;
-            }
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) && InBossEncounter() ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[0] &&
@@ -136,34 +122,26 @@ internal partial class MCH
                  BSUsed % 3 is 0 && Battery <= 50 ||
                  BSUsed % 3 is 1 && Battery <= 60 ||
                  GetStatusEffectRemainingTime(Buffs.ExcavatorReady) <= 6))
-            {
                 return true;
-            }
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[1]) &&
                 !LevelChecked(Excavator) && !MaxBattery && LevelChecked(Chainsaw) &&
                 GetCooldownRemainingTime(Chainsaw) <= GCD)
-            {
                 return true;
-            }
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[2]) &&
                 !MaxBattery && LevelChecked(AirAnchor) &&
                 GetCooldownRemainingTime(AirAnchor) <= GCD)
-            {
                 return true;
-            }
 
             if ((IsEnabled(CustomComboPreset.MCH_ST_SimpleMode) ||
                  IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && MCH_ST_Reassembled[3]) &&
                 LevelChecked(Drill) &&
                 (!LevelChecked(AirAnchor) && MCH_ST_Reassembled[2] || !MCH_ST_Reassembled[2]) &&
                 ActionReady(Drill))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -279,14 +257,10 @@ internal partial class MCH
     internal static WrathOpener Opener()
     {
         if (Lvl90EarlyTools.LevelChecked)
-        {
             return Lvl90EarlyTools;
-        }
 
         if (StandardOpener.LevelChecked)
-        {
             return StandardOpener;
-        }
 
         return WrathOpener.Dummy;
     }

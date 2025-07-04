@@ -25,19 +25,13 @@ internal partial class DRG
                 (JustUsed(WheelingThrust) ||
                  JustUsed(FangAndClaw) ||
                  JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
-            {
                 return true;
-            }
 
             if (!LevelChecked(Drakesbane) && JustUsed(VorpalThrust))
-            {
                 return true;
-            }
 
             if (!LevelChecked(FullThrust) && JustUsed(TrueThrust))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -75,9 +69,7 @@ internal partial class DRG
     {
         // Cannot Weave
         if (RemainingGCD <= weaveTime)
-        {
             return false;
-        }
 
         // List Reference
         List<uint> currentWeaves = WeaveActions;
@@ -85,21 +77,15 @@ internal partial class DRG
 
         // Force First Weave
         if (forceFirst && weaveCount > 0)
-        {
             return false;
-        }
 
         // Already Double-Weaved
         if (weaveCount > 1)
-        {
             return false;
-        }
 
         // Already Weaved Stardiver
         if (currentWeaves.Contains(Stardiver))
-        {
             return false;
-        }
 
         return true;
     }
@@ -112,15 +98,11 @@ internal partial class DRG
     {
         if (StandardOpener.LevelChecked &&
             DRG_SelectedOpener == 0)
-        {
             return StandardOpener;
-        }
 
         if (PiercingTalonOpener.LevelChecked &&
             DRG_SelectedOpener == 1)
-        {
             return PiercingTalonOpener;
-        }
 
         return WrathOpener.Dummy;
     }

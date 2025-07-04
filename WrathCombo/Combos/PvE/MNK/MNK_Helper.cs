@@ -23,38 +23,30 @@ internal partial class MNK
     internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
         if (HasStatusEffect(Buffs.OpoOpoForm) || HasStatusEffect(Buffs.FormlessFist))
-        {
             return OpoOpo is 0 && LevelChecked(DragonKick)
                 ? DragonKick
                 : OriginalHook(Bootshine);
-        }
 
         if (HasStatusEffect(Buffs.RaptorForm))
-        {
             return Raptor is 0 && LevelChecked(TwinSnakes)
                 ? TwinSnakes
                 : OriginalHook(TrueStrike);
-        }
 
         if (HasStatusEffect(Buffs.CoeurlForm))
         {
             if (Coeurl is 0 && LevelChecked(Demolish))
-            {
                 return !OnTargetsRear() &&
                        Role.CanTrueNorth() &&
                        useTrueNorthIfEnabled
                     ? TrueNorth
                     : Demolish;
-            }
 
             if (LevelChecked(SnapPunch))
-            {
                 return !OnTargetsFlank() &&
                        Role.CanTrueNorth() &&
                        useTrueNorthIfEnabled
                     ? TrueNorth
                     : OriginalHook(SnapPunch);
-            }
         }
 
         return actionId;
@@ -71,17 +63,13 @@ internal partial class MNK
              OriginalHook(MasterfulBlitz) == FlintStrike ||
              OriginalHook(MasterfulBlitz) == ElixirBurst ||
              OriginalHook(MasterfulBlitz) == RisingPhoenix))
-        {
             return true;
-        }
 
         if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
             (OriginalHook(MasterfulBlitz) == TornadoKick ||
              OriginalHook(MasterfulBlitz) == CelestialRevolution ||
              OriginalHook(MasterfulBlitz) == PhantomRush))
-        {
             return true;
-        }
 
         return false;
     }
@@ -121,25 +109,19 @@ internal partial class MNK
             if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
                 !JustUsed(PerfectBalance, 20) &&
                 HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
-            {
                 return true;
-            }
 
             // Even window
             if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
                 (GetCooldownRemainingTime(Brotherhood) <= GCD * 2 || HasStatusEffect(Buffs.Brotherhood)) &&
                 (GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2 || HasStatusEffect(Buffs.RiddleOfFire)))
-            {
                 return true;
-            }
 
             // Low level
             if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
                 (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
                  !LevelChecked(RiddleOfFire)))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -151,29 +133,21 @@ internal partial class MNK
         {
             //Initial/Failsafe
             if (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance))
-            {
                 return true;
-            }
 
             // Odd window
             if (HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
-            {
                 return true;
-            }
 
             // Even window
             if ((GetCooldownRemainingTime(Brotherhood) <= GCD * 2 || HasStatusEffect(Buffs.Brotherhood)) &&
                 (GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2 || HasStatusEffect(Buffs.RiddleOfFire)))
-            {
                 return true;
-            }
 
             // Low level
             if (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
                 !LevelChecked(RiddleOfFire))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -313,15 +287,11 @@ internal partial class MNK
     {
         if (LLOpener.LevelChecked &&
             MNK_SelectedOpener == 0)
-        {
             return LLOpener;
-        }
 
         if (SLOpener.LevelChecked &&
             MNK_SelectedOpener == 1)
-        {
             return SLOpener;
-        }
 
         return WrathOpener.Dummy;
     }
