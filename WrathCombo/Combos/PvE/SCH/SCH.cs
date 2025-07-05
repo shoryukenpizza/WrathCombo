@@ -54,8 +54,12 @@ internal partial class SCH : Healer
             
             #region Hidden Feature Raidwide
 
-            if (RaidWideCasting())
-                return HiddenRaidwides(actionID);
+            if (HiddenSacredSoil())
+                return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
+            if (HiddenExpedient())
+                return Expedient;
+            if (HiddenSuccor())
+                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
            
             #endregion
 
@@ -130,8 +134,12 @@ internal partial class SCH : Healer
             
             #region Hidden Feature Raidwide
 
-            if (RaidWideCasting())
-                return HiddenRaidwides(actionID);
+            if (HiddenSacredSoil())
+                return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
+            if (HiddenExpedient())
+                return Expedient;
+            if (HiddenSuccor())
+                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
            
             #endregion
             
@@ -197,8 +205,12 @@ internal partial class SCH : Healer
             
             #region Hidden Feature Raidwide
 
-            if (RaidWideCasting())
-                return HiddenRaidwides(actionID);
+            if (HiddenSacredSoil())
+                return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
+            if (HiddenExpedient())
+                return Expedient;
+            if (HiddenSuccor())
+                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
            
             #endregion
             
@@ -262,8 +274,12 @@ internal partial class SCH : Healer
             
             #region Hidden Feature Raidwide
 
-            if (RaidWideCasting())
-                return HiddenRaidwides(actionID);
+            if (HiddenSacredSoil())
+                return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
+            if (HiddenExpedient())
+                return Expedient;
+            if (HiddenSuccor())
+                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
            
             #endregion
 
