@@ -363,12 +363,7 @@ public static class ActionWatching
     public static bool HasDoubleWeaved() => WeaveActions.Count > 1;
 
     /// <summary> Gets the amount of GCDs used since combat started. </summary>
-    public static int NumberOfGcdsUsed => CombatActions
-        .Count(x =>
-        {
-            var attackType = GetAttackType(x);
-            return attackType == ActionAttackType.Weaponskill || attackType == ActionAttackType.Spell;
-        });
+    public static int NumberOfGcdsUsed => CombatActions.Count(x => x.ActionAttackType() is ActionAttackType.Spell or ActionAttackType.Weaponskill);
 
     private static uint _lastAction = 0;
     public static uint LastAction

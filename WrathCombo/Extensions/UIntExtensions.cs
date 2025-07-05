@@ -1,5 +1,4 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using WrathCombo.CustomComboNS.Functions;
+﻿using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Data.ActionWatching;
 
@@ -11,12 +10,12 @@ internal static class UIntExtensions
 
     internal static bool TraitLevelChecked(this uint value) => CustomComboFunctions.TraitLevelChecked(value);
 
-    internal static string ActionName(this uint value) => ActionWatching.GetActionName(value);
+    internal static string ActionName(this uint value) => GetActionName(value);
 
     internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
-        internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)Svc.Data.GetExcelSheet<Action>().GetRow(value).ActionCategory.RowId;
-    }
+    internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)ActionSheet[value].ActionCategory.RowId;
+}
 
 internal static class UShortExtensions
 {
