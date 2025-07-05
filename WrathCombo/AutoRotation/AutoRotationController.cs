@@ -279,6 +279,7 @@ namespace WrathCombo.AutoRotation
 
         private static void RezParty()
         {
+            if (HasStatusEffect(418)) return;
             uint resSpell = 
                 OccultCrescent.IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, OccultCrescent.Revive) 
                 ? OccultCrescent.Revive 
@@ -350,6 +351,7 @@ namespace WrathCombo.AutoRotation
 
         private static void CleanseParty()
         {
+            if (HasStatusEffect(418)) return;
             if (ActionManager.Instance()->QueuedActionId == RoleActions.Healer.Esuna)
                 ActionManager.Instance()->QueuedActionId = 0;
 
@@ -362,6 +364,7 @@ namespace WrathCombo.AutoRotation
 
         private static void UpdateKardiaTarget()
         {
+            if (HasStatusEffect(418)) return;
             if (!LevelChecked(SGE.Kardia)) return;
             if (CombatEngageDuration().TotalSeconds < 3) return;
 
