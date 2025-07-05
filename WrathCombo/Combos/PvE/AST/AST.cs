@@ -72,7 +72,18 @@ internal partial class AST : Healer
                     (IsNotEnabled(CustomComboPreset.AST_DPS_LightSpeedHold) ||
                     LightspeedChargeCD < DivinationCD ||
                     !LevelChecked(Divination)))
-                    return Lightspeed;                
+                    return Lightspeed;  
+                
+                #region Hidden Feature Raidwide
+
+                if (HiddenCollectiveUnconscious())
+                    return CollectiveUnconscious;
+                if (HiddenNeutralSect())
+                    return OriginalHook(NeutralSect);
+                if (HiddenAspectedHelios())
+                    return OriginalHook(AspectedHelios);
+           
+                #endregion
 
                 //Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.AST_DPS_Lucid) &&
@@ -183,7 +194,18 @@ internal partial class AST : Healer
                 (IsNotEnabled(CustomComboPreset.AST_AOE_LightSpeedHold) ||
                 LightspeedChargeCD < DivinationCD  ||
                 !LevelChecked(Divination)))
-                return Lightspeed;            
+                return Lightspeed;  
+            
+            #region Hidden Feature Raidwide
+
+            if (HiddenCollectiveUnconscious())
+                return CollectiveUnconscious;
+            if (HiddenNeutralSect())
+                return OriginalHook(NeutralSect);
+            if (HiddenAspectedHelios())
+                return OriginalHook(AspectedHelios);
+           
+            #endregion
 
             //Lucid Dreaming
             if (IsEnabled(CustomComboPreset.AST_AOE_Lucid) &&
@@ -262,6 +284,17 @@ internal partial class AST : Healer
                 return actionID;
             
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            
+            #region Hidden Feature Raidwide
+
+            if (HiddenCollectiveUnconscious())
+                return CollectiveUnconscious;
+            if (HiddenNeutralSect())
+                return OriginalHook(NeutralSect);
+            if (HiddenAspectedHelios())
+                return OriginalHook(AspectedHelios);
+           
+            #endregion
 
             if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) >= Config.AST_ST_SimpleHeals_Esuna &&
@@ -303,6 +336,17 @@ internal partial class AST : Healer
             //Level check to return helios immediately below 40
             if (!LevelChecked(AspectedHelios)) 
                 return Helios;
+            
+            #region Hidden Feature Raidwide
+
+            if (HiddenCollectiveUnconscious())
+                return CollectiveUnconscious;
+            if (HiddenNeutralSect())
+                return OriginalHook(NeutralSect);
+            if (HiddenAspectedHelios())
+                return OriginalHook(AspectedHelios);
+           
+            #endregion
             
             //Horoscope check to trigger the ability to do the larger Horoscope Heal
             if (HasStatusEffect(Buffs.Horoscope))

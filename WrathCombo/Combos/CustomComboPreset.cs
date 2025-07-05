@@ -883,8 +883,33 @@ public enum CustomComboPreset
     AST_Cards_QuickTargetCards = 1029,
 
     #endregion
+    
+    #region Hidden Features
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know." +
+                                       "\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", AST.JobID)]
+    [Hidden]
+    AST_Hidden = 1075,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Collective Unconscious Option", "Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_CollectiveUnconscious = 1076,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
+                                                               "\nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_NeutralSect = 1077,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Aspected Helios Option", "Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
+                                                           "\nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_AspectedHelios = 1078,
+    
+    #endregion
 
-    // Last value = 1074
+    // Last value = 1078
 
     #endregion
 

@@ -43,6 +43,24 @@ internal partial class AST
     internal static bool HasDivination=> HasStatusEffect(Buffs.Divination, anyOwner: true) || JustUsed(Divination);
     internal static float DivinationCD => GetCooldownRemainingTime(Divination);
     internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
+    
+    #region Hidden Raidwides
+    
+    internal static bool HiddenCollectiveUnconscious()
+    {
+        return IsEnabled(CustomComboPreset.AST_Hidden_CollectiveUnconscious) && ActionReady(CollectiveUnconscious) && CanSpellWeave() && RaidWideCasting();
+    }
+    internal static bool HiddenNeutralSect()
+    {
+        return IsEnabled(CustomComboPreset.AST_Hidden_NeutralSect) && ActionReady(OriginalHook(NeutralSect)) && CanSpellWeave() && RaidWideCasting();
+    }
+    internal static bool HiddenAspectedHelios()
+    {
+        return IsEnabled(CustomComboPreset.AST_Hidden_AspectedHelios) && HasStatusEffect(Buffs.NeutralSect) && RaidWideCasting() && 
+               !HasStatusEffect(Buffs.NeutralSectShield);
+    }
+    
+    #endregion
 
     #region Get ST Heals
     internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
@@ -524,6 +542,7 @@ internal partial class AST
             Horoscope = 1890,
             HoroscopeHelios = 1891,
             NeutralSect = 1892,
+            Suntouched = 3895, 
             NeutralSectShield = 1921,
             Divination = 1878,
             LordOfCrownsDrawn = 2054,
