@@ -208,6 +208,11 @@ internal partial class DRG : Melee
             if (actionID is not TrueThrust)
                 return actionID;
 
+            // Opener for DRG
+            if (IsEnabled(CustomComboPreset.DRG_ST_Opener) &&
+                Opener().FullOpener(ref actionID))
+                return actionID;
+
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, DRG_Variant_Cure))
                 return Variant.Cure;
 
@@ -217,11 +222,6 @@ internal partial class DRG : Melee
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-
-            // Opener for DRG
-            if (IsEnabled(CustomComboPreset.DRG_ST_Opener) &&
-                Opener().FullOpener(ref actionID))
-                return actionID;
 
             // Piercing Talon Uptime Option
             if (IsEnabled(CustomComboPreset.DRG_ST_RangedUptime) &&

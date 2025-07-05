@@ -185,6 +185,11 @@ internal partial class BLM : Caster
             if (actionID is not Fire)
                 return actionID;
 
+            // Opener
+            if (IsEnabled(CustomComboPreset.BLM_ST_Opener) &&
+                Opener().FullOpener(ref actionID))
+                return actionID;
+
             if (Variant.CanCure(CustomComboPreset.BLM_Variant_Cure, BLM_VariantCure))
                 return Variant.Cure;
 
@@ -193,11 +198,6 @@ internal partial class BLM : Caster
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-
-            // Opener
-            if (IsEnabled(CustomComboPreset.BLM_ST_Opener) &&
-                Opener().FullOpener(ref actionID))
-                return actionID;
 
             if (CanSpellWeave() && !HasDoubleWeaved())
             {
