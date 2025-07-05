@@ -916,7 +916,7 @@ public enum CustomComboPreset
     BLM_ST_Triplecast = 2115,
     
     [ParentCombo(BLM_ST_Triplecast)]
-    [CustomComboInfo("Leyline Option", "Will not use Triplecast while under the effect of Leyline.", BLM.JobID)]
+    [CustomComboInfo("Leyline Option", "Will use Triplecast even when under the effect of Leyline.", BLM.JobID)]
     BLM_ST_Triplecast_Leyline = 2118,
     
     [ParentCombo(BLM_ST_AdvancedMode)]
