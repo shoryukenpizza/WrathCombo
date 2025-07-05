@@ -36,7 +36,7 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
                 return actionID;
             
-            #region Variant
+            #region Special COntent
             if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
                 return Variant.Rampart;
             
@@ -116,7 +116,7 @@ internal partial class SCH : Healer
                 NeedToSummon)
                 return SummonEos;
             
-            #region Variant
+            #region Special Content
             if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
                 return Variant.Rampart;
 
