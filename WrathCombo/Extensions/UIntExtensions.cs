@@ -1,6 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using static WrathCombo.Data.ActionWatching;
 
 namespace WrathCombo.Extensions;
 
@@ -14,8 +15,8 @@ internal static class UIntExtensions
 
     internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
-    internal static ActionType ActionType(this uint value) => (ActionType)ActionWatching.ActionSheet[value].ActionCategory.RowId;
-}
+        internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)Svc.Data.GetExcelSheet<Action>().GetRow(value).ActionCategory.RowId;
+    }
 
 internal static class UShortExtensions
 {
