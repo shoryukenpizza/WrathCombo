@@ -1,7 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using Lumina.Excel.Sheets;
 using System.Collections.Frozen;
-using System.Collections.Generic;
 using System.Globalization;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
@@ -39,7 +38,7 @@ internal abstract partial class CustomComboFunctions
 
     public class JobIDs
     {
-        public static readonly Dictionary<Dalamud.Game.ClientLanguage, TextInfo> _textInfoCache = [];
+        private static TextInfo? _cachedTextInfo;
 
         public static readonly FrozenDictionary<uint, ClassJob> ClassJobs = Svc.Data.GetExcelSheet<ClassJob>()!.ToFrozenDictionary(i => i.RowId);
 
@@ -47,7 +46,7 @@ internal abstract partial class CustomComboFunctions
 
         public static uint JobIDToClassJobCategory(uint jobId) => ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.ClassJobCategory.RowId : 0;
 
-        public static string JobIDToShorthand(uint jobId) => jobId != 0 && ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.Abbreviation.ToString() : "";
+        public static string JobIDToShorthand(uint jobId) => jobId != 0 && ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.Abbreviation.ToString() : string.Empty;
 
         public static string JobIDToName(uint jobId)
         {
@@ -71,8 +70,8 @@ internal abstract partial class CustomComboFunctions
             if (!ClassJobs.TryGetValue(jobId, out var classJob))
                 return "Unknown";
 
-            // Combat Jobs: Fetch Job Name
-            // DoH/DoL Jobs: Fetch Category Name
+            // Combat Jobs: Use Job Name
+            // DoH/DoL Jobs: Use Category Name
             string jobName = (jobId is 8 or 16)
                 ? classJob.ClassJobCategory.Value.Name.ToString()
                 : classJob.Name.ToString();
@@ -82,27 +81,24 @@ internal abstract partial class CustomComboFunctions
 
         public static TextInfo GetTextInfo()
         {
-            var language = Svc.ClientState.ClientLanguage;
-
-            // Use TextInfo cache if available
+            // Use cached TextInfo if available
             // Otherwise create new and cache for future use
-            if (!_textInfoCache.TryGetValue(language, out var textInfo))
+            if (_cachedTextInfo is null)
             {
                 // Job names are lowercase by default
                 // This capitalizes based on regional rules
-                var cultureId = language switch
+                var cultureId = Svc.ClientState.ClientLanguage switch
                 {
                     Dalamud.Game.ClientLanguage.French      => "fr-FR",
                     Dalamud.Game.ClientLanguage.Japanese    => "ja-JP",
                     Dalamud.Game.ClientLanguage.German      => "de-DE",
-                    _                                       => "en-us",
+                    _                                       => "en-US",
                 };
 
-                textInfo = new CultureInfo(cultureId, false).TextInfo;
-                _textInfoCache[language] = textInfo;
+                _cachedTextInfo = new CultureInfo(cultureId, useUserOverride: false).TextInfo;
             }
 
-            return textInfo;
+            return _cachedTextInfo;
         }
 
         public static readonly FrozenSet<byte> Melee =
