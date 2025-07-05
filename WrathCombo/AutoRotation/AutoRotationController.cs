@@ -604,7 +604,7 @@ namespace WrathCombo.AutoRotation
                         ? GetTargetDistance(target) <= 20f
                         : InActionRange(outAct, target));
 
-                var canUse = (canUseSelf || canUseTarget || areaTargeted) && (outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0));
+                var canUse = (canUseSelf || canUseTarget || areaTargeted) && (outAct.ActionAttackType() == ActionAttackType.Ability || RemainingGCD == 0);
 
                 if ((canUse || cfg.DPSSettings.AlwaysSelectTarget))
                     Svc.Targets.Target = target;

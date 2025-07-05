@@ -509,12 +509,12 @@ public static class ActionWatching
         return $"#{index} ";
     }
 
-    public static ActionAttackType GetAttackType(uint id)
+    public static ActionAttackType GetAttackType(uint actionId)
     {
-        if (!ActionSheet.TryGetValue(id, out var action))
+        if (!ActionSheet.TryGetValue(actionId, out var actionSheet))
             return ActionAttackType.Unknown;
 
-        return action.ActionCategory.RowId switch
+        return actionSheet.ActionCategory.RowId switch
         {
             2 => ActionAttackType.Spell,
             3 => ActionAttackType.Weaponskill,
@@ -523,11 +523,11 @@ public static class ActionWatching
         };
     }
 
-    public enum ActionAttackType
+    public enum ActionAttackType : uint
     {
-        Ability,
-        Spell,
-        Weaponskill,
-        Unknown
+        Unknown = 0,
+        Spell = 2,
+        Weaponskill = 3,
+        Ability = 4
     }
 }
