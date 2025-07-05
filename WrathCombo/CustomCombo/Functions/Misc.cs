@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using Lumina.Excel.Sheets;
 using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Globalization;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
@@ -38,6 +39,8 @@ internal abstract partial class CustomComboFunctions
 
     public class JobIDs
     {
+        public static readonly Dictionary<Dalamud.Game.ClientLanguage, TextInfo> _textInfoCache = [];
+
         public static readonly FrozenDictionary<uint, ClassJob> ClassJobs = Svc.Data.GetExcelSheet<ClassJob>()!.ToFrozenDictionary(i => i.RowId);
 
         public static int JobIDToRole(uint jobId) => ClassJobs.TryGetValue(jobId, out var classJob) ? classJob.Role : 0;
@@ -79,17 +82,27 @@ internal abstract partial class CustomComboFunctions
 
         public static TextInfo GetTextInfo()
         {
-            // Job names are all lowercase by default
-            // This capitalizes based on regional rules
-            var cultureId = Svc.ClientState.ClientLanguage switch
-            {
-                Dalamud.Game.ClientLanguage.French      => "fr-FR",
-                Dalamud.Game.ClientLanguage.Japanese    => "ja-JP",
-                Dalamud.Game.ClientLanguage.German      => "de-DE",
-                _                                       => "en-us",
-            };
+            var language = Svc.ClientState.ClientLanguage;
 
-            return new CultureInfo(cultureId, false).TextInfo;
+            // Use TextInfo cache if available
+            // Otherwise create new and cache for future use
+            if (!_textInfoCache.TryGetValue(language, out var textInfo))
+            {
+                // Job names are lowercase by default
+                // This capitalizes based on regional rules
+                var cultureId = language switch
+                {
+                    Dalamud.Game.ClientLanguage.French      => "fr-FR",
+                    Dalamud.Game.ClientLanguage.Japanese    => "ja-JP",
+                    Dalamud.Game.ClientLanguage.German      => "de-DE",
+                    _                                       => "en-us",
+                };
+
+                textInfo = new CultureInfo(cultureId, false).TextInfo;
+                _textInfoCache[language] = textInfo;
+            }
+
+            return textInfo;
         }
 
         public static readonly FrozenSet<byte> Melee =
