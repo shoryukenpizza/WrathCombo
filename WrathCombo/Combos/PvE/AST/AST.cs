@@ -354,6 +354,9 @@ internal partial class AST : Healer
                     ? Helios
                     : OriginalHook(AspectedHelios);
             
+            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect) && HasStatusEffect(Buffs.Suntouched) && CanWeave())
+                return SunSign;
+            
             //Priority List
             float averagePartyHP = GetPartyAvgHPPercent();
             for(int i = 0; i < Config.AST_AoE_SimpleHeals_Priority.Count; i++)
