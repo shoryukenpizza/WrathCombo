@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
-using Dalamud.Utility;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -22,14 +21,15 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using Action = Lumina.Excel.Sheets.Action;
 
 namespace WrathCombo.Data;
 
 public static class ActionWatching
 {
     // Dictionaries
-    internal static readonly FrozenDictionary<uint, Lumina.Excel.Sheets.Action> ActionSheet =
-        Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Action>()!
+    internal static readonly FrozenDictionary<uint, Action> ActionSheet =
+        Svc.Data.GetExcelSheet<Action>()!
             .ToFrozenDictionary(i => i.RowId);
 
     internal static readonly FrozenDictionary<uint, Trait> TraitSheet =
