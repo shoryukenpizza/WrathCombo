@@ -40,16 +40,20 @@ internal partial class SGE : Healer
             //Occult skills
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-            
+
             #region Hidden Feature Raidwide
 
             if (HiddenKerachole())
                 return Kerachole;
+
             if (HiddenHolos())
                 return Holos;
+
             if (HiddenEprognosis())
-                return HasStatusEffect(Buffs.Eukrasia) ? OriginalHook(Prognosis) : Eukrasia;
-           
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
             #endregion
 
             if (CanSpellWeave() && !HasDoubleWeaved() && !HasStatusEffect(Buffs.Eukrasia))
@@ -153,16 +157,20 @@ internal partial class SGE : Healer
             //Occult skills
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-            
+
             #region Hidden Feature Raidwide
 
             if (HiddenKerachole())
                 return Kerachole;
+
             if (HiddenHolos())
                 return Holos;
+
             if (HiddenEprognosis())
-                return HasStatusEffect(Buffs.Eukrasia) ? OriginalHook(Prognosis) : Eukrasia;
-           
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
             #endregion
 
             if (CanSpellWeave() && !HasDoubleWeaved())
@@ -247,16 +255,20 @@ internal partial class SGE : Healer
 
             if (actionID is not Diagnosis)
                 return actionID;
-            
+
             #region Hidden Feature Raidwide
 
             if (HiddenKerachole())
                 return Kerachole;
+
             if (HiddenHolos())
                 return Holos;
+
             if (HiddenEprognosis())
-                return HasStatusEffect(Buffs.Eukrasia) ? OriginalHook(Prognosis) : Eukrasia;
-           
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
             #endregion
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) &&
@@ -311,16 +323,20 @@ internal partial class SGE : Healer
         {
             if (actionID is not Prognosis)
                 return actionID;
-            
+
             #region Hidden Feature Raidwide
 
             if (HiddenKerachole())
                 return Kerachole;
+
             if (HiddenHolos())
                 return Holos;
+
             if (HiddenEprognosis())
-                return HasStatusEffect(Buffs.Eukrasia) ? OriginalHook(Prognosis) : Eukrasia;
-           
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
             #endregion
 
             //Zoe -> Pneuma like Eukrasia 

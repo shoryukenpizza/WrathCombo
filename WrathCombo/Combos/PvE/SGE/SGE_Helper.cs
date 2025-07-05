@@ -28,24 +28,27 @@ internal partial class SGE
         Addersting > 0;
 
     #region Healing
-    
+
     #region Hidden Raidwides
-    internal static bool HiddenKerachole()
-    {
-        return IsEnabled(CustomComboPreset.SGE_Hidden_Kerachole) && ActionReady(Kerachole) && HasAddersgall() && CanSpellWeave() && RaidWideCasting();
-    }
-    internal static bool HiddenHolos()
-    {
-        return IsEnabled(CustomComboPreset.SGE_Hidden_Holos) && ActionReady(Holos) && CanSpellWeave() && RaidWideCasting() &&
-               GetPartyAvgHPPercent() <= SGE_Hidden_HolosOption;
-    }
+
+    internal static bool HiddenKerachole() =>
+        IsEnabled(CustomComboPreset.SGE_Hidden_Kerachole) &&
+        ActionReady(Kerachole) && HasAddersgall() &&
+        CanSpellWeave() && RaidWideCasting();
+
+    internal static bool HiddenHolos() =>
+        IsEnabled(CustomComboPreset.SGE_Hidden_Holos) &&
+        ActionReady(Holos) && CanSpellWeave() && RaidWideCasting() &&
+        GetPartyAvgHPPercent() <= SGE_Hidden_HolosOption;
+
     internal static bool HiddenEprognosis()
     {
         bool shieldCheck = GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_AoE_Heal_EPrognosisOption &&
                            GetPartyBuffPercent(SCH.Buffs.Galvanize) <= SGE_AoE_Heal_EPrognosisOption;
-        
+
         return IsEnabled(CustomComboPreset.SGE_Hidden_EPrognosis) && shieldCheck && RaidWideCasting();
     }
+
     #endregion
 
     #region ST
@@ -106,28 +109,28 @@ internal partial class SGE
                           GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) <= SGE_ST_Heal_EDiagnosisHP &&
                           shieldCheck && scholarShieldCheck;
                 return SGE_ST_Heal_EDiagnosisHP;
-            
+
             case 8:
                 action = Kerachole;
-                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Kerachole) && HasAddersgall() && 
+                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Kerachole) && HasAddersgall() &&
                           (!SGE_ST_Heal_KeracholeBossOption || !InBossEncounter());
                 return SGE_ST_Heal_KeracholeHP;
-            
+
             case 9:
                 action = OriginalHook(Physis);
-                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Physis) && 
+                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Physis) &&
                           (!SGE_ST_Heal_PhysisBossOption || !InBossEncounter());
                 return SGE_ST_Heal_PhysisHP;
-            
+
             case 10:
                 action = Panhaima;
-                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Panhaima) && 
-                          (!SGE_ST_Heal_PanhaimaBossOption|| !InBossEncounter());
+                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Panhaima) &&
+                          (!SGE_ST_Heal_PanhaimaBossOption || !InBossEncounter());
                 return SGE_ST_Heal_PanhaimaHP;
-            
+
             case 11:
                 action = Holos;
-                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Holos) && 
+                enabled = IsEnabled(CustomComboPreset.SGE_ST_Heal_Holos) &&
                           (!SGE_ST_Heal_HolosBossOption || !InBossEncounter());
                 return SGE_ST_Heal_HolosHP;
         }
@@ -139,7 +142,7 @@ internal partial class SGE
     }
 
     #endregion
-    
+
     #region AoE
 
     internal static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
@@ -336,7 +339,6 @@ internal partial class SGE
         [
             ([2], () => HasStatusEffect(Buffs.Eukrasia))
         ];
-
 
         internal override UserData ContentCheckConfig => SGE_Balance_Content;
 

@@ -192,7 +192,7 @@ internal partial class SGE
                         "Scholar Shield Check", "Enable to not override an existing Scholar's shield.", 2, 1);
                     DrawPriorityInput(SGE_ST_Heals_Priority, 12, 7, $"{EukrasianDiagnosis.ActionName()} Priority: ");
                     break;
-                
+
                 case CustomComboPreset.SGE_ST_Heal_Kerachole:
                     DrawSliderInt(0, 100, SGE_ST_Heal_KeracholeHP, "Start using when below HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(SGE_ST_Heal_KeracholeBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
@@ -204,19 +204,19 @@ internal partial class SGE
                     DrawAdditionalBoolChoice(SGE_ST_Heal_PhysisBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SGE_ST_Heals_Priority, 12, 9, $"{Physis.ActionName()} Priority: ");
                     break;
-                
+
                 case CustomComboPreset.SGE_ST_Heal_Panhaima:
                     DrawSliderInt(0, 100, SGE_ST_Heal_PanhaimaHP, "Start using when below HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(SGE_ST_Heal_PanhaimaBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SGE_ST_Heals_Priority, 12, 10, $"{Panhaima.ActionName()} Priority: ");
                     break;
-                
+
                 case CustomComboPreset.SGE_ST_Heal_Holos:
                     DrawSliderInt(0, 100, SGE_ST_Heal_HolosHP, "Start using when below HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(SGE_ST_Heal_HolosBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SGE_ST_Heals_Priority, 12, 11, $"{Holos.ActionName()} Priority: ");
                     break;
-                
+
                 case CustomComboPreset.SGE_AoE_Heal_Lucid:
                     DrawSliderInt(4000, 9500, SGE_AoE_Heal_LucidOption, "MP Threshold", 150, Hundreds);
                     break;
@@ -294,7 +294,7 @@ internal partial class SGE
                     DrawRadioButton(SGE_Eukrasia_Mode, $"{EukrasianPrognosis.ActionName()}", "", 2);
                     DrawRadioButton(SGE_Eukrasia_Mode, $"{EukrasianDyskrasia.ActionName()}", "", 3);
                     break;
-                
+
                 case CustomComboPreset.SGE_Hidden_Holos:
                     DrawSliderInt(0, 100, SGE_Hidden_HolosOption,
                         "Start using when below party average HP % to not waste the heal portion if desired. Set to 100 to disable this check");
