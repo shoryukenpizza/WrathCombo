@@ -516,6 +516,7 @@ public static class ActionWatching
 
         return actionSheet.ActionCategory.RowId switch
         {
+            1 => ActionAttackType.AutoAttack,
             2 => ActionAttackType.Spell,
             3 => ActionAttackType.Weaponskill,
             4 => ActionAttackType.Ability,
@@ -523,11 +524,12 @@ public static class ActionWatching
         };
     }
 
-    public enum ActionAttackType : uint
+    public enum ActionAttackType
     {
-        Unknown = 0,
-        Spell = 2,
-        Weaponskill = 3,
-        Ability = 4
+        Unknown,
+        AutoAttack,
+        Spell,
+        Weaponskill,
+        Ability
     }
 }
