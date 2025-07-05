@@ -10,9 +10,6 @@ internal partial class SGE
 {
     public static class Config
     {
-        public static UserInt
-            SGE_Eukrasia_Mode = new("SGE_Eukrasia_Mode");
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -329,6 +326,7 @@ internal partial class SGE
         public static UserBoolArray
             SGE_ST_DPS_Movement = new("SGE_ST_DPS_Movement");
         public static UserInt
+            SGE_Eukrasia_Mode = new("SGE_Eukrasia_Mode", 1),
             SGE_SelectedOpener = new("SGE_SelectedOpener", 0),
             SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid", 6500),
             SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo", 1),
