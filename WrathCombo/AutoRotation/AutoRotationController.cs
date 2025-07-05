@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
@@ -20,7 +19,6 @@ using WrathCombo.Services;
 using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Action = Lumina.Excel.Sheets.Action;
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 
@@ -534,7 +532,7 @@ namespace WrathCombo.AutoRotation
                     if (!ActionReady(outAct))
                         return false;
 
-                    var sheet = Svc.Data.GetExcelSheet<Action>().GetRow(outAct);
+                    var sheet = ActionWatching.ActionSheet[outAct];
                     var mustTarget = sheet.CanTargetHostile;
 
                     bool switched = SwitchOnDChole(attributes, outAct, ref target);
@@ -597,7 +595,7 @@ namespace WrathCombo.AutoRotation
                 if (target is null && !canUseSelf)
                     return false;
 
-                var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
+                var areaTargeted = ActionWatching.ActionSheet[outAct].TargetArea;
                 var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
 
                 var inRange = target is null

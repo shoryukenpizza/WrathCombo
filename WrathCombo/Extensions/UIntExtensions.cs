@@ -1,6 +1,4 @@
-﻿using ECommons.DalamudServices;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.Sheets;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 
@@ -16,7 +14,7 @@ namespace WrathCombo.Extensions
 
         internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
-        internal static ActionType ActionType(this uint value) => (ActionType)Svc.Data.GetExcelSheet<Action>().GetRow(value).ActionCategory.RowId;
+        internal static ActionType ActionType(this uint value) => (ActionType)ActionWatching.ActionSheet[value].ActionCategory.RowId;
     }
 
     internal static class UShortExtensions
