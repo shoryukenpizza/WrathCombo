@@ -278,10 +278,7 @@ public static class ActionWatching
         }
     }
 
-    private static void UpdateMudraState(uint actionId)
-    {
-        NIN.InMudra = actionId is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo;
-    }
+    private static void UpdateMudraState(uint actionId) => NIN.InMudra = NIN.MudraSigns.Contains(actionId);
 
     private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
     {
