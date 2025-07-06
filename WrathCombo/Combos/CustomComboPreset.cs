@@ -480,7 +480,13 @@ public enum CustomComboPreset
         "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", ADV.JobID)]
     [Retargeted]
     ALL_Healer_EsunaRetargeting = 100012,
-
+    
+    [Role(JobRole.Healer)]
+    [ReplaceSkill(RoleActions.Healer.Rescue)]
+    [ParentCombo(ALL_Healer_Menu)]
+    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", ADV.JobID)]
+    [Retargeted]
+    ALL_Healer_RescueRetargeting = 100013,
     #endregion
 
     #region Global Magical Ranged Features
@@ -722,6 +728,16 @@ public enum CustomComboPreset
     [PossiblyRetargeted]
     [HealingCombo]
     AST_ST_Heals = 1023,
+    
+    [ParentCombo(AST_ST_SimpleHeals)]
+    [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", AST.JobID)]
+    [PossiblyRetargeted]
+    AST_ST_SimpleHeals_Esuna = 1039,
+    
+    [ParentCombo(AST_ST_SimpleHeals)]
+    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed.", AST.JobID)]
+    [PossiblyRetargeted]
+    AST_ST_SimpleHeals_AspectedBenefic = 1027,
 
     [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Essential Dignity Option",
@@ -734,17 +750,7 @@ public enum CustomComboPreset
     [PossiblyRetargeted]
     AST_ST_Heals_CelestialIntersection = 1025,
 
-    [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed.", AST.JobID)]
-    [PossiblyRetargeted]
-    AST_ST_Heals_AspectedBenefic = 1027,
-
-    [ParentCombo(AST_ST_Heals)]
-    [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", AST.JobID)]
-    [PossiblyRetargeted]
-    AST_ST_Heals_Esuna = 1039,
-
-    [ParentCombo(AST_ST_Heals)]
+    [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Exaltation Option", "Adds Exaltation.", AST.JobID)]
     [PossiblyRetargeted]
     AST_ST_Heals_Exaltation = 1028,
@@ -768,35 +774,63 @@ public enum CustomComboPreset
     [CustomComboInfo("The Bole Option", "Adds The Bole (Reduced Damage) when the card has been drawn", AST.JobID)]
     [PossiblyRetargeted]
     AST_ST_Heals_Bole = 1050,
+    
+    [ParentCombo(AST_ST_SimpleHeals)]
+    [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", AST.JobID)]
+    AST_ST_SimpleHeals_CelestialOpposition = 1068,
+    
+    [ParentCombo(AST_ST_SimpleHeals)]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", AST.JobID)]
+    AST_ST_SimpleHeals_CollectiveUnconscious = 1069,
+    
+    [ParentCombo(AST_ST_SimpleHeals)]
+    [CustomComboInfo("Lady Option", "Adds Lady of Crowns, if the card is drawn.", AST.JobID)]
+    AST_ST_SimpleHeals_SoloLady = 1070,
+    
+    
 
     [AutoAction(true, true)]
     [ReplaceSkill(AST.Helios, AST.AspectedHelios, AST.HeliosConjuction)]
-    [CustomComboInfo("Advanced Healing Mode - AoE",
-        "Replaces Aspected Helios/Helios Conjunction or Helios with a one button healing replacement.", AST.JobID)]
-    [HealingCombo]
-    AST_AoE_Heals = 1010,
+    [CustomComboInfo("Simple Heals - AoE",
+        "Replaces Aspected Helios/Helios Conjunction or Helios with a one button healing replacement."
+        + "This Spell will be consider the bottom priority with no checks regardless of below settings.", AST.JobID)]
+    AST_AoE_SimpleHeals = 1010,
+    
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Aspected Helios Option", "Adds Aspected Helios/Helios Conjunction", AST.JobID)]
+    AST_AoE_SimpleHeals_Aspected = 1053,
+    
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Helios Option", "Adds Helios", AST.JobID)]
+    AST_AoE_SimpleHeals_Helios = 1073,
 
-    [ParentCombo(AST_AoE_Heals)]
+    [ParentCombo(AST_AoE_SimpleHeals)]
     [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", AST.JobID)]
     AST_AoE_Heals_CelestialOpposition = 1021,
 
-    [ParentCombo(AST_AoE_Heals)]
+    [ParentCombo(AST_AoE_SimpleHeals)]
     [CustomComboInfo("Lazy Lady Option", "Adds Lady of Crowns, if the card is drawn", AST.JobID)]
     AST_AoE_Heals_LazyLady = 1022,
 
-    [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Horoscope Option", "Adds Horoscope.", AST.JobID)]
-    AST_AoE_Heals_Horoscope = 1026,
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Horoscope Option", "Adds Horoscope followed by Aspected Helios or Helios.", AST.JobID)]
+    AST_AoE_SimpleHeals_Horoscope = 1026,
+    
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Horoscope Helios Option", "Adds Horoscope Helios.", AST.JobID)]
+    AST_AoE_SimpleHeals_HoroscopeHeal = 1071,
 
-    [ParentCombo(AST_AoE_Heals)]
+    [ParentCombo(AST_AoE_SimpleHeals)]
     [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign.", AST.JobID)]
-    AST_AoE_Heals_NeutralSect = 1067,
-
-    [ParentCombo(AST_AoE_Heals)]
-    [CustomComboInfo("Aspected Helios Option",
-        "In Helios mode: Will Cast Aspected Helios/Helios Conjunction when the HoT is missing on yourself."
-        + "\nIn Aspected Helios mode: Is considered enabled regardless.", AST.JobID)]
-    AST_AoE_Heals_Aspected = 1053,
+    AST_AoE_SimpleHeals_NeutralSect = 1067,
+    
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Stellar Detonation Option", "Adds Stellar Detonation when under the effect of Giant Dominance", AST.JobID)]
+    AST_AoE_SimpleHeals_StellarDetonation = 1072,
+    
+    [ParentCombo(AST_AoE_SimpleHeals)]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", AST.JobID)]
+    AST_AoE_SimpleHeals_CollectiveUnconscious = 1074,
 
     [ReplaceSkill(AST.Benefic2)]
     [CustomComboInfo("Benefic 2 Downgrade", "Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.",
@@ -848,8 +882,33 @@ public enum CustomComboPreset
     AST_Cards_QuickTargetCards = 1029,
 
     #endregion
+    
+    #region Hidden Features
+    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know." +
+                                       "\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", AST.JobID)]
+    [Hidden]
+    AST_Hidden = 1075,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Collective Unconscious Option", "Additionally, Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_CollectiveUnconscious = 1076,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Additionally, Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
+                                                               "\nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_NeutralSect = 1077,
+    
+    [ParentCombo(AST_Hidden)]
+    [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
+                                                           "\nWill be used in all 4 main combos.", AST.JobID)]
+    [Hidden]
+    AST_Hidden_AspectedHelios = 1078,
+    
+    #endregion
 
-    // Last value = 1067
+    // Last value = 1078
 
     #endregion
 
@@ -921,10 +980,6 @@ public enum CustomComboPreset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Triplecast Option", "Add Triplecast to the rotation.\nWill only be used if Swiftcast is on cooldown.", BLM.JobID)]
     BLM_ST_Triplecast = 2115,
-    
-    [ParentCombo(BLM_ST_Triplecast)]
-    [CustomComboInfo("Leyline Option", "Will use Triplecast even when under the effect of Leyline.", BLM.JobID)]
-    BLM_ST_Triplecast_Leyline = 2118,
     
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Foul/Xenoglossy Option", "Add Foul/Xenoglossy to the rotation.", BLM.JobID)]
