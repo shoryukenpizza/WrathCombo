@@ -721,81 +721,82 @@ public enum CustomComboPreset
         AST.JobID)]
     [PossiblyRetargeted]
     [HealingCombo]
-    AST_ST_SimpleHeals = 1023,
+    AST_ST_Heals = 1023,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Essential Dignity Option",
         "Essential Dignity will be added when the target is at or below the value set", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_EssentialDignity = 1024,
+    AST_ST_Heals_EssentialDignity = 1024,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Celestial Intersection Option", "Adds Celestial Intersection.", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_CelestialIntersection = 1025,
+    AST_ST_Heals_CelestialIntersection = 1025,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Aspected Benefic Option", "Adds Aspected Benefic & refreshes it if needed.", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_AspectedBenefic = 1027,
+    AST_ST_Heals_AspectedBenefic = 1027,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Esuna = 1039,
+    AST_ST_Heals_Esuna = 1039,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("Exaltation Option", "Adds Exaltation.", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Exaltation = 1028,
+    AST_ST_Heals_Exaltation = 1028,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("The Spire Option", "Adds The Spire (Shield)  when the card has been drawn", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Spire = 1030,
+    AST_ST_Heals_Spire = 1030,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("The Ewer Option", "Adds The Ewer (Heal over time) when the card has been drawn", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Ewer = 1032,
+    AST_ST_Heals_Ewer = 1032,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("The Arrow Option", "Adds The Arrow (increased healing)  when the card has been drawn", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Arrow = 1049,
+    AST_ST_Heals_Arrow = 1049,
 
-    [ParentCombo(AST_ST_SimpleHeals)]
+    [ParentCombo(AST_ST_Heals)]
     [CustomComboInfo("The Bole Option", "Adds The Bole (Reduced Damage) when the card has been drawn", AST.JobID)]
     [PossiblyRetargeted]
-    AST_ST_SimpleHeals_Bole = 1050,
+    AST_ST_Heals_Bole = 1050,
 
     [AutoAction(true, true)]
     [ReplaceSkill(AST.Helios, AST.AspectedHelios, AST.HeliosConjuction)]
     [CustomComboInfo("Simple Heals - AoE",
         "Replaces Aspected Helios/Helios Conjunction or Helios with a one button healing replacement.", AST.JobID)]
-    AST_AoE_SimpleHeals_AspectedHelios = 1010,
+    [HealingCombo]
+    AST_AoE_Heals = 1010,
 
-    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", AST.JobID)]
-    AST_AoE_SimpleHeals_CelestialOpposition = 1021,
+    AST_AoE_Heals_CelestialOpposition = 1021,
 
-    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Lazy Lady Option", "Adds Lady of Crowns, if the card is drawn", AST.JobID)]
-    AST_AoE_SimpleHeals_LazyLady = 1022,
+    AST_AoE_Heals_LazyLady = 1022,
 
-    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Horoscope Option", "Adds Horoscope.", AST.JobID)]
-    AST_AoE_SimpleHeals_Horoscope = 1026,
+    AST_AoE_Heals_Horoscope = 1026,
 
-    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Neutral Sect Option", "Adds Neutral Sect and its followup Sun Sign.", AST.JobID)]
-    AST_AoE_SimpleHeals_NeutralSect = 1067,
+    AST_AoE_Heals_NeutralSect = 1067,
 
-    [ParentCombo(AST_AoE_SimpleHeals_AspectedHelios)]
+    [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Aspected Helios Option",
         "In Helios mode: Will Cast Aspected Helios/Helios Conjunction when the HoT is missing on yourself."
         + "\nIn Aspected Helios mode: Is considered enabled regardless.", AST.JobID)]
-    AST_AoE_SimpleHeals_Aspected = 1053,
+    AST_AoE_Heals_Aspected = 1053,
 
     [ReplaceSkill(AST.Benefic2)]
     [CustomComboInfo("Benefic 2 Downgrade", "Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.",

@@ -138,7 +138,7 @@ internal partial class AST
 
                 //end aoe added
 
-                case CustomComboPreset.AST_ST_SimpleHeals:
+                case CustomComboPreset.AST_ST_Heals:
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_Adv, "Advanced Options", "", isConditionalChoice: true);
                     if (AST_ST_SimpleHeals_Adv)
                     {
@@ -149,72 +149,72 @@ internal partial class AST
                     }
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_AspectedBenefic:
+                case CustomComboPreset.AST_ST_Heals_AspectedBenefic:
                     DrawSliderInt(0, 100, AST_ST_SimpleHeals_AspectedBeneficHigh, "Start using when below set percentage");
                     DrawSliderInt(0, 100, AST_ST_SimpleHeals_AspectedBeneficLow, "Stop using when below set percentage");
                     DrawSliderInt(0, 15, AST_ST_SimpleHeals_AspectedBeneficRefresh, "Seconds remaining before reapplying (0 = Do not reapply early)");
                     
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_EssentialDignity:
+                case CustomComboPreset.AST_ST_Heals_EssentialDignity:
                     DrawSliderInt(0, 100, AST_EssentialDignity, "Set percentage value");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveDignity, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_CelestialIntersection:
+                case CustomComboPreset.AST_ST_Heals_CelestialIntersection:
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveIntersection, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Exaltation:
+                case CustomComboPreset.AST_ST_Heals_Exaltation:
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveExalt, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Spire:
+                case CustomComboPreset.AST_ST_Heals_Spire:
                     DrawSliderInt(0, 100, AST_Spire, "Set percentage value");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveSpire, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Ewer:
+                case CustomComboPreset.AST_ST_Heals_Ewer:
                     DrawSliderInt(0, 100, AST_Ewer, "Set percentage value");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveEwer, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Bole:
+                case CustomComboPreset.AST_ST_Heals_Bole:
                     DrawSliderInt(0, 100, AST_Bole, "Set percentage value");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveBole, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Arrow:
+                case CustomComboPreset.AST_ST_Heals_Arrow:
                     DrawSliderInt(0, 100, AST_Arrow, "Set percentage value");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveArrow, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_ST_SimpleHeals_Esuna:
+                case CustomComboPreset.AST_ST_Heals_Esuna:
                     DrawSliderInt(0, 100, AST_ST_SimpleHeals_Esuna, "Stop using when below HP %. Set to Zero to disable this check");
                     break;
 
-                case CustomComboPreset.AST_AoE_SimpleHeals_AspectedHelios:
+                case CustomComboPreset.AST_AoE_Heals:
                     DrawRadioButton(AST_AoEHeals_AltMode, $"On {AspectedHelios.ActionName()}", "", 0);
                     DrawRadioButton(AST_AoEHeals_AltMode, $"On {Helios.ActionName()}", "Alternative AOE Mode. Leaves Aspected Helios alone for manual HoTs", 1);
                     break;
 
-                case CustomComboPreset.AST_AoE_SimpleHeals_LazyLady:
+                case CustomComboPreset.AST_AoE_Heals_LazyLady:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_LazyLadyThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_WeaveLady, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_AoE_SimpleHeals_Horoscope:
+                case CustomComboPreset.AST_AoE_Heals_Horoscope:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_HoroscopeThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_Horoscope, "Only Weave", "Will only weave this action.");
                     break;
 
-                case CustomComboPreset.AST_AoE_SimpleHeals_CelestialOpposition:
+                case CustomComboPreset.AST_AoE_Heals_CelestialOpposition:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_CelestialOppositionThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_Opposition, "Only Weave", "Will only weave this action.");
                     break;
 
 
-                case CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect:
+                case CustomComboPreset.AST_AoE_Heals_NeutralSect:
                     DrawSliderInt(0, 100, AST_AoE_SimpleHeals_NeutralSectThreshold, "Start using when below party average HP %. Set to 100 to disable this check");
                     DrawAdditionalBoolChoice(AST_AoE_SimpleHeals_NeutralSectWeave, "Only Weave", "Will only weave this action.");
                     break;

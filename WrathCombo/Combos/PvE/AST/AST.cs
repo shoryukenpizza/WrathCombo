@@ -311,7 +311,7 @@ internal partial class AST : Healer
 
     internal class AST_AoE_SimpleHeals_AspectedHelios : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AoE_SimpleHeals_AspectedHelios;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AoE_Heals;
 
         protected override uint Invoke(uint actionID)
         {
@@ -333,18 +333,18 @@ internal partial class AST : Healer
             if (!LevelChecked(AspectedHelios)) //Level check to return helios immediately below 40
                 return Helios;
 
-            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_LazyLady) &&
+            if (IsEnabled(CustomComboPreset.AST_AoE_Heals_LazyLady) &&
                 ActionReady(MinorArcana) &&
                 Gauge.DrawnCrownCard is CardType.Lady
                 && canWeaveLady && hasHealthLady)
                 return OriginalHook(MinorArcana);
 
-            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_CelestialOpposition) &&
+            if (IsEnabled(CustomComboPreset.AST_AoE_Heals_CelestialOpposition) &&
                 ActionReady(CelestialOpposition) &&
                 canWeaveOppose && hasHealthOppose)
                 return CelestialOpposition;
 
-            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_Horoscope))
+            if (IsEnabled(CustomComboPreset.AST_AoE_Heals_Horoscope))
             {
                 if (ActionReady(Horoscope) &&
                     !HasStatusEffect(Buffs.Horoscope) &&
@@ -357,13 +357,13 @@ internal partial class AST : Healer
                     return HoroscopeHeal;
             }
 
-            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_NeutralSect) &&
+            if (IsEnabled(CustomComboPreset.AST_AoE_Heals_NeutralSect) &&
                 ActionReady(OriginalHook(NeutralSect)) && canWeaveSect && hasHealthSect)                
                 return OriginalHook(NeutralSect);
 
             // Only check for our own HoTs
             Status? hotCheck = HeliosConjuction.LevelChecked() ? GetStatusEffect(Buffs.HeliosConjunction) : GetStatusEffect(Buffs.AspectedHelios);
-            if (IsEnabled(CustomComboPreset.AST_AoE_SimpleHeals_Aspected) && nonAspectedMode || // Helios mode: option must be on
+            if (IsEnabled(CustomComboPreset.AST_AoE_Heals_Aspected) && nonAspectedMode || // Helios mode: option must be on
                 !nonAspectedMode) // Aspected mode: option is not required
             {
                 if (ActionReady(AspectedHelios)
@@ -381,7 +381,7 @@ internal partial class AST : Healer
 
     internal class AST_ST_SimpleHeals : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_SimpleHeals;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_Heals;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Benefic2)
@@ -398,13 +398,13 @@ internal partial class AST : Healer
             bool stopHot = Config.AST_ST_SimpleHeals_AspectedBeneficLow <= GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields);
             int refreshTime = Config.AST_ST_SimpleHeals_AspectedBeneficRefresh;
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Esuna) && ActionReady(Role.Esuna) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) >= Config.AST_ST_SimpleHeals_Esuna &&
                 HasCleansableDebuff(healTarget))
                 return Role.Esuna
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Spire) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Spire) &&
                 Gauge.DrawnCards[2] == CardType.Spire &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Spire &&
                 ActionReady(Play3) &&
@@ -412,7 +412,7 @@ internal partial class AST : Healer
                 return OriginalHook(Play3)
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Ewer) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Ewer) &&
                 Gauge.DrawnCards[2] == CardType.Ewer &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Ewer &&
                 ActionReady(Play3) &&
@@ -420,7 +420,7 @@ internal partial class AST : Healer
                 return OriginalHook(Play3)
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Arrow) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Arrow) &&
                 Gauge.DrawnCards[1] == CardType.Arrow &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Arrow &&
                 ActionReady(Play2) &&
@@ -428,7 +428,7 @@ internal partial class AST : Healer
                 return OriginalHook(Play2)
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Bole) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Bole) &&
                 Gauge.DrawnCards[1] == CardType.Bole &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_Bole &&
                 ActionReady(Play2) &&
@@ -436,27 +436,27 @@ internal partial class AST : Healer
                 return OriginalHook(Play2)
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_EssentialDignity) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_EssentialDignity) &&
                 ActionReady(EssentialDignity) &&
                 GetTargetHPPercent(healTarget, Config.AST_ST_SimpleHeals_IncludeShields) <= Config.AST_EssentialDignity &&
                 canWeaveDignity)
                 return EssentialDignity
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_Exaltation) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_Exaltation) &&
                 ActionReady(Exaltation) &&
                 canWeaveExalt)
                 return Exaltation
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_CelestialIntersection) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_CelestialIntersection) &&
                 ActionReady(CelestialIntersection) &&
                 canWeaveIntersect &&
                 !(healTarget as IBattleChara)!.HasShield())
                 return CelestialIntersection
                     .RetargetIfEnabled(OptionalTarget, Benefic2);
 
-            if (IsEnabled(CustomComboPreset.AST_ST_SimpleHeals_AspectedBenefic) && ActionReady(AspectedBenefic) &&
+            if (IsEnabled(CustomComboPreset.AST_ST_Heals_AspectedBenefic) && ActionReady(AspectedBenefic) &&
                 startHot && stopHot)
             {
                 //Possibly a good use for new HasStatusEffect with Status Out
