@@ -774,17 +774,14 @@ public enum CustomComboPreset
     
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Celestial Opposition Option", "Adds Celestial Opposition", AST.JobID)]
-    [PossiblyRetargeted]
     AST_ST_SimpleHeals_CelestialOpposition = 1068,
     
     [ParentCombo(AST_ST_SimpleHeals)]
-    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious for to regen, it will not hold it.", AST.JobID)]
-    [PossiblyRetargeted]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", AST.JobID)]
     AST_ST_SimpleHeals_CollectiveUnconscious = 1069,
     
     [ParentCombo(AST_ST_SimpleHeals)]
     [CustomComboInfo("Lady Option", "Adds Lady of Crowns, if the card is drawn.", AST.JobID)]
-    [PossiblyRetargeted]
     AST_ST_SimpleHeals_SoloLady = 1070,
     
     
@@ -829,8 +826,7 @@ public enum CustomComboPreset
     AST_AoE_SimpleHeals_StellarDetonation = 1072,
     
     [ParentCombo(AST_AoE_SimpleHeals)]
-    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious for to regen, it will not hold it.", AST.JobID)]
-    [PossiblyRetargeted]
+    [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", AST.JobID)]
     AST_AoE_SimpleHeals_CollectiveUnconscious = 1074,
 
     [ReplaceSkill(AST.Benefic2)]
@@ -891,18 +887,18 @@ public enum CustomComboPreset
     AST_Hidden = 1075,
     
     [ParentCombo(AST_Hidden)]
-    [CustomComboInfo("RaidWide Collective Unconscious Option", "Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
+    [CustomComboInfo("RaidWide Collective Unconscious Option", "Additionally, Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
     [Hidden]
     AST_Hidden_CollectiveUnconscious = 1076,
     
     [ParentCombo(AST_Hidden)]
-    [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
+    [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Additionally, Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
                                                                "\nWill be used in all 4 main combos.", AST.JobID)]
     [Hidden]
     AST_Hidden_NeutralSect = 1077,
     
     [ParentCombo(AST_Hidden)]
-    [CustomComboInfo("RaidWide Aspected Helios Option", "Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
+    [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
                                                            "\nWill be used in all 4 main combos.", AST.JobID)]
     [Hidden]
     AST_Hidden_AspectedHelios = 1078,
