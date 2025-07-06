@@ -450,13 +450,9 @@ namespace WrathCombo.Data
         {
             if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
 
-            return action.ActionCategory.RowId switch
-            {
-                2 => ActionAttackType.Spell,
-                3 => ActionAttackType.Weaponskill,
-                4 => ActionAttackType.Ability,
-                _ => ActionAttackType.Unknown
-            };
+            return Enum.IsDefined(typeof(ActionAttackType), action.ActionCategory.RowId)
+                ? (ActionAttackType)action.ActionCategory.RowId
+                : ActionAttackType.Unknown;
         }
 
         public enum ActionAttackType
