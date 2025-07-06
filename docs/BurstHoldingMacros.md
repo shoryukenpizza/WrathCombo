@@ -1,9 +1,13 @@
 # Wrath Macro Holding Burst
 
-You just have to create a macro with the line `/wrath toggle <id_of_the_setting>` to deactivate/activate a function in your wrath rotation.  
-It's important to do it for fights when you need to delay your burst.
+Per [Issue #99](https://github.com/PunishXIV/WrathCombo/issues/99), Burst Holding is still something we plan to implement more properly at a later time.
 
-Here's a list of macros to hold your Burst with Wrath:
+As a workaround until such time though, you can create a macro to toggle off the burst parts of Jobs within Wrath, to achieve a similar result.
+
+You can toggle off these options with `/wrath toggle <x>` in game.
+You can find the ID or internal name to provide as `<x>` by using `/wrath list set <y>` (replace `<y>` with your current job, like `/wrath list set DRK`), or by looking at the [`CustomComboPreset` File](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Combos/CustomComboPreset.cs) (see [this image](https://i.imgur.com/LsJ06DW.png) for how to read this)
+
+Below is a community-provided list of basic burst-holding macros for each job.
 
 ### <img src="https://ffxiv.gamerescape.com/w/images/6/6b/Tank_Icon_1.png" width="20px" height="20px" /> Tank
 <details>
