@@ -514,22 +514,16 @@ public static class ActionWatching
         if (!ActionSheet.TryGetValue(actionId, out var actionSheet))
             return ActionAttackType.Unknown;
 
-        return actionSheet.ActionCategory.RowId switch
-        {
-            1 => ActionAttackType.AutoAttack,
-            2 => ActionAttackType.Spell,
-            3 => ActionAttackType.Weaponskill,
-            4 => ActionAttackType.Ability,
-            _ => ActionAttackType.Unknown
-        };
+        return Enum.IsDefined(typeof(ActionAttackType), actionSheet.ActionCategory.RowId)
+                ? (ActionAttackType)actionSheet.ActionCategory.RowId
+                : ActionAttackType.Unknown;
     }
 
-    public enum ActionAttackType
+    public enum ActionAttackType : uint
     {
-        Unknown,
-        AutoAttack,
-        Spell,
-        Weaponskill,
-        Ability
+        Unknown = 0,
+        Spell = 2,
+        Weaponskill = 3,
+        Ability = 4,
     }
 }
