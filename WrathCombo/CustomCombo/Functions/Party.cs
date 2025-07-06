@@ -10,6 +10,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
@@ -96,6 +97,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         private static List<WrathPartyMember> _partyList = new();
 
+        [field: MaybeNull]
         public static List<WrathPartyMember> DeadPeople
         {
             get
