@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
@@ -14,7 +13,6 @@ using System.Numerics;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC_Subscriber;
@@ -171,7 +169,7 @@ namespace WrathCombo.AutoRotation
                 return;
 
             // Reset locks if no action for 3 seconds
-            if (ActionWatching.TimeSinceLastAction.TotalSeconds >= 3)
+            if (TimeSinceLastAction.TotalSeconds >= 3)
             {
                 LockedAoE = false;
                 LockedST = false;
@@ -270,7 +268,7 @@ namespace WrathCombo.AutoRotation
                     if (!ActionReady(spell))
                         return;
 
-                    if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !ActionWatching.OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
+                    if (ActionManager.CanUseActionOnTarget(spell, Svc.Targets.FocusTarget.Struct()) && !OutOfRange(spell, Player.Object, Svc.Targets.FocusTarget) && ActionManager.Instance()->GetActionStatus(ActionType.Action, spell) == 0)
                     {
                         ActionManager.Instance()->UseAction(ActionType.Action, regenSpell, Svc.Targets.FocusTarget.GameObjectId);
                         return;
@@ -303,8 +301,8 @@ namespace WrathCombo.AutoRotation
 
             if (Player.Object.CurrentMp >= GetResourceCost(resSpell) && ActionReady(resSpell))
             {
-                var timeSinceLastRez = TimeSpan.FromMilliseconds(ActionWatching.TimeSinceLastSuccessfulCast(resSpell));
-                if ((ActionWatching.TimeSinceLastSuccessfulCast(resSpell) != -1f && timeSinceLastRez.TotalSeconds < 4) || Player.Object.IsCasting())
+                var timeSinceLastRez = TimeSpan.FromMilliseconds(TimeSinceLastSuccessfulCast(resSpell));
+                if ((TimeSinceLastSuccessfulCast(resSpell) != -1f && timeSinceLastRez.TotalSeconds < 4) || Player.Object.IsCasting())
                     return;
 
                 if (DeadPeople.Where(RezQuery).FindFirst(x => x is not null, out var member))
@@ -536,7 +534,7 @@ namespace WrathCombo.AutoRotation
                     if (!ActionReady(outAct))
                         return false;
 
-                    var sheet = Svc.Data.GetExcelSheet<Action>().GetRow(outAct);
+                    var sheet = ActionSheet[outAct];
                     var mustTarget = sheet.CanTargetHostile;
 
                     bool switched = SwitchOnDChole(attributes, outAct, ref target);
@@ -599,7 +597,7 @@ namespace WrathCombo.AutoRotation
                 if (target is null && !canUseSelf)
                     return false;
 
-                var areaTargeted = Svc.Data.GetExcelSheet<Action>().GetRow(outAct).TargetArea;
+                var areaTargeted = ActionSheet[outAct].TargetArea;
                 var canUseTarget = target is not null && ActionManager.CanUseActionOnTarget(outAct, target.Struct());
 
                 var inRange = target is null
@@ -608,9 +606,9 @@ namespace WrathCombo.AutoRotation
                         ? GetTargetDistance(target) <= 20f
                         : InActionRange(outAct, target));
 
-                var canUse = (canUseSelf || canUseTarget || areaTargeted) && (outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0));
+                var canUse = (canUseSelf || canUseTarget || areaTargeted) && outAct.ActionAttackType() is { } type && (type is ActionAttackType.Ability || type is not ActionAttackType.Ability && RemainingGCD == 0);
 
-                if ((canUse || cfg.DPSSettings.AlwaysSelectTarget))
+                if (canUse || cfg.DPSSettings.AlwaysSelectTarget)
                     Svc.Targets.Target = target;
 
                 var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
