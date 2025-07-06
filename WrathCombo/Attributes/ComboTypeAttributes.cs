@@ -21,3 +21,8 @@ internal class BasicCombo : Attribute
 internal class HealingCombo : Attribute
 {
 }
+
+[AttributeUsage(AttributeTargets.Field)]
+internal class MitigationCombo : Attribute
+{
+}
