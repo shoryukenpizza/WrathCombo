@@ -463,7 +463,7 @@ namespace WrathCombo.Data
                 : ActionAttackType.Unknown;
         }
 
-        public enum ActionAttackType
+        public enum ActionAttackType : uint
         {
             Unknown = 0,
             Spell = 2,
