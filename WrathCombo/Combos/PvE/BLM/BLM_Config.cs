@@ -15,6 +15,7 @@ internal partial class BLM
             BLM_ST_LeyLinesCharges = new("BLM_ST_LeyLinesCharges", 1),
             BLM_ST_ThunderOption = new("BLM_ST_ThunderOption", 10),
             BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 0),
+            BLM_ST_Triplecast_SubOption = new("BLM_ST_Triplecast_SubOption", 1),
             BLM_ST_ThunderUptime_Threshold = new("BLM_ST_ThunderUptime_Threshold", 5),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
@@ -78,6 +79,12 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
+                    DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
+                        "Always", "Use always.", 0);
+
+                    DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
+                        "Not under Leylines", "Do not use while under the effect of Leylines.", 1);
+
                     if (BLM_ST_MovementOption[0])
                         DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
                             "How many charges to save for movement?");

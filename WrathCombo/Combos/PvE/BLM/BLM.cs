@@ -224,7 +224,8 @@ internal partial class BLM : Caster
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                         !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
-                        (!HasStatusEffect(Buffs.LeyLines) || IsEnabled(CustomComboPreset.BLM_ST_Triplecast_Leyline)) &&
+                        (BLM_ST_Triplecast_SubOption == 0 ||
+                         BLM_ST_Triplecast_SubOption == 1 && !HasStatusEffect(Buffs.LeyLines)) &&
                         ((BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement) ||
                          !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
