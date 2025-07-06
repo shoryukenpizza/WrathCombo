@@ -46,6 +46,7 @@ internal partial class BLM
                         1);
 
                     DrawBossOnlyChoice(BLM_Balance_Content);
+
                     break;
 
                 case CustomComboPreset.BLM_ST_LeyLines:
@@ -55,14 +56,30 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 0);
-                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 0, $"{Triplecast.ActionName()} Priority: ");
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 4, 1);
-                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 1, $"{Paradox.ActionName()} Priority: ");
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 2);
-                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 2, $"{Role.Swiftcast.ActionName()} Priority: ");
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 3);
-                    DrawPriorityInput(BLM_ST_Movement_Priority, 4, 3, $"{Xenoglossy.ActionName()} Priority: ");
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption,
+                        $"Use {Triplecast.ActionName()}", "", 4, 0);
+
+                    DrawPriorityInput(BLM_ST_Movement_Priority,
+                        4, 0, $"{Triplecast.ActionName()} Priority: ");
+
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption,
+                        $"Use {Paradox.ActionName()}", "", 4, 1);
+
+                    DrawPriorityInput(BLM_ST_Movement_Priority,
+                        4, 1, $"{Paradox.ActionName()} Priority: ");
+
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption,
+                        $"Use {Role.Swiftcast.ActionName()}", "", 4, 2);
+
+                    DrawPriorityInput(BLM_ST_Movement_Priority,
+                        4, 2, $"{Role.Swiftcast.ActionName()} Priority: ");
+
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption,
+                        $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 3);
+
+                    DrawPriorityInput(BLM_ST_Movement_Priority,
+                        4, 3, $"{Xenoglossy.ActionName()} Priority: ");
+
                     break;
 
                 case CustomComboPreset.BLM_ST_UsePolyglot:
@@ -83,11 +100,12 @@ internal partial class BLM
                         "Always", "Use always.", 0);
 
                     DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
-                        "Not under Leylines", "Do not use while under the effect of Leylines.", 1);
+                        "Not under Leylines", "Do not use while under the effect of Leylines.\nThis is the recommended behaviour.", 1);
 
                     if (BLM_ST_MovementOption[0])
                         DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
                             "How many charges to save for movement?");
+
                     break;
 
 
@@ -126,6 +144,7 @@ internal partial class BLM
                 case CustomComboPreset.BLM_AoE_Triplecast:
                     DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges,
                         $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
+
                     break;
 
                 case CustomComboPreset.BLM_AoE_Thunder:
