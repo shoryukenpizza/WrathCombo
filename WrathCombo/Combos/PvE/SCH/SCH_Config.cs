@@ -1,4 +1,6 @@
-﻿using Dalamud.Interface.Colors;
+﻿using System;
+using Dalamud.Interface.Colors;
+using Dalamud.Interface.Style;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -23,16 +25,12 @@ internal partial class SCH
                     break;
 
                 case CustomComboPreset.SCH_DPS:
-                    DrawAdditionalBoolChoice(SCH_ST_DPS_Adv, "Advanced Action Options", "Change how actions are handled", isConditionalChoice: true);
-                    if (SCH_ST_DPS_Adv)
-                    {
-                        ImGui.Indent();
-                        ImGui.Spacing();
-                        DrawHorizontalMultiChoice(SCH_ST_DPS_Adv_Actions, "On Ruin/Broils", "Apply options to Ruin and all Broils.", 3, 0);
-                        DrawHorizontalMultiChoice(SCH_ST_DPS_Adv_Actions, "On Bio/Bio II/Biolysis", "Apply options to Bio and Biolysis.", 3, 1);
-                        DrawHorizontalMultiChoice(SCH_ST_DPS_Adv_Actions, "On Ruin II", "Apply options to Ruin II.", 3, 2);
-                        ImGui.Unindent();
-                    }
+                    DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Ruin/Broils", "Apply options to Ruin and all Broils.", 0,
+                        descriptionColor:ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Bio/Bio II/Biolysis", "Apply options to Bio and Biolysis.", 1,
+                        descriptionColor:ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Ruin II", "Apply options to Ruin II.", 2,
+                        descriptionColor:ImGuiColors.DalamudWhite);
                     break;
                 
                 case CustomComboPreset.SCH_DPS_Lucid:
@@ -276,15 +274,14 @@ internal partial class SCH
             SCH_ST_DPS_EnergyDrain = new("SCH_ST_DPS_EnergyDrain", 3),
             SCH_ST_DPS_ChainStratagemSubOption = new("SCH_ST_DPS_ChainStratagemSubOption", 1),
             SCH_AoE_DPS_EnergyDrain = new("SCH_AoE_DPS_EnergyDrain", 3),
-            SCH_AoE_DPS_ChainStratagemSubOption = new("SCH_AoE_DPS_ChainStratagemSubOption", 1);
-        public static UserBool
-            SCH_ST_DPS_Adv = new("SCH_ST_DPS_Adv");
+            SCH_AoE_DPS_ChainStratagemSubOption = new("SCH_AoE_DPS_ChainStratagemSubOption", 1),
+            SCH_ST_DPS_Adv_Actions = new("SCH_ST_DPS_Adv_Actions");
+        
 
         public static UserFloat
             SCH_DPS_BioUptime_Threshold = new("SCH_DPS_BioUptime_Threshold", 3.0f);
             
-        public static UserBoolArray
-            SCH_ST_DPS_Adv_Actions = new("SCH_ST_DPS_Adv_Actions");
+        
 
         #endregion
 

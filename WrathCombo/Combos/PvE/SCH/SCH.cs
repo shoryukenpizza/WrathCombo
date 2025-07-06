@@ -1,8 +1,6 @@
-using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
-using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SCH : Healer
@@ -11,20 +9,12 @@ internal partial class SCH : Healer
     internal class SCH_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DPS;
-        internal static int BroilCount => ActionWatching.CombatActions.Count(x => x == OriginalHook(Broil));
         protected override uint Invoke(uint actionID)
         {
             #region Determine Replaced Action
-            bool actionFound;
-            if (Config.SCH_ST_DPS_Adv && Config.SCH_ST_DPS_Adv_Actions.Count > 0)
-            {
-                bool onBroils = Config.SCH_ST_DPS_Adv_Actions[0] && BroilList.Contains(actionID);
-                bool onBios = Config.SCH_ST_DPS_Adv_Actions[1] && BioList.ContainsKey(actionID);
-                bool onRuinII = Config.SCH_ST_DPS_Adv_Actions[2] && actionID is Ruin2;
-                actionFound = onBroils || onBios || onRuinII;
-            }
-            else
-                actionFound = BroilList.Contains(actionID); //default handling
+            bool actionFound = Config.SCH_ST_DPS_Adv_Actions == 0 && BroilList.Contains(actionID) ||
+                               Config.SCH_ST_DPS_Adv_Actions == 1 && BioList.ContainsKey(actionID) ||
+                               Config.SCH_ST_DPS_Adv_Actions == 2 && actionID is Ruin2;
             #endregion
             
             if (!actionFound)
