@@ -580,7 +580,7 @@ public enum CustomComboPreset
     [AutoAction(false, false)]
     [ReplaceSkill(AST.Malefic, AST.Malefic2, AST.Malefic3, AST.Malefic4, AST.FallMalefic, AST.Combust, AST.Combust2,
         AST.Combust3)]
-    [CustomComboInfo("Single Target DPS Feature", "Replaces Malefic or Combust with options below", AST.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - Single Target", "Replaces Malefic or Combust with options below", AST.JobID)]
     [AdvancedCombo]
     AST_ST_DPS = 1004,
 
@@ -651,7 +651,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(AST.Gravity, AST.Gravity2)]
-    [CustomComboInfo("AoE DPS Feature", "Replaces Gravity with options below", AST.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Gravity with options below", AST.JobID)]
     [AdvancedCombo]
     AST_AOE_DPS = 1041,
 
@@ -717,7 +717,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(AST.Benefic2)]
-    [CustomComboInfo("Simple Heals - Single Target", "Replaces Benefic II with a one button healing replacement.",
+    [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic II with a one button healing replacement.",
         AST.JobID)]
     [PossiblyRetargeted]
     [HealingCombo]
@@ -771,7 +771,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, true)]
     [ReplaceSkill(AST.Helios, AST.AspectedHelios, AST.HeliosConjuction)]
-    [CustomComboInfo("Simple Heals - AoE",
+    [CustomComboInfo("Advanced Healing Mode - AoE",
         "Replaces Aspected Helios/Helios Conjunction or Helios with a one button healing replacement.", AST.JobID)]
     [HealingCombo]
     AST_AoE_Heals = 1010,
@@ -1547,7 +1547,6 @@ public enum CustomComboPreset
 
     #endregion
     // Last value = 4002
-
     
     #region Advanced Dancer (Single Target)
 
@@ -5496,7 +5495,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(SGE.Dosis, SGE.Dosis2, SGE.Dosis3)]
-    [CustomComboInfo("Single Target DPS Feature", "Adds various options to Dosis I/II/III.", SGE.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - Single Target", "Adds various options to Dosis I/II/III.", SGE.JobID)]
     [AdvancedCombo]
     SGE_ST_DPS = 14001,
 
@@ -5551,7 +5550,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(SGE.Dyskrasia, SGE.Dyskrasia2)]
-    [CustomComboInfo("AoE DPS Feature", "Adds various options to Dyskrasia I & II. Requires a target.", SGE.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - AoE", "Adds various options to Dyskrasia I & II. Requires a target.", SGE.JobID)]
     [AdvancedCombo]
     SGE_AoE_DPS = 14009,
 
@@ -5597,7 +5596,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(SGE.Diagnosis)]
-    [CustomComboInfo("Simple Heals - Single Target", "Change Diagnosis into various options.", SGE.JobID)]
+    [CustomComboInfo("Advanced Healing Mode - Single Target", "Change Diagnosis into various options.", SGE.JobID)]
     [PossiblyRetargeted]
     [HealingCombo]
     SGE_ST_Heal = 14014,
@@ -5683,7 +5682,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, true)]
     [ReplaceSkill(SGE.Prognosis)]
-    [CustomComboInfo("Simple Heals - AoE", "Change Prognosis into various options.", SGE.JobID)]
+    [CustomComboInfo("Advanced Healing Mode - AoE", "Change Prognosis into various options.", SGE.JobID)]
     [HealingCombo]
     SGE_AoE_Heal = 14026,
 
@@ -6192,7 +6191,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4, SCH.Bio, SCH.Bio2, SCH.Biolysis)]
-    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - Single Target", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
     [AdvancedCombo]
     SCH_DPS = 16001,
 
@@ -6247,7 +6246,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
-    [CustomComboInfo("AoE DPS Feature", "Replaces Art of War with options below.", SCH.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Art of War with options below.", SCH.JobID)]
     [AdvancedCombo]
     SCH_AoE = 16010,
     
@@ -6295,7 +6294,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(SCH.Physick)]
-    [CustomComboInfo("Simple Heals - Single Target",
+    [CustomComboInfo("Advanced Healing Mode - Single Target",
         "Change Physick into Adloquium, Lustrate, then Physick with below options:", SCH.JobID)]
     [PossiblyRetargeted]
     [HealingCombo]
@@ -6357,7 +6356,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
-    [CustomComboInfo("Simple Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
+    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Succor with options below:", SCH.JobID)]
     [HealingCombo]
     SCH_AoE_Heal = 16018,
     
@@ -7647,7 +7646,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
-    [CustomComboInfo("Single Target DPS Feature", "Collection of cooldowns and spell features on Glare/Stone.",
+    [CustomComboInfo("Advanced DPS Mode - Single Target", "Collection of cooldowns and spell features on Glare/Stone.",
         WHM.JobID)]
     [AdvancedCombo]
     WHM_ST_MainCombo = 19099,
@@ -7695,7 +7694,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(WHM.Holy, WHM.Holy3)]
-    [CustomComboInfo("AoE DPS Feature", "Collection of cooldowns and spell features on Holy/Holy III.", WHM.JobID)]
+    [CustomComboInfo("Advanced DPS Mode - AoE", "Collection of cooldowns and spell features on Holy/Holy III.", WHM.JobID)]
     [AdvancedCombo]
     WHM_AoE_DPS = 19190,
 
@@ -7754,7 +7753,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, true)]
     [ReplaceSkill(WHM.Cure)]
-    [CustomComboInfo("Simple Heals - Single Target", "Replaces Cure with a one button single target healing setup.",
+    [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Cure with a one button single target healing setup.",
         WHM.JobID)]
     [PossiblyRetargeted]
     [HealingCombo]
@@ -7814,7 +7813,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, true)]
     [ReplaceSkill(WHM.Medica1)]
-    [CustomComboInfo("Simple Heals - AoE", "Replaces Medica with a one button AoE healing setup.", WHM.JobID)]
+    [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Medica with a one button AoE healing setup.", WHM.JobID)]
     [HealingCombo]
     WHM_AoEHeals = 19007,
 

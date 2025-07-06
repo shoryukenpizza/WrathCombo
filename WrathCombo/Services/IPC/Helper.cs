@@ -89,8 +89,7 @@ public partial class Helper(ref Leasing leasing)
         var targetType =
             attr.CustomComboInfo.Name.Contains("single target", lower)
                 ? ComboTargetTypeKeys.SingleTarget
-                : (attr.CustomComboInfo.Name.Contains("- aoe", lower) ||
-                   attr.CustomComboInfo.Name.Contains("aoe dps", lower))
+                : (attr.CustomComboInfo.Name.Contains("- aoe", lower))
                     ? ComboTargetTypeKeys.MultiTarget
                     : ComboTargetTypeKeys.Other;
 
