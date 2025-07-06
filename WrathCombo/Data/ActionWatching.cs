@@ -40,6 +40,7 @@ namespace WrathCombo.Data
         internal static readonly Dictionary<uint, long> LastSuccessfulUseTime = [];
         internal static readonly Dictionary<(uint, ulong), long> UsedOnDict = [];
 
+        internal readonly static List<uint> WeaveActions = [];
         internal readonly static List<uint> CombatActions = [];
 
         public delegate void LastActionChangeDelegate();
@@ -120,8 +121,6 @@ namespace WrathCombo.Data
                     }
                 }
 
-
-
                 if ((byte)header->ActionType is 13 or 2) return;
                 if (header->ActionId != 7 &&
                     header->ActionId != 8 &&
@@ -143,12 +142,15 @@ namespace WrathCombo.Data
                         {
                             case 2: //Spell
                                 LastSpell = header->ActionId;
+                                WeaveActions.Clear();
                                 break;
                             case 3: //Weaponskill
                                 LastWeaponskill = header->ActionId;
+                                WeaveActions.Clear();
                                 break;
                             case 4: //Ability
                                 LastAbility = header->ActionId;
+                                WeaveActions.Add(header->ActionId);
                                 break;
                         }
 
@@ -175,7 +177,10 @@ namespace WrathCombo.Data
                 OnActionSend?.Invoke();
 
                 if (!InCombat())
+                {
                     CombatActions.Clear();
+                    WeaveActions.Clear();
+                }
 
                 if (actionType == 1 && GetMaxCharges(actionId) > 0)
                     ChargeTimestamps[actionId] = Environment.TickCount64;
@@ -416,6 +421,7 @@ namespace WrathCombo.Data
             if (flag == ConditionFlag.InCombat && !value)
             {
                 CombatActions.Clear();
+                WeaveActions.Clear();
                 ActionTimestamps.Clear();
                 LastAbility = 0;
                 LastAction = 0;
@@ -452,21 +458,17 @@ namespace WrathCombo.Data
         {
             if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
 
-            return action.ActionCategory.RowId switch
-            {
-                2 => ActionAttackType.Spell,
-                3 => ActionAttackType.Weaponskill,
-                4 => ActionAttackType.Ability,
-                _ => ActionAttackType.Unknown
-            };
+            return Enum.IsDefined(typeof(ActionAttackType), action.ActionCategory.RowId)
+                ? (ActionAttackType)action.ActionCategory.RowId
+                : ActionAttackType.Unknown;
         }
 
-        public enum ActionAttackType
+        public enum ActionAttackType : uint
         {
-            Ability,
-            Spell,
-            Weaponskill,
-            Unknown
+            Unknown = 0,
+            Spell = 2,
+            Weaponskill = 3,
+            Ability = 4,
         }
     }
 }
