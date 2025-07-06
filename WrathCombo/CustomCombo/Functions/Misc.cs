@@ -55,7 +55,7 @@ internal abstract partial class CustomComboFunctions
             {
                 case 0:     return "General/Multiple Jobs";
                 case 99:    return "Global";
-                case 100:   return "Occult Crescent";
+                case 100:   return OccultCrescent.ContentName;
             }
 
             // Override DoH/DoL
