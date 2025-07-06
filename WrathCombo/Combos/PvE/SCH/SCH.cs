@@ -11,10 +11,12 @@ internal partial class SCH : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DPS;
         protected override uint Invoke(uint actionID)
         {
-            #region Determine Replaced Action
+            #region Variables
             bool actionFound = Config.SCH_ST_DPS_Adv_Actions == 0 && BroilList.Contains(actionID) ||
                                Config.SCH_ST_DPS_Adv_Actions == 1 && BioList.ContainsKey(actionID) ||
                                Config.SCH_ST_DPS_Adv_Actions == 2 && actionID is Ruin2;
+            
+            int chainThreshold = Config.SCH_ST_DPS_ChainStratagemSubOption == 1 || !InBossEncounter() ? Config.SCH_ST_DPS_ChainStratagemOption : 0;
             #endregion
             
             if (!actionFound)
@@ -26,7 +28,7 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
                 return actionID;
             
-            #region Special COntent
+            #region Special Content
             if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
                 return Variant.Rampart;
             
@@ -43,36 +45,30 @@ internal partial class SCH : Healer
             #endregion
             
             #region Hidden Feature Raidwide
-
             if (HiddenSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
             if (HiddenExpedient())
                 return Expedient;
             if (HiddenSuccor())
                 return HiddenRecitation() ? Recitation : OriginalHook(Succor);
-           
             #endregion
 
             if (InCombat() && CanSpellWeave())
             {
-                // Aetherflow
                 if (IsEnabled(CustomComboPreset.SCH_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                     return Aetherflow;
                 
                 if (IsEnabled(CustomComboPreset.SCH_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
                     return BanefulImpaction;
                 
-                if (IsEnabled(CustomComboPreset.SCH_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && ActionReady(ChainStratagem) && 
-                    CanApplyStatus(CurrentTarget, Debuffs.ChainStratagem) &&
-                    !HasStatusEffect(Debuffs.ChainStratagem, CurrentTarget, true) &&
-                    GetTargetHPPercent() > Config.SCH_ST_DPS_ChainStratagemOption &&
-                    (Config.SCH_ST_DPS_ChainStratagemSubOption == 0 || Config.SCH_ST_DPS_ChainStratagemSubOption == 1 && InBossEncounter()))
+                if (IsEnabled(CustomComboPreset.SCH_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem &&
+                    GetTargetHPPercent() > chainThreshold)
                     return ChainStratagem;
                     
                 if (IsEnabled(CustomComboPreset.SCH_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
-                    GetCooldownRemainingTime(Aetherflow) <= Config.SCH_ST_DPS_EnergyDrain &&
-                    (!IsEnabled(CustomComboPreset.SCH_DPS_EnergyDrain_BurstSaver) ||
-                     GetCooldownRemainingTime(ChainStratagem) > 10 ||
+                    AetherflowCD <= Config.SCH_ST_DPS_EnergyDrain &&
+                    (!Config.SCH_ST_DPS_EnergyDrain_Burst ||
+                     ChainStrategemCD > 10 ||
                      !LevelChecked(ChainStratagem)))
                     return EnergyDrain;
                 
@@ -99,6 +95,10 @@ internal partial class SCH : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE;
         protected override uint Invoke(uint actionID)
         {
+            #region Variables
+            int chainThreshold = Config.SCH_AoE_DPS_ChainStratagemSubOption == 1 || !InBossEncounter() ? Config.SCH_AoE_DPS_ChainStratagemOption : 0;
+            #endregion
+            
             if (actionID is not (ArtOfWar or ArtOfWarII))
                 return actionID;
 
@@ -123,14 +123,12 @@ internal partial class SCH : Healer
             #endregion
             
             #region Hidden Feature Raidwide
-
             if (HiddenSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
             if (HiddenExpedient())
                 return Expedient;
             if (HiddenSuccor())
                 return HiddenRecitation() ? Recitation : OriginalHook(Succor);
-           
             #endregion
             
             if (!InCombat() || !CanSpellWeave()) return actionID;
@@ -141,18 +139,15 @@ internal partial class SCH : Healer
             if (IsEnabled(CustomComboPreset.SCH_AoE_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
                 return BanefulImpaction;
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && ActionReady(ChainStratagem) && 
-                (LevelChecked(BanefulImpaction) && IsEnabled(CustomComboPreset.SCH_AoE_BanefulImpact) || !IsEnabled(CustomComboPreset.SCH_AoE_ChainStrat_BanefulOnly)) &&
-                CanApplyStatus(CurrentTarget, Debuffs.ChainStratagem) && 
-                !HasStatusEffect(Debuffs.ChainStratagem, CurrentTarget, true) &&
-                GetTargetHPPercent() > Config.SCH_AoE_DPS_ChainStratagemOption &&
-                (Config.SCH_AoE_DPS_ChainStratagemSubOption == 0 || Config.SCH_AoE_DPS_ChainStratagemSubOption == 1 && InBossEncounter()))
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem && 
+                GetTargetHPPercent() > chainThreshold &&
+                (LevelChecked(BanefulImpaction)|| !Config.SCH_AoE_DPS_ChainStratagemBanefulOption))
                 return ChainStratagem;
                     
             if (IsEnabled(CustomComboPreset.SCH_AoE_EnergyDrain) && ActionReady(EnergyDrain) && 
-                GetCooldownRemainingTime(Aetherflow) <= Config.SCH_AoE_DPS_EnergyDrain &&
-                (!IsEnabled(CustomComboPreset.SCH_AoE_EnergyDrain_BurstSaver) ||
-                 GetCooldownRemainingTime(ChainStratagem) > 10 ||
+                AetherflowCD <= Config.SCH_AoE_DPS_EnergyDrain &&
+                (!Config.SCH_AoE_DPS_EnergyDrain_Burst ||
+                 ChainStrategemCD > 10 ||
                  !LevelChecked(ChainStratagem)))
                 return EnergyDrain;
                 

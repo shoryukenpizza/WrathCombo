@@ -58,19 +58,28 @@ internal partial class SCH
                     break;
 
                 case CustomComboPreset.SCH_DPS_ChainStrat:
-                    DrawHorizontalRadioButton(SCH_ST_DPS_ChainStratagemSubOption,
-                        "All content",
-                        $"Uses {ActionWatching.GetActionName(ChainStratagem)} regardless of content.", 0);
-
-                    DrawHorizontalRadioButton(SCH_ST_DPS_ChainStratagemSubOption,
-                        "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(ChainStratagem)} when in Boss encounters.", 1);
-
+                    
                     DrawSliderInt(0, 100, SCH_ST_DPS_ChainStratagemOption, "Stop using at Enemy HP%. Set to Zero to disable this check.");
+                    
+                    ImGui.Indent();
+                    
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    
+                    DrawHorizontalRadioButton(SCH_ST_DPS_ChainStratagemSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
+
+                    DrawHorizontalRadioButton(SCH_ST_DPS_ChainStratagemSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                    
+                    ImGui.Unindent();
+                    
                     break;
 
                 case CustomComboPreset.SCH_DPS_EnergyDrain:
                     DrawSliderInt(0, 60, SCH_ST_DPS_EnergyDrain, "Aetherflow remaining cooldown");
+                    
+                    DrawAdditionalBoolChoice(SCH_ST_DPS_EnergyDrain_Burst, 
+                        "Energy Drain Burst", "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.");
                     break;
                 
                 case CustomComboPreset.SCH_AoE_Lucid:
@@ -78,19 +87,30 @@ internal partial class SCH
                     break;
                 
                 case CustomComboPreset.SCH_AoE_ChainStrat:
-                    DrawHorizontalRadioButton(SCH_AoE_DPS_ChainStratagemSubOption,
-                        "All content",
-                        $"Uses {ActionWatching.GetActionName(ChainStratagem)} regardless of content.", 0);
-
-                    DrawHorizontalRadioButton(SCH_AoE_DPS_ChainStratagemSubOption,
-                        "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(ChainStratagem)} when in Boss encounters.", 1);
-
+                    DrawAdditionalBoolChoice(SCH_AoE_DPS_ChainStratagemBanefulOption, 
+                        "Baneful Only", "Will only use Chain Strategem when high enough level to use Baneful Impaction");
+                    
                     DrawSliderInt(0, 100, SCH_AoE_DPS_ChainStratagemOption, "Stop using at Enemy HP%. Set to Zero to disable this check.");
+                    
+                    ImGui.Indent();
+                    
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+                    
+                    DrawHorizontalRadioButton(SCH_AoE_DPS_ChainStratagemSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
+
+                    DrawHorizontalRadioButton(SCH_AoE_DPS_ChainStratagemSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+                    
+                    ImGui.Unindent();
+                    
                     break;
 
                 case CustomComboPreset.SCH_AoE_EnergyDrain:
                     DrawSliderInt(0, 60, SCH_AoE_DPS_EnergyDrain, "Aetherflow remaining cooldown");
+                    
+                    DrawAdditionalBoolChoice(SCH_AoE_DPS_EnergyDrain_Burst, 
+                        "Energy Drain Burst", "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.");
                     break;
                 #endregion
                 
@@ -276,6 +296,11 @@ internal partial class SCH
             SCH_AoE_DPS_EnergyDrain = new("SCH_AoE_DPS_EnergyDrain", 3),
             SCH_AoE_DPS_ChainStratagemSubOption = new("SCH_AoE_DPS_ChainStratagemSubOption", 1),
             SCH_ST_DPS_Adv_Actions = new("SCH_ST_DPS_Adv_Actions");
+
+        internal static UserBool
+            SCH_ST_DPS_EnergyDrain_Burst = new("SCH_ST_DPS_EnergyDrain_Burst"),
+            SCH_AoE_DPS_EnergyDrain_Burst = new("SCH_AoE_DPS_EnergyDrain_Burst"),
+            SCH_AoE_DPS_ChainStratagemBanefulOption = new("SCH_AoE_DPS_ChainStratagemBanefulOption");
         
 
         public static UserFloat

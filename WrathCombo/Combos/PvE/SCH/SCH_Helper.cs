@@ -27,7 +27,7 @@ internal partial class SCH
     internal static readonly List<uint>
         BroilList = [Ruin, Broil, Broil2, Broil3, Broil4],
         AetherflowList = [EnergyDrain, Lustrate, SacredSoil, Indomitability, Excogitation],
-        ReplacedActionsList = [Ruin, Broil, Broil2, Broil3, Broil4, Bio, Biolysis, Bio2, Ruin2, Succor, Concitation, Accession, Physick],
+        ReplacedActionsList = [Ruin, Broil, Broil2, Broil3, Broil4, Bio, Biolysis, Bio2, Ruin2, Succor, Concitation, Accession, Physick], //Used for Hidden Features Retarget Sacred Soil
         FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph];
     #endregion
     internal static SCHGauge Gauge => GetJobGauge<SCHGauge>();
@@ -40,9 +40,15 @@ internal partial class SCH
                                             && OriginalHook(Aetherpact) is DissolveUnion //Quick check to see if Fairy Aetherpact is Active
                                             && AetherPactTarget is not null //Null checking so GetTargetHPPercent doesn't fall back to CurrentTarget
                                             && GetTargetHPPercent(AetherPactTarget) >= Config.SCH_ST_Heal_AetherpactDissolveOption;
-    
     internal static bool ShieldCheck => GetPartyBuffPercent(Buffs.Galvanize) <= Config.SCH_AoE_Heal_SuccorShieldOption &&
-                                       GetPartyBuffPercent(SGE.Buffs.EukrasianPrognosis) <= Config.SCH_AoE_Heal_SuccorShieldOption;
+                                        GetPartyBuffPercent(SGE.Buffs.EukrasianPrognosis) <= Config.SCH_AoE_Heal_SuccorShieldOption;
+    internal static bool CanChainStrategem => ActionReady(ChainStratagem) &&
+                                              CanApplyStatus(CurrentTarget, Debuffs.ChainStratagem) &&
+                                              !HasStatusEffect(Debuffs.ChainStratagem, CurrentTarget, true);
+
+    internal static float AetherflowCD => GetCooldownRemainingTime(Aetherflow);
+    
+    internal static float ChainStrategemCD => GetCooldownRemainingTime(ChainStratagem);
     
     #region Hidden Raidwides
     

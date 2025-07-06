@@ -6187,11 +6187,6 @@ public enum CustomComboPreset
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
     SCH_DPS_EnergyDrain = 16005,
-
-    [ParentCombo(SCH_DPS_EnergyDrain)]
-    [CustomComboInfo("Energy Drain Burst Option",
-        "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
-    SCH_DPS_EnergyDrain_BurstSaver = 16006,
     
     [ParentCombo(SCH_DPS)]
     [CustomComboInfo("Chain Stratagem",
@@ -6229,21 +6224,11 @@ public enum CustomComboPreset
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
     SCH_AoE_EnergyDrain = 16056,
-
-    [ParentCombo(SCH_AoE_EnergyDrain)]
-    [CustomComboInfo("Energy Drain Burst Option",
-        "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.", SCH.JobID)]
-    SCH_AoE_EnergyDrain_BurstSaver = 16055,
     
     [ParentCombo(SCH_AoE)]
     [CustomComboInfo("Chain Stratagem",
         "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
     SCH_AoE_ChainStrat = 16054,
-    
-    [ParentCombo(SCH_AoE_ChainStrat)]
-    [CustomComboInfo("Chain Stratagem",
-        "Will only use Chain Strategem when high enough level for Baneful Impaction and it is enabled.", SCH.JobID)]
-    SCH_AoE_ChainStrat_BanefulOnly = 16057,
     
     [ParentCombo(SCH_AoE)]
     [CustomComboInfo("Baneful Impact",
