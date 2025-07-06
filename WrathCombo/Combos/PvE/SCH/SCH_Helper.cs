@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Core;
@@ -16,22 +17,20 @@ namespace WrathCombo.Combos.PvE;
 internal partial class SCH
 {
     #region Lists
+    internal static readonly FrozenDictionary<uint, ushort> BioList = new Dictionary<uint, ushort>
+    {
+        { Bio, Debuffs.Bio1 },
+        { Bio2, Debuffs.Bio2},
+        { Biolysis, Debuffs.Biolysis},
+    }.ToFrozenDictionary();
+
     internal static readonly List<uint>
         BroilList = [Ruin, Broil, Broil2, Broil3, Broil4],
         AetherflowList = [EnergyDrain, Lustrate, SacredSoil, Indomitability, Excogitation],
         ReplacedActionsList = [Ruin, Broil, Broil2, Broil3, Broil4, Bio, Biolysis, Bio2, Ruin2, Succor, Concitation, Accession, Physick],
         FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph];
-    
-    internal static readonly Dictionary<uint, ushort>
-        BioList = new()
-        {
-            { Bio, Debuffs.Bio1 },
-            { Bio2, Debuffs.Bio2 },
-            { Biolysis, Debuffs.Biolysis }
-        };
     #endregion
     internal static SCHGauge Gauge => GetJobGauge<SCHGauge>();
-    
     internal static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
     internal static bool HasAetherflow => Gauge.Aetherflow > 0;
     internal static bool FairyDismissed => Gauge.DismissedFairy > 0;
