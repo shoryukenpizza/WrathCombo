@@ -53,6 +53,47 @@ Here's a list of macros to hold your Burst with Wrath:
 
 </details>
 
+### <img src="https://ffxiv.gamerescape.com/w/images/d/d6/Healer_Icon_1.png" width="20px" height="20px" /> Healer
+
+<details>
+<summary>WHM</summary>
+
+```
+/wrath toggle 19008
+/wrath toggle 19195
+```
+
+</details>
+<details>
+<summary>SCH</summary>
+
+```
+/wrath toggle 16003
+/wrath toggle 16054
+```
+
+</details>
+<details>
+<summary>AST</summary>
+
+```
+/wrath toggle 1043
+/wrath toggle 1016
+```
+
+</details>
+<details>
+<summary>SGE</summary>
+
+```
+/wrath toggle 14051
+/wrath toggle 14010
+/wrath toggle 14008
+/wrath toggle 14005
+```
+
+</details>
+
 ### <img src="https://ffxiv.gamerescape.com/w/images/2/29/Melee_DPS_Icon_1.png" width="20px" height="20px" /> Melee
 <details>
 <summary>DRG</summary>
