@@ -19,6 +19,8 @@ using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Data.ActionWatching;
+using Action = Lumina.Excel.Sheets.Action;
+using ActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 
