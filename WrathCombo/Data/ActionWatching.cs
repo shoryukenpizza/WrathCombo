@@ -461,10 +461,10 @@ namespace WrathCombo.Data
 
         public enum ActionAttackType
         {
-            Ability,
-            Spell,
-            Weaponskill,
-            Unknown
+            Unknown = 0,
+            Spell = 2,
+            Weaponskill = 3,
+            Ability = 4,
         }
     }
 }
