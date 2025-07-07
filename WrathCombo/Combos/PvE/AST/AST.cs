@@ -8,6 +8,85 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class AST : Healer
 {
+    internal class AST_ST_Simple_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_Simple_DPS;
+
+        protected override uint Invoke(uint actionID)
+        {
+            #region Variables
+            bool actionFound = MaleficList.Contains(actionID);
+            var replacedActions = MaleficList.ToArray();
+            #endregion
+
+            if (!actionFound)
+                return actionID;
+
+            // Out-of-combat Card Draw
+            if (!InCombat())
+            {
+                if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard)
+                    return OriginalHook(AstralDraw);
+            }
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            //In combat
+            if (InCombat())
+            {
+                //Variant stuff
+                if (Variant.CanRampart(CustomComboPreset.AST_Variant_Rampart))
+                    return Variant.Rampart;
+
+                if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_SpiritDart) && HasBattleTarget())
+                    return Variant.SpiritDart;
+
+                //Lightspeed Movement
+                if (ActionReady(Lightspeed) &&
+                    IsMoving() && !HasStatusEffect(Buffs.Lightspeed))
+                    return Lightspeed;  
+
+                //Lucid Dreaming
+                if (Role.CanLucidDream(Config.AST_ST_DPS_LucidDreaming))
+                    return Role.LucidDreaming;
+
+                //Play Card
+                if (HasDPSCard && CanSpellWeave())
+                    return OriginalHook(Play1).Retarget(replacedActions, CardResolver);
+                       
+
+                //Minor Arcana / Lord of Crowns
+                if (ActionReady(OriginalHook(MinorArcana)) &&
+                    HasLord && HasBattleTarget() && CanSpellWeave())
+                    return OriginalHook(MinorArcana);
+
+                //Card Draw
+                if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanSpellWeave())
+                    return OriginalHook(AstralDraw);
+
+                //Divination
+                if (IsEnabled(CustomComboPreset.AST_DPS_Divination) && HasBattleTarget() &&
+                    ActionReady(Divination) && !HasDivination &&
+                    !HasStatusEffect(Buffs.Divining) &&
+                    CanSpellWeave() && ActionWatching.NumberOfGcdsUsed >= 3)
+                    return Divination;
+
+                //Earthly Star
+                if (!HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
+                    IsOffCooldown(EarthlyStar) && CanSpellWeave())
+                    return EarthlyStar.Retarget(replacedActions, SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
+
+                //Oracle
+                if (HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+                    return Oracle;
+
+                if (NeedsDoT())
+                    return OriginalHook(Combust);
+            }
+            return actionID;
+        }
+    }
     internal class AST_ST_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_DPS;
@@ -23,8 +102,6 @@ internal partial class AST : Healer
             var replacedActions = alternateMode
                 ? CombustList.Keys.ToArray()
                 : MaleficList.ToArray();
-            float refreshTimer = Config.AST_ST_DPS_CombustUptime_Threshold;
-            int dotHPThreshold = Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_CombustOption : 0;
             int divHPThreshold = Config.AST_ST_DPS_DivinationSubOption == 1 || !InBossEncounter() ? Config.AST_ST_DPS_DivinationOption : 0;
             #endregion
 
@@ -137,26 +214,16 @@ internal partial class AST : Healer
                 if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) &&
                     HasStatusEffect(Buffs.Divining) && CanSpellWeave())
                     return Oracle;
+                
+                //Combust
+                if (IsEnabled(CustomComboPreset.AST_ST_DPS_CombustUptime) && NeedsDoT())
+                    return OriginalHook(Combust);
 
-                //Dot Code
-                if (HasBattleTarget())
-                {
-                    //Combust
-                    if (IsEnabled(CustomComboPreset.AST_ST_DPS_CombustUptime) &&
-                        !GravityList.Contains(actionID) &&
-                        LevelChecked(Combust) &&
-                        CombustList.TryGetValue(OriginalHook(Combust), out ushort dotDebuffID))
-                    {   
-                        if (GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget) <= refreshTimer &&
-                            GetTargetHPPercent() > dotHPThreshold &&
-                            CanApplyStatus(CurrentTarget,dotDebuffID))
-                            return OriginalHook(Combust);
-
-                        //Alternate Mode (idles as Malefic)
-                        if (alternateMode)
-                            return OriginalHook(Malefic);
-                    }
-                }
+                //Alternate Mode (idles as Malefic)
+                if (alternateMode)
+                    return OriginalHook(Malefic);
+                
+            
             }
             return actionID;
         }

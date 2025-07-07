@@ -581,11 +581,22 @@ public enum CustomComboPreset
 
     #region ASTROLOGIAN
 
+    #region Simple Modes
+    [AutoAction(false, false)]
+    [ReplaceSkill(AST.Malefic, AST.Malefic2, AST.Malefic3, AST.Malefic4, AST.FallMalefic)]
+    [ConflictingCombos(AST_ST_DPS)]
+    [CustomComboInfo("Simple DPS Mode - Single Target", "Replaces Malefic with a full one-button single target rotation, including automatic dps card assignment.\nThis is the ideal option for newcomers to the job.", AST.JobID)]
+    [SimpleCombo]
+    AST_ST_Simple_DPS = 1179,
+        
+    #endregion
+    
     #region ST DPS
 
     [AutoAction(false, false)]
     [ReplaceSkill(AST.Malefic, AST.Malefic2, AST.Malefic3, AST.Malefic4, AST.FallMalefic, AST.Combust, AST.Combust2,
         AST.Combust3)]
+    [ConflictingCombos(AST_ST_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - Single Target", "Replaces Malefic or Combust with options below", AST.JobID)]
     [AdvancedCombo]
     AST_ST_DPS = 1004,

@@ -44,6 +44,24 @@ internal partial class AST
     internal static float DivinationCD => GetCooldownRemainingTime(Divination);
     internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
     
+    #region Dot Checker
+    internal static bool NeedsDoT()
+    {
+        var dotAction = OriginalHook(Combust);
+        var hpThreshold = IsNotEnabled(CustomComboPreset.AST_ST_Simple_DPS) && (Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter()) ? Config.AST_ST_DPS_CombustOption : 0;
+        CombustList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRefresh = IsNotEnabled(CustomComboPreset.AST_ST_Simple_DPS) ? Config.AST_ST_DPS_CombustUptime_Threshold : 2.5;
+        var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
+
+        return ActionReady(dotAction) &&
+               CanApplyStatus(CurrentTarget, dotDebuffID) &&
+               !JustUsedOn(dotAction, CurrentTarget, 5f) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= dotRefresh;
+    }
+    #endregion
+    
     #region Hidden Raidwides
     
     internal static bool HiddenCollectiveUnconscious()
