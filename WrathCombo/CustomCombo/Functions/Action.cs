@@ -202,36 +202,36 @@ namespace WrathCombo.CustomComboNS.Functions
                 .ActionID;
         }
 
-        /// <summary> Checks if the provided actionID has enough cooldown remaining to weave against it without causing clipping.</summary>
-        /// <param name="weaveTime"> Time when weaving window is over. Defaults to 0.7. </param>
-        /// 
-        /// <returns> True or false. </returns>
-        public static bool CanWeave(double weaveTime = 0.7) => RemainingGCD > weaveTime;
+        /// <summary> Checks if an action can be weaved without clipping the GCD. </summary>
+        /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
+        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
+        public static bool CanWeave(float weaveEnd = 0.6f, int maxWeaves = 2) => RemainingGCD > weaveEnd && ActionWatching.WeaveActions.Count < maxWeaves;
 
-        /// <summary> Checks if the provided actionID has enough cooldown remaining to weave against it without causing clipping and checks if you're casting a spell. </summary>
-        /// <param name="weaveTime"> Time when weaving window is over. Defaults to 0.6. </param>
-        /// 
-        /// <returns> True or false. </returns>
-        public static bool CanSpellWeave(double weaveTime = 0.6)
+        /// <summary> Checks if an action can be weaved without clipping the GCD when casting spells or weaponskills. </summary>
+        /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
+        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
+        public static bool CanSpellWeave(float weaveEnd = 0.6f, int maxWeaves = 2)
         {
-            float castTimeRemaining = LocalPlayer.TotalCastTime - LocalPlayer.CurrentCastTime;
+            var player = LocalPlayer;
+            var remainingCast = player.TotalCastTime - player.CurrentCastTime;
 
-            if (RemainingGCD > weaveTime &&                          // Prevent GCD delay
-                castTimeRemaining <= 0.5 &&                                                     // Show in last 0.5sec of cast so game can queue ability
-                RemainingGCD - castTimeRemaining - weaveTime >= 0)   // Don't show if spell is still casting in weave window
-                return true;
-            return false;
+            return remainingCast <= 0.5f &&                     // Cast Threshold
+                RemainingGCD > (remainingCast + weaveEnd) &&    // End Threshold
+                ActionWatching.WeaveActions.Count < maxWeaves;  // Multi-weave Check
         }
 
-        /// <summary> Checks if the provided actionID has enough cooldown remaining to weave against it in the later portion of the GCD without causing clipping. </summary>
-        /// <param name="start"> Time (in seconds) to start to check for the weave window. If this value is greater than half of a GCD, it will instead use half a GCD instead to ensure it lands in the latter half.</param>
-        /// <param name="end"> Time (in seconds) to end the check for the weave window. </param>
-        /// 
-        /// <returns> True or false. </returns>
-        public static unsafe bool CanDelayedWeave(double start = 1.25, double end = 0.6)
+        /// <summary> Checks if an action can be weaved without clipping the GCD, limited by the specified GCD thresholds. </summary>
+        /// <param name="weaveStart"> Remaining GCD time when the window starts. <br/> Cannot be set higher than half the GCD. </param>
+        /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
+        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
+        public static unsafe bool CanDelayedWeave(float weaveStart = 1.25f, float weaveEnd = 0.6f, int maxWeaves = 2)
         {
-            float halfGCD = GCDTotal / 2f;
-            return RemainingGCD <= (start > halfGCD ? halfGCD : start) && RemainingGCD >= end;
+            var halfGCD = GCDTotal * 0.5f;
+            var remainingGCD = RemainingGCD;
+
+            return remainingGCD > weaveEnd &&                                     // End Threshold
+                remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&  // Start Threshold
+                ActionWatching.WeaveActions.Count < maxWeaves;                    // Multi-weave Check
         }
 
         public enum WeaveTypes
@@ -281,12 +281,15 @@ namespace WrathCombo.CustomComboNS.Functions
             if (!EzThrottler.Throttle("RaidWideCheck", 100))
                 return _raidwideInc;
 
-            foreach (var caster in Svc.Objects.Where(x => x is IBattleChara chara && chara.IsHostile() && chara.IsCasting()).Cast<IBattleChara>())
+            foreach (var obj in Svc.Objects)
             {
-                if (Svc.Data.Excel.GetSheet<Lumina.Excel.Sheets.Action>().TryGetRow(caster.CastActionId, out var spell))
+                if (obj is not IBattleChara caster || !caster.IsHostile() || !caster.IsCasting)
+                    continue;
+
+                if (ActionWatching.ActionSheet.TryGetValue(caster.CastActionId, out var spellSheet))
                 {
-                    byte type = spell.CastType;
-                    byte range = spell.EffectRange;
+                    byte type = spellSheet.CastType;
+                    byte range = spellSheet.EffectRange;
 
                     if (type is 2 or 5 && range >= 30)
                     {

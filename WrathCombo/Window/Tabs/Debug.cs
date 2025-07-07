@@ -617,7 +617,7 @@ internal class Debug : ConfigWindow, IDisposable
                     {
                         CustomStyleText("Next Action:", WrathOpener.CurrentOpener.OpenerActions[WrathOpener.CurrentOpener.OpenerStep].ActionName());
                         CustomStyleText("Is Delayed Weave:", WrathOpener.CurrentOpener.DelayedWeaveSteps.Any(x => x == WrathOpener.CurrentOpener.OpenerStep));
-                        CustomStyleText("Can Delayed Weave:", CanDelayedWeave(end: 0.1));
+                        CustomStyleText("Can Delayed Weave:", CanDelayedWeave(weaveEnd: 0.1f));
                     }
                 }
 
