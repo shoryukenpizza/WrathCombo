@@ -44,8 +44,9 @@ internal partial class VPR : Melee
             }
 
             //LowLevels
-            if (LevelChecked(ReavingFangs) && (HasStatusEffect(Buffs.HonedReavers) ||
-                                               !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
+            if (LevelChecked(ReavingFangs) &&
+                (HasStatusEffect(Buffs.HonedReavers) ||
+                 (!HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel))))
                 return OriginalHook(ReavingFangs);
             return actionID;
         }
@@ -111,11 +112,17 @@ internal partial class VPR : Melee
             if (!HasStatusEffect(Buffs.Reawakened) && LevelChecked(Vicewinder) && InMeleeRange())
             {
                 // Swiftskin's Coil
-                if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
+                if (VicewinderReady &&
+                    (!OnTargetsFlank() ||
+                     !TargetNeedsPositionals()) ||
+                    HuntersCoilReady)
                     return SwiftskinsCoil;
 
                 // Hunter's Coil
-                if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
+                if (VicewinderReady &&
+                    (!OnTargetsRear() ||
+                     !TargetNeedsPositionals()) ||
+                    SwiftskinsCoilReady)
                     return HuntersCoil;
             }
 
@@ -125,8 +132,8 @@ internal partial class VPR : Melee
 
             //Overcap protection
             if (CappedOnCoils() &&
-                (HasCharges(Vicewinder) && !HasStatusEffect(Buffs.SwiftskinsVenom) &&
-                 !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.Reawakened) || //spend if Vicewinder is up, after Reawaken
+                ((HasCharges(Vicewinder) && !HasStatusEffect(Buffs.SwiftskinsVenom) &&
+                  !HasStatusEffect(Buffs.HuntersVenom) && !HasStatusEffect(Buffs.Reawakened)) || //spend if Vicewinder is up, after Reawaken
                  IreCD <= GCD * 5)) //spend in case under Reawaken right as Ire comes up
                 return UncoiledFury;
 
@@ -229,7 +236,7 @@ internal partial class VPR : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            //GCDs
+            //Ranged
             if (IsEnabled(CustomComboPreset.VPR_ST_RangedUptime) &&
                 LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
                 return IsEnabled(CustomComboPreset.VPR_ST_RangedUptimeUncoiledFury) &&
@@ -243,8 +250,7 @@ internal partial class VPR : Melee
                 //Serpents Ire
                 if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsIre) && InCombat() &&
                     !CappedOnCoils() && ActionReady(SerpentsIre) &&
-                    (VPR_ST_SerpentsIre_SubOption == 0 ||
-                     VPR_ST_SerpentsIre_SubOption == 1 && InBossEncounter()))
+                    (VPR_ST_SerpentsIre_SubOption == 0 || InBossEncounter()))
                     return SerpentsIre;
 
                 // Death Rattle / Legacy Weaves
@@ -280,19 +286,24 @@ internal partial class VPR : Melee
                 !HasStatusEffect(Buffs.Reawakened) && LevelChecked(Vicewinder) && InMeleeRange())
             {
                 // Swiftskin's Coil
-                if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
+                if (VicewinderReady &&
+                    (!OnTargetsFlank() ||
+                     !TargetNeedsPositionals()) ||
+                    HuntersCoilReady)
                     return SwiftskinsCoil;
 
                 // Hunter's Coil
-                if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
+                if (VicewinderReady &&
+                    (!OnTargetsRear() ||
+                     !TargetNeedsPositionals()) ||
+                    SwiftskinsCoilReady)
                     return HuntersCoil;
             }
 
             //Reawakend Usage
             if (IsEnabled(CustomComboPreset.VPR_ST_Reawaken) &&
                 UseReawaken() &&
-                (VPR_ST_ReAwaken_SubOption == 0 ||
-                 VPR_ST_ReAwaken_SubOption == 1 && InBossEncounter()))
+                (VPR_ST_ReAwaken_SubOption == 0 || InBossEncounter()))
                 return Reawaken;
 
             //Overcap protection

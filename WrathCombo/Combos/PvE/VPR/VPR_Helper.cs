@@ -43,7 +43,7 @@ internal partial class VPR
         !HasStatusEffect(Buffs.HindsbaneVenom) &&
         !HasStatusEffect(Buffs.HindstungVenom);
 
-    #region Awaken
+    #region Reawaken
 
     internal static bool UseReawaken()
     {
@@ -71,8 +71,8 @@ internal partial class VPR
                 return true;
 
             //non boss encounters
-            if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
-                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
+            if (((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter()) ||
+                 (IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter())) &&
                 SerpentOffering >= 50)
                 return true;
 
