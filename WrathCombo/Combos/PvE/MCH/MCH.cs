@@ -67,9 +67,8 @@ internal partial class MCH : PhysicalRanged
                     // Wildfire
                     if (JustUsed(Hypercharge) &&
                         ActionReady(Wildfire) &&
-                        !HasStatusEffect(Buffs.Wildfire) &&
-                        CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                        TargetIsBoss())
+                        !HasStatusEffect(Buffs.Wildfire) && TargetIsBoss() &&
+                        CanApplyStatus(CurrentTarget, Debuffs.Wildfire))
                         return Wildfire;
 
                     if (!IsOverheated)
@@ -221,18 +220,17 @@ internal partial class MCH : PhysicalRanged
 
                     // Wildfire
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_WildFire) &&
-                        (MCH_ST_Adv_Wildfire_SubOption == 0 ||
-                         MCH_ST_Adv_Wildfire_SubOption == 1 && TargetIsBoss()) &&
+                        (MCH_ST_Adv_Wildfire_SubOption == 0 || TargetIsBoss()) &&
                         CanApplyStatus(CurrentTarget, Debuffs.Wildfire) &&
-                        JustUsed(Hypercharge) && ActionReady(Wildfire) && !HasStatusEffect(Buffs.Wildfire))
+                        JustUsed(Hypercharge) && ActionReady(Wildfire) &&
+                        !HasStatusEffect(Buffs.Wildfire))
                         return Wildfire;
 
                     if (!IsOverheated)
                     {
                         // BarrelStabilizer
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer) &&
-                            (MCH_ST_Adv_BarrelStabiliser_SubOption == 0 ||
-                             MCH_ST_Adv_BarrelStabiliser_SubOption == 1 && TargetIsBoss()) &&
+                            (MCH_ST_Adv_BarrelStabiliser_SubOption == 0 || TargetIsBoss()) &&
                             ActionReady(BarrelStabilizer) && !HasStatusEffect(Buffs.FullMetalMachinist))
                             return BarrelStabilizer;
 
@@ -311,8 +309,7 @@ internal partial class MCH : PhysicalRanged
 
             // Full Metal Field
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
-                (MCH_ST_Adv_FullMetalMachinist_SubOption == 0 ||
-                 MCH_ST_Adv_FullMetalMachinist_SubOption == 1 && TargetIsBoss()) &&
+                (MCH_ST_Adv_FullMetalMachinist_SubOption == 0 || TargetIsBoss()) &&
                 HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) &&
                 !JustUsed(BarrelStabilizer) &&
                 (fullMetal.RemainingTime <= 6 ||

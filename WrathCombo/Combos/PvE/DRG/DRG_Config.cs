@@ -123,7 +123,7 @@ internal partial class DRG
             }
         }
 
-        #region DPS
+        #region Variables
 
         public static UserInt
             DRG_SelectedOpener = new("DRG_SelectedOpener", 0),

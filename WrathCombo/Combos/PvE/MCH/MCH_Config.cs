@@ -8,28 +8,6 @@ internal partial class MCH
 {
     internal static class Config
     {
-        public static UserInt
-            MCH_Balance_Content = new("MCH_Balance_Content", 1),
-            MCH_ST_QueenOverDrive = new("MCH_ST_QueenOverDrive", 1),
-            MCH_ST_Adv_Excavator_SubOption = new("MCH_ST_Adv_Excavator_SubOption", 1),
-            MCH_ST_Adv_Turret_SubOption = new("MCH_ST_Adv_Turret_SubOption", 1),
-            MCH_ST_Adv_BarrelStabiliser_SubOption = new("MCH_ST_Adv_BarrelStabiliser_SubOption", 1),
-            MCH_ST_Adv_Wildfire_SubOption = new("MCH_ST_Adv_Wildfire_SubOption", 1),
-            MCH_ST_Adv_FullMetalMachinist_SubOption = new("MCH_ST_Adv_FullMetalMachinist_SubOption", 1),
-            MCH_ST_TurretUsage = new("MCH_ST_TurretUsage", 100),
-            MCH_ST_ReassemblePool = new("MCH_ST_ReassemblePool", 0),
-            MCH_ST_GaussRicoPool = new("MCH_ST_GaussRicoPool", 0),
-            MCH_AoE_QueenOverDrive = new("MCH_AoE_QueenOverDrive", 20),
-            MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold", 40),
-            MCH_AoE_ReassemblePool = new("MCH_AoE_ReassemblePool", 0),
-            MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage", 100),
-            MCH_AoE_SecondWindThreshold = new("MCH_AoE_SecondWindThreshold", 40),
-            MCH_VariantCure = new("MCH_VariantCure", 50);
-
-        public static UserBoolArray
-            MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
-            MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -148,5 +126,31 @@ internal partial class MCH
                     break;
             }
         }
+
+        #region Variables
+
+        public static UserInt
+            MCH_Balance_Content = new("MCH_Balance_Content", 1),
+            MCH_ST_QueenOverDrive = new("MCH_ST_QueenOverDrive", 1),
+            MCH_ST_Adv_Excavator_SubOption = new("MCH_ST_Adv_Excavator_SubOption", 1),
+            MCH_ST_Adv_Turret_SubOption = new("MCH_ST_Adv_Turret_SubOption", 1),
+            MCH_ST_Adv_BarrelStabiliser_SubOption = new("MCH_ST_Adv_BarrelStabiliser_SubOption", 1),
+            MCH_ST_Adv_Wildfire_SubOption = new("MCH_ST_Adv_Wildfire_SubOption", 1),
+            MCH_ST_Adv_FullMetalMachinist_SubOption = new("MCH_ST_Adv_FullMetalMachinist_SubOption", 1),
+            MCH_ST_TurretUsage = new("MCH_ST_TurretUsage", 100),
+            MCH_ST_ReassemblePool = new("MCH_ST_ReassemblePool", 0),
+            MCH_ST_GaussRicoPool = new("MCH_ST_GaussRicoPool", 0),
+            MCH_AoE_QueenOverDrive = new("MCH_AoE_QueenOverDrive", 20),
+            MCH_ST_SecondWindThreshold = new("MCH_ST_SecondWindThreshold", 40),
+            MCH_AoE_ReassemblePool = new("MCH_AoE_ReassemblePool", 0),
+            MCH_AoE_TurretUsage = new("MCH_AoE_TurretUsage", 100),
+            MCH_AoE_SecondWindThreshold = new("MCH_AoE_SecondWindThreshold", 40),
+            MCH_VariantCure = new("MCH_VariantCure", 50);
+
+        public static UserBoolArray
+            MCH_ST_Reassembled = new("MCH_ST_Reassembled"),
+            MCH_AoE_Reassembled = new("MCH_AoE_Reassembled");
+
+        #endregion
     }
 }

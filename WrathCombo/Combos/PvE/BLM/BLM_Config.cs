@@ -130,7 +130,7 @@ internal partial class BLM
             }
         }
 
-        #region DPS
+        #region Variables
 
         public static UserInt
             BLM_SelectedOpener = new("BLM_SelectedOpener", 0),

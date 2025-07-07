@@ -22,8 +22,7 @@ internal partial class MCH
         GetRemainingCharges(OriginalHook(Ricochet)) > GetRemainingCharges(OriginalHook(GaussRound));
 
     internal static bool HasNotWeaved =>
-        GetAttackType(LastAction) !=
-        ActionAttackType.Ability;
+        GetAttackType(LastAction) != ActionAttackType.Ability;
 
     #region Queen
 
