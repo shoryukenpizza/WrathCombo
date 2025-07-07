@@ -255,7 +255,7 @@ internal partial class BLM
     internal static byte PolyglotStacks => Gauge.PolyglotStacks;
 
     internal static short PolyglotTimer => Gauge.EnochianTimer;
-    
+
     internal static class MP
     {
         internal const int MaxMP = 10000;
@@ -363,6 +363,6 @@ internal partial class BLM
             EnhancedPolyglotII = 615,
             EnhancedAstralFire = 616;
     }
-    
+
     #endregion
 }
