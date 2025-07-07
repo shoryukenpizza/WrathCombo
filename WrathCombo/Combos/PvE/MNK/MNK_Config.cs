@@ -8,21 +8,6 @@ internal partial class MNK
 {
     internal static class Config
     {
-        public static UserInt
-            MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
-            MNK_Balance_Content = new("MNK_Balance_Content", 1),
-            MNK_ST_Brotherhood_SubOption = new("MNK_ST_Brotherhood_SubOption", 1),
-            MNK_ST_RiddleOfFire_SubOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
-            MNK_ST_RiddleOfWind_SubOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
-            MNK_ST_SecondWind_Threshold = new("MNK_ST_SecondWindThreshold", 40),
-            MNK_ST_Bloodbath_Threshold = new("MNK_ST_BloodbathThreshold", 30),
-            MNK_AoE_Brotherhood_HP = new("MNK_AoE_Brotherhood_HP", 20),
-            MNK_AoE_RiddleOfWind_HP = new("MNK_AoE_RiddleOfWind_HP", 20),
-            MNK_AoE_RiddleOfFire_HP = new("MNK_AoE_RiddleOfFire_HP", 20),
-            MNK_AoE_SecondWind_Threshold = new("MNK_AoE_SecondWindThreshold", 40),
-            MNK_AoE_Bloodbath_Threshold = new("MNK_AoE_BloodbathThreshold", 30),
-            MNK_VariantCure = new("MNK_Variant_Cure", 50);
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -101,5 +86,24 @@ internal partial class MNK
                     break;
             }
         }
+
+        #region Variables
+        
+        public static UserInt
+            MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
+            MNK_Balance_Content = new("MNK_Balance_Content", 1),
+            MNK_ST_Brotherhood_SubOption = new("MNK_ST_Brotherhood_SubOption", 1),
+            MNK_ST_RiddleOfFire_SubOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
+            MNK_ST_RiddleOfWind_SubOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
+            MNK_ST_SecondWind_Threshold = new("MNK_ST_SecondWindThreshold", 40),
+            MNK_ST_Bloodbath_Threshold = new("MNK_ST_BloodbathThreshold", 30),
+            MNK_AoE_Brotherhood_HP = new("MNK_AoE_Brotherhood_HP", 20),
+            MNK_AoE_RiddleOfWind_HP = new("MNK_AoE_RiddleOfWind_HP", 20),
+            MNK_AoE_RiddleOfFire_HP = new("MNK_AoE_RiddleOfFire_HP", 20),
+            MNK_AoE_SecondWind_Threshold = new("MNK_AoE_SecondWindThreshold", 40),
+            MNK_AoE_Bloodbath_Threshold = new("MNK_AoE_BloodbathThreshold", 30),
+            MNK_VariantCure = new("MNK_Variant_Cure", 50);
+
+        #endregion
     }
 }
