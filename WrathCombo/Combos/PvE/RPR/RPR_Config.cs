@@ -52,7 +52,6 @@ internal partial class RPR
 
                     DrawHorizontalRadioButton(RPR_ST_ArcaneCircle_SubOption,
                         "Boss encounters Only", $"Only uses {ArcaneCircle.ActionName()} when in Boss encounters.", 1);
-
                     break;
 
                 case CustomComboPreset.RPR_ST_AdvancedMode:
@@ -61,7 +60,6 @@ internal partial class RPR
 
                     DrawHorizontalRadioButton(RPR_Positional, "Flank First",
                         $"First positional: {Gibbet.ActionName()}.", 1);
-
                     break;
 
                 case CustomComboPreset.RPR_ST_SoD:
@@ -70,13 +68,11 @@ internal partial class RPR
 
                     DrawSliderInt(0, 100, RPR_SoDThreshold,
                         $"Set a HP% Threshold for when {ShadowOfDeath.ActionName()} will not be automatically applied to the target.");
-
                     break;
 
                 case CustomComboPreset.RPR_AoE_WoD:
                     DrawSliderInt(0, 100, RPR_WoDThreshold,
                         $"Set a HP% Threshold for when {WhorlOfDeath.ActionName()} will not be automatically applied to the target.");
-
                     break;
 
                 case CustomComboPreset.RPR_ST_ComboHeals:
@@ -85,7 +81,6 @@ internal partial class RPR
 
                     DrawSliderInt(0, 100, RPR_STBloodbathThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.RPR_AoE_ComboHeals:
@@ -94,7 +89,6 @@ internal partial class RPR
 
                     DrawSliderInt(0, 100, RPR_AoEBloodbathThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.RPR_Soulsow:
@@ -114,13 +108,11 @@ internal partial class RPR
 
                     DrawHorizontalMultiChoice(RPR_SoulsowOptions,
                         $"{BloodStalk.ActionName()}", $"Adds {Soulsow.ActionName()} to {BloodStalk.ActionName()}.", 5, 4);
-
                     break;
 
                 case CustomComboPreset.RPR_Variant_Cure:
                     DrawSliderInt(1, 100, RPR_VariantCure,
                         "HP% to be at or under", 200);
-
                     break;
             }
         }

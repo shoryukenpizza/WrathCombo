@@ -36,7 +36,6 @@ internal partial class VPR
 
                     DrawAdditionalBoolChoice(VPR_Opener_ExcludeUF,
                         $"Exclude {UncoiledFury.ActionName()}", "");
-
                     break;
 
                 case CustomComboPreset.VPR_ST_SerpentsIre:
@@ -45,7 +44,6 @@ internal partial class VPR
 
                     DrawHorizontalRadioButton(VPR_ST_SerpentsIre_SubOption,
                         "Boss encounters Only", $"Only uses  {SerpentsIre.ActionName()} when in Boss encounters.", 1);
-
                     break;
 
                 case CustomComboPreset.VPR_ST_Reawaken:
@@ -57,7 +55,6 @@ internal partial class VPR
 
                     DrawSliderInt(0, 5, VPR_ST_ReAwaken_Threshold,
                         $"Set a HP% threshold to use {Reawaken.ActionName()} whenever available. (Bosses Only)");
-
                     break;
 
                 case CustomComboPreset.VPR_ST_UncoiledFury:
@@ -66,7 +63,6 @@ internal partial class VPR
 
                     DrawSliderInt(0, 5, VPR_ST_UncoiledFury_Threshold,
                         $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
-
                     break;
 
                 case CustomComboPreset.VPR_ST_ComboHeals:
@@ -75,7 +71,6 @@ internal partial class VPR
 
                     DrawSliderInt(0, 100, VPR_ST_Bloodbath_Threshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.VPR_AoE_UncoiledFury:
@@ -84,13 +79,11 @@ internal partial class VPR
 
                     DrawSliderInt(0, 5, VPR_AoE_UncoiledFury_Threshold,
                         $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
-
                     break;
 
                 case CustomComboPreset.VPR_AoE_Reawaken:
                     DrawSliderInt(0, 100, VPR_AoE_Reawaken_Usage,
                         $"Stop using {Reawaken.ActionName()} at Enemy HP %. Set to Zero to disable this check.");
-
                     break;
 
                 case CustomComboPreset.VPR_AoE_ComboHeals:
@@ -99,7 +92,6 @@ internal partial class VPR
 
                     DrawSliderInt(0, 100, VPR_AoE_Bloodbath_Threshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.VPR_ReawakenLegacy:
@@ -108,13 +100,11 @@ internal partial class VPR
 
                     DrawRadioButton(VPR_ReawakenLegacyButton,
                         $"Replaces {ReavingFangs.ActionName()}", $"Replaces {ReavingFangs.ActionName()} with Full Generation - Legacy combo.", 1);
-
                     break;
 
                 case CustomComboPreset.VPR_Variant_Cure:
                     DrawSliderInt(1, 100, VPR_VariantCure,
                         "HP% to be at or under", 200);
-
                     break;
             }
         }

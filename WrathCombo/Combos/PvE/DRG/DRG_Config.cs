@@ -52,7 +52,6 @@ internal partial class DRG
 
                     DrawHorizontalRadioButton(DRG_ST_Litany_SubOption,
                         "Boss encounters Only", $"Only uses {BattleLitany.ActionName()} when in Boss encounters.", 1);
-
                     break;
 
                 case CustomComboPreset.DRG_ST_Lance:
@@ -62,7 +61,6 @@ internal partial class DRG
 
                     DrawHorizontalRadioButton(DRG_ST_Lance_SubOption,
                         "Boss encounters Only", $"Only uses {LanceCharge.ActionName()} when in Boss encounters.", 1);
-
                     break;
 
                 case CustomComboPreset.DRG_ST_HighJump:
@@ -95,19 +93,16 @@ internal partial class DRG
 
                     DrawSliderInt(0, 100, DRG_ST_Bloodbath_Threshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.DRG_AoE_Litany:
                     DrawSliderInt(0, 100, DRG_AoE_LitanyHP,
                         $"Stop Using {BattleLitany.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
-
                     break;
 
                 case CustomComboPreset.DRG_AoE_Lance:
                     DrawSliderInt(0, 100, DRG_AoE_LanceChargeHP,
                         $"Stop Using {LanceCharge.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
-
                     break;
 
                 case CustomComboPreset.DRG_AoE_HighJump:
@@ -140,13 +135,11 @@ internal partial class DRG
 
                     DrawSliderInt(0, 100, DRG_AoE_Bloodbath_Threshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.DRG_Variant_Cure:
                     DrawSliderInt(1, 100, DRG_Variant_Cure,
                         "HP% to be at or under", 200);
-
                     break;
             }
         }

@@ -46,13 +46,11 @@ internal partial class BLM
                         1);
 
                     DrawBossOnlyChoice(BLM_Balance_Content);
-
                     break;
 
                 case CustomComboPreset.BLM_ST_LeyLines:
                     DrawSliderInt(0, 1, BLM_ST_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready?");
-
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
@@ -79,7 +77,6 @@ internal partial class BLM
 
                     DrawPriorityInput(BLM_ST_Movement_Priority,
                         4, 3, $"{Xenoglossy.ActionName()} Priority: ");
-
                     break;
 
                 case CustomComboPreset.BLM_ST_UsePolyglot:
@@ -92,7 +89,6 @@ internal partial class BLM
                         "How many charges to save for movement?"))
                         if (BLM_ST_Polyglot_Save > 3 - BLM_ST_Polyglot_Movement)
                             BLM_ST_Polyglot_Save.Value = 3 - BLM_ST_Polyglot_Movement;
-
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
@@ -105,7 +101,6 @@ internal partial class BLM
                     if (BLM_ST_MovementOption[0])
                         DrawSliderInt(1, 2, BLM_ST_Triplecast_Movement,
                             "How many charges to save for movement?");
-
                     break;
 
 
@@ -126,37 +121,31 @@ internal partial class BLM
                     DrawSliderInt(0, 5, BLM_ST_ThunderUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.");
 
                     ImGui.Unindent();
-
                     break;
 
                 case CustomComboPreset.BLM_ST_Manaward:
                     DrawSliderInt(0, 100, BLM_ST_Manaward_Threshold,
                         $"{Manaward.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.BLM_AoE_LeyLines:
                     DrawSliderInt(0, 1, BLM_AoE_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
-
                     break;
 
                 case CustomComboPreset.BLM_AoE_Triplecast:
                     DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges,
                         $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
-
                     break;
 
                 case CustomComboPreset.BLM_AoE_Thunder:
                     DrawSliderInt(0, 50, BLM_AoE_ThunderHP,
                         $"Stop Using {Thunder2.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
-
                     break;
 
                 case CustomComboPreset.BLM_Variant_Cure:
                     DrawSliderInt(1, 100, BLM_VariantCure,
                         "HP% to be at or under", 200);
-
                     break;
             }
         }

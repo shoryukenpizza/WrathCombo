@@ -48,7 +48,6 @@ internal partial class SGE
                     DrawRoundedSliderFloat(0, 5, SGE_ST_DPS_EDosisRefresh,
                         "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
                     ImGui.Unindent();
-
                     break;
 
                 case CustomComboPreset.SGE_ST_DPS_Lucid:

@@ -72,7 +72,6 @@ internal partial class SAM
                         DrawSliderInt(0, 15, SAM_ST_Higanbana_Refresh,
                             $"Seconds remaining before reapplying {Higanbana.ActionName()}. Set to Zero to disable this check.");
                     }
-
                     break;
 
                 case CustomComboPreset.SAM_ST_ComboHeals:
@@ -81,7 +80,6 @@ internal partial class SAM
 
                     DrawSliderInt(0, 100, SAM_STBloodbathThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.SAM_AoE_ComboHeals:
@@ -90,7 +88,6 @@ internal partial class SAM
 
                     DrawSliderInt(0, 100, SAM_AoEBloodbathThreshold,
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
-
                     break;
 
                 case CustomComboPreset.SAM_ST_Shinten:
@@ -99,13 +96,11 @@ internal partial class SAM
 
                     DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold,
                         "HP percent threshold to not save Kenki");
-
                     break;
 
                 case CustomComboPreset.SAM_AoE_Kyuten:
                     DrawSliderInt(25, 85, SAM_AoE_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for AOE combos.");
-
                     break;
 
                 case CustomComboPreset.SAM_ST_GekkoCombo:
@@ -115,7 +110,6 @@ internal partial class SAM
                     if (SAM_Gekko_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
                     break;
 
                 case CustomComboPreset.SAM_ST_KashaCombo:
@@ -125,7 +119,6 @@ internal partial class SAM
                     if (SAM_Kasha_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Kasha_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
                     break;
 
                 case CustomComboPreset.SAM_ST_YukikazeCombo:
@@ -135,7 +128,6 @@ internal partial class SAM
                     if (SAM_Yukaze_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
                     break;
 
                 case CustomComboPreset.SAM_AoE_OkaCombo:
@@ -145,7 +137,6 @@ internal partial class SAM
                     if (SAM_Oka_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Oka_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
                     break;
 
                 case CustomComboPreset.SAM_AoE_MangetsuCombo:
@@ -155,13 +146,11 @@ internal partial class SAM
                     if (SAM_Mangetsu_KenkiOvercap)
                         DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
                     break;
 
                 case CustomComboPreset.SAM_Variant_Cure:
                     DrawSliderInt(1, 100, SAM_VariantCure,
                         "HP% to be at or under", 200);
-
                     break;
             }
         }
