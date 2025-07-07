@@ -6163,52 +6163,62 @@ public enum CustomComboPreset
 
     #region SCHOLAR
 
+    #region Simples
+    
+    [AutoAction(false, false)]
+    [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4)]
+    [ConflictingCombos(SCH_ST_ADV_DPS)]
+    [CustomComboInfo("Simple Single Target DPS Feature", "Replaces Ruin I / Broils with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job..", SCH.JobID)]
+    SCH_ST_Simple_DPS = 16070,
+    
+    #endregion
+    
     #region ST DPS
-
     [AutoAction(false, false)]
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4, SCH.Bio, SCH.Bio2, SCH.Biolysis)]
-    [CustomComboInfo("Single Target DPS Feature", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
-    SCH_DPS = 16001,
+    [ConflictingCombos(SCH_ST_Simple_DPS)]
+    [CustomComboInfo("Advanced ST DPS Feature", "Replaces Ruin I / Broils with options below.", SCH.JobID)]
+    SCH_ST_ADV_DPS = 16001,
 
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", SCH.JobID)]
-    SCH_DPS_Balance_Opener = 16009,
+    SCH_ST_ADV_DPS_Balance_Opener = 16009,
     
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Bio / Biolysis Option", "Automatic DoT uptime.", SCH.JobID)]
-    SCH_DPS_Bio = 16008,
+    SCH_ST_ADV_DPS_Bio = 16008,
 
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Aetherflow Weave Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
-    SCH_DPS_Aetherflow = 16004,
+    SCH_ST_ADV_DPS_Aetherflow = 16004,
 
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Energy Drain Weave Option",
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
-    SCH_DPS_EnergyDrain = 16005,
+    SCH_ST_ADV_DPS_EnergyDrain = 16005,
     
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Chain Stratagem",
         "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
-    SCH_DPS_ChainStrat = 16003,
+    SCH_ST_ADV_DPS_ChainStrat = 16003,
     
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Baneful Impact",
         "Adds Baneful Impact when available.", SCH.JobID)]
-    SCH_DPS_BanefulImpact = 16052,
+    SCH_ST_ADV_DPS_BanefulImpact = 16052,
 
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Ruin II Moving Option", "Use Ruin II when you have to move.", SCH.JobID)]
-    SCH_DPS_Ruin2Movement = 16007,
+    SCH_ST_ADV_DPS_Ruin2Movement = 16007,
     
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
-    SCH_DPS_FairyReminder = 16048,
+    SCH_ST_ADV_DPS_FairyReminder = 16048,
 
-    [ParentCombo(SCH_DPS)]
+    [ParentCombo(SCH_ST_ADV_DPS)]
     [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
-    SCH_DPS_Lucid = 16002,
+    SCH_ST_ADV_DPS_Lucid = 16002,
     
     #endregion
     
@@ -6443,13 +6453,13 @@ public enum CustomComboPreset
     SCH_Raise_Retarget = 16050,
     
     [Variant]
-    [VariantParent(SCH_DPS_Bio, SCH_AoE_DPS)]
+    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_DPS)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SCH.JobID)]
     SCH_DPS_Variant_SpiritDart = 16036,
 
     [Variant]
-    [VariantParent(SCH_DPS, SCH_AoE_DPS)]
+    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_DPS)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SCH.JobID)]
     SCH_DPS_Variant_Rampart = 16037,
 
@@ -6461,18 +6471,18 @@ public enum CustomComboPreset
     SCH_Hidden = 16065,
     
     [ParentCombo(SCH_Hidden)]
-    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
     [Hidden]
     SCH_Hidden_Succor_Raidwide = 16062,
     
     [ParentCombo(SCH_Hidden)]
-    [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 main combos", SCH.JobID)]
+    [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 Advanced combos", SCH.JobID)]
     [Hidden]
     [Retargeted]
     SCH_Hidden_SacredSoil = 16059,
     
     [ParentCombo(SCH_Hidden)]
-    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 main combos.", SCH.JobID)]
+    [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
     [Hidden]
     SCH_Hidden_Expedient = 16064,
     #endregion

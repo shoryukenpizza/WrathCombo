@@ -5,10 +5,69 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SCH : Healer
 {
-    #region ST DPS
-    internal class SCH_DPS : CustomCombo
+    #region Simple ST DPS
+    internal class SCH_ST_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DPS;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_ST_Simple_DPS;
+        protected override uint Invoke(uint actionID)
+        {
+            if (!BroilList.Contains(actionID))
+                return actionID;
+
+            if (NeedToSummon)
+                return SummonEos;
+            
+            #region Special Content
+            if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
+                return Variant.Rampart;
+            
+            if (Variant.CanSpiritDart(CustomComboPreset.SCH_DPS_Variant_SpiritDart))
+                return Variant.SpiritDart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+            #endregion
+            
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
+            #endregion
+
+            if (InCombat() && CanSpellWeave())
+            {
+                if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+                    return Aetherflow;
+                
+                if (HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+                    return BanefulImpaction;
+                
+                if (ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem)
+                    return ChainStratagem;
+                    
+                if (ActionReady(EnergyDrain) && AetherflowCD <= 10 &&
+                    (ChainStrategemCD > 10 || !LevelChecked(ChainStratagem)))
+                    return EnergyDrain;
+                
+                if (Role.CanLucidDream(6500))
+                    return Role.LucidDreaming;
+            }
+            //Bio/Biolysis
+            if (NeedsDoT() && InCombat())
+                return OriginalHook(Bio);
+
+            //Ruin 2 Movement
+            if (ActionReady(Ruin2) && IsMoving() && InCombat())
+                return OriginalHook(Ruin2);
+            
+            return actionID;
+        }
+    }
+    #endregion
+    
+    #region Advanced ST DPS
+    internal class SCH_ST_ADV_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_ST_ADV_DPS;
         protected override uint Invoke(uint actionID)
         {
             #region Variables
@@ -22,10 +81,10 @@ internal partial class SCH : Healer
             if (!actionFound)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.SCH_DPS_FairyReminder) && NeedToSummon)
+            if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_FairyReminder) && NeedToSummon)
                 return SummonEos;
             //Opener
-            if (IsEnabled(CustomComboPreset.SCH_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
+            if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Balance_Opener) && Opener().FullOpener(ref actionID))
                 return actionID;
             
             #region Special Content
@@ -55,33 +114,33 @@ internal partial class SCH : Healer
 
             if (InCombat() && CanSpellWeave())
             {
-                if (IsEnabled(CustomComboPreset.SCH_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+                if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                     return Aetherflow;
                 
-                if (IsEnabled(CustomComboPreset.SCH_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+                if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
                     return BanefulImpaction;
                 
-                if (IsEnabled(CustomComboPreset.SCH_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem &&
+                if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem &&
                     GetTargetHPPercent() > chainThreshold)
                     return ChainStratagem;
                     
-                if (IsEnabled(CustomComboPreset.SCH_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
+                if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
                     AetherflowCD <= Config.SCH_ST_DPS_EnergyDrain &&
                     (!Config.SCH_ST_DPS_EnergyDrain_Burst ||
                      ChainStrategemCD > 10 ||
                      !LevelChecked(ChainStratagem)))
                     return EnergyDrain;
                 
-                if (IsEnabled(CustomComboPreset.SCH_DPS_Lucid) && Role.CanLucidDream(Config.SCH_ST_DPS_LucidOption))
+                if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Lucid) && Role.CanLucidDream(Config.SCH_ST_DPS_LucidOption))
                     return Role.LucidDreaming;
             }
             
             //Bio/Biolysis
-            if (IsEnabled(CustomComboPreset.SCH_DPS_Bio) && NeedsDoT() && InCombat())
+            if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Bio) && NeedsDoT() && InCombat())
                 return OriginalHook(Bio);
 
             //Ruin 2 Movement
-            if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2Movement) && ActionReady(Ruin2) && IsMoving() && InCombat())
+            if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Ruin2Movement) && ActionReady(Ruin2) && IsMoving() && InCombat())
                 return OriginalHook(Ruin2);
             
             return actionID;
@@ -89,7 +148,7 @@ internal partial class SCH : Healer
     }
     #endregion
     
-    #region AoE DPS
+    #region Advanced AoE DPS
     internal class SCH_AoE : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_DPS;

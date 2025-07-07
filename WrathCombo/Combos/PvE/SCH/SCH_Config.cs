@@ -18,13 +18,13 @@ internal partial class SCH
             switch (preset)
             {
                 #region DPS
-                case CustomComboPreset.SCH_DPS_Balance_Opener:
+                case CustomComboPreset.SCH_ST_ADV_DPS_Balance_Opener:
                     DrawHorizontalRadioButton(SCH_ST_DPS_OpenerOption, "Dissipation First", "Uses Dissipation first, then Aetherflow", 0);
                     DrawHorizontalRadioButton(SCH_ST_DPS_OpenerOption, "Aetherflow First", "Uses Aetherflow first, then Dissipation", 1);
                     DrawBossOnlyChoice(SCH_ST_DPS_OpenerContent);
                     break;
 
-                case CustomComboPreset.SCH_DPS:
+                case CustomComboPreset.SCH_ST_ADV_DPS:
                     DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Ruin/Broils", "Apply options to Ruin and all Broils.", 0,
                         descriptionColor:ImGuiColors.DalamudWhite);
                     DrawHorizontalRadioButton(SCH_ST_DPS_Adv_Actions, "On Bio/Bio II/Biolysis", "Apply options to Bio and Biolysis.", 1,
@@ -33,11 +33,11 @@ internal partial class SCH
                         descriptionColor:ImGuiColors.DalamudWhite);
                     break;
                 
-                case CustomComboPreset.SCH_DPS_Lucid:
+                case CustomComboPreset.SCH_ST_ADV_DPS_Lucid:
                     DrawSliderInt(4000, 9500, SCH_ST_DPS_LucidOption, "MP Threshold", 150, Hundreds);
                     break;
 
-                case CustomComboPreset.SCH_DPS_Bio:
+                case CustomComboPreset.SCH_ST_ADV_DPS_Bio:
 
                     DrawSliderInt(0, 50, SCH_DPS_BioOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
@@ -57,7 +57,7 @@ internal partial class SCH
 
                     break;
 
-                case CustomComboPreset.SCH_DPS_ChainStrat:
+                case CustomComboPreset.SCH_ST_ADV_DPS_ChainStrat:
                     
                     DrawSliderInt(0, 100, SCH_ST_DPS_ChainStratagemOption, "Stop using at Enemy HP%. Set to Zero to disable this check.");
                     
@@ -75,7 +75,7 @@ internal partial class SCH
                     
                     break;
 
-                case CustomComboPreset.SCH_DPS_EnergyDrain:
+                case CustomComboPreset.SCH_ST_ADV_DPS_EnergyDrain:
                     DrawSliderInt(0, 60, SCH_ST_DPS_EnergyDrain, "Aetherflow remaining cooldown");
                     
                     DrawAdditionalBoolChoice(SCH_ST_DPS_EnergyDrain_Burst, 

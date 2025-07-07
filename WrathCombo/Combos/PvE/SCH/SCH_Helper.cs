@@ -89,11 +89,10 @@ internal partial class SCH
     internal static bool NeedsDoT()
     {
         var dotAction = OriginalHook(Bio);
-        var hpThreshold = Config.SCH_DPS_BioSubOption == 1 ||
-                          !InBossEncounter()
-            ? Config.SCH_DPS_BioSubOption
-            : 0;
+        var hpThreshold = IsNotEnabled(CustomComboPreset.SCH_ST_Simple_DPS) &&
+            (Config.SCH_DPS_BioSubOption == 1 || !InBossEncounter())? Config.SCH_DPS_BioSubOption : 0;
         BioList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRefresh = IsNotEnabled(CustomComboPreset.SCH_ST_Simple_DPS) ? Config.SCH_DPS_BioUptime_Threshold : 2.5;
         var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
 
         return ActionReady(dotAction) &&
@@ -101,7 +100,7 @@ internal partial class SCH
                !JustUsedOn(dotAction, CurrentTarget, 5f) &&
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
-               dotRemaining <= Config.SCH_DPS_BioUptime_Threshold;
+               dotRemaining <= dotRefresh;
     }
     #endregion
     
