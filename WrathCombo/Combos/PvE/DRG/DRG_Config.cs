@@ -8,27 +8,6 @@ internal partial class DRG
 {
     internal static class Config
     {
-        public static UserInt
-            DRG_SelectedOpener = new("DRG_SelectedOpener", 0),
-            DRG_Balance_Content = new("DRG_Balance_Content", 1),
-            DRG_ST_Litany_SubOption = new("DRG_ST_Litany_SubOption", 1),
-            DRG_ST_Lance_SubOption = new("DRG_ST_Lance_SubOption", 1),
-            DRG_ST_SecondWind_Threshold = new("DRG_STSecondWindThreshold", 40),
-            DRG_ST_Bloodbath_Threshold = new("DRG_STBloodbathThreshold", 30),
-            DRG_AoE_LitanyHP = new("DRG_AoE_LitanyHP", 20),
-            DRG_AoE_LanceChargeHP = new("DRG_AoE_LanceChargeHP", 20),
-            DRG_AoE_SecondWind_Threshold = new("DRG_AoE_SecondWindThreshold", 40),
-            DRG_AoE_Bloodbath_Threshold = new("DRG_AoE_BloodbathThreshold", 30),
-            DRG_Variant_Cure = new("DRG_Variant_Cure", 50);
-
-        public static UserBoolArray
-            DRG_ST_Jump_Options = new("DRG_ST_Jump_Options"),
-            DRG_ST_DragonfireDive_Options = new("DRG_ST_DragonfireDive_Options"),
-            DRG_ST_Stardiver_Options = new("DRG_ST_Stardiver_Options"),
-            DRG_AoE_Jump_Options = new("DRG_AoE_Jump_Options"),
-            DRG_AoE_DragonfireDive_Options = new("DRG_AoE_DragonfireDive_Options"),
-            DRG_AoE_Stardiver_Options = new("DRG_AoE_Stardiver_Options");
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -143,5 +122,30 @@ internal partial class DRG
                     break;
             }
         }
+
+        #region DPS
+
+        public static UserInt
+            DRG_SelectedOpener = new("DRG_SelectedOpener", 0),
+            DRG_Balance_Content = new("DRG_Balance_Content", 1),
+            DRG_ST_Litany_SubOption = new("DRG_ST_Litany_SubOption", 1),
+            DRG_ST_Lance_SubOption = new("DRG_ST_Lance_SubOption", 1),
+            DRG_ST_SecondWind_Threshold = new("DRG_STSecondWindThreshold", 40),
+            DRG_ST_Bloodbath_Threshold = new("DRG_STBloodbathThreshold", 30),
+            DRG_AoE_LitanyHP = new("DRG_AoE_LitanyHP", 20),
+            DRG_AoE_LanceChargeHP = new("DRG_AoE_LanceChargeHP", 20),
+            DRG_AoE_SecondWind_Threshold = new("DRG_AoE_SecondWindThreshold", 40),
+            DRG_AoE_Bloodbath_Threshold = new("DRG_AoE_BloodbathThreshold", 30),
+            DRG_Variant_Cure = new("DRG_Variant_Cure", 50);
+
+        public static UserBoolArray
+            DRG_ST_Jump_Options = new("DRG_ST_Jump_Options"),
+            DRG_ST_DragonfireDive_Options = new("DRG_ST_DragonfireDive_Options"),
+            DRG_ST_Stardiver_Options = new("DRG_ST_Stardiver_Options"),
+            DRG_AoE_Jump_Options = new("DRG_AoE_Jump_Options"),
+            DRG_AoE_DragonfireDive_Options = new("DRG_AoE_DragonfireDive_Options"),
+            DRG_AoE_Stardiver_Options = new("DRG_AoE_Stardiver_Options");
+
+        #endregion
     }
 }

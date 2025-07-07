@@ -238,15 +238,13 @@ internal partial class DRG : Melee
                         //Battle Litany Feature
                         if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
                             ActionReady(BattleLitany) &&
-                            (DRG_ST_Litany_SubOption == 0 ||
-                             DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
+                            (DRG_ST_Litany_SubOption == 0 || InBossEncounter()))
                             return BattleLitany;
 
                         //Lance Charge Feature
                         if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
                             ActionReady(LanceCharge) &&
-                            (DRG_ST_Lance_SubOption == 0 ||
-                             DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
+                            (DRG_ST_Lance_SubOption == 0 || InBossEncounter()))
                             return LanceCharge;
                     }
 
