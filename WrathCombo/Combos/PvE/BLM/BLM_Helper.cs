@@ -255,6 +255,27 @@ internal partial class BLM
     internal static byte PolyglotStacks => Gauge.PolyglotStacks;
 
     internal static short PolyglotTimer => Gauge.EnochianTimer;
+    
+    internal static class MP
+    {
+        internal const int MaxMP = 10000;
+
+        internal static int FireI => GetResourceCost(OriginalHook(Fire));
+
+        internal static int FlareAoE => GetResourceCost(OriginalHook(Flare));
+
+        internal static int FireAoE => GetResourceCost(OriginalHook(Fire2));
+
+        internal static int FireIII => GetResourceCost(OriginalHook(Fire3));
+
+        internal static int BlizzardAoE => GetResourceCost(OriginalHook(Blizzard2));
+
+        internal static int BlizzardI => GetResourceCost(OriginalHook(Blizzard));
+
+        internal static int Freeze => GetResourceCost(OriginalHook(BLM.Freeze));
+
+        internal static int Despair => GetResourceCost(OriginalHook(BLM.Despair));
+    }
 
     internal static readonly FrozenDictionary<uint, ushort> ThunderList = new Dictionary<uint, ushort>
     {
@@ -342,27 +363,6 @@ internal partial class BLM
             EnhancedPolyglotII = 615,
             EnhancedAstralFire = 616;
     }
-
-    internal static class MP
-    {
-        internal const int MaxMP = 10000;
-
-        internal static int FireI => GetResourceCost(OriginalHook(Fire));
-
-        internal static int FlareAoE => GetResourceCost(OriginalHook(Flare));
-
-        internal static int FireAoE => GetResourceCost(OriginalHook(Fire2));
-
-        internal static int FireIII => GetResourceCost(OriginalHook(Fire3));
-
-        internal static int BlizzardAoE => GetResourceCost(OriginalHook(Blizzard2));
-
-        internal static int BlizzardI => GetResourceCost(OriginalHook(Blizzard));
-
-        internal static int Freeze => GetResourceCost(OriginalHook(BLM.Freeze));
-
-        internal static int Despair => GetResourceCost(OriginalHook(BLM.Despair));
-    }
-
+    
     #endregion
 }
