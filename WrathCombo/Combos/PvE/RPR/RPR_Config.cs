@@ -8,23 +8,6 @@ internal partial class RPR
 {
     internal static class Config
     {
-        public static UserInt
-            RPR_Positional = new("RPR_Positional", 0),
-            RPR_Opener_StartChoice = new("RPR_Opener_StartChoice", 0),
-            RPR_Balance_Content = new("RPR_Balance_Content", 1),
-            RPR_SoDRefreshRange = new("RPR_SoDRefreshRange", 6),
-            RPR_SoDThreshold = new("RPR_SoDThreshold", 0),
-            RPR_ST_ArcaneCircle_SubOption = new("RPR_ST_ArcaneCircle_SubOption", 1),
-            RPR_STSecondWindThreshold = new("RPR_STSecondWindThreshold", 40),
-            RPR_STBloodbathThreshold = new("RPR_STBloodbathThreshold", 30),
-            RPR_WoDThreshold = new("RPR_WoDThreshold", 20),
-            RPR_AoESecondWindThreshold = new("RPR_AoESecondWindThreshold", 40),
-            RPR_AoEBloodbathThreshold = new("RPR_AoEBloodbathThreshold", 30),
-            RPR_VariantCure = new("RPRVariantCure", 50);
-
-        public static UserBoolArray
-            RPR_SoulsowOptions = new("RPR_SoulsowOptions");
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -116,5 +99,26 @@ internal partial class RPR
                     break;
             }
         }
+
+        #region Variables
+
+        public static UserInt
+            RPR_Positional = new("RPR_Positional", 0),
+            RPR_Opener_StartChoice = new("RPR_Opener_StartChoice", 0),
+            RPR_Balance_Content = new("RPR_Balance_Content", 1),
+            RPR_SoDRefreshRange = new("RPR_SoDRefreshRange", 6),
+            RPR_SoDThreshold = new("RPR_SoDThreshold", 0),
+            RPR_ST_ArcaneCircle_SubOption = new("RPR_ST_ArcaneCircle_SubOption", 1),
+            RPR_STSecondWindThreshold = new("RPR_STSecondWindThreshold", 40),
+            RPR_STBloodbathThreshold = new("RPR_STBloodbathThreshold", 30),
+            RPR_WoDThreshold = new("RPR_WoDThreshold", 20),
+            RPR_AoESecondWindThreshold = new("RPR_AoESecondWindThreshold", 40),
+            RPR_AoEBloodbathThreshold = new("RPR_AoEBloodbathThreshold", 30),
+            RPR_VariantCure = new("RPRVariantCure", 50);
+
+        public static UserBoolArray
+            RPR_SoulsowOptions = new("RPR_SoulsowOptions");
+
+        #endregion
     }
 }

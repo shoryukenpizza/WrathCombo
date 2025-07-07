@@ -69,6 +69,7 @@ internal partial class BLM
                   !HasStatusEffect(Buffs.Triplecast) &&
                   !HasStatusEffect(Role.Buffs.Swiftcast) &&
                   !HasStatusEffect(Buffs.LeyLines)),
+
         // Paradox
         (OriginalHook(Paradox), CustomComboPreset.BLM_ST_Movement,
             () => Config.BLM_ST_MovementOption[1] &&
@@ -77,11 +78,13 @@ internal partial class BLM
                   !HasStatusEffect(Buffs.Firestarter) &&
                   !HasStatusEffect(Buffs.Triplecast) &&
                   !HasStatusEffect(Role.Buffs.Swiftcast)),
+
         //Swiftcast
         (Role.Swiftcast, CustomComboPreset.BLM_ST_Movement,
             () => Config.BLM_ST_MovementOption[2] &&
                   ActionReady(Role.Swiftcast) &&
                   !HasStatusEffect(Buffs.Triplecast)),
+
         //Xeno
         (Xenoglossy, CustomComboPreset.BLM_ST_Movement,
             () => Config.BLM_ST_MovementOption[3] &&
