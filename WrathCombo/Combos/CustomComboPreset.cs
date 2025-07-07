@@ -588,6 +588,13 @@ public enum CustomComboPreset
     [CustomComboInfo("Simple DPS Mode - Single Target", "Replaces Malefic with a full one-button single target rotation, including automatic dps card assignment.\nThis is the ideal option for newcomers to the job.", AST.JobID)]
     [SimpleCombo]
     AST_ST_Simple_DPS = 1179,
+    
+    [AutoAction(true, false)]
+    [ReplaceSkill(AST.Gravity, AST.Gravity2)]
+    [ConflictingCombos(AST_AOE_DPS)]
+    [CustomComboInfo("Simple DPS Mode - AoE", "Replaces Gravity with a full one-button AoE rotation, including automatic dps card assignment.\nThis is the ideal option for newcomers to the job.", AST.JobID)]
+    [SimpleCombo]
+    AST_AOE_Simple_DPS = 1180,
         
     #endregion
     
@@ -668,6 +675,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(AST.Gravity, AST.Gravity2)]
+    [ConflictingCombos(AST_AOE_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Gravity with options below", AST.JobID)]
     [AdvancedCombo]
     AST_AOE_DPS = 1041,
@@ -917,7 +925,7 @@ public enum CustomComboPreset
     
     #endregion
 
-    // Last value = 1078
+    // Last value = 1080
 
     #endregion
 

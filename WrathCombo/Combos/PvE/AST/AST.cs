@@ -48,7 +48,7 @@ internal partial class AST : Healer
                     return Lightspeed;  
 
                 //Lucid Dreaming
-                if (Role.CanLucidDream(Config.AST_ST_DPS_LucidDreaming))
+                if (Role.CanLucidDream(6500))
                     return Role.LucidDreaming;
 
                 //Play Card
@@ -87,6 +87,7 @@ internal partial class AST : Healer
             return actionID;
         }
     }
+    
     internal class AST_ST_DPS : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_DPS;
@@ -225,6 +226,69 @@ internal partial class AST : Healer
                 
             
             }
+            return actionID;
+        }
+    }
+    
+    internal class AST_AOE_Simple_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AOE_Simple_DPS;
+        protected override uint Invoke(uint actionID)
+        {
+            if (!GravityList.Contains(actionID))
+                return actionID;
+
+            //Variant stuff
+            if (Variant.CanRampart(CustomComboPreset.AST_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_SpiritDart))
+                return Variant.SpiritDart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            //Lightspeed Movement
+            if (ActionReady(Lightspeed) && IsMoving() && !HasStatusEffect(Buffs.Lightspeed))
+                return Lightspeed;  
+
+            //Lucid Dreaming
+            if (Role.CanLucidDream(6500))
+                return Role.LucidDreaming;
+
+            //Play Card
+            if (HasDPSCard && CanSpellWeave())
+                return OriginalHook(Play1).Retarget(GravityList.ToArray(), CardResolver);
+
+            //Minor Arcana / Lord of Crowns
+            if (ActionReady(OriginalHook(MinorArcana)) && HasLord &&
+                HasBattleTarget() && CanSpellWeave())
+                return OriginalHook(MinorArcana);
+
+            //Card Draw
+            if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanSpellWeave())
+                return OriginalHook(AstralDraw);
+
+            //Divination
+            if (HasBattleTarget() && ActionReady(Divination) && !HasDivination && CanSpellWeave() &&
+                ActionWatching.NumberOfGcdsUsed >= 3)
+                return Divination;
+
+            //Earthly Star
+            if (!IsMoving() && !HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
+                IsOffCooldown(EarthlyStar) && CanSpellWeave() &&
+                ActionWatching.NumberOfGcdsUsed >= 3)
+                return EarthlyStar.Retarget(GravityList.ToArray(), SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);            
+            
+            //Oracle
+            if (HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+                return Oracle;
+
+            //MacroCosmos
+            if (ActionReady(Macrocosmos) && !HasStatusEffect(Buffs.Macrocosmos) &&
+                ActionWatching.NumberOfGcdsUsed >= 3 && !InBossEncounter())
+                return Macrocosmos;
+
             return actionID;
         }
     }
