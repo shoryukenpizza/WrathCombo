@@ -6249,12 +6249,10 @@ public enum CustomComboPreset
 
     #endregion
 
-    #region Healing
-
+    #region  ST Healing
     [AutoAction(false, true)]
     [ReplaceSkill(SCH.Physick)]
-    [CustomComboInfo("Simple Heals - Single Target",
-        "Change Physick into Adloquium, Lustrate, then Physick with below options:", SCH.JobID)]
+    [CustomComboInfo("Advanced Heals - Single Target", "Change Physick based on the below options:", SCH.JobID)]
     [PossiblyRetargeted]
     SCH_ST_Heal = 16023,
 
@@ -6314,9 +6312,12 @@ public enum CustomComboPreset
 
     [AutoAction(true, true)]
     [ReplaceSkill(SCH.Succor)]
-    [CustomComboInfo("Simple Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
+    [CustomComboInfo("Advance Heals - AoE", "Replaces Succor with options below:", SCH.JobID)]
     SCH_AoE_Heal = 16018,
     
+    #endregion
+    
+    #region AoE Healing
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Indomitability Option", "Use Indomitabilty", SCH.JobID)]
     SCH_AoE_Heal_Indomitability = 16022,
