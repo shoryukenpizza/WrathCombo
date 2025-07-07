@@ -404,7 +404,9 @@ internal partial class VPR
         FourthGeneration = 34630,
         FourthLegacy = 34643,
         Ouroboros = 34631,
-        LastLash = 34635;
+        LastLash = 34635,
+        TwinfangThresh = 34638,
+        TwinbloodThresh = 34639;
 
     public static class Buffs
     {
