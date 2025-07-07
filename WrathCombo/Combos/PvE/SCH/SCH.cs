@@ -148,10 +148,62 @@ internal partial class SCH : Healer
     }
     #endregion
     
-    #region Advanced AoE DPS
-    internal class SCH_AoE : CustomCombo
+    #region Simple AoE DPS
+    internal class SCH_AoE_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_DPS;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_Simple_DPS;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (ArtOfWar or ArtOfWarII))
+                return actionID;
+
+            if (NeedToSummon)
+                return SummonEos;
+            
+            #region Special Content
+            if (Variant.CanRampart(CustomComboPreset.SCH_DPS_Variant_Rampart))
+                return Variant.Rampart;
+
+            if (Variant.CanSpiritDart(CustomComboPreset.SCH_DPS_Variant_SpiritDart))
+                return Variant.SpiritDart;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+            #endregion
+            
+            #region Dissolve Union
+            if (EndAetherpact)
+                return DissolveUnion;
+            #endregion
+            
+            if (!InCombat() || !CanSpellWeave()) return actionID;
+            
+            if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+                return Aetherflow;
+                
+            if (HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+                return BanefulImpaction;
+                
+            if (ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem)
+                return ChainStratagem;
+                    
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
+                AetherflowCD <= 10)
+                return EnergyDrain;
+                
+            if (Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption))
+                return Role.LucidDreaming;
+
+            return actionID;
+        }
+    }
+
+    #endregion
+    
+    #region Advanced AoE DPS
+    internal class SCH_AoE_ADV_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AoE_ADV_DPS;
         protected override uint Invoke(uint actionID)
         {
             #region Variables
@@ -161,7 +213,7 @@ internal partial class SCH : Healer
             if (actionID is not (ArtOfWar or ArtOfWarII))
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_FairyReminder) &&
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_FairyReminder) &&
                 NeedToSummon)
                 return SummonEos;
             
@@ -192,25 +244,25 @@ internal partial class SCH : Healer
             
             if (!InCombat() || !CanSpellWeave()) return actionID;
             
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                 return Aetherflow;
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
                 return BanefulImpaction;
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem && 
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem && 
                 GetTargetHPPercent() > chainThreshold &&
                 (LevelChecked(BanefulImpaction)|| !Config.SCH_AoE_DPS_ChainStratagemBanefulOption))
                 return ChainStratagem;
                     
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
                 AetherflowCD <= Config.SCH_AoE_DPS_EnergyDrain &&
                 (!Config.SCH_AoE_DPS_EnergyDrain_Burst ||
                  ChainStrategemCD > 10 ||
                  !LevelChecked(ChainStratagem)))
                 return EnergyDrain;
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_DPS_Lucid) && Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption))
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Lucid) && Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption))
                 return Role.LucidDreaming;
 
             return actionID;

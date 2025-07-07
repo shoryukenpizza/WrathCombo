@@ -82,11 +82,11 @@ internal partial class SCH
                         "Energy Drain Burst", "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.");
                     break;
                 
-                case CustomComboPreset.SCH_AoE_DPS_Lucid:
+                case CustomComboPreset.SCH_AoE_ADV_DPS_Lucid:
                     DrawSliderInt(4000, 9500, SCH_AoE_DPS_LucidOption, "MP Threshold", 150, Hundreds);
                     break;
                 
-                case CustomComboPreset.SCH_AoE_DPS_ChainStrat:
+                case CustomComboPreset.SCH_AoE_ADV_DPS_ChainStrat:
                     DrawAdditionalBoolChoice(SCH_AoE_DPS_ChainStratagemBanefulOption, 
                         "Baneful Only", "Will only use Chain Strategem when high enough level to use Baneful Impaction");
                     
@@ -106,7 +106,7 @@ internal partial class SCH
                     
                     break;
 
-                case CustomComboPreset.SCH_AoE_DPS_EnergyDrain:
+                case CustomComboPreset.SCH_AoE_ADV_DPS_EnergyDrain:
                     DrawSliderInt(0, 60, SCH_AoE_DPS_EnergyDrain, "Aetherflow remaining cooldown");
                     
                     DrawAdditionalBoolChoice(SCH_AoE_DPS_EnergyDrain_Burst, 

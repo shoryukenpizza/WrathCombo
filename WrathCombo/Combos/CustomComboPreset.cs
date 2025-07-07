@@ -6244,9 +6244,18 @@ public enum CustomComboPreset
     
     [AutoAction(false, false)]
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4)]
+    [SimpleCombo]
     [ConflictingCombos(SCH_ST_ADV_DPS)]
-    [CustomComboInfo("Simple Single Target DPS Feature", "Replaces Ruin I / Broils with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job..", SCH.JobID)]
+    [CustomComboInfo("Simple Single Target DPS Feature", "Replaces Ruin I / Broils with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
     SCH_ST_Simple_DPS = 16070,
+    
+    
+    [AutoAction(true, false)]
+    [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
+    [SimpleCombo]
+    [ConflictingCombos(SCH_AoE_ADV_DPS)]
+    [CustomComboInfo("Simple AoE DPS Feature", "Replaces Art of War with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
+    SCH_AoE_Simple_DPS = 16071,
     
     #endregion
     
@@ -6302,41 +6311,40 @@ public enum CustomComboPreset
     #endregion
     
     #region AoE DPS
-
     [AutoAction(true, false)]
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
+    [ConflictingCombos(SCH_AoE_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Art of War with options below.", SCH.JobID)]
     [AdvancedCombo]
-    SCH_AoE_DPS = 16010,
-
+    SCH_AoE_ADV_DPS = 16010,
     
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Energy Drain Weave Option",
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
-    SCH_AoE_DPS_EnergyDrain = 16056,
+    SCH_AoE_ADV_DPS_EnergyDrain = 16056,
     
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Chain Stratagem",
         "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
-    SCH_AoE_DPS_ChainStrat = 16054,
+    SCH_AoE_ADV_DPS_ChainStrat = 16054,
     
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Baneful Impact",
         "Adds Baneful Impact when available.", SCH.JobID)]
-    SCH_AoE_DPS_BanefulImpact = 16053,
+    SCH_AoE_ADV_DPS_BanefulImpact = 16053,
 
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
-    SCH_AoE_DPS_FairyReminder = 16049,
+    SCH_AoE_ADV_DPS_FairyReminder = 16049,
 
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
-    SCH_AoE_DPS_Lucid = 16011,
+    SCH_AoE_ADV_DPS_Lucid = 16011,
 
-    [ParentCombo(SCH_AoE_DPS)]
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Aetherflow Weave Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
-    SCH_AoE_DPS_Aetherflow = 16012,
+    SCH_AoE_ADV_DPS_Aetherflow = 16012,
 
     #endregion
 
@@ -6537,13 +6545,13 @@ public enum CustomComboPreset
     SCH_Raise_Retarget = 16050,
     
     [Variant]
-    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_DPS)]
+    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SCH.JobID)]
     SCH_DPS_Variant_SpiritDart = 16036,
 
     [Variant]
-    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_DPS)]
+    [VariantParent(SCH_ST_ADV_DPS, SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SCH.JobID)]
     SCH_DPS_Variant_Rampart = 16037,
 
