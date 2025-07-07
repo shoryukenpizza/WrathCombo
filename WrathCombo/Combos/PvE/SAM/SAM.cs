@@ -143,7 +143,9 @@ internal partial class SAM : Melee
                         return Senei;
 
                     //Guren if no Senei
-                    case >= 25 when !LevelChecked(Senei) && ActionReady(Guren) && InActionRange(Guren):
+                    case >= 25 when !LevelChecked(Senei) &&
+                                    ActionReady(Guren) &&
+                                    InActionRange(Guren):
                         return Guren;
                 }
 
@@ -564,7 +566,8 @@ internal partial class SAM : Melee
             if (LevelChecked(TenkaGoken))
             {
                 if (LevelChecked(TsubameGaeshi) &&
-                    (HasStatusEffect(Buffs.KaeshiGokenReady) || HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
+                    (HasStatusEffect(Buffs.KaeshiGokenReady) ||
+                     HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                     return OriginalHook(TsubameGaeshi);
 
                 if (!IsMoving() &&
@@ -693,7 +696,8 @@ internal partial class SAM : Melee
                     LevelChecked(TenkaGoken))
                 {
                     if (LevelChecked(TsubameGaeshi) &&
-                        (HasStatusEffect(Buffs.KaeshiGokenReady) || HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
+                        (HasStatusEffect(Buffs.KaeshiGokenReady) ||
+                         HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                         return OriginalHook(TsubameGaeshi);
 
                     if (!IsMoving() &&
@@ -705,11 +709,13 @@ internal partial class SAM : Melee
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) || !HasStatusEffect(Buffs.Fugetsu))
+                if (!HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                    !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Oka) &&
-                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) || !HasStatusEffect(Buffs.Fuka)))
+                    (!HasKa && HasStatusEffect(Buffs.Fugetsu) ||
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
 
