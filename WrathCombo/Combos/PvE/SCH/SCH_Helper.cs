@@ -66,7 +66,7 @@ internal partial class SCH
     }
     internal static bool HiddenRecitation()
     {
-        return IsEnabled(CustomComboPreset.SCH_Hidden_Succor_Raidwide_Recitation) && ActionReady(Recitation);
+        return Config.SCH_Hidden_Succor_Raidwide_Recitation&& ActionReady(Recitation);
     }
     #endregion
     

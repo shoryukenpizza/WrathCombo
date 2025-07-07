@@ -6217,35 +6217,35 @@ public enum CustomComboPreset
     [AutoAction(true, false)]
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
     [CustomComboInfo("AoE DPS Feature", "Replaces Art of War with options below.", SCH.JobID)]
-    SCH_AoE = 16010,
+    SCH_AoE_DPS = 16010,
     
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Energy Drain Weave Option",
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
-    SCH_AoE_EnergyDrain = 16056,
+    SCH_AoE_DPS_EnergyDrain = 16056,
     
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Chain Stratagem",
         "Adds Chain Stratagem on cooldown with overlap protection", SCH.JobID)]
-    SCH_AoE_ChainStrat = 16054,
+    SCH_AoE_DPS_ChainStrat = 16054,
     
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Baneful Impact",
         "Adds Baneful Impact when available.", SCH.JobID)]
-    SCH_AoE_BanefulImpact = 16053,
+    SCH_AoE_DPS_BanefulImpact = 16053,
 
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Fairy Reminder", "Adds Summon Eos whenever you've not summoned your fairy.", SCH.JobID)]
-    SCH_AoE_FairyReminder = 16049,
+    SCH_AoE_DPS_FairyReminder = 16049,
 
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Lucid Dreaming Weave Option", "Adds Lucid Dreaming when MP drops below slider value:", SCH.JobID)]
-    SCH_AoE_Lucid = 16011,
+    SCH_AoE_DPS_Lucid = 16011,
 
-    [ParentCombo(SCH_AoE)]
+    [ParentCombo(SCH_AoE_DPS)]
     [CustomComboInfo("Aetherflow Weave Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
-    SCH_AoE_Aetherflow = 16012,
+    SCH_AoE_DPS_Aetherflow = 16012,
 
     #endregion
 
@@ -6349,19 +6349,9 @@ public enum CustomComboPreset
     [CustomComboInfo("Aetherflow Option", "Use Aetherflow when out of Aetherflow stacks.", SCH.JobID)]
     SCH_AoE_Heal_Aetherflow = 16020,
 
-    [ParentCombo(SCH_AoE_Heal_Aetherflow)]
-    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Aetherflow if Indomitability is ready to use.",
-        SCH.JobID)]
-    SCH_AoE_Heal_Aetherflow_Indomitability = 16021,
-
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Disspation Option", "Use Dissipation when out of Aetherflow stacks.", SCH.JobID)]
     SCH_AoE_Heal_Dissipation = 16041,
-    
-    [ParentCombo(SCH_AoE_Heal_Dissipation)]
-    [CustomComboInfo("Indomitability Ready Only Option", "Only uses Dissipation if Indomitability is ready to use.",
-        SCH.JobID)]
-    SCH_AoE_Heal_Dissipation_Indomitability = 16058,
     
     [ParentCombo(SCH_AoE_Heal)]
     [CustomComboInfo("Lucid Dreaming Option", "Adds Lucid Dreaming when MP isn't high enough to cast Succor.",
@@ -6452,13 +6442,13 @@ public enum CustomComboPreset
     SCH_Raise_Retarget = 16050,
     
     [Variant]
-    [VariantParent(SCH_DPS_Bio, SCH_AoE)]
+    [VariantParent(SCH_DPS_Bio, SCH_AoE_DPS)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SCH.JobID)]
     SCH_DPS_Variant_SpiritDart = 16036,
 
     [Variant]
-    [VariantParent(SCH_DPS, SCH_AoE)]
+    [VariantParent(SCH_DPS, SCH_AoE_DPS)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SCH.JobID)]
     SCH_DPS_Variant_Rampart = 16037,
 
@@ -6473,11 +6463,6 @@ public enum CustomComboPreset
     [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 main combos.", SCH.JobID)]
     [Hidden]
     SCH_Hidden_Succor_Raidwide = 16062,
-    
-    [ParentCombo(SCH_Hidden_Succor_Raidwide)]
-    [CustomComboInfo("Recitation Option", "Use Recitation to buff before the Raidwide Succor.", SCH.JobID)]
-    [Hidden]
-    SCH_Hidden_Succor_Raidwide_Recitation = 16051,
     
     [ParentCombo(SCH_Hidden)]
     [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 main combos", SCH.JobID)]

@@ -82,11 +82,11 @@ internal partial class SCH
                         "Energy Drain Burst", "Holds Energy Drain when Chain Stratagem is ready or has less than 10 seconds cooldown remaining.");
                     break;
                 
-                case CustomComboPreset.SCH_AoE_Lucid:
+                case CustomComboPreset.SCH_AoE_DPS_Lucid:
                     DrawSliderInt(4000, 9500, SCH_AoE_DPS_LucidOption, "MP Threshold", 150, Hundreds);
                     break;
                 
-                case CustomComboPreset.SCH_AoE_ChainStrat:
+                case CustomComboPreset.SCH_AoE_DPS_ChainStrat:
                     DrawAdditionalBoolChoice(SCH_AoE_DPS_ChainStratagemBanefulOption, 
                         "Baneful Only", "Will only use Chain Strategem when high enough level to use Baneful Impaction");
                     
@@ -106,7 +106,7 @@ internal partial class SCH
                     
                     break;
 
-                case CustomComboPreset.SCH_AoE_EnergyDrain:
+                case CustomComboPreset.SCH_AoE_DPS_EnergyDrain:
                     DrawSliderInt(0, 60, SCH_AoE_DPS_EnergyDrain, "Aetherflow remaining cooldown");
                     
                     DrawAdditionalBoolChoice(SCH_AoE_DPS_EnergyDrain_Burst, 
@@ -116,13 +116,11 @@ internal partial class SCH
                 
                 #region Healing
                 case CustomComboPreset.SCH_ST_Heal:
-                    DrawAdditionalBoolChoice(SCH_ST_Heal_Adv, "Advanced Options", "", isConditionalChoice: true);
-                    if (SCH_ST_Heal_Adv)
-                    {
+                    
                         ImGui.Indent();
-                        DrawAdditionalBoolChoice(SCH_ST_Heal_IncludeShields, "Include Shields in HP Percent Sliders", "");
+                        DrawAdditionalBoolChoice(SCH_ST_Heal_IncludeShields, "Advanced Option: Include Shields in HP Percent Sliders", "");
                         ImGui.Unindent();
-                    }
+                    
                     break;
 
                 case CustomComboPreset.SCH_ST_Heal_Lucid:
@@ -238,6 +236,16 @@ internal partial class SCH
                     DrawPriorityInput(SCH_AoE_Heals_Priority, 8, 5, $"{Indomitability.ActionName()} Priority: ");
                     break;
                 
+                case CustomComboPreset.SCH_AoE_Heal_Aetherflow:
+                    DrawAdditionalBoolChoice(SCH_AoE_Heal_Aetherflow_Indomitability,
+                        "Indomitability Ready Only Option", "Only uses Aetherflow if Indomitability is ready to use.");
+                    break;
+                
+                case CustomComboPreset.SCH_AoE_Heal_Dissipation:
+                    DrawAdditionalBoolChoice(SCH_AoE_Heal_Dissipation_Indomitability,
+                        "Indomitability Ready Only Option", "Only uses Dissipation if Indomitability is ready to use.");
+                    break;
+                
                 #endregion
                 
                 #region Standalones
@@ -274,6 +282,11 @@ internal partial class SCH
                     DrawRadioButton(SCH_Recitation_Mode, "Indomitability", "", 2);
                     DrawRadioButton(SCH_Recitation_Mode, "Excogitation", "", 3);
                     break; 
+                
+                case CustomComboPreset.SCH_Hidden_Succor_Raidwide:
+                    DrawAdditionalBoolChoice(SCH_Hidden_Succor_Raidwide_Recitation, "Recitation Option", "Use Recitation to buff before the Raidwide Succor.");
+                    break;
+                
                 #endregion
             }
         }
@@ -300,7 +313,10 @@ internal partial class SCH
         internal static UserBool
             SCH_ST_DPS_EnergyDrain_Burst = new("SCH_ST_DPS_EnergyDrain_Burst"),
             SCH_AoE_DPS_EnergyDrain_Burst = new("SCH_AoE_DPS_EnergyDrain_Burst"),
-            SCH_AoE_DPS_ChainStratagemBanefulOption = new("SCH_AoE_DPS_ChainStratagemBanefulOption");
+            SCH_AoE_DPS_ChainStratagemBanefulOption = new("SCH_AoE_DPS_ChainStratagemBanefulOption"),
+            SCH_AoE_Heal_Aetherflow_Indomitability = new("SCH_AoE_Heal_Aetherflow_Indomitability"),
+            SCH_AoE_Heal_Dissipation_Indomitability = new("SCH_AoE_Heal_Dissipation_Indomitability"),
+            SCH_Hidden_Succor_Raidwide_Recitation = new ("SCH_Hidden_Succor_Raidwide_Recitation");
         
 
         public static UserFloat
