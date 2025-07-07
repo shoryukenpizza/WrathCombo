@@ -318,6 +318,8 @@ internal partial class SGE
             }
         }
 
+        #region Variables
+
         #region DPS
 
         public static UserBool
@@ -388,6 +390,8 @@ internal partial class SGE
         public static UserBoolArray
             SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts"),
             SGE_ST_Heal_PanhaimaOpts = new("SGE_ST_Heal_PanhaimaOpts");
+
+        #endregion
 
         #endregion
     }

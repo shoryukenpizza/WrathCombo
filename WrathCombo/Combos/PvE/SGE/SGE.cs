@@ -232,8 +232,7 @@ internal partial class SGE : Healer
 
             //Pneuma
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Pneuma) &&
-                (SGE_AoE_DPS_Pneuma_SubOption == 0 ||
-                 SGE_AoE_DPS_Pneuma_SubOption == 1 && TargetIsBoss()) &&
+                (SGE_AoE_DPS_Pneuma_SubOption == 0 || TargetIsBoss()) &&
                 ActionReady(Pneuma) && HasBattleTarget() &&
                 InActionRange(Pneuma))
                 return Pneuma;
@@ -321,7 +320,7 @@ internal partial class SGE : Healer
             if (actionID is not Prognosis)
                 return actionID;
 
-                        #region Hidden Feature Raidwide
+            #region Hidden Feature Raidwide
 
             if (HiddenKerachole())
                 return Kerachole;
@@ -335,6 +334,7 @@ internal partial class SGE : Healer
                     : Eukrasia;
 
             #endregion
+
             //Zoe -> Pneuma like Eukrasia 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_ZoePneuma) &&
                 HasStatusEffect(Buffs.Zoe))
@@ -380,18 +380,13 @@ internal partial class SGE : Healer
                 case Kerachole when IsEnabled(CustomComboPreset.SGE_OverProtect_Kerachole) &&
                                     ActionReady(Kerachole) &&
                                     (HasStatusEffect(Buffs.Kerachole, anyOwner: true) ||
-                                     IsEnabled(CustomComboPreset.SGE_OverProtect_SacredSoil) && HasStatusEffect(SCH.Buffs.SacredSoil, anyOwner: true)) &&
-                                    (HasStatusEffect(Buffs.Kerachole, anyOwner: true) ||
                                      IsEnabled(CustomComboPreset.SGE_OverProtect_SacredSoil) && HasStatusEffect(SCH.Buffs.SacredSoil, anyOwner: true)):
-
                 case Panhaima when IsEnabled(CustomComboPreset.SGE_OverProtect_Panhaima) &&
                                    ActionReady(Panhaima) && HasStatusEffect(Buffs.Panhaima, anyOwner: true):
                     return SCH.SacredSoil;
-
                 case Philosophia when IsEnabled(CustomComboPreset.SGE_OverProtect_Philosophia) &&
                                       ActionReady(Philosophia) && HasStatusEffect(Buffs.Eudaimonia, anyOwner: true):
                     return SCH.Consolation;
-
                 default:
                     return actionID;
             }
