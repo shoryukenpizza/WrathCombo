@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
@@ -21,13 +22,13 @@ internal partial class AST
     internal static readonly List<uint>
         MaleficList = [Malefic, Malefic2, Malefic3, Malefic4, FallMalefic],
         GravityList = [Gravity, Gravity2];
-    internal static Dictionary<uint, ushort>
-        CombustList = new()
-        {
-            { Combust, Debuffs.Combust },
-            { Combust2, Debuffs.Combust2 },
-            { Combust3, Debuffs.Combust3 }
-        };
+    
+    internal static readonly FrozenDictionary<uint, ushort> CombustList = new Dictionary<uint, ushort>
+    {
+        { Combust, Debuffs.Combust },
+        { Combust2, Debuffs.Combust2 },
+        { Combust3, Debuffs.Combust3 }
+    }.ToFrozenDictionary();
 
     public static ASTGauge Gauge => GetJobGauge<ASTGauge>();
     public static CardType DrawnDPSCard => Gauge.DrawnCards[0];
