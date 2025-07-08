@@ -108,7 +108,7 @@ internal partial class SAM : Melee
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-            
+
             //oGCDs
             if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
@@ -171,7 +171,7 @@ internal partial class SAM : Melee
                 if (Role.CanBloodBath(40))
                     return Role.Bloodbath;
             }
-            
+
             //Ranged
             if (ActionReady(Enpi) &&
                 !InMeleeRange() &&
@@ -319,7 +319,7 @@ internal partial class SAM : Melee
                             return Senei;
 
                         //Guren if no Senei
-                        if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Guren) &&
+                        if (SAM_ST_CDs_Guren &&
                             !LevelChecked(Senei) &&
                             ActionReady(Guren) && InActionRange(Guren))
                             return Guren;
@@ -359,7 +359,7 @@ internal partial class SAM : Melee
                         return Role.Bloodbath;
                 }
             }
-            
+
             //Ranged
             if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
@@ -373,7 +373,7 @@ internal partial class SAM : Melee
 
                 //Ogi Namikiri Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri) &&
-                    (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) || !IsMoving()) &&
+                    (!SAM_ST_CDs_OgiNamikiri_Movement || !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
                     HasStatusEffect(Buffs.OgiNamikiriReady) && M6SReady &&
                     (JustUsed(Higanbana, 5f) ||

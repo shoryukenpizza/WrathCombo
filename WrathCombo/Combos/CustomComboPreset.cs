@@ -5878,18 +5878,10 @@ public enum CustomComboPreset
     [ParentCombo(SAM_ST_Damage)]
     [CustomComboInfo("Senei Option", "Adds Senei to the rotation.", SAM.JobID)]
     SAM_ST_CDs_Senei = 15020,
-
-    [ParentCombo(SAM_ST_CDs_Senei)]
-    [CustomComboInfo("Guren Option", "Adds Guren to the rotation if Senei is not unlocked.", SAM.JobID)]
-    SAM_ST_CDs_Guren = 15021,
     
     [ParentCombo(SAM_ST_Damage)]
     [CustomComboInfo("Ogi Namikiri Option", "Adds Ogi Namikiri and Kaeshi: Namikiri to the rotation.", SAM.JobID)]
     SAM_ST_CDs_OgiNamikiri = 15015,
-
-    [ParentCombo(SAM_ST_CDs_OgiNamikiri)]
-    [CustomComboInfo("Ogi Namikiri movement Option", "Adds Ogi Namikiri and Kaeshi: Namikiri when you're not moving.", SAM.JobID)]
-    SAM_ST_CDs_OgiNamikiri_Movement = 15016,
 
     [ParentCombo(SAM_ST_Damage)]
     [CustomComboInfo("Zanshin Option", "Adds Zanshin when ready to the rotation.", SAM.JobID)]

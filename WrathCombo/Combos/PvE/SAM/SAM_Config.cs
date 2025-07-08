@@ -60,6 +60,16 @@ internal partial class SAM
                         $"{Role.Bloodbath.ActionName()} HP percentage threshold");
                     break;
 
+                case CustomComboPreset.SAM_ST_CDs_Senei:
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_Guren,
+                        "Guren Option", "Adds Guren to the rotation if Senei is not unlocked.");
+                    break;
+
+                case CustomComboPreset.SAM_ST_CDs_OgiNamikiri:
+                    DrawAdditionalBoolChoice(SAM_ST_CDs_OgiNamikiri_Movement,
+                        "Movement Option", "Adds Ogi Namikiri and Kaeshi: Namikiri when you're not moving.");
+                    break;
+
                 case CustomComboPreset.SAM_ST_Shinten:
                     DrawSliderInt(25, 85, SAM_ST_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for ST combos.");
@@ -150,6 +160,8 @@ internal partial class SAM
             SAM_Gekko_KenkiOvercap = new("SAM_Gekko_KenkiOvercap"),
             SAM_Kasha_KenkiOvercap = new("SAM_Kasha_KenkiOvercap"),
             SAM_Yukaze_KenkiOvercap = new("SAM_Yukaze_KenkiOvercap"),
+            SAM_ST_CDs_Guren = new("SAM_ST_CDs_Guren"),
+            SAM_ST_CDs_OgiNamikiri_Movement = new("SAM_ST_CDs_OgiNamikiri_Movement"),
             SAM_Oka_KenkiOvercap = new("SAM_Oka_KenkiOvercap"),
             SAM_Mangetsu_KenkiOvercap = new("SAM_Mangetsu_KenkiOvercap");
 
