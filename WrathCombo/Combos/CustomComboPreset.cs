@@ -4927,18 +4927,10 @@ public enum CustomComboPreset
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Dynamic True North Feature", "Adds True North before Gibbet/Gallows when you are not in the correct position.", RPR.JobID)]
     RPR_ST_TrueNorthDynamic = 12098,
-
-    [ParentCombo(RPR_ST_TrueNorthDynamic)]
-    [CustomComboInfo("Hold True North for Gluttony Option", "Will hold the last charge of True North for use with Gluttony, even when out of position for Gibbet/Gallows.", RPR.JobID)]
-    RPR_ST_TrueNorthDynamic_HoldCharge = 12099,
-
+    
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Filler Option", "Replaces the combo chain with Harpe when outside of melee range. Will not override Communio.", RPR.JobID)]
     RPR_ST_RangedFiller = 12017,
-
-    [ParentCombo(RPR_ST_RangedFiller)]
-    [CustomComboInfo("Add Harvest Moon", "Adds Harvest Moon if available, when outside of melee range. Will not override Communio.", RPR.JobID)]
-    RPR_ST_RangedFillerHarvestMoon = 12018,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", RPR.JobID)]

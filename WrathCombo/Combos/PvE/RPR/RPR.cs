@@ -309,7 +309,7 @@ internal partial class RPR : Melee
                     LevelChecked(Communio))
                     return Communio;
 
-                return IsEnabled(CustomComboPreset.RPR_ST_RangedFillerHarvestMoon) &&
+                return RPR_ST_RangedFillerHarvestMoon &&
                        HasStatusEffect(Buffs.Soulsow)
                     ? HarvestMoon
                     : Harpe;
@@ -336,9 +336,9 @@ internal partial class RPR : Melee
                      !HasStatusEffect(Buffs.EnhancedGallows)))
                 {
                     return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                           ((IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
+                           ((RPR_ST_TrueNorthDynamic_HoldCharge &&
                              GetRemainingCharges(Role.TrueNorth) < 2) ||
-                            IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
+                            !RPR_ST_TrueNorthDynamic_HoldCharge) &&
                            Role.CanTrueNorth() && !OnTargetsFlank()
                         ? Role.TrueNorth
                         : OriginalHook(Gibbet);
@@ -350,9 +350,9 @@ internal partial class RPR : Melee
                      !HasStatusEffect(Buffs.EnhancedGallows)))
                 {
                     return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                           ((IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
+                           ((RPR_ST_TrueNorthDynamic_HoldCharge &&
                              GetRemainingCharges(Role.TrueNorth) < 2) ||
-                            IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
+                           !RPR_ST_TrueNorthDynamic_HoldCharge) &&
                            Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(Gallows);
