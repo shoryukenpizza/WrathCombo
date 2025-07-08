@@ -6854,11 +6854,7 @@ public enum CustomComboPreset
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Vicewinder", "Adds Vicewinder to the rotation.", VPR.JobID)]
     VPR_ST_Vicewinder = 30006,
-
-    [ParentCombo(VPR_ST_Vicewinder)]
-    [CustomComboInfo("True North Option", "Adds True North when available.", VPR.JobID)]
-    VPR_TrueNortVicewinder = 30016,
-
+    
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Vicewinder Combo", "Adds Swiftskin's Coil and Hunter's Coil to the rotation.\nWill automatically swap depending on your position.", VPR.JobID)]
     VPR_ST_VicewinderCombo = 30007,
@@ -6898,11 +6894,7 @@ public enum CustomComboPreset
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Ranged Uptime Option", "Adds Writhing Snap to the rotation when you are out of melee range.", VPR.JobID)]
     VPR_ST_RangedUptime = 30095,
-
-    [ParentCombo(VPR_ST_RangedUptime)]
-    [CustomComboInfo("Add Uncoiled Fury", "Adds Uncoiled Fury to the rotation when you are out of melee range and have Rattling Coil charges.", VPR.JobID)]
-    VPR_ST_RangedUptimeUncoiledFury = 30096,
-
+    
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", VPR.JobID)]
     VPR_ST_ComboHeals = 30097,

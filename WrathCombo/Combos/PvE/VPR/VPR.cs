@@ -288,7 +288,7 @@ internal partial class VPR : Melee
             //Ranged
             if (IsEnabled(CustomComboPreset.VPR_ST_RangedUptime) &&
                 LevelChecked(WrithingSnap) && !InMeleeRange() && HasBattleTarget())
-                return IsEnabled(CustomComboPreset.VPR_ST_RangedUptimeUncoiledFury) &&
+                return VPR_ST_RangedUptimeUncoiledFury &&
                        HasRattlingCoilStack()
                     ? UncoiledFury
                     : WrithingSnap;
@@ -336,7 +336,7 @@ internal partial class VPR : Melee
                 InActionRange(Vicewinder) &&
                 (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
-                return IsEnabled(CustomComboPreset.VPR_TrueNortVicewinder) &&
+                return VPR_TrueNortVicewinder &&
                        Role.CanTrueNorth()
                     ? Role.TrueNorth
                     : Vicewinder;

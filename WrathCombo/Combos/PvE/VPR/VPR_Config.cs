@@ -45,6 +45,16 @@ internal partial class VPR
                         $"Set a HP% Threshold to use all charges of {UncoiledFury.ActionName()}.");
                     break;
 
+                case CustomComboPreset.VPR_ST_RangedUptime:
+                    DrawAdditionalBoolChoice(VPR_ST_RangedUptimeUncoiledFury,
+                        $"Include {UncoiledFury.ActionName()}", "Adds Uncoiled Fury to the rotation when you are out of melee range and have Rattling Coil charges.");
+                    break;
+
+                case CustomComboPreset.VPR_ST_Vicewinder:
+                    DrawAdditionalBoolChoice(VPR_TrueNortVicewinder,
+                        $"{Role.TrueNorth.ActionName()} Option", "Adds True North when available.");
+                    break;
+
                 case CustomComboPreset.VPR_ST_ComboHeals:
                     DrawSliderInt(0, 100, VPR_ST_SecondWind_Threshold,
                         $"{Role.SecondWind.ActionName()} HP percentage threshold");
@@ -134,7 +144,9 @@ internal partial class VPR
             VPR_VariantCure = new("VPR_VariantCure", 50);
 
         public static UserBool
-            VPR_Opener_ExcludeUF = new("VPR_Opener_ExcludeUF");
+            VPR_Opener_ExcludeUF = new("VPR_Opener_ExcludeUF"),
+            VPR_ST_RangedUptimeUncoiledFury = new("VPR_ST_RangedUptimeUncoiledFury"),
+            VPR_TrueNortVicewinder = new("VPR_TrueNortVicewinder");
 
         #endregion
     }
