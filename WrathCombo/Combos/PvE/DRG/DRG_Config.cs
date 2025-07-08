@@ -50,6 +50,11 @@ internal partial class DRG
                         "In Melee range", $"Only uses {Jump.ActionName()} when in melee range.", 2, 1);
                     break;
 
+                case CustomComboPreset.DRG_ST_Mirage:
+                    DrawAdditionalBoolChoice(DRG_ST_DoubleMirage,
+                        "Burst Mirage Dive During LotD", "Adds Mirage Dive to the rotation when under Life of the Dragon.");
+                    break;
+
                 case CustomComboPreset.DRG_ST_DragonfireDive:
                     DrawHorizontalMultiChoice(DRG_ST_DragonfireDive_Options,
                         "No movement", $"Only uses {DragonfireDive.ActionName()} when not moving.", 2, 0);
@@ -137,6 +142,9 @@ internal partial class DRG
             DRG_AoE_SecondWind_Threshold = new("DRG_AoE_SecondWindThreshold", 40),
             DRG_AoE_Bloodbath_Threshold = new("DRG_AoE_BloodbathThreshold", 30),
             DRG_Variant_Cure = new("DRG_Variant_Cure", 50);
+
+        public static UserBool
+            DRG_ST_DoubleMirage = new("DRG_ST_DoubleMirage");
 
         public static UserBoolArray
             DRG_ST_Jump_Options = new("DRG_ST_Jump_Options"),

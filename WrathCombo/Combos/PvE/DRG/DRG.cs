@@ -260,11 +260,11 @@ internal partial class DRG : Melee
                             ActionReady(MirageDive) &&
                             HasStatusEffect(Buffs.DiveReady) &&
                             (OriginalHook(Jump) is MirageDive) &&
-                            ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
+                            ((DRG_ST_DoubleMirage &&
                               (LoTDActive ||
                                (GetStatusEffectRemainingTime(Buffs.DiveReady) <= 1.2f &&
                                 GetCooldownRemainingTime(Geirskogul) > 3))) ||
-                             IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
+                             !DRG_ST_DoubleMirage))
                             return MirageDive;
 
                         //Wyrmwind Thrust Feature
@@ -317,9 +317,9 @@ internal partial class DRG : Melee
                                 return Jump;
 
                             if (LevelChecked(HighJump) &&
-                                ((IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
+                                ((DRG_ST_DoubleMirage &&
                                   (GetCooldownRemainingTime(Geirskogul) < 13 || LoTDActive)) ||
-                                 IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
+                                 !DRG_ST_DoubleMirage))
                                 return (HighJump);
                         }
 
