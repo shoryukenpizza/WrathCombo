@@ -108,12 +108,12 @@ internal partial class SGE : Healer
                     ActionReady(Phlegma))
                 {
                     //If not enabled or not high enough level, follow slider
-                    if ((IsNotEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) || !LevelChecked(Psyche)) &&
+                    if ((!SGE_ST_DPS_Phlegma_Burst || !LevelChecked(Psyche)) &&
                         GetRemainingCharges(OriginalHook(Phlegma)) > SGE_ST_DPS_Phlegma)
                         return OriginalHook(Phlegma);
 
                     //If enabled and high enough level, burst
-                    if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma_Burst) &&
+                    if (SGE_ST_DPS_Phlegma_Burst &&
                         ((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
                          IsOffCooldown(Psyche) ||
                          JustUsed(Psyche, 5f)))
@@ -336,7 +336,7 @@ internal partial class SGE : Healer
             #endregion
 
             //Zoe -> Pneuma like Eukrasia 
-            if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_ZoePneuma) &&
+            if (SGE_AoE_Heal_ZoePneuma &&
                 HasStatusEffect(Buffs.Zoe))
                 return Pneuma;
 

@@ -5490,11 +5490,7 @@ public enum CustomComboPreset
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Phlegma Option", "Use Phlegma if available and within range.", SGE.JobID)]
     SGE_ST_DPS_Phlegma = 14005,
-
-    [ParentCombo(SGE_ST_DPS_Phlegma)]
-    [CustomComboInfo("Burst option", "Save Phlegma charges for burst.", SGE.JobID)]
-    SGE_ST_DPS_Phlegma_Burst = 14062,
-
+    
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Psyche Option", "Weaves Psyche when available.", SGE.JobID)]
     SGE_ST_DPS_Psyche = 14008,
@@ -5690,10 +5686,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Zoe Option", "Adds Zoe.", SGE.JobID)]
     SGE_AoE_Heal_Zoe = 14058,
 
-    [ParentCombo(SGE_AoE_Heal_Zoe)]
-    [CustomComboInfo("Pneuma Option", "Chain to Pneuma After.", SGE.JobID)]
-    SGE_AoE_Heal_ZoePneuma = 14060,
-    
     [ParentCombo(SGE_AoE_Heal)]
     [CustomComboInfo("Philosophia Option", "Adds Philosophia.", SGE.JobID)]
     SGE_AoE_Heal_Philosophia = 14050,
