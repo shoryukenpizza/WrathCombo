@@ -108,12 +108,7 @@ internal partial class SAM : Melee
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-
-            if (ActionReady(Enpi) &&
-                !InMeleeRange() &&
-                HasBattleTarget())
-                return Enpi;
-
+            
             //oGCDs
             if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
@@ -176,7 +171,12 @@ internal partial class SAM : Melee
                 if (Role.CanBloodBath(40))
                     return Role.Bloodbath;
             }
-
+            
+            //Ranged
+            if (ActionReady(Enpi) &&
+                !InMeleeRange() &&
+                HasBattleTarget())
+                return Enpi;
             if (UseTsubame)
                 return OriginalHook(TsubameGaeshi);
 
@@ -283,10 +283,6 @@ internal partial class SAM : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
-                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
-                return Enpi;
-
             //oGCDs
             if (CanWeave() && !HasDoubleWeaved() && M6SReady)
             {
@@ -363,6 +359,11 @@ internal partial class SAM : Melee
                         return Role.Bloodbath;
                 }
             }
+            
+            //Ranged
+            if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
+                ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
+                return Enpi;
 
             if (IsEnabled(CustomComboPreset.SAM_ST_Damage))
             {
