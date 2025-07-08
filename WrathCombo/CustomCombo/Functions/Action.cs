@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.Data;
 using WrathCombo.Services;
 
@@ -202,23 +203,34 @@ namespace WrathCombo.CustomComboNS.Functions
                 .ActionID;
         }
 
-        /// <summary> Checks if an action can be weaved without clipping the GCD. </summary>
-        /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
-        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
-        public static bool CanWeave(float weaveEnd = 0.6f, int maxWeaves = 2) => RemainingGCD > weaveEnd && ActionWatching.WeaveActions.Count < maxWeaves;
+        /// <summary>
+        ///     Checks if an action can be woven within this GCD window.
+        /// </summary>
+        /// <param name="estimatedWeaveTime">
+        ///     Amount of time required before the GCD is off cooldown.<br/>
+        ///     An Estimate of how long this oGCD will take.
+        /// </param>
+        /// <param name="maximumWeaves">
+        ///     Maximum amount of weaves allowed in this GCD window.<br/>
+        ///     Defaults to <see cref="PluginConfiguration.MaximumWeavesPerWindow"/>.
+        /// </param>
+        public static unsafe bool CanWeave(float estimatedWeaveTime = 0.6f, int? maximumWeaves = null)
+        {
+            var player = LocalPlayer;
+            var allowableWeaves = maximumWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
+            var remainingCast = player.TotalCastTime - player.CurrentCastTime;
+            var animationLock = ActionManager.Instance()->AnimationLock;
+
+            return animationLock <= 0.5f &&                                                // Animation Lock Threshold
+                   remainingCast <= 0.5f &&                                                // Cast Threshold
+                   RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock) &&  // Weave Window Threshold
+                   ActionWatching.WeaveActions.Count < allowableWeaves;                    // Multi-weave Check
+        }
 
         /// <summary> Checks if an action can be weaved without clipping the GCD when casting spells or weaponskills. </summary>
         /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
-        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
-        public static bool CanSpellWeave(float weaveEnd = 0.6f, int maxWeaves = 2)
-        {
-            var player = LocalPlayer;
-            var remainingCast = player.TotalCastTime - player.CurrentCastTime;
-
-            return remainingCast <= 0.5f &&                     // Cast Threshold
-                RemainingGCD > (remainingCast + weaveEnd) &&    // End Threshold
-                ActionWatching.WeaveActions.Count < maxWeaves;  // Multi-weave Check
-        }
+        [Obsolete("Use CanWeave instead. This method will be removed in a future update.")]
+        public static bool CanSpellWeave(float weaveEnd = 0.6f) => CanWeave(weaveEnd);
 
         /// <summary> Checks if an action can be weaved without clipping the GCD, limited by the specified GCD thresholds. </summary>
         /// <param name="weaveStart"> Remaining GCD time when the window starts. <br/> Cannot be set higher than half the GCD. </param>
