@@ -108,7 +108,7 @@ public static class ActionWatching
 
 #if DEBUG
                     Svc.Log.Verbose(
-                        $"[ActionEffect] " +
+                        $"[ReceiveActionEffectDetour] " +
                         $"Type: {effType} | " +
                         $"Value: {effValue} | " +
                         $"Params: [{eff.Param0}, {eff.Param1}, {eff.Param2}, {eff.Param3}, {eff.Param4}] | " +
@@ -255,12 +255,12 @@ public static class ActionWatching
             TimeLastActionUsed = dateNow + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
 
             // Update Helpers
-            UpdateMudraState(actionId);
+            NIN.InMudra = NIN.MudraSigns.Contains(actionId);
             WrathOpener.CurrentOpener?.ProgressOpener(actionId);
 
 #if DEBUG
             Svc.Log.Verbose(
-                $"[ActionSend] " +
+                $"[SendActionDetour] " +
                 $"Action: {actionId.ActionName()} (ID: {actionId}) | " +
                 $"Type: {actionType} | " +
                 $"Sequence: {sequence} | " +
@@ -277,8 +277,6 @@ public static class ActionWatching
             SendActionHook!.Original(targetObjectId, actionType, actionId, sequence, a5, a6, a7, a8, a9);
         }
     }
-
-    private static void UpdateMudraState(uint actionId) => NIN.InMudra = NIN.MudraSigns.Contains(actionId);
 
     private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
     {
@@ -353,10 +351,8 @@ public static class ActionWatching
         return count;
     }
 
-    /// <summary> Checks if at least one ability was used between GCDs. </summary>
-    public static bool HasWeaved() => WeaveActions.Count > 0;
-
     /// <summary> Checks if at least two abilities were used between GCDs. </summary>
+    [Obsolete("CanWeave now includes a weave limiter by default. This method will be removed in a future update.")]
     public static bool HasDoubleWeaved() => WeaveActions.Count > 1;
 
     /// <summary> Gets the amount of GCDs used since combat started. </summary>

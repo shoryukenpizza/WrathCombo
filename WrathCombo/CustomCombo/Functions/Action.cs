@@ -15,6 +15,9 @@ namespace WrathCombo.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
+        public const float BaseActionQueue = 0.5f;
+        public const float BaseAnimationLock = 0.6f;
+
         /// <summary> Calls the original hook. </summary>
         /// <param name="actionID"> Action ID. </param>
         /// <returns> The result from the hook. </returns>
@@ -203,47 +206,63 @@ namespace WrathCombo.CustomComboNS.Functions
                 .ActionID;
         }
 
-        /// <summary>
-        ///     Checks if an action can be woven within this GCD window.
-        /// </summary>
-        /// <param name="estimatedWeaveTime">
-        ///     Amount of time required before the GCD is off cooldown.<br/>
-        ///     An Estimate of how long this oGCD will take.
+        /// <summary> Checks if a certain amount of actions were weaved within the GCD window. </summary>
+        public static bool HasWeaved(int weaveAmount = 1) => ActionWatching.WeaveActions.Count >= weaveAmount;
+
+        /// <summary> Checks if a specific action was weaved within the GCD window. </summary>
+        public static bool HasWeavedAction(uint actionId) => ActionWatching.WeaveActions.Contains(actionId);
+
+        /// <summary> Checks if an action can be weaved within the GCD window. </summary>
+        /// <param name="weaveEnd">
+        ///     Remaining GCD time when the window ends. <br/>
+        ///     Defaults to 0.6s unless specified.
         /// </param>
-        /// <param name="maximumWeaves">
-        ///     Maximum amount of weaves allowed in this GCD window.<br/>
+        /// <param name="maxWeaves">
+        ///     Maximum amount of weaves allowed per window.<br/>
         ///     Defaults to <see cref="PluginConfiguration.MaximumWeavesPerWindow"/>.
         /// </param>
-        public static unsafe bool CanWeave(float estimatedWeaveTime = 0.6f, int? maximumWeaves = null)
+        public static unsafe bool CanWeave(float weaveEnd = BaseAnimationLock, int? maxWeaves = null)
         {
             var player = LocalPlayer;
-            var allowableWeaves = maximumWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
+            var weaveLimit = maxWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
             var remainingCast = player.TotalCastTime - player.CurrentCastTime;
             var animationLock = ActionManager.Instance()->AnimationLock;
 
-            return animationLock <= 0.5f &&                                                // Animation Lock Threshold
-                   remainingCast <= 0.5f &&                                                // Cast Threshold
-                   RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock) &&  // Weave Window Threshold
-                   ActionWatching.WeaveActions.Count < allowableWeaves;                    // Multi-weave Check
+            return animationLock <= BaseActionQueue &&                           // Animation Threshold
+                   remainingCast <= BaseActionQueue &&                           // Casting Threshold
+                   RemainingGCD > (remainingCast + weaveEnd + animationLock) &&  // Window End Threshold
+                   ActionWatching.WeaveActions.Count < weaveLimit;               // Multi-weave Check
         }
 
-        /// <summary> Checks if an action can be weaved without clipping the GCD when casting spells or weaponskills. </summary>
+        /// <summary> Checks if an action can be weaved within the GCD window when casting spells or weaponskills. </summary>
         /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
         [Obsolete("Use CanWeave instead. This method will be removed in a future update.")]
-        public static bool CanSpellWeave(float weaveEnd = 0.6f) => CanWeave(weaveEnd);
+        public static bool CanSpellWeave(float weaveEnd = BaseAnimationLock) => CanWeave(weaveEnd);
 
-        /// <summary> Checks if an action can be weaved without clipping the GCD, limited by the specified GCD thresholds. </summary>
-        /// <param name="weaveStart"> Remaining GCD time when the window starts. <br/> Cannot be set higher than half the GCD. </param>
-        /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
-        /// <param name="maxWeaves"> Maximum amount of weaves allowed per window. </param>
-        public static unsafe bool CanDelayedWeave(float weaveStart = 1.25f, float weaveEnd = 0.6f, int maxWeaves = 2)
+        /// <summary> Checks if an action can be weaved within the GCD window, limited by specific GCD thresholds. </summary>
+        /// <param name="weaveStart">
+        ///     Remaining GCD time when the window starts. <br/>
+        ///     Cannot be set higher than half the GCD.
+        /// </param>
+        /// <param name="weaveEnd">
+        ///     Remaining GCD time when the window ends. <br/>
+        ///     Defaults to 0.6s unless specified.
+        /// </param>
+        /// <param name="maxWeaves">
+        ///     Maximum amount of weaves allowed per window.<br/>
+        ///     Defaults to <see cref="PluginConfiguration.MaximumWeavesPerWindow"/>.
+        /// </param>
+        public static unsafe bool CanDelayedWeave(float weaveStart = 1.25f, float weaveEnd = BaseAnimationLock, int? maxWeaves = null)
         {
             var halfGCD = GCDTotal * 0.5f;
             var remainingGCD = RemainingGCD;
+            var weaveLimit = maxWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
+            var animationLock = ActionManager.Instance()->AnimationLock;
 
-            return remainingGCD > weaveEnd &&                                     // End Threshold
-                remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&  // Start Threshold
-                ActionWatching.WeaveActions.Count < maxWeaves;                    // Multi-weave Check
+            return animationLock <= BaseActionQueue &&                             // Animation Threshold
+                remainingGCD > (weaveEnd + animationLock) &&                       // Window End Threshold
+                remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&   // Window Start Threshold
+                ActionWatching.WeaveActions.Count < weaveLimit;                    // Multi-weave Check
         }
 
         public enum WeaveTypes
@@ -262,19 +281,13 @@ namespace WrathCombo.CustomComboNS.Functions
             _ => false
         };
 
-        /// <summary>
-        /// Returns the current combo timer.
-        /// </summary>
+        /// <summary> Gets the current combo timer. </summary>
         public static unsafe float ComboTimer => ActionManager.Instance()->Combo.Timer;
 
-        /// <summary>
-        /// Returns the last combo action.
-        /// </summary>
+        /// <summary> Gets the last combo action. </summary>
         public static unsafe uint ComboAction => ActionManager.Instance()->Combo.Action;
 
-        /// <summary>
-        /// Gets the current Limit Break action (PVE only)
-        /// </summary>
+        /// <summary> Gets the current limit break action (PvE only). </summary>
         public static unsafe uint LimitBreakAction => LimitBreakController.Instance()->GetActionId(Player.Object.Character(), (byte)Math.Max(0, (LimitBreakLevel - 1)));
 
         public static unsafe bool CanQueue(uint actionID)
@@ -310,7 +323,6 @@ namespace WrathCombo.CustomComboNS.Functions
                        
                         if ((caster.TotalCastTime - caster.CurrentCastTime) <= timeRemaining)
                             return _raidwideInc = true;
-
                     }
                 }
             }
@@ -326,7 +338,7 @@ namespace WrathCombo.CustomComboNS.Functions
                 if (!EzThrottler.Throttle("BeingTargetedHostile", 100))
                     return _beingTargetedHostile;
 
-                return _beingTargetedHostile = Svc.Objects.Any(x => x.IsHostile() && x is IBattleChara chara && chara.CastTargetObjectId == LocalPlayer.GameObjectId);
+                return _beingTargetedHostile = Svc.Objects.Any(x => x is IBattleChara chara && chara.IsHostile() && chara.CastTargetObjectId == LocalPlayer.GameObjectId);
             }
         }
 
