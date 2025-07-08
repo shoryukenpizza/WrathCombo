@@ -352,7 +352,7 @@ internal partial class RPR : Melee
                     return IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
                            ((RPR_ST_TrueNorthDynamic_HoldCharge &&
                              GetRemainingCharges(Role.TrueNorth) < 2) ||
-                           !RPR_ST_TrueNorthDynamic_HoldCharge) &&
+                            !RPR_ST_TrueNorthDynamic_HoldCharge) &&
                            Role.CanTrueNorth() && !OnTargetsRear()
                         ? Role.TrueNorth
                         : OriginalHook(Gallows);
