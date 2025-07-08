@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
+using WrathCombo.Services;
 
 namespace WrathCombo.CustomComboNS.Functions
 {
@@ -74,7 +75,7 @@ namespace WrathCombo.CustomComboNS.Functions
                 }
             }
 
-            if (AutoRotationController.cfg?.Enabled == true && AutoRotationController.cfg.HealerSettings.IncludeNPCs && Player.Job.IsHealer())
+            if ((Service.Configuration.AddOutOfPartyNPCsToRetargeting) || (AutoRotationController.cfg?.Enabled == true && AutoRotationController.cfg.HealerSettings.IncludeNPCs && Player.Job.IsHealer()))
             {
                 foreach (var npc in Svc.Objects.OfType<IBattleChara>().Where(x => x is not IPlayerCharacter && !existingIds.Contains(x.GameObjectId)))
                 {
@@ -83,15 +84,20 @@ namespace WrathCombo.CustomComboNS.Functions
                         WrathPartyMember wmember = new()
                         {
                             GameObjectId = npc.GameObjectId,
-                            CurrentHP = npc.CurrentHp
+                            CurrentHP = npc.CurrentHp,
+                            IsOutOfPartyNPC = true
                         };
                         _partyList.Add(wmember);
                         existingIds.Add(npc.GameObjectId);
                     }
                 }
             }
+            else
+            {
+                _partyList.RemoveAll(x => x.IsOutOfPartyNPC);
+            }
 
-            _partyList.RemoveAll(x => x.BattleChara is null);
+                _partyList.RemoveAll(x => x.BattleChara is null);
             return _partyList;
         }
 
@@ -172,6 +178,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public bool MPUpdatePending = false;
         public ulong GameObjectId;
         public uint NPCClassJob;
+        public bool IsOutOfPartyNPC = false;
 
         public ClassJob? RealJob => NPCClassJob > 0 && CustomComboFunctions.JobIDs.ClassJobs.TryGetValue(NPCClassJob, out var realJob)
             ? realJob
