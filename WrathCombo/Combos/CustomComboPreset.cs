@@ -6924,19 +6924,11 @@ public enum CustomComboPreset
     [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Vicepit", "Adds Vicepit to the rotation.", VPR.JobID)]
     VPR_AoE_Vicepit = 30105,
-
-    [ParentCombo(VPR_AoE_Vicepit)]
-    [CustomComboInfo("Disable Range Check", "Disables the range check for Vicepit, so it will be used even without a target selected.", VPR.JobID)]
-    VPR_AoE_Vicepit_DisableRange = 30111,
-
+    
     [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Vicepit Combo", "Adds Swiftskin's Den and Hunter's Den to the rotation.", VPR.JobID)]
     VPR_AoE_VicepitCombo = 30106,
-
-    [ParentCombo(VPR_AoE_VicepitCombo)]
-    [CustomComboInfo("Disable Range Check", "Disables the range check for Swiftskin's Den and Hunter's Den, so they will be used even without a target selected.", VPR.JobID)]
-    VPR_AoE_VicepitCombo_DisableRange = 30113,
-
+    
     [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Vicepit Weaves", "Adds Twinfang Thresh and Twinblood Thresh to the rotation.", VPR.JobID)]
     VPR_AoE_VicepitWeaves = 30115,
@@ -6956,11 +6948,7 @@ public enum CustomComboPreset
     [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Reawaken", "Adds Reawaken to the rotation.", VPR.JobID)]
     VPR_AoE_Reawaken = 30110,
-
-    [ParentCombo(VPR_AoE_Reawaken)]
-    [CustomComboInfo("Disable Range Check", "Disables the range check for Reawaken, so it will be used even without a target selected.", VPR.JobID)]
-    VPR_AoE_Reawaken_DisableRange = 30114,
-
+    
     [ParentCombo(VPR_AoE_AdvancedMode)]
     [CustomComboInfo("Reawaken Combo", "Adds Generations and Legacy weaves to the rotation.", VPR.JobID)]
     VPR_AoE_ReawakenCombo = 30112,

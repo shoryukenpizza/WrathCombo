@@ -62,8 +62,30 @@ internal partial class VPR
                     break;
 
                 case CustomComboPreset.VPR_AoE_Reawaken:
+                    DrawHorizontalRadioButton(VPR_AoE_Reawaken_SubOption,
+                        "In range", $"Adds range check for {Reawaken.ActionName()}, so it is used only when in range.", 0);
+
+                    DrawHorizontalRadioButton(VPR_AoE_Reawaken_SubOption,
+                        "Disable range check", $"Disables the range check for {Reawaken.ActionName()}, so it will be used even without a target selected.", 1);
+
                     DrawSliderInt(0, 100, VPR_AoE_Reawaken_Usage,
                         $"Stop using {Reawaken.ActionName()} at Enemy HP %. Set to Zero to disable this check.");
+                    break;
+
+                case CustomComboPreset.VPR_AoE_Vicepit:
+                    DrawHorizontalRadioButton(VPR_AoE_Vicepit_SubOption,
+                        "In range", $"Adds range check for {Vicepit.ActionName()}, so it is used only when in range.", 0);
+
+                    DrawHorizontalRadioButton(VPR_AoE_Vicepit_SubOption,
+                        "Disable range check", $"Disables the range check for {Vicepit.ActionName()}, so it will be used even without a target selected.", 1);
+                    break;
+
+                case CustomComboPreset.VPR_AoE_VicepitCombo:
+                    DrawHorizontalRadioButton(VPR_AoE_VicepitCombo_SubOption,
+                        "In range", $"Adds range check for {HuntersDen.ActionName()} and {SwiftskinsDen.ActionName()}, so it is used only when in range.", 0);
+
+                    DrawHorizontalRadioButton(VPR_AoE_VicepitCombo_SubOption,
+                        "Disable range check", $"Disables the range check for {HuntersDen.ActionName()} and {SwiftskinsDen.ActionName()}, so it will be used even without a target selected.", 1);
                     break;
 
                 case CustomComboPreset.VPR_AoE_ComboHeals:
@@ -102,7 +124,10 @@ internal partial class VPR
             VPR_ST_Bloodbath_Threshold = new("VPR_ST_BloodbathThreshold", 30),
             VPR_AoE_UncoiledFury_Threshold = new("VPR_AoE_UncoiledFury_Threshold", 1),
             VPR_AoE_UncoiledFury_HoldCharges = new("VPR_AoE_UncoiledFury_HoldCharges", 0),
+            VPR_AoE_Vicepit_SubOption = new("VPR_AoE_Vicepit_SubOption", 0),
+            VPR_AoE_VicepitCombo_SubOption = new("VPR_AoE_VicepitCombo_SubOption", 0),
             VPR_AoE_Reawaken_Usage = new("VPR_AoE_Reawaken_Usage", 20),
+            VPR_AoE_Reawaken_SubOption = new("VPR_AoE_Reawaken_SubOption", 0),
             VPR_AoE_SecondWind_Threshold = new("VPR_AoE_SecondWindThreshold", 40),
             VPR_AoE_Bloodbath_Threshold = new("VPR_AoE_BloodbathThreshold", 30),
             VPR_ReawakenLegacyButton = new("VPR_ReawakenLegacyButton", 0),
