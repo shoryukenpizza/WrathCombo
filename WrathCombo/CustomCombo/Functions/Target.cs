@@ -232,7 +232,7 @@ internal abstract partial class CustomComboFunctions
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
             return 0;
 
-        if (sheetSpell.CanTargetHostile && ((target ??= CurrentTarget) is null || GetTargetDistance(target) > ActionWatching.GetActionRange(sheetSpell.RowId)))
+        if (sheetSpell.CanTargetHostile && ((target ??= CurrentTarget) is null || GetTargetDistance(target) > GetActionRange(sheetSpell.RowId)))
             return 0;
 
         int count = sheetSpell.CastType switch

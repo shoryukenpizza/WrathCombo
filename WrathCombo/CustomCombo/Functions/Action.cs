@@ -35,6 +35,52 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="traitId"> The trait ID. </param>
         public static bool TraitLevelChecked(uint traitId) => LocalPlayer.Level >= GetTraitLevel(traitId);
 
+        /// <summary> Gets the minimum level required to use an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static int GetActionLevel(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.ClassJobCategory.IsValid
+            ? actionSheet.ClassJobLevel
+            : 255;
+
+        /// <summary> Gets the minimum level required to benefit from a trait. </summary>
+        /// <param name="traitId"> The trait ID. </param>
+        public static int GetTraitLevel(uint traitId) => TraitSheet.TryGetValue(traitId, out var traitSheet)
+            ? traitSheet.Level
+            : 255;
+
+        /// <summary> Gets the range of an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public unsafe static float GetActionRange(uint actionId) => ActionManager.GetActionRange(actionId);
+
+        /// <summary> Gets the radius of an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static float GetActionEffectRange(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet)
+            ? actionSheet.EffectRange
+            : -1f;
+
+        /// <summary> Gets the cast time of an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static float GetActionCastTime(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet)
+            ? actionSheet.Cast100ms * 0.1f
+            : 0f;
+
+        /// <summary> Gets the name of an action as a string. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static string GetActionName(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet)
+            ? actionSheet.Name.ToString()
+            : "Unknown Action";
+
+        /// <summary> Gets the amount of time since an action was used, in milliseconds. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static float TimeSinceActionUsed(uint actionId) => ActionTimestamps.TryGetValue(actionId, out long timestamp)
+            ? Environment.TickCount64 - timestamp
+            : -1f;
+
+        /// <summary> Gets the amount of time since an action was successfully cast, in milliseconds. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static float TimeSinceLastSuccessfulCast(uint actionId) => LastSuccessfulUseTime.TryGetValue(actionId, out long timestamp)
+            ? Environment.TickCount64 - timestamp
+            : -1f;
+
         /// <summary>
         ///     Checks if the player is within range to use an action. <br/>
         ///     If the action requires a target, defaults to CurrentTarget unless specified.

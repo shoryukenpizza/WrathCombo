@@ -17,6 +17,7 @@ using System.Numerics;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static FFXIVClientStructs.FFXIV.Client.Game.Character.ActionEffectHandler;
@@ -300,22 +301,6 @@ public static class ActionWatching
         return ActionManager.GetActionInRangeOrLoS(actionId, source.Struct(), target.Struct()) is 566;
     }
 
-    /// <summary> Gets the amount of time since an action was used, in milliseconds. </summary>
-    public static float TimeSinceActionUsed(uint actionId)
-    {
-        return ActionTimestamps.TryGetValue(actionId, out long timestamp)
-            ? Environment.TickCount64 - timestamp
-            : -1f;
-    }
-
-    /// <summary> Gets the amount of time since an action was successfully cast, in milliseconds. </summary>
-    public static float TimeSinceLastSuccessfulCast(uint actionId)
-    {
-        return LastSuccessfulUseTime.TryGetValue(actionId, out long timestamp)
-            ? Environment.TickCount64 - timestamp
-            : -1f;
-    }
-
     public static uint WhichOfTheseActionsWasLast(params uint[] actions)
     {
         if (CombatActions.Count == 0) return 0;
@@ -487,12 +472,8 @@ public static class ActionWatching
         Svc.Condition.ConditionChange -= ResetActions;
     }
 
-    public static int GetActionLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
-    public static float GetActionCastTime(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms * 0.1f : 0f;
-    public unsafe static float GetActionRange(uint id) => ActionManager.GetActionRange(id);
-    public static float GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1f;
-    public static int GetTraitLevel(uint id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
-    public static string GetActionName(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "Unknown Action";
+    [Obsolete("Use CustomComboFunctions.GetActionName instead. This method will be removed in a future update.")]
+    public static string GetActionName(uint id) => CustomComboFunctions.GetActionName(id);
 
     public static string GetBLUIndex(uint id)
     {
