@@ -10,6 +10,7 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.Data;
 using WrathCombo.Services;
+using static WrathCombo.Data.ActionWatching;
 
 namespace WrathCombo.CustomComboNS.Functions
 {
@@ -34,99 +35,80 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="traitId"> The trait ID. </param>
         public static bool TraitLevelChecked(uint traitId) => LocalPlayer.Level >= GetTraitLevel(traitId);
 
-        /// <summary> Gets the name of an action as a string. </summary>
-        /// <param name="actionId"> The action ID. </param>
-        public static string GetActionName(uint actionId) => ActionWatching.GetActionName(actionId);
-
-        /// <summary> Gets the minimum level required to use an action. </summary>
-        /// <param name="actionId"> The action ID. </param>
-        public static int GetActionLevel(uint actionId) => ActionWatching.GetActionLevel(actionId);
-
-        /// <summary> Gets the minimum level required to benefit from a trait. </summary>
-        /// <param name="traitId"> The trait ID. </param>
-        public static int GetTraitLevel(uint traitId) => ActionWatching.GetTraitLevel(traitId);
-
-        /// <summary> Gets the cast time of an action. </summary>
-        /// <param name="actionId"> The action ID. </param>
-        internal static float GetActionCastTime(uint actionId) => ActionWatching.GetActionCastTime(actionId);
-
         /// <summary>
         ///     Checks if the player is within range to use an action. <br/>
         ///     If the action requires a target, defaults to CurrentTarget unless specified.
         /// </summary>
         public static bool InActionRange(uint actionId, IGameObject? optionalTarget = null)
         {
-            var target = optionalTarget ?? CurrentTarget;
-            var actionRange = ActionWatching.GetActionRange(actionId);
+            var actionRange = GetActionRange(actionId);
 
-            // Targeted Actions
-            if (actionRange > 0)
-                return target != null && GetTargetDistance(target) <= actionRange;
+            // Has Range
+            // Eg. Geirskogul, Fleche
+            if (actionRange > 0f)
+                return (optionalTarget ??= CurrentTarget) != null && GetTargetDistance(optionalTarget) <= actionRange;
 
-            var actionRadius = ActionWatching.GetActionEffectRange(actionId);
+            var actionRadius = GetActionEffectRange(actionId);
 
-            // Self AoE Actions
-            if (actionRadius > 0)
-                return target != null && GetTargetDistance(target) <= actionRadius;
+            // Has Radius Only
+            // Eg. Dyskrasia, Art of War
+            if (actionRadius > 0f)
+                return (optionalTarget ??= CurrentTarget) != null && GetTargetDistance(optionalTarget) <= actionRadius;
 
-            // Self Actions
+            // Has Neither
+            // Eg. Reassemble, True North
             return true;
         }
 
-        /// <summary> Checks if the player can use an action based on the level required and whether it has charges / is off cooldown. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns> Non-charge actions have a charge value of 1 when off cooldown; otherwise they have a value of 0. </returns>
-        public static unsafe bool ActionReady(uint id)
+        /// <summary> Checks if an action is ready to use based on level required, current cooldown and unlock state. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static unsafe bool ActionReady(uint actionId)
         {
-            uint hookedId = OriginalHook(id);
+            uint hookedId = OriginalHook(actionId);
 
-            return ((GetCooldownRemainingTime(hookedId) <= RemainingGCD + 0.5f && ActionWatching.GetAttackType(hookedId) != ActionWatching.ActionAttackType.Ability) ||
-                HasCharges(hookedId)) && ActionManager.Instance()->GetActionStatus(ActionType.Action, hookedId, checkRecastActive: false, checkCastingActive: false) is 0 or 582 or 580;
+            return (HasCharges(hookedId) || (GetAttackType(hookedId) != ActionAttackType.Ability && GetCooldownRemainingTime(hookedId) <= RemainingGCD)) &&
+                ActionManager.Instance()->GetActionStatus(ActionType.Action, hookedId, checkRecastActive: false, checkCastingActive: false) is 0 or 582 or 580;
         }
 
         /// <summary> Checks if all passed actions are ready to be used. </summary>
-        /// <param name="ids"> IDs of the actions. </param>
-        /// <returns></returns>
-        public static bool ActionsReady(uint[] ids)
+        /// <param name="actionIds"> The action IDs. </param>
+        public static bool ActionsReady(uint[] actionIds)
         {
-            foreach (var id in ids)
-                if (!ActionReady(id)) return false;
+            foreach (var actionId in actionIds)
+                if (!ActionReady(actionId)) return false;
 
             return true;
         }
 
-        /// <summary> Checks if the last action performed was the passed ID. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool WasLastAction(uint id) => ActionWatching.CombatActions.Count > 0 && ActionWatching.CombatActions.LastOrDefault() == id;
+        /// <summary> Checks if an action was the last action performed. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool WasLastAction(uint actionId) => CombatActions.Count > 0 && CombatActions.LastOrDefault() == actionId;
 
-        /// <summary> Returns how many times in a row the last action was used. </summary>
-        /// <returns></returns>
-        public static int LastActionCounter() => ActionWatching.LastActionUseCount;
+        /// <summary> Checks if an action was the last weaponskill performed. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool WasLastWeaponskill(uint actionId) => LastWeaponskill == actionId;
 
-        /// <summary> Checks if the last weaponskill used was the passed ID. Does not have to be the last action performed, just the last weaponskill used. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool WasLastWeaponskill(uint id) => ActionWatching.LastWeaponskill == id;
+        /// <summary> Checks if an action was the last spell performed. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool WasLastSpell(uint actionId) => LastSpell == actionId;
 
-        /// <summary> Checks if the last spell used was the passed ID. Does not have to be the last action performed, just the last spell used. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool WasLastSpell(uint id) => ActionWatching.LastSpell == id;
+        /// <summary> Checks if an action was the last ability performed. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool WasLastAbility(uint actionId) => LastAbility == actionId;
 
-        /// <summary> Checks if the last ability used was the passed ID. Does not have to be the last action performed, just the last ability used. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool WasLastAbility(uint id) => ActionWatching.LastAbility == id;
+        /// <summary> Gets the amount of times the last action was used. </summary>
+        public static int LastActionCounter() => LastActionUseCount;
 
-        /// <summary> Returns if the player has set the spell as active in the Blue Mage Spellbook </summary>
-        /// <param name="id"> ID of the BLU spell. </param>
-        /// <returns></returns>
-        public static bool IsSpellActive(uint id) => Service.Configuration.ActiveBLUSpells.Contains(id);
+        /// <summary> Checks if a spell is active in the Blue Mage Spellbook. </summary>
+        /// <param name="spellId"> The action ID. </param>
+        public static bool IsSpellActive(uint spellId) => Service.Configuration.ActiveBLUSpells.Contains(spellId);
 
-        /// <summary> Calculate the best action to use, based on cooldown remaining. If there is a tie, the original is used. </summary>
+        /// <summary>
+        ///     Calculate the best action to use based on cooldown remaining. <br/>
+        ///     If there is a tie, the original is used.
+        /// </summary>
         /// <param name="original"> The original action. </param>
-        /// <param name="actions"> Action data. </param>
+        /// <param name="actions"> The actions to choose from. </param>
         /// <returns> The appropriate action to use. </returns>
         public static uint CalcBestAction(uint original, params uint[] actions)
         {
@@ -192,10 +174,10 @@ namespace WrathCombo.CustomComboNS.Functions
         }
 
         /// <summary> Checks if a certain amount of actions were weaved within the GCD window. </summary>
-        public static bool HasWeaved(int weaveAmount = 1) => ActionWatching.WeaveActions.Count >= weaveAmount;
+        public static bool HasWeaved(int weaveAmount = 1) => WeaveActions.Count >= weaveAmount;
 
         /// <summary> Checks if a specific action was weaved within the GCD window. </summary>
-        public static bool HasWeavedAction(uint actionId) => ActionWatching.WeaveActions.Contains(actionId);
+        public static bool HasWeavedAction(uint actionId) => WeaveActions.Contains(actionId);
 
         /// <summary>
         ///     Checks if an action can be woven within this GCD window.
@@ -218,7 +200,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return animationLock <= BaseActionQueue &&                                     // Animation Threshold
                    remainingCast <= BaseActionQueue &&                                     // Casting Threshold
                    RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock) &&  // Window End Threshold
-                   ActionWatching.WeaveActions.Count < allowableWeaves;                    // Multi-weave Check
+                   WeaveActions.Count < allowableWeaves;                                   // Multi-weave Check
         }
 
         /// <summary> Checks if an action can be weaved within the GCD window when casting spells or weaponskills. </summary>
@@ -249,7 +231,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return animationLock <= BaseActionQueue &&                             // Animation Threshold
                 remainingGCD > (weaveEnd + animationLock) &&                       // Window End Threshold
                 remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&   // Window Start Threshold
-                ActionWatching.WeaveActions.Count < weaveLimit;                    // Multi-weave Check
+                WeaveActions.Count < weaveLimit;                                   // Multi-weave Check
         }
 
         public enum WeaveTypes
@@ -298,12 +280,9 @@ namespace WrathCombo.CustomComboNS.Functions
                 if (obj is not IBattleChara caster || !caster.IsHostile() || !caster.IsCasting)
                     continue;
 
-                if (ActionWatching.ActionSheet.TryGetValue(caster.CastActionId, out var spellSheet))
+                if (ActionSheet.TryGetValue(caster.CastActionId, out var spellSheet))
                 {
-                    byte type = spellSheet.CastType;
-                    byte range = spellSheet.EffectRange;
-
-                    if (type is 2 or 5 && range >= 30)
+                    if (spellSheet.CastType is 2 or 5 && spellSheet.EffectRange >= 30)
                     {
                         if (timeRemaining == 0f)
                             return _raidwideInc = true;
@@ -334,7 +313,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// </summary>
         /// <param name="actionId"></param>
         /// <returns></returns>
-        public static int ActionCount(uint actionId) => ActionWatching.CombatActions.Count(x => x == OriginalHook(actionId));
+        public static int ActionCount(uint actionId) => CombatActions.Count(x => x == OriginalHook(actionId));
 
         /// <summary>
         /// Counts how many times multiple actions have been used since combat started.
@@ -358,14 +337,14 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns></returns>
         public static int TimesUsedSinceOtherAction(uint actionToCheckAgainst, uint actionToCount)
         {
-            if (!ActionWatching.CombatActions.Any(x => x == actionToCheckAgainst)) return 0;
+            if (!CombatActions.Any(x => x == actionToCheckAgainst)) return 0;
 
-            int startIdx = ActionWatching.CombatActions.LastIndexOf(actionToCheckAgainst);
+            int startIdx = CombatActions.LastIndexOf(actionToCheckAgainst);
 
             int output = 0;
-            for (int i = startIdx; i < ActionWatching.CombatActions.Count; i++)
+            for (int i = startIdx; i < CombatActions.Count; i++)
             {
-                if (ActionWatching.CombatActions[i] == actionToCount)
+                if (CombatActions[i] == actionToCount)
                     output++;
             }
 

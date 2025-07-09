@@ -489,8 +489,8 @@ public static class ActionWatching
 
     public static int GetActionLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
     public static float GetActionCastTime(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms * 0.1f : 0f;
-    public unsafe static int GetActionRange(uint id) => (int)ActionManager.GetActionRange(id);
-    public static int GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1;
+    public unsafe static float GetActionRange(uint id) => ActionManager.GetActionRange(id);
+    public static float GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1f;
     public static int GetTraitLevel(uint id) => TraitSheet.TryGetValue(id, out var trait) ? trait.Level : 255;
     public static string GetActionName(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Name.ToString() : "Unknown Action";
 
