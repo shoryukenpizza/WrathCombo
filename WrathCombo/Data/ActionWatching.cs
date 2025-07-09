@@ -487,7 +487,7 @@ public static class ActionWatching
         Svc.Condition.ConditionChange -= ResetActions;
     }
 
-    public static int GetLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
+    public static int GetActionLevel(uint id) => ActionSheet.TryGetValue(id, out var action) && action.ClassJobCategory.IsValid ? action.ClassJobLevel : 255;
     public static float GetActionCastTime(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.Cast100ms * 0.1f : 0f;
     public unsafe static int GetActionRange(uint id) => (int)ActionManager.GetActionRange(id);
     public static int GetActionEffectRange(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.EffectRange : -1;

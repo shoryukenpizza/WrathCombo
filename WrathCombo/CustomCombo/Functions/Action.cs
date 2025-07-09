@@ -18,75 +18,60 @@ namespace WrathCombo.CustomComboNS.Functions
         public const float BaseActionQueue = 0.5f;
         public const float BaseAnimationLock = 0.6f;
 
-        /// <summary> Calls the original hook. </summary>
-        /// <param name="actionID"> Action ID. </param>
-        /// <returns> The result from the hook. </returns>
-        public static uint OriginalHook(uint actionID) => Service.ActionReplacer.OriginalHook(actionID);
+        /// <summary> Gets the original hook for an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static uint OriginalHook(uint actionId) => Service.ActionReplacer.OriginalHook(actionId);
 
-        /// <summary> Compare the original hook to the given action ID. </summary>
-        /// <param name="actionID"> Action ID. </param>
-        /// <returns> A value indicating whether the action would be modified. </returns>
-        public static bool IsOriginal(uint actionID) => Service.ActionReplacer.OriginalHook(actionID) == actionID;
+        /// <summary> Checks if an action matches its original hook. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool IsOriginal(uint actionId) => Service.ActionReplacer.OriginalHook(actionId) == actionId;
 
-        /// <summary> Checks if the player is high enough level to use the passed Action ID. </summary>
-        /// <param name="actionid"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool LevelChecked(uint actionid) => LocalPlayer.Level >= GetLevel(actionid) && IsActionUnlocked(actionid);
+        /// <summary> Checks if the player has learned an action and is high enough level to use it. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static bool LevelChecked(uint actionId) => LocalPlayer.Level >= GetActionLevel(actionId) && IsActionUnlocked(actionId);
 
-        /// <summary> Checks if the player is high enough level to use the passed Trait ID. </summary>
-        /// <param name="traitid"> ID of the action. </param>
-        /// <returns></returns>
-        public static bool TraitLevelChecked(uint traitid) => LocalPlayer.Level >= GetTraitLevel(traitid);
+        /// <summary> Checks if the player is high enough level to benefit from a trait. </summary>
+        /// <param name="traitId"> The trait ID. </param>
+        public static bool TraitLevelChecked(uint traitId) => LocalPlayer.Level >= GetTraitLevel(traitId);
 
-        /// <summary> Returns the name of an action from its ID. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static string GetActionName(uint id) => ActionWatching.GetActionName(id);
+        /// <summary> Gets the name of an action as a string. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static string GetActionName(uint actionId) => ActionWatching.GetActionName(actionId);
 
-        /// <summary> Returns the level required for an action from its ID. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static int GetLevel(uint id) => ActionWatching.GetLevel(id);
+        /// <summary> Gets the minimum level required to use an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static int GetActionLevel(uint actionId) => ActionWatching.GetActionLevel(actionId);
 
-        /// <summary> Get the Cast time of an action. </summary>
-        /// <param name="id"> Action ID to check. </param>
-        /// <returns> Returns the cast time of an action. </returns>
-        internal static float GetActionCastTime(uint id) => ActionWatching.GetActionCastTime(id);
+        /// <summary> Gets the minimum level required to benefit from a trait. </summary>
+        /// <param name="traitId"> The trait ID. </param>
+        public static int GetTraitLevel(uint traitId) => ActionWatching.GetTraitLevel(traitId);
 
-        /// <summary> Checks if the player is in range to use an action. Best used with actions with irregular ranges.</summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <param name="optionalTarget"> Optional target to check range against. </param>
-        /// <returns></returns>
-        public static bool InActionRange(uint id, IGameObject? optionalTarget = null)
+        /// <summary> Gets the cast time of an action. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        internal static float GetActionCastTime(uint actionId) => ActionWatching.GetActionCastTime(actionId);
+
+        /// <summary>
+        ///     Checks if the player is within range to use an action. <br/>
+        ///     If the action requires a target, defaults to CurrentTarget unless specified.
+        /// </summary>
+        public static bool InActionRange(uint actionId, IGameObject? optionalTarget = null)
         {
-            int range = ActionWatching.GetActionRange(id);
-            switch (range)
-            {
-                case 0: //Self Use Skills (Second Wind) or attacks (Art of War, Dyskrasia)
-                    {
-                        //NOTES: HOUSING DUMMIES ARE FUCKING CURSED BASTARDS THAT DON'T REGISTER ATTACKS CORRECTLY WITH SELF RADIUS ATTACKS
-                        //Use Explorer Mode dungeon, field map dummies, or let Thancred tank.
+            var target = optionalTarget ?? CurrentTarget;
+            var actionRange = ActionWatching.GetActionRange(actionId);
 
-                        //Check if there is a radius
-                        float radius = ActionWatching.GetActionEffectRange(id);
-                        //Player has a 0.5y radius inside hitbox.
-                        //GetTargetDistance measures hitbox to hitbox (correct usage for ranged abilities so far)
-                        //But attacks from player must include personal space (0.5y).
-                        if (radius > 0)
-                        {   //Do not nest with above
-                            if (HasTarget() || optionalTarget != null) return GetTargetDistance(optionalTarget) <= radius; else return false;
-                        }
-                        else return true; //Self use targets (Second Wind) have no radius
-                    }
-                default:
-                    return GetTargetDistance(optionalTarget) <= range;
-            }
+            // Targeted Actions
+            if (actionRange > 0)
+                return target != null && GetTargetDistance(target) <= actionRange;
+
+            var actionRadius = ActionWatching.GetActionEffectRange(actionId);
+
+            // Self AoE Actions
+            if (actionRadius > 0)
+                return target != null && GetTargetDistance(target) <= actionRadius;
+
+            // Self Actions
+            return true;
         }
-
-        /// <summary> Returns the level of a trait. </summary>
-        /// <param name="id"> ID of the action. </param>
-        /// <returns></returns>
-        public static int GetTraitLevel(uint id) => ActionWatching.GetTraitLevel(id);
 
         /// <summary> Checks if the player can use an action based on the level required and whether it has charges / is off cooldown. </summary>
         /// <param name="id"> ID of the action. </param>
@@ -212,26 +197,28 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Checks if a specific action was weaved within the GCD window. </summary>
         public static bool HasWeavedAction(uint actionId) => ActionWatching.WeaveActions.Contains(actionId);
 
-        /// <summary> Checks if an action can be weaved within the GCD window. </summary>
-        /// <param name="weaveEnd">
-        ///     Remaining GCD time when the window ends. <br/>
-        ///     Defaults to 0.6s unless specified.
+        /// <summary>
+        ///     Checks if an action can be woven within this GCD window.
+        /// </summary>
+        /// <param name="estimatedWeaveTime">
+        ///     Amount of time required before the GCD is off cooldown.<br/>
+        ///     An Estimate of how long this oGCD will take.
         /// </param>
-        /// <param name="maxWeaves">
-        ///     Maximum amount of weaves allowed per window.<br/>
+        /// <param name="maximumWeaves">
+        ///     Maximum amount of weaves allowed in this GCD window.<br/>
         ///     Defaults to <see cref="PluginConfiguration.MaximumWeavesPerWindow"/>.
         /// </param>
-        public static unsafe bool CanWeave(float weaveEnd = BaseAnimationLock, int? maxWeaves = null)
+        public static unsafe bool CanWeave(float estimatedWeaveTime = BaseAnimationLock, int? maximumWeaves = null)
         {
             var player = LocalPlayer;
-            var weaveLimit = maxWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
+            var allowableWeaves = maximumWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
             var remainingCast = player.TotalCastTime - player.CurrentCastTime;
             var animationLock = ActionManager.Instance()->AnimationLock;
 
-            return animationLock <= BaseActionQueue &&                           // Animation Threshold
-                   remainingCast <= BaseActionQueue &&                           // Casting Threshold
-                   RemainingGCD > (remainingCast + weaveEnd + animationLock) &&  // Window End Threshold
-                   ActionWatching.WeaveActions.Count < weaveLimit;               // Multi-weave Check
+            return animationLock <= BaseActionQueue &&                                     // Animation Threshold
+                   remainingCast <= BaseActionQueue &&                                     // Casting Threshold
+                   RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock) &&  // Window End Threshold
+                   ActionWatching.WeaveActions.Count < allowableWeaves;                    // Multi-weave Check
         }
 
         /// <summary> Checks if an action can be weaved within the GCD window when casting spells or weaponskills. </summary>
