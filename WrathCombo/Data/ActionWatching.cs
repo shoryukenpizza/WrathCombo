@@ -29,13 +29,16 @@ namespace WrathCombo.Data;
 public static class ActionWatching
 {
     // Dictionaries
+    internal static readonly FrozenDictionary<uint, BNpcBase> BNPCSheet =
+        Svc.Data.GetExcelSheet<BNpcBase>()!
+            .ToFrozenDictionary(i => i.RowId);
+
     internal static readonly FrozenDictionary<uint, Action> ActionSheet =
         Svc.Data.GetExcelSheet<Action>()!
             .ToFrozenDictionary(i => i.RowId);
 
     internal static readonly FrozenDictionary<uint, Trait> TraitSheet =
         Svc.Data.GetExcelSheet<Trait>()!
-            .Where(i => i.ClassJobCategory.IsValid) // Player Traits Only
             .ToFrozenDictionary(i => i.RowId);
 
     internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
@@ -279,63 +282,6 @@ public static class ActionWatching
         }
     }
 
-    private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
-    {
-        replacedWith = actionId;
-        if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target, out replacedWith) ||
-            target is null)
-            return false;
-
-        if (actionId == OccultCrescent.Revive)
-        {
-            target = SimpleTarget.Stack.AllyToRaise;
-            if (target is null) return false;
-        }
-
-        targetObjectId = target.GameObjectId;
-        return true;
-    }
-
-    public static unsafe bool OutOfRange(uint actionId, IGameObject source, IGameObject target)
-    {
-        return ActionManager.GetActionInRangeOrLoS(actionId, source.Struct(), target.Struct()) is 566;
-    }
-
-    public static uint WhichOfTheseActionsWasLast(params uint[] actions)
-    {
-        if (CombatActions.Count == 0) return 0;
-
-        int currentLastIndex = 0;
-        foreach (var action in actions)
-        {
-            if (CombatActions.Any(x => x == action))
-            {
-                int index = CombatActions.LastIndexOf(action);
-
-                if (index > currentLastIndex) currentLastIndex = index;
-            }
-        }
-
-        return CombatActions[currentLastIndex];
-    }
-
-    public static int HowManyTimesUsedAfterAnotherAction(uint lastUsedIDToCheck, uint idToCheckAgainst)
-    {
-        if (CombatActions.Count < 2) return 0;
-        if (WhichOfTheseActionsWasLast(lastUsedIDToCheck, idToCheckAgainst) != lastUsedIDToCheck) return 0;
-
-        int startingIndex = CombatActions.LastIndexOf(idToCheckAgainst);
-        if (startingIndex == -1) return 0;
-
-        int count = 0;
-        for (int i = startingIndex + 1; i < CombatActions.Count; i++)
-        {
-            if (CombatActions[i] == lastUsedIDToCheck) count++;
-        }
-
-        return count;
-    }
-
     /// <summary> Checks if at least two abilities were used between GCDs. </summary>
     [Obsolete("CanWeave now includes a weave limiter by default. This method will be removed in a future update.")]
     public static bool HasDoubleWeaved() => WeaveActions.Count > 1;
@@ -441,6 +387,23 @@ public static class ActionWatching
         }
     }
 
+    private static bool CheckForChangedTarget(uint actionId, ref ulong targetObjectId, out uint replacedWith)
+    {
+        replacedWith = actionId;
+        if (!P.ActionRetargeting.TryGetTargetFor(actionId, out var target, out replacedWith) ||
+            target is null)
+            return false;
+
+        if (actionId == OccultCrescent.Revive)
+        {
+            target = SimpleTarget.Stack.AllyToRaise;
+            if (target is null) return false;
+        }
+
+        targetObjectId = target.GameObjectId;
+        return true;
+    }
+
     public static void Enable()
     {
         ReceiveActionEffectHook?.Enable();
@@ -474,6 +437,11 @@ public static class ActionWatching
 
     [Obsolete("Use CustomComboFunctions.GetActionName instead. This method will be removed in a future update.")]
     public static string GetActionName(uint id) => CustomComboFunctions.GetActionName(id);
+
+    public static unsafe bool OutOfRange(uint actionId, IGameObject source, IGameObject target)
+    {
+        return ActionManager.GetActionInRangeOrLoS(actionId, source.Struct(), target.Struct()) is 566;
+    }
 
     public static string GetBLUIndex(uint id)
     {

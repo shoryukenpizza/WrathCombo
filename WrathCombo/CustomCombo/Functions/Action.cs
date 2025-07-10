@@ -19,7 +19,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public const float BaseActionQueue = 0.5f;
         public const float BaseAnimationLock = 0.6f;
 
-        /// <summary> Gets the original hook for an action. </summary>
+        /// <summary> Gets the original hook of an action. </summary>
         /// <param name="actionId"> The action ID. </param>
         public static uint OriginalHook(uint actionId) => Service.ActionReplacer.OriginalHook(actionId);
 
@@ -43,7 +43,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         /// <summary> Gets the minimum level required to benefit from a trait. </summary>
         /// <param name="traitId"> The trait ID. </param>
-        public static int GetTraitLevel(uint traitId) => TraitSheet.TryGetValue(traitId, out var traitSheet)
+        public static int GetTraitLevel(uint traitId) => TraitSheet.TryGetValue(traitId, out var traitSheet) && traitSheet.ClassJobCategory.IsValid
             ? traitSheet.Level
             : 255;
 
@@ -51,7 +51,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="actionId"> The action ID. </param>
         public unsafe static float GetActionRange(uint actionId) => ActionManager.GetActionRange(actionId);
 
-        /// <summary> Gets the radius of an action. </summary>
+        /// <summary> Gets the effect radius of an action. </summary>
         /// <param name="actionId"> The action ID. </param>
         public static float GetActionEffectRange(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet)
             ? actionSheet.EffectRange
@@ -60,7 +60,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Gets the cast time of an action. </summary>
         /// <param name="actionId"> The action ID. </param>
         public static float GetActionCastTime(uint actionId) => ActionSheet.TryGetValue(actionId, out var actionSheet)
-            ? actionSheet.Cast100ms * 0.1f
+            ? (actionSheet.Cast100ms + actionSheet.ExtraCastTime100ms) * 0.1f
             : 0f;
 
         /// <summary> Gets the name of an action as a string. </summary>
@@ -69,16 +69,22 @@ namespace WrathCombo.CustomComboNS.Functions
             ? actionSheet.Name.ToString()
             : "Unknown Action";
 
-        /// <summary> Gets the amount of time since an action was used, in milliseconds. </summary>
+        /// <summary> Gets the name of a trait as a string. </summary>
+        /// <param name="traitId"> The trait ID. </param>
+        public static string GetTraitName(uint traitId) => TraitSheet.TryGetValue(traitId, out var traitSheet)
+            ? traitSheet.Name.ToString()
+            : "Unknown Trait";
+
+        /// <summary> Gets the amount of time since an action was used, in seconds. </summary>
         /// <param name="actionId"> The action ID. </param>
         public static float TimeSinceActionUsed(uint actionId) => ActionTimestamps.TryGetValue(actionId, out long timestamp)
-            ? Environment.TickCount64 - timestamp
+            ? (Environment.TickCount64 - timestamp) / 1000f
             : -1f;
 
-        /// <summary> Gets the amount of time since an action was successfully cast, in milliseconds. </summary>
+        /// <summary> Gets the amount of time since an action was successfully cast, in seconds. </summary>
         /// <param name="actionId"> The action ID. </param>
         public static float TimeSinceLastSuccessfulCast(uint actionId) => LastSuccessfulUseTime.TryGetValue(actionId, out long timestamp)
-            ? Environment.TickCount64 - timestamp
+            ? (Environment.TickCount64 - timestamp) / 1000f
             : -1f;
 
         /// <summary>
@@ -307,12 +313,14 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static unsafe bool CanQueue(uint actionID)
         {
-            bool alreadyQueued = ActionManager.Instance()->QueuedActionId != 0;
-            bool inSlidecast = (LocalPlayer.TotalCastTime - LocalPlayer.CurrentCastTime) <= 0.5f;
-            bool animLocked = ActionManager.Instance()->AnimationLock > 0;
+            var player = LocalPlayer;
+            var actionManager = ActionManager.Instance();
 
-            bool ret = !alreadyQueued && inSlidecast && !animLocked && ActionReady(actionID);
-            return ret;
+            bool animLocked = actionManager->AnimationLock > 0;
+            bool alreadyQueued = actionManager->QueuedActionId != 0;
+            bool inSlidecast = (player.TotalCastTime - player.CurrentCastTime) <= BaseActionQueue;
+
+            return !alreadyQueued && inSlidecast && !animLocked && ActionReady(actionID);
         }
 
         private static bool _raidwideInc;
@@ -354,64 +362,92 @@ namespace WrathCombo.CustomComboNS.Functions
             }
         }
 
-        /// <summary>
-        /// Counts how many times an action has been used since combat started.
-        /// </summary>
-        /// <param name="actionId"></param>
-        /// <returns></returns>
+        /// <summary> Gets how many times an action has been used since combat started. </summary>
+        /// <param name="actionId"> The action ID. </param>
         public static int ActionCount(uint actionId) => CombatActions.Count(x => x == OriginalHook(actionId));
 
-        /// <summary>
-        /// Counts how many times multiple actions have been used since combat started.
-        /// </summary>
-        /// <param name="actionIds"></param>
-        /// <returns></returns>
+        /// <summary> Gets how many times multiple actions have been used since combat started. </summary>
+        /// <param name="actionIds"> The action IDs. </param>
         public static int ActionCount(uint[] actionIds)
         {
             int output = 0;
-            foreach (var a in actionIds)
-                output += ActionCount(a);
+            foreach (var actionId in actionIds)
+                output += ActionCount(actionId);
 
             return output;
         }
 
-        /// <summary>
-        /// Counts how many times an action has been used in combat since using another action
-        /// </summary>
-        /// <param name="actionToCheckAgainst"></param>
-        /// <param name="actionToCount"></param>
-        /// <returns></returns>
+        /// <summary> Gets how many times an action was used since using another action. </summary>
+        /// <param name="actionToCheckAgainst"> The action to check against. </param>
+        /// <param name="actionToCount"> The action to count. </param>
         public static int TimesUsedSinceOtherAction(uint actionToCheckAgainst, uint actionToCount)
         {
             if (!CombatActions.Any(x => x == actionToCheckAgainst)) return 0;
 
             int startIdx = CombatActions.LastIndexOf(actionToCheckAgainst);
 
-            int output = 0;
+            int useCount = 0;
             for (int i = startIdx; i < CombatActions.Count; i++)
             {
                 if (CombatActions[i] == actionToCount)
-                    output++;
+                    useCount++;
             }
 
-            return output;
+            return useCount;
         }
 
-        /// <summary>
-        /// Counts how many times multiple actions have been used in combat since using another action
-        /// </summary>
-        /// <param name="actionToCheckAgainst"></param>
-        /// <param name="actionsToCount"></param>
-        /// <returns></returns>
+        /// <summary> Gets how many times multiple actions were used since using another action. </summary>
+        /// <param name="actionToCheckAgainst"> The action to check against. </param>
+        /// <param name="actionsToCount"> The actions to count.</param>
         public static int TimesUsedSinceOtherAction(uint actionToCheckAgainst, uint[] actionsToCount)
         {
-            int output = 0;
-            foreach(uint a in actionsToCount)
+            int useCount = 0;
+            foreach(uint actionId in actionsToCount)
             {
-                output += TimesUsedSinceOtherAction(actionToCheckAgainst, a);
+                useCount += TimesUsedSinceOtherAction(actionToCheckAgainst, actionId);
             }
 
-            return output;
+            return useCount;
+        }
+
+        /// <summary> Gets the most recently performed action from a list of actions. </summary>
+        /// <param name="actionIds"> The action IDs. </param>
+        public static uint WhichActionWasLast(params uint[] actionIds)
+        {
+            if (CombatActions.Count == 0) return 0;
+
+            int currentLastIndex = 0;
+            foreach (var actionId in actionIds)
+            {
+                if (CombatActions.Any(x => x == actionId))
+                {
+                    int index = CombatActions.LastIndexOf(actionId);
+
+                    if (index > currentLastIndex) currentLastIndex = index;
+                }
+            }
+
+            return CombatActions[currentLastIndex];
+        }
+
+        /// <summary> Gets how many times an action was used after using another action. </summary>
+        /// <param name="actionToCount"> The action to count. </param>
+        /// <param name="actionToCheckAgainst"> The action to check against. </param>
+        public static int TimesUsedAfterOtherAction(uint actionToCount, uint actionToCheckAgainst)
+        {
+            if (CombatActions.Count < 2) return 0;
+            if (WhichActionWasLast(actionToCount, actionToCheckAgainst) != actionToCount) return 0;
+
+            int startingIndex = CombatActions.LastIndexOf(actionToCheckAgainst);
+            if (startingIndex == -1) return 0;
+
+            int count = 0;
+            for (int i = startingIndex + 1; i < CombatActions.Count; i++)
+            {
+                if (CombatActions[i] == actionToCount) count++;
+            }
+
+            return count;
         }
     }
 }
