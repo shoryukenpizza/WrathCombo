@@ -280,10 +280,10 @@ namespace WrathCombo.CustomComboNS.Functions
             var weaveLimit = maxWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
             var animationLock = ActionManager.Instance()->AnimationLock;
 
-            return animationLock <= BaseActionQueue &&                             // Animation Threshold
-                remainingGCD > (weaveEnd + animationLock) &&                       // Window End Threshold
-                remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&   // Window Start Threshold
-                WeaveActions.Count < weaveLimit;                                   // Multi-weave Check
+            return animationLock <= BaseActionQueue &&                                // Animation Threshold
+                   remainingGCD > (weaveEnd + animationLock) &&                       // Window End Threshold
+                   remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&   // Window Start Threshold
+                   WeaveActions.Count < weaveLimit;                                   // Multi-weave Check
         }
 
         public enum WeaveTypes
@@ -311,16 +311,18 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Gets the current limit break action (PvE only). </summary>
         public static unsafe uint LimitBreakAction => LimitBreakController.Instance()->GetActionId(Player.Object.Character(), (byte)Math.Max(0, (LimitBreakLevel - 1)));
 
-        public static unsafe bool CanQueue(uint actionID)
+        /// <summary> Checks if an action can be queued. </summary>
+        /// <param name="actionId"> The action ID. </param>
+        public static unsafe bool CanQueue(uint actionId)
         {
             var player = LocalPlayer;
             var actionManager = ActionManager.Instance();
+            var remainingCast = player.TotalCastTime - player.CurrentCastTime;
 
-            bool animLocked = actionManager->AnimationLock > 0;
-            bool alreadyQueued = actionManager->QueuedActionId != 0;
-            bool inSlidecast = (player.TotalCastTime - player.CurrentCastTime) <= BaseActionQueue;
-
-            return !alreadyQueued && inSlidecast && !animLocked && ActionReady(actionID);
+            return actionManager->QueuedActionId == 0 &&               // No Action Queued
+                   actionManager->AnimationLock <= BaseActionQueue &&  // Animation Threshold
+                   remainingCast <= BaseActionQueue &&                 // Casting Threshold
+                   ActionReady(actionId);                              // Action Ready
         }
 
         private static bool _raidwideInc;
