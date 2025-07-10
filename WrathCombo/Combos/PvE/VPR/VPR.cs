@@ -81,8 +81,8 @@ internal partial class VPR : Melee
                     return SerpentsIre;
 
                 // Legacy Weaves
-                if (InActionRange(OriginalHook(SerpentsTail)) &&
-                    OriginalHook(SerpentsTail) is not SerpentsTail)
+                if (OriginalHook(SerpentsTail) is not SerpentsTail &&
+                    InRange())
                     return OriginalHook(SerpentsTail);
 
                 // Fury Twin Weaves
@@ -93,14 +93,12 @@ internal partial class VPR : Melee
                     return OriginalHook(Twinblood);
 
                 //Vice Twin Weaves
-                if (!HasStatusEffect(Buffs.Reawakened))
+                if (!HasStatusEffect(Buffs.Reawakened) && InRange())
                 {
-                    if (HasStatusEffect(Buffs.HuntersVenom) &&
-                        InActionRange(TwinfangBite))
+                    if (HasStatusEffect(Buffs.HuntersVenom))
                         return OriginalHook(Twinfang);
 
-                    if (HasStatusEffect(Buffs.SwiftskinsVenom) &&
-                        InActionRange(TwinbloodBite))
+                    if (HasStatusEffect(Buffs.SwiftskinsVenom))
                         return OriginalHook(Twinblood);
                 }
             }
@@ -113,11 +111,10 @@ internal partial class VPR : Melee
 
             //Vicewinder Combo
             if (!HasStatusEffect(Buffs.Reawakened) &&
-                LevelChecked(Vicewinder))
+                LevelChecked(Vicewinder) && InMeleeRange())
             {
                 // Swiftskin's Coil
                 if (VicewinderReady &&
-                    InActionRange(SwiftskinsCoil) &&
                     (!OnTargetsFlank() ||
                      !TargetNeedsPositionals()) ||
                     HuntersCoilReady)
@@ -125,7 +122,6 @@ internal partial class VPR : Melee
 
                 // Hunter's Coil
                 if (VicewinderReady &&
-                    InActionRange(HuntersCoil) &&
                     (!OnTargetsRear() ||
                      !TargetNeedsPositionals()) ||
                     SwiftskinsCoilReady)
@@ -146,7 +142,7 @@ internal partial class VPR : Melee
             //Vicewinder Usage
             if (HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
                 ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) &&
-                InActionRange(Vicewinder) &&
+                InMeleeRange() &&
                 ((IreCD >= GCD * 5) || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return Role.CanTrueNorth()
@@ -256,8 +252,7 @@ internal partial class VPR : Melee
                 // Death Rattle / Legacy Weaves
                 if ((IsEnabled(CustomComboPreset.VPR_ST_SerpentsTail) ||
                      IsEnabled(CustomComboPreset.VPR_ST_LegacyWeaves)) &&
-                    LevelChecked(SerpentsTail) &&
-                    InActionRange(OriginalHook(SerpentsTail)) &&
+                    LevelChecked(SerpentsTail) && InRange() &&
                     OriginalHook(SerpentsTail) is not SerpentsTail)
                     return OriginalHook(SerpentsTail);
 
@@ -273,14 +268,12 @@ internal partial class VPR : Melee
 
                 //Vice Twin Weaves
                 if (IsEnabled(CustomComboPreset.VPR_ST_VicewinderWeaves) &&
-                    !HasStatusEffect(Buffs.Reawakened))
+                    !HasStatusEffect(Buffs.Reawakened) && InMeleeRange())
                 {
-                    if (HasStatusEffect(Buffs.HuntersVenom) &&
-                        InActionRange(TwinfangBite))
+                    if (HasStatusEffect(Buffs.HuntersVenom))
                         return OriginalHook(Twinfang);
 
-                    if (HasStatusEffect(Buffs.SwiftskinsVenom) &&
-                        InActionRange(TwinbloodBite))
+                    if (HasStatusEffect(Buffs.SwiftskinsVenom))
                         return OriginalHook(Twinblood);
                 }
             }
@@ -296,11 +289,10 @@ internal partial class VPR : Melee
             //Vicewinder Combo
             if (IsEnabled(CustomComboPreset.VPR_ST_VicewinderCombo) &&
                 !HasStatusEffect(Buffs.Reawakened) &&
-                LevelChecked(Vicewinder))
+                LevelChecked(Vicewinder) && InMeleeRange())
             {
                 // Swiftskin's Coil
                 if (VicewinderReady &&
-                    InActionRange(SwiftskinsCoil) &&
                     (!OnTargetsFlank() ||
                      !TargetNeedsPositionals()) ||
                     HuntersCoilReady)
@@ -308,7 +300,6 @@ internal partial class VPR : Melee
 
                 // Hunter's Coil
                 if (VicewinderReady &&
-                    InActionRange(HuntersCoil) &&
                     (!OnTargetsRear() ||
                      !TargetNeedsPositionals()) ||
                     SwiftskinsCoilReady)
@@ -331,9 +322,7 @@ internal partial class VPR : Melee
             //Vicewinder Usage
             if (IsEnabled(CustomComboPreset.VPR_ST_Vicewinder) &&
                 HasStatusEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
-                ActionReady(Vicewinder) &&
-                !HasStatusEffect(Buffs.Reawakened) &&
-                InActionRange(Vicewinder) &&
+                ActionReady(Vicewinder) && !HasStatusEffect(Buffs.Reawakened) && InMeleeRange() &&
                 (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return VPR_TrueNortVicewinder &&
