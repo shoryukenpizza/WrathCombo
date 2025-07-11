@@ -222,7 +222,7 @@ public static class ActionWatching
         }
         catch (Exception ex)
         {
-            ex.Log();
+            Svc.Log.Error(ex, "ReceiveActionEffectDetour");
         }
     }
 
@@ -381,8 +381,9 @@ public static class ActionWatching
                 return UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            Svc.Log.Error(ex, "UseActionDetour");
             return UseActionHook.Original(actionManager, actionType, actionId, targetId, extraParam, mode, comboRouteId, outOptAreaTargeted);
         }
     }

@@ -6,6 +6,7 @@ using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.Data;
@@ -148,7 +149,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="actionId"> The action ID. </param>
         public static bool WasLastAbility(uint actionId) => LastAbility == actionId;
 
-        /// <summary> Gets the amount of times the last action was used. </summary>
+        /// <summary> Gets the amount of times the last action was used in a row. </summary>
         public static int LastActionCounter() => LastActionUseCount;
 
         /// <summary> Checks if a spell is active in the Blue Mage Spellbook. </summary>
@@ -380,22 +381,28 @@ namespace WrathCombo.CustomComboNS.Functions
         }
 
         /// <summary> Gets how many times an action was used since using another action. </summary>
-        /// <param name="actionToCheckAgainst"> The action to check against. </param>
         /// <param name="actionToCount"> The action to count. </param>
+        /// <param name="actionToCheckAgainst"> The action to check against. </param>
         public static int TimesUsedSinceOtherAction(uint actionToCheckAgainst, uint actionToCount)
         {
-            if (!CombatActions.Any(x => x == actionToCheckAgainst)) return 0;
-
-            int startIdx = CombatActions.LastIndexOf(actionToCheckAgainst);
+            if (CombatActions.Count == 0)
+                return 0;
 
             int useCount = 0;
-            for (int i = startIdx; i < CombatActions.Count; i++)
+            for (int i = CombatActions.Count - 1; i >= 0; i--)
             {
-                if (CombatActions[i] == actionToCount)
+                var action = CombatActions[i];
+                if (action == actionToCheckAgainst)
+                {
+                    return useCount;
+                }
+                if (action == actionToCount)
+                {
                     useCount++;
+                }
             }
 
-            return useCount;
+            return 0;
         }
 
         /// <summary> Gets how many times multiple actions were used since using another action. </summary>
@@ -416,40 +423,18 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="actionIds"> The action IDs. </param>
         public static uint WhichActionWasLast(params uint[] actionIds)
         {
-            if (CombatActions.Count == 0) return 0;
+            if (CombatActions.Count == 0)
+                return 0;
 
-            int currentLastIndex = 0;
-            foreach (var actionId in actionIds)
+            var actionsToCheck = new HashSet<uint>(actionIds);
+            for (int i = CombatActions.Count - 1; i >= 0; i--)
             {
-                if (CombatActions.Any(x => x == actionId))
-                {
-                    int index = CombatActions.LastIndexOf(actionId);
-
-                    if (index > currentLastIndex) currentLastIndex = index;
-                }
+                var action = CombatActions[i];
+                if (actionsToCheck.Contains(action))
+                    return action;
             }
 
-            return CombatActions[currentLastIndex];
-        }
-
-        /// <summary> Gets how many times an action was used after using another action. </summary>
-        /// <param name="actionToCount"> The action to count. </param>
-        /// <param name="actionToCheckAgainst"> The action to check against. </param>
-        public static int TimesUsedAfterOtherAction(uint actionToCount, uint actionToCheckAgainst)
-        {
-            if (CombatActions.Count < 2) return 0;
-            if (WhichActionWasLast(actionToCount, actionToCheckAgainst) != actionToCount) return 0;
-
-            int startingIndex = CombatActions.LastIndexOf(actionToCheckAgainst);
-            if (startingIndex == -1) return 0;
-
-            int count = 0;
-            for (int i = startingIndex + 1; i < CombatActions.Count; i++)
-            {
-                if (CombatActions[i] == actionToCount) count++;
-            }
-
-            return count;
+            return 0;
         }
     }
 }
