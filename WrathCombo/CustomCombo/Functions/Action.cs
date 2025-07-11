@@ -289,15 +289,13 @@ internal abstract partial class CustomComboFunctions
     {
         None,
         Weave,
-        DelayWeave,
-        SpellWeave
+        DelayWeave
     }
     public static bool CheckWeave(WeaveTypes weave) => weave switch
     {
         WeaveTypes.None => true,
         WeaveTypes.Weave => CanWeave(),
         WeaveTypes.DelayWeave => CanDelayedWeave(),
-        WeaveTypes.SpellWeave => CanSpellWeave(),
         _ => false
     };
 
