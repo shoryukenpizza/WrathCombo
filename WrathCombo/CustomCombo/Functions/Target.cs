@@ -41,9 +41,6 @@ internal abstract partial class CustomComboFunctions
         return ActionWatching.BNPCSheet.TryGetValue(chara.DataId, out var charaSheet) && charaSheet.Rank is 2 or 6;
     }
 
-    [Obsolete("Use TargetIsBoss")]
-    internal static bool IsBoss(IGameObject? target) => TargetIsBoss(target);
-
     /// <summary> Checks if an object is quest-related. Defaults to CurrentTarget unless specified. </summary>
     internal static unsafe bool IsQuestMob(IGameObject? optionalTarget = null)
     {
@@ -52,9 +49,6 @@ internal abstract partial class CustomComboFunctions
 
         return chara.Struct()->NamePlateIconId is 71204 or 71144 or 71224 or 71344;
     }
-
-    [Obsolete("Use HasBattleTarget")]
-    internal static bool TargetIsHostile() => HasBattleTarget();
 
     /// <summary> Checks if an object is friendly. Defaults to CurrentTarget unless specified. </summary>
     public unsafe static bool TargetIsFriendly(IGameObject? optionalTarget = null)
@@ -150,9 +144,6 @@ internal abstract partial class CustomComboFunctions
             ? Math.Clamp(charaHPPercent + chara.ShieldPercentage, 0f, 100f)
             : charaHPPercent;
     }
-
-    [Obsolete("Use GetTargetCurrentHP")]
-    public static float EnemyHealthCurrentHp() => GetTargetCurrentHP();
 
     /// <summary> Gets an object's maximum HP. Defaults to CurrentTarget unless specified. </summary>
     public static uint GetTargetMaxHP(IGameObject? optionalTarget = null) => (optionalTarget ?? CurrentTarget) is IBattleChara chara ? chara.MaxHp : 0;
