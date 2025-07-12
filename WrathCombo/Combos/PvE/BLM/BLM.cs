@@ -1,7 +1,6 @@
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.BLM.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM : Caster
@@ -24,7 +23,7 @@ internal partial class BLM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanSpellWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
@@ -199,7 +198,7 @@ internal partial class BLM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanSpellWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && !HasMaxPolyglotStacks)
@@ -402,7 +401,7 @@ internal partial class BLM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanSpellWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (ActionReady(Manafont) &&
                     EndOfFirePhase)
@@ -494,7 +493,7 @@ internal partial class BLM : Caster
                 return OccultCrescent.BestPhantomAction();
 
 
-            if (CanSpellWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     ActionReady(Manafont) &&

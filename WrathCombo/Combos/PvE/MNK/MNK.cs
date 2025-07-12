@@ -1,6 +1,5 @@
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.MNK.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class MNK : Melee
@@ -43,7 +42,7 @@ internal partial class MNK : Melee
                 return OccultCrescent.BestPhantomAction();
 
             // OGCDs
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (UseBrotherhood())
                     return Brotherhood;
@@ -120,7 +119,7 @@ internal partial class MNK : Melee
             if (IsEnabled(CustomComboPreset.MNK_STUseOpener) &&
                 Opener().FullOpener(ref actionID))
                 return Opener().OpenerStep >= 9 &&
-                       CanWeave() && !HasDoubleWeaved() &&
+                       CanWeave() &&
                        Chakra >= 5
                     ? TheForbiddenChakra
                     : actionID;
@@ -156,7 +155,7 @@ internal partial class MNK : Melee
                 return OccultCrescent.BestPhantomAction();
 
             // OGCDs
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.MNK_STUseBuffs))
                 {
@@ -279,7 +278,7 @@ internal partial class MNK : Melee
                 return OccultCrescent.BestPhantomAction();
 
             // OGCD's
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (UseBrotherhood())
                     return Brotherhood;
@@ -390,7 +389,7 @@ internal partial class MNK : Melee
                 return OccultCrescent.BestPhantomAction();
 
             // OGCD's 
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
                 {

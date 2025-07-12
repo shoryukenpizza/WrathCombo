@@ -1,6 +1,5 @@
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SAM.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM : Melee
@@ -110,7 +109,7 @@ internal partial class SAM : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 //Meikyo Features
                 if (UseMeikyo())
@@ -284,7 +283,7 @@ internal partial class SAM : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs))
                 {
@@ -518,7 +517,7 @@ internal partial class SAM : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCD Features
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 if (OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
                     return Hagakure;
@@ -629,7 +628,7 @@ internal partial class SAM : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCD Features
-            if (CanWeave() && !HasDoubleWeaved() && M6SReady)
+            if (CanWeave() && M6SReady)
             {
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Hagakure) &&
                     OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))

@@ -3,7 +3,6 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
@@ -53,7 +52,7 @@ internal partial class SGE : Healer
 
             #endregion
 
-            if (CanSpellWeave() && !HasDoubleWeaved() && !HasStatusEffect(Buffs.Eukrasia))
+            if (CanSpellWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
                     return Variant.SpiritDart;
@@ -170,7 +169,7 @@ internal partial class SGE : Healer
 
             #endregion
 
-            if (CanSpellWeave() && !HasDoubleWeaved())
+            if (CanSpellWeave())
             {
                 // Variant Spirit Dart
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))

@@ -1,6 +1,5 @@
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.RPR.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class RPR : Melee
@@ -54,7 +53,7 @@ internal partial class RPR : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //All Weaves
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 //Arcane Cirlce
                 if (ActionReady(ArcaneCircle) &&
@@ -228,7 +227,7 @@ internal partial class RPR : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //All Weaves
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 //Arcane Cirlce
                 if (IsEnabled(CustomComboPreset.RPR_ST_ArcaneCircle) &&
@@ -431,7 +430,7 @@ internal partial class RPR : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (ActionReady(ArcaneCircle))
                     return ArcaneCircle;
@@ -535,7 +534,7 @@ internal partial class RPR : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ArcaneCircle) &&
                     ActionReady(ArcaneCircle))

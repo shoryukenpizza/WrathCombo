@@ -28,7 +28,7 @@ internal partial class MCH
 
     internal static bool UseQueen()
     {
-        if (!HasDoubleWeaved() && !HasStatusEffect(Buffs.Wildfire) &&
+        if (!HasStatusEffect(Buffs.Wildfire) &&
             !JustUsed(OriginalHook(Heatblast)) && ActionReady(RookAutoturret) &&
             !RobotActive && Battery >= 50)
         {

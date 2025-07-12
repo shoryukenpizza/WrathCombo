@@ -1,6 +1,5 @@
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.VPR.Config;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR : Melee
@@ -73,7 +72,8 @@ internal partial class VPR : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave()
+                )
             {
                 //Serpents Ire
                 if (InCombat() && !CappedOnCoils() &&
@@ -241,7 +241,7 @@ internal partial class VPR : Melee
                 return OccultCrescent.BestPhantomAction();
 
             //oGCDs
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 //Serpents Ire
                 if (IsEnabled(CustomComboPreset.VPR_ST_SerpentsIre) && InCombat() &&
@@ -426,7 +426,7 @@ internal partial class VPR : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 // Death Rattle / Legacy Weaves
                 if (LevelChecked(SerpentsTail) &&
@@ -572,7 +572,7 @@ internal partial class VPR : Melee
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            if (CanWeave() && !HasDoubleWeaved())
+            if (CanWeave())
             {
                 // Death Rattle / Legacy Weaves
                 if (IsEnabled(CustomComboPreset.VPR_AoE_SerpentsTail) &&
