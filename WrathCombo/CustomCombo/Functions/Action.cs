@@ -306,7 +306,7 @@ internal abstract partial class CustomComboFunctions
     public static unsafe uint ComboAction => ActionManager.Instance()->Combo.Action;
 
     /// <summary> Gets the current limit break action (PvE only). </summary>
-    public static unsafe uint LimitBreakAction => LimitBreakController.Instance()->GetActionId(Player.Object.Character(), (byte)Math.Max(0, (LimitBreakLevel - 1)));
+    public static unsafe uint LimitBreakAction => LimitBreakController.Instance()->GetActionId(Player.Object.Character(), (byte)Math.Max(0, LimitBreakLevel - 1));
 
     /// <summary> Checks if an action can be queued. </summary>
     /// <param name="actionId"> The action ID. </param>
@@ -369,11 +369,11 @@ internal abstract partial class CustomComboFunctions
     /// <param name="actionIds"> The action IDs. </param>
     public static int ActionCount(uint[] actionIds)
     {
-        int output = 0;
+        int useCount = 0;
         foreach (var actionId in actionIds)
-            output += ActionCount(actionId);
+            useCount += ActionCount(actionId);
 
-        return output;
+        return useCount;
     }
 
     /// <summary> Gets how many times an action was used since using another action. </summary>

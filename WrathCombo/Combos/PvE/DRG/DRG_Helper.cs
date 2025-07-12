@@ -42,7 +42,7 @@ internal partial class DRG
 
     internal static bool CanDRGWeave(float weaveTime = BaseAnimationLock, bool forceFirst = false)
     {
-        return CanWeave(weaveTime) && !HasWeavedAction(Stardiver) && (!forceFirst || !HasWeaved());
+        return !HasWeavedAction(Stardiver) && (!forceFirst || !HasWeaved()) && CanWeave(weaveTime);
     }
 
     #endregion
