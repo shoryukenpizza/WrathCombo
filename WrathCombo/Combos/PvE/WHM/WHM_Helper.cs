@@ -27,11 +27,8 @@ internal partial class WHM
     internal static bool NeedsDoT()
     {
         var dotAction = OriginalHook(Aero);
-        var hpThreshold = Config.WHM_ST_DPS_AeroOptionSubOption ==
-                          (int)Config.BossAvoidance.Off ||
-                          !InBossEncounter()
-            ? Config.WHM_ST_DPS_AeroOption
-            : 0;
+        var hpThreshold = computeHpThreshold();
+
         AeroList.TryGetValue(dotAction, out var dotDebuffID);
         var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
 
@@ -43,13 +40,27 @@ internal partial class WHM
                dotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold;
     }
 
+    internal static int computeHpThreshold()
+    {
+        switch ((int)Config.WHM_ST_DPS_AeroOptionSubOption)
+        {
+            default:
+            case (int)Config.DotEnemyRestriction.NonBosses:
+                return InBossEncounter() ? 0 : Config.WHM_ST_DPS_AeroOption;
+            case (int)Config.DotEnemyRestriction.AllEnemies:
+                return Config.WHM_ST_DPS_AeroOption;
+            case (int)Config.DotEnemyRestriction.OnlyBosses:
+                return InBossEncounter() && TargetIsBoss() ? Config.WHM_ST_DPS_AeroOption : 101;
+        }
+    }
+
     internal static bool BellRaidwideCheckPassed
     {
         get
         {
             if (!IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell))
                 return false;
-            
+
             // Skip any checks if Raidwide checking is not enabled
             if (!Config.WHM_AoEHeals_LiturgyRaidwideOnly)
                 return true;
@@ -59,10 +70,10 @@ internal partial class WHM
                 (int)Config.BossRequirement.On &&
                 !InBossEncounter())
                 return true;
-            
+
             if (!RaidWideCasting())
                 return false;
-            
+
             return true;
         }
     }

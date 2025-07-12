@@ -77,13 +77,20 @@ internal partial class WHM
                         "Non-Bosses",
                         "Only applies the HP check above to non-bosses.\n" +
                         "Allows you to only stop DoTing early when it's not a boss.",
-                        (int)BossAvoidance.On,
+                        (int)DotEnemyRestriction.NonBosses,
                         descriptionColor: ImGuiColors.DalamudWhite);
 
                     DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
                         "All Enemies",
                         "Applies the HP check above to all enemies.",
-                        (int)BossAvoidance.Off,
+                        (int)DotEnemyRestriction.AllEnemies,
+                        descriptionColor: ImGuiColors.DalamudWhite);
+                    
+                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
+                        "Only Bosses",
+                        "Applies the HP check above only when it's a boss. \n"+
+                        "This will not apply DoTs to non-bosses enemies",
+                        (int)DotEnemyRestriction.OnlyBosses,
                         descriptionColor: ImGuiColors.DalamudWhite);
 
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold,
@@ -351,10 +358,11 @@ internal partial class WHM
         /// <summary>
         ///     Enemy type restriction for HP threshold checks.
         /// </summary>
-        internal enum BossAvoidance
+        internal enum DotEnemyRestriction
         {
-            On = 0,
-            Off = 1,
+            NonBosses = 0,
+            AllEnemies = 1,
+            OnlyBosses = 2,
         }
 
         #endregion
@@ -424,12 +432,12 @@ internal partial class WHM
         ///     Enemy type to apply the HP threshold check to.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="BossAvoidance.On" /> <br />
-        ///     <b>Options</b>: <see cref="BossAvoidance">BossAvoidance Enum</see>
+        ///     <b>Default</b>: <see cref="DotEnemyRestriction.NonBosses" /> <br />
+        ///     <b>Options</b>: <see cref="DotEnemyRestriction">DotEnemyRestriction Enum</see>
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionSubOption =
-            new("WHM_ST_DPS_AeroOptionSubOption", (int)BossAvoidance.On);
+            new("WHM_ST_DPS_AeroOptionSubOption", (int)DotEnemyRestriction.NonBosses);
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in single target rotations.
