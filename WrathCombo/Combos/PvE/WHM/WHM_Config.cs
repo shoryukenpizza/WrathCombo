@@ -1,7 +1,6 @@
 ﻿#region
 
 using System.Numerics;
-using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
@@ -73,24 +72,22 @@ internal partial class WHM
                         itemWidth: medium);
       
                     ImGui.Indent();
+                    ImGui.Indent();
                     ImGui.TextUnformatted("For non-bosses, select what kind of content this applies to:");
                     DrawHorizontalRadioButton(
-                        WHM_Dia_Uptime_Content, "All Content",
+                        WHM_ST_DPS_AeroOptionSubOption, "All Content",
                         "Applies to all content in the game.",
-                        outputValue: 0,
-                        descriptionColor: ImGuiColors.DalamudYellow
+                        outputValue: (int)EnemyRestriction.AllEnemies
                     );
                     DrawHorizontalRadioButton(
-                        WHM_Dia_Uptime_Content, "Boss Only Content",
+                        WHM_ST_DPS_AeroOptionSubOption, "Boss Only Content",
                         "Only applies in instances where you directly fight a boss. Excludes many A Realm Reborn & Heavensward raids that include trash.",
-                        outputValue: 1,
-                        descriptionColor: ImGuiColors.DalamudYellow
+                        outputValue: (int)EnemyRestriction.OnlyBosses
                     );
                     DrawHorizontalRadioButton(
-                        WHM_Dia_Uptime_Content, "Non-Boss Only Content",
+                        WHM_ST_DPS_AeroOptionSubOption, "Non-Boss Only Content",
                         "Only applies when not facing a boss. Includes many A Realm Reborn & Heavensward raids that include trash.",
-                        outputValue: 2,
-                        descriptionColor: ImGuiColors.DalamudYellow
+                        outputValue: (int)EnemyRestriction.NonBosses
                     );
 
                     ImGui.Spacing();
@@ -413,18 +410,6 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_Opener" />
         internal static UserInt WHM_Balance_Content =
             new("WHM_Balance_Content", 0);
-
-        /// <summary>
-        ///     Content type of Balance Opener.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: All Content<br />
-        ///     <b>Options</b>: All Content or
-        ///     <see cref="ContentCheck.IsInBossOnlyContent" />
-        /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_Opener" />
-        internal static UserInt WHM_Dia_Uptime_Content =
-            new("WHM_Dia_Uptime_Content", 0);
 
         /// <summary>
         ///     HP threshold to stop applying DoTs on Bosses.
