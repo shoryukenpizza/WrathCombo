@@ -45,11 +45,11 @@ internal partial class WHM
         switch ((int)Config.WHM_ST_DPS_AeroOptionSubOption)
         {
             default:
-            case (int)Config.DotEnemyRestriction.NonBosses:
+            case (int)Config.EnemyRestriction.NonBosses:
                 return InBossEncounter() ? 0 : Config.WHM_ST_DPS_AeroOption;
-            case (int)Config.DotEnemyRestriction.AllEnemies:
+            case (int)Config.EnemyRestriction.AllEnemies:
                 return Config.WHM_ST_DPS_AeroOption;
-            case (int)Config.DotEnemyRestriction.OnlyBosses:
+            case (int)Config.EnemyRestriction.OnlyBosses:
                 return InBossEncounter() && TargetIsBoss() ? Config.WHM_ST_DPS_AeroOption : 101;
         }
     }
