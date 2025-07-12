@@ -42,15 +42,20 @@ internal partial class WHM
 
     internal static int computeHpThreshold()
     {
+        if (TargetIsBoss() && InBossEncounter())
+        {
+            return Config.WHM_ST_DPS_AeroOptionBoss;
+        }
+
         switch ((int)Config.WHM_ST_DPS_AeroOptionSubOption)
         {
+            case (int)Config.EnemyRestriction.AllEnemies:
+                return Config.WHM_ST_DPS_AeroOptionNonBoss;
+            case (int)Config.EnemyRestriction.OnlyBosses:
+                return InBossEncounter() ? Config.WHM_ST_DPS_AeroOptionNonBoss : 0;
             default:
             case (int)Config.EnemyRestriction.NonBosses:
-                return InBossEncounter() ? 0 : Config.WHM_ST_DPS_AeroOption;
-            case (int)Config.EnemyRestriction.AllEnemies:
-                return Config.WHM_ST_DPS_AeroOption;
-            case (int)Config.EnemyRestriction.OnlyBosses:
-                return InBossEncounter() && TargetIsBoss() ? Config.WHM_ST_DPS_AeroOption : 101;
+                return !InBossEncounter() ? Config.WHM_ST_DPS_AeroOptionNonBoss : 0;
         }
     }
 
