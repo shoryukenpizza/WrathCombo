@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Numerics;
+using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
@@ -73,21 +74,24 @@ internal partial class WHM
       
                     ImGui.Indent();
                     ImGui.Indent();
-                    ImGui.TextUnformatted("For non-bosses, select what kind of content this applies to:");
+                    ImGui.TextUnformatted("For Non-Bosses, select what kind of content this applies to:");
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "All Content",
-                        "Applies to all content in the game.",
-                        outputValue: (int)EnemyRestriction.AllEnemies
+                        "Apply the HP% for Non-Bosses to all content.",
+                        outputValue: (int)EnemyRestriction.AllEnemies,
+                        descriptionColor: ImGuiColors.DalamudWhite
                     );
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "Boss Only Content",
-                        "Only applies in instances where you directly fight a boss. Excludes many A Realm Reborn & Heavensward raids that include trash.",
-                        outputValue: (int)EnemyRestriction.OnlyBosses
+                        "Apply the HP% for Non-Bosses, only in Boss content, to adds. Always applies DoTs at any HP outside of Boss content.",
+                        outputValue: (int)EnemyRestriction.OnlyBosses,
+                        descriptionColor: ImGuiColors.DalamudWhite
                     );
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "Non-Boss Only Content",
-                        "Only applies when not facing a boss. Includes many A Realm Reborn & Heavensward raids that include trash.",
-                        outputValue: (int)EnemyRestriction.NonBosses
+                        "Apply the HP% for Non-Bosses, only outside Boss content. Always applies DoTs at any HP to adds in boss content.",
+                        outputValue: (int)EnemyRestriction.NonBosses,
+                        descriptionColor: ImGuiColors.DalamudWhite
                     );
 
                     ImGui.Spacing();
@@ -328,7 +332,7 @@ internal partial class WHM
 
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStopUsingAtDescription =
-            " Non-bosses HP% to stop using (0 = Use Always, 100 = Never)";
+            " Non-Bosses HP% to stop using (0 = Use Always, 100 = Never)";
 
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStopUsingOnBossAtDescription =
