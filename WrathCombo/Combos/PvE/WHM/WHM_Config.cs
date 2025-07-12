@@ -427,7 +427,7 @@ internal partial class WHM
             new("WHM_Dia_Uptime_Content", 0);
 
         /// <summary>
-        ///     HP threshold to stop applying DoTs.
+        ///     HP threshold to stop applying DoTs on Bosses.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 0 <br />
@@ -439,7 +439,7 @@ internal partial class WHM
             new("WHM_ST_DPS_AeroOptionBoss");
 
         /// <summary>
-        ///     HP threshold to stop applying DoTs.
+        ///     HP threshold to stop applying DoTs on Non-Bosses.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 0 <br />
