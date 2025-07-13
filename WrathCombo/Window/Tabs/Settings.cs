@@ -154,15 +154,6 @@ namespace WrathCombo.Window.Tabs
                 ImGuiEx.Spacing(new Vector2(0, 20));
                 ImGuiEx.TextUnderlined("Rotation Behavior Options");
 
-                #region Performance Mode
-
-                if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))
-                    Service.Configuration.Save();
-
-                ImGuiComponents.HelpMarker("This mode will disable actions being changed on your hotbar, but will still continue to work in the background as you press your buttons.");
-
-                #endregion
-
                 #region Spells while Moving
 
                 if (ImGui.Checkbox("Block spells if moving", ref Service.Configuration.BlockSpellOnMove))
@@ -178,6 +169,19 @@ namespace WrathCombo.Window.Tabs
                     Service.Configuration.Save();
 
                 ImGuiComponents.HelpMarker("Controls whether Actions will be Intercepted Replaced with combos from the plugin.\nIf disabled, your manual presses of abilities will no longer be affected by your Wrath settings.\n\nAuto-Rotation will work regardless of the setting.\n\nControlled by the `/wrath combo` command.");
+
+                #endregion
+
+                #region Performance Mode
+
+                if (Service.Configuration.ActionChanging) {
+                    ImGui.Indent();
+                    if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))
+                        Service.Configuration.Save();
+
+                    ImGuiComponents.HelpMarker("This mode will disable actions being changed on your hotbar, but will still continue to work in the background as you press your buttons.");
+                    ImGui.Unindent();
+                }
 
                 #endregion
 
