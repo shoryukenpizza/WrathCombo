@@ -6,7 +6,6 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using ContentHelper = ECommons.GameHelpers;
 using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
 
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class OccultCrescent
@@ -94,8 +93,10 @@ internal partial class OccultCrescent
                     (CustomComboPreset.Phantom_Cannoneer_DarkCannon, DarkCannon),
                     (CustomComboPreset.Phantom_Cannoneer_ShockCannon, ShockCannon)
                 })
+                {
                     if (IsEnabledAndUsable(preset, action))
                         return action;
+                }
             }
         }
 
@@ -234,7 +235,7 @@ internal partial class OccultCrescent
                     return PhantomKick; //damage buff + dash
 
                 if (IsEnabledAndUsable(CustomComboPreset.Phantom_Monk_OccultCounter, OccultCounter) &&
-                    HasStatusEffect(Buffs.Counterstance) && targetDistance <= 6f)
+                    targetDistance <= 6f)
                     return OccultCounter; //counter attack
             }
 
@@ -365,7 +366,7 @@ internal partial class OccultCrescent
                 hasTarget && !HasStatusEffect(Debuffs.OccultMageMasher, CurrentTarget) && canWeave)
                 return OccultMageMasher; //weaken target's magic attack
 
-            // Abilities
+            // GCDs
             if (!canWeave)
             {
                 if (IsEnabledAndUsable(CustomComboPreset.Phantom_TimeMage_OccultQuick, OccultQuick) &&
