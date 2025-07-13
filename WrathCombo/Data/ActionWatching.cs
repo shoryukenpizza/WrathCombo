@@ -41,7 +41,6 @@ public static class ActionWatching
         Svc.Data.GetExcelSheet<Trait>()!
             .ToFrozenDictionary(i => i.RowId);
 
-    internal static readonly Dictionary<uint, long> ChargeTimestamps = [];
     internal static readonly Dictionary<uint, long> ActionTimestamps = [];
     internal static readonly Dictionary<uint, long> LastSuccessfulUseTime = [];
     internal static readonly Dictionary<(uint, ulong), long> UsedOnDict = [];
@@ -247,15 +246,12 @@ public static class ActionWatching
             if (actionType == 1)
             {
                 ActionTimestamps[actionId] = currentTick;
-
-                if (GetMaxCharges(actionId) > 0)
-                    ChargeTimestamps[actionId] = currentTick;
+                UsedOnDict[(actionId, targetObjectId)] = currentTick;
             }
 
             // Update Trackers
             LastAction = actionId;
             LastActionType = actionType;
-            UsedOnDict[(actionId, targetObjectId)] = currentTick;
             TimeLastActionUsed = dateNow + TimeSpan.FromMilliseconds(ActionManager.GetAdjustedCastTime((ActionType)actionType, actionId));
 
             // Update Helpers

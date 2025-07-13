@@ -248,10 +248,10 @@ internal abstract partial class CustomComboFunctions
         var remainingCast = player.TotalCastTime - player.CurrentCastTime;
         var animationLock = ActionManager.Instance()->AnimationLock;
 
-        return animationLock <= BaseActionQueue &&                                     // Animation Threshold
-               remainingCast <= BaseActionQueue &&                                     // Casting Threshold
-               RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock) &&  // Window End Threshold
-               WeaveActions.Count < weaveLimit;                                        // Multi-weave Check
+        return WeaveActions.Count < weaveLimit &&                                    // Multi-weave Check
+               animationLock <= BaseActionQueue &&                                   // Animation Threshold
+               remainingCast <= BaseActionQueue &&                                   // Casting Threshold
+               RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock);  // Window End Threshold
     }
 
     /// <summary> Checks if an action can be weaved within the GCD window when casting spells or weaponskills. </summary>
@@ -279,10 +279,10 @@ internal abstract partial class CustomComboFunctions
         var weaveLimit = maxWeaves ?? Service.Configuration.MaximumWeavesPerWindow;
         var animationLock = ActionManager.Instance()->AnimationLock;
 
-        return animationLock <= BaseActionQueue &&                                // Animation Threshold
-               remainingGCD > (weaveEnd + animationLock) &&                       // Window End Threshold
-               remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart) &&   // Window Start Threshold
-               WeaveActions.Count < weaveLimit;                                   // Multi-weave Check
+        return WeaveActions.Count < weaveLimit &&                              // Multi-weave Check
+               animationLock <= BaseActionQueue &&                             // Animation Threshold
+               remainingGCD > (weaveEnd + animationLock) &&                    // Window End Threshold
+               remainingGCD <= (weaveStart > halfGCD ? halfGCD : weaveStart);  // Window Start Threshold
     }
 
     public enum WeaveTypes
