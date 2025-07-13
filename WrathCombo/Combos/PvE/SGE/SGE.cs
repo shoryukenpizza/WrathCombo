@@ -23,7 +23,8 @@ internal partial class SGE : Healer
             // Kardia Reminder
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Kardia) &&
                 LevelChecked(Kardia) &&
-                !HasStatusEffect(Buffs.Kardia))
+                !HasStatusEffect(Buffs.Kardia) &&
+                Target is not null)
                 return Kardia
                     .Retarget(actionID, Target);
 
