@@ -6265,7 +6265,7 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Ruin, SCH.Broil, SCH.Broil2, SCH.Broil3, SCH.Broil4)]
     [SimpleCombo]
     [ConflictingCombos(SCH_ST_ADV_DPS)]
-    [CustomComboInfo("Simple Single Target DPS Feature", "Replaces Ruin I / Broils with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
+    [CustomComboInfo("Simple DPS Mode - Single Target", "Replaces Ruin I / Broils with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
     SCH_ST_Simple_DPS = 16070,
     
     
@@ -6273,7 +6273,7 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.ArtOfWar, SCH.ArtOfWarII)]
     [SimpleCombo]
     [ConflictingCombos(SCH_AoE_ADV_DPS)]
-    [CustomComboInfo("Simple AoE DPS Feature", "Replaces Art of War with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
+    [CustomComboInfo("Simple DPS Mode - AoE", "Replaces Art of War with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", SCH.JobID)]
     SCH_AoE_Simple_DPS = 16071,
     
     #endregion
