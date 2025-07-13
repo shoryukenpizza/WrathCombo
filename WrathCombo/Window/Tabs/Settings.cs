@@ -154,21 +154,12 @@ namespace WrathCombo.Window.Tabs
                 ImGuiEx.Spacing(new Vector2(0, 20));
                 ImGuiEx.TextUnderlined("Rotation Behavior Options");
 
-                #region Performance Mode
-
-                if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))
-                    Service.Configuration.Save();
-
-                ImGuiComponents.HelpMarker("This mode will disable actions being changed on your hotbar, but will still continue to work in the background as you press your buttons.");
-
-                #endregion
-
                 #region Spells while Moving
 
                 if (ImGui.Checkbox("Block spells if moving", ref Service.Configuration.BlockSpellOnMove))
                     Service.Configuration.Save();
 
-                ImGuiComponents.HelpMarker("Completely blocks spells from being used if you are moving, by replacing your actions with Savage Blade.\nThis would supersede combo-specific movement options, available for most jobs.");
+                ImGuiComponents.HelpMarker("Completely blocks spells from being used if you are moving, by replacing your actions with Savage Blade.\nThis would supersede combo-specific movement options, available for most jobs.\n\nIt is recommended to keep this off, as most combos already handle this more gracefully.\nDefault: Off");
 
                 #endregion
 
@@ -177,7 +168,20 @@ namespace WrathCombo.Window.Tabs
                 if (ImGui.Checkbox("Action Replacing", ref Service.Configuration.ActionChanging))
                     Service.Configuration.Save();
 
-                ImGuiComponents.HelpMarker("Controls whether Actions will be Intercepted Replaced with combos from the plugin.\nIf disabled, your manual presses of abilities will no longer be affected by your Wrath settings.\n\nAuto-Rotation will work regardless of the setting.\n\nControlled by the `/wrath combo` command.");
+                ImGuiComponents.HelpMarker("Controls whether Actions will be Intercepted Replaced with combos from the plugin.\nIf disabled, your manual presses of abilities will no longer be affected by your Wrath settings.\n\nAuto-Rotation will work regardless of the setting.\n\nControlled by the `/wrath combo` command.\n\nIt is REQUIRED to keep this on if you use want to use Wrath without Auto Rotation.\nDefault: On");
+
+                #endregion
+
+                #region Performance Mode
+
+                if (Service.Configuration.ActionChanging) {
+                    ImGui.Indent();
+                    if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))
+                        Service.Configuration.Save();
+
+                    ImGuiComponents.HelpMarker("This mode will disable actions being changed on your hotbar, but will still continue to work in the background as you press your buttons.\n\nIt is recommended to try turing this on if you have performance issues.\nDefault: Off");
+                    ImGui.Unindent();
+                }
 
                 #endregion
 
