@@ -438,7 +438,7 @@ internal partial class WHM
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionNonBoss =
-            new("WHM_ST_DPS_AeroOptionNonBoss");
+            new("WHM_ST_DPS_AeroOptionNonBoss", 50);
 
         /// <summary>
         ///     Time threshold in seconds before reapplying DoT.
@@ -461,7 +461,7 @@ internal partial class WHM
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionSubOption =
-            new("WHM_ST_DPS_AeroOptionSubOption", (int)EnemyRestriction.NonBosses);
+            new("WHM_ST_DPS_AeroOptionSubOption", (int)EnemyRestriction.AllEnemies);
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in single target rotations.
