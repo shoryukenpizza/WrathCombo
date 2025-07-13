@@ -9,7 +9,9 @@ internal partial class SGE : Healer
 {
     internal class SGE_ST_DPS : CustomCombo
     {
-        private static uint[] DosisActions => SGE_ST_DPS_Adv ? [Dosis2] : [.. DosisList.Keys];
+        private static uint[] DosisActions => SGE_ST_DPS_Adv
+            ? [Dosis2]
+            : [.. DosisList.Keys];
 
         protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_ST_DPS;
 
@@ -22,7 +24,8 @@ internal partial class SGE : Healer
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Kardia) &&
                 LevelChecked(Kardia) &&
                 !HasStatusEffect(Buffs.Kardia))
-                return Kardia;
+                return Kardia
+                    .Retarget(actionID, Target);
 
             // Opener for SGE
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener) &&
@@ -52,7 +55,7 @@ internal partial class SGE : Healer
 
             #endregion
 
-            if (CanSpellWeave() && !HasStatusEffect(Buffs.Eukrasia))
+            if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
                     return Variant.SpiritDart;
@@ -169,7 +172,7 @@ internal partial class SGE : Healer
 
             #endregion
 
-            if (CanSpellWeave())
+            if (CanWeave())
             {
                 // Variant Spirit Dart
                 if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
@@ -205,14 +208,14 @@ internal partial class SGE : Healer
             //Eukrasia for DoT
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_EDyskrasia) &&
                 IsOffCooldown(Eukrasia) &&
-                !WasLastSpell(EukrasianDyskrasia) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
+                !JustUsedOn(EukrasianDyskrasia, CurrentTarget) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
                 TraitLevelChecked(Traits.OffensiveMagicMasteryII) &&
                 HasBattleTarget() && InActionRange(Dyskrasia) &&
                 CanApplyStatus(CurrentTarget, Debuffs.EukrasianDyskrasia) &&
                 GetTargetHPPercent() > 25 &&
                 ((DyskrasiaDebuff is null && DosisDebuff is null) ||
-                 DyskrasiaDebuff?.RemainingTime <= 3 ||
-                 DosisDebuff?.RemainingTime <= 3))
+                 DyskrasiaDebuff?.RemainingTime <= 4 ||
+                 DosisDebuff?.RemainingTime <= 4))
                 return Eukrasia;
 
             //Phlegma

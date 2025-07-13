@@ -5501,6 +5501,7 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_ST_DPS)]
     [CustomComboInfo("Kardia Reminder Option", "Adds Kardia when not under the effect.", SGE.JobID)]
+    [PossiblyRetargeted]
     SGE_ST_DPS_Kardia = 14006,
 
     [ParentCombo(SGE_ST_DPS)]

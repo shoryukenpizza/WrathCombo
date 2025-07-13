@@ -106,7 +106,7 @@ internal partial class SGE
                     break;
 
                 case CustomComboPreset.SGE_AoE_DPS_Rhizo:
-                    DrawSliderInt(1,3, SGE_AoE_DPS_Rhizo,
+                    DrawSliderInt(1, 3, SGE_AoE_DPS_Rhizo,
                         "Addersgall Threshold");
                     break;
 

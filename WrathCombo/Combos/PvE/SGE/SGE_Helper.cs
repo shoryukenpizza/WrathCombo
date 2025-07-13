@@ -6,6 +6,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.SGE.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 namespace WrathCombo.Combos.PvE;
@@ -20,6 +21,11 @@ internal partial class SGE
 
     internal static bool MaxPhlegma =>
         GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma));
+
+    internal static IGameObject? Target =>
+        SimpleTarget.UIMouseOverTarget ??
+        SimpleTarget.HardTarget.IfCanUseOn(Kardia) ??
+        SimpleTarget.AnyTank;
 
     internal static bool HasAddersgall() =>
         Addersgall > 0;
@@ -217,7 +223,7 @@ internal partial class SGE
 
     #region Movement Prio
 
-    private static (uint Action, CustomComboPreset Preset, Func<bool> Logic)[]
+    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
         PrioritizedMovement =>
     [
         //Toxikon
