@@ -6,7 +6,6 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.DRG.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using static WrathCombo.Data.ActionWatching;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class DRG
@@ -41,29 +40,10 @@ internal partial class DRG
 
     #region Animation Locks
 
-    internal static bool CanDRGWeave(float weaveTime = 0.6f, bool forceFirst = false)
+    internal static bool CanDRGWeave(float weaveTime = BaseAnimationLock, bool forceFirst = false)
+
     {
-        // Cannot Weave
-        if (RemainingGCD <= weaveTime)
-            return false;
-
-        // List Reference
-        List<uint> currentWeaves = WeaveActions;
-        int weaveCount = currentWeaves.Count;
-
-        // Force First Weave
-        if (forceFirst && weaveCount > 0)
-            return false;
-
-        // Already Double-Weaved
-        if (weaveCount > 1)
-            return false;
-
-        // Already Weaved Stardiver
-        if (currentWeaves.Contains(Stardiver))
-            return false;
-
-        return true;
+        return !HasWeavedAction(Stardiver) && (!forceFirst || !HasWeaved()) && CanWeave(weaveTime);
     }
 
     #endregion
