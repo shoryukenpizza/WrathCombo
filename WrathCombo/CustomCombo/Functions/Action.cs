@@ -254,11 +254,6 @@ internal abstract partial class CustomComboFunctions
                RemainingGCD > (remainingCast + estimatedWeaveTime + animationLock);  // Window End Threshold
     }
 
-    /// <summary> Checks if an action can be weaved within the GCD window when casting spells or weaponskills. </summary>
-    /// <param name="weaveEnd"> Remaining GCD time when the window ends. </param>
-    [Obsolete("Use CanWeave instead. This method will be removed in a future update.")]
-    public static bool CanSpellWeave(float weaveEnd = BaseAnimationLock) => CanWeave(weaveEnd);
-
     /// <summary> Checks if an action can be weaved within the GCD window, limited by specific GCD thresholds. </summary>
     /// <param name="weaveStart">
     ///     Remaining GCD time when the window starts. <br/>
