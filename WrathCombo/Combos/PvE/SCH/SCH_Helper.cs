@@ -54,11 +54,11 @@ internal partial class SCH
     
     internal static bool HiddenSacredSoil()
     {
-        return IsEnabled(CustomComboPreset.SCH_Hidden_SacredSoil) && ActionReady(SacredSoil) && CanSpellWeave() && RaidWideCasting();
+        return IsEnabled(CustomComboPreset.SCH_Hidden_SacredSoil) && ActionReady(SacredSoil) && CanWeave() && RaidWideCasting();
     }
     internal static bool HiddenExpedient()
     {
-        return IsEnabled(CustomComboPreset.SCH_Hidden_Expedient) && ActionReady(Expedient) && CanSpellWeave() && RaidWideCasting();
+        return IsEnabled(CustomComboPreset.SCH_Hidden_Expedient) && ActionReady(Expedient) && CanWeave() && RaidWideCasting();
     }
     internal static bool HiddenSuccor()
     {

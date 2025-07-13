@@ -33,7 +33,7 @@ internal partial class SCH : Healer
                 return DissolveUnion;
             #endregion
 
-            if (InCombat() && CanSpellWeave())
+            if (InCombat() && CanWeave())
             {
                 if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                     return Aetherflow;
@@ -112,7 +112,7 @@ internal partial class SCH : Healer
                 return HiddenRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
 
-            if (InCombat() && CanSpellWeave())
+            if (InCombat() && CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.SCH_ST_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                     return Aetherflow;
@@ -176,7 +176,7 @@ internal partial class SCH : Healer
                 return DissolveUnion;
             #endregion
             
-            if (!InCombat() || !CanSpellWeave()) return actionID;
+            if (!InCombat() || !CanWeave()) return actionID;
             
             if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                 return Aetherflow;
@@ -242,7 +242,7 @@ internal partial class SCH : Healer
                 return HiddenRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
             
-            if (!InCombat() || !CanSpellWeave()) return actionID;
+            if (!InCombat() || !CanWeave()) return actionID;
             
             if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
                 return Aetherflow;
@@ -313,7 +313,7 @@ internal partial class SCH : Healer
             // Aetherflow
             if (IsEnabled(CustomComboPreset.SCH_ST_Heal_Aetherflow) &&
                 ActionReady(Aetherflow) && !HasAetherflow &&
-                InCombat() && CanSpellWeave())
+                InCombat() && CanWeave())
                 return Aetherflow;
 
             // Dissipation

@@ -52,33 +52,33 @@ internal partial class AST : Healer
                     return Role.LucidDreaming;
 
                 //Play Card
-                if (HasDPSCard && CanSpellWeave())
+                if (HasDPSCard && CanWeave())
                     return OriginalHook(Play1).Retarget(replacedActions, CardResolver);
                        
 
                 //Minor Arcana / Lord of Crowns
                 if (ActionReady(OriginalHook(MinorArcana)) &&
-                    HasLord && HasBattleTarget() && CanSpellWeave())
+                    HasLord && HasBattleTarget() && CanWeave())
                     return OriginalHook(MinorArcana);
 
                 //Card Draw
-                if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanSpellWeave())
+                if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanWeave())
                     return OriginalHook(AstralDraw);
 
                 //Divination
                 if (IsEnabled(CustomComboPreset.AST_DPS_Divination) && HasBattleTarget() &&
                     ActionReady(Divination) && !HasDivination &&
                     !HasStatusEffect(Buffs.Divining) &&
-                    CanSpellWeave() && ActionWatching.NumberOfGcdsUsed >= 3)
+                    CanWeave() && ActionWatching.NumberOfGcdsUsed >= 3)
                     return Divination;
 
                 //Earthly Star
                 if (!HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
-                    IsOffCooldown(EarthlyStar) && CanSpellWeave())
+                    IsOffCooldown(EarthlyStar) && CanWeave())
                     return EarthlyStar.Retarget(replacedActions, SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
                 //Oracle
-                if (HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+                if (HasStatusEffect(Buffs.Divining) && CanWeave())
                     return Oracle;
 
                 if (NeedsDoT())
@@ -170,7 +170,7 @@ internal partial class AST : Healer
 
                 //Play Card
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoPlay) &&
-                    HasDPSCard && CanSpellWeave() &&
+                    HasDPSCard && CanWeave() &&
                     (HasDivination || !cardPooling || !LevelChecked(Divination)))
                     return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
                         ? OriginalHook(Play1).Retarget(replacedActions, CardResolver)
@@ -179,7 +179,7 @@ internal partial class AST : Healer
                 //Minor Arcana / Lord of Crowns
                 if (ActionReady(OriginalHook(MinorArcana)) &&
                     IsEnabled(CustomComboPreset.AST_DPS_LazyLord) &&
-                    HasLord && HasBattleTarget() && CanSpellWeave() &&
+                    HasLord && HasBattleTarget() && CanWeave() &&
                     (HasDivination || !lordPooling || !LevelChecked(Divination)))
                     return OriginalHook(MinorArcana);
 
@@ -187,13 +187,13 @@ internal partial class AST : Healer
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
                     ActionReady(OriginalHook(AstralDraw)) &&
                     (HasNoCards || HasNoDPSCard && Config.AST_ST_DPS_OverwriteHealCards) &&
-                    CanSpellWeave())
+                    CanWeave())
                     return OriginalHook(AstralDraw);
 
                 //Lightspeed Burst
                 if (IsEnabled(CustomComboPreset.AST_DPS_LightspeedBurst) &&
                     ActionReady(Lightspeed) && !HasStatusEffect(Buffs.Lightspeed) &&
-                    DivinationCD < 5 && CanSpellWeave())
+                    DivinationCD < 5 && CanWeave())
                     return Lightspeed;
 
                 //Divination
@@ -201,19 +201,19 @@ internal partial class AST : Healer
                     ActionReady(Divination) && !HasDivination && //Overwrite protection
                     !HasStatusEffect(Buffs.Divining) &&
                     GetTargetHPPercent() > divHPThreshold &&
-                    CanSpellWeave() && ActionWatching.NumberOfGcdsUsed >= 3)
+                    CanWeave() && ActionWatching.NumberOfGcdsUsed >= 3)
                     return Divination;
 
                 //Earthly Star
                 if (IsEnabled(CustomComboPreset.AST_ST_DPS_EarthlyStar) &&
                     !HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
-                    IsOffCooldown(EarthlyStar) && CanSpellWeave())
+                    IsOffCooldown(EarthlyStar) && CanWeave())
                     return EarthlyStar.Retarget(replacedActions,
                         SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);
 
                 //Oracle
                 if (IsEnabled(CustomComboPreset.AST_DPS_Oracle) &&
-                    HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+                    HasStatusEffect(Buffs.Divining) && CanWeave())
                     return Oracle;
                 
                 //Combust
@@ -257,31 +257,31 @@ internal partial class AST : Healer
                 return Role.LucidDreaming;
 
             //Play Card
-            if (HasDPSCard && CanSpellWeave())
+            if (HasDPSCard && CanWeave())
                 return OriginalHook(Play1).Retarget(GravityList.ToArray(), CardResolver);
 
             //Minor Arcana / Lord of Crowns
             if (ActionReady(OriginalHook(MinorArcana)) && HasLord &&
-                HasBattleTarget() && CanSpellWeave())
+                HasBattleTarget() && CanWeave())
                 return OriginalHook(MinorArcana);
 
             //Card Draw
-            if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanSpellWeave())
+            if (ActionReady(OriginalHook(AstralDraw)) && HasNoDPSCard && CanWeave())
                 return OriginalHook(AstralDraw);
 
             //Divination
-            if (HasBattleTarget() && ActionReady(Divination) && !HasDivination && CanSpellWeave() &&
+            if (HasBattleTarget() && ActionReady(Divination) && !HasDivination && CanWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return Divination;
 
             //Earthly Star
             if (!IsMoving() && !HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
-                IsOffCooldown(EarthlyStar) && CanSpellWeave() &&
+                IsOffCooldown(EarthlyStar) && CanWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return EarthlyStar.Retarget(GravityList.ToArray(), SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);            
             
             //Oracle
-            if (HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+            if (HasStatusEffect(Buffs.Divining) && CanWeave())
                 return Oracle;
 
             //MacroCosmos
@@ -345,7 +345,7 @@ internal partial class AST : Healer
 
             //Play Card
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoPlay) &&
-                HasDPSCard && CanSpellWeave() && 
+                HasDPSCard && CanWeave() && 
                 (HasDivination || !cardPooling || !LevelChecked(Divination)))
                 return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards)
                     ? OriginalHook(Play1).Retarget(GravityList.ToArray(),
@@ -355,7 +355,7 @@ internal partial class AST : Healer
             //Minor Arcana / Lord of Crowns
             if (ActionReady(OriginalHook(MinorArcana)) &&
                 IsEnabled(CustomComboPreset.AST_AOE_LazyLord) && HasLord &&
-                HasBattleTarget() && CanSpellWeave() &&
+                HasBattleTarget() && CanWeave() &&
                 (HasDivination || !lordPooling || !LevelChecked(Divination)))
                 return OriginalHook(MinorArcana);
 
@@ -363,34 +363,34 @@ internal partial class AST : Healer
             if (IsEnabled(CustomComboPreset.AST_AOE_AutoDraw) &&
                 ActionReady(OriginalHook(AstralDraw)) &&
                 (HasNoCards || HasNoDPSCard && Config.AST_AOE_DPS_OverwriteHealCards) &&
-                CanSpellWeave())
+                CanWeave())
                 return OriginalHook(AstralDraw);
             
             //Lightspeed Burst
             if (IsEnabled(CustomComboPreset.AST_AOE_LightspeedBurst) &&
                 ActionReady(Lightspeed) && !HasStatusEffect(Buffs.Lightspeed) &&
                 DivinationCD < 5 && ActionWatching.NumberOfGcdsUsed >= 3 &&
-                CanSpellWeave())
+                CanWeave())
                 return Lightspeed;
 
             //Divination
             if (IsEnabled(CustomComboPreset.AST_AOE_Divination) && HasBattleTarget() &&
                 ActionReady(Divination) && !HasDivination && //Overwrite protection
-                GetTargetHPPercent() > divHPThreshold && CanSpellWeave() &&
+                GetTargetHPPercent() > divHPThreshold && CanWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return Divination;
 
             //Earthly Star
             if (IsEnabled(CustomComboPreset.AST_AOE_DPS_EarthlyStar) && !IsMoving() &&
                 !HasStatusEffect(Buffs.EarthlyDominance) && ActionReady(EarthlyStar) &&
-                IsOffCooldown(EarthlyStar) && CanSpellWeave() &&
+                IsOffCooldown(EarthlyStar) && CanWeave() &&
                 ActionWatching.NumberOfGcdsUsed >= 3)
                 return EarthlyStar.Retarget(GravityList.ToArray(),
                     SimpleTarget.AnyEnemy ?? SimpleTarget.Stack.Allies);            
             
             //Oracle
             if (IsEnabled(CustomComboPreset.AST_AOE_Oracle) &&
-                HasStatusEffect(Buffs.Divining) && CanSpellWeave())
+                HasStatusEffect(Buffs.Divining) && CanWeave())
                 return Oracle;
 
             //MacroCosmos
