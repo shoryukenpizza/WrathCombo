@@ -456,7 +456,7 @@ internal partial class WHM
         ///     Enemy type to apply the HP threshold check to.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="EnemyRestriction.NonBosses" /> <br />
+        ///     <b>Default</b>: <see cref="EnemyRestriction.AllEnemies" /> <br />
         ///     <b>Options</b>: <see cref="EnemyRestriction">EnemyRestriction Enum</see>
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
