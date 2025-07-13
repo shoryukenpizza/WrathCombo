@@ -73,8 +73,9 @@ internal partial class WHM
                         itemWidth: medium);
       
                     ImGui.Indent();
-                    ImGui.Indent();
                     ImGui.TextUnformatted("For Non-Bosses, select what kind of content this applies to:");
+                    ImGui.NewLine();
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "All Content",
                         "Apply the HP% for Non-Bosses to all content.",
