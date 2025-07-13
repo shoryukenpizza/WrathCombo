@@ -414,7 +414,7 @@ public static class ActionWatching
                 var original = actionId; //Save the original action, do not modify
                 var originalTargetId = targetId; //Save the original target, do not modify
 
-                if (Service.Configuration.PerformanceMode) //Performance mode only logic, to modify the actionId
+                if (Service.Configuration.ActionChanging && Service.Configuration.PerformanceMode) //Performance mode only logic, to modify the actionId
                 {
                     var result = actionId;
                     foreach (var combo in ActionReplacer.FilteredCombos)
