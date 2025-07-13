@@ -21,14 +21,14 @@ internal partial class OccultCrescent
         if (!IsInOccult)
             return 0; //not in Occult Crescent
 
-        var isMoving = IsMoving();
-        var inCombat = InCombat();
-        var canWeave = CanWeave();
-        var hasTarget = HasBattleTarget();
-        var targetDistance = GetTargetDistance();
-        var targetHP = GetTargetHPPercent();
-        var playerHP = PlayerHealthPercentageHp();
-        var playerMP = LocalPlayer.CurrentMp;
+        bool isMoving = IsMoving();
+        bool inCombat = InCombat();
+        bool canWeave = CanWeave();
+        bool hasTarget = HasBattleTarget();
+        float targetDistance = GetTargetDistance();
+        float targetHP = GetTargetHPPercent();
+        float playerHP = PlayerHealthPercentageHp();
+        uint playerMP = LocalPlayer.CurrentMp;
 
         #region Bard
 
@@ -87,7 +87,7 @@ internal partial class OccultCrescent
                 //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
                 //    return HolyCannon; //better on Undead targets____ they dont share a cooldown you fire all the cannons so doesnt really matter if undead. 
 
-                foreach ((CustomComboPreset preset, uint action) in new[]
+                foreach((CustomComboPreset preset, uint action) in new[]
                 {
                     (CustomComboPreset.Phantom_Cannoneer_PhantomFire, PhantomFire),
                     (CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon),
