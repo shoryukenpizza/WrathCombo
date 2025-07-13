@@ -201,9 +201,9 @@ internal partial class WAR
                 #region AoE
                 case CustomComboPreset.WAR_AoE_Decimate:
                     UserConfig.DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
-                        "Burst Pooling", "Allow Decimate for use during burst windows\nNOTE: This ignores the slider below when inside burst windows", 0);
+                        "Burst Pooling", "Allow Decimate for extra use during burst windows\nNOTE: This ignores the gauge slider below when ready for or already in burst", 0);
                     UserConfig.DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
-                        "No Burst Pooling", "Forbid Decimate for use during burst windows\nNOTE: This instead fully honors the value set on the gauge slider below", 1);
+                        "No Burst Pooling", "Forbid Decimate for extra use during burst windows\nNOTE: This fully honors the value set on the gauge slider below", 1);
                     ImGui.Spacing();
                     UserConfig.DrawSliderInt(50, 100, WAR_AoE_Decimate_Gauge,
                         "Minimum gauge required to spend:");
