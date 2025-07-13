@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
@@ -21,13 +22,13 @@ internal partial class AST
     internal static readonly List<uint>
         MaleficList = [Malefic, Malefic2, Malefic3, Malefic4, FallMalefic],
         GravityList = [Gravity, Gravity2];
-    internal static Dictionary<uint, ushort>
-        CombustList = new()
-        {
-            { Combust, Debuffs.Combust },
-            { Combust2, Debuffs.Combust2 },
-            { Combust3, Debuffs.Combust3 }
-        };
+    
+    internal static readonly FrozenDictionary<uint, ushort> CombustList = new Dictionary<uint, ushort>
+    {
+        { Combust, Debuffs.Combust },
+        { Combust2, Debuffs.Combust2 },
+        { Combust3, Debuffs.Combust3 }
+    }.ToFrozenDictionary();
 
     public static ASTGauge Gauge => GetJobGauge<ASTGauge>();
     public static CardType DrawnDPSCard => Gauge.DrawnCards[0];
@@ -43,6 +44,24 @@ internal partial class AST
     internal static bool HasDivination=> HasStatusEffect(Buffs.Divination, anyOwner: true) || JustUsed(Divination);
     internal static float DivinationCD => GetCooldownRemainingTime(Divination);
     internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
+    
+    #region Dot Checker
+    internal static bool NeedsDoT()
+    {
+        var dotAction = OriginalHook(Combust);
+        var hpThreshold = IsNotEnabled(CustomComboPreset.AST_ST_Simple_DPS) && (Config.AST_ST_DPS_CombustSubOption == 1 || !InBossEncounter()) ? Config.AST_ST_DPS_CombustOption : 0;
+        CombustList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRefresh = IsNotEnabled(CustomComboPreset.AST_ST_Simple_DPS) ? Config.AST_ST_DPS_CombustUptime_Threshold : 2.5;
+        var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
+
+        return ActionReady(dotAction) &&
+               CanApplyStatus(CurrentTarget, dotDebuffID) &&
+               !JustUsedOn(dotAction, CurrentTarget, 5f) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= dotRefresh;
+    }
+    #endregion
     
     #region Hidden Raidwides
     
