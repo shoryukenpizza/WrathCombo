@@ -23,8 +23,8 @@ internal partial class SGE
         GetRemainingCharges(OriginalHook(Phlegma)) == GetMaxCharges(OriginalHook(Phlegma));
 
     internal static IGameObject? Target =>
-        SimpleTarget.UIMouseOverTarget ??
-        SimpleTarget.HardTarget.IfCanUseOn(Kardia) ??
+        SimpleTarget.UIMouseOverTarget.IfCanUseOn(Kardia).IfWithinRange(30) ??
+        SimpleTarget.HardTarget.IfCanUseOn(Kardia).IfWithinRange(30) ??
         SimpleTarget.AnyTank;
 
     internal static bool HasAddersgall() =>
