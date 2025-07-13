@@ -84,13 +84,13 @@ internal partial class WHM
                     );
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "Boss Only Content",
-                        "Apply the HP% for Non-Bosses, only in Boss content (to adds). Always applies DoTs at any HP outside of Boss content.",
+                        "Apply the HP% for Non-Bosses, only in Boss content (to adds).\nAlways applies DoTs at any HP outside of Boss content.",
                         outputValue: (int)EnemyRestriction.OnlyBosses,
                         descriptionColor: ImGuiColors.DalamudWhite
                     );
                     DrawHorizontalRadioButton(
                         WHM_ST_DPS_AeroOptionSubOption, "Non-Boss Only Content",
-                        "Apply the HP% for Non-Bosses, only outside Boss content. Always applies DoTs at any HP to adds in boss content.",
+                        "Apply the HP% for Non-Bosses, only outside Boss content.\nAlways applies DoTs at any HP to adds in boss content.",
                         outputValue: (int)EnemyRestriction.NonBosses,
                         descriptionColor: ImGuiColors.DalamudWhite
                     );
