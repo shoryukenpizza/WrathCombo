@@ -163,8 +163,9 @@ public static class DebugFile
 
     private static void AddConflictingInfo()
     {
-        var hasConflicts = ConflictingPlugins.TryGetComboPlugins(out var conflicts);
-        var conflictingPluginsCount = conflicts?.Length ?? 0;
+        var hasConflicts = ConflictingPlugins.TryGetConflicts(out var conflictsObj);
+        var conflicts = conflictsObj.ToArray();
+        var conflictingPluginsCount = conflicts.Length;
 
         AddLine($"Conflicting Plugins: {conflictingPluginsCount}");
 
