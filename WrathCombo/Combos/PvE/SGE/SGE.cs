@@ -483,19 +483,19 @@ internal partial class SGE : Healer
                 ActionReady(Haima) && actionID is Haima)
                 return Haima.RetargetIfEnabled(OptionalTarget, Haima);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole) && 
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole) &&
                 ActionReady(Druochole) && actionID is Druochole)
                 return Druochole.RetargetIfEnabled(OptionalTarget, Druochole);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole) && 
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole) &&
                 ActionReady(Taurochole) && actionID is Taurochole)
                 return Taurochole.RetargetIfEnabled(OptionalTarget, Taurochole);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) && 
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) &&
                 ActionReady(Krasis) && actionID is Krasis)
                 return Krasis.RetargetIfEnabled(OptionalTarget, Krasis);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia) && 
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia) &&
                 ActionReady(Kardia) && actionID is Kardia)
                 return Kardia.Retarget(Kardia, Target);
 

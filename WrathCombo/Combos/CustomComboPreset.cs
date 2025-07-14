@@ -5868,27 +5868,27 @@ public enum CustomComboPreset
     SGE_Retarget = 14073,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Haima Options", "Retargets Haima according to ur Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Haima Options", "Retargets Haima according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_Retarget_Haima = 14074,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Druchole Options", "Retargets Druchole according to ur Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Druchole Options", "Retargets Druchole according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_Retarget_Druchole = 14075,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to ur Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_Retarget_Taurochole = 14076,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Krasis Options", "Retargets Krasis according to ur Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Krasis Options", "Retargets Krasis according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_Retarget_Krasis = 14077,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Kardia Options", "Retargets Kardia according to ur Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Kardia Options", "Retargets Kardia according to your Healing stack.", SGE.JobID)]
     [Retargeted]
     SGE_Retarget_Kardia = 14078,
     
