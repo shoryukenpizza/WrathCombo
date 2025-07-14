@@ -5613,6 +5613,7 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_AoE_DPS)]
     [CustomComboInfo("Addersgall Overflow Protection", "Weaves Druochole when Addersgall gauge is greater than or equal to the specified value.", SGE.JobID)]
+    [PossiblyRetargeted]
     SGE_AoE_DPS_AddersgallProtect = 14053,
 
     [ParentCombo(SGE_AoE_DPS)]
@@ -5663,12 +5664,12 @@ public enum CustomComboPreset
     SGE_ST_Heal_Rhizomata = 14023,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Apply Kardia Option", "Applies Kardia to your target if it's not applied to anyone else.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [CustomComboInfo("Apply Kardia Option", "Applies Kardia if it's not applied to anyone.", SGE.JobID)]
+    [Retargeted]
     SGE_ST_Heal_Kardia = 14016,
 
     [ParentCombo(SGE_ST_Heal)]
-    [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", SGE.JobID)]
+    [CustomComboInfo("Esuna Option", "Applies Esuna if there is a cleansable debuff.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_ST_Heal_Esuna = 14015,
 
@@ -5816,8 +5817,8 @@ public enum CustomComboPreset
     SGE_Rhizo = 14037,
 
     [ReplaceSkill(SGE.Taurochole)]
-    [CustomComboInfo("Taurochole to Druochole Feature", "Turns Taurochole to Druochole when Taurochole is on cooldown.",
-        SGE.JobID)]
+    [CustomComboInfo("Taurochole to Druochole Feature", "Turns Taurochole to Druochole when Taurochole is on cooldown.", SGE.JobID)]
+    [PossiblyRetargeted]
     SGE_TauroDruo = 14038,
 
     [ReplaceSkill(SGE.Pneuma)]
@@ -5840,10 +5841,12 @@ public enum CustomComboPreset
 
     [ReplaceSkill(SGE.Soteria)]
     [CustomComboInfo("Soteria to Kardia Feature", "Soteria turns into Kardia when not active or Soteria is on-cooldown.", SGE.JobID)]
+    [Retargeted]
     SGE_Kardia = 14041,
 
     [ReplaceSkill(SGE.Eukrasia)]
     [CustomComboInfo("Eukrasia Feature", "Eukrasia turns into the selected Eukrasian-type action when active.", SGE.JobID)]
+    [PossiblyRetargeted]
     SGE_Eukrasia = 14042,
     
     [Variant]
@@ -5877,10 +5880,16 @@ public enum CustomComboPreset
     [CustomComboInfo("Holos Option", "Will try to cast Holos when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
     [Hidden]
     SGE_Hidden_Holos = 14072,
+
+    [ParentCombo(SGE_Hidden)]
+    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
+    [Hidden]
+    [PossiblyRetargeted]
+    SGE_Hidden_Retarget = 14073,
     
     #endregion
 
-    // Last used number = 14072
+    // Last used number = 14073
 
     #endregion
 
