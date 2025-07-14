@@ -180,12 +180,13 @@ namespace WrathCombo.Window
                 ImGui.Spacing();
 #endif
 
-                if (ConflictingPlugins.TryGetComboPlugins(out var conflicts))
+                ConflictingPlugins.Draw();
+                if (ConflictingPlugins.TryGetConflicts(out var conflicts))
                 {
                     ImGui.Spacing();
                     ImGui.Spacing();
                     const string conflictStringStart = "Conflicting Combo";
-                    const string conflictStringEnd = "Plugins Detected!";
+                    const string conflictStringEnd   = "Plugins Detected!";
 
                     // Chop the text in half if it doesn't fit
                     ImGuiEx.LineCentered("###ConflictingPlugins", () =>
