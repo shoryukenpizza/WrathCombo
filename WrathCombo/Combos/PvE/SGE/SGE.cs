@@ -475,23 +475,28 @@ internal partial class SGE : Healer
 
     internal class SGE_Retarget : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Hidden_Retarget;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Retarget;
 
         protected override uint Invoke(uint actionID)
         {
-            if (ActionReady(Haima) && actionID is Haima)
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima) &&
+                ActionReady(Haima) && actionID is Haima)
                 return Haima.RetargetIfEnabled(OptionalTarget, Haima);
 
-            if (ActionReady(Druochole) && actionID is Druochole)
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole) && 
+                ActionReady(Druochole) && actionID is Druochole)
                 return Druochole.RetargetIfEnabled(OptionalTarget, Druochole);
 
-            if (ActionReady(Taurochole) && actionID is Taurochole)
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole) && 
+                ActionReady(Taurochole) && actionID is Taurochole)
                 return Taurochole.RetargetIfEnabled(OptionalTarget, Taurochole);
 
-            if (ActionReady(Krasis) && actionID is Krasis)
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) && 
+                ActionReady(Krasis) && actionID is Krasis)
                 return Krasis.RetargetIfEnabled(OptionalTarget, Krasis);
 
-            if (ActionReady(Kardia) && actionID is Kardia)
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia) && 
+                ActionReady(Kardia) && actionID is Kardia)
                 return Kardia.Retarget(Kardia, Target);
 
             return actionID;

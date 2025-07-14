@@ -5861,6 +5861,39 @@ public enum CustomComboPreset
 
     #endregion
     
+    #region Standalone Healing option
+
+    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_Retarget = 14073,
+
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Haima Options", "Retargets Haima according to ur Healing stack.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_Retarget_Haima = 14074,
+
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Druchole Options", "Retargets Druchole according to ur Healing stack.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_Retarget_Druchole = 14075,
+
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to ur Healing stack.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_Retarget_Taurochole = 14076,
+
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Krasis Options", "Retargets Krasis according to ur Healing stack.", SGE.JobID)]
+    [PossiblyRetargeted]
+    SGE_Retarget_Krasis = 14077,
+
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Kardia Options", "Retargets Kardia according to ur Healing stack.", SGE.JobID)]
+    [Retargeted]
+    SGE_Retarget_Kardia = 14078,
+    
+    #endregion
+    
     #region Hidden Features
     [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SGE.JobID)]
     [Hidden]
@@ -5880,16 +5913,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Holos Option", "Will try to cast Holos when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
     [Hidden]
     SGE_Hidden_Holos = 14072,
-
-    [ParentCombo(SGE_Hidden)]
-    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
-    [Hidden]
-    [PossiblyRetargeted]
-    SGE_Hidden_Retarget = 14073,
     
     #endregion
 
-    // Last used number = 14073
+    // Last used number = 14078
 
     #endregion
 
