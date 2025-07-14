@@ -180,8 +180,7 @@ namespace WrathCombo.Window
                 ImGui.Spacing();
 #endif
 
-                var conflictingPlugins = ConflictingPluginsCheck.TryGetConflictingPlugins();
-                if (conflictingPlugins != null)
+                if (ConflictingPlugins.TryGetComboPlugins(out var conflicts))
                 {
                     ImGui.Spacing();
                     ImGui.Spacing();
@@ -199,7 +198,7 @@ namespace WrathCombo.Window
                         // Tooltip with explanation
                         if (ImGui.IsItemHovered())
                         {
-                            var conflictingPluginsText = "- " + string.Join("\n- ", conflictingPlugins);
+                            var conflictingPluginsText = "- " + string.Join("\n- ", conflicts!);
                             var tooltipText =
                                 "The following plugins are known to conflict " +
                                 $"with {Svc.PluginInterface.InternalName}:\n" +

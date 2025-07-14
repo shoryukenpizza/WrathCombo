@@ -163,15 +163,15 @@ public static class DebugFile
 
     private static void AddConflictingInfo()
     {
-        var conflictingPlugins = ConflictingPluginsCheck.TryGetConflictingPlugins();
-        var conflictingPluginsCount = conflictingPlugins?.Length ?? 0;
+        var hasConflicts = ConflictingPlugins.TryGetComboPlugins(out var conflicts);
+        var conflictingPluginsCount = conflicts?.Length ?? 0;
 
         AddLine($"Conflicting Plugins: {conflictingPluginsCount}");
 
-        if (conflictingPlugins == null) return;
+        if (!hasConflicts) return;
 
         AddLine("START CONFLICTING PLUGINS");
-        foreach (var plugin in conflictingPlugins)
+        foreach (var plugin in conflicts)
             AddLine($"- {plugin}");
         AddLine("END CONFLICTING PLUGINS");
     }
