@@ -3,8 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using Dalamud.Interface.Colors;
 using Dalamud.Plugin;
 using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
+using ImGuiNET;
 
 #endregion
 
@@ -12,6 +16,178 @@ namespace WrathCombo.Data;
 
 public static class ConflictingPlugins
 {
+    public static bool TryGetConflicts(out Conflicts conflicts)
+    {
+        conflicts = new Conflicts();
+
+        Conflict[] complexCombos = [];
+        if (TryGetSimpleComboConflicts(out var simpleCombos) ||
+            TryGetComplexComboConflicts(out complexCombos))
+            conflicts[ConflictType.Combo] =
+                simpleCombos.Concat(complexCombos).ToArray();
+
+        if (TryGetTargetingConflicts(out var targetingConflicts))
+            conflicts[ConflictType.Targeting] = targetingConflicts;
+
+        if (TryGetSettingConflicts(out var settingConflicts))
+            conflicts[ConflictType.Settings] = settingConflicts;
+
+        return conflicts.ToArray().Length > 0;
+    }
+
+    public static void Draw()
+    {
+        if (!TryGetConflicts(out var conflicts))
+            return;
+
+        var hasComboConflicts = conflicts[ConflictType.Combo].Length > 0;
+        var hasTargetingConflicts = conflicts[ConflictType.Targeting].Length > 0;
+        var hasSettingsConflicts = conflicts[ConflictType.Settings].Length > 0;
+
+        ImGui.Spacing();
+        ImGui.Spacing();
+
+        if (hasComboConflicts)
+        {
+            var conflictingPluginsText = "- " + string.Join("\n- ",
+                conflicts[ConflictType.Combo]
+                    .Select(x => $"{x.Name} v{x.Version}" +
+                                 (string.IsNullOrEmpty(x.Reason)
+                                     ? ""
+                                     : $" ({x.Reason})")));
+            var tooltipText =
+                "The following plugins are known to conflict " +
+                $"with {Svc.PluginInterface.InternalName}:\n" +
+                conflictingPluginsText +
+                "\n\nIt is recommended you disable these plugins to prevent\n" +
+                "unexpected behavior and bugs.";
+
+            ShowWarning(ConflictType.Combo, tooltipText, false);
+        }
+
+        if (hasTargetingConflicts)
+        {
+            var tooltipText =
+                "The following plugins are known to conflict with\n" +
+                $"{Svc.PluginInterface.InternalName}'s Action Retargeting, which you have enabled:";
+
+            foreach (var conflict in conflicts[ConflictType.Targeting])
+                tooltipText +=
+                    $"\n- {conflict.Name} v{conflict.Version}" +
+                    $"\n  Actions:\n" +
+                    string.Join("\n  - ", conflict.Reason.Split(','));
+
+            tooltipText +=
+                "\n\nIt is recommended you disable these plugins, or\n" +
+                "remove the conflicting actions from their settings, or\n" +
+                $"disable Retargeting for the action in {Svc.PluginInterface.InternalName},\n" +
+                "to prevent unexpected behavior and bugs.";
+
+            ShowWarning(ConflictType.Targeting, tooltipText, hasComboConflicts);
+        }
+
+        if (hasSettingsConflicts)
+        {
+            var conflictingSettingsText = "- " + string.Join("\n- ",
+                conflicts[ConflictType.Combo]
+                    .Select(x => $"{x.Name} v{x.Version} (setting: {x.Reason})"));
+
+            var tooltipText =
+                "The following plugins are known to conflict with\n" +
+                $"{Svc.PluginInterface.InternalName}'s Settings, which you have enabled:" +
+                conflictingSettingsText +
+                "\n\nIt is recommended you disable these plugins, or\n" +
+                "remove the conflicting setting in the plugins\n" +
+                "to prevent unexpected behavior and bugs.";
+
+            ShowWarning(ConflictType.Settings, tooltipText,
+                hasComboConflicts || hasTargetingConflicts);
+        }
+
+        return;
+
+        void ShowWarningText(string start, string end, Vector4 color)
+        {
+            if (ImGui.GetColumnWidth() <
+                ImGui.CalcTextSize(start + " " + end).X.Scale())
+                ImGui.TextColored(color, start + "\n" + end);
+            else
+                ImGui.TextColored(color, start + " " + end);
+        }
+
+        void ShowWarning(ConflictType type, string tooltipText, bool hasWarningAbove)
+        {
+            var color = type switch
+            {
+                ConflictType.Combo => ImGuiColors.DalamudRed,
+                ConflictType.Targeting => ImGuiColors.DalamudYellow,
+                ConflictType.Settings => ImGuiColors.DalamudOrange,
+                _ => throw new ArgumentOutOfRangeException(nameof(type),
+                    $"Unknown conflict type: {type}"),
+            };
+
+            if (hasWarningAbove)
+                ImGui.Spacing();
+
+            ImGuiEx.LineCentered($"###Conflicting{type}Plugins", () =>
+            {
+                var conflictMessage = conflicts.ToArray()[0].ConflictMessageParts;
+                ShowWarningText(conflictMessage[0], conflictMessage[1], color);
+
+                // Tooltip with explanation
+                if (ImGui.IsItemHovered())
+                    ImGui.SetTooltip(tooltipText);
+            });
+        }
+    }
+
+    #region Targeting Conflicts
+
+    /// <summary>
+    ///     Checks for targeting conflicts, which are also more complicated and
+    ///     requires checking the settings of the plugins.
+    /// </summary>
+    /// <param name="conflicts">
+    ///     The output list of conflicting plugins.
+    /// </param>
+    /// <returns>
+    ///     Whether there are targeting conflicts.
+    /// </returns>
+    private static bool TryGetTargetingConflicts(out Conflict[] conflicts)
+    {
+        conflicts = [];
+
+        // Redirect
+        // Reaction
+
+        return conflicts.Length > 0;
+    }
+
+    #endregion
+
+    #region Setting Conflicts
+
+    /// <summary>
+    ///     Checks for conflicts from specific settings in other plugins,
+    ///     like those that modify action queueing.
+    /// </summary>
+    /// <param name="conflicts">
+    ///     The output list of conflicting plugins.
+    /// </param>
+    /// <returns>
+    ///     Whether there are settings conflicts.
+    /// </returns>
+    private static bool TryGetSettingConflicts(out Conflict[] conflicts)
+    {
+        conflicts = [];
+
+        // Bossmod
+
+        return conflicts.Length > 0;
+    }
+
+    #endregion
+
     #region Combo Conflicts
 
     /// <summary>
@@ -74,83 +250,6 @@ public static class ConflictingPlugins
     }
 
     #endregion
-
-    #region Targeting Conflicts
-
-    /// <summary>
-    ///     Checks for targeting conflicts, which are also more complicated and
-    ///     requires checking the settings of the plugins.
-    /// </summary>
-    /// <param name="conflicts">
-    ///     The output list of conflicting plugins.
-    /// </param>
-    /// <returns>
-    ///     Whether there are targeting conflicts.
-    /// </returns>
-    private static bool TryGetTargetingConflicts(out Conflict[] conflicts)
-    {
-        conflicts = [];
-
-        // Redirect
-        // Reaction
-
-        return conflicts.Length > 0;
-    }
-
-    #endregion
-
-    #region Setting Conflicts
-
-    /// <summary>
-    ///     Checks for conflicts from specific settings in other plugins,
-    ///     like those that modify action queueing.
-    /// </summary>
-    /// <param name="conflicts">
-    ///     The output list of conflicting plugins.
-    /// </param>
-    /// <returns>
-    ///     Whether there are settings conflicts.
-    /// </returns>
-    private static bool TryGetSettingConflicts(out Conflict[] conflicts)
-    {
-        conflicts = [];
-
-        // Bossmod
-
-        return conflicts.Length > 0;
-    }
-
-    #endregion
-
-    public static bool TryGetConflicts(out Conflicts conflicts)
-    {
-        conflicts = new Conflicts();
-        
-        Conflict[] complexCombos = [];
-        if (TryGetSimpleComboConflicts(out var simpleCombos) ||
-            TryGetComplexComboConflicts(out complexCombos))
-            conflicts[ConflictType.Combo] = 
-                simpleCombos.Concat(complexCombos).ToArray();
-        
-        if (TryGetTargetingConflicts(out var targetingConflicts))
-            conflicts[ConflictType.Targeting] = targetingConflicts;
-        
-        if (TryGetSettingConflicts(out var settingConflicts))
-            conflicts[ConflictType.Settings] = settingConflicts;
-        
-        return conflicts.ToArray().Length > 0;
-    }
-
-    public static void Draw()
-    {
-        if (!TryGetConflicts(out var conflicts))
-            return;
-
-        foreach (var conflict in conflicts.ToArray())
-        {
-            
-        }
-    }
 }
 
 public enum ConflictType
@@ -163,12 +262,13 @@ public enum ConflictType
 public class Conflicts
 {
     private readonly Dictionary<ConflictType, Conflict[]> _conflicts = [];
+
     public Conflict[] this[ConflictType type]
     {
         get => _conflicts.TryGetValue(type, out var conflicts) ? conflicts : [];
         set => _conflicts[type] = value;
     }
-    
+
     public Conflict[] ToArray() => _conflicts.Values.SelectMany(x => x).ToArray();
 }
 
@@ -179,7 +279,7 @@ public class Conflict
     private const string TargetingConflictStart = "Conflicting Action";
     private const string TargetingConflictEnd = "Retargeting Detected!";
     private const string SettingsConflictStart = "Conflicting Plugin";
-    private const string SettingsConflictEnd = "Settings Detected!";
+    private const string SettingsConflictEnd = "Setting(s) Detected!";
 
     private readonly IExposedPlugin _plugin;
 
