@@ -16,6 +16,15 @@ namespace WrathCombo.Data;
 
 public static class ConflictingPlugins
 {
+    /// <summary>
+    ///     Gets all current conflicts.
+    /// </summary>
+    /// <param name="conflicts">
+    ///     The output list of conflicts.
+    /// </param>
+    /// <returns>
+    ///     Whether there are any conflicts at all.
+    /// </returns>
     public static bool TryGetConflicts(out Conflicts conflicts)
     {
         conflicts = new Conflicts();
@@ -35,6 +44,13 @@ public static class ConflictingPlugins
         return conflicts.ToArray().Length > 0;
     }
 
+    /// <summary>
+    ///     Draws all conflicts for the user to see.<br />
+    ///     For <see cref="Window.ConfigWindow" />.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     If a color was not added for a new <see cref="ConflictType" /> value.
+    /// </exception>
     public static void Draw()
     {
         if (!TryGetConflicts(out var conflicts))
@@ -252,6 +268,7 @@ public static class ConflictingPlugins
     #endregion
 }
 
+/// The different types of conflicts that are checked for.
 public enum ConflictType
 {
     Combo,
@@ -259,6 +276,15 @@ public enum ConflictType
     Settings,
 }
 
+/// <summary>
+///     A list of conflicts, sorted by their <see cref="ConflictType" /> internally,
+///     and accessible like a dictionary.
+/// </summary>
+/// <remarks>
+///     Access via <see cref="ToArray" /> to get all conflicts in a flat array,<br />
+///     or via the <see cref="this[ConflictType]" /> indexer to get conflicts of a
+///     specific type.
+/// </remarks>
 public class Conflicts
 {
     private readonly Dictionary<ConflictType, Conflict[]> _conflicts = [];
@@ -272,17 +298,31 @@ public class Conflicts
     public Conflict[] ToArray() => _conflicts.Values.SelectMany(x => x).ToArray();
 }
 
+/// <summary>
+///     A plugin conflict object, containing information about the offending plugin,
+///     and the offence.
+/// </summary>
 public class Conflict
 {
-    private const string ComboConflictStart = "Conflicting Combo";
-    private const string ComboConflictEnd = "Plugin(s) Detected!";
-    private const string TargetingConflictStart = "Conflicting Action";
-    private const string TargetingConflictEnd = "Retargeting Detected!";
-    private const string SettingsConflictStart = "Conflicting Plugin";
-    private const string SettingsConflictEnd = "Setting(s) Detected!";
-
+    /// The internal plugin's data that is offending.
     private readonly IExposedPlugin _plugin;
 
+    /// <summary>
+    ///     Create a new conflict object.
+    /// </summary>
+    /// <param name="internalName">The internal name of the plugin.</param>
+    /// <param name="conflictType">
+    ///     What <see cref="ConflictType">type</see> this conflict is.
+    /// </param>
+    /// <param name="reason">
+    ///     The reason for the conflict, if applicable.<br />
+    ///     Combo conflicts: nothing, or the part of the plugin that offends.<br />
+    ///     Targeting conflicts: the actions that conflict, separated by commas.<br />
+    ///     Settings conflicts: directions to the setting that conflicts.
+    /// </param>
+    /// <exception cref="KeyNotFoundException">
+    ///     If the plugin with the given internal name was not found.
+    /// </exception>
     public Conflict(
         string internalName, ConflictType conflictType, string? reason = null)
     {
@@ -295,13 +335,41 @@ public class Conflict
         Reason = reason;
     }
 
-    internal string Name => _plugin.Name;
-    internal string InternalName => _plugin.InternalName;
-    internal string Version => _plugin.Version.ToString();
-    internal ConflictType ConflictType { get; }
-    internal string? Reason { get; }
+    /// The display name of the plugin.
+    public string Name => _plugin.Name;
 
-    internal string[] ConflictMessageParts =>
+    /// <summary>
+    ///     The internal name of the plugin, which can be used for getting a
+    ///     <see cref="IExposedPlugin" /> instance from
+    ///     <see cref="Svc.PluginInterface">Svc.PluginInterface.InstalledPlugins</see>.
+    /// </summary>
+    internal string InternalName => _plugin.InternalName;
+
+    /// The version of the plugin, as a string.
+    public string Version => _plugin.Version.ToString();
+
+    /// What
+    /// <see cref="ConflictType">type</see>
+    /// this conflict is.
+    internal ConflictType ConflictType { get; }
+
+    /// <summary>
+    ///     The reason for the conflict, if applicable.<br />
+    ///     Combo conflicts: nothing, or the part of the plugin that offends.<br />
+    ///     Targeting conflicts: the actions that conflict, separated by commas.<br />
+    ///     Settings conflicts: directions to the setting that conflicts.
+    /// </summary>
+    public string? Reason { get; }
+
+    /// <summary>
+    ///     The parts of the conflict message that should be displayed to the user
+    ///     in the UI.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     If there is are not constants set for the given
+    ///     <see cref="ConflictType" />.
+    /// </exception>
+    public string[] ConflictMessageParts =>
         ConflictType switch
         {
             ConflictType.Combo => [ComboConflictStart, ComboConflictEnd],
@@ -310,4 +378,17 @@ public class Conflict
             _ => throw new ArgumentOutOfRangeException(nameof(ConflictType),
                 $"Unknown conflict type: {ConflictType}"),
         };
+
+    #region UI Display Strings
+
+    private const string ComboConflictStart = "Conflicting Combo";
+    private const string ComboConflictEnd = "Plugin(s) Detected!";
+
+    private const string TargetingConflictStart = "Conflicting Action";
+    private const string TargetingConflictEnd = "Retargeting Detected!";
+
+    private const string SettingsConflictStart = "Conflicting Plugin";
+    private const string SettingsConflictEnd = "Setting(s) Detected!";
+
+    #endregion
 }
