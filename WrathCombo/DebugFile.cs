@@ -173,7 +173,8 @@ public static class DebugFile
 
         AddLine("START CONFLICTING PLUGINS");
         foreach (var plugin in conflicts)
-            AddLine($"- {plugin}");
+            AddLine($"- {plugin.Name} v{plugin.Version} ({plugin.ConflictType}) " +
+                    $"reason: {plugin.Reason}");
         AddLine("END CONFLICTING PLUGINS");
     }
 
