@@ -8,6 +8,11 @@ description: >-
   Please see the full documentation, or `/snd`>Help>Lua>IPC>Wrath for documentation:
 
   https://github.com/PunishXIV/WrathCombo/blob/docs/docs/IPC.md
+
+
+  Update from:
+
+  https://github.com/PunishXIV/WrathCombo/blob/docs/docs/IPCExample.lua
 plugin_dependencies:
 - WrathCombo
 
@@ -21,20 +26,20 @@ local leaseID
 function EnableWrathAuto()
     -- Enable Wrath Combo Auto Rotation
     IPC.WrathCombo.SetAutoRotationState(GetLeaseID(), true)
-    
+
     -- Report Wrath Combo's Auto Rotation state
     yield("/wait 0.75")
     log("Wrath Combo Auto Rotation is now " ..
-        (IPC.WrathCombo.GetAutoRotationState() and "enabled" or "disabled"))
-    
+            (IPC.WrathCombo.GetAutoRotationState() and "enabled" or "disabled"))
+
     -- Make sure the current job is ready for Auto Rotation
     IPC.WrathCombo.SetCurrentJobAutoRotationReady(GetLeaseID())
-    
+
     -- Report Wrath Combo's current job readiness state
     yield("/wait 1.0")
     log("Wrath Combo's current job is " ..
-        (IPC.WrathCombo.IsCurrentJobAutoRotationReady() and "ready" or "not ready"))
-    
+            (IPC.WrathCombo.IsCurrentJobAutoRotationReady() and "ready" or "not ready"))
+
     yield("/wait 10.0")
 end
 
@@ -56,7 +61,7 @@ function EnableWrathAutoAndConfigure()
         log("Current job is being readied for Auto Rotation.")
     else
         log("Failed to ready current job for Auto Rotation: " ..
-            tostring(readyReturn))
+                tostring(readyReturn))
         return
     end
 
@@ -65,15 +70,15 @@ function EnableWrathAutoAndConfigure()
     local jobReady = IPC.WrathCombo.IsCurrentJobAutoRotationReady()
     log("Wrath Combo's current job is " ..
             (jobReady and "ready" or "not ready"))
-    
+
     -- Set various Auto Rotation settings
     IPC.WrathCombo.SetAutoRotationConfigState(GetLeaseID(),
-        AutoRotationConfigOption.InCombatOnly, false)
+            AutoRotationConfigOption.InCombatOnly, false)
     IPC.WrathCombo.SetAutoRotationConfigState(GetLeaseID(),
             AutoRotationConfigOption.AutoRez, true)
     IPC.WrathCombo.SetAutoRotationConfigState(GetLeaseID(),
             AutoRotationConfigOption.SingleTargetHPP, 60)
-    
+
     yield("/wait 10.0")
 end
 
@@ -85,7 +90,7 @@ function DemonstrateHandling()
         log("IPC is not ready; cannot demonstrate handling.")
         return
     end
-    
+
     -- Attempting to register for a lease
     ---------------------------------------------------------------------------------
     local registrationReturn = IPC.WrathCombo.Register("test name")
@@ -98,14 +103,14 @@ function DemonstrateHandling()
         log("Successfully registered for Wrath Combo control with leaseId: " ..
                 tostring(registrationReturn))
     end
-    
+
     -- Looking at all combo and option names for the current job
     ---------------------------------------------------------------------------------
     local jobID = Player.Job.Id
     -- Combos
     local comboNamesList = {}
-    log("Current job ID: " .. tostring(jobID) .. 
-        " (" .. Player.Job.Name .. ")")
+    log("Current job ID: " .. tostring(jobID) ..
+            " (" .. Player.Job.Name .. ")")
     local comboNamesRaw = IPC.WrathCombo.GetComboNamesForJob(jobID)
     if comboNamesRaw == nil or comboNamesRaw.Count == nil then
         log("Failed to get combo names for job ID: " .. tostring(jobID))
@@ -141,7 +146,7 @@ function DemonstrateHandling()
         log("Option names for job ID " .. tostring(jobID) .. ": " ..
                 table.concat(optionNamesList, ", "))
     end
-    
+
     -- Check Combo and Option states
     ---------------------------------------------------------------------------------
     local presetReturn
@@ -149,21 +154,21 @@ function DemonstrateHandling()
     presetReturn = IPC.WrathCombo.GetComboState(comboNamesList[1])
     log("Combo state for " .. tostring(comboNamesList[1]) .. " -> " ..
             "enabled: " .. tostring(presetReturn[ComboStateKeys.Enabled]) ..
-              " (type: " .. type(presetReturn[ComboStateKeys.Enabled]) .. "), " ..
+            " (type: " .. type(presetReturn[ComboStateKeys.Enabled]) .. "), " ..
             "enabled in auto: " .. tostring(presetReturn[ComboStateKeys.AutoMode]) ..
-              " (type: " .. type(presetReturn[ComboStateKeys.AutoMode]) .. ")")
+            " (type: " .. type(presetReturn[ComboStateKeys.AutoMode]) .. ")")
     -- Option
     presetReturn = IPC.WrathCombo.GetComboOptionState(optionNamesList[1])
     log("Option state for " .. tostring(optionNamesList[1]) .. " -> " ..
             "enabled: " .. tostring(presetReturn) ..
-              " (type: " .. type(presetReturn) .. "), ")
-    
+            " (type: " .. type(presetReturn) .. "), ")
+
     -- Set Combo and Option states
     ---------------------------------------------------------------------------------
     local setResult
     -- Combo
     setResult = IPC.WrathCombo.SetComboState(GetLeaseID(), comboNamesList[1],
-        true, true)
+            true, true)
     if setResult == SetResult.Okay or setResult == SetResult.OkayWorking then
         log("Successfully set combo state for " .. tostring(comboNamesList[1]) ..
                 " to enabled and auto mode on.")
@@ -173,7 +178,7 @@ function DemonstrateHandling()
     end
     -- Option
     setResult = IPC.WrathCombo.SetComboOptionState(GetLeaseID(),
-        optionNamesList[1], true)
+            optionNamesList[1], true)
     if setResult == SetResult.Okay or setResult == SetResult.OkayWorking then
         log("Successfully set option state for " .. tostring(optionNamesList[1]) ..
                 " to enabled.")
@@ -181,13 +186,13 @@ function DemonstrateHandling()
         log("Failed to set option state for " .. tostring(optionNamesList[1]) ..
                 ": " .. tostring(setResult))
     end
-    
+
     -- Checking Auto Rotation settings
     ---------------------------------------------------------------------------------
     local autoRotConfigReturn
     -- A boolean
     autoRotConfigReturn = IPC.WrathCombo.GetAutoRotationConfigState(
-        AutoRotationConfigOption.InCombatOnly)
+            AutoRotationConfigOption.InCombatOnly)
     log("Auto Rotation Config Option " ..
             tostring(AutoRotationConfigOption.InCombatOnly) .. " -> " ..
             tostring(autoRotConfigReturn) ..
@@ -213,7 +218,7 @@ function DemonstrateHandling()
             tostring(AutoRotationConfigOption.SingleTargetHPP) .. " -> " ..
             tostring(autoRotConfigReturn) ..
             " (type: " .. type(autoRotConfigReturn) .. ")")
-    
+
     yield("/wait 10.0")
 end
 
@@ -224,24 +229,24 @@ function GetLeaseID()
     else
         registered = false
     end
-    
+
     if IPC.WrathCombo.IPCReady() == false then
         log("IPC is not ready; cannot register for Wrath Combo control. " ..
-            "Likely just waiting for caches to be built after a job change.")
+                "Likely just waiting for caches to be built after a job change.")
         return
     end
-    
+
     log("Registering for Wrath Combo control...")
-    
+
     leaseID = IPC.WrathCombo.Register(scriptName)
-    
+
     if leaseID ~= nil then
         log("Successfully registered with leaseId: " .. tostring(leaseID))
     else
         log("Failed to register for lease. " ..
-            "See logs from Wrath Combo for why.")
+                "See logs from Wrath Combo for why.")
     end
-    
+
     return leaseID
 end
 
