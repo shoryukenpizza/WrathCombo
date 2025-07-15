@@ -3,6 +3,10 @@
 > the IPC in your plugin.
 
 > [!TIP]
+> See [The Example Lua](IPCExample.lua) for a barebones example of how to set up
+> the IPC in your SND script.
+
+> [!TIP]
 > Please check out the Table of Contents on GitHub for easy navigation,
 > there is a lot of explanation of the IPC, but also simple code snippet usage
 > details in this guide, as well as a Changelog at the end.
@@ -313,7 +317,7 @@ public class MyIPC
         
         // you can also convert the `reason` back to the `CancellationReason` enum.
         // you can copy this enum into your own class from:
-        // https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L182
+        // https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L117
     }
 }
 ```
@@ -339,9 +343,10 @@ internal static Guid? CurrentLease
     }
 }
 ```
-See how AutoDuty does this [here, in `Register`]((https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L473)) (callback [here](https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCProvider.cs#L27) and [here](https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L488)).
+See how AutoDuty does this [here, in `Register`]((https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L581)) (callback 
+[here](https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCProvider.cs#L596)).
 
-## How to use the setup IPC
+### How to use the setup IPC
 
 Once you are set up to work with the Wrath Combo IPC, it can be very simple if all
 you are trying to do is make sure the user is set up to for Auto-Rotation:
@@ -376,7 +381,7 @@ This does require you to copy over the [`SetResult` enum](https://github.com/Pun
 Or you can make it more advanced, making sure Auto-Rotation settings are as you want
 them to be.
 
-This does require you to copy over the [`AutoRotationConfigOption` enum](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L117).
+This does require you to copy over the [`AutoRotationConfigOption` enum](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L185).
 
 ```csharp
 if (WrathIPC.IsEnabled)
@@ -392,7 +397,7 @@ if (WrathIPC.IsEnabled)
 }
 ```
 See how AutoDuty does this, and to what extent,
-[here, in `SetAutoMode`](https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L451).
+[here, in `SetAutoMode`](https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L557).
 
 Lastly, you will need to release control when you are done, you are incentivized to
 release control yourself so the user is not incentivized to revoke control from you:
