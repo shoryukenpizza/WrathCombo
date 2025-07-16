@@ -167,6 +167,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Service.ActionReplacer = new ActionReplacer();
         ActionWatching.Enable();
         IPC = Provider.Init();
+        ConflictingPluginsChecks.Begin();
 
         ConfigWindow = new ConfigWindow();
         _majorChangesWindow = new MajorChangesWindow();
@@ -423,6 +424,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         IPC.Dispose();
         MoveHook?.Dispose();
 
+        ConflictingPluginsChecks.Dispose();
         AllIPCSubscriptions.Dispose();
         Svc.ClientState.Login -= PrintLoginMessage;
         ECommonsMain.Dispose();
