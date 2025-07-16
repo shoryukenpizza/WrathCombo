@@ -29,9 +29,9 @@ public static class ConflictingPlugins
     {
         conflicts = new Conflicts();
 
-        Conflict[] complexCombos = [];
-        if (TryGetSimpleComboConflicts(out var simpleCombos) ||
-            TryGetComplexComboConflicts(out complexCombos))
+        var hasSimpleConflicts = TryGetSimpleComboConflicts(out var simpleCombos);
+        var hasComplexConflicts = TryGetComplexComboConflicts(out var complexCombos);
+        if (hasSimpleConflicts || hasComplexConflicts)
             conflicts[ConflictType.Combo] =
                 simpleCombos.Concat(complexCombos).ToArray();
 
