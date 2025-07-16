@@ -198,7 +198,7 @@ public static class ConflictingPlugins
     {
         conflicts = [];
 
-        // Bossmod
+        // BossMod
 
         return conflicts.Length > 0;
     }
