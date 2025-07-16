@@ -15,7 +15,7 @@ public static class ConflictingPluginsChecks
     public static class Bossmod
     {
         public static bool Conflicted;
-        private static DateTime _conflictRegistered = DateTime.MinValue;
+        private static DateTime? _conflictRegistered;
         private static DateTime? _conflictFirstSeen;
         private static int _conflictsInARow;
         private static int _maxConflictsInARow = 4;
@@ -41,8 +41,9 @@ public static class ConflictingPluginsChecks
             }
             
             // Clear the conflict
-            if (!BossmodIPC.IsEnabled || // disabled
-                BossmodIPC.LastModified() > _conflictRegistered) // bm config changed
+            if (!BossModIPC.IsEnabled || // disabled
+                (_conflictRegistered is not null && // there is a conflict currently
+                 BossModIPC.LastModified() > _conflictRegistered)) // bm config changed
             {
                 PluginLog.Verbose("[ConflictingPlugins] [Bossmod] IPC not enabled, or config updated");
                 Conflicted = false;
