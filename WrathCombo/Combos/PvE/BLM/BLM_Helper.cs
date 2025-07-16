@@ -21,7 +21,7 @@ internal partial class BLM
         FirePhase && !ActionReady(Despair) && !ActionReady(FireSpam) && !ActionReady(FlareStar);
 
     internal static bool EndOfIcePhase =>
-        IcePhase && CurMp == MP.MaxMP && HasMaxUmbralHeartStacks;
+        IcePhase && CurMp is MP.MaxMP && HasMaxUmbralHeartStacks;
 
     internal static bool EndOfIcePhaseAoEMaxLevel =>
         IcePhase && HasMaxUmbralHeartStacks && TraitLevelChecked(Traits.EnhancedAstralFire);
@@ -246,10 +246,6 @@ internal partial class BLM
     internal static byte AstralFireStacks => Gauge.AstralFireStacks;
 
     internal static bool IcePhase => Gauge.InUmbralIce;
-
-    internal static bool UmbralIce1 => Gauge.UmbralIceStacks == 1;
-
-    internal static bool UmbralIce2 => Gauge.UmbralIceStacks == 2;
 
     internal static byte UmbralIceStacks => Gauge.UmbralIceStacks;
 

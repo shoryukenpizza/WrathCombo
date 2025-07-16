@@ -41,20 +41,18 @@ internal partial class BLM : Caster
                         return Role.Swiftcast;
 
                     if (ActionReady(Transpose) &&
+                        LevelChecked(Fire3) &&
                         (HasStatusEffect(Role.Buffs.Swiftcast) ||
-                         HasStatusEffect(Buffs.Triplecast) ||
-                         !LevelChecked(Fire3)))
+                         HasStatusEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
 
                 if (IcePhase)
                 {
-                    if (CurMp is MP.MaxMP &&
-                        (JustUsed(Paradox) ||
-                         !LevelChecked(Blizzard3)))
+                    if (CurMp is MP.MaxMP && JustUsed(Paradox))
                         return Transpose;
 
-                    if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
+                    if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
                         ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
                 }
@@ -92,7 +90,7 @@ internal partial class BLM : Caster
                     !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
-                if (ActionReady(Paradox) &&
+                if (LevelChecked(Paradox) &&
                     FirePhase && ActiveParadox &&
                     !HasStatusEffect(Buffs.Firestarter) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
@@ -120,28 +118,33 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && LevelChecked(Fire3))
                     return Fire3;
 
                 if (ActiveParadox &&
                     CurMp > 1600 &&
-                    (AstralFireStacks < 3 ||
-                     JustUsed(FlareStar, 5) ||
-                     !LevelChecked(FlareStar) && ActionReady(Despair)))
+                    AstralFireStacks is 3 &&
+                    (JustUsed(FlareStar, 5) ||
+                     !LevelChecked(FlareStar) && LevelChecked(Despair)))
                     return OriginalHook(Paradox);
 
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
+                if (LevelChecked(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
                     return FireSpam;
 
                 if (ActionReady(Despair))
                     return Despair;
 
-                if (ActionReady(Blizzard3) &&
+                if (LevelChecked(Blizzard3) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
+
+                if (ActionReady(Transpose) &&
+                    !LevelChecked(Fire3) &&
+                    CurMp < MP.FireI)
+                    return Transpose;
             }
 
             if (IcePhase)
@@ -151,14 +154,20 @@ internal partial class BLM : Caster
                     ActiveParadox)
                     return OriginalHook(Paradox);
 
-                if (CurMp is MP.MaxMP && ActionReady(Fire3))
-                    return Fire3; //35-100, pre-Paradox/scuffed starting combat
+                if (CurMp is MP.MaxMP)
+                {
+                    if (LevelChecked(Fire3))
+                        return Fire3;
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
+                    if (ActionReady(Transpose) && !LevelChecked(Blizzard3))
+                        return Transpose;
+                }
+
+                if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
-                if (ActionReady(BlizzardSpam))
+                if (LevelChecked(BlizzardSpam))
                     return BlizzardSpam;
             }
 
@@ -227,20 +236,17 @@ internal partial class BLM : Caster
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
                         ActionReady(Transpose) &&
                         (HasStatusEffect(Role.Buffs.Swiftcast) ||
-                         HasStatusEffect(Buffs.Triplecast) ||
-                         !LevelChecked(Fire3)))
+                         HasStatusEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
 
                 if (IcePhase)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
-                        CurMp is MP.MaxMP &&
-                        (JustUsed(Paradox) ||
-                         !LevelChecked(Blizzard3)))
+                        CurMp is MP.MaxMP && JustUsed(Paradox))
                         return Transpose;
 
-                    if (ActionReady(Blizzard3) && UmbralIceStacks < 3)
+                    if (LevelChecked(Blizzard3) && UmbralIceStacks < 3)
                     {
                         if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
                             ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
@@ -318,14 +324,14 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && AstralFireStacks < 3 ||
-                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                    !LevelChecked(Fire4) && TimeSinceFirestarterBuff >= 2 && LevelChecked(Fire3))
                     return Fire3;
 
                 if (ActiveParadox &&
                     CurMp > 1600 &&
-                    (AstralFireStacks < 3 ||
-                     JustUsed(FlareStar, 5) ||
-                     !LevelChecked(FlareStar) && ActionReady(Despair)))
+                    AstralFireStacks is 3 &&
+                    (JustUsed(FlareStar, 5) ||
+                     !LevelChecked(FlareStar) && LevelChecked(Despair)))
                     return OriginalHook(Paradox);
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
@@ -339,9 +345,15 @@ internal partial class BLM : Caster
                     ActionReady(Despair))
                     return Despair;
 
-                if (ActionReady(Blizzard3) &&
+                if (LevelChecked(Blizzard3) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
+
+                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
+                    ActionReady(Transpose) &&
+                    !LevelChecked(Fire3) &&
+                    CurMp < MP.FireI)
+                    return Transpose;
             }
 
             if (IcePhase)
@@ -351,10 +363,17 @@ internal partial class BLM : Caster
                     ActiveParadox)
                     return OriginalHook(Paradox);
 
-                if (CurMp is MP.MaxMP && ActionReady(Fire3))
-                    return Fire3;
+                if (CurMp is MP.MaxMP)
+                {
+                    if (LevelChecked(Fire3))
+                        return Fire3;
 
-                if (ActionReady(Blizzard3) && UmbralIceStacks < 3 &&
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
+                        ActionReady(Transpose) && !LevelChecked(Blizzard3))
+                        return Transpose;
+                }
+
+                if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
@@ -397,9 +416,7 @@ internal partial class BLM : Caster
 
                 if (ActionReady(Transpose) &&
                     (EndOfFirePhase ||
-                     EndOfIcePhaseAoEMaxLevel ||
-                     CurMp is MP.MaxMP ||
-                     HasMaxUmbralHeartStacks))
+                     EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
                 if (ActionReady(Amplifier) && PolyglotTimer >= 20000)
@@ -431,7 +448,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
+                if (LevelChecked(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Fire2);
 
                 if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
@@ -441,17 +458,26 @@ internal partial class BLM : Caster
 
                 if (ActionReady(Flare))
                     return Flare;
+
+                if (ActionReady(Transpose) &&
+                    !LevelChecked(Fire3) &&
+                    CurMp < MP.FireAoE)
+                    return Transpose;
             }
 
             if (IcePhase)
             {
-                if (ActionReady(Freeze))
+                if ((CurMp is MP.MaxMP || HasMaxUmbralHeartStacks) &&
+                    ActionReady(Transpose))
+                    return Transpose;
+
+                if (LevelChecked(Freeze))
                     return LevelChecked(Blizzard4) && HasBattleTarget() &&
                            NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
                         : Freeze;
 
-                if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
+                if (!LevelChecked(Freeze) && LevelChecked(Blizzard2))
                     return OriginalHook(Blizzard2);
             }
 
@@ -487,10 +513,7 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
                     ActionReady(Transpose) &&
-                    (EndOfFirePhase ||
-                     EndOfIcePhaseAoEMaxLevel ||
-                     CurMp is MP.MaxMP ||
-                     HasMaxUmbralHeartStacks))
+                    (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
@@ -540,25 +563,34 @@ internal partial class BLM : Caster
                     return Flare;
 
                 if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
-                    ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
+                    LevelChecked(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Blizzard2);
+
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
+                    ActionReady(Transpose) && CurMp < MP.FireAoE)
+                    return Transpose;
             }
 
             if (IcePhase)
             {
-                if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
-                    HasMaxUmbralHeartStacks && CurMp is MP.MaxMP &&
-                    ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
-                    return OriginalHook(Fire2);
+                if (HasMaxUmbralHeartStacks || CurMp is MP.MaxMP)
+                {
+                    if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
+                        LevelChecked(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                        return OriginalHook(Fire2);
 
-                if (ActionReady(Freeze))
+                    if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
+                        ActionReady(Transpose))
+                        return Transpose;
+                }
+                if (LevelChecked(Freeze))
                     return IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
                            LevelChecked(Blizzard4) && HasBattleTarget() &&
                            NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2
                         ? Blizzard4
                         : Freeze;
 
-                if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
+                if (!LevelChecked(Freeze) && LevelChecked(Blizzard2))
                     return OriginalHook(Blizzard2);
             }
 
@@ -593,7 +625,7 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID switch
             {
-                Blizzard when LevelChecked(Blizzard3) && (FirePhase || UmbralIce1 || UmbralIce2) => Blizzard3,
+                Blizzard when LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 or 2) => Blizzard3,
                 Freeze when !LevelChecked(Freeze) => Blizzard2,
                 var _ => actionID
             };
