@@ -138,7 +138,8 @@ internal partial class BLM : Caster
                     !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
 
-                if (ActionReady(Transpose))
+                if (ActionReady(Transpose) &&
+                    !LevelChecked(Fire3))
                     return Transpose; //Level 4-34
             }
 
@@ -343,7 +344,8 @@ internal partial class BLM : Caster
                     return Blizzard3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
-                    ActionReady(Transpose))
+                    ActionReady(Transpose) &&
+                    !LevelChecked(Fire3))
                     return Transpose; //Level 4-34
             }
 
