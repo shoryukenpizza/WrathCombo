@@ -260,8 +260,13 @@ public static class ConflictingPlugins
     {
         conflicts = [];
 
+        if (ConflictingPluginsChecks.Bossmod.Conflicted)
+            conflicts = conflicts.Append(new Conflict(
+                "BossMod", ConflictType.Combo,
+                "is queueing actions!"))
+                .ToArray();
+
         // Reaction ?
-        // Bossmod
 
         return conflicts.Length > 0;
     }
