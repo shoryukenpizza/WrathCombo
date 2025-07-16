@@ -613,19 +613,12 @@ internal partial class BLM : Caster
 
         protected override uint Invoke(uint actionID)
         {
-            switch (actionID)
+            return actionID switch
             {
-                case Blizzard when LevelChecked(Blizzard3) && !IcePhase:
-                
-                case Blizzard3 when LevelChecked(Blizzard3) && (FirePhase || UmbralIce1 || UmbralIce2):
-                    return Blizzard3;
-
-                case Freeze when !LevelChecked(Freeze):
-                    return Blizzard2;
-
-                default:
-                    return actionID;
-            }
+                Blizzard when LevelChecked(Blizzard3) && (FirePhase || UmbralIce1 || UmbralIce2) => Blizzard3,
+                Freeze when !LevelChecked(Freeze) => Blizzard2,
+                var _ => actionID
+            };
         }
     }
 
@@ -688,23 +681,14 @@ internal partial class BLM : Caster
 
         protected override uint Invoke(uint actionID)
         {
-            switch (actionID)
+            return actionID switch
             {
-                case Fire4 when FirePhase && LevelChecked(Fire4):
-                    return Fire4;
-
-                case Fire4 when IcePhase && LevelChecked(Blizzard4):
-                    return Blizzard4;
-
-                case Flare when FirePhase && LevelChecked(Flare):
-                    return Flare;
-
-                case Flare when IcePhase && LevelChecked(Freeze):
-                    return Freeze;
-
-                default:
-                    return actionID;
-            }
+                Fire4 when FirePhase && LevelChecked(Fire4) => Fire4,
+                Fire4 when IcePhase && LevelChecked(Blizzard4) => Blizzard4,
+                Flare when FirePhase && LevelChecked(Flare) => Flare,
+                Flare when IcePhase && LevelChecked(Freeze) => Freeze,
+                var _ => actionID
+            };
         }
     }
 
