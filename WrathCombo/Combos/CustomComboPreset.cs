@@ -4159,16 +4159,11 @@ public enum CustomComboPreset
     NIN_ST_AeolianEdgeCombo = 10074,
 
     [ReplaceSkill(NIN.ArmorCrush)]
-    [CustomComboInfo("Armor Crush Combo", "Replace Armor Crush with its combo chain.", NIN.JobID)]
-    [BasicCombo]
-    NIN_ST_ArmorCrushCombo = 10075,
-
-    #endregion
-
-    [ReplaceSkill(NIN.ArmorCrush)]
     [CustomComboInfo("Armor Crush Combo Feature", "Replace Armor Crush with its combo chain.", NIN.JobID)]
     NIN_ArmorCrushCombo = 10053,
 
+    #endregion
+    
     [ReplaceSkill(NIN.Kassatsu)]
     [CustomComboInfo("Kassatsu to Trick Feature",
         "Replaces Kassatsu with Trick Attack/Kunai's Bane while Suiton or Hidden is up.\nCooldown tracking plugin recommended.",

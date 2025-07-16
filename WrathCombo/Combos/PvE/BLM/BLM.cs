@@ -616,6 +616,8 @@ internal partial class BLM : Caster
             switch (actionID)
             {
                 case Blizzard when LevelChecked(Blizzard3) && !IcePhase:
+                
+                case Blizzard3 when LevelChecked(Blizzard3) && (FirePhase || UmbralIce1 || UmbralIce2):
                     return Blizzard3;
 
                 case Freeze when !LevelChecked(Freeze):

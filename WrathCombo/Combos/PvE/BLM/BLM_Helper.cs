@@ -247,6 +247,10 @@ internal partial class BLM
 
     internal static bool IcePhase => Gauge.InUmbralIce;
 
+    internal static bool UmbralIce1 => Gauge.UmbralIceStacks == 1;
+    
+    internal static bool UmbralIce2 => Gauge.UmbralIceStacks == 2;
+
     internal static byte UmbralIceStacks => Gauge.UmbralIceStacks;
 
     internal static byte UmbralHearts => Gauge.UmbralHearts;
