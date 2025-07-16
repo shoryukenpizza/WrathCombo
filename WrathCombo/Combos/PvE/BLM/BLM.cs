@@ -611,15 +611,13 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Blizzard1to3;
 
-        protected override uint Invoke(uint actionID)
-        {
-            return actionID switch
+        protected override uint Invoke(uint actionID) =>
+            actionID switch
             {
                 Blizzard when LevelChecked(Blizzard3) && (FirePhase || UmbralIce1 || UmbralIce2) => Blizzard3,
                 Freeze when !LevelChecked(Freeze) => Blizzard2,
                 var _ => actionID
             };
-        }
     }
 
     internal class BLM_Fire1to3 : CustomCombo
@@ -679,9 +677,8 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FireandIce;
 
-        protected override uint Invoke(uint actionID)
-        {
-            return actionID switch
+        protected override uint Invoke(uint actionID) =>
+            actionID switch
             {
                 Fire4 when FirePhase && LevelChecked(Fire4) => Fire4,
                 Fire4 when IcePhase && LevelChecked(Blizzard4) => Blizzard4,
@@ -689,7 +686,6 @@ internal partial class BLM : Caster
                 Flare when IcePhase && LevelChecked(Freeze) => Freeze,
                 var _ => actionID
             };
-        }
     }
 
     internal class BLM_FireFlarestar : CustomCombo
