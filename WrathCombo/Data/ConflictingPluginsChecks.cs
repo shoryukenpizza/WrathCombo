@@ -92,6 +92,9 @@ public static class ConflictingPluginsChecks
         Svc.Framework.RunOnTick(RunChecks, ts);
     }
 
-    public static void Dispose() =>
+    public static void Dispose() {
+        BossMod.dispose();
+        BossModReborn.dispose();
         _cancelConflictChecks = true;
+    }
 }

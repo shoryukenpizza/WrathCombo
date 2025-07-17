@@ -5,6 +5,5 @@ public static class AllIPCSubscriptions
     public static void Dispose()
     {
         OrbwalkerIPC.Dispose();
-        BossModIPC.Dispose();
     }
 }
