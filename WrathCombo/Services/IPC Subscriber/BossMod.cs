@@ -24,7 +24,7 @@ internal static class BossModIPC
     internal static bool IsEnabled =>
         InstalledVersion >= ValidVersion || // release version
         InstalledVersion == new Version(0, 0, 0, 0); // debug version
-    
+
     /// <summary>
     ///     Checks the installed version of the BossMod plugin.
     /// </summary>
@@ -36,12 +36,12 @@ internal static class BossModIPC
         (DalamudReflector.TryGetDalamudPlugin("BossMod", out var dalamudPlugin, false, true)
             ? dalamudPlugin.GetType().Assembly.GetName().Version!
             : new Version(0, 0, 0, 1)); // no version found
-    
+
     /// The version where the IPC endpoints were introduced.
     private static readonly Version ValidVersion = new(0,3,0,6);
 
     #endregion
-    
+
     /// <summary>
     ///     Wrapper for <see cref="HasEntries"/> IPC call, only checking if the
     ///     IPC is enabled.
@@ -56,12 +56,12 @@ internal static class BossModIPC
             PluginLog.Debug("[BossMod] BossMod is not enabled.");
             return false;
         }
-        
+
         var hasEntries = HasEntries();
         PluginLog.Verbose($"[BossMod] `ActionQueue.HasEntries`: {hasEntries} ");
         return hasEntries;
     }
-    
+
 #pragma warning disable CS0649, CS8618 // EzIPC complaints
     [EzIPC("Configuration.%m")]
     internal static readonly Func<DateTime> LastModified;
