@@ -630,7 +630,7 @@ internal partial class BLM : Caster
             actionID switch
             {
                 Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 || UmbralIceStacks is 2) => Blizzard3,
-                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase => OriginalHook(Blizzard),
+                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
                 Freeze when !LevelChecked(Freeze) => Blizzard2,
                 var _ => actionID
             };
