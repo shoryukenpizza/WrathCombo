@@ -133,7 +133,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (LevelChecked(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
+                if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
                     return FireSpam;
 
                 if (ActionReady(Despair))
@@ -169,7 +169,7 @@ internal partial class BLM : Caster
                     (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
-                if (LevelChecked(BlizzardSpam))
+                if (ActionReady(BlizzardSpam))
                     return BlizzardSpam;
             }
 
