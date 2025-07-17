@@ -629,7 +629,8 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID switch
             {
-                Blizzard when LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 or 2) => Blizzard3,
+                Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) && FirePhase  => Blizzard3,
+                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase => OriginalHook(Blizzard),
                 Freeze when !LevelChecked(Freeze) => Blizzard2,
                 var _ => actionID
             };

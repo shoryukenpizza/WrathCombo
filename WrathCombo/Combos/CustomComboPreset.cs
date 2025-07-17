@@ -1091,8 +1091,8 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire I/III Feature", "Replaces Fire I with Fire III outside of Astral Fire or when Firestarter is up.", BLM.JobID)]
     BLM_Fire1to3 = 2054,
 
-    [ReplaceSkill(BLM.Blizzard, BLM.Freeze)]
-    [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I with Blizzard III when out of Umbral Ice.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
+    [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3, BLM.Freeze)]
+    [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_Blizzard1to3 = 2052,
 
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]

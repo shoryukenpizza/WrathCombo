@@ -127,6 +127,14 @@ internal partial class BLM
                     DrawSliderInt(1, 100, BLM_VariantCure,
                         "HP% to be at or under", 200);
                     break;
+
+                case CustomComboPreset.BLM_Blizzard1to3:
+                    DrawRadioButton(BLM_B1to3,
+                        $"Replaces {Blizzard.ActionName()}", $"Replaces {Blizzard.ActionName()} with {Blizzard3.ActionName()} when out of Umbral Ice.", 0);
+
+                    DrawRadioButton(BLM_B1to3,
+                        $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Blizzard.ActionName()} when in Umbral Ice.", 1);
+                    break;
             }
         }
 
@@ -147,7 +155,8 @@ internal partial class BLM
             BLM_AoE_Triplecast_HoldCharges = new("BLM_AoE_Triplecast_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 20),
-            BLM_VariantCure = new("BLM_VariantCure", 50);
+            BLM_VariantCure = new("BLM_VariantCure", 50),
+            BLM_B1to3 = new("BLM_B1to3", 0);
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
