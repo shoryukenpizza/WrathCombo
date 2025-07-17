@@ -49,7 +49,7 @@ internal partial class BLM : Caster
 
                 if (IcePhase)
                 {
-                    if (CurMp is MP.MaxMP && 
+                    if (CurMp is MP.MaxMP &&
                         JustUsed(Paradox) &&
                         ActionReady(Transpose))
                         return Transpose;
