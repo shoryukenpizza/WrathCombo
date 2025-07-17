@@ -57,7 +57,7 @@ internal partial class BLM : Caster
                         return Role.Swiftcast;
                 }
 
-                if (ActionReady(Manaward) && PlayerHealthPercentageHp() < 25)
+                if (ActionReady(Manaward) && PlayerHealthPercentageHp() < 40)
                     return Manaward;
             }
 
@@ -123,9 +123,9 @@ internal partial class BLM : Caster
 
                 if (ActiveParadox &&
                     CurMp > 1600 &&
-                    AstralFireStacks is 3 &&
-                    (JustUsed(FlareStar, 5) ||
-                     !LevelChecked(FlareStar) && LevelChecked(Despair)))
+                    (AstralFireStacks < 3 ||
+                     JustUsed(FlareStar, 5) ||
+                     !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return OriginalHook(Paradox);
 
                 if (FlarestarReady)
@@ -329,9 +329,9 @@ internal partial class BLM : Caster
 
                 if (ActiveParadox &&
                     CurMp > 1600 &&
-                    AstralFireStacks is 3 &&
-                    (JustUsed(FlareStar, 5) ||
-                     !LevelChecked(FlareStar) && LevelChecked(Despair)))
+                    (AstralFireStacks < 3 ||
+                     JustUsed(FlareStar, 5) ||
+                     !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return OriginalHook(Paradox);
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
