@@ -49,7 +49,9 @@ internal partial class BLM : Caster
 
                 if (IcePhase)
                 {
-                    if (CurMp is MP.MaxMP && JustUsed(Paradox))
+                    if (CurMp is MP.MaxMP && 
+                        JustUsed(Paradox) &&
+                        ActionReady(Transpose))
                         return Transpose;
 
                     if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
@@ -243,7 +245,8 @@ internal partial class BLM : Caster
                 if (IcePhase)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
-                        CurMp is MP.MaxMP && JustUsed(Paradox))
+                        CurMp is MP.MaxMP && JustUsed(Paradox) &&
+                        ActionReady(Transpose))
                         return Transpose;
 
                     if (LevelChecked(Blizzard3) && UmbralIceStacks < 3)
@@ -369,7 +372,8 @@ internal partial class BLM : Caster
                         return Fire3;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
-                        ActionReady(Transpose) && !LevelChecked(Blizzard3))
+                        ActionReady(Transpose) &&
+                        !LevelChecked(Blizzard3))
                         return Transpose;
                 }
 
