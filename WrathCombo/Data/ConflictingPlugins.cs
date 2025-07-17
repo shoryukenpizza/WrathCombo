@@ -265,6 +265,11 @@ public static class ConflictingPlugins
                 "BossMod", ConflictType.Combo,
                 "is queueing actions!"))
                 .ToArray();
+        if (ConflictingPluginsChecks.BossModReborn.Conflicted)
+            conflicts = conflicts.Append(new Conflict(
+                "BossModReborn", ConflictType.Combo,
+                "is queueing actions!"))
+                .ToArray();
 
         // Reaction ?
 
