@@ -138,7 +138,7 @@ internal partial class BLM
 
                 case CustomComboPreset.BLM_Fire1to3:
                     DrawRadioButton(BLM_F1to3,
-                        $"Replaces {Fire.ActionName()}", $"Replaces {Fire.ActionName()} with {Fire3.ActionName()} when out of Astral Fire III.", 0);
+                        $"Replaces {Fire.ActionName()}", $"Replaces {Fire.ActionName()} with {Fire3.ActionName()} when out of Astral Fire III or not in combat.", 0);
 
                     DrawRadioButton(BLM_F1to3,
                         $"Replaces {Fire3.ActionName()}", $"Replaces {Fire3.ActionName()} with {Fire.ActionName()} when in Astral Fire III.", 1);

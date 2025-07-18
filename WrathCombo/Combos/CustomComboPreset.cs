@@ -1097,7 +1097,7 @@ public enum CustomComboPreset
 
     [ReplaceSkill(BLM.Fire4)]
     [ConflictingCombos(BLM_FireandIce)]
-    [CustomComboInfo("Fire 4 to 3", "Replaces Fire 4 with Fire 3 when not in Astral Fire III.", BLM.JobID)]
+    [CustomComboInfo("Fire 4 to 3", "Replaces Fire 4 with Fire 3 when not in Astral Fire III or not in combat.", BLM.JobID)]
     BLM_Fire4to3 = 2059,
 
     [ReplaceSkill(BLM.Blizzard4)]
