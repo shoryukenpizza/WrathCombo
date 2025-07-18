@@ -130,10 +130,18 @@ internal partial class BLM
 
                 case CustomComboPreset.BLM_Blizzard1to3:
                     DrawRadioButton(BLM_B1to3,
-                        $"Replaces {Blizzard.ActionName()}", $"Replaces {Blizzard.ActionName()} with {Blizzard3.ActionName()} when out of Umbral Ice.", 0);
+                        $"Replaces {Blizzard.ActionName()}", $"Replaces {Blizzard.ActionName()} with {Blizzard3.ActionName()} when out of Umbral Ice III.", 0);
 
                     DrawRadioButton(BLM_B1to3,
-                        $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Blizzard.ActionName()} when in Umbral Ice.", 1);
+                        $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Blizzard.ActionName()} when in Umbral Ice III.", 1);
+                    break;
+
+                case CustomComboPreset.BLM_Fire1to3:
+                    DrawRadioButton(BLM_F1to3,
+                        $"Replaces {Fire.ActionName()}", $"Replaces {Fire.ActionName()} with {Fire3.ActionName()} when out of Astral Fire III.", 0);
+
+                    DrawRadioButton(BLM_F1to3,
+                        $"Replaces {Fire3.ActionName()}", $"Replaces {Fire3.ActionName()} with {Fire.ActionName()} when in Astral Fire III.", 1);
                     break;
             }
         }
@@ -156,7 +164,8 @@ internal partial class BLM
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 20),
             BLM_VariantCure = new("BLM_VariantCure", 50),
-            BLM_B1to3 = new("BLM_B1to3", 0);
+            BLM_B1to3 = new("BLM_B1to3", 0),
+            BLM_F1to3 = new("BLM_F1to3", 0);
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
