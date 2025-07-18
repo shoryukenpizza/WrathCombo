@@ -631,7 +631,6 @@ internal partial class BLM : Caster
             {
                 Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 || UmbralIceStacks is 2) => Blizzard3,
                 Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
-                Freeze when !LevelChecked(Freeze) => Blizzard2,
                 var _ => actionID
             };
     }
@@ -708,6 +707,15 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID is FlareStar && FirePhase && LevelChecked(FlareStar) && ActiveParadox && AstralSoulStacks < 6
                 ? OriginalHook(Fire)
+                : actionID;
+    }
+
+    internal class BLM_FreezeBlizzard2 : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FreezeBlizzard2;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Freeze && !LevelChecked(Freeze)
+                ? Blizzard2
                 : actionID;
     }
 

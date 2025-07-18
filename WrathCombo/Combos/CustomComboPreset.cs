@@ -1091,8 +1091,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire I/III Feature", "Replaces Fire I or Fire III.", BLM.JobID)]
     BLM_Fire1to3 = 2054,
 
-    [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3, BLM.Freeze)]
-    [ConflictingCombos(BLM_FreezeParadox)]
+    [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
     [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_Blizzard1to3 = 2052,
 
@@ -1110,12 +1109,17 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire & Ice", "Replaces Fire4 with Blizzard4 when in Umbral Ice.\nReplaces Flare with Freeze when in Umbral Ice.", BLM.JobID)]
     BLM_FireandIce = 2057,
 
+    [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
+    [ConflictingCombos(BLM_FreezeParadox)]
+    [CustomComboInfo("Freeze to Blizzard II", "nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
+    BLM_FreezeBlizzard2 = 2064,
+
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]
     [CustomComboInfo(" Fire and Flare to Star", "Replaces Fire4 and Flare to Flarestar when on max stacks.", BLM.JobID)]
     BLM_FireFlarestar = 2058,
 
     [ReplaceSkill(BLM.Freeze)]
-    [ConflictingCombos(BLM_Blizzard1to3)]
+    [ConflictingCombos(BLM_FreezeBlizzard2)]
     [CustomComboInfo("Freeze to Paradox", "Replaces Freeze with Ice Paradox when you have 3 Umbral Heart stacks.", BLM.JobID)]
     BLM_FreezeParadox = 2062,
 
@@ -1147,7 +1151,7 @@ public enum CustomComboPreset
 
     // Last value ST = 2117
     //Last Value AoE = 2212
-    //Last Value misc = 2063
+    //Last Value misc = 2064
 
     #endregion
 
