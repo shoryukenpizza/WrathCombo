@@ -1112,10 +1112,18 @@ public enum CustomComboPreset
     [CustomComboInfo(" Fire and Flare to Star", "Replaces Fire4 and Flare to Flarestar when on max stacks.", BLM.JobID)]
     BLM_FireFlarestar = 2058,
 
+    [ReplaceSkill(BLM.Freeze)]
+    [CustomComboInfo("Freeze to Paradox", "Replaces Freeze with Ice Paradox when you have 3 Umbral Heart stacks.", BLM.JobID)]
+    BLM_FreezeParadox = 2062,
+
+    [ReplaceSkill(BLM.FlareStar)]
+    [CustomComboInfo("Flarestar to Paradox", "Replaces Flarestar with Fire Paradox when not at max Flarestar stacks.", BLM.JobID)]
+    BLM_FlareParadox = 2063,
+
     [ReplaceSkill(BLM.Amplifier)]
     [CustomComboInfo("Amplifier to Xenoglossy", "Replaces Amplifier with Xenoglossy when at max Polyglot stacks.", BLM.JobID)]
     BLM_AmplifierXeno = 2061,
-
+    
     [ReplaceSkill(BLM.Transpose)]
     [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID)]
     BLM_UmbralSoul = 2050,
@@ -1136,7 +1144,7 @@ public enum CustomComboPreset
 
     // Last value ST = 2117
     //Last Value AoE = 2212
-    //Last Value misc = 2061
+    //Last Value misc = 2063
 
     #endregion
 

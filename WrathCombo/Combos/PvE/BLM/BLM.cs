@@ -693,6 +693,24 @@ internal partial class BLM : Caster
                 : actionID;
     }
 
+    internal class BLM_FreezeParadox : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FreezeParadox;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Freeze && HasMaxUmbralHeartStacks && LevelChecked(Paradox) && ActiveParadox && IcePhase
+                ? OriginalHook(Blizzard)
+                : actionID;
+    }
+
+    internal class BLM_FlareParadox : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FlareParadox;
+        protected override uint Invoke(uint actionID) =>
+            actionID is FlareStar && FirePhase && LevelChecked(FlareStar) && ActiveParadox && AstralSoulStacks < 6
+                ? OriginalHook(Fire)
+                : actionID;
+    }
+
     internal class BLM_AmplifierXeno : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_AmplifierXeno;
