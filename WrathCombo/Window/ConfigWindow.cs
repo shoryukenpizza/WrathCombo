@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using ECommons.Logging;
 using ECommons.Throttlers;
@@ -19,6 +20,7 @@ using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.Data;
+using WrathCombo.Services;
 using WrathCombo.Window.Tabs;
 
 namespace WrathCombo.Window
@@ -99,15 +101,23 @@ namespace WrathCombo.Window
             var topLeftSideHeight = region.Y;
             var columns = 2;
             var tableName = "###MainTable";
+            if (Service.Configuration.UILeftColumnCollapsed)
+            {
+                columns = 1;
+                tableName = "###NoSidebarMainTable";
+            }
             
             using var style = ImRaii.PushStyle(ImGuiStyleVar.CellPadding, new Vector2(4, 0).Scale());
             using (var table = ImRaii.Table(tableName, columns, ImGuiTableFlags.Resizable)) {
                 if (!table) return;
                 
-                DrawSidebar(topLeftSideHeight);
+                if (!Service.Configuration.UILeftColumnCollapsed)
+                    DrawSidebar(topLeftSideHeight);
                 
                 DrawBody();
             }
+            
+            DrawCollapseButton();
         }
 
         private void DrawSidebar(float topLeftSideHeight)
@@ -259,6 +269,25 @@ namespace WrathCombo.Window
                     AutoRotationTab.Draw();
                     break;
             };
+        }
+
+        private void DrawCollapseButton()
+        {
+            // Go to the bottom of the window
+            ImGui.SetCursorPos(ImGui.GetCursorPos() with
+            {
+                X = ImGui.GetStyle().WindowPadding.X,
+                Y = ImGui.GetWindowSize().Y - ImGui.GetStyle().WindowPadding.Y*2 -
+                    ImGui.GetTextLineHeight(),
+            });
+            using var overlay = ImRaii.Child("ButtonOverlay", Vector2.Zero, false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+            if (!overlay) return;
+            
+            if (ImGuiEx.IconButton(FontAwesomeIcon.CaretLeft))
+                Service.Configuration.UILeftColumnCollapsed =
+                    !Service.Configuration.UILeftColumnCollapsed;
+            if (ImGui.IsItemHovered())
+                ImGui.SetTooltip("Collapse this Sidebar");
         }
 
 
