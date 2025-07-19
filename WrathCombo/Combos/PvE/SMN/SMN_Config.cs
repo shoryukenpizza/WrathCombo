@@ -141,7 +141,7 @@ internal partial class SMN
                     DrawHorizontalMultiChoice(SMN_ST_Egi_AstralFlow, "Add Slipstream", "", 4, 2);
 
                     if (SMN_ST_Egi_AstralFlow[1])
-                        DrawSliderInt(0, 25, SMN_ST_CrimsonCycloneMeleeDistance, " Range of when to use Crimson Cyclone.");
+                        DrawSliderInt(0, 25, SMN_ST_CrimsonCycloneMeleeDistance, " Maximum range to use Crimson Cyclone.");
 
                     break;
                 }
@@ -154,7 +154,7 @@ internal partial class SMN
                     DrawHorizontalMultiChoice(SMN_AoE_Egi_AstralFlow, "Add Slipstream", "", 4, 2);
 
                     if (SMN_AoE_Egi_AstralFlow[1])
-                        DrawSliderInt(0, 25, SMN_AoE_CrimsonCycloneMeleeDistance, " Range of when to use Crimson Cyclone.");
+                        DrawSliderInt(0, 25, SMN_AoE_CrimsonCycloneMeleeDistance, " Maximum range to use Crimson Cyclone.");
 
                     break;
                 }
