@@ -273,21 +273,55 @@ namespace WrathCombo.Window
 
         private void DrawCollapseButton()
         {
+            var collapsed = Service.Configuration.UILeftColumnCollapsed;
+            
             // Go to the bottom of the window
             ImGui.SetCursorPos(ImGui.GetCursorPos() with
             {
                 X = ImGui.GetStyle().WindowPadding.X,
                 Y = ImGui.GetWindowSize().Y - ImGui.GetStyle().WindowPadding.Y*2 -
-                    ImGui.GetTextLineHeight(),
+                    ImGui.GetTextLineHeight() *
+                    (Service.Configuration.UILeftColumnCollapsed ? 1.5f : 1f),
             });
-            using var overlay = ImRaii.Child("ButtonOverlay", Vector2.Zero, false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
-            if (!overlay) return;
             
-            if (ImGuiEx.IconButton(FontAwesomeIcon.CaretLeft))
-                Service.Configuration.UILeftColumnCollapsed =
-                    !Service.Configuration.UILeftColumnCollapsed;
+            // Calculate the size needed for the button
+            var fPad = ImGui.GetStyle().FramePadding;
+            Vector2 faSz;
+            using (ImRaii.PushFont(UiBuilder.IconFont))
+            {
+                faSz = ImGui.CalcTextSize("\uF0D9");
+            }
+            
+            // Draw a window for the button, so clicks don't leak behind it
+            using var overlay = ImRaii.Child("ButtonOverlay",
+                new Vector2(faSz.X * 2 + fPad.X * 2,
+                    faSz.Y + 10f.Scale() + fPad.Y * 2),
+                false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
+            if (!overlay) return;
+
+            // Set up how the button should display
+            var icon = FontAwesomeIcon.CaretLeft;
+            var hoverText = "Collapse Sidebar";
+            if (collapsed)
+            {
+                icon = FontAwesomeIcon.CaretRight;
+                hoverText = "Expand Sidebar";
+                ImGui.SetWindowFontScale(1.5f);
+            }
+            
+            // Draw the button
+            if (ImGuiEx.IconButton(icon, "CollapseButton"))
+            {
+                ImGui.SetWindowFontScale(1f);
+                Service.Configuration.UILeftColumnCollapsed = !collapsed;
+                Service.Configuration.Save();
+            }
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("Collapse this Sidebar");
+                ImGui.SetTooltip(hoverText);
+            
+            // Restore the font scale if it was changed
+            if (collapsed)
+                ImGui.SetWindowFontScale(1f);
         }
 
 
