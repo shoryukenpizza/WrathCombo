@@ -56,6 +56,7 @@ public static class ConflictingPlugins
         if (!TryGetConflicts(out var conflicts))
             return;
 
+        Conflict[] currentConflicts = [];
         var hasComboConflicts = conflicts[ConflictType.Combo].Length > 0;
         var hasTargetingConflicts = conflicts[ConflictType.Targeting].Length > 0;
         var hasSettingsConflicts = conflicts[ConflictType.Settings].Length > 0;
@@ -65,6 +66,7 @@ public static class ConflictingPlugins
 
         if (hasComboConflicts)
         {
+            currentConflicts = conflicts[ConflictType.Combo];
             var conflictingPluginsText = "- " + string.Join("\n- ",
                 conflicts[ConflictType.Combo]
                     .Select(x => $"{x.Name} v{x.Version}" +
@@ -83,6 +85,7 @@ public static class ConflictingPlugins
 
         if (hasTargetingConflicts)
         {
+            currentConflicts = conflicts[ConflictType.Targeting];
             var tooltipText =
                 "The following plugins are known to conflict with\n" +
                 $"{Svc.PluginInterface.InternalName}'s Action Retargeting, which you have enabled:";
@@ -90,8 +93,8 @@ public static class ConflictingPlugins
             foreach (var conflict in conflicts[ConflictType.Targeting])
                 tooltipText +=
                     $"\n- {conflict.Name} v{conflict.Version}" +
-                    $"\n  Actions:\n" +
-                    string.Join("\n  - ", conflict.Reason.Split(','));
+                    $"\n    Actions:\n        - " +
+                    string.Join("\n        - ", conflict.Reason.Split(','));
 
             tooltipText +=
                 "\n\nIt is recommended you disable these plugins, or\n" +
@@ -104,6 +107,7 @@ public static class ConflictingPlugins
 
         if (hasSettingsConflicts)
         {
+            currentConflicts = conflicts[ConflictType.Settings];
             var conflictingSettingsText = "- " + string.Join("\n- ",
                 conflicts[ConflictType.Combo]
                     .Select(x => $"{x.Name} v{x.Version} (setting: {x.Reason})"));
@@ -122,15 +126,6 @@ public static class ConflictingPlugins
 
         return;
 
-        void ShowWarningText(string start, string end, Vector4 color)
-        {
-            if (ImGui.GetColumnWidth() <
-                ImGui.CalcTextSize(start + " " + end).X.Scale())
-                ImGui.TextColored(color, start + "\n" + end);
-            else
-                ImGui.TextColored(color, start + " " + end);
-        }
-
         void ShowWarning(ConflictType type, string tooltipText, bool hasWarningAbove)
         {
             var color = type switch
@@ -145,15 +140,33 @@ public static class ConflictingPlugins
             if (hasWarningAbove)
                 ImGui.Spacing();
 
-            ImGuiEx.LineCentered($"###Conflicting{type}Plugins", () =>
+            var conflictMessage = currentConflicts.ToArray()[0].ConflictMessageParts;
+            var twoLines = ImGui.GetColumnWidth() <=
+                           ImGui.CalcTextSize(conflictMessage[0] + " " +
+                                              conflictMessage[1]).X.Scale();
+            
+            ImGui.BeginGroup();
+            ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 2));
+            if (twoLines)
             {
-                var conflictMessage = conflicts.ToArray()[0].ConflictMessageParts;
-                ShowWarningText(conflictMessage[0], conflictMessage[1], color);
+                ImGuiEx.LineCentered($"###Conflicting{type}Plugins0", () =>
+                    ImGui.TextColored(color, conflictMessage[0])
+                );
+                ImGuiEx.LineCentered($"###Conflicting{type}Plugins1", () =>
+                    ImGui.TextColored(color, conflictMessage[1])
+                );
+            }
+            else
+                ImGuiEx.LineCentered($"###Conflicting{type}Plugins0", () =>
+                    ImGui.TextColored(color, conflictMessage[0] + " " +
+                                             conflictMessage[1])
+                );
+            ImGui.PopStyleVar();
+            ImGui.EndGroup();
 
-                // Tooltip with explanation
-                if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip(tooltipText);
-            });
+            // Tooltip with explanation
+            if (ImGui.IsItemHovered())
+                ImGui.SetTooltip(tooltipText);
         }
     }
 
@@ -270,8 +283,6 @@ public static class ConflictingPlugins
                 "BossModReborn", ConflictType.Combo,
                 "is queueing actions!"))
                 .ToArray();
-
-        // Reaction ?
 
         return conflicts.Length > 0;
     }
