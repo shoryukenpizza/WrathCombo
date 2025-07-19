@@ -228,17 +228,17 @@ public static class ConflictingPlugins
     ///     List of the most popular conflicting plugins.
     /// </summary>
     /// <remarks>
-    ///     The list is case-sensitive, and needs to be lowercase.
+    ///     The list is not case-sensitive.
     /// </remarks>
-    private static string[] conflictingPluginsNames = new[]
-    {
-        "xivcombo",
-        "xivcomboexpanded",
-        "xivcomboexpandedest",
-        "xivcombovx",
-        "xivslothcombo",
-        "rotationsolver",
-    };
+    private static readonly string[] ConflictingPluginsNames =
+    [
+        "XIVCombo",
+        "XIVComboExpanded",
+        "XIVComboExpandedest",
+        "XIVComboVX",
+        "XIVSlothCombo",
+        "RotationSolver",
+    ];
 
     /// <summary>
     ///     Searches for any enabled conflicting plugins.
@@ -253,9 +253,9 @@ public static class ConflictingPlugins
     {
         conflicts = Svc.PluginInterface.InstalledPlugins
             .Where(x =>
-                Enumerable.Contains(conflictingPluginsNames,
-                    x.InternalName.ToLower()) &&
-                x.IsLoaded)
+                x.IsLoaded && // lighter check first
+                ConflictingPluginsNames.Any(y => y.Equals(x.InternalName,
+                    StringComparison.InvariantCultureIgnoreCase)))
             .Select(x => new Conflict(x.InternalName, ConflictType.Combo))
             .ToArray();
 
