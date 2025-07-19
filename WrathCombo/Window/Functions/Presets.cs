@@ -6,7 +6,6 @@ using System.Text;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
-using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
@@ -500,28 +499,12 @@ namespace WrathCombo.Window.Functions
 
             // Resolved the conditions if possibly retargeted
             if (possiblyRetargeted)
-            {
-                void MakeRetargeted()
+                if (IsConditionSatisfied(Attributes[preset!.Value]
+                        .PossiblyRetargeted!.PossibleCondition) == true)
                 {
                     retargeted = true;
                     possiblyRetargeted = false;
                 }
-
-                // Should have all conditions in PossiblyRetargetedAttribute.Condition
-                switch (Attributes[preset!.Value].PossiblyRetargeted!.PossibleCondition)
-                {
-                    case Condition.RetargetHealingActionsEnabled:
-                        if (Service.Configuration.RetargetHealingActionsToStack)
-                            MakeRetargeted();
-                        break;
-                    case Condition.ASTQuickTargetCardsFeatureEnabled:
-                        if (IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards))
-                            MakeRetargeted();
-                        break;
-                    default:
-                        return; // No other conditions are supported
-                }
-            }
 
             ImGui.SameLine();
 

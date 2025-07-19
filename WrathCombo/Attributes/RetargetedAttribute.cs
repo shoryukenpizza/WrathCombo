@@ -82,14 +82,38 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
 
     /// <summary>
     ///     These conditions should be implemented in the switch in
-    ///     <see cref="Presets.DrawRetargetedAttribute">
-    ///         DrawRetargetedAttribute()
-    ///     </see>.
+    ///     <see cref="IsConditionSatisfied" />.
     /// </summary>
     internal enum Condition
     {
         RetargetHealingActionsEnabled,
         ASTQuickTargetCardsFeatureEnabled,
+    }
+    
+    /// <summary>
+    ///     Checks if a given <see cref="Condition" />
+    ///     (for a <see cref="PossiblyRetargetedAttribute" />)
+    ///     is satisfied.
+    /// </summary>
+    /// <param name="condition">
+    ///     The <see cref="Condition" /> to check.
+    /// </param>
+    /// <returns>
+    ///     Whether the condition is satisfied or not,
+    ///     or <see langword="null" /> if the condition is unsupported.
+    /// </returns>
+    public static bool? IsConditionSatisfied(Condition condition)
+    {
+        switch (condition)
+        {
+            case Condition.RetargetHealingActionsEnabled:
+                return Service.Configuration.RetargetHealingActionsToStack;
+            case Condition.ASTQuickTargetCardsFeatureEnabled:
+                return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards);
+            default:
+                PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
+                return null;
+        }
     }
 }
 
