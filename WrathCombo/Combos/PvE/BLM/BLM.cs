@@ -166,7 +166,9 @@ internal partial class BLM : Caster
                 }
 
                 if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
-                    (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
+                    (HasStatusEffect(Role.Buffs.Swiftcast) ||
+                     HasStatusEffect(Buffs.Triplecast) ||
+                     JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
@@ -378,7 +380,9 @@ internal partial class BLM : Caster
                 }
 
                 if (LevelChecked(Blizzard3) && UmbralIceStacks < 3 &&
-                    (JustUsed(Transpose, 5f) || JustUsed(Freeze, 10f)))
+                    (HasStatusEffect(Role.Buffs.Swiftcast) ||
+                     HasStatusEffect(Buffs.Triplecast) ||
+                     JustUsed(Freeze, 10f)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
