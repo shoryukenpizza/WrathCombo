@@ -42,6 +42,7 @@ namespace WrathCombo.Window.Functions
             public VariantParentAttribute? VariantParent;
             public PossiblyRetargetedAttribute? PossiblyRetargeted;
             public RetargetedAttribute? RetargetedAttribute;
+            public uint[] RetargetedActions = [];
             public BozjaParentAttribute? BozjaParent;
             public EurekaParentAttribute? EurekaParent;
             public OccultCrescentAttribute? OccultCrescentJob;
@@ -73,7 +74,44 @@ namespace WrathCombo.Window.Functions
                 RoleAttribute = preset.GetAttribute<RoleAttribute>();
                 Hidden = preset.GetAttribute<HiddenAttribute>();
                 ComboType = PresetStorage.GetComboType(preset);
+                RetargetedActions = GetRetargetedActions(preset, RetargetedAttribute, PossiblyRetargeted, Parent);
             }
+        }
+        
+        private static uint[] GetRetargetedActions
+            (CustomComboPreset preset,
+                RetargetedAttribute? retargetedAttribute,
+                PossiblyRetargetedAttribute? possiblyRetargeted,
+                CustomComboPreset? parent)
+        {
+            // Pick whichever Retargeted attribute is available
+            RetargetedAttributeBase? retargetAttribute = null;
+            if (retargetedAttribute != null)
+                retargetAttribute = retargetedAttribute;
+            else if (possiblyRetargeted != null)
+                retargetAttribute = possiblyRetargeted;
+            
+            // Bail if the Preset is not Retargeted
+            if (retargetAttribute == null)
+                return [];
+            
+            // Bail if not actually enabled
+            if (!IsEnabled(preset))
+                return [];
+            // ReSharper disable once DuplicatedSequentialIfBodies
+            if (parent != null && !IsEnabled((CustomComboPreset)parent))
+                return [];
+            if (parent?.Attributes().Parent is { } grandParent &&
+                !IsEnabled((CustomComboPreset)(grandParent.Attributes().Parent!)))
+                return [];
+            
+            // Bail if the Condition for PossiblyRetargeted is not satisfied
+            if (retargetAttribute is PossiblyRetargetedAttribute attribute
+                && IsConditionSatisfied(attribute.PossibleCondition) != true)
+                return [];
+            
+            // Set the Retargeted Actions if all bails are passed
+            return retargetAttribute.RetargetedActions;
         }
 
         internal static Dictionary<CustomComboPreset, bool> GetJobAutorots => P
