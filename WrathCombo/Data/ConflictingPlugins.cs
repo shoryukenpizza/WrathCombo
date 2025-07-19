@@ -9,6 +9,7 @@ using Dalamud.Plugin;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using ImGuiNET;
+using WrathCombo.Extensions;
 
 #endregion
 
@@ -87,13 +88,13 @@ public static class ConflictingPlugins
         {
             currentConflicts = conflicts[ConflictType.Targeting];
             var tooltipText =
-                "The following plugins are known to conflict with\n" +
-                $"{Svc.PluginInterface.InternalName}'s Action Retargeting, which you have enabled:";
+                "Your configuration in the following plugins will conflict\n" +
+                $"with {Svc.PluginInterface.InternalName}'s enabled Action Retargeting:";
 
             foreach (var conflict in conflicts[ConflictType.Targeting])
                 tooltipText +=
                     $"\n- {conflict.Name} v{conflict.Version}" +
-                    $"\n    Actions:\n        - " +
+                    $"\n    Actions Retargeted there and in {Svc.PluginInterface.InternalName}:\n        - " +
                     string.Join("\n        - ", conflict.Reason.Split(','));
 
             tooltipText +=
@@ -192,7 +193,9 @@ public static class ConflictingPlugins
         if (ConflictingPluginsChecks.MOAction.Conflicted)
             conflicts = conflicts.Append(new Conflict(
                     "MOAction", ConflictType.Targeting,
-                    "blackest night"))
+                    string.Join(",",
+                        ConflictingPluginsChecks.MOAction.ConflictingActions
+                            .Select(x => x.ActionName()))))
                 .ToArray();
 
         return conflicts.Length > 0;

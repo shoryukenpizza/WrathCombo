@@ -125,6 +125,8 @@ public static class ConflictingPluginsChecks
     {
         protected override MOAction IPC => (MOAction)_ipc;
 
+        public uint[] ConflictingActions = [];
+
         public override void CheckForConflict()
         {
             // Throttle the check
@@ -138,8 +140,16 @@ public static class ConflictingPluginsChecks
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
             if (moActionRetargeted.Overlaps(wrathRetargeted))
             {
-                PluginLog.Debug($"[ConflictingPlugins] [{Name}] Marked Conflict!");
+                if (!Conflicted)
+                    PluginLog.Debug($"[ConflictingPlugins] [{Name}] Marked Conflict!");
+                ConflictingActions =
+                    moActionRetargeted .Intersect(wrathRetargeted).ToArray();
                 Conflicted = true;
+            }
+            else
+            {
+                ConflictingActions = [];
+                Conflicted = false;
             }
         }
     }
