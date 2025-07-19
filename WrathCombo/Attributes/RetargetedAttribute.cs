@@ -1,8 +1,11 @@
 #region
 
 using System;
+using ECommons.Logging;
+using WrathCombo.Combos;
 using WrathCombo.Core;
-using WrathCombo.Window.Functions;
+using WrathCombo.Services;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -15,9 +18,18 @@ namespace WrathCombo.Attributes;
 ///     <see cref="ActionRetargeting" />.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-internal class RetargetedAttribute(params uint[] retargetedActions) : Attribute
+internal class RetargetedAttribute : RetargetedAttributeBase
 {
-    public uint[] RetargetedActions { get; } = retargetedActions ?? [];
+    /// <summary>
+    ///     Designates a Preset as one that is Retargeted.
+    /// </summary>
+    /// <param name="retargetedActions">
+    ///     List of all actions that are Retargeted by this Preset.
+    /// </param>
+    internal RetargetedAttribute(params uint[] retargetedActions)
+    {
+        RetargetedActions = retargetedActions;
+    }
 }
 
 /// <summary>
@@ -25,7 +37,7 @@ internal class RetargetedAttribute(params uint[] retargetedActions) : Attribute
 ///     <see cref="ActionRetargeting" />.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-internal class PossiblyRetargetedAttribute : Attribute
+internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
 {
     private const string DefaultSettingInfo =
         "Settings Tab > Retarget (Single Target) Healing Actions";
@@ -56,7 +68,7 @@ internal class PossiblyRetargetedAttribute : Attribute
     {
         SettingInfo = settingInfo;
         PossibleCondition = condition;
-        RetargetedActions = retargetedActions ?? [];
+        RetargetedActions = retargetedActions;
     }
     
     /// <seealso cref="PossiblyRetargetedAttribute(string, Condition, uint[])"/>
@@ -67,7 +79,6 @@ internal class PossiblyRetargetedAttribute : Attribute
 
     public string SettingInfo { get; }
     public Condition PossibleCondition { get; }
-    public uint[] RetargetedActions { get; }
 
     /// <summary>
     ///     These conditions should be implemented in the switch in
@@ -80,4 +91,15 @@ internal class PossiblyRetargetedAttribute : Attribute
         RetargetHealingActionsEnabled,
         ASTQuickTargetCardsFeatureEnabled,
     }
+}
+
+/// <summary>
+///     Just a common base class for all Retargeted Attributes.
+/// </summary>
+internal abstract class RetargetedAttributeBase : Attribute
+{
+    /// <summary>
+    ///     The actions that are Retargeted by this Preset.
+    /// </summary>
+    public uint[] RetargetedActions { get; internal set; } = [];
 }
