@@ -12,6 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Colors;
+using ECommons.Logging;
+using ECommons.Throttlers;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
@@ -27,6 +29,7 @@ namespace WrathCombo.Window
         internal static readonly Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
         internal static readonly Dictionary<CustomComboPreset, (CustomComboPreset Preset, CustomComboInfoAttribute Info)[]> presetChildren = GetPresetChildren();
         internal static int currentPreset = 1;
+        internal static float lastLeftColumnWidth;
         internal static Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
         {
             return Enum
@@ -103,13 +106,18 @@ namespace WrathCombo.Window
             using var table = ImRaii.Table("###MainTable", 2, ImGuiTableFlags.Resizable);
             if (!table)
                 return;
-
-
-            ImGui.TableSetupColumn("##LeftColumn", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 3);
+            
+            var imageSize = new Vector2(125).Scale();
+            var leftColumnFlags = ImGuiTableColumnFlags.WidthFixed;
+            if (lastLeftColumnWidth < imageSize.X)
+                leftColumnFlags |= ImGuiTableColumnFlags.NoResize;
+            
+            ImGui.TableSetupColumn("##LeftColumn", leftColumnFlags, imageSize.X+10f.Scale());
 
             ImGui.TableNextColumn();
 
             var regionSize = ImGui.GetContentRegionAvail();
+            lastLeftColumnWidth = regionSize.X;
 
             ImGui.PushStyleVar(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
 
@@ -122,13 +130,19 @@ namespace WrathCombo.Window
                     imagePath = Path.Combine(
                         Svc.PluginInterface.AssemblyLocation.Directory?.FullName!,
                         "images\\wrathcombo.png");
-                    if (!File.Exists(imagePath))
-                        throw new FileNotFoundException();
+                    throw new FileNotFoundException();
+                    if (EzThrottler.Throttle("logTypeOfWrathIconUsed", 45000))
+                        PluginLog.Verbose("Using Local WrathCombo Icon");
                 }
                 catch (Exception)
                 {
                     // Fallback to the remote icon if there are any issues
                     imagePath = PunishLibMain.PluginManifest.IconUrl ?? "";
+                    if (EzThrottler.Throttle("logTypeOfWrathIconUsed", 45000))
+                        PluginLog.Verbose(
+                            "Using Remote WrathCombo Icon\n             " +
+                            Svc.PluginInterface.AssemblyLocation.Directory?.FullName! +
+                            "images\\wrathcombo.png");
                 }
 
                 if (ThreadLoadImageHandler.TryGetTextureWrap(imagePath, out var logo))
