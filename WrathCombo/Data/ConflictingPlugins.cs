@@ -56,7 +56,7 @@ public static class ConflictingPlugins
         if (!TryGetConflicts(out var conflicts))
             return;
 
-        Conflict[] currentConflicts = [];
+        Conflict[] currentConflicts;
         var hasComboConflicts = conflicts[ConflictType.Combo].Length > 0;
         var hasTargetingConflicts = conflicts[ConflictType.Targeting].Length > 0;
         var hasSettingsConflicts = conflicts[ConflictType.Settings].Length > 0;
@@ -144,7 +144,7 @@ public static class ConflictingPlugins
             var twoLines = ImGui.GetColumnWidth() <=
                            ImGui.CalcTextSize(conflictMessage[0] + " " +
                                               conflictMessage[1]).X.Scale();
-            
+
             ImGui.BeginGroup();
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 2));
             if (twoLines)
@@ -161,6 +161,7 @@ public static class ConflictingPlugins
                     ImGui.TextColored(color, conflictMessage[0] + " " +
                                              conflictMessage[1])
                 );
+
             ImGui.PopStyleVar();
             ImGui.EndGroup();
 
@@ -279,13 +280,13 @@ public static class ConflictingPlugins
 
         if (ConflictingPluginsChecks.BossMod.Conflicted)
             conflicts = conflicts.Append(new Conflict(
-                "BossMod", ConflictType.Combo,
-                "is queueing actions!"))
+                    "BossMod", ConflictType.Combo,
+                    "is queueing actions!"))
                 .ToArray();
         if (ConflictingPluginsChecks.BossModReborn.Conflicted)
             conflicts = conflicts.Append(new Conflict(
-                "BossModReborn", ConflictType.Combo,
-                "is queueing actions!"))
+                    "BossModReborn", ConflictType.Combo,
+                    "is queueing actions!"))
                 .ToArray();
 
         return conflicts.Length > 0;

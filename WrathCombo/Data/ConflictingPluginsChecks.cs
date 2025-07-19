@@ -152,7 +152,7 @@ public static class ConflictingPluginsChecks
                     $"(v{ipc.InstalledVersion})");
         }
 
-        // ReSharper disable once UnusedMemberInSuper
+        // ReSharper disable once UnusedMemberInSuper.Global
         protected abstract ReusableIPC IPC { get; }
 
         public bool Conflicted { get; protected set; }

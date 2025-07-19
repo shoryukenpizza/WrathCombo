@@ -19,7 +19,8 @@ internal sealed class MOAction(
     : ReusableIPC(pluginName ?? "MOAction", validVersion ?? new Version(4, 7, 0, 1))
 {
 #pragma warning disable CS0649, CS8618 // Complaints of the method
-    [EzIPC("RetargetedActions")] private readonly Func<uint[]> _retargetedActions = null!;
+    [EzIPC("RetargetedActions")]
+    private readonly Func<uint[]> _retargetedActions = null!;
 #pragma warning restore CS8618, CS0649
 
     public uint[] GetRetargetedActions()

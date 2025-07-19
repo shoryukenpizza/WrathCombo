@@ -20,10 +20,10 @@ public abstract class ReusableIPC : IDisposable
         if (string.IsNullOrWhiteSpace(pluginName))
             throw new ArgumentException("Plugin name cannot be null or empty.",
                 nameof(pluginName));
-        
+
         PluginName = pluginName;
         ValidVersion = validVersion ?? new Version(0, 0, 0, 0);
-        DisposalTokens = EzIPC.Init(this, PluginName, SafeWrapper.None);
+        DisposalTokens = EzIPC.Init(this, PluginName);
     }
 
     public bool IsEnabled =>
