@@ -33,8 +33,6 @@ internal partial class SMN
             SMN_AoE_Egi_AstralFlow = new("SMN_AoE_Egi_AstralFlow");
 
         public static UserBool
-            SMN_ST_CrimsonCycloneMelee = new("SMN_ST_CrimsonCycloneMelee"),
-            SMN_AoE_CrimsonCycloneMelee = new("SMN_AoE_CrimsonCycloneMelee"),
             SMN_ST_Searing_Any = new("SMN_ST_Searing_Any"),
             SMN_AoE_Searing_Any = new("SMN_AoE_Searing_Any");
 
@@ -143,12 +141,7 @@ internal partial class SMN
                     DrawHorizontalMultiChoice(SMN_ST_Egi_AstralFlow, "Add Slipstream", "", 4, 2);
 
                     if (SMN_ST_Egi_AstralFlow[1])
-                        DrawAdditionalBoolChoice(SMN_ST_CrimsonCycloneMelee,
-                            "Enforced Crimson Cyclone Melee Check", "Only uses Crimson Cyclone when range is equal or lower than.");
-
-                    if (SMN_ST_CrimsonCycloneMelee)
-                        DrawSliderInt(1, 3, SMN_ST_CrimsonCycloneMeleeDistance,
-                            " Range of when to use Crimson Cyclone.");
+                        DrawSliderInt(0, 25, SMN_ST_CrimsonCycloneMeleeDistance, " Range of when to use Crimson Cyclone.");
 
                     break;
                 }
@@ -161,12 +154,7 @@ internal partial class SMN
                     DrawHorizontalMultiChoice(SMN_AoE_Egi_AstralFlow, "Add Slipstream", "", 4, 2);
 
                     if (SMN_AoE_Egi_AstralFlow[1])
-                        DrawAdditionalBoolChoice(SMN_AoE_CrimsonCycloneMelee,
-                            "Enforced Crimson Cyclone Melee Check", "Only uses Crimson Cyclone when range is equal or lower than.");
-
-                    if(SMN_AoE_CrimsonCycloneMelee)
-                        DrawSliderInt(1, 3, SMN_AoE_CrimsonCycloneMeleeDistance,
-                            " Range of when to use Crimson Cyclone.");
+                        DrawSliderInt(0, 25, SMN_AoE_CrimsonCycloneMeleeDistance, " Range of when to use Crimson Cyclone.");
 
                     break;
                 }
