@@ -1,10 +1,11 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
 using ECommons.DalamudServices;
 using ECommons.Logging;
-using WrathCombo.Combos.PvE;
+using WrathCombo.Core;
 using WrathCombo.Services.IPC_Subscriber;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -133,9 +134,13 @@ public static class ConflictingPluginsChecks
             
             PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
-            var retargetedActions = IPC.GetRetargetedActions();
-            if (retargetedActions.Contains(DRK.BlackestNight))
+            var moActionRetargeted = IPC.GetRetargetedActions().ToHashSet();
+            var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
+            if (moActionRetargeted.Overlaps(wrathRetargeted))
+            {
+                PluginLog.Debug($"[ConflictingPlugins] [{Name}] Marked Conflict!");
                 Conflicted = true;
+            }
         }
     }
 
