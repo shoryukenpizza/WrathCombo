@@ -188,7 +188,11 @@ public static class ConflictingPlugins
 
         // Redirect
         // Reaction
-        // MoAction
+        if (ConflictingPluginsChecks.MOAction.Conflicted)
+            conflicts = conflicts.Append(new Conflict(
+                    "MOAction", ConflictType.Targeting,
+                    "blackest night"))
+                .ToArray();
 
         return conflicts.Length > 0;
     }
