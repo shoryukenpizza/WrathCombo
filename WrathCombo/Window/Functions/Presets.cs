@@ -98,20 +98,30 @@ namespace WrathCombo.Window.Functions
             if (retargetAttribute == null)
                 return [];
             
-            // Bail if not actually enabled
-            if (!IsEnabled(preset))
-                return [];
-            // ReSharper disable once DuplicatedSequentialIfBodies
-            if (parent != null && !IsEnabled((CustomComboPreset)parent))
-                return [];
-            if (parent?.Attributes().Parent is { } grandParent &&
-                !IsEnabled((CustomComboPreset)(grandParent.Attributes().Parent!)))
-                return [];
+            try {
+                // Bail if not actually enabled
+                if (!Service.Configuration.EnabledActions.Contains(preset))
+                    return [];
+                // ReSharper disable once DuplicatedSequentialIfBodies
+                if (parent != null &&
+                    !Service.Configuration.EnabledActions
+                        .Contains((CustomComboPreset)parent))
+                    return [];
+                if (parent?.Attributes()?.Parent is { } grandParent &&
+                    !Service.Configuration.EnabledActions
+                        .Contains(grandParent))
+                    return [];
             
-            // Bail if the Condition for PossiblyRetargeted is not satisfied
-            if (retargetAttribute is PossiblyRetargetedAttribute attribute
-                && IsConditionSatisfied(attribute.PossibleCondition) != true)
+                // Bail if the Condition for PossiblyRetargeted is not satisfied
+                if (retargetAttribute is PossiblyRetargetedAttribute attribute
+                    && IsConditionSatisfied(attribute.PossibleCondition) != true)
+                    return [];
+            }
+            catch (Exception e)
+            {
+                PluginLog.Error($"Failed to check if Preset {preset} is enabled: {e.ToStringFull()}");
                 return [];
+            }
             
             // Set the Retargeted Actions if all bails are passed
             return retargetAttribute.RetargetedActions;
