@@ -14,7 +14,7 @@ namespace WrathCombo.Services.IPC_Subscriber;
 internal sealed class BossModIPC(
     string? pluginName = null,
     Version? validVersion = null)
-    : ReusableIPC(pluginName ?? "BossMod", validVersion ?? new Version(0, 3, 0, 6))
+    : ReusableIPC(pluginName ?? "BossMod", validVersion ?? new Version(0, 3, 1, 0))
 {
     public bool HasAutomaticActionsQueued()
     {
