@@ -127,7 +127,8 @@ public static class ConflictingPluginsChecks
         public override void CheckForConflict()
         {
             // Throttle the check
-            if (!EZ.Throttle($"conflictCheck{Name}", TS.FromSeconds(20)))
+            if (!EZ.Throttle($"conflictCheck{Name}", TS.FromSeconds(20)) ||
+                !IPC.IsEnabled)
                 return;
             
             PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
