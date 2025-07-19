@@ -26,7 +26,7 @@ internal sealed class MOAction(
     {
         if (!IsEnabled)
         {
-            PluginLog.Debug($"[{PluginName}] {PluginName} is not enabled.");
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] is not enabled.");
             return [];
         }
 
@@ -34,12 +34,14 @@ internal sealed class MOAction(
         {
             var actions = _retargetedActions();
             PluginLog.Verbose(
-                $"[{PluginName}] `RetargetedActions`: {string.Join(", ", actions.Select(x => x.ActionName()))}");
+                $"[ConflictingPlugins] [{PluginName}] `RetargetedActions`: " +
+                string.Join(", ", actions.Select(x => x.ActionName())));
             return actions;
         }
         catch (Exception e)
         {
-            e.Log();
+            PluginLog.Warning($"[ConflictingPlugins] [{PluginName}] " +
+                              $"`RetargetedActions` failed: {e.ToStringFull()}");
             return [];
         }
     }

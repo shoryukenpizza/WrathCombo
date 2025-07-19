@@ -20,7 +20,7 @@ internal sealed class BossModIPC(
     {
         if (!IsEnabled)
         {
-            PluginLog.Debug($"[{PluginName}] {PluginName} is not enabled.");
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] is not enabled.");
             return false;
         }
 
@@ -28,12 +28,15 @@ internal sealed class BossModIPC(
         {
             var hasEntries = _hasEntries();
             PluginLog.Verbose(
-                $"[{PluginName}] `ActionQueue.HasEntries`: {hasEntries} ");
+                $"[ConflictingPlugins] [{PluginName}] `ActionQueue.HasEntries`: " +
+                hasEntries);
             return hasEntries;
         }
         catch (Exception e)
         {
-            e.Log();
+            PluginLog.Warning($"[ConflictingPlugins] [{PluginName}] " +
+                              $"`ActionQueue.HasEntries` failed:" +
+                              e.ToStringFull());
             return false;
         }
     }
@@ -48,7 +51,9 @@ internal sealed class BossModIPC(
         }
         catch (Exception e)
         {
-            e.Log();
+            PluginLog.Warning($"[ConflictingPlugins] [{PluginName}] " +
+                              $"`Configuration.LastModified` failed: " +
+                              e.ToStringFull());
             return DateTime.MinValue;
         }
     }
