@@ -4,42 +4,18 @@ using System;
 using ECommons;
 using ECommons.EzIpcManager;
 using ECommons.Logging;
-using ECommons.Reflection;
+
+// ReSharper disable InlineTemporaryVariable
 
 #endregion
 
 namespace WrathCombo.Services.IPC_Subscriber;
 
-internal class BossModIPC : IDisposable
+internal sealed class BossModIPC(
+    string? pluginName = null,
+    Version? validVersion = null)
+    : ReusableIPC(pluginName ?? "BossMod", validVersion ?? new Version(0, 3, 0, 6))
 {
-    private readonly EzIPCDisposalToken[] _disposalTokens;
-
-    public readonly string PluginName;
-
-    private readonly Version _validVersion;
-
-    public BossModIPC
-    (string pluginName = "BossMod",
-        Version? validVersion = null)
-    {
-        PluginName = pluginName;
-        _validVersion = validVersion ?? new Version(0, 3, 0, 6);
-        _disposalTokens = EzIPC.Init(this, PluginName, SafeWrapper.IPCException);
-    }
-
-    public void Dispose()
-    {
-        foreach (var token in _disposalTokens)
-            try
-            {
-                token.Dispose();
-            }
-            catch (Exception ex)
-            {
-                ex.Log();
-            }
-    }
-
     public bool HasAutomaticActionsQueued()
     {
         if (!IsEnabled)
@@ -76,20 +52,6 @@ internal class BossModIPC : IDisposable
             return DateTime.MinValue;
         }
     }
-
-    #region Version Checking
-
-    public bool IsEnabled =>
-        InstalledVersion >= _validVersion || // release version
-        InstalledVersion == new Version(0, 0, 0, 0); // debug version
-
-    public Version InstalledVersion =>
-        (DalamudReflector.TryGetDalamudPlugin(PluginName, out var dalamudPlugin,
-            false, true)
-            ? dalamudPlugin.GetType().Assembly.GetName().Version!
-            : new Version(0, 0, 0, 1)); // no version found
-
-    #endregion
 
 #pragma warning disable CS0649, CS8618 // Complaints of the method
     [EzIPC("Rotation.ActionQueue.HasEntries")]
