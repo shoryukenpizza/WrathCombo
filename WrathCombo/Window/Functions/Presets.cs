@@ -8,6 +8,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
@@ -34,6 +35,7 @@ namespace WrathCombo.Window.Functions
         private static bool _animFrame = false;
         internal class PresetAttributes
         {
+            private CustomComboPreset Preset;
             public bool IsPvP;
             public CustomComboPreset[] Conflicts;
             public CustomComboPreset? Parent;
@@ -42,7 +44,8 @@ namespace WrathCombo.Window.Functions
             public VariantParentAttribute? VariantParent;
             public PossiblyRetargetedAttribute? PossiblyRetargeted;
             public RetargetedAttribute? RetargetedAttribute;
-            public uint[] RetargetedActions = [];
+            public uint[] RetargetedActions => 
+                GetRetargetedActions(Preset, RetargetedAttribute, PossiblyRetargeted, Parent);
             public BozjaParentAttribute? BozjaParent;
             public EurekaParentAttribute? EurekaParent;
             public OccultCrescentAttribute? OccultCrescentJob;
@@ -56,6 +59,7 @@ namespace WrathCombo.Window.Functions
 
             public PresetAttributes(CustomComboPreset preset)
             {
+                Preset = preset;
                 IsPvP = PresetStorage.IsPvP(preset);
                 Conflicts = PresetStorage.GetConflicts(preset);
                 Parent = PresetStorage.GetParent(preset);
@@ -74,7 +78,6 @@ namespace WrathCombo.Window.Functions
                 RoleAttribute = preset.GetAttribute<RoleAttribute>();
                 Hidden = preset.GetAttribute<HiddenAttribute>();
                 ComboType = PresetStorage.GetComboType(preset);
-                RetargetedActions = GetRetargetedActions(preset, RetargetedAttribute, PossiblyRetargeted, Parent);
             }
         }
         
