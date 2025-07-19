@@ -16,12 +16,12 @@ internal partial class SMN
             SMN_ST_BurstPhase = new("SMN_ST_BurstPhase", 1),
             SMN_ST_SwiftcastPhase = new("SMN_SwiftcastPhase", 1),
             SMN_ST_Burst_Delay = new("SMN_Burst_Delay", 0),
-            SMN_ST_CrimsonCycloneMeleeDistance = new("SMN_ST_CrimsonCycloneMeleeDistance", 3),
+            SMN_ST_CrimsonCycloneMeleeDistance = new("SMN_ST_CrimsonCycloneMeleeDistance", 25),
             SMN_Opener_SkipSwiftcast = new("SMN_Opener_SkipSwiftcast", 1),
             
             SMN_AoE_Lucid = new("SMN_AoE_Lucid", 8000),
             SMN_AoE_BurstPhase = new("SMN_AoE_BurstPhase", 1),
-            SMN_AoE_CrimsonCycloneMeleeDistance = new("SMN_AoE_CrimsonCycloneMeleeDistance", 3),
+            SMN_AoE_CrimsonCycloneMeleeDistance = new("SMN_AoE_CrimsonCycloneMeleeDistance", 25),
             SMN_AoE_SwiftcastPhase = new("SMN_AoE_SwiftcastPhase", 1),
             SMN_AoE_Burst_Delay = new("SMN_AoE_Burst_Delay", 0),
             
