@@ -25,6 +25,7 @@ public static class ConflictingPluginsChecks
 
         PluginLog.Verbose(
             "[ConflictingPlugins] Periodic check for conflicting plugins");
+        
         BossMod.CheckForConflict();
         BossModReborn.CheckForConflict();
         MOAction.CheckForConflict();
@@ -96,11 +97,15 @@ public static class ConflictingPluginsChecks
                  IPC.LastModified() > _conflictRegistered)) // bm config changed
             {
                 PluginLog.Verbose(
-                    $"[ConflictingPlugins] [{Name}] IPC not enabled, or config updated");
+                    $"[ConflictingPlugins] [{Name}] IPC not enabled, " +
+                    $"or config updated");
                 Conflicted = false;
                 _conflictsInARow = 0;
                 return;
             }
+            
+            // Bail if the IPC is not enabled
+            if (!IPC.IsEnabled) return;
 
             // Add a conflict note
             if (IPC.HasAutomaticActionsQueued())
@@ -114,7 +119,9 @@ public static class ConflictingPluginsChecks
             // Save a complete conflict
             if (_conflictsInARow > _maxConflictsInARow)
             {
-                PluginLog.Debug($"[ConflictingPlugins] [{Name}] Marked Conflict!");
+                if (!Conflicted)
+                    PluginLog.Information(
+                        $"[ConflictingPlugins] [{Name}] Marked Conflict!");
                 Conflicted = true;
                 _conflictRegistered = DateTime.Now;
             }
@@ -137,11 +144,16 @@ public static class ConflictingPluginsChecks
             PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
             var moActionRetargeted = IPC.GetRetargetedActions().ToHashSet();
+            if (moActionRetargeted.Count != 0)
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] {moActionRetargeted.Count} Retargeted Actions Found");
+            
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
             if (moActionRetargeted.Overlaps(wrathRetargeted))
             {
                 if (!Conflicted)
-                    PluginLog.Debug($"[ConflictingPlugins] [{Name}] Marked Conflict!");
+                    PluginLog.Information(
+                        $"[ConflictingPlugins] [{Name}] Marked Conflict!");
                 ConflictingActions =
                     moActionRetargeted .Intersect(wrathRetargeted).ToArray();
                 Conflicted = true;
