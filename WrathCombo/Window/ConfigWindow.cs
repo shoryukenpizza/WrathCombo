@@ -11,12 +11,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Interface.Colors;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
-using WrathCombo.Data;
+using WrathCombo.Data.Conflicts;
 using WrathCombo.Window.Tabs;
 
 namespace WrathCombo.Window
@@ -181,7 +180,6 @@ namespace WrathCombo.Window
 #endif
 
                 ConflictingPlugins.Draw();
-
             }
 
             ImGui.PopStyleVar();

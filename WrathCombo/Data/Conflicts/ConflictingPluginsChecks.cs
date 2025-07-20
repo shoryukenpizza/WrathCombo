@@ -12,7 +12,7 @@ using TS = System.TimeSpan;
 
 #endregion
 
-namespace WrathCombo.Data;
+namespace WrathCombo.Data.Conflicts;
 
 public static class ConflictingPluginsChecks
 {
@@ -117,6 +117,7 @@ public static class ConflictingPluginsChecks
             }
 
             // Save a complete conflict
+            // ReSharper disable once InvertIf
             if (_conflictsInARow > _maxConflictsInARow)
             {
                 if (!Conflicted)
@@ -190,6 +191,7 @@ public static class ConflictingPluginsChecks
         // ReSharper disable once MemberHidesStaticFromOuterClass
         public virtual void Dispose() => _ipc.Dispose();
 
+        // ReSharper disable once UnusedMemberInSuper.Global
         public abstract void CheckForConflict();
     }
 }

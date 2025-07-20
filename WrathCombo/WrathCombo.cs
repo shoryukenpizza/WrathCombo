@@ -24,7 +24,6 @@ using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
-using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -33,7 +32,7 @@ using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
 using WrathCombo.Window.Tabs;
-using ECommons.EzHookManager;
+using WrathCombo.Data.Conflicts;
 using WrathCombo.Services.IPC_Subscriber;
 
 namespace WrathCombo;
