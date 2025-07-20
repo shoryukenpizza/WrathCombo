@@ -1,8 +1,12 @@
+using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
+using ECommons.Logging;
+using ECommons.Throttlers;
 using ImGuiNET;
 using PunishLib;
 using PunishLib.ImGuiMethods;
@@ -11,10 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using ECommons.Logging;
-using ECommons.Throttlers;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
@@ -106,17 +106,20 @@ namespace WrathCombo.Window
                 columns = 1;
                 tableName = "###NoSidebarMainTable";
             }
-            
+
             using var style = ImRaii.PushStyle(ImGuiStyleVar.CellPadding, new Vector2(4, 0).Scale());
-            using (var table = ImRaii.Table(tableName, columns, ImGuiTableFlags.Resizable)) {
+            using (var table = ImRaii.Table(tableName, columns, ImGuiTableFlags.Resizable))
+            {
                 if (!table) return;
-                
+
                 if (!Service.Configuration.UILeftColumnCollapsed)
                     DrawSidebar(topLeftSideHeight);
-                
+                else
+                    ImGui.Indent(45f.Scale());
+
                 DrawBody();
             }
-            
+
             DrawCollapseButton();
         }
 
@@ -126,8 +129,8 @@ namespace WrathCombo.Window
             var leftColumnFlags = ImGuiTableColumnFlags.WidthFixed;
             if (lastLeftColumnWidth < imageSize.X)
                 leftColumnFlags |= ImGuiTableColumnFlags.NoResize;
-            
-            ImGui.TableSetupColumn("##LeftColumn", leftColumnFlags, imageSize.X+10f.Scale());
+
+            ImGui.TableSetupColumn("##LeftColumn", leftColumnFlags, imageSize.X + 10f.Scale());
             ImGui.TableNextColumn();
 
             var regionSize = ImGui.GetContentRegionAvail();
@@ -141,7 +144,7 @@ namespace WrathCombo.Window
                 ImGui.Dummy(Vector2.Zero);
                 return;
             }
-            
+
             string? imagePath;
             try
             {
@@ -166,29 +169,29 @@ namespace WrathCombo.Window
             if (ThreadLoadImageHandler.TryGetTextureWrap(imagePath, out var logo))
                 ImGuiEx.LineCentered("###WrathLogo", () =>
                     ImGui.Image(logo.ImGuiHandle, imageSize));
-            
+
             ImGui.Spacing();
             ImGui.Separator();
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("PvE Features", OpenWindow == OpenWindow.PvE))
                 OpenWindow = OpenWindow.PvE;
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("PvP Features", OpenWindow == OpenWindow.PvP))
                 OpenWindow = OpenWindow.PvP;
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("Auto-Rotation", OpenWindow == OpenWindow.AutoRotation))
                 OpenWindow = OpenWindow.AutoRotation;
-            
+
             ImGui.Spacing();
             ImGui.Spacing();
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("Settings", OpenWindow == OpenWindow.Settings))
                 OpenWindow = OpenWindow.Settings;
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("About", OpenWindow == OpenWindow.About))
                 OpenWindow = OpenWindow.About;
@@ -196,11 +199,11 @@ namespace WrathCombo.Window
 #if DEBUG
             ImGui.Spacing();
             ImGui.Spacing();
-            
+
             ImGui.Spacing();
             if (ImGui.Selectable("DEBUG", OpenWindow == OpenWindow.Debug))
                 OpenWindow = OpenWindow.Debug;
-            
+
             ImGui.Spacing();
 #endif
 
@@ -241,13 +244,13 @@ namespace WrathCombo.Window
         {
             ImGui.TableSetupColumn("##RightColumn", ImGuiTableColumnFlags.WidthStretch);
             ImGui.TableNextColumn();
-            
+
             using var rightChild = ImRaii.Child("###WrathRightSide", Vector2.Zero, false);
             if (!rightChild) return;
-            
+
             if (OpenWindow == OpenWindow.None)
                 OpenWindow = OpenWindow.PvE;
-            
+
             switch (OpenWindow)
             {
                 case OpenWindow.PvE:
@@ -268,22 +271,21 @@ namespace WrathCombo.Window
                 case OpenWindow.AutoRotation:
                     AutoRotationTab.Draw();
                     break;
-            };
+            }
+            ;
         }
 
         private void DrawCollapseButton()
         {
             var collapsed = Service.Configuration.UILeftColumnCollapsed;
-            
+
             // Go to the bottom of the window
             ImGui.SetCursorPos(ImGui.GetCursorPos() with
             {
-                X = ImGui.GetStyle().WindowPadding.X,
-                Y = ImGui.GetWindowSize().Y - ImGui.GetStyle().WindowPadding.Y*2 -
-                    ImGui.GetTextLineHeight() *
-                    (Service.Configuration.UILeftColumnCollapsed ? 1.5f : 1f),
+                X = 12f.Scale(),
+                Y = ImGui.GetContentRegionMax().Y - 45f.Scale(),
             });
-            
+
             // Calculate the size needed for the button
             var fPad = ImGui.GetStyle().FramePadding;
             Vector2 faSz;
@@ -291,7 +293,7 @@ namespace WrathCombo.Window
             {
                 faSz = ImGui.CalcTextSize("\uF0D9");
             }
-            
+
             // Draw a window for the button, so clicks don't leak behind it
             using var overlay = ImRaii.Child("ButtonOverlay",
                 new Vector2(faSz.X * 2 + fPad.X * 2,
@@ -302,26 +304,24 @@ namespace WrathCombo.Window
             // Set up how the button should display
             var icon = FontAwesomeIcon.CaretLeft;
             var hoverText = "Collapse Sidebar";
+            ImGui.SetWindowFontScale(1.5f.Scale());
             if (collapsed)
             {
                 icon = FontAwesomeIcon.CaretRight;
                 hoverText = "Expand Sidebar";
-                ImGui.SetWindowFontScale(1.5f);
             }
-            
+
             // Draw the button
             if (ImGuiEx.IconButton(icon, "CollapseButton"))
             {
-                ImGui.SetWindowFontScale(1f);
                 Service.Configuration.UILeftColumnCollapsed = !collapsed;
                 Service.Configuration.Save();
             }
             if (ImGui.IsItemHovered())
                 ImGui.SetTooltip(hoverText);
-            
-            // Restore the font scale if it was changed
-            if (collapsed)
-                ImGui.SetWindowFontScale(1f);
+
+
+            ImGui.SetWindowFontScale(1f);
         }
 
 
