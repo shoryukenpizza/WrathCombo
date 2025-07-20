@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
-using ECommons.GameHelpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
