@@ -35,8 +35,8 @@ internal sealed class MOAction(
         {
             var actions = _retargetedActions();
             PluginLog.Verbose(
-                $"[ConflictingPlugins] [{PluginName}] `RetargetedActions`: " +
-                string.Join(", ", actions.Select(x => x.ActionName())));
+                $"[ConflictingPlugins] [{PluginName}] Has `RetargetedActions`: " +
+                (actions.Length > 0));
             return actions;
         }
         catch (Exception e)
