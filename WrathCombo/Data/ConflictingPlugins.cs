@@ -47,18 +47,49 @@ public static class ConflictingPlugins
         }
         
         conflicts = new Conflicts();
+        
+        // try/catch blocks are here for issues with the Conflict instantiations
 
-        var hasSimpleConflicts = TryGetSimpleComboConflicts(out var simpleCombos);
-        var hasComplexConflicts = TryGetComplexComboConflicts(out var complexCombos);
-        if (hasSimpleConflicts || hasComplexConflicts)
-            conflicts[ConflictType.Combo] =
-                simpleCombos.Concat(complexCombos).ToArray();
+        try
+        {
+            var hasSimpleConflicts =
+                TryGetSimpleComboConflicts(out var simpleCombos);
+            var hasComplexConflicts =
+                TryGetComplexComboConflicts(out var complexCombos);
+            if (hasSimpleConflicts || hasComplexConflicts)
+                conflicts[ConflictType.Combo] =
+                    simpleCombos.Concat(complexCombos).ToArray();
+        }
+        catch (Exception e)
+        {
+            PluginLog.Error(
+                "[ConflictingPlugins] Failed to check for combo conflicts: " +
+                e.ToStringFull());
+        }
 
-        if (TryGetTargetingConflicts(out var targetingConflicts))
-            conflicts[ConflictType.Targeting] = targetingConflicts;
+        try
+        {
+            if (TryGetTargetingConflicts(out var targetingConflicts))
+                conflicts[ConflictType.Targeting] = targetingConflicts;
+        }
+        catch (Exception e)
+        {
+            PluginLog.Error(
+                "[ConflictingPlugins] Failed to check for targeting conflicts: " +
+                e.ToStringFull());
+        }
 
-        if (TryGetSettingConflicts(out var settingConflicts))
-            conflicts[ConflictType.Settings] = settingConflicts;
+        try
+        {
+            if (TryGetSettingConflicts(out var settingConflicts))
+                conflicts[ConflictType.Settings] = settingConflicts;
+        }
+        catch (Exception e)
+        {
+            PluginLog.Error(
+                "[ConflictingPlugins] Failed to check for setting conflicts: " +
+                e.ToStringFull());
+        }
 
         _cachedConflicts = conflicts;
         return conflicts.ToArray().Length > 0;
