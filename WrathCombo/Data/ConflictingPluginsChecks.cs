@@ -56,8 +56,8 @@ public static class ConflictingPluginsChecks
     }
 
     internal sealed class BossModCheck(bool reborn = false)
-        : ConflictCheck(reborn
-            ? new BossModIPC()
+        : ConflictCheck(!reborn
+            ? new BossModIPC("BossMod", new Version(0, 3, 1, 0))
             : new BossModIPC("BossModReborn", new Version(7, 2, 5, 90)))
     {
         private DateTime? _conflictFirstSeen;
