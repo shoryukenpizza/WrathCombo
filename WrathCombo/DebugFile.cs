@@ -175,7 +175,9 @@ public static class DebugFile
         AddLine("START CONFLICTING PLUGINS");
         foreach (var plugin in conflicts)
             AddLine($"- {plugin.Name} v{plugin.Version} ({plugin.ConflictType}) " +
-                    $"reason: {plugin.Reason}");
+                    (string.IsNullOrEmpty(plugin.Reason)
+                        ? ""
+                        : "reason: " + plugin.Reason));
         AddLine("END CONFLICTING PLUGINS");
     }
 

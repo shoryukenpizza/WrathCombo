@@ -332,13 +332,13 @@ public static class ConflictingPlugins
         if (ConflictingPluginsChecks.BossMod.Conflicted)
             conflicts = conflicts.Append(new Conflict(
                     "BossMod", ConflictType.Combo,
-                    "Autorotation module is queueing actions!"))
+                    "Autorotation module is queueing actions"))
                 .ToArray();
         if (ConflictingPluginsChecks.BossModReborn.Conflicted)
         {
             conflicts = conflicts.Append(new Conflict(
                     "BossModReborn", ConflictType.Combo,
-                    "Autorotation module is queueing actions!"))
+                    "Autorotation module is queueing actions"))
                 .ToArray();
         }
 
