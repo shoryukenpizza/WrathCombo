@@ -48,7 +48,7 @@
 /WrathCombo/Services/IPC/                             @zbee
 /res/ipc_status.txt                                   @zbee
 /WrathCombo/Data/ContentCheck.cs                      @zbee
-/WrathCombo/Data/ConflictingPluginsCheck.cs           @zbee
+/WrathCombo/Data/Conflicts                            @zbee
 /WrathCombo/Combos/PvE/Content/Bozja.cs               @zbee @Akechi-kun
 /WrathCombo/CustomCombo/StancePartner.cs              @zbee
 
