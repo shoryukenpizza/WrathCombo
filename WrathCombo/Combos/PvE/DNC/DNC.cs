@@ -221,7 +221,7 @@ internal partial class DNC : PhysicalRanged
             }
 
             // Dance Partner
-            if (IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner) && LevelChecked(ClosedPosition) &&
+            if (IsEnabled(CustomComboPreset.DNC_ST_Adv_AutoPartner) && ActionReady(ClosedPosition) &&
                 CanWeave() &&
                 CurrentPartnerNonOptimal)
                 return HasStatusEffect(Buffs.ClosedPosition)
@@ -550,7 +550,7 @@ internal partial class DNC : PhysicalRanged
             }
 
             // Dance Partner
-            if (CanWeave() && LevelChecked(ClosedPosition) &&
+            if (CanWeave() && ActionReady(ClosedPosition) &&
                 CurrentPartnerNonOptimal)
                 return HasStatusEffect(Buffs.ClosedPosition)
                     ? Ending
