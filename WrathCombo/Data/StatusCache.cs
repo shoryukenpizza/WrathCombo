@@ -1,12 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using ECommons.DalamudServices;
+using ECommons.GameFunctions;
+using ECommons.GameHelpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
-using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Status = Dalamud.Game.ClientState.Statuses.Status; // conflicts with structs if not defined
 
@@ -178,6 +178,26 @@ namespace WrathCombo.Data
                         if (HasStatusEffect(2290)) return targetID != 11794;
                     }
                     return false;
+                case 966: //The Tower at Paradigm's Breach, Hansel & Gretel
+                          // Hansel = 12709
+                          // Gretel = 12708
+
+                    if (targetID is 12709 or 12708)
+                    {
+                        bool Tank = (LocalPlayer!).GetRole() is CombatRole.Tank;
+
+                        // Non Tanks should just ignore Strong of Shield & Stronger Together.
+                        if (!Tank)
+                        {
+                            if (HasStatusEffect(2538, tar) || HasStatusEffect(2539, tar)) return true;
+                        }
+                        else // Directional Parry checking only for Tanks for now
+                        {
+                            if (HasStatusEffect(680, tar) && AngleToTarget(tar) != AttackAngle.Front) return true;
+                        }
+                    }
+                    return false;
+
                 case 801 or 805 or 1122: //Interdimensional Rift (Omega 12 / Alphascape 4), Regular/Savage?/Ultimate?
                     // Omega-M = 9339
                     // Omega-F = 9340
