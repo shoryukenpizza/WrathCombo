@@ -181,17 +181,20 @@ namespace WrathCombo.Data
                 case 966: //The Tower at Paradigm's Breach, Hansel & Gretel
                           // Hansel = 12709
                           // Gretel = 12708
+                          // 608 Directional Parry
+                          // 2538 Strong of Shield
+                          // 2539 Stronger Together
 
                     if (targetID is 12709 or 12708)
                     {
                         bool Tank = (LocalPlayer!).GetRole() is CombatRole.Tank;
 
-                        // Non Tanks should just ignore Strong of Shield & Stronger Together.
+                        // Non Tanks should just ignore parrying boss(s)
                         if (!Tank)
                         {
-                            if (HasStatusEffect(2538, tar) || HasStatusEffect(2539, tar)) return true;
+                            if (HasStatusEffect(680, tar)) return true;
                         }
-                        else // Directional Parry checking only for Tanks for now
+                        else // Directional checking only for Tanks for now
                         {
                             if (HasStatusEffect(680, tar) && AngleToTarget(tar) != AttackAngle.Front) return true;
                         }
