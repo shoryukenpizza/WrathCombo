@@ -12,9 +12,9 @@ using ECommons.Logging;
 namespace WrathCombo.Services.IPC_Subscriber;
 
 internal sealed class BossModIPC(
-    string? pluginName = null,
-    Version? validVersion = null)
-    : ReusableIPC(pluginName ?? "BossMod", validVersion ?? new Version(0, 3, 1, 0))
+    string pluginName,
+    Version validVersion)
+    : ReusableIPC(pluginName, validVersion)
 {
     public bool HasAutomaticActionsQueued()
     {
