@@ -6,10 +6,14 @@ using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Colors;
 using Dalamud.Plugin;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
+using ECommons.Logging;
 using ImGuiNET;
 using WrathCombo.Extensions;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 #endregion
 
@@ -17,6 +21,12 @@ namespace WrathCombo.Data;
 
 public static class ConflictingPlugins
 {
+
+    /// <summary>
+    ///     Cache for <see cref="TryGetConflicts" /> results.
+    /// </summary>
+    private static Conflicts? _cachedConflicts;
+    
     /// <summary>
     ///     Gets all current conflicts.
     /// </summary>
@@ -28,6 +38,14 @@ public static class ConflictingPlugins
     /// </returns>
     public static bool TryGetConflicts(out Conflicts conflicts)
     {
+        // Only check for new conflicts periodically, not refreshed on demand anyway
+        if (!EZ.Throttle("conflictCheck", TS.FromSeconds(1.5)) &&
+            _cachedConflicts is not null)
+        {
+            conflicts = _cachedConflicts;
+            return _cachedConflicts.ToArray().Length > 0;
+        }
+        
         conflicts = new Conflicts();
 
         var hasSimpleConflicts = TryGetSimpleComboConflicts(out var simpleCombos);
@@ -42,6 +60,7 @@ public static class ConflictingPlugins
         if (TryGetSettingConflicts(out var settingConflicts))
             conflicts[ConflictType.Settings] = settingConflicts;
 
+        _cachedConflicts = conflicts;
         return conflicts.ToArray().Length > 0;
     }
 
@@ -284,13 +303,15 @@ public static class ConflictingPlugins
         if (ConflictingPluginsChecks.BossMod.Conflicted)
             conflicts = conflicts.Append(new Conflict(
                     "BossMod", ConflictType.Combo,
-                    "is queueing actions!"))
+                    "Autorotation module is queueing actions!"))
                 .ToArray();
         if (ConflictingPluginsChecks.BossModReborn.Conflicted)
+        {
             conflicts = conflicts.Append(new Conflict(
                     "BossModReborn", ConflictType.Combo,
-                    "is queueing actions!"))
+                    "Autorotation module is queueing actions!"))
                 .ToArray();
+        }
 
         return conflicts.Length > 0;
     }
