@@ -1104,7 +1104,7 @@ public enum CustomComboPreset
     BLM_Blizzard1to3 = 2052,
 
     [ReplaceSkill(BLM.Fire4)]
-    [ConflictingCombos(BLM_FireandIce)]
+    [ConflictingCombos(BLM_FireandIce, BLM_FireFlarestar)]
     [CustomComboInfo("Fire 4 to 3", "Replaces Fire 4 with Fire 3 when not in Astral Fire III or not in combat.", BLM.JobID)]
     BLM_Fire4to3 = 2059,
 
@@ -1118,7 +1118,7 @@ public enum CustomComboPreset
     BLM_Blizzard4toDespair = 2060,
     
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]
-    [ConflictingCombos(BLM_Fire4to3)]
+    [ConflictingCombos(BLM_Fire4to3, BLM_FireFlarestar)]
     [CustomComboInfo("Fire & Ice", "Replaces Fire4 with Blizzard4 when in Umbral Ice.\nReplaces Flare with Freeze when in Umbral Ice.", BLM.JobID)]
     BLM_FireandIce = 2057,
 
@@ -1128,6 +1128,7 @@ public enum CustomComboPreset
     BLM_FreezeBlizzard2 = 2064,
 
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]
+    [ConflictingCombos(BLM_Fire4to3, BLM_FireandIce)]
     [CustomComboInfo(" Fire and Flare to Star", "Replaces Fire4 and Flare to Flarestar when on max stacks.", BLM.JobID)]
     BLM_FireFlarestar = 2058,
 
