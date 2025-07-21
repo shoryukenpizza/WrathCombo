@@ -646,8 +646,8 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID switch
             {
-                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) && (IcePhase || AstralFireStacks is 1 || AstralFireStacks is 2 || HasStatusEffect(Buffs.Firestarter) || !InCombat()) => Fire3,
-                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase && AstralFireStacks is 3 => OriginalHook(Fire),
+                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) && (IcePhase || ((AstralFireStacks is 1 or 2) && HasStatusEffect(Buffs.Firestarter)) || !InCombat()) => Fire3,
+                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase && (AstralFireStacks is 3 || ((AstralFireStacks is 1 or 2) && !HasStatusEffect(Buffs.Firestarter))) => OriginalHook(Fire),
                 var _ => actionID
             };
     }
