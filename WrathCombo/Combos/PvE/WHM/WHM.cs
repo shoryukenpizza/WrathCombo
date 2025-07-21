@@ -246,53 +246,30 @@ internal partial class WHM : Healer
 
             #endregion
 
-            #region OGCD Tools
-
             if (IsEnabled(CustomComboPreset.WHM_STHeals_Lucid) && CanWeave() &&
                 Role.CanLucidDream(Config.WHM_STHeals_Lucid))
                 return Role.LucidDreaming;
-
-            // OGCD Priority List
-            foreach (var prio in Config.WHM_ST_Heals_Priority.Items.OrderBy(x => x))
+            
+            //Priority List
+            for(int i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
             {
-                var index = Config.WHM_ST_Heals_Priority.IndexOf(prio);
-                var config = GetMatchingConfigST(index, OptionalTarget,
-                    out var spell, out var enabled);
+                int index = Config.WHM_ST_Heals_Priority.IndexOf(i + 1);
+                int config = GetMatchingConfigST(index, OptionalTarget, out uint spell, out bool enabled);
 
-                if (!enabled) continue;
-
-                if (GetTargetHPPercent(healTarget,
-                        Config.WHM_STHeals_IncludeShields) <= config &&
-                    ActionReady(spell))
-                    return spell
-                        .RetargetIfEnabled(OptionalTarget, Cure);
+                if (enabled)
+                {
+                    if (GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields) <= config &&
+                        ActionReady(spell))
+                        return spell.RetargetIfEnabled(OptionalTarget, Cure);
+                }
             }
-
-            #endregion
-
-            #region GCD Tools
-
-            if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && canRegen)
-                return Regen
-                    .RetargetIfEnabled(OptionalTarget, Cure);
-
-            if (IsEnabled(CustomComboPreset.WHM_STHeals_Solace) && CanLily &&
-                ActionReady(AfflatusSolace))
-                return AfflatusSolace
-                    .RetargetIfEnabled(OptionalTarget, Cure);
-
-            if (ActionReady(Cure2))
-            {
-                if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && canThinAir)
-                    return ThinAir;
-                return Cure2
-                    .RetargetIfEnabled(OptionalTarget, Cure);
-            }
-
-            #endregion
-
-            return actionID
-                .RetargetIfEnabled(OptionalTarget, Cure);
+           
+            if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && canThinAir)
+                return ThinAir;
+            
+            return LevelChecked(Cure2) ?
+                Cure2.RetargetIfEnabled(OptionalTarget, Cure):
+                Cure.RetargetIfEnabled(OptionalTarget);
         }
     }
 

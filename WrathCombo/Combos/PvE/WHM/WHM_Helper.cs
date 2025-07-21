@@ -3,9 +3,11 @@
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Statuses;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
@@ -82,77 +84,83 @@ internal partial class WHM
             return true;
         }
     }
-
-    #region Heal Priority
-
-    public static int GetMatchingConfigST(
-        int i,
-        IGameObject? optionalTarget,
-        out uint action,
-        out bool enabled)
+    
+    #region Get ST Heals
+    internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {
-        //var healTarget = optionalTarget ?? GetHealTarget(Config.WHM_STHeals_UIMouseOver);
-        //leaving in case Regen gets a slider and is added
-
-        var canWeave = CanWeave(0.3f);
-
+        IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+        bool stopHot = Config.WHM_STHeals_RegenHPLower >= GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields);
+        float refreshTime = Config.WHM_STHeals_RegenTimer;
+        Status? regenHoT = GetStatusEffect(Buffs.Regen, healTarget);
+        Status? BenisonShield = GetStatusEffect(Buffs.DivineBenison, healTarget);
+        
         switch (i)
         {
             case 0:
                 action = Benediction;
-
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Benediction) &&
-                          (!Config.WHM_STHeals_BenedictionWeave ||
-                           Config.WHM_STHeals_BenedictionWeave && canWeave);
-
+                          (!Config.WHM_STHeals_BenedictionWeave || CanWeave());
                 return Config.WHM_STHeals_BenedictionHP;
-
             case 1:
                 action = Tetragrammaton;
-
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Tetragrammaton) &&
-                          (!Config.WHM_STHeals_TetraWeave ||
-                           Config.WHM_STHeals_TetraWeave && canWeave);
-
+                          (!Config.WHM_STHeals_TetraWeave || CanWeave());
                 return Config.WHM_STHeals_TetraHP;
-
             case 2:
                 action = DivineBenison;
-
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Benison) &&
-                          (!Config.WHM_STHeals_BenisonWeave ||
-                           Config.WHM_STHeals_BenisonWeave && canWeave);
-
+                          BenisonShield == null &&
+                          (!Config.WHM_STHeals_BenisonWeave || CanWeave());
                 return Config.WHM_STHeals_BenisonHP;
-
             case 3:
                 action = Aquaveil;
-
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Aquaveil) &&
-                          (!Config.WHM_STHeals_AquaveilWeave ||
-                           Config.WHM_STHeals_AquaveilWeave && canWeave);
-
+                          (!Config.WHM_STHeals_AquaveilWeave || CanWeave());
                 return Config.WHM_STHeals_AquaveilHP;
-
             case 4:
-                action = Temperance;
-
+                action = AfflatusSolace;
+                enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Solace) && 
+                          CanLily;
+                return Config.WHM_STHeals_SolaceHP;
+            case 5:
+                action = Regen;
+                enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && 
+                          !stopHot &&
+                          (regenHoT is null || regenHoT.RemainingTime <= refreshTime);
+                return Config.WHM_STHeals_RegenHPUpper;
+            
+            case 6:
+                action = OriginalHook(Temperance);
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Temperance) &&
-                          (!Config.WHM_STHeals_TemperanceWeave ||
-                           Config.WHM_STHeals_TemperanceWeave && canWeave) &&
+                          (!Config.WHM_STHeals_TemperanceWeave || CanWeave()) &&
                           ContentCheck.IsInConfiguredContent(
                               Config.WHM_STHeals_TemperanceDifficulty,
                               Config.WHM_STHeals_TemperanceDifficultyListSet);
-
                 return Config.WHM_STHeals_TemperanceHP;
+            
+            case 7:
+                action = Asylum;
+                enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Asylum) &&
+                          (!Config.WHM_STHeals_AsylumWeave || CanWeave()) &&
+                          ContentCheck.IsInConfiguredContent(
+                              Config.WHM_STHeals_AsylumDifficulty,
+                              Config.WHM_STHeals_AsylumDifficultyListSet);
+                return Config.WHM_STHeals_AsylumHP;
+            case 8:
+                action = LiturgyOfTheBell;
+                enabled = IsEnabled(CustomComboPreset.WHM_STHeals_LiturgyOfTheBell) &&
+                          !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
+                          (!Config.WHM_STHeals_LiturgyOfTheBellWeave || CanWeave()) &&
+                          ContentCheck.IsInConfiguredContent(
+                              Config.WHM_STHeals_LiturgyOfTheBellDifficulty,
+                              Config.WHM_STHeals_LiturgyOfTheBellDifficultyListSet);
+                return Config.WHM_STHeals_LiturgyOfTheBellHP;
         }
 
         enabled = false;
         action = 0;
-
         return 0;
     }
-
     #endregion
 
     #region Variables

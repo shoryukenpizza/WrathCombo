@@ -7789,54 +7789,64 @@ public enum CustomComboPreset
     [PossiblyRetargeted]
     [HealingCombo]
     WHM_STHeals = 19300,
-
+    
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Regen Option", "Applies Regen to the target if missing.", WHM.JobID)]
+    [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
     [PossiblyRetargeted]
-    WHM_STHeals_Regen = 19301,
-
+    WHM_STHeals_Esuna = 19309,
+    
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Benediction Option", "Uses Benediction when target is below HP threshold.", WHM.JobID)]
-    [PossiblyRetargeted]
-    WHM_STHeals_Benediction = 19302,
-
-    [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Afflatus Solace Option", "Uses Afflatus Solace when available.", WHM.JobID)]
-    [PossiblyRetargeted]
-    WHM_STHeals_Solace = 19303,
-
+    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
+    WHM_STHeals_Lucid = 19308,
+    
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", WHM.JobID)]
     WHM_STHeals_ThinAir = 19304,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Tetragrammaton Option", "Uses Tetragrammaton when available.", WHM.JobID)]
+    [CustomComboInfo("Regen Option", "Adds Regen.", WHM.JobID)]
+    [PossiblyRetargeted]
+    WHM_STHeals_Regen = 19301,
+
+    [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("Afflatus Solace Option", "Adds Afflatus Solace", WHM.JobID)]
+    [PossiblyRetargeted]
+    WHM_STHeals_Solace = 19303,
+
+    [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("Tetragrammaton Option", "Adds Tetragrammaton.", WHM.JobID)]
     [PossiblyRetargeted]
     WHM_STHeals_Tetragrammaton = 19305,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Divine Benison Option", "Uses Divine Benison when available.", WHM.JobID)]
+    [CustomComboInfo("Divine Benison Option", "Adds Divine Benison.", WHM.JobID)]
     [PossiblyRetargeted]
     WHM_STHeals_Benison = 19306,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Aquaveil Option", "Uses Aquaveil when available.", WHM.JobID)]
+    [CustomComboInfo("Aquaveil Option", "Adds Aquaveil.", WHM.JobID)]
     [PossiblyRetargeted]
     WHM_STHeals_Aquaveil = 19307,
+    
+    [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("Benediction Option", "Adds Benediciton.", WHM.JobID)]
+    [PossiblyRetargeted]
+    WHM_STHeals_Benediction = 19302,
 
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
-    WHM_STHeals_Lucid = 19308,
-
-    [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Temperance Option", "Uses Temperance when available for mitigation and healing boost.", WHM.JobID)]
+    [CustomComboInfo("Temperance Option", "Adds Temperance and it's followup Divine Caress.", WHM.JobID)]
     [PossiblyRetargeted]
     WHM_STHeals_Temperance = 19310,
-
+    
     [ParentCombo(WHM_STHeals)]
-    [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum.", WHM.JobID)]
     [PossiblyRetargeted]
-    WHM_STHeals_Esuna = 19309,
+    WHM_STHeals_Asylum = 19311,
+    
+    [ParentCombo(WHM_STHeals)]
+    [CustomComboInfo("LiturgyOfTheBell Option", "Adds LiturgyOfTheBell.", WHM.JobID)]
+    [PossiblyRetargeted]
+    WHM_STHeals_LiturgyOfTheBell = 19312,
 
     #endregion
 
