@@ -60,31 +60,6 @@ internal partial class WHM
                 return !InBossEncounter() ? Config.WHM_ST_DPS_AeroOptionNonBoss : 0;
         }
     }
-
-    internal static bool BellRaidwideCheckPassed
-    {
-        get
-        {
-            if (!IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell))
-                return false;
-
-            // Skip any checks if Raidwide checking is not enabled
-            if (!Config.WHM_AoEHeals_LiturgyRaidwideOnly)
-                return true;
-
-            // Skip Raidwide check if not in a boss fight, and that check is restricted to bosses
-            if (Config.WHM_AoEHeals_LiturgyRaidwideOnlyBoss ==
-                (int)Config.BossRequirement.On &&
-                !InBossEncounter())
-                return true;
-
-            if (!RaidWideCasting())
-                return false;
-
-            return true;
-        }
-    }
-    
     #region Get ST Heals
     internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {
@@ -132,31 +107,107 @@ internal partial class WHM
             case 6:
                 action = OriginalHook(Temperance);
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Temperance) &&
-                          (!Config.WHM_STHeals_TemperanceWeave || CanWeave()) &&
-                          ContentCheck.IsInConfiguredContent(
-                              Config.WHM_STHeals_TemperanceDifficulty,
-                              Config.WHM_STHeals_TemperanceDifficultyListSet);
+                          (!Config.WHM_STHeals_TemperanceOptions[1] || !InBossEncounter()) &&
+                          (!Config.WHM_STHeals_TemperanceOptions[0] || CanWeave());
                 return Config.WHM_STHeals_TemperanceHP;
             
             case 7:
                 action = Asylum;
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Asylum) &&
-                          (!Config.WHM_STHeals_AsylumWeave || CanWeave()) &&
-                          ContentCheck.IsInConfiguredContent(
-                              Config.WHM_STHeals_AsylumDifficulty,
-                              Config.WHM_STHeals_AsylumDifficultyListSet);
+                          (!Config.WHM_STHeals_AsylumOptions[1] || !InBossEncounter()) &&
+                          (!Config.WHM_STHeals_AsylumOptions[0] || CanWeave());
                 return Config.WHM_STHeals_AsylumHP;
             case 8:
                 action = LiturgyOfTheBell;
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_LiturgyOfTheBell) &&
                           !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
-                          (!Config.WHM_STHeals_LiturgyOfTheBellWeave || CanWeave()) &&
-                          ContentCheck.IsInConfiguredContent(
-                              Config.WHM_STHeals_LiturgyOfTheBellDifficulty,
-                              Config.WHM_STHeals_LiturgyOfTheBellDifficultyListSet);
+                          (!Config.WHM_STHeals_LiturgyOfTheBellOptions[1] || !InBossEncounter()) &&
+                          (!Config.WHM_STHeals_LiturgyOfTheBellOptions[0] || CanWeave());
                 return Config.WHM_STHeals_LiturgyOfTheBellHP;
         }
 
+        enabled = false;
+        action = 0;
+        return 0;
+    }
+    #endregion
+    
+    #region Get Aoe Heals
+    public static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
+    {
+        bool medica3Check = !HasStatusEffect(Buffs.Medica3) ||
+                            GetStatusEffectRemainingTime(Buffs.Medica3) <= Config.WHM_AoEHeals_MedicaTime;
+        bool medica2Check = !HasStatusEffect(Buffs.Medica2) ||
+                            GetStatusEffectRemainingTime(Buffs.Medica2) <= Config.WHM_AoEHeals_MedicaTime;
+        
+        switch (i)
+        {
+            case 0:
+                action = OriginalHook(Medica2);
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Medica2) &&
+                          (LevelChecked(Medica3) && medica3Check || 
+                           !LevelChecked(Medica3) && medica2Check);
+                return Config.WHM_AoEHeals_Medica2HP;
+            
+            case 1:
+                action = Cure3;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Cure3) &&
+                          (LocalPlayer.CurrentMp >= Config.WHM_AoEHeals_Cure3MP ||
+                           HasStatusEffect(Buffs.ThinAir));
+                return Config.WHM_AoEHeals_Cure3HP;
+            
+            case 2:
+                action = PlenaryIndulgence;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Plenary) &&
+                          (CanWeave() || !Config.WHM_AoEHeals_PlenaryWeave);
+                return Config.WHM_AoEHeals_PlenaryHP;
+            
+            case 3:
+                action = Temperance;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Temperance) &&
+                          (CanWeave() || !Config.WHM_AoEHeals_TemperanceWeave) &&
+                          !HasStatusEffect(Buffs.DivineGrace) &&
+                          ContentCheck.IsInConfiguredContent(
+                            Config.WHM_AoEHeals_TemperanceDifficulty,
+                            Config.WHM_AoEHeals_TemperanceDifficultyListSet);
+                return Config.WHM_AoEHeals_TemperanceHP;
+            
+            case 4:
+                action = Asylum;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum) &&
+                          (CanWeave() || !Config.WHM_AoEHeals_AsylumWeave) && !IsMoving() &&
+                          ContentCheck.IsInConfiguredContent(
+                              Config.WHM_AoEHeals_AsylumDifficulty,
+                              Config.WHM_AoEHeals_AsylumDifficultyListSet);
+                return Config.WHM_AoEHeals_AsylumHP;
+            
+            case 5:
+                action = LiturgyOfTheBell;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell) && 
+                          !HasStatusEffect(Buffs.LiturgyOfTheBell) && 
+                          (CanWeave() || !Config.WHM_AoEHeals_LiturgyWeave) &&
+                          ContentCheck.IsInConfiguredContent(
+                              Config.WHM_AoEHeals_LiturgyDifficulty,
+                              Config.WHM_AoEHeals_LiturgyDifficultyListSet);
+                return Config.WHM_AoEHeals_LiturgyHP;
+            
+            case 6:
+                action = AfflatusRapture;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Rapture) && CanLily;
+                return Config.WHM_AoEHeals_RaptureHP;
+            
+            case 7:
+                action = Assize;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Assize) &&
+                          (!Config.WHM_AoEHeals_AssizeWeave || CanWeave());
+                return Config.WHM_AoEHeals_AssizeHP;
+            
+            case 8:
+                action = DivineCaress;
+                enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
+                          (!Config.WHM_AoEHeals_DivineCaressWeave || CanWeave());
+                return Config.WHM_AoEHeals_DivineCaressHP;
+        }
         enabled = false;
         action = 0;
         return 0;

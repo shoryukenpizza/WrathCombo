@@ -7766,20 +7766,6 @@ public enum CustomComboPreset
 
     #endregion
 
-    #region DPS Small Features
-
-    [ReplaceSkill(WHM.AfflatusSolace)]
-    [CustomComboInfo("Solace into Misery Feature",
-        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.", WHM.JobID)]
-    WHM_SolaceMisery = 19000,
-
-    [ReplaceSkill(WHM.AfflatusRapture)]
-    [CustomComboInfo("Rapture into Misery Feature",
-        "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
-    WHM_RaptureMisery = 19001,
-
-    #endregion
-
     #region Single Target Heals
 
     [AutoAction(false, true)]
@@ -7857,18 +7843,27 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Healing Mode - AoE", "Replaces Medica with a one button AoE healing setup.", WHM.JobID)]
     [HealingCombo]
     WHM_AoEHeals = 19007,
+    
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
+    WHM_AoEHeals_Lucid = 19204,
+    
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", WHM.JobID)]
+    WHM_AoEHeals_ThinAir = 19200,
+    
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery when available.", WHM.JobID)]
+    WHM_AoEHeals_Misery = 19010,
+    
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Medica II Option", "Uses Medica II when current target doesn't have Medica II buff." +
+                                         "\nUpgrades to Medica III when level allows.", WHM.JobID)]
+    WHM_AoEHeals_Medica2 = 19205,
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Afflatus Rapture Option", "Uses Afflatus Rapture when available.", WHM.JobID)]
     WHM_AoEHeals_Rapture = 19011,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery when available.", WHM.JobID)]
-    WHM_AoEHeals_Misery = 19010,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", WHM.JobID)]
-    WHM_AoEHeals_ThinAir = 19200,
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Cure III Option", "Replaces Medica with Cure III when available.", WHM.JobID)]
@@ -7881,19 +7876,15 @@ public enum CustomComboPreset
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Plenary Indulgence Option", "Uses Plenary Indulgence when available.", WHM.JobID)]
     WHM_AoEHeals_Plenary = 19203,
+    
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", WHM.JobID)]
+    [Retargeted]
+    WHM_AoEHeals_Asylum = 19028,
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Temperance Option", "Uses Temperance when available for a healing boost whenever the party average falls below the set threshold.", WHM.JobID)]
     WHM_AoEHeals_Temperance = 19210,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
-    WHM_AoEHeals_Lucid = 19204,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Medica II Option", "Uses Medica II when current target doesn't have Medica II buff." +
-                                         "\nUpgrades to Medica III when level allows.", WHM.JobID)]
-    WHM_AoEHeals_Medica2 = 19205,
 
     [ParentCombo(WHM_AoEHeals)]
     [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active.", WHM.JobID)]
@@ -7903,31 +7894,20 @@ public enum CustomComboPreset
     [CustomComboInfo("Liturgy of the Bell Option", "Adds Liturgy of the Bell (Lilybell) placement to the rotation.", WHM.JobID)]
     [Retargeted]
     WHM_AoEHeals_LiturgyOfTheBell = 19206,
+    
+    #endregion
+    
+    #region DPS Small Features
 
-    [ParentCombo(WHM_AoEHeals_LiturgyOfTheBell)]
-    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority placement for Liturgy of the Bell.", WHM.JobID)]
-    [Retargeted]
-    WHM_AoEHeals_LiturgyOfTheBell_Enemy = 19208,
+    [ReplaceSkill(WHM.AfflatusSolace)]
+    [CustomComboInfo("Solace into Misery Feature",
+        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.", WHM.JobID)]
+    WHM_SolaceMisery = 19000,
 
-    [ParentCombo(WHM_AoEHeals_LiturgyOfTheBell)]
-    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority placement for Liturgy of the Bell.\nBeneath the Enemy placement option, but above yourself.", WHM.JobID)]
-    [Retargeted]
-    WHM_AoEHeals_LiturgyOfTheBell_Allies = 19209,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Asylum Option", "Adds Asylum placement, when standing still, to the rotation.\nWill Retarget it onto yourself.", WHM.JobID)]
-    [Retargeted]
-    WHM_AoEHeals_Asylum = 19028,
-
-    [ParentCombo(WHM_AoEHeals_Asylum)]
-    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Asylum.", WHM.JobID)]
-    [Retargeted]
-    WHM_AoEHeals_Asylum_Enemy = 19030,
-
-    [ParentCombo(WHM_AoEHeals_Asylum)]
-    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Asylum.\nBeneath the Enemy placement option, but above yourself.", WHM.JobID)]
-    [Retargeted]
-    WHM_AoEHeals_Asylum_Allies = 19031,
+    [ReplaceSkill(WHM.AfflatusRapture)]
+    [CustomComboInfo("Rapture into Misery Feature",
+        "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
+    WHM_RaptureMisery = 19001,
 
     #endregion
 

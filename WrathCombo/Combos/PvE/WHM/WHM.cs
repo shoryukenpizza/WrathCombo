@@ -263,13 +263,12 @@ internal partial class WHM : Healer
                         return spell.RetargetIfEnabled(OptionalTarget, Cure);
                 }
             }
-           
-            if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && canThinAir)
-                return ThinAir;
+            if (LevelChecked(Cure2))
+                return IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && canThinAir
+                    ? ThinAir
+                    : Cure2.RetargetIfEnabled(OptionalTarget, Cure);
             
-            return LevelChecked(Cure2) ?
-                Cure2.RetargetIfEnabled(OptionalTarget, Cure):
-                Cure.RetargetIfEnabled(OptionalTarget);
+            return Cure.RetargetIfEnabled(OptionalTarget);
         }
     }
 
@@ -289,132 +288,30 @@ internal partial class WHM : Healer
                              !HasStatusEffect(Buffs.ThinAir) &&
                              GetRemainingCharges(ThinAir) >
                              Config.WHM_AoEHeals_ThinAir;
-
-            var canPlenary = ActionReady(PlenaryIndulgence) &&
-                             (!Config.WHM_AoEHeals_PlenaryWeave ||
-                              Config.WHM_AoEHeals_PlenaryWeave &&
-                              CanWeave());
-
-            var canAssize = ActionReady(Assize) &&
-                            (!Config.WHM_AoEHeals_AssizeWeave ||
-                             Config.WHM_AoEHeals_AssizeWeave &&
-                             CanWeave());
-
-            var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
-
-            var hasMedica2 = GetStatusEffect(Buffs.Medica2, healTarget);
-            var hasMedica3 = GetStatusEffect(Buffs.Medica3, healTarget);
-            
-            
-            var temperanceInRaidwideContent =
-                ContentCheck.IsInConfiguredContent(
-                    Config.WHM_AoEHeals_TemperanceRaidwideDifficulty,
-                    Config.WHM_AoEHeals_TemperanceRaidwideDifficultyListSet);
-            var temperanceHPCheckPassed =
-                (Config.WHM_AoEHeals_TemperanceRaidwide &&
-                 Config.WHM_AoEHeals_TemperanceRaidwidePrioritization &&
-                 temperanceInRaidwideContent &&
-                 RaidWideCasting()) ||
-                GetPartyAvgHPPercent() <= Config.WHM_AoEHeals_TemperanceHP;
-            
-            var bellTarget =
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Enemy)
-                    ? SimpleTarget.HardTarget
-                    : null) ??
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell_Allies)
-                    ? SimpleTarget.Stack.OverridesAllies
-                    : null) ??
-                SimpleTarget.Self;
-            var asylumTarget =
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Enemy)
-                    ? SimpleTarget.HardTarget
-                    : null) ??
-                (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum_Allies)
-                    ? SimpleTarget.Stack.OverridesAllies
-                    : null) ??
-                SimpleTarget.Self;
-
             #endregion
-
-            #region OGCD Tools
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Assize) &&
-                canAssize)
-                return Assize;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Plenary) &&
-                canPlenary)
-                return PlenaryIndulgence;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Temperance) &&
-                ActionReady(Temperance) &&
-                (!Config.WHM_AoEHeals_TemperanceWeave || CanWeave()) &&
-                temperanceHPCheckPassed &&
-                ContentCheck.IsInConfiguredContent(
-                    Config.WHM_AoEHeals_TemperanceDifficulty,
-                    Config.WHM_AoEHeals_TemperanceDifficultyListSet) &&
-                (!Config.WHM_AoEHeals_TemperanceRaidwide || 
-                 (RaidWideCasting() && temperanceInRaidwideContent)))
-                return Temperance;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_DivineCaress) &&
-                ActionReady(DivineCaress))
-                return OriginalHook(DivineCaress);
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell) &&
-                ActionReady(LiturgyOfTheBell) &&
-                !HasStatusEffect(Buffs.LiturgyOfTheBell) &&
-                !JustUsed(LiturgyOfTheBell) &&
-                BellRaidwideCheckPassed &&
-                ContentCheck.IsInConfiguredContent(
-                    Config.WHM_AoEHeals_LiturgyDifficulty,
-                    Config.WHM_AoEHeals_LiturgyDifficultyListSet))
-                return LiturgyOfTheBell.Retarget(Medica1, bellTarget);
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Asylum) &&
-                ActionReady(Asylum) &&
-                !IsMoving() &&
-                (!Config.WHM_AoEHeals_AsylumRaidwideOnly || RaidWideCasting()))
-                return Asylum.Retarget(Medica1, asylumTarget);
-
+            
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Lucid) &&
                 CanWeave() &&
                 Role.CanLucidDream(Config.WHM_AoEHeals_Lucid))
                 return Role.LucidDreaming;
 
-            #endregion
-
-            #region GCD Tools
-
             // Blood Overcap
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Misery) &&
                 gauge.BloodLily == 3)
                 return AfflatusMisery;
-
-            // Heals
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Rapture) &&
-                ActionReady(AfflatusRapture) && CanLily)
-                return AfflatusRapture;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_ThinAir) && canThinAir)
-                return ThinAir;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Medica2)
-                && ((hasMedica2 == null && hasMedica3 == null) || // No Medica buffs
-                    (hasMedica2 != null && // Medica buff, but falling off
-                     hasMedica2.RemainingTime <= Config.WHM_AoEHeals_MedicaTime) ||
-                    (hasMedica3 != null &&
-                     hasMedica3.RemainingTime <= Config.WHM_AoEHeals_MedicaTime))
-                && (ActionReady(Medica2) || ActionReady(Medica3)))
-                return LevelChecked(Medica3) ? Medica3 : Medica2;
-
-            if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Cure3) &&
-                ActionReady(Cure3) &&
-                (LocalPlayer.CurrentMp >= Config.WHM_AoEHeals_Cure3MP ||
-                 HasStatusEffect(Buffs.ThinAir)))
-                return Cure3;
-
-            #endregion
+            
+            //Priority List
+            for(int i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
+            {
+                int index = Config.WHM_AoE_Heals_Priority.IndexOf(i + 1);
+                int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
+                
+                if (enabled && GetPartyAvgHPPercent() <= config && ActionReady(spell))
+                    return IsEnabled(CustomComboPreset.WHM_AoEHeals_ThinAir) && canThinAir && spell is Cure3 or Medica2 or Medica3?
+                        ThinAir:
+                        spell.RetargetIfEnabled(OptionalTarget, Medica1);
+            }
+           
 
             return actionID;
         }
