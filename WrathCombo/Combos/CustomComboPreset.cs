@@ -1108,6 +1108,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire 4 to 3", "Replaces Fire 4 with Fire 3 when not in Astral Fire III or not in combat.", BLM.JobID)]
     BLM_Fire4to3 = 2059,
 
+    [ReplaceSkill(BLM.Fire)]
+    [ConflictingCombos(BLM_FireandIce)]
+    [CustomComboInfo("Fire to Despair", "Replaces Fire  with Despair when in Astral Fire and below 2400 MP.", BLM.JobID)]
+    BLM_Fire1Despair = 2065,
+
     [ReplaceSkill(BLM.Blizzard4)]
     [CustomComboInfo("Blizzard 4 to Despair", "Replaces Blizzard 4 with Despair when in Astral Fire.", BLM.JobID)]
     BLM_Blizzard4toDespair = 2060,
@@ -1159,7 +1164,7 @@ public enum CustomComboPreset
 
     // Last value ST = 2117
     //Last Value AoE = 2212
-    //Last Value misc = 2064
+    //Last Value misc = 2065
 
     #endregion
 
