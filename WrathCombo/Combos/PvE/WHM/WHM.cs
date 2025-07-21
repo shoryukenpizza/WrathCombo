@@ -64,6 +64,17 @@ internal partial class WHM : Healer
                 return OccultCrescent.BestPhantomAction();
 
             if (!InCombat()) return actionID;
+            
+            #region Special Feature Raidwide
+
+            if (RaidwideTemperance())
+                return OriginalHook(Temperance);
+            if (RaidwideAsylum())
+                return Asylum.Retarget(actionID, SimpleTarget.Self);
+            if (RaidwideLiturgyOfTheBell())
+                return LiturgyOfTheBell.Retarget(actionID, SimpleTarget.Self);
+           
+            #endregion
 
             #region Weaves
 
@@ -149,6 +160,17 @@ internal partial class WHM : Healer
                 return actionID;
 
             #endregion
+            
+            #region Special Feature Raidwide
+
+            if (RaidwideTemperance())
+                return OriginalHook(Temperance);
+            if (RaidwideAsylum())
+                return Asylum.Retarget([Holy, Holy3], SimpleTarget.Self);
+            if (RaidwideLiturgyOfTheBell())
+                return LiturgyOfTheBell.Retarget([Holy, Holy3], SimpleTarget.Self);
+           
+            #endregion
 
             #region Weaves
 
@@ -232,6 +254,17 @@ internal partial class WHM : Healer
                              GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields)
                              <= Config.WHM_STHeals_RegenHPUpper;  
             #endregion
+            
+            #region Special Feature Raidwide
+
+            if (RaidwideTemperance())
+                return OriginalHook(Temperance);
+            if (RaidwideAsylum())
+                return Asylum.Retarget(Cure, SimpleTarget.Self);
+            if (RaidwideLiturgyOfTheBell())
+                return LiturgyOfTheBell.Retarget(Cure, SimpleTarget.Self);
+           
+            #endregion
 
             #region Priority Cleansing
 
@@ -288,6 +321,17 @@ internal partial class WHM : Healer
                              !HasStatusEffect(Buffs.ThinAir) &&
                              GetRemainingCharges(ThinAir) >
                              Config.WHM_AoEHeals_ThinAir;
+            #endregion
+            
+            #region Special Feature Raidwide
+
+            if (RaidwideTemperance())
+                return OriginalHook(Temperance);
+            if (RaidwideAsylum())
+                return Asylum.Retarget(Medica1, SimpleTarget.Self);
+            if (RaidwideLiturgyOfTheBell())
+                return LiturgyOfTheBell.Retarget(Medica1 ,SimpleTarget.Self);
+           
             #endregion
             
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Lucid) &&

@@ -60,6 +60,28 @@ internal partial class WHM
                 return !InBossEncounter() ? Config.WHM_ST_DPS_AeroOptionNonBoss : 0;
         }
     }
+    #region Raidwides
+    internal static bool RaidwideAsylum()
+    {
+        return IsEnabled(CustomComboPreset.WHM_Raidwide_Asylum) && 
+               ActionReady(Asylum) &&
+               CanWeave() && !RaidWideCasting();
+    }
+    internal static bool RaidwideTemperance()
+    {
+        return IsEnabled(CustomComboPreset.WHM_Raidwide_Temperance) && 
+               ActionReady(OriginalHook(Temperance)) && 
+               CanWeave() && !RaidWideCasting();
+    }
+    internal static bool RaidwideLiturgyOfTheBell()
+    {
+        return IsEnabled(CustomComboPreset.WHM_Raidwide_LiturgyOfTheBell) && 
+               ActionReady(LiturgyOfTheBell) &&
+               !HasStatusEffect(Buffs.LiturgyOfTheBell) && 
+               !RaidWideCasting() && CanWeave();
+    }
+    #endregion
+    
     #region Get ST Heals
     internal static int GetMatchingConfigST(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {

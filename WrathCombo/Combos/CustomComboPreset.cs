@@ -7897,6 +7897,31 @@ public enum CustomComboPreset
     
     #endregion
     
+    #region Raidwide Heals
+    
+    #region Hidden Features
+    [CustomComboInfo("Boss Raidwide Options", "Collection of tools designed to try and cast during a raidwide attack when detected." +
+                                       "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", WHM.JobID)]
+    WHM_Raidwide = 19220,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Asylum Option", "Will try to Weave Asylum when a raidwide casting. \nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Asylum = 19221,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Temperance Combo Option", "Will try to Weave Temperance and Divine Caress when a raidwide casting. " +
+                                                           "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Temperance = 19222,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide LiturgyOfTheBell Option", "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
+                                                        "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_LiturgyOfTheBell = 19223,
+    
+    #endregion
+    
+    #endregion
+    
     #region DPS Small Features
 
     [ReplaceSkill(WHM.AfflatusSolace)]
