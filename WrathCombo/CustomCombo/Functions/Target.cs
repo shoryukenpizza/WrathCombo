@@ -263,6 +263,51 @@ internal abstract partial class CustomComboFunctions
         return count;
     }
 
+    /// <summary>
+    ///     Gets the number of allies within range of an AoE action. <br/>
+    ///     If the action requires a target, defaults to CurrentTarget unless specified.
+    /// </summary>
+    /// <param name="aoeSpell">
+    ///     The Action ID to check. <br />
+    ///     This will be used to load up all required data from the Action Sheet.
+    /// </param>
+    /// <param name="target">
+    ///     Target for targeted AoE shapes (all but <see cref="SelfCircle"/>). <br />
+    ///     (Optional, defaults to false)
+    /// </param>
+    /// <returns>
+    ///     Number of allies within the specified action's range.
+    /// </returns>
+    public static int NumberOfAlliesInRange
+        (uint aoeSpell, IGameObject? target)
+    {
+        if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
+            return 0;
+
+        if (sheetSpell.CanTargetAlly &&
+            ((target ??= CurrentTarget) is null ||
+             GetTargetDistance(target) > GetActionRange(sheetSpell.RowId)))
+            return 0;
+
+        var count = sheetSpell.CastType switch
+        {
+            1 => 1,
+            2 => sheetSpell.CanTargetSelf
+                ? NumberOfObjectsInRange<SelfCircle>(sheetSpell.EffectRange,
+                    enemies: false)
+                : NumberOfObjectsInRange<Circle>(sheetSpell.EffectRange, target,
+                    enemies: false),
+            // No current cones or lines for allies, but may as well have them here
+            3 => NumberOfObjectsInRange<Cone>(sheetSpell.Range, target,
+                enemies: false),
+            4 => NumberOfObjectsInRange<Line>(sheetSpell.Range, target,
+                sheetSpell.XAxisModifier, enemies: false),
+            _ => 0,
+        };
+
+        return count;
+    }
+
     /// <summary> Checks if an object is within line of sight of the player. </summary>
     internal static unsafe bool IsInLineOfSight(IGameObject? obj)
     {
@@ -442,6 +487,12 @@ internal abstract partial class CustomComboFunctions
         
         bool IsValidTarget(IGameObject o)
         {
+            if (!enemies)
+                return o is IBattleChara &&
+                       o.IsTargetable &&
+                       o.IsWithinRange(60f) &&
+                       o.IsFriendly();
+            
             return o is { ObjectKind: ObjectKind.BattleNpc, IsTargetable: true } &&
                    o.IsWithinRange(60f) &&
                    o.IsHostile() &&
