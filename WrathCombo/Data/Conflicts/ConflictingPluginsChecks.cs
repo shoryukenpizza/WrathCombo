@@ -70,12 +70,8 @@ public static class ConflictingPluginsChecks
 
         public override void CheckForConflict()
         {
-            // Throttle the check
-            if (!EZ.Throttle($"conflictCheck{Name}", TS.FromSeconds(8)) ||
-                !Svc.Condition[ConditionFlag.InCombat])
+            if (!ThrottlePassed(8, false))
                 return;
-
-            PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
 #if DEBUG
             _maxConflictsInARow = 1;
@@ -120,11 +116,8 @@ public static class ConflictingPluginsChecks
             // ReSharper disable once InvertIf
             if (_conflictsInARow > _maxConflictsInARow)
             {
-                if (!Conflicted)
-                    PluginLog.Information(
-                        $"[ConflictingPlugins] [{Name}] Marked Conflict!");
-                Conflicted = true;
                 _conflictRegistered = DateTime.Now;
+                MarkConflict();
             }
         }
     }
@@ -137,12 +130,8 @@ public static class ConflictingPluginsChecks
 
         public override void CheckForConflict()
         {
-            // Throttle the check
-            if (!EZ.Throttle($"conflictCheck{Name}", TS.FromSeconds(20)) ||
-                !IPC.IsEnabled)
+            if (!ThrottlePassed(20))
                 return;
-            
-            PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
             var moActionRetargeted = IPC.GetRetargetedActions().ToHashSet();
             if (moActionRetargeted.Count != 0)
@@ -152,12 +141,9 @@ public static class ConflictingPluginsChecks
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
             if (moActionRetargeted.Overlaps(wrathRetargeted))
             {
-                if (!Conflicted)
-                    PluginLog.Information(
-                        $"[ConflictingPlugins] [{Name}] Marked Conflict!");
                 ConflictingActions =
                     moActionRetargeted .Intersect(wrathRetargeted).ToArray();
-                Conflicted = true;
+                MarkConflict();
             }
             else
             {
@@ -193,5 +179,41 @@ public static class ConflictingPluginsChecks
 
         // ReSharper disable once UnusedMemberInSuper.Global
         public abstract void CheckForConflict();
+
+        /// <summary>
+        ///     Checks if an EZ Throttle passes, and if the plugin is enabled.
+        /// </summary>
+        /// <param name="frequency">
+        ///     The frequency - in seconds - that must have passed since the last
+        ///     check.
+        /// </param>
+        /// <param name="enabledCheck">
+        ///     Whether to check if the plugin is enabled as well.
+        /// </param>
+        /// <returns>
+        ///     If the <see cref="CheckForConflict"/> should be run or not.
+        /// </returns>
+        protected bool ThrottlePassed (int frequency = 10, bool enabledCheck = true)
+        {
+            if (!EZ.Throttle($"conflictCheck{Name}",
+                    TS.FromSeconds(frequency)) ||
+                (enabledCheck && !_ipc.IsEnabled))
+                return false;
+            
+            PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
+
+            return true;
+        }
+        
+        /// <summary>
+        ///     Marks the plugin as conflicted, and logs the event.
+        /// </summary>
+        protected void MarkConflict()
+        {
+            if (!Conflicted)
+                PluginLog.Information($"[ConflictingPlugins] [{Name}] " +
+                                      "Marked Conflict!");
+            Conflicted = true;
+        }
     }
 }
