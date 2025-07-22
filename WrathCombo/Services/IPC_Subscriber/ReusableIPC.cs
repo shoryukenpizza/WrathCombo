@@ -14,8 +14,12 @@ public abstract class ReusableIPC : IDisposable
     public EzIPCDisposalToken[] DisposalTokens;
     public string PluginName;
     public Version ValidVersion;
+    protected bool ReflectionNotIPC;
 
-    protected ReusableIPC(string? pluginName, Version? validVersion = null)
+    protected ReusableIPC
+        (string? pluginName,
+            Version? validVersion = null,
+            bool reflectionNotIPC = false)
     {
         if (string.IsNullOrWhiteSpace(pluginName))
             throw new ArgumentException("Plugin name cannot be null or empty.",
@@ -23,7 +27,8 @@ public abstract class ReusableIPC : IDisposable
 
         PluginName = pluginName;
         ValidVersion = validVersion ?? new Version(0, 0, 0, 0);
-        DisposalTokens = EzIPC.Init(this, PluginName);
+        ReflectionNotIPC = reflectionNotIPC;
+        DisposalTokens = ReflectionNotIPC ? [] : EzIPC.Init(this, PluginName);
     }
 
     public bool IsEnabled =>
@@ -31,9 +36,9 @@ public abstract class ReusableIPC : IDisposable
         InstalledVersion == new Version(0, 0, 0, 0); // debug ver for some plugins
 
     public Version InstalledVersion =>
-        (DalamudReflector.TryGetDalamudPlugin(PluginName, out var dalamudPlugin,
-            false, true)
-            ? dalamudPlugin.GetType().Assembly.GetName().Version!
+        (DalamudReflector.TryGetDalamudPlugin(PluginName, out var plugin,
+            ignoreCache: true)
+            ? plugin.GetType().Assembly.GetName().Version!
             : new Version(0, 0, 0, 1)); // no version found
 
     public virtual void Dispose()
