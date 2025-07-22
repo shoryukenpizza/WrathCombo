@@ -7694,7 +7694,7 @@ public enum CustomComboPreset
     [AutoAction(false, false)]
     [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
     [ConflictingCombos(WHM_ST_Simple_DPS)]
-    [CustomComboInfo("Advanced DPS Mode - Single Target", "Collection of cooldowns and spell features on Glare/Stone.",
+    [CustomComboInfo("Advanced DPS Mode - Single Target", "Collection of cooldowns and spell features on Glares/Stones/Aeros/Dia.",
         WHM.JobID)]
     [AdvancedCombo]
     WHM_ST_MainCombo = 19099,

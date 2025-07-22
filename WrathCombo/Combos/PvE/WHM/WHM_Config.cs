@@ -32,30 +32,12 @@ internal partial class WHM
                 #region Single Target DPS
 
                 case CustomComboPreset.WHM_ST_MainCombo:
-                    DrawAdditionalBoolChoice(WHM_ST_MainCombo_Adv,
-                        "Advanced Action Options",
-                        "Change how actions are handled",
-                        isConditionalChoice: true);
-
-                    if (WHM_ST_MainCombo_Adv)
-                    {
-                        ImGui.Indent();
-                        ImGui.Spacing();
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
-                            "On Stone/Glare",
-                            "Apply options to all Stones and Glares.",
-                            3, 0);
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
-                            "On Aero/Dia",
-                            "Apply options to Aeros and Dia.",
-                            3, 1);
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
-                            $"On {Stone2.ActionName()}",
-                            $"Apply options to On {Stone2.ActionName()}.",
-                            3, 2);
-                        ImGui.Unindent();
-                    }
-
+                    DrawHorizontalRadioButton(WHM_ST_MainCombo_Actions, "On Stones/Glares", "Apply options to all Stones and Glares.", 0,
+                        descriptionColor:ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(WHM_ST_MainCombo_Actions, "On Aeros/Dia", "Apply options to all Aeros And Dia.", 1,
+                        descriptionColor:ImGuiColors.DalamudWhite);
+                    DrawHorizontalRadioButton(WHM_ST_MainCombo_Actions, "On Stone II", "Apply options to Stone II.", 2,
+                        descriptionColor:ImGuiColors.DalamudWhite);
                     break;
 
                 case CustomComboPreset.WHM_ST_MainCombo_Opener:
@@ -416,25 +398,14 @@ internal partial class WHM
         #region Single Target DPS
 
         /// <summary>
-        ///     Enable advanced replacement action options for single target combo.
+        ///     Button Selection for single target DPS.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo" />
-        internal static UserBool WHM_ST_MainCombo_Adv =
-            new("WHM_ST_MainCombo_Adv");
-
-        /// <summary>
-        ///     Advanced action replacement options for main combo.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: [] <br />
-        ///     <b>Options</b>: Boolean array for action replacement selections
-        /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo" />
-        public static UserBoolArray WHM_ST_MainCombo_Adv_Actions =
-            new("WHM_ST_MainCombo_Adv_Actions");
+        internal static UserInt WHM_ST_MainCombo_Actions =
+            new("WHM_ST_MainCombo_Actions");
 
         /// <summary>
         ///     Content type of Balance Opener.

@@ -154,25 +154,10 @@ internal partial class WHM : Healer
         {
             #region Button Selection
 
-            bool actionFound;
-
-            if (Config.WHM_ST_MainCombo_Adv &&
-                Config.WHM_ST_MainCombo_Adv_Actions.Count > 0)
-            {
-                var isStoneGlare = Config.WHM_ST_MainCombo_Adv_Actions[0] &&
-                                   StoneGlareList.Contains(actionID);
-                var isAero = Config.WHM_ST_MainCombo_Adv_Actions[1] &&
-                             AeroList.ContainsKey(actionID);
-                var isStone2 = Config.WHM_ST_MainCombo_Adv_Actions[2] &&
-                               actionID is Stone2;
-                actionFound = isStoneGlare || isAero || isStone2;
-            }
-            else
-            {
-                actionFound = StoneGlareList.Contains(actionID); //default handling
-            }
-
-            // If the action is not in the list, return the actionID
+            bool actionFound = Config.WHM_ST_MainCombo_Actions == 0 && StoneGlareList.Contains(actionID) ||
+                               Config.WHM_ST_MainCombo_Actions == 1 && AeroList.ContainsKey(actionID) ||
+                               Config.WHM_ST_MainCombo_Actions == 2 && actionID is Stone2;
+            
             if (!actionFound)
                 return actionID;
 
