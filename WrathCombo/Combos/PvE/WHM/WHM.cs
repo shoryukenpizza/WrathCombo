@@ -283,6 +283,12 @@ internal partial class WHM : Healer
                 Role.CanLucidDream(Config.WHM_STHeals_Lucid))
                 return Role.LucidDreaming;
             
+            // Divine Caress
+            if (IsEnabled(CustomComboPreset.WHM_STHeals_Temperance) && HasStatusEffect(Buffs.DivineGrace) &&
+                (!Config.WHM_STHeals_TemperanceOptions[1] || !InBossEncounter()) &&
+                (!Config.WHM_STHeals_TemperanceOptions[0] || CanWeave()))
+                return OriginalHook(Temperance);
+            
             //Priority List
             for(int i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
             {
@@ -348,7 +354,7 @@ internal partial class WHM : Healer
             for(int i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
             {
                 int index = Config.WHM_AoE_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigAoE(index, out uint spell, out bool enabled);
+                int config = GetMatchingConfigAoE(index, OptionalTarget, out uint spell, out bool enabled);
                 
                 if (enabled && GetPartyAvgHPPercent() <= config && ActionReady(spell))
                     return IsEnabled(CustomComboPreset.WHM_AoEHeals_ThinAir) && canThinAir && spell is Cure3 or Medica2 or Medica3?

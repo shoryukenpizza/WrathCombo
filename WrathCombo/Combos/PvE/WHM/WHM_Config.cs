@@ -249,6 +249,8 @@ internal partial class WHM
                 case CustomComboPreset.WHM_AoEHeals_Cure3:
                     DrawSliderInt(1, 100, WHM_AoEHeals_Cure3HP,
                         partyStartUsingAtDescription);
+                    DrawSliderInt(2, 8, WHM_AoEHeals_Cure3Allies,
+                        "Minimum Number of allies in range of Cure 3 target");
                     DrawSliderInt(1500, 8500, WHM_AoEHeals_Cure3MP,
                         "MP to be over",
                         sliderIncrement: 500);
@@ -318,7 +320,7 @@ internal partial class WHM
                     DrawAdditionalBoolChoice(WHM_AoEHeals_AssizeWeave,
                         weaveDescription, "");
                     DrawPriorityInput(WHM_AoE_Heals_Priority, 9, 7,
-                        $"{AfflatusRapture.ActionName()} Priority: ");
+                        $"{Assize.ActionName()} Priority: ");
                     break;
                 
                 case CustomComboPreset.WHM_AoEHeals_DivineCaress:
@@ -814,6 +816,19 @@ internal partial class WHM
         
         internal static UserInt WHM_AoEHeals_Cure3HP = 
             new("WHM_AoEHeals_Cure3HP", 100);
+        
+        /// <summary>
+        ///     Minimum Party Members In range of target to use Cure 3.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 2 <br />
+        ///     <b>Range</b>: 2 - 8 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Cure3" />
+        
+        internal static UserInt WHM_AoEHeals_Cure3Allies = 
+            new("WHM_AoEHeals_Cure3Allies", 2);
 
         /// <summary>
         ///     MP threshold to use Cure III.

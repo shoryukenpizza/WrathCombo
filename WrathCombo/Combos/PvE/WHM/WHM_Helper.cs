@@ -65,20 +65,20 @@ internal partial class WHM
     {
         return IsEnabled(CustomComboPreset.WHM_Raidwide_Asylum) && 
                ActionReady(Asylum) &&
-               CanWeave() && !RaidWideCasting();
+               CanWeave() && RaidWideCasting();
     }
     internal static bool RaidwideTemperance()
     {
         return IsEnabled(CustomComboPreset.WHM_Raidwide_Temperance) && 
                ActionReady(OriginalHook(Temperance)) && 
-               CanWeave() && !RaidWideCasting();
+               CanWeave() && RaidWideCasting();
     }
     internal static bool RaidwideLiturgyOfTheBell()
     {
         return IsEnabled(CustomComboPreset.WHM_Raidwide_LiturgyOfTheBell) && 
                ActionReady(LiturgyOfTheBell) &&
                !HasStatusEffect(Buffs.LiturgyOfTheBell) && 
-               !RaidWideCasting() && CanWeave();
+               RaidWideCasting() && CanWeave();
     }
     #endregion
     
@@ -155,8 +155,9 @@ internal partial class WHM
     #endregion
     
     #region Get Aoe Heals
-    public static int GetMatchingConfigAoE(int i, out uint action, out bool enabled)
+    public static int GetMatchingConfigAoE(int i, IGameObject? OptionalTarget, out uint action, out bool enabled)
     {
+        IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
         bool medica3Check = !HasStatusEffect(Buffs.Medica3) ||
                             GetStatusEffectRemainingTime(Buffs.Medica3) <= Config.WHM_AoEHeals_MedicaTime;
         bool medica2Check = !HasStatusEffect(Buffs.Medica2) ||
@@ -174,6 +175,8 @@ internal partial class WHM
             case 1:
                 action = Cure3;
                 enabled = IsEnabled(CustomComboPreset.WHM_AoEHeals_Cure3) &&
+                          NumberOfAlliesInRange(Cure3, OptionalTarget) 
+                          >= Config.WHM_AoEHeals_Cure3Allies &&
                           (LocalPlayer.CurrentMp >= Config.WHM_AoEHeals_Cure3MP ||
                            HasStatusEffect(Buffs.ThinAir));
                 return Config.WHM_AoEHeals_Cure3HP;
