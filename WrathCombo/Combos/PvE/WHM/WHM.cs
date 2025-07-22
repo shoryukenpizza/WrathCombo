@@ -17,6 +17,132 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM : Healer
 {
+    #region Simple DPS
+
+    internal class WHM_ST_Simple_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.WHM_ST_Simple_DPS;
+
+        protected override uint Invoke(uint actionID)
+        {
+            var actionFound = StoneGlareList.Contains(actionID);
+           
+            if (!actionFound)
+                return actionID;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            if (!InCombat()) return actionID;
+           
+            #region Weaves
+
+            if (CanWeave())
+            {
+                if (Variant.CanRampart(CustomComboPreset.WHM_DPS_Variant_Rampart))
+                    return Variant.Rampart;
+
+                if (ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                    return PresenceOfMind;
+
+                if (ActionReady(Assize))
+                    return Assize;
+
+                if (Role.CanLucidDream(7500))
+                    return Role.LucidDreaming;
+
+                if (Variant.CanSpiritDart(
+                        CustomComboPreset.WHM_DPS_Variant_SpiritDart))
+                    return Variant.SpiritDart;
+            }
+
+            #endregion
+
+            #region GCDS and Casts
+
+            // DoTs
+            if (NeedsDoT())
+                return OriginalHook(Aero);
+
+            // Glare IV
+            if (HasStatusEffect(Buffs.SacredSight))
+                return Glare4;
+
+            // Lily Heal Overcap
+            if (ActionReady(AfflatusRapture) &&
+                (FullLily || AlmostFullLily))
+                return AfflatusRapture;
+
+            // Blood Lily Spend
+            if (BloodLilyReady)
+                return AfflatusMisery;
+
+            
+            return actionID;
+
+            #endregion
+        }
+    }
+
+    internal class WHM_AoE_Simple_DPS : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } =
+            CustomComboPreset.WHM_AoE_Simple_DPS;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Holy or Holy3))
+                return actionID;
+
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            #region Weaves
+
+            if (CanWeave() || IsMoving())
+            {
+                if (ActionReady(Assize))
+                    return Assize;
+
+                if (ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                    return PresenceOfMind;
+
+                if (Role.CanLucidDream(7500))
+                    return Role.LucidDreaming;
+
+                if (Variant.CanRampart(CustomComboPreset.WHM_DPS_Variant_Rampart))
+                    return Variant.Rampart;
+
+                if (Variant.CanSpiritDart(CustomComboPreset
+                        .WHM_DPS_Variant_SpiritDart))
+                    return Variant.SpiritDart;
+            }
+
+            #endregion
+
+            #region GCDS and Casts
+
+            // Glare IV
+            if (HasStatusEffect(Buffs.SacredSight))
+                return OriginalHook(Glare4);
+
+            if (ActionReady(AfflatusRapture) &&
+                (FullLily || AlmostFullLily))
+                return AfflatusRapture;
+
+            if (BloodLilyReady &&
+                HasBattleTarget())
+                return AfflatusMisery;
+
+            #endregion
+
+            return actionID;
+        }
+    }
+
+    #endregion
+    
     #region DPS
 
     internal class WHM_ST_MainCombo : CustomCombo

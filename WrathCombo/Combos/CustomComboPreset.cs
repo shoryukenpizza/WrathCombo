@@ -7672,11 +7672,28 @@ public enum CustomComboPreset
     #endregion
 
     #region WHITE MAGE
+    
+    [AutoAction(false, false)]
+    [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
+    [ConflictingCombos(WHM_ST_MainCombo)]
+    [CustomComboInfo("Simple DPS Mode - Single Target", "Replaces Stone with a full one-button single target rotation. \nThis is the ideal option for newcomers to the job.",
+        WHM.JobID)]
+    [SimpleCombo]
+    WHM_ST_Simple_DPS = 19050,
+    
+    [AutoAction(true, false)]
+    [ReplaceSkill(WHM.Holy, WHM.Holy3)]
+    [ConflictingCombos(WHM_AoE_DPS)]
+    [CustomComboInfo("Simple DPS Mode - AoE", "Replaces Holy with a full one-button AoE rotation. \nThis is the ideal option for newcomers to the job.",
+        WHM.JobID)]
+    [SimpleCombo]
+    WHM_AoE_Simple_DPS = 19051,
 
     #region Single Target DPS Feature
 
     [AutoAction(false, false)]
     [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
+    [ConflictingCombos(WHM_ST_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - Single Target", "Collection of cooldowns and spell features on Glare/Stone.",
         WHM.JobID)]
     [AdvancedCombo]
@@ -7725,6 +7742,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(WHM.Holy, WHM.Holy3)]
+    [ConflictingCombos(WHM_AoE_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - AoE", "Collection of cooldowns and spell features on Holy/Holy III.", WHM.JobID)]
     [AdvancedCombo]
     WHM_AoE_DPS = 19190,

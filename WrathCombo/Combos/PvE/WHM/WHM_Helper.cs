@@ -29,9 +29,9 @@ internal partial class WHM
     internal static bool NeedsDoT()
     {
         var dotAction = OriginalHook(Aero);
-        var hpThreshold = computeHpThreshold();
-
+        var hpThreshold = IsNotEnabled(CustomComboPreset.WHM_ST_Simple_DPS) ? computeHpThreshold(): 0;
         AeroList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRefresh = IsNotEnabled(CustomComboPreset.WHM_ST_Simple_DPS) ? Config.WHM_ST_MainCombo_DoT_Threshold : 2.5;
         var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
 
         return ActionReady(dotAction) &&
@@ -39,7 +39,7 @@ internal partial class WHM
                !JustUsedOn(dotAction, CurrentTarget, 5f) &&
                HasBattleTarget() &&
                GetTargetHPPercent() > hpThreshold &&
-               dotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold;
+               dotRemaining <= dotRefresh;
     }
 
     internal static int computeHpThreshold()
