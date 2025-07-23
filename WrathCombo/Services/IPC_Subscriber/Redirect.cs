@@ -46,11 +46,6 @@ internal sealed class Redirect(
             PluginLog.Verbose(
                 $"[ConflictingPlugins] [{PluginName}] Has `Redirections`: " +
                 (actions.Length > 0));
-            foreach (var action in actions)
-            {
-                PluginLog.Verbose(
-                    $"[ConflictingPlugins] [{PluginName}] Action: {action.ActionName()}");
-            }
             return actions;
         }
         catch (Exception e)
