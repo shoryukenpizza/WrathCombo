@@ -125,8 +125,8 @@ public static class ConflictingPlugins
                 "The following plugins are known to conflict " +
                 $"with {Svc.PluginInterface.InternalName}:\n" +
                 conflictingPluginsText +
-                "\n\nIt is recommended you disable these plugins to prevent\n" +
-                "unexpected behavior and bugs.";
+                "\n\nIt is recommended you disable these plugins, or their " +
+                "rotation components, to prevent unexpected behavior and bugs.";
 
             ShowWarning(ConflictType.Combo, tooltipText, false);
         }
