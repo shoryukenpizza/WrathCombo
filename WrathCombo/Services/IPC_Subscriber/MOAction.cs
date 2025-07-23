@@ -11,7 +11,7 @@ using ECommons.Logging;
 
 namespace WrathCombo.Services.IPC_Subscriber;
 
-internal sealed class MOAction(
+internal sealed class MOActionIPC(
     string? pluginName = null,
     Version? validVersion = null)
     : ReusableIPC(pluginName ?? "MOAction", validVersion ?? new Version(4, 7, 0, 0))

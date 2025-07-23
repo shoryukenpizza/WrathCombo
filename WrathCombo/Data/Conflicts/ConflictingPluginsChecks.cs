@@ -124,10 +124,10 @@ public static class ConflictingPluginsChecks
         }
     }
 
-    internal sealed class MOActionCheck() : ConflictCheck(new MOAction())
+    internal sealed class MOActionCheck() : ConflictCheck(new MOActionIPC())
     {
         public uint[] ConflictingActions = [];
-        protected override MOAction IPC => (MOAction)_ipc;
+        protected override MOActionIPC IPC => (MOActionIPC)_ipc;
 
         public override void CheckForConflict()
         {
@@ -154,10 +154,10 @@ public static class ConflictingPluginsChecks
         }
     }
 
-    internal sealed class RedirectCheck() : ConflictCheck(new Redirect())
+    internal sealed class RedirectCheck() : ConflictCheck(new RedirectIPC())
     {
         public uint[] ConflictingActions = [];
-        protected override Redirect IPC => (Redirect)_ipc;
+        protected override RedirectIPC IPC => (RedirectIPC)_ipc;
 
         public override void CheckForConflict()
         {

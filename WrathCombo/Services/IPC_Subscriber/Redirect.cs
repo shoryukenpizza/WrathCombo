@@ -11,7 +11,7 @@ using ECommons.Reflection;
 
 namespace WrathCombo.Services.IPC_Subscriber;
 
-internal sealed class Redirect(
+internal sealed class RedirectIPC(
     string? pluginName = null,
     Version? validVersion = null)
     : ReusableIPC(pluginName ?? "Redirect",
