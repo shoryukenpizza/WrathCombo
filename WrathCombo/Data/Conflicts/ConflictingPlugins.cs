@@ -158,12 +158,12 @@ public static class ConflictingPlugins
         {
             currentConflicts = conflicts[ConflictType.Settings];
             var conflictingSettingsText = "- " + string.Join("\n- ",
-                conflicts[ConflictType.Combo]
+                conflicts[ConflictType.Settings]
                     .Select(x => $"{x.Name} v{x.Version} (setting: {x.Reason})"));
 
             var tooltipText =
                 "The following plugins are known to conflict with\n" +
-                $"{Svc.PluginInterface.InternalName}'s Settings, which you have enabled:" +
+                $"{Svc.PluginInterface.InternalName}'s Settings, which you have enabled:\n" +
                 conflictingSettingsText +
                 "\n\nIt is recommended you disable these plugins, or\n" +
                 "remove the conflicting setting in the plugins\n" +
@@ -282,6 +282,20 @@ public static class ConflictingPlugins
         conflicts = [];
 
         // BossMod
+        
+        if (ConflictingPluginsChecks.Redirect.Conflicted)
+        {
+            if (ConflictingPluginsChecks.Redirect.ConflictingActions[0] is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "Redirect", ConflictType.Settings,
+                        "Options > Treat all ground-targeted actions as mouseovers"))
+                    .ToArray();
+            if (ConflictingPluginsChecks.Redirect.ConflictingActions[1] is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "Redirect", ConflictType.Settings,
+                        "Options > Treat all friendly actions as mouseovers"))
+                    .ToArray();
+        }
 
         return conflicts.Length > 0;
     }
