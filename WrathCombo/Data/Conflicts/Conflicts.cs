@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Plugin;
 using ECommons.DalamudServices;
+
+#endregion
 
 namespace WrathCombo.Data.Conflicts;
 

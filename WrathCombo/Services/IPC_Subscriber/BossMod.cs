@@ -51,29 +51,31 @@ internal sealed class BossModIPC(
                             $"Plugin is not loaded.");
             return false;
         }
-        
+
         var ai = Plugin.GetFoP("_ai");
         if (ai == null)
         {
-            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] Could not access _ai field");
+            PluginLog.Debug(
+                $"[ConflictingPlugins] [{PluginName}] Could not access _ai field");
             return false;
         }
-        
+
         var aiConfig = ai.GetFoP("Config");
         if (aiConfig == null)
         {
-            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] Could not access AI.Config field");
+            PluginLog.Debug(
+                $"[ConflictingPlugins] [{PluginName}] Could not access AI.Config field");
             return false;
         }
-        
+
         var aiEnabled = aiConfig.GetFoP<bool>("Enabled");
         var aiDisableTargeting = aiConfig.GetFoP<bool>("ForbidActions");
-        
+
         PluginLog.Verbose(
             $"[ConflictingPlugins] [{PluginName}] `AI.Enabled`: {aiEnabled}, " +
             $"`AI.DisableTargeting`: {aiDisableTargeting}");
-       
-       return aiEnabled == true && aiDisableTargeting != true;
+
+        return aiEnabled && aiDisableTargeting != true;
     }
 
     public DateTime LastModified()

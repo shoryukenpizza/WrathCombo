@@ -110,7 +110,7 @@ public static class ConflictingPluginsChecks
                 _conflictsInARow = 0;
                 return;
             }
-            
+
             // Check for a targeting conflict
             SettingConflicted =
                 IPC.IsAutoTargetingEnabled() &&
@@ -176,6 +176,7 @@ public static class ConflictingPluginsChecks
         ///     <b>Key <c>3</c>+</b> are all overlapping action retargets.
         /// </remarks>
         public uint[] ConflictingActions = [];
+
         protected override RedirectIPC IPC => (RedirectIPC)_ipc;
 
         public override void CheckForConflict()
@@ -255,6 +256,7 @@ public static class ConflictingPluginsChecks
         ///     <b>Key <c>4</c>+</b> are all overlapping action retargets.
         /// </remarks>
         public (uint Action, string stackName)[] ConflictingActions = [];
+
         protected override ReActionIPC IPC => (ReActionIPC)_ipc;
 
         public override void CheckForConflict()

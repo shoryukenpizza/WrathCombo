@@ -330,6 +330,7 @@ public static class ConflictingPlugins
         conflicts = [];
 
         #region BossMod
+
         if (ConflictingPluginsChecks.BossMod.SettingConflicted)
         {
             conflicts = conflicts.Append(new Conflict(
@@ -337,6 +338,7 @@ public static class ConflictingPlugins
                     "AI is enabled WITH targeting [check 'Disable auto-targeting']"))
                 .ToArray();
         }
+
         #endregion
 
         #region Redirect

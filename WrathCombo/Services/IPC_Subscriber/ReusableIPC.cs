@@ -12,15 +12,16 @@ namespace WrathCombo.Services.IPC_Subscriber;
 
 public abstract class ReusableIPC : IDisposable
 {
+    private IDalamudPlugin? _plugin;
     public EzIPCDisposalToken[] DisposalTokens;
     public string PluginName;
-    public Version ValidVersion;
     protected bool ReflectionNotIPC;
+    public Version ValidVersion;
 
     protected ReusableIPC
-        (string? pluginName,
-            Version? validVersion = null,
-            bool reflectionNotIPC = false)
+    (string? pluginName,
+        Version? validVersion = null,
+        bool reflectionNotIPC = false)
     {
         if (string.IsNullOrWhiteSpace(pluginName))
             throw new ArgumentException("Plugin name cannot be null or empty.",
@@ -35,14 +36,13 @@ public abstract class ReusableIPC : IDisposable
     public bool IsEnabled =>
         InstalledVersion >= ValidVersion || // release version
         InstalledVersion == new Version(0, 0, 0, 0); // debug ver for some plugins
-    
+
     protected bool PluginIsLoaded =>
         DalamudReflector.TryGetDalamudPlugin(
             PluginName, out _plugin, ignoreCache: true);
 
-    private IDalamudPlugin? _plugin;
-    
-    protected IDalamudPlugin Plugin {
+    protected IDalamudPlugin Plugin
+    {
         get
         {
             if (PluginIsLoaded)
