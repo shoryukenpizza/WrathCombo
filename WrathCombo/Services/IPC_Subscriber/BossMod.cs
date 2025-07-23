@@ -4,6 +4,7 @@ using System;
 using ECommons;
 using ECommons.EzIpcManager;
 using ECommons.Logging;
+using ECommons.Reflection;
 
 // ReSharper disable InlineTemporaryVariable
 
@@ -20,7 +21,8 @@ internal sealed class BossModIPC(
     {
         if (!IsEnabled)
         {
-            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] is not enabled.");
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] " +
+                            $"IPC is not enabled.");
             return false;
         }
 
@@ -39,6 +41,27 @@ internal sealed class BossModIPC(
                               e.ToStringFull());
             return false;
         }
+    }
+
+    public bool IsAutoTargetingEnabled()
+    {
+        if (!PluginIsLoaded)
+        {
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] " +
+                            $"Plugin is not loaded.");
+            return false;
+        }
+        
+        var ai = Plugin.GetFoP("_ai");
+        var aiConfig = ai?.GetFoP("Config");
+        var aiEnabled = aiConfig?.GetFoP<bool>("Enabled");
+        var aiDisableTargeting = aiConfig?.GetFoP<bool>("ForbidActions");
+        
+        PluginLog.Verbose(
+            $"[ConflictingPlugins] [{PluginName}] `AI.Enabled`: {aiEnabled}, " +
+            $"`AI.DisableTargeting`: {aiDisableTargeting}");
+       
+       return aiEnabled == true && aiDisableTargeting != true;
     }
 
     public DateTime LastModified()

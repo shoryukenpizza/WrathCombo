@@ -73,13 +73,14 @@ public static class ConflictingPluginsChecks
         private int _conflictsInARow;
         private int _maxConflictsInARow = 4;
 
+        public bool SettingConflicted;
+
         protected override BossModIPC IPC => (BossModIPC)_ipc;
 
         public override void CheckForConflict()
         {
             if (!ThrottlePassed(8, false))
                 return;
-
 #if DEBUG
             _maxConflictsInARow = 1;
 #endif
@@ -109,8 +110,13 @@ public static class ConflictingPluginsChecks
 
             // Bail if the IPC is not enabled
             if (!IPC.IsEnabled) return;
+            
+            // Check for a targeting conflict
+            SettingConflicted =
+                IPC.IsAutoTargetingEnabled() &&
+                AutoRotationController.cfg.DPSRotationMode != DPSRotationMode.Manual;
 
-            // Add a conflict note
+            // Check for a combo conflict
             if (IPC.HasAutomaticActionsQueued())
             {
                 PluginLog.Verbose(
@@ -241,7 +247,8 @@ public static class ConflictingPluginsChecks
             ConflictingActions = [];
             var conflictedThisCheck = false;
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
-            var stackName = "";
+            // ReSharper disable once InlineOutVariableDeclaration
+            string stackName;
 
             #region Auto Targeting Enabled
 
