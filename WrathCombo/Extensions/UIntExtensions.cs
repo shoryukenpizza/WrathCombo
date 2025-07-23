@@ -22,6 +22,9 @@ internal static class UIntExtensions
     internal static bool IsGroundTargeted(this uint value) =>
         Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).TargetArea;
     
+    internal static bool IsEnemyTargetable(this uint value) =>
+        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).CanTargetHostile;
+    
     internal static bool IsFriendlyTargetable(this uint value) =>
         Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).CanTargetAlly;
 }
