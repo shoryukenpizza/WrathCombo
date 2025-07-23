@@ -262,9 +262,13 @@ public static class ConflictingPluginsChecks
         protected bool ThrottlePassed(int frequency = 5, bool enabledCheck = true)
         {
             if (!EZ.Throttle($"conflictCheck{Name}",
-                    TS.FromSeconds(frequency)) ||
-                (enabledCheck && !_ipc.IsEnabled))
+                    TS.FromSeconds(frequency)))
                 return false;
+            if (enabledCheck && !_ipc.IsEnabled)
+            {
+                Conflicted = false;
+                return false;
+            }
 
             PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
