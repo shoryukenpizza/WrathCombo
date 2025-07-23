@@ -1,4 +1,7 @@
-﻿using WrathCombo.CustomComboNS.Functions;
+﻿using System.Linq;
+using ECommons.DalamudServices;
+using Lumina.Excel.Sheets;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Data.ActionWatching;
 
@@ -15,6 +18,12 @@ internal static class UIntExtensions
     internal static int Role(this uint value) => CustomComboFunctions.JobIDs.JobIDToRole(value);
 
     internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)ActionSheet[value].ActionCategory.RowId;
+    
+    internal static bool IsGroundTargeted(this uint value) =>
+        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).TargetArea;
+    
+    internal static bool IsFriendlyTargetable(this uint value) =>
+        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).CanTargetAlly;
 }
 
 internal static class UShortExtensions
