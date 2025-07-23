@@ -57,19 +57,39 @@ internal sealed class RedirectIPC(
 
     public bool AreGroundTargetedActionsRedirected()
     {
-        PluginLog.Verbose(
-            $"[ConflictingPlugins] [{PluginName}] " +
-            $"Has `AutoMouseoverGround`: {AutoMouseoverGround}");
+        try
+        {
+            PluginLog.Verbose(
+                $"[ConflictingPlugins] [{PluginName}] " +
+                $"Has `AutoMouseoverGround`: {AutoMouseoverGround}");
 
-        return AutoMouseoverGround;
+            return AutoMouseoverGround;
+        }
+        catch (Exception e)
+        {
+            PluginLog.Warning($"[ConflictingPlugins] [{PluginName}] " +
+                              $"Checking `AutoMouseoverGround` failed: " +
+                              $"{e.ToStringFull()}");
+            return false;
+        }
     }
 
     public bool AreBeneficialActionsRedirected()
     {
-        PluginLog.Verbose(
-            $"[ConflictingPlugins] [{PluginName}] " +
-            $"Has `AutoMouseoverBeneficial`: {AutoMouseoverBeneficial}");
+        try
+        {
+            PluginLog.Verbose(
+                $"[ConflictingPlugins] [{PluginName}] " +
+                $"Has `AutoMouseoverBeneficial`: {AutoMouseoverBeneficial}");
 
-        return AutoMouseoverBeneficial;
+            return AutoMouseoverBeneficial;
+        }
+        catch (Exception e)
+        {
+            PluginLog.Warning($"[ConflictingPlugins] [{PluginName}] " +
+                              $"Checking `AutoMouseoverBeneficial` failed: " +
+                              $"{e.ToStringFull()}");
+            return false;
+        }
     }
 }

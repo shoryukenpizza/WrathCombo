@@ -53,9 +53,21 @@ internal sealed class BossModIPC(
         }
         
         var ai = Plugin.GetFoP("_ai");
-        var aiConfig = ai?.GetFoP("Config");
-        var aiEnabled = aiConfig?.GetFoP<bool>("Enabled");
-        var aiDisableTargeting = aiConfig?.GetFoP<bool>("ForbidActions");
+        if (ai == null)
+        {
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] Could not access _ai field");
+            return false;
+        }
+        
+        var aiConfig = ai.GetFoP("Config");
+        if (aiConfig == null)
+        {
+            PluginLog.Debug($"[ConflictingPlugins] [{PluginName}] Could not access AI.Config field");
+            return false;
+        }
+        
+        var aiEnabled = aiConfig.GetFoP<bool>("Enabled");
+        var aiDisableTargeting = aiConfig.GetFoP<bool>("ForbidActions");
         
         PluginLog.Verbose(
             $"[ConflictingPlugins] [{PluginName}] `AI.Enabled`: {aiEnabled}, " +

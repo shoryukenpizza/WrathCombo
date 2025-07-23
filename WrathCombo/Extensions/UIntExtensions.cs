@@ -20,13 +20,13 @@ internal static class UIntExtensions
     internal static ActionAttackType ActionAttackType(this uint value) => (ActionAttackType)ActionSheet[value].ActionCategory.RowId;
     
     internal static bool IsGroundTargeted(this uint value) =>
-        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).TargetArea;
+        ActionSheet.FirstOrDefault(x => x.Value.RowId == value).Value.TargetArea;
     
     internal static bool IsEnemyTargetable(this uint value) =>
-        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).CanTargetHostile;
+        ActionSheet.FirstOrDefault(x => x.Value.RowId == value).Value.CanTargetHostile;
     
     internal static bool IsFriendlyTargetable(this uint value) =>
-        Svc.Data.GetExcelSheet<Action>().FirstOrDefault(x => x.RowId == value).CanTargetAlly;
+        ActionSheet.FirstOrDefault(x => x.Value.RowId == value).Value.CanTargetAlly;
 }
 
 internal static class UShortExtensions

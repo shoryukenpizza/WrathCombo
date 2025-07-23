@@ -38,7 +38,7 @@ public abstract class ReusableIPC : IDisposable
     
     protected bool PluginIsLoaded =>
         DalamudReflector.TryGetDalamudPlugin(
-            PluginName, out _plugin,ignoreCache: true);
+            PluginName, out _plugin, ignoreCache: true);
 
     private IDalamudPlugin? _plugin;
     

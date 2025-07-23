@@ -9,6 +9,8 @@ using WrathCombo.Combos;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 namespace WrathCombo.Core
 {
@@ -26,10 +28,13 @@ namespace WrathCombo.Core
         
         public static HashSet<uint> AllRetargetedActions {
             get {
+                if (!EZ.Throttle("allRetargetedActions", TS.FromSeconds(3)))
+                    return field;
                 var result = Enum.GetValues<CustomComboPreset>()
                     .SelectMany(preset => preset.Attributes()?.RetargetedActions ?? [])
                     .ToHashSet();
                 PluginLog.Verbose($"Retrieved {result.Count} retargeted actions");
+                field = result;
                 return result;
             }
         }

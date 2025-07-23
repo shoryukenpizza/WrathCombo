@@ -103,9 +103,9 @@ public class Conflict
     ///     The parts of the conflict message that should be displayed to the user
     ///     in the UI.
     /// </summary>
-    /// <exception cref="ConflictType">
+    /// <exception cref="ArgumentOutOfRangeException">
     ///     If there is are not constants set for the given
-    ///     <see cref="ArgumentOutOfRangeException" />.
+    ///     <see cref="ConflictType" />.
     /// </exception>
     public string[] ConflictMessageParts =>
         ConflictType switch

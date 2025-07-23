@@ -424,7 +424,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         MoveHook?.Dispose();
 
         ConflictingPluginsChecks.Dispose();
-        AllIPCSubscriptions.Dispose();
+        AllStaticIPCSubscriptions.Dispose();
         Svc.ClientState.Login -= PrintLoginMessage;
         ECommonsMain.Dispose();
         P = null;

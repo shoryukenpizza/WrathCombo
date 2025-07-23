@@ -16,6 +16,10 @@ public class ReActionIPC(
     Version validVersion)
     : ReusableIPC(pluginName, validVersion, true)
 {
+    private const uint MetaActionAll = 0;
+    private const uint MetaActionHarmful = 1;
+    private const uint MetaActionBeneficial = 2;
+
     private object Configuration =>
         Plugin.GetFoP("Config");
 
@@ -55,7 +59,7 @@ public class ReActionIPC(
                 }
 
                 // Add all retargeted actions to the list
-                workingActions.AddRange(actionsToBeRetargeted!
+                workingActions.AddRange(actionsToBeRetargeted
                     .Select(x => (x.GetFoP<uint>("ID"), name)));
 
                 var actionsToUseWhenRetargeting =
@@ -103,48 +107,31 @@ public class ReActionIPC(
         return AutoTarget;
     }
 
-    public bool AreAllActionsRetargeted(out string stackName)
+    private bool IsMetaActionRetargeted
+        (uint metaAction, string actionType, out string stackName)
     {
         var stacks = GetRetargetedActions(true);
-        var hasAllActionsRetargeted = stacks.Length > 0 &&
-                                      stacks.Any(x => x.Action == 0);
+        var hasMetaAction =
+            stacks.Length > 0 && stacks.Any(x => x.Action == metaAction);
         stackName = stacks
-            .Where(x => x.Action == 0).Select(x => x.stackName)
+            .Where(x => x.Action == metaAction)
+            .Select(x => x.stackName)
             .FirstOrDefault() ?? "";
         PluginLog.Verbose(
             $"[ConflictingPlugins] [{PluginName}] " +
-            $"Has `AllActionsRetargeted`: {hasAllActionsRetargeted}");
-
-        return hasAllActionsRetargeted;
+            $"Has `{actionType}`: {hasMetaAction}");
+        return hasMetaAction;
     }
 
-    public bool AreHarmfulActionsRetargeted(out string stackName)
-    {
-        var stacks = GetRetargetedActions(true);
-        var hasHarmfulActionsRetargeted = stacks.Length > 0 &&
-                                          stacks.Any(x => x.Action == 1);
-        stackName = stacks
-            .Where(x => x.Action == 1).Select(x => x.stackName)
-            .FirstOrDefault() ?? "";
-        PluginLog.Verbose(
-            $"[ConflictingPlugins] [{PluginName}] " +
-            $"Has `HarmfulActionsRetargeted`: {hasHarmfulActionsRetargeted}");
+    public bool AreAllActionsRetargeted(out string stackName) =>
+        IsMetaActionRetargeted(MetaActionAll, "AllActionsRetargeted",
+            out stackName);
 
-        return hasHarmfulActionsRetargeted;
-    }
+    public bool AreHarmfulActionsRetargeted(out string stackName) =>
+        IsMetaActionRetargeted(MetaActionHarmful, "HarmfulActionsRetargeted",
+            out stackName);
 
-    public bool AreBeneficialActionsRetargeted(out string stackName)
-    {
-        var stacks = GetRetargetedActions(true);
-        var hasBeneficialActionsRetargeted = stacks.Length > 0 &&
-                                             stacks.Any(x => x.Action == 2);
-        stackName = stacks
-            .Where(x => x.Action == 2).Select(x => x.stackName)
-            .FirstOrDefault() ?? "";
-        PluginLog.Verbose(
-            $"[ConflictingPlugins] [{PluginName}] " +
-            $"Has `BeneficialActionsRetargeted`: {hasBeneficialActionsRetargeted}");
-
-        return hasBeneficialActionsRetargeted;
-    }
+    public bool AreBeneficialActionsRetargeted(out string stackName) =>
+        IsMetaActionRetargeted(MetaActionBeneficial, "BeneficialActionsRetargeted",
+            out stackName);
 }

@@ -57,10 +57,13 @@ public static class ConflictingPluginsChecks
 
     public static void Dispose()
     {
+        _cancelConflictChecks = true;
         BossMod.Dispose();
         BossModReborn.Dispose();
+        Redirect.Dispose();
+        ReAction.Dispose();
+        ReActionEx.Dispose();
         MOAction.Dispose();
-        _cancelConflictChecks = true;
     }
 
     internal sealed class BossModCheck(bool reborn = false)
@@ -87,7 +90,7 @@ public static class ConflictingPluginsChecks
 
             // Reset the conflict timer, must exceed the threshold within 2 minutes
             if (_conflictFirstSeen is not null &&
-                _conflictFirstSeen - DateTime.Now > TS.FromMinutes(2))
+                DateTime.Now - _conflictFirstSeen > TS.FromMinutes(2))
             {
                 PluginLog.Verbose(
                     $"[ConflictingPlugins] [{Name}] Resetting Conflict Check");
@@ -107,9 +110,6 @@ public static class ConflictingPluginsChecks
                 _conflictsInARow = 0;
                 return;
             }
-
-            // Bail if the IPC is not enabled
-            if (!IPC.IsEnabled) return;
             
             // Check for a targeting conflict
             SettingConflicted =
@@ -167,6 +167,14 @@ public static class ConflictingPluginsChecks
 
     internal sealed class RedirectCheck() : ConflictCheck(new RedirectIPC())
     {
+        /// <summary>
+        ///     The meta actions and actual actions that conflict with Wrath.
+        /// </summary>
+        /// <remarks>
+        ///     <b>Key <c>0</c></b> is Ground Targeting enabled meta action,<br />
+        ///     <b>Key <c>1</c></b> is Beneficial Actions enabled meta action,<br />
+        ///     <b>Key <c>3</c>+</b> are all overlapping action retargets.
+        /// </remarks>
         public uint[] ConflictingActions = [];
         protected override RedirectIPC IPC => (RedirectIPC)_ipc;
 
@@ -236,6 +244,16 @@ public static class ConflictingPluginsChecks
             ? new ReActionIPC("ReAction", new Version(1, 3, 4, 1))
             : new ReActionIPC("ReActionEx", new Version(1, 0, 0, 8)))
     {
+        /// <summary>
+        ///     The meta actions and actual actions that conflict with Wrath.
+        /// </summary>
+        /// <remarks>
+        ///     <b>Key <c>0</c></b> is Auto Targeting enabled meta action,<br />
+        ///     <b>Key <c>1</c></b> is All Actions enabled meta action,<br />
+        ///     <b>Key <c>2</c></b> is Harmful Actions enabled meta action,<br />
+        ///     <b>Key <c>3</c></b> is Beneficial Actions enabled meta action,<br />
+        ///     <b>Key <c>4</c>+</b> are all overlapping action retargets.
+        /// </remarks>
         public (uint Action, string stackName)[] ConflictingActions = [];
         protected override ReActionIPC IPC => (ReActionIPC)_ipc;
 
