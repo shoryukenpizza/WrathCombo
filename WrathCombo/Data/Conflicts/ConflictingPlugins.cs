@@ -236,8 +236,22 @@ public static class ConflictingPlugins
     {
         conflicts = [];
 
-        // Redirect
+        if (ConflictingPluginsChecks.Redirect.Conflicted)
+        {
+            var actions = ConflictingPluginsChecks.Redirect.ConflictingActions;
+            var conflictMessage = actions
+                .Where((action, i) => action is not (0 or 1) || i >= 2)
+                .Aggregate("", (current, action) => current + (action.ActionName() + ","));
+            conflictMessage = conflictMessage[..^1]; // remove last comma
+            
+            conflicts = conflicts.Append(new Conflict(
+                    "Redirect", ConflictType.Targeting,
+                    conflictMessage))
+                .ToArray();
+        }
+        
         // Reaction
+        
         if (ConflictingPluginsChecks.MOAction.Conflicted)
             conflicts = conflicts.Append(new Conflict(
                     "MOAction", ConflictType.Targeting,
