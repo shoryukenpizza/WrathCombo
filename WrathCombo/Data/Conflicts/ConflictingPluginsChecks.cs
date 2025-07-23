@@ -2,10 +2,10 @@
 
 using System;
 using System.Linq;
-using Dalamud.Game.ClientState.Conditions;
 using ECommons.DalamudServices;
 using ECommons.Logging;
 using WrathCombo.Core;
+using WrathCombo.Extensions;
 using WrathCombo.Services.IPC_Subscriber;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -25,9 +25,10 @@ public static class ConflictingPluginsChecks
 
         PluginLog.Verbose(
             "[ConflictingPlugins] Periodic check for conflicting plugins");
-        
+
         BossMod.CheckForConflict();
         BossModReborn.CheckForConflict();
+        Redirect.CheckForConflict();
         MOAction.CheckForConflict();
 
         Svc.Framework.RunOnTick(RunChecks!, TS.FromSeconds(4.11));
@@ -35,6 +36,7 @@ public static class ConflictingPluginsChecks
 
     internal static BossModCheck BossMod { get; } = new();
     internal static BossModCheck BossModReborn { get; } = new(true);
+    internal static RedirectCheck Redirect { get; } = new();
     internal static MOActionCheck MOAction { get; } = new();
 
     public static void Begin()
@@ -99,7 +101,7 @@ public static class ConflictingPluginsChecks
                 _conflictsInARow = 0;
                 return;
             }
-            
+
             // Bail if the IPC is not enabled
             if (!IPC.IsEnabled) return;
 
@@ -124,9 +126,8 @@ public static class ConflictingPluginsChecks
 
     internal sealed class MOActionCheck() : ConflictCheck(new MOAction())
     {
-        protected override MOAction IPC => (MOAction)_ipc;
-
         public uint[] ConflictingActions = [];
+        protected override MOAction IPC => (MOAction)_ipc;
 
         public override void CheckForConflict()
         {
@@ -137,12 +138,12 @@ public static class ConflictingPluginsChecks
             if (moActionRetargeted.Count != 0)
                 PluginLog.Verbose(
                     $"[ConflictingPlugins] [{Name}] {moActionRetargeted.Count} Retargeted Actions Found");
-            
+
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
             if (moActionRetargeted.Overlaps(wrathRetargeted))
             {
                 ConflictingActions =
-                    moActionRetargeted .Intersect(wrathRetargeted).ToArray();
+                    moActionRetargeted.Intersect(wrathRetargeted).ToArray();
                 MarkConflict();
             }
             else
@@ -150,6 +151,69 @@ public static class ConflictingPluginsChecks
                 ConflictingActions = [];
                 Conflicted = false;
             }
+        }
+    }
+
+    internal sealed class RedirectCheck() : ConflictCheck(new Redirect())
+    {
+        public uint[] ConflictingActions = [];
+        protected override Redirect IPC => (Redirect)_ipc;
+
+        public override void CheckForConflict()
+        {
+            if (!ThrottlePassed())
+                return;
+
+            ConflictingActions = [];
+
+            var conflictedThisCheck = false;
+            var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
+
+            // Check if all Ground Targeted Actions are redirected
+            if (IPC.AreGroundTargetedActionsRedirected() &&
+                wrathRetargeted.Any(x => x.IsGroundTargeted()))
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] Ground Targeted Actions are Redirected");
+                ConflictingActions = [1];
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+
+            // Check if all Beneficial Actions are redirected
+            if (IPC.AreBeneficialActionsRedirected() &&
+                wrathRetargeted.Any(x => x.IsFriendlyTargetable()))
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] Beneficial Actions are Redirected");
+                if (ConflictingActions.Length == 0)
+                    ConflictingActions = [0, 1];
+                else
+                    ConflictingActions = [1, 1];
+                MarkConflict();
+            }
+
+            // Check for individual Actions Retargeted
+            var redirectRetargeted = IPC.GetRetargetedActions().ToHashSet();
+            if (redirectRetargeted.Count != 0)
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] {redirectRetargeted.Count} Retargeted Actions Found");
+            if (redirectRetargeted.Overlaps(wrathRetargeted))
+            {
+                var intersection = redirectRetargeted.Intersect(wrathRetargeted)
+                    .ToArray();
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] " +
+                    $"{intersection.Length} Overlapping Retargeted Actions Found");
+                ConflictingActions =
+                    ConflictingActions.Concat(intersection).ToArray();
+                MarkConflict();
+            }
+
+            // Remove conflict if none were found this check
+            // ReSharper disable once InvertIf
+            if (!conflictedThisCheck && Conflicted)
+                Conflicted = false;
         }
     }
 
@@ -191,20 +255,20 @@ public static class ConflictingPluginsChecks
         ///     Whether to check if the plugin is enabled as well.
         /// </param>
         /// <returns>
-        ///     If the <see cref="CheckForConflict"/> should be run or not.
+        ///     If the <see cref="CheckForConflict" /> should be run or not.
         /// </returns>
-        protected bool ThrottlePassed (int frequency = 10, bool enabledCheck = true)
+        protected bool ThrottlePassed(int frequency = 10, bool enabledCheck = true)
         {
             if (!EZ.Throttle($"conflictCheck{Name}",
                     TS.FromSeconds(frequency)) ||
                 (enabledCheck && !_ipc.IsEnabled))
                 return false;
-            
+
             PluginLog.Verbose($"[ConflictingPlugins] [{Name}] Performing Check ...");
 
             return true;
         }
-        
+
         /// <summary>
         ///     Marks the plugin as conflicted, and logs the event.
         /// </summary>
