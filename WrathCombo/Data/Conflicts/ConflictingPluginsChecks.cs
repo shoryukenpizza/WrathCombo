@@ -191,6 +191,7 @@ public static class ConflictingPluginsChecks
                 else
                     ConflictingActions = [1, 1];
                 MarkConflict();
+                conflictedThisCheck = true;
             }
 
             // Check for individual Actions Retargeted
@@ -208,6 +209,7 @@ public static class ConflictingPluginsChecks
                 ConflictingActions =
                     ConflictingActions.Concat(intersection).ToArray();
                 MarkConflict();
+                conflictedThisCheck = true;
             }
 
             // Remove conflict if none were found this check
