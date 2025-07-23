@@ -6,7 +6,6 @@ using System.Linq;
 using ECommons;
 using ECommons.Logging;
 using ECommons.Reflection;
-using WrathCombo.Extensions;
 
 #endregion
 
@@ -55,13 +54,13 @@ internal sealed class Redirect(
             return [];
         }
     }
-    
+
     public bool AreGroundTargetedActionsRedirected()
     {
         PluginLog.Verbose(
             $"[ConflictingPlugins] [{PluginName}] " +
             $"Has `AutoMouseoverGround`: {AutoMouseoverGround}");
-        
+
         return AutoMouseoverGround;
     }
 
@@ -70,7 +69,7 @@ internal sealed class Redirect(
         PluginLog.Verbose(
             $"[ConflictingPlugins] [{PluginName}] " +
             $"Has `AutoMouseoverBeneficial`: {AutoMouseoverBeneficial}");
-        
+
         return AutoMouseoverBeneficial;
     }
 }

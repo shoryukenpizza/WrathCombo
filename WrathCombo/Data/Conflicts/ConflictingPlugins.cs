@@ -19,12 +19,11 @@ namespace WrathCombo.Data.Conflicts;
 
 public static class ConflictingPlugins
 {
-
     /// <summary>
     ///     Cache for <see cref="TryGetConflicts" /> results.
     /// </summary>
     private static Conflicts? _cachedConflicts;
-    
+
     /// <summary>
     ///     Gets all current conflicts.
     /// </summary>
@@ -43,9 +42,9 @@ public static class ConflictingPlugins
             conflicts = _cachedConflicts;
             return _cachedConflicts.ToArray().Length > 0;
         }
-        
+
         conflicts = new Conflicts();
-        
+
         // try/catch blocks are here for issues with the Conflict instantiations
 
         try
@@ -241,17 +240,18 @@ public static class ConflictingPlugins
             var actions = ConflictingPluginsChecks.Redirect.ConflictingActions;
             var conflictMessage = actions
                 .Where((action, i) => action is not (0 or 1) || i >= 2)
-                .Aggregate("", (current, action) => current + (action.ActionName() + ","));
+                .Aggregate("",
+                    (current, action) => current + (action.ActionName() + ","));
             conflictMessage = conflictMessage[..^1]; // remove last comma
-            
+
             conflicts = conflicts.Append(new Conflict(
                     "Redirect", ConflictType.Targeting,
                     conflictMessage))
                 .ToArray();
         }
-        
+
         // Reaction
-        
+
         if (ConflictingPluginsChecks.MOAction.Conflicted)
             conflicts = conflicts.Append(new Conflict(
                     "MOAction", ConflictType.Targeting,
@@ -282,7 +282,7 @@ public static class ConflictingPlugins
         conflicts = [];
 
         // BossMod
-        
+
         if (ConflictingPluginsChecks.Redirect.Conflicted)
         {
             if (ConflictingPluginsChecks.Redirect.ConflictingActions[0] is 1)
