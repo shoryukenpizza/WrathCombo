@@ -326,6 +326,20 @@ internal partial class WHM
                     break;
                 
                 #endregion
+                
+                #region StandAlone Features
+                
+                case CustomComboPreset.WHM_Asylum:
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,"Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,"Hardtarget Allies", "Will place at hard target if ally", 2, 1);
+                    break;
+                
+                case CustomComboPreset.WHM_LiturgyOfTheBell:
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,"Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,"Hardtarget Allies", "Will place at hard target if ally", 2, 1);
+                    break;
+                
+                #endregion
             }
         }
 
@@ -1062,6 +1076,30 @@ internal partial class WHM
             WHM_AoEHeals_AsylumDifficultyListSet =
                 ContentCheck.ListSet.Halved;
 
+        #endregion
+        
+        #region Standalone Features
+
+        /// <summary>
+        ///     Hard target Retargetting Options for Asylum Standalone Feature
+        /// </summary> 
+        /// <value>
+        ///     <b>Default</b>: True True
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_Asylum" />
+        internal static UserBoolArray WHM_AsylumOptions = 
+            new("WHM_AsylumOptions", [true, true]);
+        
+        /// <summary>
+        ///     Hard target Retargetting Options for LiturgyOfTheBell Standalone Feature
+        /// </summary> 
+        /// <value>
+        ///     <b>Default</b>: True True
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_LiturgyOfTheBell" />
+        internal static UserBoolArray WHM_LiturgyOfTheBellOptions = 
+            new ("WHM_LiturgyOfTheBellOptions", [true, true]);
+        
         #endregion
 
         #endregion

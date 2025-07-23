@@ -4,6 +4,7 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
@@ -21,8 +22,7 @@ internal partial class WHM : Healer
 
     internal class WHM_ST_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_ST_Simple_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_ST_Simple_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -87,8 +87,7 @@ internal partial class WHM : Healer
 
     internal class WHM_AoE_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_AoE_Simple_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_AoE_Simple_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -147,8 +146,7 @@ internal partial class WHM : Healer
 
     internal class WHM_ST_MainCombo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_ST_MainCombo;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_ST_MainCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -244,8 +242,7 @@ internal partial class WHM : Healer
 
     internal class WHM_AoE_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_AoE_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_AoE_DPS;
 
         private static int AssizeCount =>
             ActionWatching.CombatActions.Count(x => x == Assize);
@@ -338,8 +335,7 @@ internal partial class WHM : Healer
 
     internal class WHM_ST_Heals : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_STHeals;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_STHeals;
 
         protected override uint Invoke(uint actionID)
         {
@@ -424,8 +420,7 @@ internal partial class WHM : Healer
 
     internal class WHM_AoEHeals : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_AoEHeals;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_AoEHeals;
 
         protected override uint Invoke(uint actionID)
         {
@@ -484,8 +479,7 @@ internal partial class WHM : Healer
 
     internal class WHM_SolaceMisery : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_SolaceMisery;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_SolaceMisery;
 
         protected override uint Invoke(uint actionID) =>
             actionID is AfflatusSolace && gauge.BloodLily == 3
@@ -495,8 +489,7 @@ internal partial class WHM : Healer
 
     internal class WHM_RaptureMisery : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_RaptureMisery;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_RaptureMisery;
 
         protected override uint Invoke(uint actionID) =>
             actionID is AfflatusRapture && gauge.BloodLily == 3
@@ -506,8 +499,7 @@ internal partial class WHM : Healer
 
     internal class WHM_CureSync : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_CureSync;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_CureSync;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Cure2 && !LevelChecked(Cure2)
@@ -517,8 +509,7 @@ internal partial class WHM : Healer
 
     internal class WHM_Raise : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.WHM_Raise;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Raise;
 
         protected override uint Invoke(uint actionID)
         {
@@ -539,6 +530,58 @@ internal partial class WHM : Healer
             return actionID;
         }
     }
+    
+    
+    internal class WHM_Asylum : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Asylum;
 
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Asylum)
+                return actionID;
+            
+            var asylumTarget =
+                (Config.WHM_AsylumOptions[0]
+                    ? SimpleTarget.HardTarget.IfHostile()
+                    : null) ??
+                (Config.WHM_AsylumOptions[1]
+                    ? SimpleTarget.HardTarget.IfFriendly()
+                    : null) ??
+                SimpleTarget.Self;
+                
+            return IsEnabled(CustomComboPreset.WHM_Asylum)? Asylum.Retarget(asylumTarget) : actionID;
+        }
+    }
+    internal class WHM_LiturgyOfTheBell : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_LiturgyOfTheBell;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not LiturgyOfTheBell)
+                return actionID;
+            
+            var bellTarget =
+                (Config.WHM_LiturgyOfTheBellOptions[0]
+                    ? SimpleTarget.HardTarget.IfHostile()
+                    : null) ??
+                (Config.WHM_LiturgyOfTheBellOptions[1]
+                    ? SimpleTarget.HardTarget.IfFriendly()
+                    : null) ??
+                SimpleTarget.Self;
+                
+            return IsEnabled(CustomComboPreset.WHM_LiturgyOfTheBell)? LiturgyOfTheBell.Retarget(bellTarget) : actionID;
+        }
+    }
+    internal class WHM_Cure3 : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Cure3;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not Cure3
+                ? actionID
+                : actionID.Retarget(SimpleTarget.Stack.AllyToHeal, dontCull: true);
+    }
     #endregion
 }

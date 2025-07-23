@@ -7974,6 +7974,21 @@ public enum CustomComboPreset
     [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", WHM.JobID)]
     [Retargeted]
     WHM_Raise_Retarget = 19029,
+    
+    [ReplaceSkill(WHM.Asylum)]
+    [CustomComboInfo("Asylum Retarget Feature", "Retargets Asylum on yourself.", WHM.JobID)]
+    [Retargeted]
+    WHM_Asylum = 19027,
+    
+    [ReplaceSkill(WHM.LiturgyOfTheBell)]
+    [CustomComboInfo("LiturgyOfTheBell Retarget Feature", "Retargets LiturgyOfTheBell on yourself.", WHM.JobID)]
+    [Retargeted]
+    WHM_LiturgyOfTheBell = 19030,
+    
+    [ReplaceSkill(WHM.Cure3)]
+    [CustomComboInfo("Cure 3 Retarget Feature", "Retargets Cure 3 to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Cure3 = 19031,
 
     #endregion
 
