@@ -126,7 +126,7 @@ public static class ConflictingPlugins
                 $"with {Svc.PluginInterface.InternalName}:\n" +
                 conflictingPluginsText +
                 "\n\nIt is recommended you disable these plugins, or their " +
-                "rotation components, to prevent unexpected behavior and bugs.";
+                "rotation\ncomponents, to prevent unexpected behavior and bugs.";
 
             ShowWarning(ConflictType.Combo, tooltipText, false);
         }
@@ -235,13 +235,15 @@ public static class ConflictingPlugins
     {
         conflicts = [];
 
+        #region Redirect
+
         if (ConflictingPluginsChecks.Redirect.Conflicted)
         {
             var actions = ConflictingPluginsChecks.Redirect.ConflictingActions;
             var conflictMessage = actions
                 .Where((action, i) => action is not (0 or 1) || i >= 2)
                 .Aggregate("",
-                    (current, action) => current + (action.ActionName() + ","));
+                    (current, action) => current + action.ActionName() + ",");
             conflictMessage = conflictMessage[..^1]; // remove last comma
 
             conflicts = conflicts.Append(new Conflict(
@@ -250,7 +252,51 @@ public static class ConflictingPlugins
                 .ToArray();
         }
 
-        // Reaction
+        #endregion
+
+        #region ReAction
+
+        if (ConflictingPluginsChecks.ReAction.Conflicted &&
+            ConflictingPluginsChecks.ReAction.ConflictingActions.Length > 4)
+        {
+            var actions = ConflictingPluginsChecks.ReAction.ConflictingActions;
+            var conflictMessage = actions
+                .Where((x, i) => x.Action is not (0 or 1 or 2) || i > 4)
+                .Aggregate("",
+                    (current, x) => current + $"{x.Action.ActionName()} " +
+                                    $"    (stack: {x.stackName}),");
+            conflictMessage = conflictMessage[..^1]; // remove last comma
+
+            conflicts = conflicts.Append(new Conflict(
+                    "ReAction", ConflictType.Targeting,
+                    conflictMessage))
+                .ToArray();
+        }
+
+        #endregion
+
+        #region ReActionEx
+
+        if (ConflictingPluginsChecks.ReActionEx.Conflicted &&
+            ConflictingPluginsChecks.ReActionEx.ConflictingActions.Length > 4)
+        {
+            var actions = ConflictingPluginsChecks.ReActionEx.ConflictingActions;
+            var conflictMessage = actions
+                .Where((x, i) => x.Action is not (0 or 1 or 2) || i > 4)
+                .Aggregate("",
+                    (current, x) => current + $"{x.Action.ActionName()} " +
+                                    $"    (stack: {x.stackName}),");
+            conflictMessage = conflictMessage[..^1]; // remove last comma
+
+            conflicts = conflicts.Append(new Conflict(
+                    "ReActionEx", ConflictType.Targeting,
+                    conflictMessage))
+                .ToArray();
+        }
+
+        #endregion
+
+        #region MOAction
 
         if (ConflictingPluginsChecks.MOAction.Conflicted)
             conflicts = conflicts.Append(new Conflict(
@@ -259,6 +305,8 @@ public static class ConflictingPlugins
                         ConflictingPluginsChecks.MOAction.ConflictingActions
                             .Select(x => x.ActionName()))))
                 .ToArray();
+
+        #endregion
 
         return conflicts.Length > 0;
     }
@@ -283,6 +331,8 @@ public static class ConflictingPlugins
 
         // BossMod
 
+        #region Redirect
+
         if (ConflictingPluginsChecks.Redirect.Conflicted)
         {
             if (ConflictingPluginsChecks.Redirect.ConflictingActions[0] is 1)
@@ -296,6 +346,72 @@ public static class ConflictingPlugins
                         "Options > Treat all friendly actions as mouseovers"))
                     .ToArray();
         }
+
+        #endregion
+
+        #region ReAction
+
+        if (ConflictingPluginsChecks.ReAction.Conflicted)
+        {
+            var reFeedback = ConflictingPluginsChecks.ReAction.ConflictingActions;
+            if (reFeedback[0].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReAction", ConflictType.Settings,
+                        "Other Settings > Enable Auto Target"))
+                    .ToArray();
+            if (reFeedback[1].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReAction", ConflictType.Settings,
+                        "Stacks > " + reFeedback[1].stackName + " > " +
+                        "'All Actions' is retargeted"))
+                    .ToArray();
+            if (reFeedback[2].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReAction", ConflictType.Settings,
+                        "Stacks > " + reFeedback[2].stackName + " > " +
+                        "'All Harmful Actions' is retargeted"))
+                    .ToArray();
+            if (reFeedback[3].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReAction", ConflictType.Settings,
+                        "Stacks > " + reFeedback[3].stackName + " > " +
+                        "'All Beneficial Actions' is retargeted"))
+                    .ToArray();
+        }
+
+        #endregion
+
+        #region ReActionEx
+
+        if (ConflictingPluginsChecks.ReActionEx.Conflicted)
+        {
+            var reFeedback = ConflictingPluginsChecks.ReActionEx.ConflictingActions;
+            if (reFeedback[0].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReActionEx", ConflictType.Settings,
+                        "Other Settings > Enable Auto Target"))
+                    .ToArray();
+            if (reFeedback[1].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReActionEx", ConflictType.Settings,
+                        "Stacks > " + reFeedback[1].stackName + " > " +
+                        "'All Actions' is retargeted"))
+                    .ToArray();
+            if (reFeedback[2].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReActionEx", ConflictType.Settings,
+                        "Stacks > " + reFeedback[2].stackName + " > " +
+                        "'All Harmful Actions' is retargeted"))
+                    .ToArray();
+            if (reFeedback[3].Action is 1)
+                conflicts = conflicts.Append(new Conflict(
+                        "ReActionEx", ConflictType.Settings,
+                        "Stacks > " + reFeedback[3].stackName + " > " +
+                        "'All Beneficial Actions' is retargeted"))
+                    .ToArray();
+        }
+
+        #endregion
 
         return conflicts.Length > 0;
     }

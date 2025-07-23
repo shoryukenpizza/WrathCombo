@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using ECommons.DalamudServices;
 using ECommons.Logging;
+using WrathCombo.AutoRotation;
 using WrathCombo.Core;
 using WrathCombo.Extensions;
 using WrathCombo.Services.IPC_Subscriber;
@@ -29,6 +30,8 @@ public static class ConflictingPluginsChecks
         BossMod.CheckForConflict();
         BossModReborn.CheckForConflict();
         Redirect.CheckForConflict();
+        ReAction.CheckForConflict();
+        ReActionEx.CheckForConflict();
         MOAction.CheckForConflict();
 
         Svc.Framework.RunOnTick(RunChecks!, TS.FromSeconds(4.11));
@@ -37,6 +40,8 @@ public static class ConflictingPluginsChecks
     internal static BossModCheck BossMod { get; } = new();
     internal static BossModCheck BossModReborn { get; } = new(true);
     internal static RedirectCheck Redirect { get; } = new();
+    internal static ReActionCheck ReAction { get; } = new();
+    internal static ReActionCheck ReActionEx { get; } = new(true);
     internal static MOActionCheck MOAction { get; } = new();
 
     public static void Begin()
@@ -198,7 +203,8 @@ public static class ConflictingPluginsChecks
             var redirectRetargeted = IPC.GetRetargetedActions().ToHashSet();
             if (redirectRetargeted.Count != 0)
                 PluginLog.Verbose(
-                    $"[ConflictingPlugins] [{Name}] {redirectRetargeted.Count} Retargeted Actions Found");
+                    $"[ConflictingPlugins] [{Name}] {redirectRetargeted.Count} " +
+                    "Retargeted Actions Found");
             if (redirectRetargeted.Overlaps(wrathRetargeted))
             {
                 var intersection = redirectRetargeted.Intersect(wrathRetargeted)
@@ -211,6 +217,124 @@ public static class ConflictingPluginsChecks
                 MarkConflict();
                 conflictedThisCheck = true;
             }
+
+            // Remove conflict if none were found this check
+            // ReSharper disable once InvertIf
+            if (!conflictedThisCheck && Conflicted)
+                Conflicted = false;
+        }
+    }
+
+    internal sealed class ReActionCheck(bool expanded = false)
+        : ConflictCheck(!expanded
+            ? new ReActionIPC("ReAction", new Version(1, 3, 4, 1))
+            : new ReActionIPC("ReActionEx", new Version(1, 0, 0, 8)))
+    {
+        public (uint Action, string stackName)[] ConflictingActions = [];
+        protected override ReActionIPC IPC => (ReActionIPC)_ipc;
+
+        public override void CheckForConflict()
+        {
+            if (!ThrottlePassed())
+                return;
+
+            ConflictingActions = [];
+            var conflictedThisCheck = false;
+            var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
+            var stackName = "";
+
+            #region Auto Targeting Enabled
+
+            if (IPC.IsAutoTargetingEnabled() &&
+                AutoRotationController.cfg.DPSRotationMode != DPSRotationMode.Manual)
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] Auto Targeting is Enabled");
+                ConflictingActions = [(1, "")];
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+            else
+                ConflictingActions = [(0, "")];
+
+            #endregion
+
+            #region All Actions Retargeted
+
+            if (IPC.AreAllActionsRetargeted(out stackName) &&
+                wrathRetargeted.Count > 0)
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] All Actions are Retargeted");
+                ConflictingActions = ConflictingActions
+                    .Concat([(1u, stackName)]).ToArray();
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+            else
+                ConflictingActions = ConflictingActions.Concat([(0u, "")]).ToArray();
+
+            #endregion
+
+            #region All Harmful Actions Retargeted
+
+            if (IPC.AreHarmfulActionsRetargeted(out stackName) &&
+                wrathRetargeted.Any(x => x.IsEnemyTargetable()))
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] Harmful Actions are Retargeted");
+                ConflictingActions = ConflictingActions
+                    .Concat([(1u, stackName)]).ToArray();
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+            else
+                ConflictingActions = ConflictingActions.Concat([(0u, "")]).ToArray();
+
+            #endregion
+
+            #region All Beneficial Actions Retargeted
+
+            if (IPC.AreBeneficialActionsRetargeted(out stackName) &&
+                wrathRetargeted.Any(x => x.IsFriendlyTargetable()))
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] " +
+                    $"Beneficial Actions are Retargeted");
+                ConflictingActions = ConflictingActions
+                    .Concat([(1u, stackName)]).ToArray();
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+            else
+                ConflictingActions = ConflictingActions.Concat([(0u, "")]).ToArray();
+
+            #endregion
+
+            #region Individual Retargeted Actions Overlap
+
+            var reactionRetargeted = IPC.GetRetargetedActions();
+            if (reactionRetargeted.Length > 0)
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] {reactionRetargeted.Length} " +
+                    "Retargeted Actions Found");
+
+            var intersection = reactionRetargeted
+                .Where(x => wrathRetargeted.Contains(x.Action))
+                .ToArray();
+
+            if (intersection.Length > 0)
+            {
+                PluginLog.Verbose(
+                    $"[ConflictingPlugins] [{Name}] " +
+                    $"{intersection.Length} Overlapping Retargeted Actions Found");
+                ConflictingActions =
+                    ConflictingActions.Concat(intersection).ToArray();
+                MarkConflict();
+                conflictedThisCheck = true;
+            }
+
+            #endregion
 
             // Remove conflict if none were found this check
             // ReSharper disable once InvertIf
