@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using Dalamud.Plugin;
 using ECommons;
 using ECommons.EzIpcManager;
 using ECommons.Reflection;
@@ -34,12 +35,29 @@ public abstract class ReusableIPC : IDisposable
     public bool IsEnabled =>
         InstalledVersion >= ValidVersion || // release version
         InstalledVersion == new Version(0, 0, 0, 0); // debug ver for some plugins
+    
+    protected bool PluginIsLoaded =>
+        DalamudReflector.TryGetDalamudPlugin(
+            PluginName, out _plugin,ignoreCache: true);
+
+    private IDalamudPlugin? _plugin;
+    
+    protected IDalamudPlugin Plugin {
+        get
+        {
+            if (PluginIsLoaded)
+                return _plugin!;
+            throw new InvalidOperationException(
+                "Plugin is not loaded or does not exist. " +
+                "(This should be used after a `PluginIsLoaded` check)");
+        }
+    }
 
     public Version InstalledVersion =>
-        (DalamudReflector.TryGetDalamudPlugin(PluginName, out var plugin,
+        DalamudReflector.TryGetDalamudPlugin(PluginName, out var plugin,
             ignoreCache: true)
-            ? plugin.GetType().Assembly.GetName().Version!
-            : new Version(0, 0, 0, 1)); // no version found
+            ? plugin.GetType().Assembly.GetName().Version ?? new Version(0, 0, 0, 1)
+            : new Version(0, 0, 0, 1); // no version found
 
     public virtual void Dispose()
     {
