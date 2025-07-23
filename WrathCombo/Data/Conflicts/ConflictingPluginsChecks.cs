@@ -131,7 +131,7 @@ public static class ConflictingPluginsChecks
 
         public override void CheckForConflict()
         {
-            if (!ThrottlePassed(20))
+            if (!ThrottlePassed())
                 return;
 
             var moActionRetargeted = IPC.GetRetargetedActions().ToHashSet();
@@ -257,7 +257,7 @@ public static class ConflictingPluginsChecks
         /// <returns>
         ///     If the <see cref="CheckForConflict" /> should be run or not.
         /// </returns>
-        protected bool ThrottlePassed(int frequency = 10, bool enabledCheck = true)
+        protected bool ThrottlePassed(int frequency = 5, bool enabledCheck = true)
         {
             if (!EZ.Throttle($"conflictCheck{Name}",
                     TS.FromSeconds(frequency)) ||
