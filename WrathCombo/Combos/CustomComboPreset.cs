@@ -752,7 +752,7 @@ public enum CustomComboPreset
     [ReplaceSkill(AST.Benefic2)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Benefic II with a one button healing replacement.",
         AST.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(AST.Benefic2)]
     [HealingCombo]
     AST_ST_Heals = 1023,
     
@@ -5668,7 +5668,7 @@ public enum CustomComboPreset
     [AutoAction(false, true)]
     [ReplaceSkill(SGE.Diagnosis)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Change Diagnosis into various options.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(SGE.Diagnosis)]
     [HealingCombo]
     SGE_ST_Heal = 14014,
 
@@ -6359,7 +6359,7 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Physick)]
     [CustomComboInfo("Advanced Healing Mode - Single Target",
         "Change Physick based on the below options::", SCH.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(SCH.Physick)]
     [HealingCombo]
     SCH_ST_Heal = 16023,
 
@@ -7786,7 +7786,7 @@ public enum CustomComboPreset
     [ReplaceSkill(WHM.Cure)]
     [CustomComboInfo("Advanced Healing Mode - Single Target", "Replaces Cure with a one button single target healing setup.",
         WHM.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted(WHM.Cure)]
     [HealingCombo]
     WHM_STHeals = 19300,
 
