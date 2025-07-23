@@ -106,8 +106,8 @@ public static class ConflictingPlugins
 
         Conflict[] currentConflicts;
         var hasComboConflicts = conflicts[ConflictType.Combo].Length > 0;
-        var hasTargetingConflicts = conflicts[ConflictType.Targeting].Length > 0;
         var hasSettingsConflicts = conflicts[ConflictType.Settings].Length > 0;
+        var hasTargetingConflicts = conflicts[ConflictType.Targeting].Length > 0;
 
         ImGui.Spacing();
         ImGui.Spacing();
@@ -131,6 +131,25 @@ public static class ConflictingPlugins
             ShowWarning(ConflictType.Combo, tooltipText, false);
         }
 
+        if (hasSettingsConflicts)
+        {
+            currentConflicts = conflicts[ConflictType.Settings];
+            var conflictingSettingsText = "- " + string.Join("\n- ",
+                conflicts[ConflictType.Settings]
+                    .Select(x => $"{x.Name} v{x.Version} (setting: {x.Reason})"));
+
+            var tooltipText =
+                "The following plugins are known to conflict with\n" +
+                $"{Svc.PluginInterface.InternalName}'s Settings, which you have enabled:\n" +
+                conflictingSettingsText +
+                "\n\nIt is recommended you disable these plugins, or\n" +
+                "remove the conflicting setting in the plugins\n" +
+                "to prevent unexpected behavior and bugs.";
+
+            ShowWarning(ConflictType.Settings, tooltipText,
+                hasComboConflicts || hasTargetingConflicts);
+        }
+
         if (hasTargetingConflicts)
         {
             currentConflicts = conflicts[ConflictType.Targeting];
@@ -151,25 +170,6 @@ public static class ConflictingPlugins
                 "to prevent unexpected behavior and bugs.";
 
             ShowWarning(ConflictType.Targeting, tooltipText, hasComboConflicts);
-        }
-
-        if (hasSettingsConflicts)
-        {
-            currentConflicts = conflicts[ConflictType.Settings];
-            var conflictingSettingsText = "- " + string.Join("\n- ",
-                conflicts[ConflictType.Settings]
-                    .Select(x => $"{x.Name} v{x.Version} (setting: {x.Reason})"));
-
-            var tooltipText =
-                "The following plugins are known to conflict with\n" +
-                $"{Svc.PluginInterface.InternalName}'s Settings, which you have enabled:\n" +
-                conflictingSettingsText +
-                "\n\nIt is recommended you disable these plugins, or\n" +
-                "remove the conflicting setting in the plugins\n" +
-                "to prevent unexpected behavior and bugs.";
-
-            ShowWarning(ConflictType.Settings, tooltipText,
-                hasComboConflicts || hasTargetingConflicts);
         }
 
         return;
