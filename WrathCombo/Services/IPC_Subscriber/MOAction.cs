@@ -14,7 +14,7 @@ namespace WrathCombo.Services.IPC_Subscriber;
 internal sealed class MOActionIPC(
     string? pluginName = null,
     Version? validVersion = null)
-    : ReusableIPC(pluginName ?? "MOAction", validVersion ?? new Version(4, 7, 0, 0))
+    : ReusableIPC(pluginName ?? "MOAction", validVersion ?? new Version(4, 7, 1, 0))
 {
 #pragma warning disable CS0649, CS8618 // Complaints of the method
     [EzIPC("RetargetedActions")]
