@@ -107,6 +107,7 @@ internal partial class WHM
                 action = DivineBenison;
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Benison) &&
                           BenisonShield == null &&
+                          GetRemainingCharges(DivineBenison) > Config.WHM_STHeals_BenisonCharges &&
                           (!Config.WHM_STHeals_BenisonWeave || CanWeave());
                 return Config.WHM_STHeals_BenisonHP;
             case 3:

@@ -133,6 +133,8 @@ internal partial class WHM
                 case CustomComboPreset.WHM_STHeals_Benison:
                     DrawAdditionalBoolChoice(WHM_STHeals_BenisonWeave,
                         weaveDescription, "");
+                    DrawSliderInt(0, 1, WHM_STHeals_BenisonCharges, 
+                        chargesToKeepDescription);
                     DrawSliderInt(1, 100, WHM_STHeals_BenisonHP,
                         targetStartUsingAtDescription);
                     DrawPriorityInput(WHM_ST_Heals_Priority, 9, 2,
@@ -660,6 +662,18 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_STHeals_Benison" />
         internal static UserBool WHM_STHeals_BenisonWeave =
             new("WHM_STHeals_BenisonWeave", false);
+        
+        /// <summary>
+        ///     Charges to keep of Divine Benison.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 0 <br />
+        ///     <b>Range</b>: 0 - 1 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benison" />
+        internal static UserInt WHM_STHeals_BenisonCharges =
+            new("WHM_STHeals_BenisonCharges", 0);
 
         /// <summary>
         ///     HP threshold to use Divine Benison.
