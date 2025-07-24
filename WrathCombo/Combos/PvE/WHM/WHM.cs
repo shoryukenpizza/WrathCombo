@@ -234,7 +234,8 @@ internal partial class WHM : Healer
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_Misery_oGCD) &&
                 BloodLilyReady)
                 return AfflatusMisery;
-
+           
+            
             // Needed Because of Button Selection
             return OriginalHook(Stone1);
 
@@ -324,6 +325,14 @@ internal partial class WHM : Healer
                 BloodLilyReady &&
                 HasBattleTarget())
                 return AfflatusMisery;
+           
+            var dotAction = OriginalHook(Aero);
+            AeroList.TryGetValue(dotAction, out var dotDebuffID);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 0f, 4);
+            
+            if (IsEnabled(CustomComboPreset.WHM_AoE_MainCombo_DoT) &&
+                ActionReady(dotAction) && target != null)
+                return OriginalHook(Aero).Retarget(target);
 
             #endregion
 

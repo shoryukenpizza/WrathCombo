@@ -7765,6 +7765,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Afflatus Misery Option", "Adds Afflatus Misery to the AoE combo when it is ready to be used.",
         WHM.JobID)]
     WHM_AoE_DPS_Misery = 19194,
+    
+    [ParentCombo(WHM_AoE_DPS)]
+    [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.",
+        WHM.JobID)]
+    WHM_AoE_MainCombo_DoT = 19198,
 
     [ParentCombo(WHM_AoE_DPS)]
     [CustomComboInfo("Lily Overcap Protection Option", "Adds Afflatus Rapture to the AoE combo when at three Lilies.",
@@ -7941,9 +7946,6 @@ public enum CustomComboPreset
     #endregion
     
     #region DPS Small Features
-
-    
-    
     
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",

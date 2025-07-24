@@ -366,7 +366,7 @@ internal static class SimpleTarget
             .OrderByDescending(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
-    public static IGameObject? DoTableEnemy
+    public static IGameObject? DottableEnemy
     (uint dotAction,
         ushort dotDebuff,
         float reapplyThreshold = 0,
@@ -388,7 +388,8 @@ internal static class SimpleTarget
                             (dotDebuff, x) <= reapplyThreshold &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff) &&
                         x.IsWithinRange(action.Range))
-            .OrderByDescending(x => x.CurrentHp / x.MaxHp * 100)
+            .OrderBy(x => CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff, x))
+            .ThenByDescending(x => x.CurrentHp / x.MaxHp * 100)
             .FirstOrDefault();
     }
 
