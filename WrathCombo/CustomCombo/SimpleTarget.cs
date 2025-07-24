@@ -388,7 +388,7 @@ internal static class SimpleTarget
                             (dotDebuff, x) <= reapplyThreshold &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff) &&
                         x.IsWithinRange(action.Range))
-            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .OrderByDescending(x => x.CurrentHp / x.MaxHp * 100)
             .FirstOrDefault();
     }
 
