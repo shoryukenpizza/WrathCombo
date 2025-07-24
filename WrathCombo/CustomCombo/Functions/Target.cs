@@ -116,7 +116,7 @@ internal abstract partial class CustomComboFunctions
     /// </returns>
     public static bool CanInterruptEnemy(float? minCastPercent = null, IGameObject? optionalTarget = null)
     {
-        if ((optionalTarget ?? CurrentTarget) is not IBattleChara chara || !chara.IsCasting || !chara.IsCastInterruptible)
+        if ((optionalTarget ?? CurrentTarget) is not IBattleChara { IsCasting: true } chara || !chara.IsCastInterruptible)
             return false;
 
         float minThreshold = Math.Clamp(minCastPercent ?? (float)Service.Configuration.InterruptDelay, 0f, 1f);
@@ -224,7 +224,7 @@ internal abstract partial class CustomComboFunctions
     /// </param>
     /// <param name="target">
     ///     Target for targeted AoE shapes (all but <see cref="SelfCircle"/>). <br />
-    ///     (Optional, defaults to false)
+    ///     (Optional, defaults to <see cref="CurrentTarget" />)
     /// </param>
     /// <param name="checkIgnoredList">
     ///     Whether to check the 
@@ -273,13 +273,13 @@ internal abstract partial class CustomComboFunctions
     /// </param>
     /// <param name="target">
     ///     Target for targeted AoE shapes (all but <see cref="SelfCircle"/>). <br />
-    ///     (Optional, defaults to false)
+    ///     (Optional, defaults to <see cref="CurrentTarget" />)
     /// </param>
     /// <returns>
     ///     Number of allies within the specified action's range.
     /// </returns>
     public static int NumberOfAlliesInRange
-        (uint aoeSpell, IGameObject? target)
+        (uint aoeSpell, IGameObject? target = null)
     {
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
             return 0;
