@@ -330,14 +330,32 @@ internal partial class WHM
                 #region StandAlone Features
                 
                 case CustomComboPreset.WHM_Asylum:
-                    DrawHorizontalMultiChoice(WHM_AsylumOptions,"Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
-                    DrawHorizontalMultiChoice(WHM_AsylumOptions,"Hardtarget Allies", "Will place at hard target if ally", 2, 1);
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
+                        "Hardtarget Enemies", "Will place at hard target if enemy", 3, 0);
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
+                        "Hardtarget Allies", "Will place at hard target if ally", 3, 1);
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions, 
+                        "Temperance Raidwide Mitigation Option", "Replace with Temperance when Asylum is on cooldown", 3, 2);
                     break;
                 
                 case CustomComboPreset.WHM_LiturgyOfTheBell:
-                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,"Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
-                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,"Hardtarget Allies", "Will place at hard target if ally", 2, 1);
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
+                        "Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
+                        "Hardtarget Allies", "Will place at hard target if ally", 2, 1);
                     break;
+                
+                case CustomComboPreset.WHM_Aquaveil:
+                    DrawHorizontalMultiChoice(WHM_AquaveilOptions,
+                        "Divine Benison ST Mit Option", "Will add Divine Benison for ST Mit", 2, 0);
+                    DrawHorizontalMultiChoice(WHM_AquaveilOptions,
+                        "Tetragrammaton ST Mit Option", "Will add Tetragrammaton to top off targets health", 2, 1);
+                    if (WHM_AquaveilOptions[1])
+                    {
+                        DrawSliderInt(0, 100, WHM_Aquaveil_TetraThreshold, "Will use if targets HP % is below set threshold");
+                    }
+                    break;
+                    
                 
                 #endregion
             }
@@ -361,7 +379,7 @@ internal partial class WHM
 
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStopUsingAtDescription =
-            " Non-Bosses HP% to stop using (0 = Use Always, 100 = Never)";
+            " Target HP% to stop using (0 = Use Always, 100 = Never)";
 
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStopUsingOnBossAtDescription =
@@ -1099,6 +1117,28 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_LiturgyOfTheBellOptions = 
             new ("WHM_LiturgyOfTheBellOptions", [true, true]);
+        
+        /// <summary>
+        ///     Options for Aquaveil Standalone Feature
+        /// </summary> 
+        /// <value>
+        ///     <b>Default</b>: True True
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_Aquaveil" />
+        internal static UserBoolArray WHM_AquaveilOptions = 
+            new ("WHM_AquaveilOptions", [true, true]);
+        
+        /// <summary>
+        ///     Tetra threshold for Aquaveil standalone feature
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 100 <br />
+        ///     <b>Range</b>: 0 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_Aquaveil" />
+        internal static UserInt WHM_Aquaveil_TetraThreshold 
+            = new("WHM_Aquaveil_TetraThreshold", 100);
         
         #endregion
 

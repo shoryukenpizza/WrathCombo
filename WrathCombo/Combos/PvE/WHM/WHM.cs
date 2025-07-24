@@ -1,6 +1,8 @@
 #region
 
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Statuses;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -484,7 +486,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID) =>
             actionID is AfflatusSolace && gauge.BloodLily == 3
                 ? AfflatusMisery
-                : actionID;
+                : actionID.RetargetIfEnabled(OptionalTarget);
     }
 
     internal class WHM_RaptureMisery : CustomCombo
@@ -503,8 +505,8 @@ internal partial class WHM : Healer
 
         protected override uint Invoke(uint actionID) =>
             actionID is Cure2 && !LevelChecked(Cure2)
-                ? Cure
-                : actionID;
+                ? Cure.RetargetIfEnabled(OptionalTarget, Cure2)
+                : actionID.RetargetIfEnabled(OptionalTarget);
     }
 
     internal class WHM_Raise : CustomCombo
@@ -549,8 +551,41 @@ internal partial class WHM : Healer
                     ? SimpleTarget.HardTarget.IfFriendly()
                     : null) ??
                 SimpleTarget.Self;
-                
-            return IsEnabled(CustomComboPreset.WHM_Asylum)? Asylum.Retarget(asylumTarget) : actionID;
+
+            if (Config.WHM_AsylumOptions[2] &&
+                ActionReady(OriginalHook(Temperance)) &&
+                IsOnCooldown(Asylum))
+                return OriginalHook(Temperance);
+
+            return Asylum.Retarget(asylumTarget);
+        }
+    }
+    internal class WHM_Aquaveil : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Aquaveil;
+
+        protected override uint Invoke(uint actionID)
+        {
+            IGameObject? healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
+            Status? benisonShield = GetStatusEffect(Buffs.DivineBenison, healTarget);
+            
+            if (actionID is not Aquaveil)
+                return actionID;
+
+            if (ActionReady(Aquaveil))
+                return actionID.RetargetIfEnabled(OptionalTarget);
+            
+            if (Config.WHM_AquaveilOptions[0] &&
+                ActionReady(DivineBenison) &&
+                benisonShield == null)
+                return DivineBenison.RetargetIfEnabled(OptionalTarget, Aquaveil);
+
+            if (Config.WHM_AquaveilOptions[1] &&
+                ActionReady(Tetragrammaton) && 
+                GetTargetHPPercent(healTarget) < Config.WHM_Aquaveil_TetraThreshold)
+                return Tetragrammaton.RetargetIfEnabled(OptionalTarget, Aquaveil);
+
+            return actionID;
         }
     }
     internal class WHM_LiturgyOfTheBell : CustomCombo
@@ -571,7 +606,7 @@ internal partial class WHM : Healer
                     : null) ??
                 SimpleTarget.Self;
                 
-            return IsEnabled(CustomComboPreset.WHM_LiturgyOfTheBell)? LiturgyOfTheBell.Retarget(bellTarget) : actionID;
+            return LiturgyOfTheBell.Retarget(bellTarget);
         }
     }
     internal class WHM_Cure3 : CustomCombo
@@ -581,7 +616,47 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID) =>
             actionID is not Cure3
                 ? actionID
-                : actionID.Retarget(SimpleTarget.Stack.AllyToHeal, dontCull: true);
+                : actionID.RetargetIfEnabled(OptionalTarget);
+    }
+    
+    internal class WHM_Benediction : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Benediction;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not Benediction
+                ? actionID
+                : actionID.RetargetIfEnabled(OptionalTarget);
+    }
+    
+    internal class WHM_Tetragrammaton : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Tetragrammaton;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not Tetragrammaton
+                ? actionID
+                : actionID.RetargetIfEnabled(OptionalTarget);
+    }
+    
+    internal class WHM_Regen : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_Regen;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not Regen
+                ? actionID
+                : actionID.RetargetIfEnabled(OptionalTarget);
+    }
+    
+    internal class WHM_DivineBenison : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.WHM_DivineBenison;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is not DivineBenison
+                ? actionID
+                : actionID.RetargetIfEnabled(OptionalTarget);
     }
     #endregion
 }

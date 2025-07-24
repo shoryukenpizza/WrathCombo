@@ -7942,9 +7942,13 @@ public enum CustomComboPreset
     
     #region DPS Small Features
 
+    
+    
+    
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",
-        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.", WHM.JobID)]
+        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used. \nWill retarget to heal stack if Retargetting is enabled", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_SolaceMisery = 19000,
 
     [ReplaceSkill(WHM.AfflatusRapture)]
@@ -7952,12 +7956,9 @@ public enum CustomComboPreset
         "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
     WHM_RaptureMisery = 19001,
 
-    #endregion
-
-    #region Heals Small Features
-
     [ReplaceSkill(WHM.Cure2)]
-    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.", WHM.JobID)]
+    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nWill retarget to heal stack if Retargetting is enabled", WHM.JobID)]
+    [PossiblyRetargeted]
     WHM_CureSync = 19002,
 
     [ReplaceSkill( RoleActions.Magic.Swiftcast)]
@@ -7975,6 +7976,11 @@ public enum CustomComboPreset
     [Retargeted]
     WHM_Raise_Retarget = 19029,
     
+    [ReplaceSkill(WHM.Aquaveil)]
+    [CustomComboInfo("Aquaveil Retarget Feature", "Retargets Aquaveil  to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Aquaveil  = 19036,
+    
     [ReplaceSkill(WHM.Asylum)]
     [CustomComboInfo("Asylum Retarget Feature", "Retargets Asylum on yourself.", WHM.JobID)]
     [Retargeted]
@@ -7989,6 +7995,26 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure 3 Retarget Feature", "Retargets Cure 3 to the heal stack.", WHM.JobID)]
     [Retargeted]
     WHM_Cure3 = 19031,
+    
+    [ReplaceSkill(WHM.Benediction)]
+    [CustomComboInfo("Benediction Retarget Feature", "Retargets Benediction to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Benediction = 19032,
+    
+    [ReplaceSkill(WHM.Tetragrammaton)]
+    [CustomComboInfo("Tetragrammaton Retarget Feature", "Retargets Tetragrammaton to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Tetragrammaton = 19033,
+    
+    [ReplaceSkill(WHM.Regen)]
+    [CustomComboInfo("Regen Retarget Feature", "Retargets Regen to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Regen = 19034,
+    
+    [ReplaceSkill(WHM.DivineBenison)]
+    [CustomComboInfo("Divine Benison Retarget Feature", "Retargets Divine Benison to the heal stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_DivineBenison = 19035,
 
     #endregion
 
