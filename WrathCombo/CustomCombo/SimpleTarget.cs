@@ -373,12 +373,11 @@ internal static class SimpleTarget
         int maxTargetsToKeepDoTed = 3)
     {
         var action = ActionSheet[dotAction];
-        var numberOfEnemiesWithDoT = Svc.Objects
+        var numberOfEnemiesInRange = Svc.Objects
             .OfType<IBattleChara>()
-            .Count(x => x.IsHostile() && x.IsTargetable &&
-                        CustomComboFunctions.HasStatusEffect(dotDebuff, x));
+            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(15f));
 
-        if (numberOfEnemiesWithDoT >= maxTargetsToKeepDoTed)
+        if (numberOfEnemiesInRange >= maxTargetsToKeepDoTed)
             return null;
 
         return Svc.Objects

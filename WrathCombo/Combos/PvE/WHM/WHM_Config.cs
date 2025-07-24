@@ -101,6 +101,15 @@ internal partial class WHM
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
                     break;
+                
+                case CustomComboPreset.WHM_AoE_MainCombo_DoT:
+                    DrawRoundedSliderFloat(0, 5, WHM_AoE_MainCombo_DoT_Reapply,
+                        reapplyTimeRemainingDescription,
+                        itemWidth: little, digits: 1);
+                    DrawSliderInt(0, 10, WHM_AoE_MainCombo_DoT_MaxTargets,
+                        "Maximum number of targets to employ multi-dotting ",
+                        itemWidth: little);
+                    break;
 
                 #endregion
 
@@ -527,6 +536,30 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoE_DPS_Lucid" />
         internal static UserInt WHM_AoEDPS_Lucid =
             new("WHM_AoE_Lucid", 6500);
+        
+        /// <summary>
+        ///     Reapplication Threshold for AoE Multidotting
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 0 <br />
+        ///     <b>Range</b>: 0 - 5<br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        internal static UserFloat WHM_AoE_MainCombo_DoT_Reapply =
+            new("WHM_AoE_MainCombo_DoT_Reapply", 0);
+        
+        /// <summary>
+        ///     Max Targets for AoE Multidotting
+        /// </summary> 
+        /// <value>
+        ///     <b>Default</b>: 4 <br />
+        ///     <b>Range</b>: 0 - 10<br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        internal static UserInt WHM_AoE_MainCombo_DoT_MaxTargets = 
+            new("WHM_AoE_MainCombo_DoT_MaxTargets", 4);
 
         #endregion
 
