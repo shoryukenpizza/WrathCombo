@@ -369,20 +369,21 @@ internal static class SimpleTarget
     public static IGameObject? DottableEnemy
     (uint dotAction,
         ushort dotDebuff,
-        float reapplyThreshold = 0,
-        int maxTargetsToKeepDoTed = 3)
+        float reapplyThreshold = 1,
+        int maxNumberOfEnemiesInRange = 3)
     {
         var action = ActionSheet[dotAction];
         var numberOfEnemiesInRange = Svc.Objects
             .OfType<IBattleChara>()
             .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(15f));
 
-        if (numberOfEnemiesInRange >= maxTargetsToKeepDoTed)
+        if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
             return null;
 
         return Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(dotAction) &&
+                        !CustomComboFunctions.JustUsedOn(dotAction, x) &&
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff) &&

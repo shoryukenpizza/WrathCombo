@@ -339,7 +339,7 @@ internal partial class WHM : Healer
             
             if (IsEnabled(CustomComboPreset.WHM_AoE_MainCombo_DoT) &&
                 ActionReady(dotAction) && target != null)
-                return OriginalHook(Aero).Retarget(target);
+                return OriginalHook(Aero).Retarget([Holy, Holy3], target);
 
             #endregion
 
