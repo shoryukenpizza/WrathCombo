@@ -49,8 +49,7 @@ public class ReActionIPC(
                 var actionsToBeRetargeted =
                     (stack.GetFoP("Actions") as IEnumerable<object>)?.ToArray();
 
-                if (actionsToBeRetargeted == null ||
-                    actionsToBeRetargeted.Length == 0)
+                if (actionsToBeRetargeted == null)
                 {
                     PluginLog.Verbose(
                         $"[ConflictingPlugins] [{PluginName}] " +
@@ -65,8 +64,7 @@ public class ReActionIPC(
                 var actionsToUseWhenRetargeting =
                     (stack.GetFoP("Items") as IEnumerable<object>)?.ToArray();
 
-                if (actionsToUseWhenRetargeting == null ||
-                    actionsToUseWhenRetargeting.Length == 0)
+                if (actionsToUseWhenRetargeting == null)
                 {
                     PluginLog.Warning(
                         $"[ConflictingPlugins] [{PluginName}] " +
