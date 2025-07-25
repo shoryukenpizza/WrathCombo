@@ -7945,12 +7945,19 @@ public enum CustomComboPreset
     
     #endregion
     
-    #region DPS Small Features
+    #region Small Features
+    
+    [ReplaceSkill(WHM.Aquaveil)]
+    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    WHM_Mit_ST = 19041,
+    
+    [ReplaceSkill(WHM.Asylum)]
+    [CustomComboInfo("Mitigation Feature - AoE", "Changes Asylum into Temperance and then Divine Caress after use.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    WHM_Mit_AoE = 19040,
     
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",
-        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used. \nWill retarget to heal stack if Retargetting is enabled", WHM.JobID)]
-    [PossiblyRetargeted]
+        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.\nSolace can be Retargeted with the Retargeting Features below.", WHM.JobID)]
     WHM_SolaceMisery = 19000,
 
     [ReplaceSkill(WHM.AfflatusRapture)]
@@ -7959,8 +7966,7 @@ public enum CustomComboPreset
     WHM_RaptureMisery = 19001,
 
     [ReplaceSkill(WHM.Cure2)]
-    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nWill retarget to heal stack if Retargetting is enabled", WHM.JobID)]
-    [PossiblyRetargeted]
+    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
     WHM_CureSync = 19002,
 
     [ReplaceSkill( RoleActions.Magic.Swiftcast)]
@@ -7968,55 +7974,82 @@ public enum CustomComboPreset
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Raise.", WHM.JobID)]
     WHM_Raise = 19004,
 
+    [ParentCombo(WHM_Raise)]
+    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Raise Stack.", WHM.JobID)]
+    [Retargeted]
+    WHM_Raise_Retarget = 19029,
+
     [ReplaceSkill(WHM.Raise)]
     [CustomComboInfo("Thin Air Raise Feature", "Adds Thin Air to the Global Raise Feature/Alternative Raise Feature.",
         WHM.JobID)]
     WHM_ThinAirRaise = 19014,
 
-    [ParentCombo(WHM_Raise)]
-    [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", WHM.JobID)]
-    [Retargeted]
-    WHM_Raise_Retarget = 19029,
+    #endregion
+
+    #region Retargeting
+
+    [CustomComboInfo("Retargeting Features", "Collection of Options to Retarget Manually-Used Single Target Heals.", WHM.JobID)]
+    WHM_Retargets = 19037,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Aquaveil)]
-    [CustomComboInfo("Aquaveil Retarget Feature", "Retargets Aquaveil  to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Cure Option", "Retargets Cure and Cure II to the heal stack (even from the Cure II Sync Feature above).", WHM.JobID)]
     [Retargeted]
-    WHM_Aquaveil  = 19036,
+    WHM_Re_Cure = 19038,
     
+    [ParentCombo(WHM_Retargets)]
+    [ReplaceSkill(WHM.Aquaveil)]
+    [CustomComboInfo("Afflatus Option", "Retargets Afflatus to the heal stack (even from the Solace into Misery Feature above).", WHM.JobID)]
+    [Retargeted]
+    WHM_Re_Solace = 19039,
+    
+    [ParentCombo(WHM_Retargets)]
+    [ReplaceSkill(WHM.Aquaveil)]
+    [CustomComboInfo("Aquaveil Option", "Retargets Aquaveil to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
+    [Retargeted]
+    WHM_Re_Aquaveil = 19036,
+    
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Asylum)]
-    [CustomComboInfo("Asylum Retarget Feature", "Retargets Asylum on yourself.", WHM.JobID)]
+    [CustomComboInfo("Asylum Option", "Retargets Asylum to yourself (even from the Mitigation Feature above).", WHM.JobID)]
     [Retargeted]
-    WHM_Asylum = 19027,
+    WHM_Re_Asylum = 19027,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.LiturgyOfTheBell)]
-    [CustomComboInfo("LiturgyOfTheBell Retarget Feature", "Retargets LiturgyOfTheBell on yourself.", WHM.JobID)]
+    [CustomComboInfo("Liturgy Of The Bell Option", "Retargets Liturgy Of The Bell to yourself.", WHM.JobID)]
     [Retargeted]
-    WHM_LiturgyOfTheBell = 19030,
+    WHM_Re_LiturgyOfTheBell = 19030,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Cure3)]
-    [CustomComboInfo("Cure 3 Retarget Feature", "Retargets Cure 3 to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Cure 3 Retarget Option", "Retargets Cure 3 to the heal stack.", WHM.JobID)]
     [Retargeted]
-    WHM_Cure3 = 19031,
+    WHM_Re_Cure3 = 19031,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Benediction)]
-    [CustomComboInfo("Benediction Retarget Feature", "Retargets Benediction to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Benediction Option", "Retargets Benediction to the heal stack.", WHM.JobID)]
     [Retargeted]
-    WHM_Benediction = 19032,
+    WHM_Re_Benediction = 19032,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Tetragrammaton)]
-    [CustomComboInfo("Tetragrammaton Retarget Feature", "Retargets Tetragrammaton to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Tetragrammaton Option", "Retargets Tetragrammaton to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
     [Retargeted]
-    WHM_Tetragrammaton = 19033,
+    WHM_Re_Tetragrammaton = 19033,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Regen)]
-    [CustomComboInfo("Regen Retarget Feature", "Retargets Regen to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Regen Option", "Retargets Regen to the heal stack.", WHM.JobID)]
     [Retargeted]
-    WHM_Regen = 19034,
+    WHM_Re_Regen = 19034,
     
+    [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.DivineBenison)]
-    [CustomComboInfo("Divine Benison Retarget Feature", "Retargets Divine Benison to the heal stack.", WHM.JobID)]
+    [CustomComboInfo("Divine Benison Option", "Retargets Divine Benison to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
     [Retargeted]
-    WHM_DivineBenison = 19035,
+    WHM_Re_DivineBenison = 19035,
 
     #endregion
 
@@ -8035,7 +8068,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 19209
+    // Last value = 19041 (then skips to next last used: 19210)
 
     #endregion
 

@@ -340,34 +340,46 @@ internal partial class WHM
                     break;
                 
                 #endregion
-                
-                #region StandAlone Features
-                
-                case CustomComboPreset.WHM_Asylum:
-                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
-                        "Hardtarget Enemies", "Will place at hard target if enemy", 3, 0);
-                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
-                        "Hardtarget Allies", "Will place at hard target if ally", 3, 1);
-                    DrawHorizontalMultiChoice(WHM_AsylumOptions, 
-                        "Temperance Raidwide Mitigation Option", "Replace with Temperance when Asylum is on cooldown", 3, 2);
-                    break;
-                
-                case CustomComboPreset.WHM_LiturgyOfTheBell:
-                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
-                        "Hardtarget Enemies", "Will place at hard target if enemy", 2, 0);
-                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
-                        "Hardtarget Allies", "Will place at hard target if ally", 2, 1);
-                    break;
-                
-                case CustomComboPreset.WHM_Aquaveil:
+
+                #region Mitigation Features
+
+                case CustomComboPreset.WHM_Mit_ST:
                     DrawHorizontalMultiChoice(WHM_AquaveilOptions,
-                        "Divine Benison ST Mit Option", "Will add Divine Benison for ST Mit", 2, 0);
+                        "Include Divine Benison", "Will add Divine Benison for more mitigation.", 2, 0);
+                    ImGui.NewLine();
                     DrawHorizontalMultiChoice(WHM_AquaveilOptions,
-                        "Tetragrammaton ST Mit Option", "Will add Tetragrammaton to top off targets health", 2, 1);
+                        "Include Tetragrammaton", "Will add Tetragrammaton to top off targets health.", 2, 1);
                     if (WHM_AquaveilOptions[1])
                     {
-                        DrawSliderInt(0, 100, WHM_Aquaveil_TetraThreshold, "Will use if targets HP % is below set threshold");
+                        ImGui.Indent();
+                        DrawSliderInt(0, 100, WHM_Aquaveil_TetraThreshold,
+                            "Target HP% to use Tetra at or below (100 = Disable check)");
+                        ImGui.Unindent();
                     }
+                    break;
+
+                #endregion
+                
+                #region Retargeting Features
+                
+                case CustomComboPreset.WHM_Re_Asylum:
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Asylum to before Self:");
+                    ImGui.Unindent();
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
+                        "Enemy Hard Target", "Will place at hard target if enemy", 3, 0);
+                    DrawHorizontalMultiChoice(WHM_AsylumOptions,
+                        "Ally Hard Target", "Will place at hard target if ally", 3, 1);
+                    break;
+                
+                case CustomComboPreset.WHM_Re_LiturgyOfTheBell:
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Asylum to before Self:");
+                    ImGui.Unindent();
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
+                        "Enemy Hard Target", "Will place at hard target if enemy", 2, 0);
+                    DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
+                        "Ally Hard Target", "Will place at hard target if ally", 2, 1);
                     break;
                     
                 
@@ -1166,7 +1178,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Asylum" />
+        /// <seealso cref="CustomComboPreset.WHM_Re_Asylum" />
         internal static UserBoolArray WHM_AsylumOptions = 
             new("WHM_AsylumOptions", [true, true]);
         
@@ -1176,7 +1188,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_LiturgyOfTheBell" />
+        /// <seealso cref="CustomComboPreset.WHM_Re_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_LiturgyOfTheBellOptions = 
             new ("WHM_LiturgyOfTheBellOptions", [true, true]);
         
@@ -1186,7 +1198,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Aquaveil" />
+        /// <seealso cref="CustomComboPreset.WHM_Mit_ST" />
         internal static UserBoolArray WHM_AquaveilOptions = 
             new ("WHM_AquaveilOptions", [true, true]);
         
@@ -1198,7 +1210,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Aquaveil" />
+        /// <seealso cref="CustomComboPreset.WHM_Mit_ST" />
         internal static UserInt WHM_Aquaveil_TetraThreshold 
             = new("WHM_Aquaveil_TetraThreshold", 100);
         
