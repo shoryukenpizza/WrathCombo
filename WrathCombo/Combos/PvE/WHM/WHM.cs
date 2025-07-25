@@ -139,7 +139,7 @@ internal partial class WHM : Healer
             
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 3, 4);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID,30, 3, 4);
             
             if (ActionReady(dotAction) && target != null)
                 return OriginalHook(Aero).Retarget(target);
