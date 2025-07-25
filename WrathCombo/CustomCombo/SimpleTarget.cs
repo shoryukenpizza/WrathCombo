@@ -384,7 +384,7 @@ internal static class SimpleTarget
         return Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(dotAction) &&
-                        x.CurrentHp / x.MaxHp * 100u > minHP &&
+                        x.CurrentHp * 100u / x.MaxHp > minHP &&
                         !CustomComboFunctions.JustUsedOn(dotAction, x) &&
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
