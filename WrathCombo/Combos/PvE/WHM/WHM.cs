@@ -505,7 +505,7 @@ internal partial class WHM : Healer
                 ? AfflatusMisery
                 : IsEnabled(Preset.WHM_Re_Solace)
                   ? AfflatusSolace.Retarget(SimpleTarget.Stack.AllyToHeal)
-                  : AfflatusSolace;
+                  : actionID;
     }
 
     internal class WHM_RaptureMisery : CustomCombo
