@@ -103,9 +103,11 @@ internal partial class WHM
                     break;
                 
                 case CustomComboPreset.WHM_AoE_MainCombo_DoT:
+                    ImGui.Indent();
                     DrawRoundedSliderFloat(0, 5, WHM_AoE_MainCombo_DoT_Reapply,
                         reapplyTimeRemainingDescription,
                         itemWidth: little, digits: 1);
+                    ImGui.Unindent();
                     DrawSliderInt(0, 10, WHM_AoE_MainCombo_DoT_MaxTargets,
                         "Maximum number of targets to employ multi-dotting ",
                         itemWidth: little);
