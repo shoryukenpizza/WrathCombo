@@ -504,7 +504,7 @@ internal partial class WHM : Healer
             actionID is AfflatusSolace && gauge.BloodLily == 3
                 ? AfflatusMisery
                 : IsEnabled(Preset.WHM_Re_Solace)
-                  ? AfflatusSolace.Retarget(SimpleTarget.Stack.AllyToHeal)
+                  ? actionID.Retarget(SimpleTarget.Stack.AllyToHeal)
                   : actionID;
     }
 
