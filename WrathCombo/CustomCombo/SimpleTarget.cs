@@ -369,7 +369,7 @@ internal static class SimpleTarget
     public static IGameObject? DottableEnemy
     (uint dotAction,
         ushort dotDebuff,
-        uint minHP = 10, // 10%
+        uint minHPPercent = 10,
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
@@ -384,7 +384,7 @@ internal static class SimpleTarget
         return Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(dotAction) &&
-                        x.CurrentHp * 100u / x.MaxHp > minHP &&
+                        x.CurrentHp * 100u / x.MaxHp > minHPPercent &&
                         !CustomComboFunctions.JustUsedOn(dotAction, x) &&
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
