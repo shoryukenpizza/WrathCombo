@@ -335,7 +335,7 @@ internal partial class WHM : Healer
            
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, Config.WHM_AoE_MainCombo_DoT_Reapply, Config.WHM_AoE_MainCombo_DoT_MaxTargets);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30,Config.WHM_AoE_MainCombo_DoT_Reapply, Config.WHM_AoE_MainCombo_DoT_MaxTargets);
             
             if (IsEnabled(CustomComboPreset.WHM_AoE_MainCombo_DoT) &&
                 ActionReady(dotAction) && target != null)
