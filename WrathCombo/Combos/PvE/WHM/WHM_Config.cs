@@ -103,14 +103,15 @@ internal partial class WHM
                     break;
                 
                 case CustomComboPreset.WHM_AoE_MainCombo_DoT:
+                    DrawSliderInt(0, 100, WHM_AoE_MainCombo_DoT_HPThreshold,
+                        targetStopUsingAtDescription);
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0, 5, WHM_AoE_MainCombo_DoT_Reapply,
                         reapplyTimeRemainingDescription,
                         itemWidth: little, digits: 1);
                     ImGui.Unindent();
                     DrawSliderInt(0, 10, WHM_AoE_MainCombo_DoT_MaxTargets,
-                        "Maximum number of targets to employ multi-dotting ",
-                        itemWidth: little);
+                        "Maximum number of targets to employ multi-dotting ");
                     break;
 
                 #endregion
@@ -550,6 +551,18 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
         internal static UserFloat WHM_AoE_MainCombo_DoT_Reapply =
             new("WHM_AoE_MainCombo_DoT_Reapply", 0);
+        
+        /// <summary>
+        ///     Health Threshold to stop Multidotting
+        /// </summary> 
+        /// <value>
+        ///     <b>Default</b>: 50 <br />
+        ///     <b>Range</b>: 0 - 100<br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        internal static UserInt WHM_AoE_MainCombo_DoT_HPThreshold = 
+            new("WHM_AoE_MainCombo_DoT_HPThreshold", 50);
         
         /// <summary>
         ///     Max Targets for AoE Multidotting

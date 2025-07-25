@@ -369,7 +369,7 @@ internal static class SimpleTarget
     public static IGameObject? DottableEnemy
     (uint dotAction,
         ushort dotDebuff,
-        uint minHPPercent = 10,
+        int minHPPercent = 10,
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
