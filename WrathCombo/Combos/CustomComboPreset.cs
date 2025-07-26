@@ -7672,7 +7672,9 @@ public enum CustomComboPreset
     #endregion
 
     #region WHITE MAGE
-    
+
+    #region Simple Mode
+
     [AutoAction(false, false)]
     [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
     [ConflictingCombos(WHM_ST_MainCombo)]
@@ -7689,7 +7691,9 @@ public enum CustomComboPreset
     [SimpleCombo]
     WHM_AoE_Simple_DPS = 19051,
 
-    #region Single Target DPS Feature
+    #endregion
+
+    #region Advanced Single Target DPS Combo
 
     [AutoAction(false, false)]
     [ReplaceSkill(WHM.Stone1, WHM.Stone2, WHM.Stone3, WHM.Stone4, WHM.Glare1, WHM.Glare3)]
@@ -7738,7 +7742,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    #region AoE DPS Feature
+    #region Advanced AoE DPS Combo
 
     [AutoAction(true, false)]
     [ReplaceSkill(WHM.Holy, WHM.Holy3)]
@@ -7789,7 +7793,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    #region Single Target Heals
+    #region Advanced Single Target Heals Combo
 
     [AutoAction(false, true)]
     [ReplaceSkill(WHM.Cure)]
@@ -7859,7 +7863,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    #region AoE Heals Feature
+    #region Advanced AoE Heals Combo
 
     [AutoAction(true, true)]
     [ReplaceSkill(WHM.Medica1)]
@@ -7921,33 +7925,8 @@ public enum CustomComboPreset
     
     #endregion
     
-    #region Raidwide Heals
-    
-    #region Hidden Features
-    [CustomComboInfo("Boss Raidwide Options", "Collection of tools designed to try and cast during a raidwide attack when detected." +
-                                       "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", WHM.JobID)]
-    WHM_Raidwide = 19220,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide Asylum Option", "Will try to Weave Asylum when a raidwide casting. \nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_Asylum = 19221,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide Temperance Combo Option", "Will try to Weave Temperance and Divine Caress when a raidwide casting. " +
-                                                           "\nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_Temperance = 19222,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide LiturgyOfTheBell Option", "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
-                                                        "\nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_LiturgyOfTheBell = 19223,
-    
-    #endregion
-    
-    #endregion
-    
-    #region Small Features
-    
+    #region Mitigation Features
+
     [ReplaceSkill(WHM.Aquaveil)]
     [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", WHM.JobID)]
     WHM_Mit_ST = 19041,
@@ -7955,6 +7934,35 @@ public enum CustomComboPreset
     [ReplaceSkill(WHM.Asylum)]
     [CustomComboInfo("Mitigation Feature - AoE", "Changes Asylum into Temperance and then Divine Caress after use.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
     WHM_Mit_AoE = 19040,
+
+    #endregion
+    
+    #region Raidwide Heals
+    
+    [CustomComboInfo("Boss Raidwide Options",
+        "Collection of tools designed to try and cast during a raidwide attack when detected." +
+        "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", WHM.JobID)]
+    WHM_Raidwide = 19220,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Asylum Option", "Will try to Weave Asylum when a raidwide casting. \nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Asylum = 19221,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Temperance Combo Option",
+        "Will try to Weave Temperance and Divine Caress when a raidwide casting. " +
+        "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Temperance = 19222,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide LiturgyOfTheBell Option",
+        "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
+        "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_LiturgyOfTheBell = 19223,
+    
+    #endregion
+    
+    #region Small Features
     
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",
@@ -8069,7 +8077,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 19041 (then skips to next last used: 19210)
+    // Last value = 19051 (then skips to next last used: 19210)
 
     #endregion
 
