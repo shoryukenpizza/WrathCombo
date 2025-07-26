@@ -483,23 +483,23 @@ internal partial class SGE : Healer
         {
             if (!EZ.Throttle("SGERetargetingFeature", TS.FromSeconds(5)))
                 return actionID;
-            
-            var healStack = SimpleTarget.Stack.AllyToHeal;
-            
+
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima))
-                Haima.Retarget(healStack, dontCull: true);
+                Haima.Retarget(healStack, true);
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole))
-                Druochole.Retarget(healStack, dontCull: true);
+                Druochole.Retarget(healStack, true);
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole))
-                Taurochole.Retarget(healStack, dontCull: true);
+                Taurochole.Retarget(healStack, true);
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis))
-                Krasis.Retarget(healStack, dontCull: true);
+                Krasis.Retarget(healStack, true);
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia))
-                Kardia.Retarget(Target, dontCull: true);
+                Kardia.Retarget(Target, true);
 
             return actionID;
         }
