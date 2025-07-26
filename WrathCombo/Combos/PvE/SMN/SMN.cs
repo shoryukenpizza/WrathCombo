@@ -950,7 +950,7 @@ internal partial class SMN : Caster
                     return OriginalHook(PreciousBrilliance);
 
                 if (IfritAstralFlowCyclone && HasStatusEffect(Buffs.IfritsFavor) &&
-                   ((GetTargetDistance() <= Config.SMN_AoE_CrimsonCycloneMeleeDistance)) //Melee Check
+                   GetTargetDistance() <= Config.SMN_AoE_CrimsonCycloneMeleeDistance //Melee Check
                    || (IfritAstralFlowStrike && HasStatusEffect(Buffs.CrimsonStrike) && InMeleeRange())) //After Strike
                     return OriginalHook(AstralFlow);
 
