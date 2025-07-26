@@ -163,12 +163,12 @@ internal partial class WHM : Healer
         {
             #region Button Selection
 
-            bool actionFound = Config.WHM_ST_MainCombo_Actions == 0 &&
-                               StoneGlareList.Contains(actionID) ||
-                               Config.WHM_ST_MainCombo_Actions == 1 &&
-                               AeroList.ContainsKey(actionID) ||
-                               Config.WHM_ST_MainCombo_Actions == 2 &&
-                               actionID is Stone2;
+            var actionFound = Config.WHM_ST_MainCombo_Actions == 0 &&
+                              StoneGlareList.Contains(actionID) ||
+                              Config.WHM_ST_MainCombo_Actions == 1 &&
+                              AeroList.ContainsKey(actionID) ||
+                              Config.WHM_ST_MainCombo_Actions == 2 &&
+                              actionID is Stone2;
 
             if (!actionFound)
                 return actionID;
@@ -417,11 +417,11 @@ internal partial class WHM : Healer
                 return OriginalHook(Temperance);
 
             //Priority List
-            for (int i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
+            for (var i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
             {
-                int index = Config.WHM_ST_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigST(index, OptionalTarget,
-                    out uint spell, out bool enabled);
+                var index = Config.WHM_ST_Heals_Priority.IndexOf(i + 1);
+                var config = GetMatchingConfigST(index, OptionalTarget,
+                    out var spell, out var enabled);
 
                 if (enabled)
                 {
@@ -481,11 +481,11 @@ internal partial class WHM : Healer
                 return AfflatusMisery;
 
             //Priority List
-            for (int i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
+            for (var i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
             {
-                int index = Config.WHM_AoE_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigAoE(index, OptionalTarget,
-                    out uint spell, out bool enabled);
+                var index = Config.WHM_AoE_Heals_Priority.IndexOf(i + 1);
+                var config = GetMatchingConfigAoE(index, OptionalTarget,
+                    out var spell, out var enabled);
 
                 if (enabled && GetPartyAvgHPPercent() <= config &&
                     ActionReady(spell))
