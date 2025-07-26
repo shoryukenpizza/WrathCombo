@@ -535,7 +535,7 @@ internal partial class DNC
             };
         }
 
-        return false;
+        return true;
     }
 
     #endregion
