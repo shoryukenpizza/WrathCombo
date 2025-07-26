@@ -6325,6 +6325,10 @@ public enum CustomComboPreset
     SCH_AoE_ADV_DPS = 16010,
     
     [ParentCombo(SCH_AoE_ADV_DPS)]
+    [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", SCH.JobID)]
+    SCH_AoE_ADV_DPS_DoT = 16072,
+    
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Energy Drain Weave Option",
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
@@ -6581,7 +6585,7 @@ public enum CustomComboPreset
     SCH_Raidwide_Expedient = 16064,
     #endregion
 
-    // Last value = 16069
+    // Last value = 16072
 
     #endregion
 

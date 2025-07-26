@@ -163,7 +163,7 @@ internal partial class WHM : Healer
                 SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30, 3, 4);
 
             if (ActionReady(dotAction) && target != null)
-                return OriginalHook(Aero).Retarget(target);
+                return OriginalHook(Aero).Retarget([Holy, Holy3], target);
 
             #endregion
 
