@@ -70,11 +70,14 @@ internal partial class SCH : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_ST_ADV_DPS;
         protected override uint Invoke(uint actionID)
         {
-            #region Variables
             bool actionFound = Config.SCH_ST_DPS_Adv_Actions == 0 && BroilList.Contains(actionID) ||
                                Config.SCH_ST_DPS_Adv_Actions == 1 && BioList.ContainsKey(actionID) ||
                                Config.SCH_ST_DPS_Adv_Actions == 2 && actionID is Ruin2;
             
+            if (!actionFound)
+                return actionID;
+            
+            #region Variables
             int chainThreshold = Config.SCH_ST_DPS_ChainStratagemSubOption == 1 || !InBossEncounter() ? Config.SCH_ST_DPS_ChainStratagemOption : 0;
             #endregion
             
@@ -98,18 +101,15 @@ internal partial class SCH : Healer
                 return OccultCrescent.BestPhantomAction();
             #endregion
             
-            #region Dissolve Union
+            #region Healing Helpers
             if (EndAetherpact)
                 return DissolveUnion;
-            #endregion
-            
-            #region Hidden Feature Raidwide
-            if (HiddenSacredSoil())
+            if (RaidwideSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
-            if (HiddenExpedient())
+            if (RaidwideExpedient())
                 return Expedient;
-            if (HiddenSuccor())
-                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
+            if (RaidwideSuccor())
+                return RaidwideRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
 
             if (InCombat() && CanWeave())
@@ -228,18 +228,15 @@ internal partial class SCH : Healer
                 return OccultCrescent.BestPhantomAction();
             #endregion
             
-            #region Dissolve Union
+            #region Healing Helpers
             if (EndAetherpact)
                 return DissolveUnion;
-            #endregion
-            
-            #region Hidden Feature Raidwide
-            if (HiddenSacredSoil())
+            if (RaidwideSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
-            if (HiddenExpedient())
+            if (RaidwideExpedient())
                 return Expedient;
-            if (HiddenSuccor())
-                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
+            if (RaidwideSuccor())
+                return RaidwideRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
             
             if (!InCombat() || !CanWeave()) return actionID;
@@ -294,20 +291,15 @@ internal partial class SCH : Healer
 
             #endregion
             
-            #region Dissolve Union
+            #region Healing Helpers
             if (EndAetherpact)
                 return DissolveUnion;
-            #endregion
-            
-            #region Hidden Feature Raidwide
-
-            if (HiddenSacredSoil())
+            if (RaidwideSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
-            if (HiddenExpedient())
+            if (RaidwideExpedient())
                 return Expedient;
-            if (HiddenSuccor())
-                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
-           
+            if (RaidwideSuccor())
+                return RaidwideRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
             
             // Aetherflow
@@ -363,20 +355,15 @@ internal partial class SCH : Healer
             if (actionID is not (Succor or Concitation or Accession))
                 return actionID;
             
-            #region Dissolve Union
+            #region Healing Helpers
             if (EndAetherpact)
                 return DissolveUnion;
-            #endregion
-            
-            #region Hidden Feature Raidwide
-
-            if (HiddenSacredSoil())
+            if (RaidwideSacredSoil())
                 return SacredSoil.Retarget(ReplacedActionsList.ToArray(), SimpleTarget.Self);
-            if (HiddenExpedient())
+            if (RaidwideExpedient())
                 return Expedient;
-            if (HiddenSuccor())
-                return HiddenRecitation() ? Recitation : OriginalHook(Succor);
-           
+            if (RaidwideSuccor())
+                return RaidwideRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
 
             if (!HasAetherflow && InCombat())

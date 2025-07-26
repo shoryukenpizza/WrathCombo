@@ -6563,26 +6563,22 @@ public enum CustomComboPreset
 
     #endregion
     
-    #region Hidden Features
-    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SCH.JobID)]
-    [Hidden]
+    #region Raidwide Features
+    [CustomComboInfo("Raidwide Options", "Collection of tools designed to try and cast during a raidwide attack when detected." +
+                                         "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", SCH.JobID)]
     SCH_Hidden = 16065,
     
     [ParentCombo(SCH_Hidden)]
     [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
-    [Hidden]
-    SCH_Hidden_Succor_Raidwide = 16062,
+    SCH_Raidwide_Succor = 16062,
     
     [ParentCombo(SCH_Hidden)]
     [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected..\nWill be used in all 4 Advanced combos", SCH.JobID)]
-    [Hidden]
-    [Retargeted]
-    SCH_Hidden_SacredSoil = 16059,
+    SCH_Raidwide_SacredSoil = 16059,
     
     [ParentCombo(SCH_Hidden)]
     [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
-    [Hidden]
-    SCH_Hidden_Expedient = 16064,
+    SCH_Raidwide_Expedient = 16064,
     #endregion
 
     // Last value = 16069

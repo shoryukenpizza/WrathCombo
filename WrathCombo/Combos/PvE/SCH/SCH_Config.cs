@@ -283,8 +283,8 @@ internal partial class SCH
                     DrawRadioButton(SCH_Recitation_Mode, "Excogitation", "", 3);
                     break; 
                 
-                case CustomComboPreset.SCH_Hidden_Succor_Raidwide:
-                    DrawAdditionalBoolChoice(SCH_Hidden_Succor_Raidwide_Recitation, "Recitation Option", "Use Recitation to buff before the Raidwide Succor.");
+                case CustomComboPreset.SCH_Raidwide_Succor:
+                    DrawAdditionalBoolChoice(SCH_Raidwide_Succor_Recitation, "Recitation Option", "Use Recitation to buff before the Raidwide Succor.");
                     break;
                 
                 #endregion
@@ -316,7 +316,7 @@ internal partial class SCH
             SCH_AoE_DPS_ChainStratagemBanefulOption = new("SCH_AoE_DPS_ChainStratagemBanefulOption"),
             SCH_AoE_Heal_Aetherflow_Indomitability = new("SCH_AoE_Heal_Aetherflow_Indomitability"),
             SCH_AoE_Heal_Dissipation_Indomitability = new("SCH_AoE_Heal_Dissipation_Indomitability"),
-            SCH_Hidden_Succor_Raidwide_Recitation = new ("SCH_Hidden_Succor_Raidwide_Recitation");
+            SCH_Raidwide_Succor_Recitation = new ("SCH_Raidwide_Succor_Recitation");
         
 
         public static UserFloat
