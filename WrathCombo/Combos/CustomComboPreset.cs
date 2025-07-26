@@ -5834,6 +5834,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Rhizomata Feature", "Replaces Addersgall skills with Rhizomata when empty.", SGE.JobID)]
     SGE_Rhizo = 14037,
 
+    [ConflictingCombos(SGE_Retarget_Taurochole)]
     [ReplaceSkill(SGE.Taurochole)]
     [CustomComboInfo("Taurochole to Druochole Feature", "Turns Taurochole to Druochole when Taurochole is on cooldown.", SGE.JobID)]
     [PossiblyRetargeted]
@@ -5894,7 +5895,8 @@ public enum CustomComboPreset
     [CustomComboInfo("Druchole Options", "Retargets Druchole according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]
     SGE_Retarget_Druchole = 14075,
-
+    
+    [ConflictingCombos(SGE_TauroDruo)]
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack.", SGE.JobID)]
     [PossiblyRetargeted]

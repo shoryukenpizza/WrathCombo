@@ -3,6 +3,8 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
@@ -479,25 +481,25 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima) &&
-                ActionReady(Haima) && actionID is Haima)
-                return Haima.RetargetIfEnabled(OptionalTarget, Haima);
+            if (!EZ.Throttle("SGERetargetingFeature", TS.FromSeconds(5)))
+                return actionID;
+            
+            var healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima))
+                Haima.Retarget(healStack, dontCull: true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole) &&
-                ActionReady(Druochole) && actionID is Druochole)
-                return Druochole.RetargetIfEnabled(OptionalTarget, Druochole);
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole))
+                Druochole.Retarget(healStack, dontCull: true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole) &&
-                ActionReady(Taurochole) && actionID is Taurochole)
-                return Taurochole.RetargetIfEnabled(OptionalTarget, Taurochole);
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole))
+                Taurochole.Retarget(healStack, dontCull: true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) &&
-                ActionReady(Krasis) && actionID is Krasis)
-                return Krasis.RetargetIfEnabled(OptionalTarget, Krasis);
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis))
+                Krasis.Retarget(healStack, dontCull: true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia) &&
-                ActionReady(Kardia) && actionID is Kardia)
-                return Kardia.Retarget(Kardia, Target);
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia))
+                Kardia.Retarget(Target, dontCull: true);
 
             return actionID;
         }
