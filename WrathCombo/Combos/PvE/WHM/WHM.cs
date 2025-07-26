@@ -508,20 +508,35 @@ internal partial class WHM : Healer
     {
         protected internal override Preset Preset => Preset.WHM_SolaceMisery;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is AfflatusSolace && gauge.BloodLily == 3 ? AfflatusMisery :
-                IsEnabled(Preset.WHM_Re_Solace) ?
-                    actionID.Retarget(SimpleTarget.Stack.AllyToHeal) : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not AfflatusSolace)
+                return actionID;
+
+            if (gauge.BloodLily == 3)
+                return AfflatusMisery;
+
+            if (IsEnabled(Preset.WHM_Re_Solace))
+                return AfflatusSolace.Retarget(SimpleTarget.Stack.AllyToHeal);
+
+            return actionID;
+        }
     }
 
     internal class WHM_RaptureMisery : CustomCombo
     {
         protected internal override Preset Preset => Preset.WHM_RaptureMisery;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is AfflatusRapture && gauge.BloodLily == 3
-                ? AfflatusMisery
-                : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not AfflatusRapture)
+                return actionID;
+
+            if (gauge.BloodLily == 3)
+                return AfflatusMisery;
+
+            return actionID;
+        }
     }
 
     internal class WHM_CureSync : CustomCombo
