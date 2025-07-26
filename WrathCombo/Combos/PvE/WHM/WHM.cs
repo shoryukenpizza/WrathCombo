@@ -63,6 +63,7 @@ internal partial class WHM : Healer
                     return Variant.Rampart;
 
                 if (ActionReady(PresenceOfMind) &&
+                    ActionWatching.NumberOfGcdsUsed >= 3 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
@@ -125,6 +126,7 @@ internal partial class WHM : Healer
                     return Assize;
 
                 if (ActionReady(PresenceOfMind) &&
+                    ActionWatching.NumberOfGcdsUsed >= 4 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
@@ -245,6 +247,7 @@ internal partial class WHM : Healer
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_PresenceOfMind) &&
                     ActionReady(PresenceOfMind) &&
+                    ActionWatching.NumberOfGcdsUsed >= 3 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
@@ -343,6 +346,7 @@ internal partial class WHM : Healer
 
                 if (IsEnabled(Preset.WHM_AoE_DPS_PresenceOfMind) &&
                     ActionReady(PresenceOfMind) &&
+                    ActionWatching.NumberOfGcdsUsed >= 4 &&
                     !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
