@@ -399,7 +399,7 @@ internal partial class WHM
         
         /// Bar Description for Party HP%  Average to start using plus disable text
         private const string partyStartUsingAtDescription =
-            "Start using when below party average HP %. Set to 100 to disable this check";
+            "Start using when below party average HP% (100 = Disable check)";
 
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStopUsingAtDescription =

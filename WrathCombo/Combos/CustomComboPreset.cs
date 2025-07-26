@@ -7880,8 +7880,9 @@ public enum CustomComboPreset
     WHM_AoEHeals_Misery = 19010,
     
     [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Medica II Option", "Uses Medica II when current target doesn't have Medica II buff." +
-                                         "\nUpgrades to Medica III when level allows.", WHM.JobID)]
+    [CustomComboInfo("Medica II Option",
+        "Uses Medica II when heal target doesn't have Medica II buff." +
+        "\nUpgrades to Medica III when level allows.", WHM.JobID)]
     WHM_AoEHeals_Medica2 = 19205,
 
     [ParentCombo(WHM_AoEHeals)]
