@@ -908,28 +908,25 @@ public enum CustomComboPreset
 
     #endregion
     
-    #region Hidden Features
-    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know." +
-                                       "\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", AST.JobID)]
-    [Hidden]
-    AST_Hidden = 1075,
+    #region Raidwide Features
+    [CustomComboInfo("Boss Raidwide Options",
+        "Collection of tools designed to try and cast during a raidwide attack when detected." +
+        "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", AST.JobID)]
+    AST_Raidwide = 1075,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Collective Unconscious Option", "Additionally, Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_CollectiveUnconscious = 1076,
+    AST_Raidwide_CollectiveUnconscious = 1076,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Additionally, Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
                                                                "\nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_NeutralSect = 1077,
+    AST_Raidwide_NeutralSect = 1077,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
                                                            "\nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_AspectedHelios = 1078,
+    AST_Raidwide_AspectedHelios = 1078,
     
     #endregion
 

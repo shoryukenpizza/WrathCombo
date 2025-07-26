@@ -152,13 +152,13 @@ internal partial class AST : Healer
                     !LevelChecked(Divination)))
                     return Lightspeed;  
                 
-                #region Hidden Feature Raidwide
+                #region Healing Helper
 
-                if (HiddenCollectiveUnconscious())
+                if (RaidwideCollectiveUnconscious())
                     return CollectiveUnconscious;
-                if (HiddenNeutralSect())
+                if (RaidwideNeutralSect())
                     return OriginalHook(NeutralSect);
-                if (HiddenAspectedHelios())
+                if (RaidwideAspectedHelios())
                     return OriginalHook(AspectedHelios);
            
                 #endregion
@@ -334,13 +334,13 @@ internal partial class AST : Healer
                 !LevelChecked(Divination)))
                 return Lightspeed;  
             
-            #region Hidden Feature Raidwide
+            #region Healing Helper
 
-            if (HiddenCollectiveUnconscious())
+            if (RaidwideCollectiveUnconscious())
                 return CollectiveUnconscious;
-            if (HiddenNeutralSect())
+            if (RaidwideNeutralSect())
                 return OriginalHook(NeutralSect);
-            if (HiddenAspectedHelios())
+            if (RaidwideAspectedHelios())
                 return OriginalHook(AspectedHelios);
            
             #endregion
@@ -430,13 +430,13 @@ internal partial class AST : Healer
             
             var healTarget = OptionalTarget ?? SimpleTarget.Stack.AllyToHeal;
             
-            #region Hidden Feature Raidwide
+            #region Healing Helper
 
-            if (HiddenCollectiveUnconscious())
+            if (RaidwideCollectiveUnconscious())
                 return CollectiveUnconscious;
-            if (HiddenNeutralSect())
+            if (RaidwideNeutralSect())
                 return OriginalHook(NeutralSect);
-            if (HiddenAspectedHelios())
+            if (RaidwideAspectedHelios())
                 return OriginalHook(AspectedHelios);
            
             #endregion
@@ -482,13 +482,13 @@ internal partial class AST : Healer
             if (!LevelChecked(AspectedHelios)) 
                 return Helios;
             
-            #region Hidden Feature Raidwide
+            #region Healing Helper
 
-            if (HiddenCollectiveUnconscious())
+            if (RaidwideCollectiveUnconscious())
                 return CollectiveUnconscious;
-            if (HiddenNeutralSect())
+            if (RaidwideNeutralSect())
                 return OriginalHook(NeutralSect);
-            if (HiddenAspectedHelios())
+            if (RaidwideAspectedHelios())
                 return OriginalHook(AspectedHelios);
            
             #endregion
