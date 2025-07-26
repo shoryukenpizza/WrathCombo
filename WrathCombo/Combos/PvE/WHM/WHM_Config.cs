@@ -7,6 +7,7 @@ using WrathCombo.Data;
 using WrathCombo.Window.Functions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.UserConfig;
+using Preset = WrathCombo.Combos.CustomComboPreset;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable GrammarMistakeInComment
@@ -23,13 +24,13 @@ internal partial class WHM
 {
     public static class Config
     {
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 #region Single Target DPS
 
-                case CustomComboPreset.WHM_ST_MainCombo:
+                case Preset.WHM_ST_MainCombo:
                     DrawHorizontalRadioButton(WHM_ST_MainCombo_Actions, "On Stones/Glares", "Apply options to all Stones and Glares.", 0,
                         descriptionColor:ImGuiColors.DalamudWhite);
                     DrawHorizontalRadioButton(WHM_ST_MainCombo_Actions, "On Aeros/Dia", "Apply options to all Aeros And Dia.", 1,
@@ -38,11 +39,11 @@ internal partial class WHM
                         descriptionColor:ImGuiColors.DalamudWhite);
                     break;
 
-                case CustomComboPreset.WHM_ST_MainCombo_Opener:
+                case Preset.WHM_ST_MainCombo_Opener:
                     DrawBossOnlyChoice(WHM_Balance_Content);
                     break;
 
-                case CustomComboPreset.WHM_ST_MainCombo_DoT:
+                case Preset.WHM_ST_MainCombo_DoT:
                     DrawSliderInt(0, 100, WHM_ST_DPS_AeroOptionBoss,
                         targetStopUsingOnBossAtDescription,
                         itemWidth: medium);
@@ -84,7 +85,7 @@ internal partial class WHM
                     ImGui.Unindent();
                     break;
 
-                case CustomComboPreset.WHM_ST_MainCombo_Lucid:
+                case Preset.WHM_ST_MainCombo_Lucid:
                     DrawSliderInt(4000, 9500, WHM_STDPS_Lucid,
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
@@ -94,13 +95,13 @@ internal partial class WHM
 
                 #region AoE DPS
 
-                case CustomComboPreset.WHM_AoE_DPS_Lucid:
+                case Preset.WHM_AoE_DPS_Lucid:
                     DrawSliderInt(4000, 9500, WHM_AoEDPS_Lucid,
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
                     break;
                 
-                case CustomComboPreset.WHM_AoE_MainCombo_DoT:
+                case Preset.WHM_AoE_MainCombo_DoT:
                     DrawSliderInt(0, 100, WHM_AoE_MainCombo_DoT_HPThreshold,
                         targetStopUsingAtDescription);
                     ImGui.Indent();
@@ -116,13 +117,13 @@ internal partial class WHM
 
                 #region Single Target Heals
 
-                case CustomComboPreset.WHM_STHeals:
+                case Preset.WHM_STHeals:
                     DrawAdditionalBoolChoice(WHM_STHeals_IncludeShields,
                         "Include Shields in HP Percent Sliders",
                         "");
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_Benediction:
+                case Preset.WHM_STHeals_Benediction:
                     DrawAdditionalBoolChoice(WHM_STHeals_BenedictionWeave,
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_BenedictionHP,
@@ -131,7 +132,7 @@ internal partial class WHM
                         $"{Benediction.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Tetragrammaton:
+                case Preset.WHM_STHeals_Tetragrammaton:
                     DrawAdditionalBoolChoice(WHM_STHeals_TetraWeave,
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_TetraHP,
@@ -140,7 +141,7 @@ internal partial class WHM
                         $"{Tetragrammaton.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Benison:
+                case Preset.WHM_STHeals_Benison:
                     DrawAdditionalBoolChoice(WHM_STHeals_BenisonWeave,
                         weaveDescription, "");
                     DrawSliderInt(0, 1, WHM_STHeals_BenisonCharges, 
@@ -151,7 +152,7 @@ internal partial class WHM
                         $"{DivineBenison.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Aquaveil:
+                case Preset.WHM_STHeals_Aquaveil:
                     DrawAdditionalBoolChoice(WHM_STHeals_AquaveilWeave,
                         weaveDescription, "");
                     DrawSliderInt(1, 100, WHM_STHeals_AquaveilHP,
@@ -160,14 +161,14 @@ internal partial class WHM
                         $"{Aquaveil.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_Solace:
+                case Preset.WHM_STHeals_Solace:
                     DrawSliderInt(1, 100, WHM_STHeals_SolaceHP,
                         targetStartUsingAtDescription);
                     DrawPriorityInput(WHM_ST_Heals_Priority, 9, 4,
                         $"{AfflatusSolace.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Regen:
+                case Preset.WHM_STHeals_Regen:
                     ImGui.Indent();
                     DrawRoundedSliderFloat(0f, 6f, WHM_STHeals_RegenTimer,
                         reapplyTimeRemainingDescription,
@@ -181,7 +182,7 @@ internal partial class WHM
                         $"{Regen.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Temperance:
+                case Preset.WHM_STHeals_Temperance:
                     DrawSliderInt(1, 100, WHM_STHeals_TemperanceHP,
                         targetStartUsingAtDescription);
                     DrawHorizontalMultiChoice(WHM_STHeals_TemperanceOptions,"Only Weave", weaveDescription, 2, 0);
@@ -190,7 +191,7 @@ internal partial class WHM
                         $"{Temperance.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_Asylum:
+                case Preset.WHM_STHeals_Asylum:
                     DrawSliderInt(1, 100, WHM_STHeals_AsylumHP,
                         targetStartUsingAtDescription);
                     DrawHorizontalMultiChoice(WHM_STHeals_AsylumOptions,"Only Weave", weaveDescription, 2, 0);
@@ -199,7 +200,7 @@ internal partial class WHM
                         $"{Asylum.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_LiturgyOfTheBell:
+                case Preset.WHM_STHeals_LiturgyOfTheBell:
                     DrawSliderInt(1, 100, WHM_STHeals_LiturgyOfTheBellHP,
                         targetStartUsingAtDescription);
                     DrawHorizontalMultiChoice(WHM_STHeals_LiturgyOfTheBellOptions,"Only Weave", weaveDescription, 2, 0);
@@ -208,18 +209,18 @@ internal partial class WHM
                         $"{LiturgyOfTheBell.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_ThinAir:
+                case Preset.WHM_STHeals_ThinAir:
                     DrawSliderInt(0, 1, WHM_STHeals_ThinAir,
                         chargesToKeepDescription);
                     break;
                 
-                case CustomComboPreset.WHM_STHeals_Lucid:
+                case Preset.WHM_STHeals_Lucid:
                     DrawSliderInt(4000, 9500, WHM_STHeals_Lucid,
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
                     break;
 
-                case CustomComboPreset.WHM_STHeals_Esuna:
+                case Preset.WHM_STHeals_Esuna:
                     DrawSliderInt(0, 100, WHM_STHeals_Esuna,
                         targetStopUsingAtDescription);
                     break;
@@ -228,7 +229,7 @@ internal partial class WHM
 
                 #region AoE Heals
                 
-                case CustomComboPreset.WHM_AoEHeals_Medica2:
+                case Preset.WHM_AoEHeals_Medica2:
                     DrawSliderInt(1, 100, WHM_AoEHeals_Medica2HP,
                         partyStartUsingAtDescription);
                     ImGui.Indent();
@@ -240,7 +241,7 @@ internal partial class WHM
                         $"{Medica2.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Cure3:
+                case Preset.WHM_AoEHeals_Cure3:
                     DrawSliderInt(1, 100, WHM_AoEHeals_Cure3HP,
                         partyStartUsingAtDescription);
                     DrawSliderInt(2, 8, WHM_AoEHeals_Cure3Allies,
@@ -252,7 +253,7 @@ internal partial class WHM
                         $"{Cure3.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Plenary:
+                case Preset.WHM_AoEHeals_Plenary:
                     DrawSliderInt(1, 100, WHM_AoEHeals_PlenaryHP,
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_PlenaryWeave,
@@ -262,7 +263,7 @@ internal partial class WHM
                         $"{PlenaryIndulgence.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Temperance:
+                case Preset.WHM_AoEHeals_Temperance:
                     DrawSliderInt(1, 100, WHM_AoEHeals_TemperanceHP, 
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_TemperanceWeave,
@@ -275,7 +276,7 @@ internal partial class WHM
                         $"{Temperance.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Asylum:
+                case Preset.WHM_AoEHeals_Asylum:
                     DrawSliderInt(1, 100, WHM_AoEHeals_AsylumHP, 
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_AsylumWeave,
@@ -288,7 +289,7 @@ internal partial class WHM
                         $"{Asylum.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell:
+                case Preset.WHM_AoEHeals_LiturgyOfTheBell:
                     DrawSliderInt(1, 100, WHM_AoEHeals_LiturgyHP, 
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_LiturgyWeave,
@@ -301,14 +302,14 @@ internal partial class WHM
                         $"{LiturgyOfTheBell.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Rapture:
+                case Preset.WHM_AoEHeals_Rapture:
                     DrawSliderInt(1, 100, WHM_AoEHeals_RaptureHP,
                         partyStartUsingAtDescription);
                     DrawPriorityInput(WHM_AoE_Heals_Priority, 9, 6,
                         $"{AfflatusRapture.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_Assize:
+                case Preset.WHM_AoEHeals_Assize:
                     DrawSliderInt(1, 100, WHM_AoEHeals_AssizeHP,
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_AssizeWeave,
@@ -317,7 +318,7 @@ internal partial class WHM
                         $"{Assize.ActionName()} Priority: ");
                     break;
                 
-                case CustomComboPreset.WHM_AoEHeals_DivineCaress:
+                case Preset.WHM_AoEHeals_DivineCaress:
                     DrawSliderInt(1, 100, WHM_AoEHeals_DivineCaressHP,
                         partyStartUsingAtDescription);
                     DrawAdditionalBoolChoice(WHM_AoEHeals_DivineCaressWeave,
@@ -326,12 +327,12 @@ internal partial class WHM
                         $"{DivineCaress.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.WHM_AoEHeals_ThinAir:
+                case Preset.WHM_AoEHeals_ThinAir:
                     DrawSliderInt(0, 1, WHM_AoEHeals_ThinAir,
                         chargesToKeepDescription);
                     break;
 
-                case CustomComboPreset.WHM_AoEHeals_Lucid:
+                case Preset.WHM_AoEHeals_Lucid:
                     DrawSliderInt(4000, 9500, WHM_AoEHeals_Lucid,
                         mpThresholdDescription,
                         itemWidth: medium, SliderIncrements.Hundreds);
@@ -341,7 +342,7 @@ internal partial class WHM
 
                 #region Mitigation Features
 
-                case CustomComboPreset.WHM_Mit_ST:
+                case Preset.WHM_Mit_ST:
                     DrawHorizontalMultiChoice(WHM_AquaveilOptions,
                         "Include Divine Benison", "Will add Divine Benison for more mitigation.", 2, 0);
                     ImGui.NewLine();
@@ -360,7 +361,7 @@ internal partial class WHM
                 
                 #region Retargeting Features
                 
-                case CustomComboPreset.WHM_Re_Asylum:
+                case Preset.WHM_Re_Asylum:
                     ImGui.Indent();
                     ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Asylum to before Self:");
                     ImGui.Unindent();
@@ -370,7 +371,7 @@ internal partial class WHM
                         "Ally Hard Target", "Will place at hard target if ally", 3, 1);
                     break;
                 
-                case CustomComboPreset.WHM_Re_LiturgyOfTheBell:
+                case Preset.WHM_Re_LiturgyOfTheBell:
                     ImGui.Indent();
                     ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Asylum to before Self:");
                     ImGui.Unindent();
