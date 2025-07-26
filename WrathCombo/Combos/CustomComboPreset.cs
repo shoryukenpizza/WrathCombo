@@ -943,7 +943,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_Fire1to3)]
+    [ConflictingCombos(BLM_ST_AdvancedMode, BLM_Fire1to3, BLM_Fire1Despair)]
     [CustomComboInfo("Simple Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     [SimpleCombo]
     BLM_ST_SimpleMode = 2001,
@@ -961,7 +961,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_ST_SimpleMode, BLM_Fire1to3)]
+    [ConflictingCombos(BLM_ST_SimpleMode, BLM_Fire1to3, BLM_Fire1Despair)]
     [CustomComboInfo("Advanced Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
     [AdvancedCombo]
     BLM_ST_AdvancedMode = 2100,
@@ -1111,7 +1111,7 @@ public enum CustomComboPreset
     BLM_Fire4to3 = 2059,
 
     [ReplaceSkill(BLM.Fire)]
-    [ConflictingCombos(BLM_FireandIce)]
+    [ConflictingCombos(BLM_FireandIce, BLM_ST_AdvancedMode, BLM_ST_SimpleMode)]
     [CustomComboInfo("Fire to Despair", "Replaces Fire  with Despair when in Astral Fire and below 2400 MP.", BLM.JobID)]
     BLM_Fire1Despair = 2065,
 
