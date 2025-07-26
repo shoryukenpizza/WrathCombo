@@ -8021,7 +8021,7 @@ public enum CustomComboPreset
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Aquaveil)]
-    [CustomComboInfo("Afflatus Option", "Retargets Afflatus to the heal stack (even from the Solace into Misery Feature above).", WHM.JobID)]
+    [CustomComboInfo("Afflatus Solace Option", "Retargets Afflatus Solace to the heal stack (even from the Solace into Misery Feature above).", WHM.JobID)]
     [Retargeted]
     WHM_Re_Solace = 19039,
     
