@@ -7708,6 +7708,19 @@ public enum CustomComboPreset
     WHM_ST_MainCombo_Opener = 19023,
 
     [ParentCombo(WHM_ST_MainCombo)]
+    [CustomComboInfo("Movement Options", "Various options to keep you casting while moving.", WHM.JobID)]
+    WHM_ST_MainCombo_Movement = 19052,
+
+    [ParentCombo(WHM_ST_MainCombo_Movement)]
+    [CustomComboInfo("DoT Option", "Will reapply DoT early to all enemies within range while moving.", WHM.JobID)]
+    [Retargeted]
+    WHM_ST_MainCombo_Move_DoT = 19053,
+
+    [ParentCombo(WHM_ST_MainCombo_Movement)]
+    [CustomComboInfo("Afflatus Misery Option", "Will prioritize Afflatus Misery higher while moving.", WHM.JobID)]
+    WHM_ST_MainCombo_Move_Lily = 19054,
+
+    [ParentCombo(WHM_ST_MainCombo)]
     [CustomComboInfo("Aero/Dia Uptime Option",
         "Adds Aero/Dia to the single target combo if the debuff is not present on current target, or is about to expire.",
         WHM.JobID)]

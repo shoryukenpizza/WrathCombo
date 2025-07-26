@@ -37,6 +37,24 @@ internal partial class WHM : Healer
 
             if (!InCombat()) return actionID;
 
+            #region Movement Options
+
+            if (IsMoving())
+            {
+                var dotAction = OriginalHook(Aero);
+                AeroList.TryGetValue(dotAction, out var dotDebuffID);
+                var target = SimpleTarget.DottableEnemy(
+                    dotAction, dotDebuffID, 0, 20, 99);
+                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
+                    target is not null)
+                    return dotAction.Retarget(StoneGlareList.ToArray(), target);
+
+                if (BloodLilyReady)
+                    return AfflatusMisery;
+            }
+
+            #endregion
+
             #region Weaves
 
             if (CanWeave())
@@ -162,15 +180,15 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             #region Button Selection
+            
+            var replacedAction = (int)Config.WHM_ST_MainCombo_Actions switch
+            {
+                1 => AeroList.Keys.ToArray(),
+                2 => [Stone2],
+                _ => StoneGlareList.ToArray(),
+            };
 
-            var actionFound = Config.WHM_ST_MainCombo_Actions == 0 &&
-                              StoneGlareList.Contains(actionID) ||
-                              Config.WHM_ST_MainCombo_Actions == 1 &&
-                              AeroList.ContainsKey(actionID) ||
-                              Config.WHM_ST_MainCombo_Actions == 2 &&
-                              actionID is Stone2;
-
-            if (!actionFound)
+            if (!replacedAction.Contains(actionID))
                 return actionID;
 
             #endregion
@@ -196,6 +214,25 @@ internal partial class WHM : Healer
                 return Asylum.Retarget(actionID, SimpleTarget.Self);
             if (RaidwideLiturgyOfTheBell())
                 return LiturgyOfTheBell.Retarget(actionID, SimpleTarget.Self);
+
+            #endregion
+
+            #region Movement Options
+
+            if (IsMoving() && IsEnabled(Preset.WHM_ST_MainCombo_Movement))
+            {
+                var dotAction = OriginalHook(Aero);
+                AeroList.TryGetValue(dotAction, out var dotDebuffID);
+                var target = SimpleTarget.DottableEnemy(
+                    dotAction, dotDebuffID, 0, 30, 99);
+                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
+                    target is not null)
+                    return dotAction.Retarget(replacedAction, target);
+
+                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_Lily) &&
+                    BloodLilyReady)
+                    return AfflatusMisery;
+            }
 
             #endregion
 
@@ -477,7 +514,7 @@ internal partial class WHM : Healer
 
             // Blood Overcap
             if (IsEnabled(Preset.WHM_AoEHeals_Misery) &&
-                gauge.BloodLily == 3)
+                BloodLilyReady)
                 return AfflatusMisery;
 
             //Priority List
@@ -513,7 +550,7 @@ internal partial class WHM : Healer
             if (actionID is not AfflatusSolace)
                 return actionID;
 
-            if (gauge.BloodLily == 3)
+            if (BloodLilyReady)
                 return AfflatusMisery;
 
             if (IsEnabled(Preset.WHM_Re_Solace))
@@ -532,7 +569,7 @@ internal partial class WHM : Healer
             if (actionID is not AfflatusRapture)
                 return actionID;
 
-            if (gauge.BloodLily == 3)
+            if (BloodLilyReady)
                 return AfflatusMisery;
 
             return actionID;
