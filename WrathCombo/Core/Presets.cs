@@ -37,7 +37,7 @@ namespace WrathCombo.Core
                 field = result;
                 return result;
             }
-        }
+        } = null!;
 
         public static void Init()
         {
