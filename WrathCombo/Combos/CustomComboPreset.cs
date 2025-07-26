@@ -683,6 +683,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Gravity with options below", AST.JobID)]
     [AdvancedCombo]
     AST_AOE_DPS = 1041,
+    
+    [ParentCombo(AST_AOE_DPS)]
+    [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", AST.JobID)]
+    AST_AOE_DPS_DoT = 1083,
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Lightspeed Weave Option", "Adds Lightspeed when moving", AST.JobID)]
@@ -930,7 +934,7 @@ public enum CustomComboPreset
     
     #endregion
 
-    // Last value = 1080
+    // Last value = 1083
 
     #endregion
 

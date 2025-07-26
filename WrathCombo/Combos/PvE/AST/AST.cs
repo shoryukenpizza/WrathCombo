@@ -295,6 +295,14 @@ internal partial class AST : Healer
             if (ActionReady(Macrocosmos) && !HasStatusEffect(Buffs.Macrocosmos) &&
                 ActionWatching.NumberOfGcdsUsed >= 3 && !InBossEncounter())
                 return Macrocosmos;
+            
+            var dotAction = OriginalHook(Combust);
+            CombustList.TryGetValue(dotAction, out var dotDebuffID);
+            var target =
+                SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30, 3, 4);
+
+            if (ActionReady(dotAction) && target != null)
+                return OriginalHook(Combust).Retarget([Gravity, Gravity2], target);
 
             return actionID;
         }
@@ -415,6 +423,17 @@ internal partial class AST : Healer
                 (Config.AST_AOE_DPS_MacroCosmos_SubOption == 1 ||
                 !InBossEncounter()))
                 return Macrocosmos;
+            
+            var dotAction = OriginalHook(Combust);
+            CombustList.TryGetValue(dotAction, out var dotDebuffID);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID,
+                Config.AST_AOE_DPS_DoT_HPThreshold,
+                Config.AST_AOE_DPS_DoT_Reapply,
+                Config.AST_AOE_DPS_DoT_MaxTargets);
+
+            if (IsEnabled(CustomComboPreset.AST_AOE_DPS_DoT) &&
+                ActionReady(dotAction) && target != null)
+                return OriginalHook(Combust).Retarget([Gravity, Gravity2], target);
 
             return actionID;
         }
