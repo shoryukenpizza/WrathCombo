@@ -709,7 +709,7 @@ internal partial class WHM : Healer
                 AfflatusSolace.Retarget(healStack, dontCull: true);
 
             if (IsEnabled(Preset.WHM_Re_Aquaveil))
-                AfflatusSolace.Retarget(healStack, dontCull: true);
+                Aquaveil.Retarget(healStack, dontCull: true);
 
             if (IsEnabled(Preset.WHM_Re_LiturgyOfTheBell))
             {
