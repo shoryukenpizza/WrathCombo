@@ -176,22 +176,28 @@ internal partial class SCH : Healer
                 return DissolveUnion;
             #endregion
             
-            if (!InCombat() || !CanWeave()) return actionID;
-            
-            if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+            if (!WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow && CanWeave())
                 return Aetherflow;
                 
-            if (HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+            if (HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem) && CanWeave())
                 return BanefulImpaction;
                 
-            if (ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem)
+            if (ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem && CanWeave())
                 return ChainStratagem;
                     
             if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
-                AetherflowCD <= 10)
+                AetherflowCD <= 10 && CanWeave())
                 return EnergyDrain;
+            
+            var dotAction = OriginalHook(Bio);
+            BioList.TryGetValue(dotAction, out var dotDebuffID);
+            var target =
+                SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30, 3, 4);
+
+            if (ActionReady(dotAction) && target != null)
+                return OriginalHook(Bio).Retarget([ArtOfWar, ArtOfWarII], target);
                 
-            if (Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption))
+            if (Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption) && CanWeave())
                 return Role.LucidDreaming;
 
             return actionID;
@@ -239,27 +245,36 @@ internal partial class SCH : Healer
                 return RaidwideRecitation() ? Recitation : OriginalHook(Succor);
             #endregion
             
-            if (!InCombat() || !CanWeave()) return actionID;
-            
-            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow)
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Aetherflow) && !WasLastAction(Dissipation) && ActionReady(Aetherflow) && !HasAetherflow && CanWeave())
                 return Aetherflow;
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem))
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_BanefulImpact) && HasStatusEffect(Buffs.ImpactImminent) && !JustUsed(ChainStratagem) && CanWeave())
                 return BanefulImpaction;
                 
             if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_ChainStrat) && ActionWatching.NumberOfGcdsUsed > 3 && CanChainStrategem && 
-                GetTargetHPPercent() > chainThreshold &&
+                GetTargetHPPercent() > chainThreshold && CanWeave() &&
                 (LevelChecked(BanefulImpaction)|| !Config.SCH_AoE_DPS_ChainStratagemBanefulOption))
                 return ChainStratagem;
                     
             if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_EnergyDrain) && ActionReady(EnergyDrain) && 
-                AetherflowCD <= Config.SCH_AoE_DPS_EnergyDrain &&
+                AetherflowCD <= Config.SCH_AoE_DPS_EnergyDrain && CanWeave() &&
                 (!Config.SCH_AoE_DPS_EnergyDrain_Burst ||
                  ChainStrategemCD > 10 ||
                  !LevelChecked(ChainStratagem)))
                 return EnergyDrain;
+            
+            var dotAction = OriginalHook(Bio);
+            BioList.TryGetValue(dotAction, out var dotDebuffID);
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID,
+                Config.SCH_AoE_ADV_DPS_DoT_HPThreshold,
+                Config.SCH_AoE_ADV_DPS_DoT_Reapply,
+                Config.SCH_AoE_ADV_DPS_DoT_MaxTargets);
+
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_DoT) &&
+                ActionReady(dotAction) && target != null)
+                return OriginalHook(Bio).Retarget([ArtOfWar, ArtOfWarII], target);
                 
-            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Lucid) && Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption))
+            if (IsEnabled(CustomComboPreset.SCH_AoE_ADV_DPS_Lucid) && Role.CanLucidDream(Config.SCH_AoE_DPS_LucidOption) && CanWeave())
                 return Role.LucidDreaming;
 
             return actionID;

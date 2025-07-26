@@ -683,6 +683,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced DPS Mode - AoE", "Replaces Gravity with options below", AST.JobID)]
     [AdvancedCombo]
     AST_AOE_DPS = 1041,
+    
+    [ParentCombo(AST_AOE_DPS)]
+    [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", AST.JobID)]
+    AST_AOE_DPS_DoT = 1083,
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Lightspeed Weave Option", "Adds Lightspeed when moving", AST.JobID)]
@@ -908,32 +912,29 @@ public enum CustomComboPreset
 
     #endregion
     
-    #region Hidden Features
-    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know." +
-                                       "\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", AST.JobID)]
-    [Hidden]
-    AST_Hidden = 1075,
+    #region Raidwide Features
+    [CustomComboInfo("Boss Raidwide Options",
+        "Collection of tools designed to try and cast during a raidwide attack when detected." +
+        "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", AST.JobID)]
+    AST_Raidwide = 1075,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Collective Unconscious Option", "Additionally, Will try to Weave Collective Unconscious when a raidwide casting. \nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_CollectiveUnconscious = 1076,
+    AST_Raidwide_CollectiveUnconscious = 1076,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Neutral Sect Combo Option", "Additionally, Will try to Weave Neutral Sect and Sun sign when a raidwide casting. " +
                                                                "\nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_NeutralSect = 1077,
+    AST_Raidwide_NeutralSect = 1077,
     
-    [ParentCombo(AST_Hidden)]
+    [ParentCombo(AST_Raidwide)]
     [CustomComboInfo("RaidWide Aspected Helios Option", "Additionally, Will try to cast Aspected Helios for with Neutral Sect Buff for shields when a raidwide casting. " +
                                                            "\nWill be used in all 4 main combos.", AST.JobID)]
-    [Hidden]
-    AST_Hidden_AspectedHelios = 1078,
+    AST_Raidwide_AspectedHelios = 1078,
     
     #endregion
 
-    // Last value = 1080
+    // Last value = 1083
 
     #endregion
 
@@ -6325,6 +6326,10 @@ public enum CustomComboPreset
     SCH_AoE_ADV_DPS = 16010,
     
     [ParentCombo(SCH_AoE_ADV_DPS)]
+    [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.", SCH.JobID)]
+    SCH_AoE_ADV_DPS_DoT = 16072,
+    
+    [ParentCombo(SCH_AoE_ADV_DPS)]
     [CustomComboInfo("Energy Drain Weave Option",
         "Use Energy Drain to consume remaining Aetherflow stacks when Aetherflow is about to come off cooldown.",
         SCH.JobID)]
@@ -6581,7 +6586,7 @@ public enum CustomComboPreset
     SCH_Raidwide_Expedient = 16064,
     #endregion
 
-    // Last value = 16069
+    // Last value = 16072
 
     #endregion
 

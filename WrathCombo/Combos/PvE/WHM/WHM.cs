@@ -165,7 +165,7 @@ internal partial class WHM : Healer
                 SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30, 3, 4);
 
             if (ActionReady(dotAction) && target != null)
-                return OriginalHook(Aero).Retarget(target);
+                return OriginalHook(Aero).Retarget([Holy, Holy3], target);
 
             #endregion
 
@@ -694,10 +694,10 @@ internal partial class WHM : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            var healStack = SimpleTarget.Stack.AllyToHeal;
-            
             if (!EZ.Throttle("WHMRetargetingFeature", TS.FromSeconds(5)))
                 return actionID;
+            
+            var healStack = SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(Preset.WHM_Re_Cure))
             {
@@ -709,7 +709,7 @@ internal partial class WHM : Healer
                 AfflatusSolace.Retarget(healStack, dontCull: true);
 
             if (IsEnabled(Preset.WHM_Re_Aquaveil))
-                AfflatusSolace.Retarget(healStack, dontCull: true);
+                Aquaveil.Retarget(healStack, dontCull: true);
 
             if (IsEnabled(Preset.WHM_Re_LiturgyOfTheBell))
             {
