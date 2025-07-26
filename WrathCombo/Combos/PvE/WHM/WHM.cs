@@ -1,8 +1,6 @@
 #region
 
 using System.Linq;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -30,7 +28,7 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             var actionFound = StoneGlareList.Contains(actionID);
-           
+
             if (!actionFound)
                 return actionID;
 
@@ -38,7 +36,7 @@ internal partial class WHM : Healer
                 return OccultCrescent.BestPhantomAction();
 
             if (!InCombat()) return actionID;
-           
+
             #region Weaves
 
             if (CanWeave())
@@ -46,7 +44,8 @@ internal partial class WHM : Healer
                 if (Variant.CanRampart(Preset.WHM_DPS_Variant_Rampart))
                     return Variant.Rampart;
 
-                if (ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                if (ActionReady(PresenceOfMind) &&
+                    !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
                 if (ActionReady(Assize))
@@ -81,7 +80,7 @@ internal partial class WHM : Healer
             if (BloodLilyReady)
                 return AfflatusMisery;
 
-            
+
             return actionID;
 
             #endregion
@@ -107,7 +106,8 @@ internal partial class WHM : Healer
                 if (ActionReady(Assize))
                     return Assize;
 
-                if (ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                if (ActionReady(PresenceOfMind) &&
+                    !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
                 if (Role.CanLucidDream(7500))
@@ -136,11 +136,12 @@ internal partial class WHM : Healer
             if (BloodLilyReady &&
                 HasBattleTarget())
                 return AfflatusMisery;
-            
+
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID,30, 3, 4);
-            
+            var target =
+                SimpleTarget.DottableEnemy(dotAction, dotDebuffID, 30, 3, 4);
+
             if (ActionReady(dotAction) && target != null)
                 return OriginalHook(Aero).Retarget(target);
 
@@ -151,7 +152,7 @@ internal partial class WHM : Healer
     }
 
     #endregion
-    
+
     #region DPS
 
     internal class WHM_ST_MainCombo : CustomCombo
@@ -162,10 +163,13 @@ internal partial class WHM : Healer
         {
             #region Button Selection
 
-            bool actionFound = Config.WHM_ST_MainCombo_Actions == 0 && StoneGlareList.Contains(actionID) ||
-                               Config.WHM_ST_MainCombo_Actions == 1 && AeroList.ContainsKey(actionID) ||
-                               Config.WHM_ST_MainCombo_Actions == 2 && actionID is Stone2;
-            
+            bool actionFound = Config.WHM_ST_MainCombo_Actions == 0 &&
+                               StoneGlareList.Contains(actionID) ||
+                               Config.WHM_ST_MainCombo_Actions == 1 &&
+                               AeroList.ContainsKey(actionID) ||
+                               Config.WHM_ST_MainCombo_Actions == 2 &&
+                               actionID is Stone2;
+
             if (!actionFound)
                 return actionID;
 
@@ -183,7 +187,7 @@ internal partial class WHM : Healer
                 return OccultCrescent.BestPhantomAction();
 
             if (!InCombat()) return actionID;
-            
+
             #region Special Feature Raidwide
 
             if (RaidwideTemperance())
@@ -192,7 +196,7 @@ internal partial class WHM : Healer
                 return Asylum.Retarget(actionID, SimpleTarget.Self);
             if (RaidwideLiturgyOfTheBell())
                 return LiturgyOfTheBell.Retarget(actionID, SimpleTarget.Self);
-           
+
             #endregion
 
             #region Weaves
@@ -203,7 +207,8 @@ internal partial class WHM : Healer
                     return Variant.Rampart;
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_PresenceOfMind) &&
-                    ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                    ActionReady(PresenceOfMind) &&
+                    !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
                 if (IsEnabled(Preset.WHM_ST_MainCombo_Assize) &&
@@ -242,8 +247,8 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_ST_MainCombo_Misery_oGCD) &&
                 BloodLilyReady)
                 return AfflatusMisery;
-           
-            
+
+
             // Needed Because of Button Selection
             return OriginalHook(Stone1);
 
@@ -279,7 +284,7 @@ internal partial class WHM : Healer
                 return actionID;
 
             #endregion
-            
+
             #region Special Feature Raidwide
 
             if (RaidwideTemperance())
@@ -288,7 +293,7 @@ internal partial class WHM : Healer
                 return Asylum.Retarget([Holy, Holy3], SimpleTarget.Self);
             if (RaidwideLiturgyOfTheBell())
                 return LiturgyOfTheBell.Retarget([Holy, Holy3], SimpleTarget.Self);
-           
+
             #endregion
 
             #region Weaves
@@ -300,7 +305,8 @@ internal partial class WHM : Healer
                     return Assize;
 
                 if (IsEnabled(Preset.WHM_AoE_DPS_PresenceOfMind) &&
-                    ActionReady(PresenceOfMind) && !HasStatusEffect(Buffs.SacredSight))
+                    ActionReady(PresenceOfMind) &&
+                    !HasStatusEffect(Buffs.SacredSight))
                     return PresenceOfMind;
 
                 if (IsEnabled(Preset.WHM_AoE_DPS_Lucid) &&
@@ -333,11 +339,14 @@ internal partial class WHM : Healer
                 BloodLilyReady &&
                 HasBattleTarget())
                 return AfflatusMisery;
-           
+
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
-            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID, Config.WHM_AoE_MainCombo_DoT_HPThreshold, Config.WHM_AoE_MainCombo_DoT_Reapply, Config.WHM_AoE_MainCombo_DoT_MaxTargets);
-            
+            var target = SimpleTarget.DottableEnemy(dotAction, dotDebuffID,
+                Config.WHM_AoE_MainCombo_DoT_HPThreshold,
+                Config.WHM_AoE_MainCombo_DoT_Reapply,
+                Config.WHM_AoE_MainCombo_DoT_MaxTargets);
+
             if (IsEnabled(Preset.WHM_AoE_MainCombo_DoT) &&
                 ActionReady(dotAction) && target != null)
                 return OriginalHook(Aero).Retarget([Holy, Holy3], target);
@@ -370,17 +379,8 @@ internal partial class WHM : Healer
                              GetRemainingCharges(ThinAir) >
                              Config.WHM_STHeals_ThinAir;
 
-
-            var canRegen = ActionReady(Regen) &&
-                             !JustUsedOn(Regen, healTarget) &&
-                             GetStatusEffectRemainingTime(Buffs.Regen, healTarget)
-                             <= Config.WHM_STHeals_RegenTimer && //Refresh Time Threshold
-                             GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields)
-                             >= Config.WHM_STHeals_RegenHPLower &&
-                             GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields)
-                             <= Config.WHM_STHeals_RegenHPUpper;  
             #endregion
-            
+
             #region Special Feature Raidwide
 
             if (RaidwideTemperance())
@@ -389,7 +389,7 @@ internal partial class WHM : Healer
                 return Asylum.Retarget(Cure, SimpleTarget.Self);
             if (RaidwideLiturgyOfTheBell())
                 return LiturgyOfTheBell.Retarget(Cure, SimpleTarget.Self);
-           
+
             #endregion
 
             #region Priority Cleansing
@@ -408,31 +408,35 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_STHeals_Lucid) && CanWeave() &&
                 Role.CanLucidDream(Config.WHM_STHeals_Lucid))
                 return Role.LucidDreaming;
-            
+
             // Divine Caress
-            if (IsEnabled(Preset.WHM_STHeals_Temperance) && HasStatusEffect(Buffs.DivineGrace) &&
+            if (IsEnabled(Preset.WHM_STHeals_Temperance) &&
+                HasStatusEffect(Buffs.DivineGrace) &&
                 (!Config.WHM_STHeals_TemperanceOptions[1] || !InBossEncounter()) &&
                 (!Config.WHM_STHeals_TemperanceOptions[0] || CanWeave()))
                 return OriginalHook(Temperance);
-            
+
             //Priority List
-            for(int i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
+            for (int i = 0; i < Config.WHM_ST_Heals_Priority.Count; i++)
             {
                 int index = Config.WHM_ST_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigST(index, OptionalTarget, out uint spell, out bool enabled);
+                int config = GetMatchingConfigST(index, OptionalTarget,
+                    out uint spell, out bool enabled);
 
                 if (enabled)
                 {
-                    if (GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields) <= config &&
+                    if (GetTargetHPPercent(healTarget,
+                            Config.WHM_STHeals_IncludeShields) <= config &&
                         ActionReady(spell))
                         return spell.RetargetIfEnabled(OptionalTarget, Cure);
                 }
             }
+
             if (LevelChecked(Cure2))
                 return IsEnabled(Preset.WHM_STHeals_ThinAir) && canThinAir
                     ? ThinAir
                     : Cure2.RetargetIfEnabled(OptionalTarget, Cure);
-            
+
             return Cure.RetargetIfEnabled(OptionalTarget);
         }
     }
@@ -452,8 +456,9 @@ internal partial class WHM : Healer
                              !HasStatusEffect(Buffs.ThinAir) &&
                              GetRemainingCharges(ThinAir) >
                              Config.WHM_AoEHeals_ThinAir;
+
             #endregion
-            
+
             #region Special Feature Raidwide
 
             if (RaidwideTemperance())
@@ -461,10 +466,10 @@ internal partial class WHM : Healer
             if (RaidwideAsylum())
                 return Asylum.Retarget(Medica1, SimpleTarget.Self);
             if (RaidwideLiturgyOfTheBell())
-                return LiturgyOfTheBell.Retarget(Medica1 ,SimpleTarget.Self);
-           
+                return LiturgyOfTheBell.Retarget(Medica1, SimpleTarget.Self);
+
             #endregion
-            
+
             if (IsEnabled(Preset.WHM_AoEHeals_Lucid) &&
                 CanWeave() &&
                 Role.CanLucidDream(Config.WHM_AoEHeals_Lucid))
@@ -474,19 +479,22 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_AoEHeals_Misery) &&
                 gauge.BloodLily == 3)
                 return AfflatusMisery;
-            
+
             //Priority List
-            for(int i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
+            for (int i = 0; i < Config.WHM_AoE_Heals_Priority.Count; i++)
             {
                 int index = Config.WHM_AoE_Heals_Priority.IndexOf(i + 1);
-                int config = GetMatchingConfigAoE(index, OptionalTarget, out uint spell, out bool enabled);
-                
-                if (enabled && GetPartyAvgHPPercent() <= config && ActionReady(spell))
-                    return IsEnabled(Preset.WHM_AoEHeals_ThinAir) && canThinAir && spell is Cure3 or Medica2 or Medica3?
-                        ThinAir:
-                        spell.RetargetIfEnabled(OptionalTarget, Medica1);
+                int config = GetMatchingConfigAoE(index, OptionalTarget,
+                    out uint spell, out bool enabled);
+
+                if (enabled && GetPartyAvgHPPercent() <= config &&
+                    ActionReady(spell))
+                    return IsEnabled(Preset.WHM_AoEHeals_ThinAir) && canThinAir &&
+                           spell is Cure3 or Medica2 or Medica3
+                        ? ThinAir
+                        : spell.RetargetIfEnabled(OptionalTarget, Medica1);
             }
-           
+
 
             return actionID;
         }
@@ -501,11 +509,9 @@ internal partial class WHM : Healer
         protected internal override Preset Preset => Preset.WHM_SolaceMisery;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is AfflatusSolace && gauge.BloodLily == 3
-                ? AfflatusMisery
-                : IsEnabled(Preset.WHM_Re_Solace)
-                  ? actionID.Retarget(SimpleTarget.Stack.AllyToHeal)
-                  : actionID;
+            actionID is AfflatusSolace && gauge.BloodLily == 3 ? AfflatusMisery :
+                IsEnabled(Preset.WHM_Re_Solace) ?
+                    actionID.Retarget(SimpleTarget.Stack.AllyToHeal) : actionID;
     }
 
     internal class WHM_RaptureMisery : CustomCombo
@@ -522,15 +528,16 @@ internal partial class WHM : Healer
     {
         protected internal override Preset Preset => Preset.WHM_CureSync;
 
-        protected override uint Invoke(uint actionID) {
+        protected override uint Invoke(uint actionID)
+        {
             if (actionID is not Cure)
                 return actionID;
-            
+
             if (!LevelChecked(Cure2))
                 return IsEnabled(Preset.WHM_Re_Cure)
                     ? Cure.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal)
                     : Cure;
-            
+
             return IsEnabled(Preset.WHM_Re_Cure)
                 ? Cure2.Retarget(SimpleTarget.Stack.AllyToHeal)
                 : Cure2;
@@ -550,17 +557,15 @@ internal partial class WHM : Healer
                 (ThinAir);
 
             if (HasStatusEffect(Role.Buffs.Swiftcast))
-                return IsEnabled(Preset.WHM_ThinAirRaise) && canThinAir
-                    ? ThinAir
-                    : IsEnabled(Preset.WHM_Raise_Retarget)
-                        ? Raise.Retarget(Role.Swiftcast,
-                            SimpleTarget.Stack.AllyToRaise)
-                        : Raise;
+                return IsEnabled(Preset.WHM_ThinAirRaise) && canThinAir ? ThinAir :
+                    IsEnabled(Preset.WHM_Raise_Retarget) ? Raise.Retarget(
+                        Role.Swiftcast,
+                        SimpleTarget.Stack.AllyToRaise) : Raise;
 
             return actionID;
         }
     }
-    
+
     internal class WHM_Mit_ST : CustomCombo
     {
         protected internal override Preset Preset => Preset.WHM_Mit_ST;
@@ -569,7 +574,7 @@ internal partial class WHM : Healer
         {
             if (actionID is not Aquaveil)
                 return actionID;
-            
+
             var healTarget = SimpleTarget.Stack.AllyToHeal;
             var benisonShield = GetStatusEffect(Buffs.DivineBenison, healTarget);
 
@@ -577,7 +582,7 @@ internal partial class WHM : Healer
                 return IsEnabled(Preset.WHM_Re_Aquaveil)
                     ? Aquaveil.Retarget(Aquaveil, SimpleTarget.Stack.AllyToHeal)
                     : Aquaveil;
-            
+
             if (Config.WHM_AquaveilOptions[0] &&
                 ActionReady(DivineBenison) &&
                 benisonShield == null)
@@ -586,17 +591,17 @@ internal partial class WHM : Healer
                     : DivineBenison;
 
             if (Config.WHM_AquaveilOptions[1] &&
-                ActionReady(Tetragrammaton) && 
+                ActionReady(Tetragrammaton) &&
                 GetTargetHPPercent(healTarget) < Config.WHM_Aquaveil_TetraThreshold)
                 return IsEnabled(Preset.WHM_Re_Tetragrammaton)
                     ? Tetragrammaton.Retarget(Aquaveil, SimpleTarget.Stack
-                    .AllyToHeal)
+                        .AllyToHeal)
                     : Tetragrammaton;
 
             return actionID;
         }
     }
-    
+
     internal class WHM_Mit_AoE : CustomCombo
     {
         protected internal override Preset Preset => Preset.WHM_Mit_AoE;
@@ -605,7 +610,7 @@ internal partial class WHM : Healer
         {
             if (actionID is not Asylum)
                 return actionID;
-            
+
             var asylumTarget =
                 (Config.WHM_AsylumOptions[0]
                     ? SimpleTarget.HardTarget.IfHostile()
@@ -628,23 +633,23 @@ internal partial class WHM : Healer
     internal class WHM_Retarget : CustomCombo
     {
         protected internal override Preset Preset => Preset.WHM_Retargets;
-        
+
         protected override uint Invoke(uint actionID)
         {
             var healStack = SimpleTarget.Stack.AllyToHeal;
-            
+
             if (IsEnabled(Preset.WHM_Re_Cure))
             {
                 Cure.Retarget(healStack, dontCull: true);
                 Cure2.Retarget(healStack, dontCull: true);
             }
-            
+
             if (IsEnabled(Preset.WHM_Re_Solace))
                 AfflatusSolace.Retarget(healStack, dontCull: true);
-            
+
             if (IsEnabled(Preset.WHM_Re_Aquaveil))
                 AfflatusSolace.Retarget(healStack, dontCull: true);
-            
+
             if (IsEnabled(Preset.WHM_Re_LiturgyOfTheBell))
             {
                 var bellTarget =
@@ -660,16 +665,16 @@ internal partial class WHM : Healer
 
             if (IsEnabled(Preset.WHM_Re_Cure3))
                 Cure3.Retarget(healStack, dontCull: true);
-            
+
             if (IsEnabled(Preset.WHM_Re_Benediction))
                 Benediction.Retarget(healStack, dontCull: true);
 
             if (IsEnabled(Preset.WHM_Re_Tetragrammaton))
                 Tetragrammaton.Retarget(healStack, dontCull: true);
-            
+
             if (IsEnabled(Preset.WHM_Re_Regen))
                 Regen.Retarget(healStack, dontCull: true);
-            
+
             if (IsEnabled(Preset.WHM_Re_DivineBenison))
                 DivineBenison.Retarget(healStack, dontCull: true);
 

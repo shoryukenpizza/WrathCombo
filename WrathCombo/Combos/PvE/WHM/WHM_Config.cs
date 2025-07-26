@@ -1,8 +1,6 @@
 ﻿#region
 
-using System.Numerics;
 using Dalamud.Interface.Colors;
-using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -399,7 +397,7 @@ internal partial class WHM
         private const string targetStartUsingAtDescription =
             "Target HP% to use at or below (100 = Disable check)";
         
-        /// Bar Description for Party HP%  Averageto start using plus disable text
+        /// Bar Description for Party HP%  Average to start using plus disable text
         private const string partyStartUsingAtDescription =
             "Start using when below party average HP %. Set to 100 to disable this check";
 
@@ -553,7 +551,7 @@ internal partial class WHM
             new("WHM_AoE_Lucid", 6500);
         
         /// <summary>
-        ///     Reapplication Threshold for AoE Multidotting
+        ///     Reapplication Threshold for AoE Multi-DoTing
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 0 <br />
@@ -565,7 +563,7 @@ internal partial class WHM
             new("WHM_AoE_MainCombo_DoT_Reapply", 0);
         
         /// <summary>
-        ///     Health Threshold to stop Multidotting
+        ///     Health Threshold to stop Multi-DoTing
         /// </summary> 
         /// <value>
         ///     <b>Default</b>: 50 <br />
@@ -577,7 +575,7 @@ internal partial class WHM
             new("WHM_AoE_MainCombo_DoT_HPThreshold", 50);
         
         /// <summary>
-        ///     Max Targets for AoE Multidotting
+        ///     Max Targets for AoE Multi-DoTing
         /// </summary> 
         /// <value>
         ///     <b>Default</b>: 4 <br />
@@ -1173,7 +1171,7 @@ internal partial class WHM
         #region Standalone Features
 
         /// <summary>
-        ///     Hard target Retargetting Options for Asylum Standalone Feature
+        ///     Hard target Retargeting Options for Asylum Standalone Feature
         /// </summary> 
         /// <value>
         ///     <b>Default</b>: True True
@@ -1183,7 +1181,8 @@ internal partial class WHM
             new("WHM_AsylumOptions", [true, true]);
         
         /// <summary>
-        ///     Hard target Retargetting Options for LiturgyOfTheBell Standalone Feature
+        ///     Hard target Retargeting Options for Liturgy Of The Bell
+        ///     Standalone Feature
         /// </summary> 
         /// <value>
         ///     <b>Default</b>: True True
