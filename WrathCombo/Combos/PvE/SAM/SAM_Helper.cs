@@ -77,7 +77,6 @@ internal partial class SAM
                         return true;
                 }
 
-
                 //Pre Enhanced Senei
                 if (!EnhancedSenei && ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                     return true;
