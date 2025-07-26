@@ -427,7 +427,7 @@ internal partial class SGE : Healer
                 1 => OriginalHook(Diagnosis),
                 2 => OriginalHook(Prognosis),
                 3 => OriginalHook(Dyskrasia),
-                var _ => actionID.RetargetIfEnabled(OptionalTarget, EukrasianDiagnosis)
+                var _ => actionID.RetargetIfEnabled(null, EukrasianDiagnosis)
             };
         }
     }

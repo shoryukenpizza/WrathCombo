@@ -5883,28 +5883,28 @@ public enum CustomComboPreset
     #region Standalone Healing option
 
     [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [Retargeted]
     SGE_Retarget = 14073,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Haima Options", "Retargets Haima according to your Healing stack.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [Retargeted]
     SGE_Retarget_Haima = 14074,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Druchole Options", "Retargets Druchole according to your Healing stack.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [Retargeted]
     SGE_Retarget_Druchole = 14075,
     
     [ConflictingCombos(SGE_TauroDruo)]
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [Retargeted]
     SGE_Retarget_Taurochole = 14076,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Krasis Options", "Retargets Krasis according to your Healing stack.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [Retargeted]
     SGE_Retarget_Krasis = 14077,
 
     [ParentCombo(SGE_Retarget)]
