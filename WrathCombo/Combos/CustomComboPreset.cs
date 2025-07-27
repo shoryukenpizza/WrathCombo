@@ -5889,28 +5889,28 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Haima Options", "Retargets Haima according to your Healing stack.", SGE.JobID)]
-    [Retargeted]
+    [Retargeted(SGE.Haima)]
     SGE_Retarget_Haima = 14074,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Druchole Options", "Retargets Druchole according to your Healing stack.", SGE.JobID)]
-    [Retargeted]
-    SGE_Retarget_Druchole = 14075,
+    [CustomComboInfo("Druochole Options", "Retargets Druochole according to your Healing stack.", SGE.JobID)]
+    [Retargeted(SGE.Druochole)]
+    SGE_Retarget_Druochole = 14075,
     
     [ConflictingCombos(SGE_TauroDruo)]
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack.", SGE.JobID)]
-    [Retargeted]
+    [Retargeted(SGE.Taurochole)]
     SGE_Retarget_Taurochole = 14076,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Krasis Options", "Retargets Krasis according to your Healing stack.", SGE.JobID)]
-    [Retargeted]
+    [Retargeted(SGE.Krasis)]
     SGE_Retarget_Krasis = 14077,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Kardia Options", "Retargets Kardia according to your Healing stack.", SGE.JobID)]
-    [Retargeted]
+    [Retargeted(SGE.Kardia)]
     SGE_Retarget_Kardia = 14078,
     
     #endregion
@@ -7749,7 +7749,7 @@ public enum CustomComboPreset
 
     [ParentCombo(WHM_ST_MainCombo)]
     [CustomComboInfo("Movement DoT Option", "Will reapply DoT early to all enemies within range while moving.", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Aero, WHM.Aero2, WHM.Dia)]
     WHM_ST_MainCombo_Move_DoT = 19053,
 
     [ParentCombo(WHM_ST_MainCombo)]
@@ -7818,6 +7818,7 @@ public enum CustomComboPreset
     [ParentCombo(WHM_AoE_DPS)]
     [CustomComboInfo("Multitarget Dot Option", "Maintains dots on multiple targets.",
         WHM.JobID)]
+    [Retargeted(WHM.Aero, WHM.Aero2, WHM.Dia)]
     WHM_AoE_MainCombo_DoT = 19198,
 
     [ParentCombo(WHM_AoE_DPS)]
@@ -8053,61 +8054,61 @@ public enum CustomComboPreset
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Aquaveil)]
     [CustomComboInfo("Cure Option", "Retargets Cure and Cure II to the heal stack (even from the Cure II Sync Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Cure, WHM.Cure2)]
     WHM_Re_Cure = 19038,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Aquaveil)]
     [CustomComboInfo("Afflatus Solace Option", "Retargets Afflatus Solace to the heal stack (even from the Solace into Misery Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.AfflatusSolace)]
     WHM_Re_Solace = 19039,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Aquaveil)]
     [CustomComboInfo("Aquaveil Option", "Retargets Aquaveil to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Aquaveil)]
     WHM_Re_Aquaveil = 19036,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Asylum)]
     [CustomComboInfo("Asylum Option", "Retargets Asylum to yourself (even from the Mitigation Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Asylum)]
     WHM_Re_Asylum = 19027,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.LiturgyOfTheBell)]
     [CustomComboInfo("Liturgy Of The Bell Option", "Retargets Liturgy Of The Bell to yourself.", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.LiturgyOfTheBell)]
     WHM_Re_LiturgyOfTheBell = 19030,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Cure3)]
     [CustomComboInfo("Cure 3 Retarget Option", "Retargets Cure 3 to the heal stack.", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Cure3)]
     WHM_Re_Cure3 = 19031,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Benediction)]
     [CustomComboInfo("Benediction Option", "Retargets Benediction to the heal stack.", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Benediction)]
     WHM_Re_Benediction = 19032,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Tetragrammaton)]
     [CustomComboInfo("Tetragrammaton Option", "Retargets Tetragrammaton to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Tetragrammaton)]
     WHM_Re_Tetragrammaton = 19033,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.Regen)]
     [CustomComboInfo("Regen Option", "Retargets Regen to the heal stack.", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.Regen)]
     WHM_Re_Regen = 19034,
     
     [ParentCombo(WHM_Retargets)]
     [ReplaceSkill(WHM.DivineBenison)]
     [CustomComboInfo("Divine Benison Option", "Retargets Divine Benison to the heal stack (even from the Mitigation Feature above).", WHM.JobID)]
-    [Retargeted]
+    [Retargeted(WHM.DivineBenison)]
     WHM_Re_DivineBenison = 19035,
 
     #endregion
