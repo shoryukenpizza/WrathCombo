@@ -184,41 +184,24 @@ namespace WrathCombo.CustomComboNS.Functions
                 case 966: //The Tower at Paradigm's Breach, Hansel & Gretel
                           // Hansel = 12709
                           // Gretel = 12708
-                          // 608 Directional Parry
+                          // 680 Directional Parry
                           // 2538 Strong of Shield
                           // 2539 Stronger Together
 
                     if (targetID is 12709 or 12708)
                     {
                         bool Tank = (LocalPlayer!).GetRole() is CombatRole.Tank;
+                        bool bossHasStatus = HasStatusEffect(680, tar);
 
                         // Non Tanks should just ignore parrying boss(s)
                         if (!Tank)
                         {
-                            if (HasStatusEffect(680, tar)) return true;
+                            if (bossHasStatus) return true;
                         }
-                        else // Better Tank logic to ignore the other boss, from Taurenkey
+                        //Tanks should only ignore their target if it has the buff and they aren't in front.
+                        else
                         {
-                            int[] bosses = [12709, 12708];
-                            var otherBoss = Svc.Objects.FirstOrDefault(x => x.DataId == bosses.FirstOrDefault(x => x != targetID) && !x.IsDead);
-                            bool inFrontOfBoss = AngleToTarget(tar) == AttackAngle.Front;
-                            bool bossHasStatus = HasStatusEffect(680, tar);
-
-                            if (inFrontOfBoss && bossHasStatus) //Scenario 1: Boss has buff, you're in front, it's good to attack
-                                return false;
-
-                            if (!bossHasStatus) //Scenario 2: The boss doesn't have a buff, we only want to target it if we're not in front of the boss with the buff
-                            {
-                                if (otherBoss is not null)
-                                {
-                                    if (HasStatusEffect(680, otherBoss) && AngleToTarget(otherBoss) == AttackAngle.Front)
-                                        return true;
-
-                                    return false;
-                                }
-                            }
-
-                            if (bossHasStatus) //Scenario 3: Boss has buff, you're not in front, it's not good to attack
+                            if (bossHasStatus && AngleToTarget(tar) != AttackAngle.Front)
                                 return true;
                         }
                     }
