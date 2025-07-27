@@ -207,8 +207,6 @@ internal partial class SMN : Caster
                 return OccultCrescent.BestPhantomAction();
             #endregion
 
-           
-
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
             if (DemiExists && Gauge.SummonTimerRemaining <= 2500)
@@ -386,8 +384,6 @@ internal partial class SMN : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
-
-            
 
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
@@ -581,7 +577,6 @@ internal partial class SMN : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
-
 
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
@@ -798,8 +793,6 @@ internal partial class SMN : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
             #endregion
-
-            
 
             #region OGCD
             //Emergency Demi Attack Dump, Probably not needed anymore without burst delay selection
