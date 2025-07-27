@@ -39,24 +39,6 @@ internal partial class WHM : Healer
 
             if (!InCombat()) return actionID;
 
-            #region Movement Options
-
-            if (IsMoving())
-            {
-                var dotAction = OriginalHook(Aero);
-                AeroList.TryGetValue(dotAction, out var dotDebuffID);
-                var target = SimpleTarget.DottableEnemy(
-                    dotAction, dotDebuffID, 0, 20, 99);
-                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
-                    target is not null)
-                    return dotAction.Retarget(StoneGlareList.ToArray(), target);
-
-                if (BloodLilyReady)
-                    return AfflatusMisery;
-            }
-
-            #endregion
-
             #region Weaves
 
             if (CanWeave())
@@ -100,6 +82,21 @@ internal partial class WHM : Healer
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
+            
+            #region Movement Options
+
+            if (IsMoving())
+            {
+                var dotAction = OriginalHook(Aero);
+                AeroList.TryGetValue(dotAction, out var dotDebuffID);
+                var target = SimpleTarget.DottableEnemy(
+                    dotAction, dotDebuffID, 0, 20, 99);
+                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
+                    target is not null)
+                    return dotAction.Retarget(StoneGlareList.ToArray(), target);
+            }
+
+            #endregion
 
             return actionID;
 
@@ -220,25 +217,6 @@ internal partial class WHM : Healer
 
             #endregion
 
-            #region Movement Options
-
-            if (IsMoving() && IsEnabled(Preset.WHM_ST_MainCombo_Movement))
-            {
-                var dotAction = OriginalHook(Aero);
-                AeroList.TryGetValue(dotAction, out var dotDebuffID);
-                var target = SimpleTarget.DottableEnemy(
-                    dotAction, dotDebuffID, 0, 30, 99);
-                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
-                    target is not null)
-                    return dotAction.Retarget(replacedAction, target);
-
-                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_Lily) &&
-                    BloodLilyReady)
-                    return AfflatusMisery;
-            }
-
-            #endregion
-
             #region Weaves
 
             if (CanWeave())
@@ -288,6 +266,20 @@ internal partial class WHM : Healer
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
+            
+            #region Movement Options
+
+            if (IsMoving())
+            {
+                var dotAction = OriginalHook(Aero);
+                AeroList.TryGetValue(dotAction, out var dotDebuffID);
+                var target = SimpleTarget.DottableEnemy(
+                    dotAction, dotDebuffID, 0, 30, 99);
+                if (IsEnabled(Preset.WHM_ST_MainCombo_Move_DoT) &&
+                    target is not null)
+                    return dotAction.Retarget(replacedAction, target);
+            }
+            #endregion
 
             // Needed Because of Button Selection
             return OriginalHook(Stone1);
