@@ -91,16 +91,15 @@ internal partial class WHM : Healer
             // Glare IV
             if (HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
+            
+            // Blood Lily Spend
+            if (BloodLilyReady)
+                return AfflatusMisery;
 
             // Lily Heal Overcap
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-
-            // Blood Lily Spend
-            if (BloodLilyReady)
-                return AfflatusMisery;
-
 
             return actionID;
 
@@ -150,14 +149,14 @@ internal partial class WHM : Healer
             // Glare IV
             if (HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
+            
+            if (BloodLilyReady &&
+                HasBattleTarget())
+                return AfflatusMisery;
 
             if (ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-
-            if (BloodLilyReady &&
-                HasBattleTarget())
-                return AfflatusMisery;
 
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
@@ -279,17 +278,16 @@ internal partial class WHM : Healer
                 HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
 
+            // Blood Lily Spend
+            if (IsEnabled(Preset.WHM_ST_MainCombo_Misery_oGCD) &&
+                BloodLilyReady)
+                return AfflatusMisery;
+            
             // Lily Heal Overcap
             if (IsEnabled(Preset.WHM_ST_MainCombo_LilyOvercap) &&
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-
-            // Blood Lily Spend
-            if (IsEnabled(Preset.WHM_ST_MainCombo_Misery_oGCD) &&
-                BloodLilyReady)
-                return AfflatusMisery;
-
 
             // Needed Because of Button Selection
             return OriginalHook(Stone1);
@@ -372,16 +370,16 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_AoE_DPS_GlareIV) &&
                 HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
+            
+            if (IsEnabled(Preset.WHM_AoE_DPS_Misery) &&
+                BloodLilyReady &&
+                HasBattleTarget())
+                return AfflatusMisery;
 
             if (IsEnabled(Preset.WHM_AoE_DPS_LilyOvercap) &&
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
                 return AfflatusRapture;
-
-            if (IsEnabled(Preset.WHM_AoE_DPS_Misery) &&
-                BloodLilyReady &&
-                HasBattleTarget())
-                return AfflatusMisery;
 
             var dotAction = OriginalHook(Aero);
             AeroList.TryGetValue(dotAction, out var dotDebuffID);
