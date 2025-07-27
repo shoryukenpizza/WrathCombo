@@ -10,7 +10,7 @@ internal partial class AST : Healer
 {
     internal class AST_ST_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_Simple_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_ST_Simple_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -90,7 +90,7 @@ internal partial class AST : Healer
     
     internal class AST_ST_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_ST_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -239,7 +239,7 @@ internal partial class AST : Healer
     
     internal class AST_AOE_Simple_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AOE_Simple_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_AOE_Simple_DPS;
         protected override uint Invoke(uint actionID)
         {
             if (!GravityList.Contains(actionID))
@@ -310,7 +310,7 @@ internal partial class AST : Healer
 
     internal class AST_AOE_DPS : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AOE_DPS;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_AOE_DPS;
         protected override uint Invoke(uint actionID)
         {
             #region Variables
@@ -441,7 +441,7 @@ internal partial class AST : Healer
 
     internal class AST_ST_SimpleHeals : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_ST_Heals;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_ST_Heals;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Benefic2)
@@ -487,7 +487,7 @@ internal partial class AST : Healer
 
     internal class AST_AoE_SimpleHeals : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_AoE_Heals;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_AoE_Heals;
 
         protected override uint Invoke(uint actionID)
         {
@@ -544,7 +544,7 @@ internal partial class AST : Healer
 
     internal class AST_RetargetEssentialDignity : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_RetargetEssentialDignity;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_RetargetEssentialDignity;
 
         protected override uint Invoke(uint actionID) =>
             actionID is not EssentialDignity
@@ -554,7 +554,7 @@ internal partial class AST : Healer
 
     internal class AST_RetargetManualCards : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Cards_QuickTargetCards;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_Cards_QuickTargetCards;
 
         protected override uint Invoke(uint actionID)
         {
@@ -570,7 +570,7 @@ internal partial class AST : Healer
     
     internal class AST_Benefic : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Benefic;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_Benefic;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Benefic2 && !ActionReady(Benefic2)
@@ -580,7 +580,7 @@ internal partial class AST : Healer
 
     internal class AST_Lightspeed : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Lightspeed_Protection;       
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_Lightspeed_Protection;       
 
         protected override uint Invoke(uint actionID) =>
             actionID is Lightspeed && HasStatusEffect(Buffs.Lightspeed)
@@ -590,7 +590,7 @@ internal partial class AST : Healer
 
     internal class AST_Raise_Alternative : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Raise_Alternative;
+        protected internal override CustomComboPreset Preset => CustomComboPreset.AST_Raise_Alternative;
 
         protected override uint Invoke(uint actionID) =>
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
