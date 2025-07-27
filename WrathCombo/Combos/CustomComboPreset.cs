@@ -7974,10 +7974,12 @@ public enum CustomComboPreset
 
     [ReplaceSkill(WHM.Aquaveil)]
     [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Aquaveil (and optionally Tetra and Benison)", Condition.WHMRetargetingFeaturesEnabledForSTMit)]
     WHM_Mit_ST = 19041,
     
     [ReplaceSkill(WHM.Asylum)]
     [CustomComboInfo("Mitigation Feature - AoE", "Changes Asylum into Temperance and then Divine Caress after use.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Asylum", Condition.WHMRetargetingFeaturesEnabledForAoEMit)]
     WHM_Mit_AoE = 19040,
 
     #endregion
@@ -8012,6 +8014,8 @@ public enum CustomComboPreset
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",
         "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.\nSolace can be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Afflatus Solace", 
+        Condition.WHMRetargetingFeaturesEnabledForSolace)]
     WHM_SolaceMisery = 19000,
 
     [ReplaceSkill(WHM.AfflatusRapture)]
@@ -8021,6 +8025,7 @@ public enum CustomComboPreset
 
     [ReplaceSkill(WHM.Cure2)]
     [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Cure", Condition.WHMRetargetingFeaturesEnabledForCure)]
     WHM_CureSync = 19002,
 
     [ReplaceSkill( RoleActions.Magic.Swiftcast)]

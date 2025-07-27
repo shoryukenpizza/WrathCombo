@@ -3,6 +3,7 @@
 using System;
 using ECommons.Logging;
 using WrathCombo.Combos;
+using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -88,6 +89,10 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
     {
         RetargetHealingActionsEnabled,
         ASTQuickTargetCardsFeatureEnabled,
+        WHMRetargetingFeaturesEnabledForSTMit,
+        WHMRetargetingFeaturesEnabledForAoEMit,
+        WHMRetargetingFeaturesEnabledForSolace,
+        WHMRetargetingFeaturesEnabledForCure,
     }
     
     /// <summary>
@@ -110,6 +115,22 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                 return Service.Configuration.RetargetHealingActionsToStack;
             case Condition.ASTQuickTargetCardsFeatureEnabled:
                 return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards);
+            case Condition.WHMRetargetingFeaturesEnabledForSTMit:
+                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
+                       IsEnabled(CustomComboPreset.WHM_Re_Aquaveil) &&
+                       (WHM.Config.WHM_AquaveilOptions[0] != true ||
+                        IsEnabled(CustomComboPreset.WHM_Re_DivineBenison)) &&
+                       (WHM.Config.WHM_AquaveilOptions[1] != true ||
+                        IsEnabled(CustomComboPreset.WHM_Re_Tetragrammaton));
+            case Condition.WHMRetargetingFeaturesEnabledForAoEMit:
+                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
+                       IsEnabled(CustomComboPreset.WHM_Re_Asylum);
+            case Condition.WHMRetargetingFeaturesEnabledForSolace:
+                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
+                       IsEnabled(CustomComboPreset.WHM_Re_Solace);
+            case Condition.WHMRetargetingFeaturesEnabledForCure:
+                return IsEnabled(CustomComboPreset.WHM_Retargets) &&
+                       IsEnabled(CustomComboPreset.WHM_Re_Cure);
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
                 return null;
