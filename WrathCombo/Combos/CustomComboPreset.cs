@@ -616,6 +616,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Combust Uptime Option",
         "Adds Combust to the DPS feature if it's not present on current target, or is about to expire.", AST.JobID)]
     AST_ST_DPS_CombustUptime = 1018,
+    
+    [ParentCombo(AST_ST_DPS)]
+    [CustomComboInfo("Combust Movement Option", "\"Will reapply DoT early to all enemies within range while moving.\"", AST.JobID)]
+    [Retargeted]
+    AST_ST_DPS_Move_DoT = 1084,
 
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Lightspeed Weave Option", "Adds Lightspeed when moving", AST.JobID)]
