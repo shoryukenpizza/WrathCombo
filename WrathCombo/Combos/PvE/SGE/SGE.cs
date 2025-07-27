@@ -489,7 +489,7 @@ internal partial class SGE : Healer
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima))
                 Haima.Retarget(healStack, true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druchole))
+            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druochole))
                 Druochole.Retarget(healStack, true);
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole))
