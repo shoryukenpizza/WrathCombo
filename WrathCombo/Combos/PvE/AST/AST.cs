@@ -5,8 +5,6 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
-using EZ = ECommons.Throttlers.EzThrottler;
-using TS = System.TimeSpan;
 
 namespace WrathCombo.Combos.PvE;
 
