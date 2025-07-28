@@ -561,6 +561,7 @@ internal partial class AST
             AspectedBenefic = 835,
             AspectedHelios = 836,
             HeliosConjunction = 3894,
+            Intersection = 1889,
             Horoscope = 1890,
             HoroscopeHelios = 1891,
             NeutralSect = 1892,

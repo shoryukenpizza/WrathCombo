@@ -894,7 +894,16 @@ public enum CustomComboPreset
 
     [ReplaceSkill(AST.Lightspeed)]
     [CustomComboInfo("Lightspeed Overwrite Protection Feature", "Blocks the Lightspeed Button while buff is active.", AST.JobID)]
-    AST_Lightspeed_Protection = 1065,    
+    AST_Lightspeed_Protection = 1065,   
+    
+    [ReplaceSkill(AST.Exaltation)]
+    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Exaltation into Essential Dignity and/or Celestial Intersection after use.\nEach action can be Retargeted with the Retargeting Features below.", AST.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Exaltation (and optionally Essential Dignity and Celestial Intersection", Condition.ASTRetargetingFeaturesEnabledForSTMit)]
+    AST_Mit_ST = 1094,
+    
+    [ReplaceSkill(AST.CollectiveUnconscious)]
+    [CustomComboInfo("Mitigation Feature - AoE", "Changes Collective Unconscious into Neutral Sect/Sun Sign and/or Aspected Helios/Helios Conjuction for shield after use.", AST.JobID)]
+    AST_Mit_AoE = 1095,
     #endregion
     
     #region Raidwide Features
@@ -985,7 +994,7 @@ public enum CustomComboPreset
     AST_Variant_Rampart = 1036,
     #endregion
 
-    // Last value = 1083
+    // Last value = 1095
 
     #endregion
 

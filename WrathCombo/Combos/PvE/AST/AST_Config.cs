@@ -43,6 +43,7 @@ internal partial class AST
             AST_AoE_SimpleHeals_StellarDetonation = new("AST_AoE_SimpleHeals_StellarDetonation", 80),
             AST_AoE_SimpleHeals_Aspected = new("AST_AoE_SimpleHeals_Aspected", 80),
             AST_AoE_SimpleHeals_Helios = new("AST_AoE_SimpleHeals_Helios", 80),
+            AST_Mit_ST_EssentialDignityThreshold = new("AST_Mit_ST_EssentialDignityThreshold", 80),
             
             //DPS
             AST_ST_DPS_DivinationOption = new("AST_ST_DPS_DivinationOption"),
@@ -96,6 +97,7 @@ internal partial class AST
             AST_ST_SimpleHeals_CelestialOppositionOptions = new("AST_ST_SimpleHeals_CelestialOppositionOptions"),
             AST_ST_SimpleHeals_CollectiveUnconsciousOptions = new("AST_ST_SimpleHeals_CollectiveUnconsciousOptions"),
             AST_ST_SimpleHeals_SoloLadyOptions = new("AST_ST_SimpleHeals_SoloLadyOptions"),
+            AST_Mit_ST_Options = new("AST_Mit_ST_Options"),
             AST_EarthlyStarOptions = new("AST_EarthlyStarOptions");
 
         #endregion
@@ -384,6 +386,21 @@ internal partial class AST
                         "Enemy Hard Target", "Will place at hard target if enemy", 2, 0);
                     DrawHorizontalMultiChoice(AST_EarthlyStarOptions,
                         "Ally Hard Target", "Will place at hard target if ally", 2, 1);
+                    break;
+                
+                case Preset.AST_Mit_ST:
+                    DrawHorizontalMultiChoice(AST_Mit_ST_Options,
+                        "Include Celestial Intersection", "Will add Celestial Intersection for more mitigation.", 2, 0);
+                    ImGui.NewLine();
+                    DrawHorizontalMultiChoice(AST_Mit_ST_Options,
+                        "Include Essential Dignity", "Will add Essential Dignity to top off targets health.", 2, 1);
+                    if (AST_Mit_ST_Options[1])
+                    {
+                        ImGui.Indent();
+                        DrawSliderInt(1, 100, AST_Mit_ST_EssentialDignityThreshold,
+                            "Target HP% to use Essential Dignity below");
+                        ImGui.Unindent();
+                    }
                     break;
                 #endregion
             }

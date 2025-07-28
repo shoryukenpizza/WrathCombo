@@ -90,6 +90,7 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
         RetargetHealingActionsEnabled,
         ASTQuickTargetCardsFeatureEnabled,
         ASTRetargetingFeaturesEnabledForBenefic,
+        ASTRetargetingFeaturesEnabledForSTMit,
         WHMRetargetingFeaturesEnabledForSTMit,
         WHMRetargetingFeaturesEnabledForAoEMit,
         WHMRetargetingFeaturesEnabledForSolace,
@@ -118,6 +119,13 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                 return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards);
             case Condition.ASTRetargetingFeaturesEnabledForBenefic:
                 return IsEnabled(CustomComboPreset.AST_Retargets_Benefic);
+            case Condition.ASTRetargetingFeaturesEnabledForSTMit:
+                return IsEnabled(CustomComboPreset.AST_Retargets) &&
+                       IsEnabled(CustomComboPreset.AST_Retargets_Exaltation) &&
+                       (AST.Config.AST_Mit_ST_Options[0] != true ||
+                        IsEnabled(CustomComboPreset.AST_Retargets_CelestialIntersection)) &&
+                       (AST.Config.AST_Mit_ST_Options[1] != true ||
+                        IsEnabled(CustomComboPreset.AST_Retargets_EssentialDignity));
             case Condition.WHMRetargetingFeaturesEnabledForSTMit:
                 return IsEnabled(CustomComboPreset.WHM_Retargets) &&
                        IsEnabled(CustomComboPreset.WHM_Re_Aquaveil) &&

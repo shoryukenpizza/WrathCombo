@@ -683,6 +683,63 @@ internal partial class AST : Healer
                     : Ascend
                 : actionID;
     }
+    
+    internal class AST_Mit_ST : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.AST_Mit_ST;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Exaltation)
+                return actionID;
+            
+            var healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (ActionReady(Exaltation))
+                return IsEnabled(Preset.AST_Retargets_Exaltation)
+                    ? Exaltation.Retarget(healStack, dontCull: true)
+                    : Exaltation;
+            
+            if (Config.AST_Mit_ST_Options[0] && 
+                ActionReady(CelestialIntersection) && 
+                !HasStatusEffect(Buffs.Intersection, target: healStack))
+                return IsEnabled(Preset.AST_Retargets_CelestialIntersection)
+                    ? CelestialIntersection.Retarget(Exaltation ,healStack, dontCull: true)
+                    : CelestialIntersection;
+            
+            if (Config.AST_Mit_ST_Options[1] &&
+                ActionReady(EssentialDignity) &&
+                GetTargetHPPercent(healStack) < Config.AST_Mit_ST_EssentialDignityThreshold)
+                return IsEnabled(Preset.AST_Retargets_EssentialDignity)
+                    ? EssentialDignity.Retarget(Exaltation, healStack, dontCull: true)
+                    : EssentialDignity;
+            
+            return actionID;
+        }
+    }
+    internal class AST_Mit_AoE : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.AST_Mit_AoE;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not CollectiveUnconscious)
+                return actionID;
+
+            if (ActionReady(CollectiveUnconscious))
+                return CollectiveUnconscious;
+
+            if (ActionReady(OriginalHook(NeutralSect)))
+                return OriginalHook(NeutralSect);
+
+            if (HasStatusEffect(Buffs.NeutralSect) && !HasStatusEffect(Buffs.NeutralSectShield))
+                return OriginalHook(AspectedHelios);
+
+            return actionID;
+        }
+    }
+
+
 
     internal class AST_Retargets : CustomCombo
     {

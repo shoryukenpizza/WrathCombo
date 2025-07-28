@@ -351,8 +351,8 @@ internal partial class WHM
                     if (WHM_AquaveilOptions[1])
                     {
                         ImGui.Indent();
-                        DrawSliderInt(0, 100, WHM_Aquaveil_TetraThreshold,
-                            "Target HP% to use Tetra at or below (100 = Disable check)");
+                        DrawSliderInt(1, 100, WHM_Aquaveil_TetraThreshold,
+                            "Target HP% to use Tetra below)");
                         ImGui.Unindent();
                     }
                     break;
