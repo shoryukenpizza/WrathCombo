@@ -18,7 +18,7 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, 50))
+            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
@@ -153,7 +153,7 @@ internal partial class BRD : PhysicalRanged
                 return actionID;
 
             #region Special Content
-            if (Variant.CanCure(Preset.BRD_Variant_Cure, 50))
+            if (Variant.CanCure(Preset.BRD_Variant_Cure, BRD_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(Preset.BRD_Variant_Rampart, WeaveTypes.Weave))
