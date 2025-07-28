@@ -449,7 +449,6 @@ internal partial class SGE : Healer
     internal class SGE_TauroDruo : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_TauroDruo;
-
         protected override uint Invoke(uint actionID)
         {
             if (actionID is not Taurochole)
@@ -478,7 +477,7 @@ internal partial class SGE : Healer
             
             if (!HasStatusEffect(Buffs.Kardia) || IsOnCooldown(Soteria))
                 return IsEnabled(Preset.SGE_Retarget_Kardia)
-                    ? Kardia.Retarget(healStack, true)
+                    ? Kardia.Retarget(actionID, healStack, true)
                     : Kardia;
             
             return actionID;

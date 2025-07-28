@@ -5956,13 +5956,13 @@ public enum CustomComboPreset
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Druochole Options", "Retargets Druochole according to your Healing stack." +
-                                          "(even from the Tauroshole to Druochole Feature above)", SGE.JobID)]
+                                          "(even from the Taurochole to Druochole Feature above)", SGE.JobID)]
     [Retargeted(SGE.Druochole)]
     SGE_Retarget_Druochole = 14075,
     
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack." +
-                                           "(even from the Tauroshole to Druochole Feature above)", SGE.JobID)]
+                                           "(even from the Taurochole to Druochole Feature above)", SGE.JobID)]
     [Retargeted(SGE.Taurochole)]
     SGE_Retarget_Taurochole = 14076,
 
