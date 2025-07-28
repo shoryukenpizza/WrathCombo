@@ -98,7 +98,8 @@ internal partial class AST
             case 0:
                 action = CelestialIntersection;
                 enabled = IsEnabled(Preset.AST_ST_Heals_CelestialIntersection) &&
-                          ActionReady(CelestialIntersection) && !(healTarget as IBattleChara)!.HasShield() &&
+                          ActionReady(CelestialIntersection) && !HasStatusEffect(Buffs.Intersection, healTarget) &&
+                          GetRemainingCharges(CelestialIntersection) > Config.AST_ST_SimpleHeals_CelestialIntersectionCharges &&
                           (CanWeave() || !Config.AST_ST_SimpleHeals_WeaveIntersection);
                 return Config.AST_ST_SimpleHeals_CelestialIntersection;
             case 1:
@@ -111,7 +112,8 @@ internal partial class AST
                 action = Exaltation;
                 enabled = IsEnabled(Preset.AST_ST_Heals_Exaltation) &&
                           ActionReady(Exaltation) &&
-                          (CanWeave() || !Config.AST_ST_SimpleHeals_WeaveExalt);
+                          (CanWeave() || !Config.AST_ST_SimpleHeals_ExaltationOptions[0]) &&
+                          (!InBossEncounter() || !Config.AST_ST_SimpleHeals_ExaltationOptions[1]);
                 return Config.AST_ST_SimpleHeals_Exaltation;
             case 3:
                 action = Bole;

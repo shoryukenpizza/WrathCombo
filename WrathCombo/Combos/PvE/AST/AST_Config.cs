@@ -24,6 +24,7 @@ internal partial class AST
             AST_ST_SimpleHeals_Arrow = new("AST_ST_SimpleHeals_Arrow", 80),
             AST_ST_SimpleHeals_Bole = new("AST_ST_SimpleHeals_Bole", 80),
             AST_ST_SimpleHeals_CelestialIntersection = new("AST_ST_SimpleHeals_CelestialIntersection", 80),
+            AST_ST_SimpleHeals_CelestialIntersectionCharges = new ("AST_ST_SimpleHeals_CelestialIntersectionCharges", 1),
             AST_ST_SimpleHeals_EssentialDignity = new("AST_ST_SimpleHeals_EssentialDignity", 50),
             AST_ST_SimpleHeals_Exaltation = new("AST_ST_SimpleHeals_Exaltation", 50),
             AST_ST_SimpleHeals_Esuna = new("AST_ST_SimpleHeals_Esuna", 100),
@@ -97,6 +98,7 @@ internal partial class AST
             AST_ST_SimpleHeals_CelestialOppositionOptions = new("AST_ST_SimpleHeals_CelestialOppositionOptions"),
             AST_ST_SimpleHeals_CollectiveUnconsciousOptions = new("AST_ST_SimpleHeals_CollectiveUnconsciousOptions"),
             AST_ST_SimpleHeals_SoloLadyOptions = new("AST_ST_SimpleHeals_SoloLadyOptions"),
+            AST_ST_SimpleHeals_ExaltationOptions = new("AST_ST_SimpleHeals_ExaltationOptions"),
             AST_Mit_ST_Options = new("AST_Mit_ST_Options"),
             AST_EarthlyStarOptions = new("AST_EarthlyStarOptions");
 
@@ -228,6 +230,7 @@ internal partial class AST
                 
                 case Preset.AST_ST_Heals_CelestialIntersection:
                     DrawSliderInt(0, 100, AST_ST_SimpleHeals_CelestialIntersection, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawSliderInt(0, 1, AST_ST_SimpleHeals_CelestialIntersectionCharges, "How many charges to retain for manual use. Set to 0 to disable this check.");
                     DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveIntersection, "Only Weave", "Will only weave this action.");
                     DrawPriorityInput(AST_ST_SimpleHeals_Priority, 11, 0, $"{CelestialIntersection.ActionName()} Priority: ");
                     break;
@@ -240,7 +243,8 @@ internal partial class AST
                 
                 case Preset.AST_ST_Heals_Exaltation:
                     DrawSliderInt(0, 100, AST_ST_SimpleHeals_Exaltation, "Start using when below HP %. Set to 100 to disable this check");
-                    DrawAdditionalBoolChoice(AST_ST_SimpleHeals_WeaveExalt, "Only Weave", "Will only weave this action.");
+                    DrawHorizontalMultiChoice(AST_ST_SimpleHeals_ExaltationOptions, "Only Weave", "Will only weave this action.", 2, 0);
+                    DrawHorizontalMultiChoice(AST_ST_SimpleHeals_ExaltationOptions," Not On Bosses", "Will not use in Boss encounters.", 2, 1);
                     DrawPriorityInput(AST_ST_SimpleHeals_Priority, 11, 2, $"{Exaltation.ActionName()} Priority: ");
                     break;
                 
