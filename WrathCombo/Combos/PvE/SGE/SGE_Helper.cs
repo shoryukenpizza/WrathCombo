@@ -38,22 +38,22 @@ internal partial class SGE
 
     #region Hidden Raidwides
 
-    internal static bool HiddenKerachole() =>
-        IsEnabled(Preset.SGE_Hidden_Kerachole) &&
+    internal static bool RaidwideKerachole() =>
+        IsEnabled(Preset.SGE_Raidwide_Kerachole) &&
         ActionReady(Kerachole) && HasAddersgall() &&
         CanWeave() && RaidWideCasting();
 
-    internal static bool HiddenHolos() =>
-        IsEnabled(Preset.SGE_Hidden_Holos) &&
+    internal static bool RaidwideHolos() =>
+        IsEnabled(Preset.SGE_Raidwide_Holos) &&
         ActionReady(Holos) && CanWeave() && RaidWideCasting() &&
-        GetPartyAvgHPPercent() <= SGE_Hidden_HolosOption;
+        GetPartyAvgHPPercent() <= SGE_Raidwide_HolosOption;
 
-    internal static bool HiddenEprognosis()
+    internal static bool RaidwideEprognosis()
     {
         bool shieldCheck = GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_AoE_Heal_EPrognosisOption &&
                            GetPartyBuffPercent(SCH.Buffs.Galvanize) <= SGE_AoE_Heal_EPrognosisOption;
 
-        return IsEnabled(Preset.SGE_Hidden_EPrognosis) && shieldCheck && RaidWideCasting();
+        return IsEnabled(Preset.SGE_Raidwide_EPrognosis) && shieldCheck && RaidWideCasting();
     }
 
     #endregion
@@ -423,6 +423,9 @@ internal partial class SGE
         Pneuma = 24318,
         EukrasianDyskrasia = 37032,
         Psyche = 37033,
+        
+        //Movement
+        Icarus = 24295,
 
         // Buffs
         Soteria = 24294,

@@ -95,6 +95,9 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
         WHMRetargetingFeaturesEnabledForAoEMit,
         WHMRetargetingFeaturesEnabledForSolace,
         WHMRetargetingFeaturesEnabledForCure,
+        SGERetargetingFeaturesEnabledForKardia,
+        SGERetargetingFeaturesEnabledForEDiagnosis,
+        SGERetargetingFeaturesEnabledForTauroDruo
     }
     
     /// <summary>
@@ -142,6 +145,17 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
             case Condition.WHMRetargetingFeaturesEnabledForCure:
                 return IsEnabled(CustomComboPreset.WHM_Retargets) &&
                        IsEnabled(CustomComboPreset.WHM_Re_Cure);
+            case Condition.SGERetargetingFeaturesEnabledForKardia:
+                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Kardia);
+            case Condition.SGERetargetingFeaturesEnabledForEDiagnosis:
+                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
+                       SGE.Config.SGE_Eukrasia_Mode == 1 &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_EukrasianDiagnosis);
+            case Condition.SGERetargetingFeaturesEnabledForTauroDruo:
+                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Druochole) &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole);
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
                 return null;

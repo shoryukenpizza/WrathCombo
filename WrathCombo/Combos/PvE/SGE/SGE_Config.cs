@@ -356,8 +356,8 @@ internal partial class SGE
                         $"{EukrasianDyskrasia.ActionName()}", "", 3);
                     break;
 
-                case Preset.SGE_Hidden_Holos:
-                    DrawSliderInt(0, 100, SGE_Hidden_HolosOption,
+                case Preset.SGE_Raidwide_Holos:
+                    DrawSliderInt(0, 100, SGE_Raidwide_HolosOption,
                         "Start using when below party average HP % to not waste the heal portion if desired. Set to 100 to disable this check");
                     break;
 
@@ -436,7 +436,7 @@ internal partial class SGE
             SGE_AoE_Heal_IxocholeOption = new("SGE_AoE_Heal_IxocholeOption", 70),
             SGE_AoE_Heal_HolosOption = new("SGE_AoE_Heal_HolosOption", 60),
             SGE_AoE_Heal_EPrognosisOption = new("SGE_AoE_Heal_EPrognosisOption", 70),
-            SGE_Hidden_HolosOption = new("SGE_Hidden_HolosOption", 70);
+            SGE_Raidwide_HolosOption = new("SGE_Raidwide_HolosOption", 70);
 
         public static UserIntArray
             SGE_ST_Heals_Priority = new("SGE_ST_Heals_Priority"),

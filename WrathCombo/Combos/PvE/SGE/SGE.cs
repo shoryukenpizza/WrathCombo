@@ -43,19 +43,15 @@ internal partial class SGE : Healer
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            #region Hidden Feature Raidwide
-
-            if (HiddenKerachole())
+            #region Raidwide Feature
+            if (RaidwideKerachole())
                 return Kerachole;
-
-            if (HiddenHolos())
+            if (RaidwideHolos())
                 return Holos;
-
-            if (HiddenEprognosis())
+            if (RaidwideEprognosis())
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? OriginalHook(Prognosis)
                     : Eukrasia;
-
             #endregion
 
             if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
@@ -162,19 +158,15 @@ internal partial class SGE : Healer
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-            #region Hidden Feature Raidwide
-
-            if (HiddenKerachole())
+            #region Raidwide Feature
+            if (RaidwideKerachole())
                 return Kerachole;
-
-            if (HiddenHolos())
+            if (RaidwideHolos())
                 return Holos;
-
-            if (HiddenEprognosis())
+            if (RaidwideEprognosis())
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? OriginalHook(Prognosis)
                     : Eukrasia;
-
             #endregion
 
             if (CanWeave())
@@ -262,19 +254,15 @@ internal partial class SGE : Healer
             if (actionID is not Diagnosis)
                 return actionID;
 
-            #region Hidden Feature Raidwide
-
-            if (HiddenKerachole())
+            #region Raidwide Feature
+            if (RaidwideKerachole())
                 return Kerachole;
-
-            if (HiddenHolos())
+            if (RaidwideHolos())
                 return Holos;
-
-            if (HiddenEprognosis())
+            if (RaidwideEprognosis())
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? OriginalHook(Prognosis)
                     : Eukrasia;
-
             #endregion
 
             if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
@@ -332,19 +320,15 @@ internal partial class SGE : Healer
             if (actionID is not Prognosis)
                 return actionID;
 
-            #region Hidden Feature Raidwide
-
-            if (HiddenKerachole())
+            #region Raidwide Feature
+            if (RaidwideKerachole())
                 return Kerachole;
-
-            if (HiddenHolos())
+            if (RaidwideHolos())
                 return Holos;
-
-            if (HiddenEprognosis())
+            if (RaidwideEprognosis())
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? OriginalHook(Prognosis)
                     : Eukrasia;
-
             #endregion
 
             //Zoe -> Pneuma like Eukrasia 
@@ -406,7 +390,6 @@ internal partial class SGE : Healer
             }
         }
     }
-
     internal class SGE_Raise : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Raise;
@@ -419,38 +402,15 @@ internal partial class SGE : Healer
                     : Egeiro
                 : actionID;
     }
-
-    internal class SGE_Eukrasia : CustomCombo
+    internal class SGE_ZoePneuma : CustomCombo
     {
-        protected internal override Preset Preset => Preset.SGE_Eukrasia;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Eukrasia || !HasStatusEffect(Buffs.Eukrasia))
-                return actionID;
-
-            return SGE_Eukrasia_Mode.Value switch
-            {
-                0 => OriginalHook(Dosis),
-                1 => OriginalHook(Diagnosis),
-                2 => OriginalHook(Prognosis),
-                3 => OriginalHook(Dyskrasia),
-                var _ => actionID.RetargetIfEnabled(null, EukrasianDiagnosis)
-            };
-        }
-    }
-
-    internal class SGE_Kardia : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.SGE_Kardia;
+        protected internal override Preset Preset => Preset.SGE_ZoePneuma;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Soteria &&
-            (!HasStatusEffect(Buffs.Kardia) || IsOnCooldown(Soteria))
-                ? Kardia.Retarget(actionID, Target)
+            actionID is Pneuma && ActionReady(Pneuma) && IsOffCooldown(Zoe)
+                ? Zoe
                 : actionID;
     }
-
     internal class SGE_Rhizo : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Rhizo;
@@ -461,28 +421,69 @@ internal partial class SGE : Healer
                 ? Rhizomata
                 : actionID;
     }
+    internal class SGE_Eukrasia : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SGE_Eukrasia;
 
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Eukrasia || !HasStatusEffect(Buffs.Eukrasia))
+                return actionID;
+
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+
+            if (SGE_Eukrasia_Mode == 0)
+                return OriginalHook(Dosis);
+            if (SGE_Eukrasia_Mode == 2)
+                return OriginalHook(Prognosis);
+            if (SGE_Eukrasia_Mode == 3)
+                return OriginalHook(Dyskrasia);
+            if (SGE_Eukrasia_Mode == 1)
+                return IsEnabled(Preset.SGE_Retarget_EukrasianDiagnosis)
+                    ? EukrasianDiagnosis.Retarget(Eukrasia, healStack)
+                    : EukrasianDiagnosis;
+            
+            return actionID;
+        }
+    }
     internal class SGE_TauroDruo : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_TauroDruo;
 
-        protected override uint Invoke(uint actionID) =>
-            (actionID is Taurochole) &&
-            (!LevelChecked(Taurochole) || IsOnCooldown(Taurochole))
-                ? Druochole.RetargetIfEnabled(null, actionID)
-                : actionID.RetargetIfEnabled(null, actionID);
-    }
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Taurochole)
+                return actionID;
 
-    internal class SGE_ZoePneuma : CustomCombo
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (!LevelChecked(Taurochole) || IsOnCooldown(Taurochole))
+                return IsEnabled(Preset.SGE_Retarget_Druochole)
+                    ? Druochole.Retarget(Taurochole, healStack, true)
+                    : Druochole;
+            return IsEnabled(Preset.SGE_Retarget_Taurochole)
+                    ? Taurochole.Retarget(healStack, true)
+                    : Taurochole;
+        }
+    }
+    internal class SGE_Kardia : CustomCombo
     {
-        protected internal override Preset Preset => Preset.SGE_ZoePneuma;
+        protected internal override Preset Preset => Preset.SGE_Kardia;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Pneuma && ActionReady(Pneuma) && IsOffCooldown(Zoe)
-                ? Zoe
-                : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Soteria)
+                return actionID;
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (!HasStatusEffect(Buffs.Kardia) || IsOnCooldown(Soteria))
+                return IsEnabled(Preset.SGE_Retarget_Kardia)
+                    ? Kardia.Retarget(healStack, true)
+                    : Kardia;
+            
+            return actionID;
+        }
     }
-
     internal class SGE_Retarget : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Retarget;
@@ -491,6 +492,12 @@ internal partial class SGE : Healer
         {
             IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
 
+            if (IsEnabled(Preset.SGE_Retarget_Diagnosis))
+                OriginalHook(Diagnosis).Retarget(healStack, true);
+            
+            if (IsEnabled(Preset.SGE_Retarget_EukrasianDiagnosis))
+                EukrasianDiagnosis.Retarget(Diagnosis, healStack, true);
+            
             if (IsEnabled(Preset.SGE_Retarget_Haima))
                 Haima.Retarget(healStack, true);
 
@@ -504,7 +511,7 @@ internal partial class SGE : Healer
                 Krasis.Retarget(healStack, true);
 
             if (IsEnabled(Preset.SGE_Retarget_Kardia))
-                Kardia.Retarget(Target, true);
+                Kardia.Retarget(healStack, true);
 
             return actionID;
         }

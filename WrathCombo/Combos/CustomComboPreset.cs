@@ -5903,20 +5903,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Rhizomata Feature", "Replaces Addersgall skills with Rhizomata when empty.", SGE.JobID)]
     SGE_Rhizo = 14037,
 
-    [ConflictingCombos(SGE_Retarget_Taurochole)]
-    [ReplaceSkill(SGE.Taurochole)]
-    [CustomComboInfo("Taurochole to Druochole Feature", "Turns Taurochole to Druochole when Taurochole is on cooldown.", SGE.JobID)]
-    [PossiblyRetargeted]
-    SGE_TauroDruo = 14038,
-
-    [ReplaceSkill(SGE.Pneuma)]
-    [CustomComboInfo("Zoe Pneuma Feature", "Places Zoe on top of Pneuma when both actions are on cooldown.", SGE.JobID)]
-    SGE_ZoePneuma = 14039,
-
-    #endregion
-
-    #region Utility
-
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Swiftcast Raise Feature", "Changes Swiftcast to Egeiro while Swiftcast is on cooldown.", SGE.JobID)]
@@ -5926,34 +5912,42 @@ public enum CustomComboPreset
     [CustomComboInfo("Retarget Raise", "Will Retarget the Raise affected here to your Heal Stack.", SGE.JobID)]
     [Retargeted(SGE.Egeiro)]
     SGE_Raise_Retarget = 14061,
+    
+    [ReplaceSkill(SGE.Pneuma)]
+    [CustomComboInfo("Zoe Pneuma Feature", "Places Zoe on top of Pneuma when both actions are on cooldown.", SGE.JobID)]
+    SGE_ZoePneuma = 14039,
 
     [ReplaceSkill(SGE.Soteria)]
     [CustomComboInfo("Soteria to Kardia Feature", "Soteria turns into Kardia when not active or Soteria is on-cooldown.", SGE.JobID)]
-    [Retargeted]
+    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SGERetargetingFeaturesEnabledForKardia)]
     SGE_Kardia = 14041,
 
     [ReplaceSkill(SGE.Eukrasia)]
     [CustomComboInfo("Eukrasia Feature", "Eukrasia turns into the selected Eukrasian-type action when active.", SGE.JobID)]
-    [PossiblyRetargeted]
+    [PossiblyRetargeted("Retargeting Features below, Enable Eukrasion Diagnosis", Condition.SGERetargetingFeaturesEnabledForEDiagnosis)]
     SGE_Eukrasia = 14042,
-    
-    [Variant]
-    [VariantParent(SGE_ST_DPS_EDosis, SGE_AoE_DPS)]
-    [CustomComboInfo("Spirit Dart Option", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SGE.JobID)]
-    SGE_DPS_Variant_SpiritDart = 14048,
-
-    [Variant]
-    [VariantParent(SGE_ST_DPS, SGE_AoE_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SGE.JobID)]
-    SGE_DPS_Variant_Rampart = 14049,
-
-    #endregion
+   
+    [ReplaceSkill(SGE.Taurochole)]
+    [CustomComboInfo("Taurochole to Druochole Feature", "Turns Taurochole to Druochole when Taurochole is on cooldown.", SGE.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Druochole and Taurochole", Condition.SGERetargetingFeaturesEnabledForTauroDruo)]
+    SGE_TauroDruo = 14038,
     
     #region Standalone Healing option
 
     [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
     [Retargeted]
     SGE_Retarget = 14073,
+    
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Diagnosis Options", "Retargets Diagnosis according to your Healing stack.", SGE.JobID)]
+    [Retargeted(SGE.Diagnosis)]
+    SGE_Retarget_Diagnosis = 14079,
+    
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Eukrasian Diagnosis Options", "Retargets Eukrasian Diagnosis according to your Healing stack." +
+                                                    "(even from the Eukrasia Feature above)", SGE.JobID)]
+    [Retargeted(SGE.EukrasianDiagnosis)]
+    SGE_Retarget_EukrasianDiagnosis = 14080,
 
     [ParentCombo(SGE_Retarget)]
     [CustomComboInfo("Haima Options", "Retargets Haima according to your Healing stack.", SGE.JobID)]
@@ -5961,13 +5955,14 @@ public enum CustomComboPreset
     SGE_Retarget_Haima = 14074,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Druochole Options", "Retargets Druochole according to your Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Druochole Options", "Retargets Druochole according to your Healing stack." +
+                                          "(even from the Tauroshole to Druochole Feature above)", SGE.JobID)]
     [Retargeted(SGE.Druochole)]
     SGE_Retarget_Druochole = 14075,
     
-    [ConflictingCombos(SGE_TauroDruo)]
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Taurochole Options", "Retargets Taurochole according to your Healing stack." +
+                                           "(even from the Tauroshole to Druochole Feature above)", SGE.JobID)]
     [Retargeted(SGE.Taurochole)]
     SGE_Retarget_Taurochole = 14076,
 
@@ -5977,32 +5972,43 @@ public enum CustomComboPreset
     SGE_Retarget_Krasis = 14077,
 
     [ParentCombo(SGE_Retarget)]
-    [CustomComboInfo("Kardia Options", "Retargets Kardia according to your Healing stack.", SGE.JobID)]
+    [CustomComboInfo("Kardia Options", "Retargets Kardia according to your Healing stack." +
+                                       "(even from the Soteria to Kardia Feature above)", SGE.JobID)]
     [Retargeted(SGE.Kardia)]
     SGE_Retarget_Kardia = 14078,
     
     #endregion
     
-    #region Hidden Features
-    [CustomComboInfo("Hidden Options", "Collection of cheeky or encounter-specific extra options only available to those in the know.\nDo not expect these options to be maintained, or even kept, after they are no longer Current.", SGE.JobID)]
-    [Hidden]
-    SGE_Hidden = 14069,
+    #region Raidwide Features
+    [CustomComboInfo("Raidwide Options", "Collection of tools designed to try and cast during a raidwide attack when detected." +
+                                         "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", SGE.JobID)]
+    SGE_Raidwide = 14069,
     
-    [ParentCombo(SGE_Hidden)]
+    [ParentCombo(SGE_Raidwide)]
     [CustomComboInfo("Eukrasian Prognosis Option", "Will try to cast Shields when a raidwide casting is detected if shieldcheck from Eukrasian Prognosis setting passes. \nWill be used in all 4 main combos.", SGE.JobID)]
-    [Hidden]
-    SGE_Hidden_EPrognosis = 14070,
+    SGE_Raidwide_EPrognosis = 14070,
     
-    [ParentCombo(SGE_Hidden)]
+    [ParentCombo(SGE_Raidwide)]
     [CustomComboInfo("Kerachole Option", "Will try to cast Kerachole when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
-    [Hidden]
-    SGE_Hidden_Kerachole = 14071,
+    SGE_Raidwide_Kerachole = 14071,
     
-    [ParentCombo(SGE_Hidden)]
+    [ParentCombo(SGE_Raidwide)]
     [CustomComboInfo("Holos Option", "Will try to cast Holos when a raidwide casting is detected. \nWill be used in all 4 main combos.", SGE.JobID)]
-    [Hidden]
-    SGE_Hidden_Holos = 14072,
+    SGE_Raidwide_Holos = 14072,
+    #endregion
     
+    #region Variant
+    [Variant]
+    [VariantParent(SGE_ST_DPS_EDosis, SGE_AoE_DPS)]
+    [CustomComboInfo("Spirit Dart Option", "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", SGE.JobID)]
+    SGE_DPS_Variant_SpiritDart = 14048,
+
+    [Variant]
+    [VariantParent(SGE_ST_DPS, SGE_AoE_DPS)]
+    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", SGE.JobID)]
+    SGE_DPS_Variant_Rampart = 14049,
+    #endregion
+
     #endregion
 
     // Last used number = 14078
