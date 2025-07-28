@@ -3,17 +3,19 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
+using Preset = WrathCombo.Combos.CustomComboPreset;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
 {
+    #region Advanced ST
     internal class SGE_ST_DPS_AdvancedMode : CustomCombo
     {
         private static uint[] DosisActions => SGE_ST_DPS_Adv
             ? [Dosis2]
             : [.. DosisList.Keys];
 
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_ST_DPS;
+        protected internal override Preset Preset => Preset.SGE_ST_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -21,7 +23,7 @@ internal partial class SGE : Healer
                 return actionID;
 
             // Kardia Reminder
-            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Kardia) &&
+            if (IsEnabled(Preset.SGE_ST_DPS_Kardia) &&
                 LevelChecked(Kardia) &&
                 !HasStatusEffect(Buffs.Kardia) &&
                 Target is not null)
@@ -29,12 +31,12 @@ internal partial class SGE : Healer
                     .Retarget(actionID, Target);
 
             // Opener for SGE
-            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener) &&
+            if (IsEnabled(Preset.SGE_ST_DPS_Opener) &&
                 Opener().FullOpener(ref actionID))
                 return actionID;
 
             // Variant
-            if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
                 return Variant.Rampart;
 
             //Occult skills
@@ -58,39 +60,39 @@ internal partial class SGE : Healer
 
             if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
             {
-                if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
+                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
                     return Variant.SpiritDart;
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_ST_DPS_Lucid))
                     return Role.LucidDreaming;
 
                 // Addersgall Protection
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_AddersgallProtect) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_AddersgallProtect) &&
                     ActionReady(Druochole) && Addersgall >= SGE_ST_DPS_AddersgallProtect)
                     return Druochole
                         .RetargetIfEnabled(null, DosisActions);
 
                 // Psyche
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Psyche) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Psyche) &&
                     ActionReady(Psyche) && InCombat())
                     return Psyche;
 
                 // Rhizomata
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Rhizo) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Rhizo) &&
                     ActionReady(Rhizomata) && Addersgall < SGE_ST_DPS_Rhizo)
                     return Rhizomata;
 
                 //Soteria
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Soteria) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Soteria) &&
                     ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
                     return Soteria;
             }
 
             if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
             {
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_EDosis) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_EDosis) &&
                     LevelChecked(Eukrasia) && InCombat() &&
                     !JustUsedOn(DosisList[OriginalHook(Dosis)].Eukrasian, CurrentTarget) &&
                     CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
@@ -106,7 +108,7 @@ internal partial class SGE : Healer
                 }
 
                 // Phlegma
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Phlegma) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Phlegma) &&
                     InCombat() && InActionRange(OriginalHook(Phlegma)) &&
                     ActionReady(Phlegma))
                 {
@@ -124,7 +126,7 @@ internal partial class SGE : Healer
                 }
 
                 // Movement Options
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Movement) &&
+                if (IsEnabled(Preset.SGE_ST_DPS_Movement) &&
                     InCombat() && IsMoving())
                 {
                     foreach(int priority in SGE_ST_DPS_Movement_Priority.Items.OrderBy(x => x))
@@ -139,10 +141,12 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
-
+    #endregion
+    
+    #region Advanced AoE DPS
     internal class SGE_AoE_DPS_AdvancedMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_AoE_DPS;
+        protected internal override Preset Preset => Preset.SGE_AoE_DPS;
 
         protected override uint Invoke(uint actionID)
         {
@@ -151,7 +155,7 @@ internal partial class SGE : Healer
                 return actionID;
 
             // Variant Rampart
-            if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart))
+            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
                 return Variant.Rampart;
 
             //Occult skills
@@ -176,39 +180,39 @@ internal partial class SGE : Healer
             if (CanWeave())
             {
                 // Variant Spirit Dart
-                if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart))
+                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
                     return Variant.SpiritDart;
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) &&
+                if (IsEnabled(Preset.SGE_AoE_DPS_Lucid) &&
                     Role.CanLucidDream(SGE_AoE_DPS_Lucid))
                     return Role.LucidDreaming;
 
                 // Addersgall Protection
-                if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_AddersgallProtect) &&
+                if (IsEnabled(Preset.SGE_AoE_DPS_AddersgallProtect) &&
                     ActionReady(Druochole) && Addersgall >= SGE_AoE_DPS_AddersgallProtect)
                     return Druochole
                         .RetargetIfEnabled(null, OriginalHook(Dyskrasia));
 
                 // Psyche
-                if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Psyche))
+                if (IsEnabled(Preset.SGE_AoE_DPS_Psyche))
                     if (ActionReady(Psyche) && HasBattleTarget() &&
                         InActionRange(Psyche))
                         return Psyche;
 
                 // Rhizomata
-                if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Rhizo) &&
+                if (IsEnabled(Preset.SGE_AoE_DPS_Rhizo) &&
                     ActionReady(Rhizomata) && Addersgall <= SGE_AoE_DPS_Rhizo)
                     return Rhizomata;
 
                 //Soteria
-                if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Soteria) &&
+                if (IsEnabled(Preset.SGE_AoE_DPS_Soteria) &&
                     ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
                     return Soteria;
             }
 
             //Eukrasia for DoT
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_EDyskrasia) &&
+            if (IsEnabled(Preset.SGE_AoE_DPS_EDyskrasia) &&
                 IsOffCooldown(Eukrasia) &&
                 !JustUsedOn(EukrasianDyskrasia, CurrentTarget) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
                 TraitLevelChecked(Traits.OffensiveMagicMasteryII) &&
@@ -221,21 +225,21 @@ internal partial class SGE : Healer
                 return Eukrasia;
 
             //Phlegma
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Phlegma) &&
+            if (IsEnabled(Preset.SGE_AoE_DPS_Phlegma) &&
                 ActionReady(Phlegma) &&
                 HasBattleTarget() &&
                 InActionRange(OriginalHook(Phlegma)))
                 return OriginalHook(Phlegma);
 
             //Toxikon
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Toxikon) &&
+            if (IsEnabled(Preset.SGE_AoE_DPS_Toxikon) &&
                 ActionReady(Toxikon) &&
                 HasBattleTarget() && HasAddersting() &&
                 InActionRange(OriginalHook(Toxikon)))
                 return OriginalHook(Toxikon);
 
             //Pneuma
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Pneuma) &&
+            if (IsEnabled(Preset.SGE_AoE_DPS_Pneuma) &&
                 (SGE_AoE_DPS_Pneuma_SubOption == 0 || TargetIsBoss()) &&
                 ActionReady(Pneuma) && HasBattleTarget() &&
                 InActionRange(Pneuma))
@@ -244,10 +248,12 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
-
+    #endregion
+    
+    #region ST Healing
     internal class SGE_ST_Heal_AdvancedMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_ST_Heal;
+        protected internal override Preset Preset => Preset.SGE_ST_Heal;
 
         protected override uint Invoke(uint actionID)
         {
@@ -271,7 +277,7 @@ internal partial class SGE : Healer
 
             #endregion
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) &&
+            if (IsEnabled(Preset.SGE_ST_Heal_Esuna) &&
                 ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, SGE_ST_Heal_IncludeShields) >= SGE_ST_Heal_Esuna &&
                 HasCleansableDebuff(healTarget))
@@ -282,11 +288,11 @@ internal partial class SGE : Healer
                 return EukrasianDiagnosis
                     .RetargetIfEnabled(OptionalTarget, Diagnosis);
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Rhizomata) &&
+            if (IsEnabled(Preset.SGE_ST_Heal_Rhizomata) &&
                 ActionReady(Rhizomata) && !HasAddersgall())
                 return Rhizomata;
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Kardia) &&
+            if (IsEnabled(Preset.SGE_ST_Heal_Kardia) &&
                 LevelChecked(Kardia) &&
                 !HasStatusEffect(Buffs.Kardia) &&
                 !HasStatusEffect(Buffs.Kardion, healTarget))
@@ -294,7 +300,7 @@ internal partial class SGE : Healer
                     .Retarget(actionID, Target);
 
             // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Lucid) &&
+            if (IsEnabled(Preset.SGE_ST_Heal_Lucid) &&
                 Role.CanLucidDream(SGE_ST_Heal_LucidOption))
                 return Role.LucidDreaming;
 
@@ -314,10 +320,12 @@ internal partial class SGE : Healer
                 .RetargetIfEnabled(OptionalTarget, Diagnosis);
         }
     }
-
+    #endregion
+    
+    #region AoE Healing
     internal class SGE_AoE_Heal_AdvancedMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_AoE_Heal;
+        protected internal override Preset Preset => Preset.SGE_AoE_Heal;
 
         protected override uint Invoke(uint actionID)
         {
@@ -344,15 +352,15 @@ internal partial class SGE : Healer
                 HasStatusEffect(Buffs.Zoe))
                 return Pneuma;
 
-            if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_EPrognosis) &&
+            if (IsEnabled(Preset.SGE_AoE_Heal_EPrognosis) &&
                 HasStatusEffect(Buffs.Eukrasia))
                 return OriginalHook(Prognosis);
 
-            if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Rhizomata) &&
+            if (IsEnabled(Preset.SGE_AoE_Heal_Rhizomata) &&
                 ActionReady(Rhizomata) && !HasAddersgall())
                 return Rhizomata;
 
-            if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Lucid) &&
+            if (IsEnabled(Preset.SGE_AoE_Heal_Lucid) &&
                 Role.CanLucidDream(SGE_AoE_Heal_LucidOption))
                 return Role.LucidDreaming;
 
@@ -369,10 +377,12 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
-
+    #endregion
+    
+    #region Standalones
     internal class SGE_OverProtect : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_OverProtect;
+        protected internal override Preset Preset => Preset.SGE_OverProtect;
 
         protected override uint Invoke(uint actionID)
         {
@@ -381,14 +391,14 @@ internal partial class SGE : Healer
 
             switch (actionID)
             {
-                case Kerachole when IsEnabled(CustomComboPreset.SGE_OverProtect_Kerachole) &&
+                case Kerachole when IsEnabled(Preset.SGE_OverProtect_Kerachole) &&
                                     ActionReady(Kerachole) &&
                                     (HasStatusEffect(Buffs.Kerachole, anyOwner: true) ||
-                                     IsEnabled(CustomComboPreset.SGE_OverProtect_SacredSoil) && HasStatusEffect(SCH.Buffs.SacredSoil, anyOwner: true)):
-                case Panhaima when IsEnabled(CustomComboPreset.SGE_OverProtect_Panhaima) &&
+                                     IsEnabled(Preset.SGE_OverProtect_SacredSoil) && HasStatusEffect(SCH.Buffs.SacredSoil, anyOwner: true)):
+                case Panhaima when IsEnabled(Preset.SGE_OverProtect_Panhaima) &&
                                    ActionReady(Panhaima) && HasStatusEffect(Buffs.Panhaima, anyOwner: true):
                     return SCH.SacredSoil;
-                case Philosophia when IsEnabled(CustomComboPreset.SGE_OverProtect_Philosophia) &&
+                case Philosophia when IsEnabled(Preset.SGE_OverProtect_Philosophia) &&
                                       ActionReady(Philosophia) && HasStatusEffect(Buffs.Eudaimonia, anyOwner: true):
                     return SCH.Consolation;
                 default:
@@ -399,11 +409,11 @@ internal partial class SGE : Healer
 
     internal class SGE_Raise : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Raise;
+        protected internal override Preset Preset => Preset.SGE_Raise;
 
         protected override uint Invoke(uint actionID) =>
             actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
-                ? IsEnabled(CustomComboPreset.SGE_Raise_Retarget)
+                ? IsEnabled(Preset.SGE_Raise_Retarget)
                     ? Egeiro.Retarget(Role.Swiftcast,
                         SimpleTarget.Stack.AllyToRaise)
                     : Egeiro
@@ -412,7 +422,7 @@ internal partial class SGE : Healer
 
     internal class SGE_Eukrasia : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Eukrasia;
+        protected internal override Preset Preset => Preset.SGE_Eukrasia;
 
         protected override uint Invoke(uint actionID)
         {
@@ -432,7 +442,7 @@ internal partial class SGE : Healer
 
     internal class SGE_Kardia : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Kardia;
+        protected internal override Preset Preset => Preset.SGE_Kardia;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Soteria &&
@@ -443,7 +453,7 @@ internal partial class SGE : Healer
 
     internal class SGE_Rhizo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Rhizo;
+        protected internal override Preset Preset => Preset.SGE_Rhizo;
 
         protected override uint Invoke(uint actionID) =>
             AddersgallList.Contains(actionID) &&
@@ -454,7 +464,7 @@ internal partial class SGE : Healer
 
     internal class SGE_TauroDruo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_TauroDruo;
+        protected internal override Preset Preset => Preset.SGE_TauroDruo;
 
         protected override uint Invoke(uint actionID) =>
             (actionID is Taurochole) &&
@@ -465,7 +475,7 @@ internal partial class SGE : Healer
 
     internal class SGE_ZoePneuma : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_ZoePneuma;
+        protected internal override Preset Preset => Preset.SGE_ZoePneuma;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Pneuma && ActionReady(Pneuma) && IsOffCooldown(Zoe)
@@ -475,28 +485,29 @@ internal partial class SGE : Healer
 
     internal class SGE_Retarget : CustomCombo
     {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SGE_Retarget;
+        protected internal override Preset Preset => Preset.SGE_Retarget;
 
         protected override uint Invoke(uint actionID)
         {
             IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima))
+            if (IsEnabled(Preset.SGE_Retarget_Haima))
                 Haima.Retarget(healStack, true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Druochole))
+            if (IsEnabled(Preset.SGE_Retarget_Druochole))
                 Druochole.Retarget(healStack, true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole))
+            if (IsEnabled(Preset.SGE_Retarget_Taurochole))
                 Taurochole.Retarget(healStack, true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Krasis))
+            if (IsEnabled(Preset.SGE_Retarget_Krasis))
                 Krasis.Retarget(healStack, true);
 
-            if (IsEnabled(CustomComboPreset.SGE_Retarget_Kardia))
+            if (IsEnabled(Preset.SGE_Retarget_Kardia))
                 Kardia.Retarget(Target, true);
 
             return actionID;
         }
     }
+    #endregion
 }
