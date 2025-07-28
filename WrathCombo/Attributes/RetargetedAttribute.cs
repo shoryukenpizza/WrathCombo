@@ -89,6 +89,7 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
     {
         RetargetHealingActionsEnabled,
         ASTQuickTargetCardsFeatureEnabled,
+        ASTRetargetingFeaturesEnabledForBenefic,
         WHMRetargetingFeaturesEnabledForSTMit,
         WHMRetargetingFeaturesEnabledForAoEMit,
         WHMRetargetingFeaturesEnabledForSolace,
@@ -115,6 +116,8 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                 return Service.Configuration.RetargetHealingActionsToStack;
             case Condition.ASTQuickTargetCardsFeatureEnabled:
                 return IsEnabled(CustomComboPreset.AST_Cards_QuickTargetCards);
+            case Condition.ASTRetargetingFeaturesEnabledForBenefic:
+                return IsEnabled(CustomComboPreset.AST_Retargets_Benefic);
             case Condition.WHMRetargetingFeaturesEnabledForSTMit:
                 return IsEnabled(CustomComboPreset.WHM_Retargets) &&
                        IsEnabled(CustomComboPreset.WHM_Re_Aquaveil) &&

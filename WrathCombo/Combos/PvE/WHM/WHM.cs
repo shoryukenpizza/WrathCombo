@@ -684,9 +684,6 @@ internal partial class WHM : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            if (!EZ.Throttle("WHMRetargetingFeature", TS.FromSeconds(5)))
-                return actionID;
-            
             var healStack = SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(Preset.WHM_Re_Cure))

@@ -40,6 +40,7 @@ internal partial class AST
             AST_AoE_SimpleHeals_StellarDetonation = new("AST_AoE_SimpleHeals_StellarDetonation", 80),
             AST_AoE_SimpleHeals_Aspected = new("AST_AoE_SimpleHeals_Aspected", 80),
             AST_AoE_SimpleHeals_Helios = new("AST_AoE_SimpleHeals_Helios", 80),
+            
             //DPS
             AST_ST_DPS_DivinationOption = new("AST_ST_DPS_DivinationOption"),
             AST_ST_DPS_AltMode = new("AST_ST_DPS_AltMode"),
@@ -91,7 +92,8 @@ internal partial class AST
         public static UserBoolArray
             AST_ST_SimpleHeals_CelestialOppositionOptions = new("AST_ST_SimpleHeals_CelestialOppositionOptions"),
             AST_ST_SimpleHeals_CollectiveUnconsciousOptions = new("AST_ST_SimpleHeals_CollectiveUnconsciousOptions"),
-            AST_ST_SimpleHeals_SoloLadyOptions = new("AST_ST_SimpleHeals_SoloLadyOptions");
+            AST_ST_SimpleHeals_SoloLadyOptions = new("AST_ST_SimpleHeals_SoloLadyOptions"),
+            AST_EarthlyStarOptions = new("AST_EarthlyStarOptions");
 
         internal static void Draw(CustomComboPreset preset)
         {
@@ -368,6 +370,16 @@ internal partial class AST
                     DrawRadioButton(AST_QuickTarget_Override, "Hard Target Override", "Overrides selection with hard target, if you have one that is in range and does not have damage down or rez sickness.", 1, descriptionAsTooltip: true);
                     DrawRadioButton(AST_QuickTarget_Override, "UI MouseOver Override", "Overrides selection with UI MouseOver target, if you have one that is in range and does not have damage down or rez sickness.", 2, descriptionAsTooltip: true);
                     DrawRadioButton(AST_QuickTarget_Override, "Any MouseOver Override", "Overrides selection with UI or Nameplate or Model MouseOver target (in that order), if you have one that is in range and does not have damage down or rez sickness.", 3, descriptionAsTooltip: true);
+                    break;
+                
+                case CustomComboPreset.AST_Retargets_EarthlyStar:
+                    ImGui.Indent();
+                    ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Earthly Star to before Self:");
+                    ImGui.Unindent();
+                    DrawHorizontalMultiChoice(AST_EarthlyStarOptions,
+                        "Enemy Hard Target", "Will place at hard target if enemy", 2, 0);
+                    DrawHorizontalMultiChoice(AST_EarthlyStarOptions,
+                        "Ally Hard Target", "Will place at hard target if ally", 2, 1);
                     break;
                 #endregion
             }

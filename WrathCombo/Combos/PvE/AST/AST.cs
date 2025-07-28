@@ -5,6 +5,9 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class AST : Healer
@@ -199,7 +202,7 @@ internal partial class AST : Healer
     
     #endregion
     
-    #region Advance DPS Combos
+    #region Advanced DPS Combos
     internal class AST_ST_DPS : CustomCombo
     {
         protected internal override Preset Preset => Preset.AST_ST_DPS;
@@ -516,6 +519,8 @@ internal partial class AST : Healer
     }
     
     #endregion
+    
+    #region Healing
 
     internal class AST_ST_Heals : CustomCombo
     {
@@ -596,6 +601,7 @@ internal partial class AST : Healer
                     ? Helios
                     : OriginalHook(AspectedHelios);
             
+            //Check for Suntouched to finish the combo after Neutral sect regardless of priorities
             if (IsEnabled(Preset.AST_AoE_Heals_NeutralSect) && HasStatusEffect(Buffs.Suntouched) && CanWeave())
                 return SunSign;
             
@@ -619,16 +625,9 @@ internal partial class AST : Healer
                 actionID;
         }
     }
-
-    internal class AST_RetargetEssentialDignity : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.AST_RetargetEssentialDignity;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is not EssentialDignity
-                ? actionID
-                : actionID.Retarget(SimpleTarget.Stack.AllyToHeal, dontCull: true);
-    }
+    #endregion 
+    
+    #region Standalone Features
 
     internal class AST_RetargetManualCards : CustomCombo
     {
@@ -650,10 +649,18 @@ internal partial class AST : Healer
     {
         protected internal override Preset Preset => Preset.AST_Benefic;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Benefic2 && !ActionReady(Benefic2)
-                ? Benefic
-                : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Benefic2)
+                return actionID;
+
+            var healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (!LevelChecked(Benefic2))
+                return IsEnabled(Preset.AST_Retargets_Benefic) ? Benefic.Retarget(healStack, dontCull: true) : Benefic;
+            
+            return IsEnabled(Preset.AST_Retargets_Benefic) ? Benefic2.Retarget(healStack, dontCull: true) : Benefic2;
+        }
     }
 
     internal class AST_Lightspeed : CustomCombo
@@ -678,4 +685,58 @@ internal partial class AST : Healer
                     : Ascend
                 : actionID;
     }
+
+    internal class AST_Retargets : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.AST_Retargets;
+
+        protected override uint Invoke(uint actionID)
+        {
+            var healStack = SimpleTarget.Stack.AllyToHeal;
+
+            if (IsEnabled(Preset.AST_Retargets_Benefic))
+            {
+                Benefic.Retarget(healStack, dontCull: true);
+                Benefic2.Retarget(healStack, dontCull: true);
+            }
+
+            if (IsEnabled(Preset.AST_Retargets_AspectedBenefic))
+                AspectedBenefic.Retarget(healStack, dontCull: true);
+
+            if (IsEnabled(Preset.AST_Retargets_EssentialDignity))
+                EssentialDignity.Retarget(healStack, dontCull: true);
+
+            if (IsEnabled(Preset.AST_Retargets_Exaltation))
+                Exaltation.Retarget(healStack, dontCull: true);
+
+            if (IsEnabled(Preset.AST_Retargets_Synastry))
+                Synastry.Retarget(healStack, dontCull: true);
+
+            if (IsEnabled(Preset.AST_Retargets_CelestialIntersection))
+                CelestialIntersection.Retarget(healStack, dontCull: true);
+
+            if (IsEnabled(Preset.AST_Retargets_HealCards))
+            {
+                OriginalHook(Play2).Retarget(Play2, healStack, dontCull: true);
+                OriginalHook(Play3).Retarget(Play3, healStack, dontCull: true);
+            }
+
+            if (IsEnabled(Preset.AST_Retargets_EarthlyStar))
+            {
+                var starTarget =
+                    (Config.AST_EarthlyStarOptions[0]
+                        ? SimpleTarget.HardTarget.IfHostile()
+                        : null) ??
+                    (Config.AST_EarthlyStarOptions[1]
+                        ? SimpleTarget.HardTarget.IfFriendly()
+                        : null) ??
+                    SimpleTarget.Self;
+                EarthlyStar.Retarget(starTarget, dontCull: true);
+            }
+
+            return actionID;
+        }
+    }
+
+    #endregion
 }

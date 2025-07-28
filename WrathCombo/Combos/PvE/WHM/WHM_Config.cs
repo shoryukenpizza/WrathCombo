@@ -373,7 +373,7 @@ internal partial class WHM
                 
                 case Preset.WHM_Re_LiturgyOfTheBell:
                     ImGui.Indent();
-                    ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Asylum to before Self:");
+                    ImGui.TextColored(ImGuiColors.DalamudGrey, "Options to try to Retarget Liturgy of the Bell to before Self:");
                     ImGui.Unindent();
                     DrawHorizontalMultiChoice(WHM_LiturgyOfTheBellOptions,
                         "Enemy Hard Target", "Will place at hard target if enemy", 2, 0);

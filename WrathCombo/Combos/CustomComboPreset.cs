@@ -865,16 +865,23 @@ public enum CustomComboPreset
     [ParentCombo(AST_AoE_Heals)]
     [CustomComboInfo("Collective Unconscious Option", "Adds Collective Unconscious (for the regen so it will not channel)", AST.JobID)]
     AST_AoE_Heals_CollectiveUnconscious = 1074,
+    #endregion
+    
+    #region Cards
+    [CustomComboInfo("Quick Target Damage Cards",
+        "When you play the Balance or Spear in a combo, this will automatically target the buff on to a party member.\nIt will look at DPS that suit the card first, following The Balance's priorities; if none found or they have buffs already, will look at the other DPS instead.\nWill try to skip party members that have damage downs or rez sickness.\nWill default to you if no suitable party members were found.",
+        AST.JobID)]
+    [Retargeted(AST.Play1, AST.Balance, AST.Spear)]
+    AST_Cards_QuickTargetCards = 1029,
+    #endregion
 
+    #region Standalones
     [ReplaceSkill(AST.Benefic2)]
     [CustomComboInfo("Benefic 2 Downgrade", "Changes Benefic 2 to Benefic when Benefic 2 is not unlocked or available.",
         AST.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Cure", Condition.ASTRetargetingFeaturesEnabledForBenefic)]
     AST_Benefic = 1002,
-
-    #endregion
-
-    #region Utility
-
+    
     [ReplaceSkill(RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Ascend", AST.JobID)]
@@ -888,33 +895,6 @@ public enum CustomComboPreset
     [ReplaceSkill(AST.Lightspeed)]
     [CustomComboInfo("Lightspeed Overwrite Protection Feature", "Blocks the Lightspeed Button while buff is active.", AST.JobID)]
     AST_Lightspeed_Protection = 1065,    
-
-    [ReplaceSkill(AST.EssentialDignity)]
-    [CustomComboInfo("Retarget Essential Dignity Feature", "Will Retarget Essential Dignity outside of Healing combos to your Heal Stack.", AST.JobID)]
-    [Retargeted(AST.EssentialDignity)]
-    AST_RetargetEssentialDignity = 1059,
-
-    [Variant]
-    [VariantParent(AST_ST_DPS_CombustUptime)]
-    [CustomComboInfo("Spirit Dart Option",
-        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", AST.JobID)]
-    AST_Variant_SpiritDart = 1035,
-
-    [Variant]
-    [VariantParent(AST_ST_DPS)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", AST.JobID)]
-    AST_Variant_Rampart = 1036,
-
-    #endregion
-
-    #region Cards
-
-    [CustomComboInfo("Quick Target Damage Cards",
-        "When you play the Balance or Spear in a combo, this will automatically target the buff on to a party member.\nIt will look at DPS that suit the card first, following The Balance's priorities; if none found or they have buffs already, will look at the other DPS instead.\nWill try to skip party members that have damage downs or rez sickness.\nWill default to you if no suitable party members were found.",
-        AST.JobID)]
-    [Retargeted(AST.Play1, AST.Balance, AST.Spear)]
-    AST_Cards_QuickTargetCards = 1029,
-
     #endregion
     
     #region Raidwide Features
@@ -937,6 +917,72 @@ public enum CustomComboPreset
                                                            "\nWill be used in all 4 main combos.", AST.JobID)]
     AST_Raidwide_AspectedHelios = 1078,
     
+    #endregion
+    
+    #region Retargeting
+    [CustomComboInfo("Retargeting Features", "Collection of Options to Retarget Manually-Used Single Target Heals.", AST.JobID)]
+    AST_Retargets = 1085,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.Benefic, AST.Benefic2)]
+    [CustomComboInfo("Benefic Option", "Retargets Benefic and Benefic II to the heal stack (even from the Benefic 2 Downgrade Feature above).", AST.JobID)]
+    [Retargeted(AST.Benefic, AST.Benefic2)]
+    AST_Retargets_Benefic = 1086,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.AspectedBenefic)]
+    [CustomComboInfo("Aspected Benefic Option", "Retargets Aspected Benefic to the heal stack.", AST.JobID)]
+    [Retargeted(AST.AspectedBenefic)]
+    AST_Retargets_AspectedBenefic = 1087,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.EssentialDignity)]
+    [CustomComboInfo("Essential Dignity Option", "Retargets Essential Dignity to the heal stack.", AST.JobID)]
+    [Retargeted(AST.EssentialDignity)]
+    AST_Retargets_EssentialDignity = 1059,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.Exaltation)]
+    [CustomComboInfo("Exaltation Option", "Retargets Exaltation to the heal stack.", AST.JobID)]
+    [Retargeted(AST.Exaltation)]
+    AST_Retargets_Exaltation = 1089,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.Synastry)]
+    [CustomComboInfo("Synastry Option", "Retargets Synastry to the heal stack.", AST.JobID)]
+    [Retargeted(AST.Synastry)]
+    AST_Retargets_Synastry = 1090,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.CelestialIntersection)]
+    [CustomComboInfo("Celestial Intersection Option", "Retargets Celestial Intersection to the heal stack.", AST.JobID)]
+    [Retargeted(AST.CelestialIntersection)]
+    AST_Retargets_CelestialIntersection = 1091,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.Play2, AST.Play3)]
+    [CustomComboInfo("Healing Cards Option", "Retargets the 4 Healing Cards (Ewer, Arrow, Bole, Spire) to the heal stack.", AST.JobID)]
+    [Retargeted(AST.Play2, AST.Play3)]
+    AST_Retargets_HealCards = 1092,
+    
+    [ParentCombo(AST_Retargets)]
+    [ReplaceSkill(AST.EarthlyStar)]
+    [CustomComboInfo("Earthly Star Option", "Retargets Earthly Star to the the ground Under yourself.", AST.JobID)]
+    [Retargeted(AST.EarthlyStar)]
+    AST_Retargets_EarthlyStar = 1093,
+    #endregion
+    
+    #region Variants
+    [Variant]
+    [VariantParent(AST_ST_DPS_CombustUptime)]
+    [CustomComboInfo("Spirit Dart Option",
+        "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", AST.JobID)]
+    AST_Variant_SpiritDart = 1035,
+
+    [Variant]
+    [VariantParent(AST_ST_DPS)]
+    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", AST.JobID)]
+    AST_Variant_Rampart = 1036,
     #endregion
 
     // Last value = 1083
