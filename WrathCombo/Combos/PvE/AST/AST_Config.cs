@@ -12,6 +12,7 @@ internal partial class AST
 {
     public static class Config
     {
+        #region Options
         public static UserIntArray
             AST_ST_SimpleHeals_Priority = new("AST_ST_SimpleHeals_Priority"),
             AST_AoE_SimpleHeals_Priority = new("AST_AoE_SimpleHeals_Priority");
@@ -97,6 +98,7 @@ internal partial class AST
             AST_ST_SimpleHeals_SoloLadyOptions = new("AST_ST_SimpleHeals_SoloLadyOptions"),
             AST_EarthlyStarOptions = new("AST_EarthlyStarOptions");
 
+        #endregion
         internal static void Draw(Preset preset)
         {
             switch (preset)

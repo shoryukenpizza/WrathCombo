@@ -20,6 +20,7 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class AST
 {
+    #region Variables
     internal static readonly List<uint>
         MaleficList = [Malefic, Malefic2, Malefic3, Malefic4, FallMalefic],
         GravityList = [Gravity, Gravity2];
@@ -45,6 +46,7 @@ internal partial class AST
     internal static bool HasDivination=> HasStatusEffect(Buffs.Divination, anyOwner: true) || JustUsed(Divination);
     internal static float DivinationCD => GetCooldownRemainingTime(Divination);
     internal static float LightspeedChargeCD => GetCooldownChargeRemainingTime(Lightspeed);
+    #endregion
     
     #region Dot Checker
     internal static bool NeedsDoT()
