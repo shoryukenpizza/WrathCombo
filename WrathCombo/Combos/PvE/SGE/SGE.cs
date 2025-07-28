@@ -3,8 +3,6 @@ using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
-using EZ = ECommons.Throttlers.EzThrottler;
-using TS = System.TimeSpan;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
@@ -481,9 +479,6 @@ internal partial class SGE : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            if (!EZ.Throttle("SGERetargetingFeature", TS.FromSeconds(5)))
-                return actionID;
-
             IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(CustomComboPreset.SGE_Retarget_Haima))
