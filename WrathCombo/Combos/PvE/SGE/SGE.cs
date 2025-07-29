@@ -5,6 +5,8 @@ using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
 using Preset = WrathCombo.Combos.CustomComboPreset;
 namespace WrathCombo.Combos.PvE;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 internal partial class SGE : Healer
 {
@@ -483,12 +485,56 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
+    internal class SGE_Mit_ST : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SGE_Mit_ST;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Krasis)
+                return actionID;
+            
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+
+            if (ActionReady(Krasis))
+                return IsEnabled(Preset.SGE_Retarget_Krasis)
+                    ? Krasis.Retarget(healStack, dontCull: true)
+                    : actionID;
+            
+            if (!HasStatusEffect(Buffs.EukrasianDiagnosis, healStack))
+            {
+                if (!HasStatusEffect(Buffs.Eukrasia))
+                    return Eukrasia;
+                
+                return IsEnabled(Preset.SGE_Retarget_EukrasianDiagnosis)
+                    ? EukrasianDiagnosis.Retarget(Krasis, healStack, true)
+                    : EukrasianDiagnosis;
+            }
+            
+            if (SGE_Mit_ST_Options[0] && !ActionReady(Krasis) &&
+                ActionReady(Haima))
+                return IsEnabled(Preset.SGE_Retarget_Haima)
+                    ? Haima.Retarget(Krasis ,healStack, dontCull: true)
+                    : Haima;
+            
+            if (SGE_Mit_ST_Options[1] && !ActionReady(Krasis) &&
+                ActionReady(Taurochole) &&
+                GetTargetHPPercent(healStack) <= SGE_Mit_ST_TaurocholeThreshold)
+                return IsEnabled(Preset.SGE_Retarget_Taurochole)
+                    ? Taurochole.Retarget(Krasis ,healStack, dontCull: true)
+                    : Taurochole;
+            
+            return actionID;
+        }
+    }
     internal class SGE_Retarget : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Retarget;
 
         protected override uint Invoke(uint actionID)
         {
+            if (!EZ.Throttle("SGERetargetingFeature", TS.FromSeconds(.1)))
+                return actionID;
+            
             IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
 
             if (IsEnabled(Preset.SGE_Retarget_Diagnosis))

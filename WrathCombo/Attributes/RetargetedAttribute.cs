@@ -97,7 +97,8 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
         WHMRetargetingFeaturesEnabledForCure,
         SGERetargetingFeaturesEnabledForKardia,
         SGERetargetingFeaturesEnabledForEDiagnosis,
-        SGERetargetingFeaturesEnabledForTauroDruo
+        SGERetargetingFeaturesEnabledForTauroDruo,
+        SGERetargetingFeaturesEnabledForSTMit
     }
     
     /// <summary>
@@ -156,6 +157,14 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                 return IsEnabled(CustomComboPreset.SGE_Retarget) &&
                        IsEnabled(CustomComboPreset.SGE_Retarget_Druochole) &&
                        IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole);
+            case Condition.SGERetargetingFeaturesEnabledForSTMit:
+                return IsEnabled(CustomComboPreset.SGE_Retarget) &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Krasis) &&
+                       IsEnabled(CustomComboPreset.SGE_Retarget_EukrasianDiagnosis) &&
+                       (SGE.Config.SGE_Mit_ST_Options[1] != true ||
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole)) &&
+                       (SGE.Config.SGE_Mit_ST_Options[0] != true ||
+                       IsEnabled(CustomComboPreset.SGE_Retarget_Haima));
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
                 return null;

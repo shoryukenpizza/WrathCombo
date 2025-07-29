@@ -6,6 +6,8 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
@@ -684,6 +686,9 @@ internal partial class WHM : Healer
         protected override uint Invoke(uint actionID)
         {
             var healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (!EZ.Throttle("WHMRetargetingFeature", TS.FromSeconds(.1)))
+                return actionID;
 
             if (IsEnabled(Preset.WHM_Re_Cure))
             {

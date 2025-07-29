@@ -6,6 +6,8 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
 using static WrathCombo.Combos.PvE.AST.Config;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -728,6 +730,9 @@ internal partial class AST : Healer
         protected override uint Invoke(uint actionID)
         {
             var healStack = SimpleTarget.Stack.AllyToHeal;
+            
+            if (!EZ.Throttle("ASTRetargetingFeature", TS.FromSeconds(.1)))
+                return actionID;
 
             if (IsEnabled(Preset.AST_Retargets_Benefic))
             {

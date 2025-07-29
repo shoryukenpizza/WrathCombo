@@ -355,6 +355,21 @@ internal partial class SGE
                     DrawRadioButton(SGE_Eukrasia_Mode,
                         $"{EukrasianDyskrasia.ActionName()}", "", 3);
                     break;
+                
+                case Preset.SGE_Mit_ST:
+                    DrawHorizontalMultiChoice(SGE_Mit_ST_Options,
+                        "Include Haima", "Will add Haima for more mitigation.", 2, 0);
+                    ImGui.NewLine();
+                    DrawHorizontalMultiChoice(SGE_Mit_ST_Options,
+                        "Include Taurochole", "Will add Taurochole to top off targets health and add Damage reduction.", 2, 1);
+                    if (SGE_Mit_ST_Options[1])
+                    {
+                        ImGui.Indent();
+                        DrawSliderInt(1, 100, SGE_Mit_ST_TaurocholeThreshold,
+                            "Target HP% to use Taurochole at or below. Set to 100 to disable this check.");
+                        ImGui.Unindent();
+                    }
+                    break;
 
                 case Preset.SGE_Raidwide_Holos:
                     DrawSliderInt(0, 100, SGE_Raidwide_HolosOption,
@@ -436,7 +451,8 @@ internal partial class SGE
             SGE_AoE_Heal_IxocholeOption = new("SGE_AoE_Heal_IxocholeOption", 70),
             SGE_AoE_Heal_HolosOption = new("SGE_AoE_Heal_HolosOption", 60),
             SGE_AoE_Heal_EPrognosisOption = new("SGE_AoE_Heal_EPrognosisOption", 70),
-            SGE_Raidwide_HolosOption = new("SGE_Raidwide_HolosOption", 70);
+            SGE_Raidwide_HolosOption = new("SGE_Raidwide_HolosOption", 70),
+            SGE_Mit_ST_TaurocholeThreshold = new("SGE_Mit_ST_TaurocholeThreshold", 100);
 
         public static UserIntArray
             SGE_ST_Heals_Priority = new("SGE_ST_Heals_Priority"),
@@ -444,7 +460,8 @@ internal partial class SGE
 
         public static UserBoolArray
             SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts"),
-            SGE_ST_Heal_PanhaimaOpts = new("SGE_ST_Heal_PanhaimaOpts");
+            SGE_ST_Heal_PanhaimaOpts = new("SGE_ST_Heal_PanhaimaOpts"),
+            SGE_Mit_ST_Options = new("SGE_Mit_ST_Options");
 
         #endregion
 
