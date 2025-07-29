@@ -526,6 +526,41 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
+    internal class SGE_Mit_AoE : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SGE_Mit_AoE;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Holos)
+                return actionID;
+
+            if (SGE_Mit_AoE_Options[0] &&
+                ActionReady(Kerachole) &&
+                !HasStatusEffect(Buffs.Kerachole, anyOwner: true) &&
+                !HasStatusEffect(SCH.Buffs.SacredSoil, anyOwner: true))
+                return Kerachole;
+            
+            if (SGE_Mit_AoE_Options[1] &&
+                ActionReady(Philosophia))
+                return Philosophia;
+
+            if (GetPartyBuffPercent(Buffs.EukrasianPrognosis) <= SGE_Mit_AoE_PrognosisOption)
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
+            if (ActionReady(Holos) &&
+                !HasStatusEffect(Buffs.Holosakos, anyOwner:true))
+                return Holos;
+
+            if (SGE_Mit_AoE_Options[2] &&
+                ActionReady(Panhaima) &&
+                !HasStatusEffect(Buffs.Panhaima, anyOwner:true))
+                return Panhaima;
+
+            return actionID;
+        }
+    }
     internal class SGE_Retarget : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Retarget;

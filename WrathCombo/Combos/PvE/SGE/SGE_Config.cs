@@ -177,7 +177,8 @@ internal partial class SGE
                 case Preset.SGE_ST_Heal_Haima:
                     DrawSliderInt(0, 100, SGE_ST_Heal_Haima,
                         "Start using when below HP %. Set to 100 to disable this check.");
-
+                    DrawAdditionalBoolChoice(SGE_ST_Heal_HaimaBossOption,
+                        "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SGE_ST_Heals_Priority,
                         12, 4, $"{Haima.ActionName()} Priority: ");
                     break;
@@ -185,7 +186,8 @@ internal partial class SGE
                 case Preset.SGE_ST_Heal_Krasis:
                     DrawSliderInt(0, 100, SGE_ST_Heal_Krasis,
                         "Start using when below HP %. Set to 100 to disable this check.");
-
+                    DrawAdditionalBoolChoice(SGE_ST_Heal_KrasisBossOption,
+                        "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SGE_ST_Heals_Priority,
                         12, 5, $"{Krasis.ActionName()} Priority: ");
                     break;
@@ -370,6 +372,17 @@ internal partial class SGE
                         ImGui.Unindent();
                     }
                     break;
+                
+                case Preset.SGE_Mit_AoE:
+                    DrawSliderInt(0, 100, SGE_Mit_AoE_PrognosisOption,
+                        "Shield Check: Percentage of Party Members without shields to check for.", sliderIncrement:25);
+                    DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
+                        "Include Philosophia", "Will add Philosophia before Eukrasian Prognosis for the Healing Boost", 3, 0);
+                    DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
+                        "Include Kerachole", "Will add Kerachole at beginning", 3, 1);
+                    DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
+                        "Include Panhaima", "Will add Panhaima at the end", 3, 2);
+                    break;
 
                 case Preset.SGE_Raidwide_Holos:
                     DrawSliderInt(0, 100, SGE_Raidwide_HolosOption,
@@ -423,6 +436,8 @@ internal partial class SGE
             SGE_ST_Heal_PanhaimaBossOption = new("SGE_ST_Heal_PanhaimaBossOption"),
             SGE_ST_Heal_PhysisBossOption = new("SGE_ST_Heal_PhysisBossOption"),
             SGE_ST_Heal_HolosBossOption = new("SGE_ST_Heal_HolosBossOption"),
+            SGE_ST_Heal_HaimaBossOption = new("SGE_ST_Heal_HaimaBossOption"),
+            SGE_ST_Heal_KrasisBossOption = new("SGE_ST_Heal_KrasisBossOption"),
             SGE_AoE_Heal_KeracholeTrait = new("SGE_AoE_Heal_KeracholeTrait"),
             SGE_AoE_Heal_ZoePneuma = new("SGE_AoE_Heal_ZoePneuma");
 
@@ -452,7 +467,8 @@ internal partial class SGE
             SGE_AoE_Heal_HolosOption = new("SGE_AoE_Heal_HolosOption", 60),
             SGE_AoE_Heal_EPrognosisOption = new("SGE_AoE_Heal_EPrognosisOption", 70),
             SGE_Raidwide_HolosOption = new("SGE_Raidwide_HolosOption", 70),
-            SGE_Mit_ST_TaurocholeThreshold = new("SGE_Mit_ST_TaurocholeThreshold", 100);
+            SGE_Mit_ST_TaurocholeThreshold = new("SGE_Mit_ST_TaurocholeThreshold", 100),
+            SGE_Mit_AoE_PrognosisOption = new("SGE_Mit_AoE_PrognosisOption");
 
         public static UserIntArray
             SGE_ST_Heals_Priority = new("SGE_ST_Heals_Priority"),
@@ -461,7 +477,8 @@ internal partial class SGE
         public static UserBoolArray
             SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts"),
             SGE_ST_Heal_PanhaimaOpts = new("SGE_ST_Heal_PanhaimaOpts"),
-            SGE_Mit_ST_Options = new("SGE_Mit_ST_Options");
+            SGE_Mit_ST_Options = new("SGE_Mit_ST_Options"),
+            SGE_Mit_AoE_Options = new("SGE_Mit_AoE_Options");
 
         #endregion
 

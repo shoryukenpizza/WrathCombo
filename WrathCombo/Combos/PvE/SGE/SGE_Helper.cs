@@ -97,12 +97,14 @@ internal partial class SGE
 
             case 4:
                 action = Haima;
-                enabled = IsEnabled(Preset.SGE_ST_Heal_Haima);
+                enabled = IsEnabled(Preset.SGE_ST_Heal_Haima) &&
+                          (!SGE_ST_Heal_HaimaBossOption || !InBossEncounter());
                 return SGE_ST_Heal_Haima;
 
             case 5:
                 action = Krasis;
-                enabled = IsEnabled(Preset.SGE_ST_Heal_Krasis);
+                enabled = IsEnabled(Preset.SGE_ST_Heal_Krasis) &&
+                          (!SGE_ST_Heal_KrasisBossOption || !InBossEncounter());
                 return SGE_ST_Heal_Krasis;
 
             case 6:
@@ -456,6 +458,7 @@ internal partial class SGE
             Panhaima = 2613,
             Kerachole = 2618,
             Zoe = 2611,
+            Holosakos = 3365,
             Eudaimonia = 3899;
     }
 

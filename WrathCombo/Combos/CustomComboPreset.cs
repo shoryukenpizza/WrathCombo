@@ -5937,6 +5937,10 @@ public enum CustomComboPreset
     [PossiblyRetargeted("Retargeting Features below, Enable Krasis, Haima, Eukrasian Diagnosis, and Taurochole", Condition.SGERetargetingFeaturesEnabledForSTMit)]
     SGE_Mit_ST = 14081,
     
+    [ReplaceSkill(SGE.Holos)]
+    [CustomComboInfo("Mitigation Feature - AoE", "Changes Holos into Eukrasion Prognosis to apply shields.", SGE.JobID)]
+    SGE_Mit_AoE = 14082,
+    
     #region Standalone Healing option
 
     [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SGE.JobID)]
@@ -6016,7 +6020,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last used number = 14078
+    // Last used number = 14082
 
     #endregion
 
