@@ -699,10 +699,15 @@ internal partial class BLM : Caster
     internal class BLM_Fire1Despair : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Fire1Despair;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Fire && FirePhase && CurMp < 2400
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Fire)
+                return actionID;
+            
+            return FirePhase && CurMp < 2400
                 ? Despair
                 : OriginalHook(Fire);
+        }
     }
 
     internal class BLM_FreezeParadox : CustomCombo
