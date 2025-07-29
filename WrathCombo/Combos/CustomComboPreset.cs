@@ -6613,31 +6613,19 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Lustrate)]
     [CustomComboInfo("Lustrate to Excogitation Feature",
         "Change Lustrate into Excogitation when Excogitation is ready.", SCH.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForLustcog)]
     SCH_Lustrate = 16014,
-    
-    [ReplaceSkill(SCH.SacredSoil)]
-    [CustomComboInfo("Sacred Soil Retargetting", "Adds Self retargetting to Sacred Soil", SCH.JobID)]
-    [Retargeted(SCH.SacredSoil)]
-    SCH_SacredSoil = 16066,
-    
-    [ParentCombo(SCH_SacredSoil)]
-    [CustomComboInfo("Ally Placement Option", "Will add any ally UI MouseOver target, focus target, soft target, or hard target as the priority Retarget for Sacred Soil.\nBeneath the Enemy placement option, but above yourself.", SCH.JobID)]
-    [Retargeted]
-    SCH_SacredSoil_Allies = 16061,
-    
-    [ParentCombo(SCH_SacredSoil)]
-    [CustomComboInfo("Enemy Placement Option", "Will add an enemy hard target as the top priority Retarget for Sacred Soil", SCH.JobID)]
-    [Retargeted]
-    SCH_SacredSoil_Enemy = 16060,
     
     [ReplaceSkill(SCH.Recitation)]
     [CustomComboInfo("Recitation Combo Feature",
         "Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.", SCH.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForAdlocog)]
     SCH_Recitation = 16015,
     
     [ReplaceSkill(SCH.DeploymentTactics)]
     [CustomComboInfo("Deployment Tactics Feature",
         "Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.", SCH.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForAdloDeployment)]
     SCH_DeploymentTactics = 16034,
 
     [ParentCombo(SCH_DeploymentTactics)]
@@ -6689,21 +6677,69 @@ public enum CustomComboPreset
 
     #endregion
     
+    #region Standalone Healing option
+
+    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SCH.JobID)]
+    [Retargeted]
+    SCH_Retarget = 16073,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Physick Options", "Retargets Physick according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Physick)]
+    SCH_Retarget_Physick = 16074,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Adloquium Options", "Retargets Adloquium according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Adloquium)]
+    SCH_Retarget_Adloquium = 16081,
+   
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Lustrate Options", "Retargets Lustrate according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Lustrate)]
+    SCH_Retarget_Lustrate = 16075,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Protraction Options", "Retargets Protraction according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Protraction)]
+    SCH_Retarget_Protraction = 16076,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Deployment Tactics Options", "Retargets Deployment Tactics according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.DeploymentTactics)]
+    SCH_Retarget_DeploymentTactics = 16077,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Excogitation Options", "Retargets Excogitation according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Excogitation)]
+    SCH_Retarget_Excogitation = 16078,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Aetherpact Options", "Retargets Aetherpact according to your Healing stack.", SCH.JobID)]
+    [Retargeted(SCH.Aetherpact)]
+    SCH_Retarget_Aetherpact = 16079,
+    
+    [ParentCombo(SCH_Retarget)]
+    [CustomComboInfo("Sacred Soil Options", "Retargets Sacred Soil to yourself.", SCH.JobID)]
+    [Retargeted(SCH.SacredSoil)]
+    SCH_Retarget_SacredSoil = 16080,
+    
+    #endregion
+    
     #region Raidwide Features
     [CustomComboInfo("Raidwide Options", "Collection of tools designed to try and cast during a raidwide attack when detected." +
                                          "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", SCH.JobID)]
-    SCH_Hidden = 16065,
+    SCH_Raidwide = 16065,
     
-    [ParentCombo(SCH_Hidden)]
+    [ParentCombo(SCH_Raidwide)]
     [CustomComboInfo("RaidWide Succor Option", "Will try to cast Succor when a raidwide casting is detected if shieldcheck from succor setting passes. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
     SCH_Raidwide_Succor = 16062,
     
-    [ParentCombo(SCH_Hidden)]
+    [ParentCombo(SCH_Raidwide)]
     [CustomComboInfo("Sacred Soil Option", "Will try to use Sacred Soil on self when a raidwide casting is detected.\nWill be used in all 4 Advanced combos", SCH.JobID)]
     [Retargeted(SCH.SacredSoil)]
     SCH_Raidwide_SacredSoil = 16059,
     
-    [ParentCombo(SCH_Hidden)]
+    [ParentCombo(SCH_Raidwide)]
     [CustomComboInfo("Expedient Raidwide Option", "Will try to use Expedient when a raidwide casting is detected. \nWill be used in all 4 Advanced combos.", SCH.JobID)]
     SCH_Raidwide_Expedient = 16064,
     #endregion

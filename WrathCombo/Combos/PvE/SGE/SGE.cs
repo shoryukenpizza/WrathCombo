@@ -4,9 +4,11 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.SGE.Config;
 using Preset = WrathCombo.Combos.CustomComboPreset;
-namespace WrathCombo.Combos.PvE;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
+
+namespace WrathCombo.Combos.PvE;
+
 
 internal partial class SGE : Healer
 {

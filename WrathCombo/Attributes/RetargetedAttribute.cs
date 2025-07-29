@@ -98,7 +98,10 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
         SGERetargetingFeaturesEnabledForKardia,
         SGERetargetingFeaturesEnabledForEDiagnosis,
         SGERetargetingFeaturesEnabledForTauroDruo,
-        SGERetargetingFeaturesEnabledForSTMit
+        SGERetargetingFeaturesEnabledForSTMit,
+        SCHRetargetingFeaturesEnabledForLustcog,
+        SCHRetargetingFeaturesEnabledForAdlocog,
+        SCHRetargetingFeaturesEnabledForAdloDeployment
     }
     
     /// <summary>
@@ -165,6 +168,21 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                        IsEnabled(CustomComboPreset.SGE_Retarget_Taurochole)) &&
                        (SGE.Config.SGE_Mit_ST_Options[0] != true ||
                        IsEnabled(CustomComboPreset.SGE_Retarget_Haima));
+            case Condition.SCHRetargetingFeaturesEnabledForLustcog:
+                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Lustrate);
+            case Condition.SCHRetargetingFeaturesEnabledForAdlocog:
+                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                       (SCH.Config.SCH_Recitation_Mode == 3 &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation) ||
+                       SCH.Config.SCH_Recitation_Mode == 0 &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium));
+            case Condition.SCHRetargetingFeaturesEnabledForAdloDeployment:
+                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_DeploymentTactics);
+              
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
                 return null;

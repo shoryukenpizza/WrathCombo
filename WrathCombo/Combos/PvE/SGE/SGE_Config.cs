@@ -121,16 +121,8 @@ internal partial class SGE
                 #region Heal
 
                 case Preset.SGE_ST_Heal:
-                    DrawAdditionalBoolChoice(SGE_ST_Heal_Adv,
-                        "Advanced Options", "", isConditionalChoice: true);
-
-                    if (SGE_ST_Heal_Adv)
-                    {
-                        ImGui.Indent();
-                        DrawAdditionalBoolChoice(SGE_ST_Heal_IncludeShields,
-                            "Include Shields in HP Percent Sliders", "");
-                        ImGui.Unindent();
-                    }
+                    DrawAdditionalBoolChoice(SGE_ST_Heal_IncludeShields,
+                        "Include Shields in HP Percent Sliders", "");
                     break;
 
                 case Preset.SGE_ST_Heal_Esuna:
@@ -430,7 +422,6 @@ internal partial class SGE
         #region Healing
 
         public static UserBool
-            SGE_ST_Heal_Adv = new("SGE_ST_Heal_Adv"),
             SGE_ST_Heal_IncludeShields = new("SGE_ST_Heal_IncludeShields"),
             SGE_ST_Heal_KeracholeBossOption = new("SGE_ST_Heal_KeracholeBossOption"),
             SGE_ST_Heal_PanhaimaBossOption = new("SGE_ST_Heal_PanhaimaBossOption"),
