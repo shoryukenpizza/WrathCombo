@@ -5933,7 +5933,7 @@ public enum CustomComboPreset
     SGE_TauroDruo = 14038,
     
     [ReplaceSkill(SGE.Krasis)]
-    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", SGE.JobID)]
+    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Krasis into Eukrasian Diagnosis and/or Taurochole/Haima after use.\nEach action can be Retargeted with the Retargeting Features below.", SGE.JobID)]
     [PossiblyRetargeted("Retargeting Features below, Enable Krasis, Haima, Eukrasian Diagnosis, and Taurochole", Condition.SGERetargetingFeaturesEnabledForSTMit)]
     SGE_Mit_ST = 14081,
     
