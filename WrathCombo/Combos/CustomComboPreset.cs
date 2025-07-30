@@ -5634,10 +5634,31 @@ public enum CustomComboPreset
 
     #region SAGE
 
+    #region Simple Mode
+
+    [AutoAction(false, false)]
+    [ReplaceSkill(SGE.Dosis, SGE.Dosis2, SGE.Dosis3)]
+    [ConflictingCombos(SGE_ST_DPS)]
+    [CustomComboInfo("Simple DPS Mode - Single Target", "Replaces Dosis with a full one-button single target rotation. \nThis is the ideal option for newcomers to the job.",
+        SGE.JobID)]
+    [SimpleCombo] 
+    SGE_ST_Simple_DPS = 14084,
+
+    [AutoAction(true, false)]
+    [ReplaceSkill(SGE.Dyskrasia, SGE.Dyskrasia2)]
+    [ConflictingCombos(SGE_AoE_DPS)]
+    [CustomComboInfo("Simple DPS Mode - AoE", "Replaces Dyskrasia with a full one-button AoE rotation. \nThis is the ideal option for newcomers to the job.",
+        SGE.JobID)]
+    [SimpleCombo]
+    SGE_AoE_Simple_DPS = 14085,
+
+    #endregion
+
     #region Single Target DPS Feature
 
     [AutoAction(false, false)]
     [ReplaceSkill(SGE.Dosis, SGE.Dosis2, SGE.Dosis3)]
+    [ConflictingCombos(SGE_ST_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - Single Target", "Adds various options to Dosis I/II/III.", SGE.JobID)]
     [AdvancedCombo]
     SGE_ST_DPS = 14001,
@@ -5690,6 +5711,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(SGE.Dyskrasia, SGE.Dyskrasia2)]
+    [ConflictingCombos(SGE_AoE_Simple_DPS)]
     [CustomComboInfo("Advanced DPS Mode - AoE", "Adds various options to Dyskrasia I & II. Requires a target.", SGE.JobID)]
     [AdvancedCombo]
     SGE_AoE_DPS = 14009,
@@ -6025,7 +6047,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last used number = 14083
+    // Last used number = 140835
 
     #endregion
 
