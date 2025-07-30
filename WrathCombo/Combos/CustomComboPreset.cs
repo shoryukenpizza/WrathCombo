@@ -1102,7 +1102,7 @@ public enum CustomComboPreset
     BLM_Fire1to3 = 2054,
 
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeBlizzard2)]
+    [ConflictingCombos(BLM_FreezeBlizzard2, BLM_Blizzard4toDespair)]
     [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_Blizzard1to3 = 2052,
 
@@ -1117,6 +1117,7 @@ public enum CustomComboPreset
     BLM_Fire1Despair = 2065,
 
     [ReplaceSkill(BLM.Blizzard4, BLM.Blizzard3)]
+    [ConflictingCombos(BLM_Blizzard1to3, BLM_FreezeBlizzard2)]
     [CustomComboInfo("Blizzard 3/4 to Despair", "Replaces Blizzard 3/4 with Despair when in Astral Fire.", BLM.JobID)]
     BLM_Blizzard4toDespair = 2060,
     
@@ -1126,7 +1127,7 @@ public enum CustomComboPreset
     BLM_FireandIce = 2057,
 
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeParadox, BLM_Blizzard1to3)]
+    [ConflictingCombos(BLM_FreezeParadox, BLM_Blizzard1to3, BLM_Blizzard4toDespair)]
     [CustomComboInfo("Freeze to Blizzard II", "nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_FreezeBlizzard2 = 2064,
 
