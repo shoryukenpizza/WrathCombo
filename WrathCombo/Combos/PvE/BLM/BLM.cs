@@ -84,7 +84,7 @@ internal partial class BLM : Caster
                 HasMaxPolyglotStacks)
                 return Xenoglossy;
 
-            if (IsMoving() && InCombat())
+            if (IsMoving() && InCombat() && HasBattleTarget())
             {
                 if (ActionReady(Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
@@ -304,7 +304,7 @@ internal partial class BLM : Caster
                 HasMaxPolyglotStacks)
                 return Xenoglossy;
 
-            if (IsMoving() && InCombat())
+            if (IsMoving() && InCombat() && HasBattleTarget())
             {
                 foreach(int priority in BLM_ST_Movement_Priority.Items.OrderBy(x => x))
                 {
@@ -646,8 +646,18 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID switch
             {
-                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) && (IcePhase || ((AstralFireStacks is 1 or 2) && HasStatusEffect(Buffs.Firestarter)) || !InCombat()) && !JustUsed(Fire3) => Fire3,
-                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase && (AstralFireStacks is 3 || ((AstralFireStacks is 1 or 2) && !HasStatusEffect(Buffs.Firestarter))) && !JustUsed(OriginalHook(Fire)) => OriginalHook(Fire),
+                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) &&
+                          (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
+                           LevelChecked(Paradox) && !ActiveParadox ||
+                           !InCombat() && LevelChecked(Fire4) ||
+                           IcePhase ||
+                           !LevelChecked(Fire4) && HasStatusEffect(Buffs.Firestarter)) &&
+                          !JustUsed(Fire3) => Fire3,
+
+                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
+                           (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
+                            !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) &&
+                           !JustUsed(OriginalHook(Fire)) => OriginalHook(Fire),
                 var _ => actionID
             };
     }
