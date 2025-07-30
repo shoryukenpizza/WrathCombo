@@ -5986,6 +5986,11 @@ public enum CustomComboPreset
     [Retargeted(SGE.Kardia)]
     SGE_Retarget_Kardia = 14078,
     
+    [ParentCombo(SGE_Retarget)]
+    [CustomComboInfo("Icarus Movement Option", "Retargets Icarus to UI/Field Mouseover", SGE.JobID)]
+    [Retargeted(SGE.Icarus)]
+    SGE_Retarget_Icarus = 14083,
+    
     #endregion
     
     #region Raidwide Features
@@ -6020,7 +6025,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last used number = 14082
+    // Last used number = 14083
 
     #endregion
 
@@ -6613,19 +6618,19 @@ public enum CustomComboPreset
     [ReplaceSkill(SCH.Lustrate)]
     [CustomComboInfo("Lustrate to Excogitation Feature",
         "Change Lustrate into Excogitation when Excogitation is ready.", SCH.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForLustcog)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Lustrate and Excogitation", Condition.SCHRetargetingFeaturesEnabledForLustcog)]
     SCH_Lustrate = 16014,
     
     [ReplaceSkill(SCH.Recitation)]
     [CustomComboInfo("Recitation Combo Feature",
         "Change Recitation into either Adloquium, Succor, Indomitability, or Excogitation when used.", SCH.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForAdlocog)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Adloquium and Excogitation", Condition.SCHRetargetingFeaturesEnabledForAdlocog)]
     SCH_Recitation = 16015,
     
     [ReplaceSkill(SCH.DeploymentTactics)]
     [CustomComboInfo("Deployment Tactics Feature",
         "Changes Deployment Tactics to Adloquium until a party member has the Galvanize buff.", SCH.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Kardia", Condition.SCHRetargetingFeaturesEnabledForAdloDeployment)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Adloquium and Deployment Tactics", Condition.SCHRetargetingFeaturesEnabledForAdloDeployment)]
     SCH_DeploymentTactics = 16034,
 
     [ParentCombo(SCH_DeploymentTactics)]
@@ -6679,7 +6684,7 @@ public enum CustomComboPreset
     
     #region Standalone Healing option
 
-    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options.", SCH.JobID)]
+    [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options. \nEven in the Standalone Features Above.", SCH.JobID)]
     [Retargeted]
     SCH_Retarget = 16073,
     
@@ -6744,7 +6749,7 @@ public enum CustomComboPreset
     SCH_Raidwide_Expedient = 16064,
     #endregion
 
-    // Last value = 16072
+    // Last value = 16080
 
     #endregion
 

@@ -594,6 +594,9 @@ internal partial class SGE : Healer
 
             if (IsEnabled(Preset.SGE_Retarget_Kardia))
                 Kardia.Retarget(healStack, true);
+            
+            if (IsEnabled(Preset.SGE_Retarget_Icarus))
+                Icarus.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, dontCull: true);
 
             return actionID;
         }
