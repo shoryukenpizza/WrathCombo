@@ -28,6 +28,9 @@ internal partial class SGE
         SimpleTarget.HardTarget.IfCanUseOn(Kardia).IfWithinRange(30) ??
         SimpleTarget.AnyTank;
 
+    internal static IGameObject? HealStack =>
+        SimpleTarget.Stack.AllyToHeal;
+
     internal static bool HasAddersgall() =>
         Addersgall > 0;
 
@@ -36,7 +39,7 @@ internal partial class SGE
 
     #region Healing
 
-    #region Hidden Raidwides
+    #region Raidwides
 
     internal static bool RaidwideKerachole() =>
         IsEnabled(Preset.SGE_Raidwide_Kerachole) &&
@@ -425,7 +428,7 @@ internal partial class SGE
         Pneuma = 24318,
         EukrasianDyskrasia = 37032,
         Psyche = 37033,
-        
+
         //Movement
         Icarus = 24295,
 

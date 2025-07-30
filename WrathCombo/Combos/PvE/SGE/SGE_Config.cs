@@ -349,7 +349,7 @@ internal partial class SGE
                     DrawRadioButton(SGE_Eukrasia_Mode,
                         $"{EukrasianDyskrasia.ActionName()}", "", 3);
                     break;
-                
+
                 case Preset.SGE_Mit_ST:
                     DrawHorizontalMultiChoice(SGE_Mit_ST_Options,
                         "Include Haima", "Will add Haima for more mitigation.", 2, 0);
@@ -364,10 +364,10 @@ internal partial class SGE
                         ImGui.Unindent();
                     }
                     break;
-                
+
                 case Preset.SGE_Mit_AoE:
                     DrawSliderInt(0, 100, SGE_Mit_AoE_PrognosisOption,
-                        "Shield Check: Percentage of Party Members without shields to check for.", sliderIncrement:25);
+                        "Shield Check: Percentage of Party Members without shields to check for.", sliderIncrement: 25);
                     DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
                         "Include Philosophia", "Will add Philosophia before Eukrasian Prognosis for the Healing Boost", 3, 0);
                     DrawHorizontalMultiChoice(SGE_Mit_AoE_Options,
