@@ -651,6 +651,105 @@ internal partial class SCH : Healer
     }
     #endregion
     
+    internal class SCH_Mit_ST : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SCH_Mit_ST;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Protraction)
+                return actionID;
+            
+            IGameObject? healStack = SimpleTarget.Stack.AllyToHeal;
+
+            if (ActionReady(Protraction))
+                return IsEnabled(Preset.SCH_Retarget_Protraction)
+                    ? Protraction.Retarget(healStack, dontCull: true)
+                    : actionID;
+
+            if (SCH_Mit_STOptions[0] && 
+                ActionReady(Recitation))
+                return Recitation;
+            
+            if (ActionReady(Adloquium) && 
+                !HasStatusEffect(Buffs.Galvanize, healStack))
+                return IsEnabled(Preset.SCH_Retarget_Adloquium)
+                ? OriginalHook(Adloquium).Retarget(Protraction, healStack, true)
+                : OriginalHook(Adloquium);
+
+            if (SCH_Mit_STOptions[1] &&
+                ActionReady(DeploymentTactics) &&
+                HasStatusEffect(Buffs.Catalyze, healStack))
+                return IsEnabled(Preset.SCH_Retarget_DeploymentTactics)
+                    ? DeploymentTactics.Retarget(Protraction, healStack, true)
+                    : DeploymentTactics;
+
+            if (SCH_Mit_STOptions[2] && ActionReady(Excogitation))
+                return IsEnabled(Preset.SCH_Retarget_Excogitation)
+                    ? Excogitation.Retarget(Protraction, healStack, true)
+                    : Excogitation;
+            
+            return actionID;
+        }
+    }
+    internal class SCH_Mit_AoE : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SCH_Mit_AoE;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not SacredSoil)
+                return actionID;
+            
+            var soilTarget =
+                (SCH_Retarget_SacredSoilOptions[0]
+                    ? SimpleTarget.HardTarget.IfHostile()
+                    : null) ??
+                (SCH_Retarget_SacredSoilOptions[1]
+                    ? SimpleTarget.HardTarget.IfFriendly()
+                    : null) ??
+                SimpleTarget.Self;
+            
+            if (ActionReady(SacredSoil))
+                return IsEnabled(Preset.SCH_Retarget_SacredSoil) 
+                    ? SacredSoil.Retarget(soilTarget) 
+                    : actionID;
+
+            if (SCH_Mit_AoEOptions[0] &&
+                ActionReady(FeyIllumination) && HasPetPresent() && !FairyBusy)
+                return FeyIllumination;
+
+            if (SCH_Mit_AoEOptions[1])
+            {
+                if (ActionReady(Recitation) && ActionReady(DeploymentTactics))
+                    return Recitation;
+
+                if (HasStatusEffect(Buffs.Recitation))
+                    return Adloquium.Retarget(SacredSoil, SimpleTarget.Self);
+                
+                if (ActionReady(DeploymentTactics) && HasStatusEffect(Buffs.Catalyze))
+                    return DeploymentTactics.Retarget(SacredSoil ,SimpleTarget.Self);
+            }
+
+            if (!HasStatusEffect(Buffs.Galvanize) &&
+                !HasStatusEffect(SGE.Buffs.EukrasianPrognosis))
+                return OriginalHook(Succor);
+
+            if (SCH_Mit_AoEOptions[2] &&
+                ActionReady(Expedient))
+                return Expedient;
+
+            if (SCH_Mit_AoEOptions[3] &&
+                ActionReady(SummonSeraph) &&
+                HasPetPresent() && !FairyBusy)
+                return SummonSeraph;
+            
+            if (ActionReady(Consolation) && 
+                !JustUsed(Consolation))
+                return Consolation;
+
+            return actionID;
+        }
+    }
+    
     #region Retargeting Standalone
     internal class SCH_Retarget : CustomCombo
     {
@@ -686,7 +785,7 @@ internal partial class SCH : Healer
             
             if (IsEnabled(Preset.SCH_Retarget_SacredSoil))
             {
-                var bellTarget =
+                var soilTarget =
                     (SCH_Retarget_SacredSoilOptions[0]
                         ? SimpleTarget.HardTarget.IfHostile()
                         : null) ??
@@ -694,7 +793,7 @@ internal partial class SCH : Healer
                         ? SimpleTarget.HardTarget.IfFriendly()
                         : null) ??
                     SimpleTarget.Self;
-                SacredSoil.Retarget(bellTarget, dontCull: true);
+                SacredSoil.Retarget(soilTarget, dontCull: true);
             }
             return actionID;
         }

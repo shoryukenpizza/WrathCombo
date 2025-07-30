@@ -6682,6 +6682,24 @@ public enum CustomComboPreset
 
     #endregion
     
+    #region Mitigation Features
+
+    [ReplaceSkill(SCH.Protraction)]
+    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Protraction into (Optional Recitation)Adloquium followed by (Optional Deployment Tactics and Excogitation)" +
+                                                           "\nEach action can be Retargeted with the Retargeting Features below.", SCH.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Protraction and Adloquium (and optionally Deployment Tactics and Excogitation)", Condition.SCHRetargetingFeaturesEnabledForSTMit)]
+    SCH_Mit_ST = 16083,
+    
+    [ReplaceSkill(SCH.SacredSoil)]
+    [CustomComboInfo("Mitigation Feature - AoE", "Changes Sacred Soil into (optional Fey Illumination) " +
+                                                 "\nthen Succor or (Optional Self Targetted Recitation-Adloquium-Deployment Tactics)" +
+                                                 "\nFinished with (Optional Expedient) and (Optional Seraph/Consolation)" +
+                                                 "\nCan be Retargeted with the Retargeting Features below.", SCH.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Sacred Soil", Condition.SCHRetargetingFeaturesEnabledForAoEMit)]
+    SCH_Mit_AoE = 16082,
+
+    #endregion
+    
     #region Standalone Healing option
 
     [CustomComboInfo("Retarget Options", "Retargets Single Target Healing options. \nEven in the Standalone Features Above.", SCH.JobID)]
@@ -6749,7 +6767,7 @@ public enum CustomComboPreset
     SCH_Raidwide_Expedient = 16064,
     #endregion
 
-    // Last value = 16080
+    // Last value = 16082
 
     #endregion
 

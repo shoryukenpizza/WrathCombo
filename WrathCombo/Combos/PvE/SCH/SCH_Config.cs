@@ -294,10 +294,23 @@ internal partial class SCH
                     break;
                 
                 case Preset.SCH_Retarget_SacredSoil:
-                    DrawHorizontalMultiChoice(SCH_Retarget_SacredSoilOptions, "Enemy Hard Target","Will place under hard target if it is an Enemy", 2, 0);
-                    DrawHorizontalMultiChoice(SCH_Retarget_SacredSoilOptions, "Ally Hard Target","Will place under hard target if it is an Ally", 2, 1);
+                    DrawHorizontalMultiChoice(SCH_Retarget_SacredSoilOptions, "Enemy Hard Target","Will place under hard target if it is an Enemy.", 2, 0);
+                    DrawHorizontalMultiChoice(SCH_Retarget_SacredSoilOptions, "Ally Hard Target","Will place under hard target if it is an Ally.", 2, 1);
                     break;
                 
+                case Preset.SCH_Mit_ST:
+                    DrawHorizontalMultiChoice(SCH_Mit_STOptions, "Recitation","Will Recitation before Adloquium if available.", 3, 0);
+                    DrawHorizontalMultiChoice(SCH_Mit_STOptions, "Deployment Tactics","Will spread Adloquium crit shield if available.", 3, 1);
+                    DrawHorizontalMultiChoice(SCH_Mit_STOptions, "Excogitation","Will use Excogitation if available.", 3, 2);
+                    break;
+                
+                case Preset.SCH_Mit_AoE:
+                    DrawHorizontalMultiChoice(SCH_Mit_AoEOptions, "Fey Illumination","Will activate Fey Illumination before Succor", 4, 0);
+                    DrawHorizontalMultiChoice(SCH_Mit_AoEOptions, "Crit Adloquium Deployment","Will Recitation into Adloquium and Deployment tactics in place of Succor" +
+                        "\nThis will be targeted at yourself for simplicity and reliability.", 4, 1);
+                    DrawHorizontalMultiChoice(SCH_Mit_AoEOptions, "Expedient","Will use Expedient if available.", 4, 2);
+                    DrawHorizontalMultiChoice(SCH_Mit_AoEOptions, "Summon Seraph Consolation","Will summon Seraph if available and use Consolation for more shield.", 4, 3);
+                    break;
                 
                 #endregion
             }
@@ -398,7 +411,9 @@ internal partial class SCH
             SCH_Recitation_Mode = new("SCH_Recitation_Mode");
         
         internal static UserBoolArray
-            SCH_Retarget_SacredSoilOptions = new("SCH_Retarget_SacredSoilOptions");
+            SCH_Retarget_SacredSoilOptions = new("SCH_Retarget_SacredSoilOptions"),
+            SCH_Mit_STOptions = new("SCH_Mit_STOptions"),
+            SCH_Mit_AoEOptions = new("SCH_Mit_AoEOptions");
 
         #endregion
         

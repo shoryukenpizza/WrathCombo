@@ -347,6 +347,8 @@ internal partial class SCH
             Dissipation = 791,
             EmergencyTactics = 792,
             Recitation = 1896,
+            SeraphicVeil = 1917,
+            Catalyze = 1918,
             ImpactImminent = 3882;
     }
 

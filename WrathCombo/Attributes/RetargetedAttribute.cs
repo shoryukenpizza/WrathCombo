@@ -101,7 +101,9 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
         SGERetargetingFeaturesEnabledForSTMit,
         SCHRetargetingFeaturesEnabledForLustcog,
         SCHRetargetingFeaturesEnabledForAdlocog,
-        SCHRetargetingFeaturesEnabledForAdloDeployment
+        SCHRetargetingFeaturesEnabledForAdloDeployment,
+        SCHRetargetingFeaturesEnabledForSTMit,
+        SCHRetargetingFeaturesEnabledForAoEMit
     }
     
     /// <summary>
@@ -182,7 +184,16 @@ internal class PossiblyRetargetedAttribute : RetargetedAttributeBase
                 return IsEnabled(CustomComboPreset.SCH_Retarget) &&
                        IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium) &&
                        IsEnabled(CustomComboPreset.SCH_Retarget_DeploymentTactics);
-              
+            case Condition.SCHRetargetingFeaturesEnabledForSTMit:
+                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Adloquium) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Protraction) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_DeploymentTactics) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_Excogitation);
+            case Condition.SCHRetargetingFeaturesEnabledForAoEMit:
+                return IsEnabled(CustomComboPreset.SCH_Retarget) &&
+                       IsEnabled(CustomComboPreset.SCH_Retarget_SacredSoil);
+            
             default:
                 PluginLog.Error($"Unknown PossiblyRetargeted Condition: {condition}");
                 return null;
