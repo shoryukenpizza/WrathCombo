@@ -8095,63 +8095,7 @@ public enum CustomComboPreset
     
     #endregion
     
-    #region Mitigation Features
-
-    [ReplaceSkill(WHM.Aquaveil)]
-    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", WHM.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Aquaveil (and optionally Tetra and Benison)", Condition.WHMRetargetingFeaturesEnabledForSTMit)]
-    WHM_Mit_ST = 19041,
-    
-    [ReplaceSkill(WHM.Asylum)]
-    [CustomComboInfo("Mitigation Feature - AoE", "Changes Asylum into Temperance and then Divine Caress after use.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Asylum", Condition.WHMRetargetingFeaturesEnabledForAoEMit)]
-    WHM_Mit_AoE = 19040,
-
-    #endregion
-    
-    #region Raidwide Heals
-    
-    [CustomComboInfo("Boss Raidwide Options",
-        "Collection of tools designed to try and cast during a raidwide attack when detected." +
-        "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", WHM.JobID)]
-    WHM_Raidwide = 19220,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide Asylum Option", "Will try to Weave Asylum when a raidwide casting. \nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_Asylum = 19221,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide Temperance Combo Option",
-        "Will try to Weave Temperance and Divine Caress when a raidwide casting. " +
-        "\nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_Temperance = 19222,
-    
-    [ParentCombo(WHM_Raidwide)]
-    [CustomComboInfo("RaidWide LiturgyOfTheBell Option",
-        "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
-        "\nWill be used in all 4 main combos.", WHM.JobID)]
-    WHM_Raidwide_LiturgyOfTheBell = 19223,
-    
-    #endregion
-    
     #region Small Features
-    
-    [ReplaceSkill(WHM.AfflatusSolace)]
-    [CustomComboInfo("Solace into Misery Feature",
-        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.\nSolace can be Retargeted with the Retargeting Features below.", WHM.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Afflatus Solace", 
-        Condition.WHMRetargetingFeaturesEnabledForSolace)]
-    WHM_SolaceMisery = 19000,
-
-    [ReplaceSkill(WHM.AfflatusRapture)]
-    [CustomComboInfo("Rapture into Misery Feature",
-        "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
-    WHM_RaptureMisery = 19001,
-
-    [ReplaceSkill(WHM.Cure2)]
-    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
-    [PossiblyRetargeted("Retargeting Features below, Enable Cure", Condition.WHMRetargetingFeaturesEnabledForCure)]
-    WHM_CureSync = 19002,
 
     [ReplaceSkill( RoleActions.Magic.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
@@ -8167,6 +8111,36 @@ public enum CustomComboPreset
     [CustomComboInfo("Thin Air Raise Feature", "Adds Thin Air to the Global Raise Feature/Alternative Raise Feature.",
         WHM.JobID)]
     WHM_ThinAirRaise = 19014,
+    
+    [ReplaceSkill(WHM.AfflatusRapture)]
+    [CustomComboInfo("Rapture into Misery Feature",
+        "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
+    WHM_RaptureMisery = 19001,
+
+    [ReplaceSkill(WHM.AfflatusSolace)]
+    [CustomComboInfo("Solace into Misery Feature",
+        "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.\nSolace can be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Afflatus Solace", 
+        Condition.WHMRetargetingFeaturesEnabledForSolace)]
+    WHM_SolaceMisery = 19000,
+    
+    [ReplaceSkill(WHM.Cure2)]
+    [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Cure", Condition.WHMRetargetingFeaturesEnabledForCure)]
+    WHM_CureSync = 19002,
+    #endregion
+    
+    #region Mitigation Features
+
+    [ReplaceSkill(WHM.Aquaveil)]
+    [CustomComboInfo("Mitigation Feature - Single Target", "Changes Aquaveil into Tetragrammaton and/or Divine Benison after use.\nEach action can be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Aquaveil (and optionally Tetra and Benison)", Condition.WHMRetargetingFeaturesEnabledForSTMit)]
+    WHM_Mit_ST = 19041,
+    
+    [ReplaceSkill(WHM.Asylum)]
+    [CustomComboInfo("Mitigation Feature - AoE", "Changes Asylum into Temperance and then Divine Caress after use.\nCan be Retargeted with the Retargeting Features below.", WHM.JobID)]
+    [PossiblyRetargeted("Retargeting Features below, Enable Asylum", Condition.WHMRetargetingFeaturesEnabledForAoEMit)]
+    WHM_Mit_AoE = 19040,
 
     #endregion
 
@@ -8235,6 +8209,31 @@ public enum CustomComboPreset
     [Retargeted(WHM.DivineBenison)]
     WHM_Re_DivineBenison = 19035,
 
+    #endregion
+    
+    #region Raidwide Heals
+    
+    [CustomComboInfo("Boss Raidwide Options",
+        "Collection of tools designed to try and cast during a raidwide attack when detected." +
+        "\nThis will work for most, but not all raidwide attacks and is no substitute for learning the fight", WHM.JobID)]
+    WHM_Raidwide = 19220,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Asylum Option", "Will try to Weave Asylum when a raidwide casting. \nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Asylum = 19221,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide Temperance Combo Option",
+        "Will try to Weave Temperance and Divine Caress when a raidwide casting. " +
+        "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_Temperance = 19222,
+    
+    [ParentCombo(WHM_Raidwide)]
+    [CustomComboInfo("RaidWide LiturgyOfTheBell Option",
+        "Will try to weave LiturgyOfTheBell when a raidwide casting. " +
+        "\nWill be used in all 4 main combos.", WHM.JobID)]
+    WHM_Raidwide_LiturgyOfTheBell = 19223,
+    
     #endregion
 
     #region Variants

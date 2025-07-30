@@ -702,6 +702,19 @@ internal partial class WHM : Healer
             if (IsEnabled(Preset.WHM_Re_Aquaveil))
                 Aquaveil.Retarget(healStack, dontCull: true);
 
+            if (IsEnabled(Preset.WHM_Re_Asylum))
+            {
+                var asylumTarget =
+                    (WHM_AsylumOptions[0]
+                        ? SimpleTarget.HardTarget.IfHostile()
+                        : null) ??
+                    (WHM_AsylumOptions[1]
+                        ? SimpleTarget.HardTarget.IfFriendly()
+                        : null) ??
+                    SimpleTarget.Self;
+                Asylum.Retarget(asylumTarget, dontCull: true);
+            }
+
             if (IsEnabled(Preset.WHM_Re_LiturgyOfTheBell))
             {
                 var bellTarget =
@@ -714,7 +727,7 @@ internal partial class WHM : Healer
                     SimpleTarget.Self;
                 LiturgyOfTheBell.Retarget(bellTarget, dontCull: true);
             }
-
+            
             if (IsEnabled(Preset.WHM_Re_Cure3))
                 Cure3.Retarget(healStack, dontCull: true);
 
