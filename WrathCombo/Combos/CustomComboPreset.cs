@@ -1116,8 +1116,8 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire to Despair", "Replaces Fire  with Despair when in Astral Fire and below 2400 MP.", BLM.JobID)]
     BLM_Fire1Despair = 2065,
 
-    [ReplaceSkill(BLM.Blizzard4)]
-    [CustomComboInfo("Blizzard 4 to Despair", "Replaces Blizzard 4 with Despair when in Astral Fire.", BLM.JobID)]
+    [ReplaceSkill(BLM.Blizzard4, BLM.Blizzard3)]
+    [CustomComboInfo("Blizzard 3/4 to Despair", "Replaces Blizzard 3/4 with Despair when in Astral Fire.", BLM.JobID)]
     BLM_Blizzard4toDespair = 2060,
     
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]

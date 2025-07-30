@@ -650,7 +650,7 @@ internal partial class BLM : Caster
                           (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
                            LevelChecked(Paradox) && !ActiveParadox ||
                            !InCombat() && LevelChecked(Fire4) ||
-                           IcePhase ||
+                           IcePhase && !ActiveParadox ||
                            !LevelChecked(Fire4) && HasStatusEffect(Buffs.Firestarter)) &&
                           !JustUsed(Fire3) => Fire3,
 
@@ -701,9 +701,12 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Blizzard4toDespair;
         protected override uint Invoke(uint actionID) =>
-            actionID is Blizzard4 && FirePhase && LevelChecked(Despair)
-                ? Despair
-                : actionID;
+            actionID switch
+            {
+                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) => Despair,
+                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) => Despair,
+                var _ => actionID
+            };
     }
 
     internal class BLM_Fire1Despair : CustomCombo
