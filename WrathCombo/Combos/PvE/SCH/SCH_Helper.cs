@@ -29,7 +29,7 @@ internal partial class SCH
         BroilList = [Ruin, Broil, Broil2, Broil3, Broil4],
         AetherflowList = [EnergyDrain, Lustrate, SacredSoil, Indomitability, Excogitation],
         ReplacedActionsList = [Ruin, Broil, Broil2, Broil3, Broil4, Bio, Biolysis, Bio2, Ruin2, Succor, Concitation, Accession, Physick], //Used for Hidden Features Retarget Sacred Soil
-        FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph];
+        FairyList = [WhisperingDawn, FeyBlessing, FeyIllumination, Dissipation, Aetherpact, SummonSeraph, Seraphism];
     #endregion
     internal static SCHGauge Gauge => GetJobGauge<SCHGauge>();
     internal static IBattleChara? AetherPactTarget => Svc.Objects.Where(x => x is IBattleChara chara && chara.StatusList.Any(y => y.StatusId == 1223 && y.SourceObject.GameObjectId == Svc.Buddies.PetBuddy.ObjectId)).Cast<IBattleChara>().FirstOrDefault();
