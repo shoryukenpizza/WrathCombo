@@ -134,8 +134,7 @@ internal class Debug : ConfigWindow, IDisposable
         // Custom 2-Column Styling
         static void CustomStyleText(string firstColumn, object? secondColumn, bool useMonofont = false, Vector4? optionalColor = null)
         {
-            byte* nullPtr = null;
-            ImGui.Columns(2, nullPtr, false);
+            ImGui.Columns(2, (byte*)null, false);
             if (!string.IsNullOrEmpty(firstColumn))
             {
                 ImGui.TextUnformatted(firstColumn);
