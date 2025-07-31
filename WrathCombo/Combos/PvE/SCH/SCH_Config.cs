@@ -140,11 +140,13 @@ internal partial class SCH
 
                 case Preset.SCH_ST_Heal_Excogitation:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ExcogitationOption, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(SCH_ST_Heal_ExcogitationBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SCH_ST_Heals_Priority, 8, 1, $"{Excogitation.ActionName()} Priority: ");
                     break;
 
                 case Preset.SCH_ST_Heal_Protraction:
                     DrawSliderInt(0, 100, SCH_ST_Heal_ProtractionOption, "Start using when below HP %. Set to 100 to disable this check");
+                    DrawAdditionalBoolChoice(SCH_ST_Heal_ProtractionBossOption, "Not on Bosses", "Will not use on ST in Boss encounters.");
                     DrawPriorityInput(SCH_ST_Heals_Priority, 8, 2, $"{Protraction.ActionName()} Priority: ");
                     break;
 
@@ -391,7 +393,9 @@ internal partial class SCH
             SCH_ST_Heal_WhisperingDawnBossOption = new("SCH_ST_Heal_WhisperingDawnBossOption"),
             SCH_ST_Heal_FeyIlluminationBossOption = new("SCH_ST_Heal_FeyIlluminationBossOption"),
             SCH_ST_Heal_FeyBlessingBossOption = new("SCH_ST_Heal_FeyBlessingBossOption"),
-            SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation");
+            SCH_AoE_Heal_Indomitability_Recitation = new("SCH_AoE_Heal_Indomitability_Recitation"),
+            SCH_ST_Heal_ExcogitationBossOption = new("SCH_ST_Heal_ExcogitationBossOption"),
+            SCH_ST_Heal_ProtractionBossOption = new("SCH_ST_Heal_ProtractionBossOption");
 
         public static UserBoolArray
             SCH_ST_Heal_AldoquimOpts = new("SCH_ST_Heal_AldoquimOpts"),

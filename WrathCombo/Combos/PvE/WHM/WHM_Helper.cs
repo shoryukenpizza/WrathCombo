@@ -101,7 +101,8 @@ internal partial class WHM
             case 3:
                 action = Aquaveil;
                 enabled = IsEnabled(Preset.WHM_STHeals_Aquaveil) &&
-                          (!WHM_STHeals_AquaveilWeave || CanWeave());
+                          (!WHM_STHeals_AquaveilOptions[1] || !InBossEncounter()) &&
+                          (!WHM_STHeals_AquaveilOptions[0] || CanWeave());
                 return WHM_STHeals_AquaveilHP;
             case 4:
                 action = AfflatusSolace;

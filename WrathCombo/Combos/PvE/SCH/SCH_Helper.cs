@@ -128,11 +128,13 @@ internal partial class SCH
                 return SCH_ST_Heal_LustrateOption;
             case 1:
                 action = Excogitation;
-                enabled = IsEnabled(Preset.SCH_ST_Heal_Excogitation) && (HasAetherflow || HasStatusEffect(Buffs.Recitation));
+                enabled = IsEnabled(Preset.SCH_ST_Heal_Excogitation) && (HasAetherflow || HasStatusEffect(Buffs.Recitation)) &&
+                          (!SCH_ST_Heal_ExcogitationBossOption || !InBossEncounter());;
                 return SCH_ST_Heal_ExcogitationOption;
             case 2:
                 action = Protraction;
-                enabled = IsEnabled(Preset.SCH_ST_Heal_Protraction);
+                enabled = IsEnabled(Preset.SCH_ST_Heal_Protraction) &&
+                          (!SCH_ST_Heal_ProtractionBossOption || !InBossEncounter());
                 return SCH_ST_Heal_ProtractionOption;
             case 3:
                 action = Aetherpact;
