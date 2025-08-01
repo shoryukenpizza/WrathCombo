@@ -3751,11 +3751,11 @@ public enum CustomComboPreset
     MNK_ST_AdvancedMode = 9005,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo("Meditation Option", "Adds Meditation to the rotation", MNK.JobID)]
+    [CustomComboInfo("Steeled / Forbidden Meditation Option", "Adds Steeled / Forbidden Meditation to the rotation", MNK.JobID)]
     MNK_STUseMeditation = 9007,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo("The Forbidden Chakra Option", "Adds The Forbidden Chakra to the rotation", MNK.JobID)]
+    [CustomComboInfo("Steeled Peak / The Forbidden Chakra Option", "Adds Steeled Peak / The Forbidden Chakra to the rotation", MNK.JobID)]
     MNK_STUseTheForbiddenChakra = 9012,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
@@ -3818,11 +3818,11 @@ public enum CustomComboPreset
     MNK_AOE_AdvancedMode = 9027,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Meditation Option", "Adds Meditation to the rotation", MNK.JobID)]
+    [CustomComboInfo("Inspirited / Enlightened Meditation Option", "Adds Inspirited / Enlightened Meditation to the rotation", MNK.JobID)]
     MNK_AoEUseMeditation = 9028,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Howling Fist Option", "Adds Howling Fist to the rotation", MNK.JobID)]
+    [CustomComboInfo("Howling Fist / Enlightenment Option", "Adds Howling Fist / Enlightenment to the rotation", MNK.JobID)]
     MNK_AoEUseHowlingFist = 9033,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
