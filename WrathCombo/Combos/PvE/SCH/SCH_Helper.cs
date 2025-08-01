@@ -348,6 +348,7 @@ internal partial class SCH
             SacredSoil = 299,
             Dissipation = 791,
             EmergencyTactics = 792,
+            Excogitation =1220,
             Recitation = 1896,
             SeraphicVeil = 1917,
             Catalyze = 1918,
