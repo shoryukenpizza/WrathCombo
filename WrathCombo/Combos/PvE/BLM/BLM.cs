@@ -73,7 +73,7 @@ internal partial class BLM : Caster
 
             if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
                 CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                ((ThunderDebuffST is null && ThunderDebuffAoE is null) ||
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                  ThunderDebuffST?.RemainingTime <= 3 ||
                  ThunderDebuffAoE?.RemainingTime <= 3) &&
                 GetTargetHPPercent() > 0)
@@ -113,7 +113,7 @@ internal partial class BLM : Caster
             if (FirePhase)
             {
                 // TODO: Revisit when Raid Buff checks are in place
-                if ((PolyglotStacks > 1))
+                if (PolyglotStacks > 1)
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -233,7 +233,7 @@ internal partial class BLM : Caster
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                         !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
                         (BLM_ST_Triplecast_SubOption == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
-                        ((BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement) ||
+                        (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement ||
                          !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                         return Triplecast;
 
@@ -261,7 +261,7 @@ internal partial class BLM : Caster
                             ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                             !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
                             (BLM_ST_Triplecast_SubOption == 0 || !HasStatusEffect(Buffs.LeyLines)) &&
-                            ((BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement) ||
+                            (BLM_ST_MovementOption[0] && GetRemainingCharges(Triplecast) > BLM_ST_Triplecast_Movement ||
                              !BLM_ST_MovementOption[0]) && JustUsed(Despair) && !ActionReady(Manafont))
                             return Triplecast;
                     }
@@ -290,7 +290,7 @@ internal partial class BLM : Caster
                 int hpThreshold = BLM_ST_Thunder_SubOption == 1 || !InBossEncounter() ? BLM_ST_ThunderOption : 0;
 
                 if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                    ((ThunderDebuffST is null && ThunderDebuffAoE is null) ||
+                    (ThunderDebuffST is null && ThunderDebuffAoE is null ||
                      ThunderDebuffST?.RemainingTime <= refreshTimer ||
                      ThunderDebuffAoE?.RemainingTime <= refreshTimer) &&
                     GetTargetHPPercent() > hpThreshold)
@@ -318,11 +318,11 @@ internal partial class BLM : Caster
             {
                 // TODO: Revisit when Raid Buff checks are in place
                 if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                    ((BLM_ST_MovementOption[3] &&
-                      PolyglotStacks > BLM_ST_Polyglot_Movement &&
-                      PolyglotStacks > BLM_ST_Polyglot_Save) ||
-                     (!BLM_ST_MovementOption[3] &&
-                      PolyglotStacks > BLM_ST_Polyglot_Save)))
+                    (BLM_ST_MovementOption[3] &&
+                     PolyglotStacks > BLM_ST_Polyglot_Movement &&
+                     PolyglotStacks > BLM_ST_Polyglot_Save ||
+                     !BLM_ST_MovementOption[3] &&
+                     PolyglotStacks > BLM_ST_Polyglot_Save))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -442,7 +442,7 @@ internal partial class BLM : Caster
             if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
                 GetTargetHPPercent() > 1 &&
                 CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
-                ((ThunderDebuffAoE is null && ThunderDebuffST is null) ||
+                (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
                 (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
@@ -542,8 +542,8 @@ internal partial class BLM : Caster
             if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
                 HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
                 CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
-                (GetTargetHPPercent() > BLM_AoE_ThunderHP) &&
-                ((ThunderDebuffAoE is null && ThunderDebuffST is null) ||
+                GetTargetHPPercent() > BLM_AoE_ThunderHP &&
+                (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
                  ThunderDebuffST?.RemainingTime <= 3) &&
                 (EndOfFirePhase || EndOfIcePhase || EndOfIcePhaseAoEMaxLevel))
