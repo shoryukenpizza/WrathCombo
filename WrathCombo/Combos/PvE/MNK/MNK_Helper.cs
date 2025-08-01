@@ -84,7 +84,7 @@ internal partial class MNK
         ActionReady(RiddleOfFire) &&
         !HasStatusEffect(Buffs.FiresRumination) &&
         (JustUsed(Brotherhood, GCD) ||
-         (GetCooldownRemainingTime(Brotherhood) is > 50 and < 65) ||
+         GetCooldownRemainingTime(Brotherhood) is > 50 and < 65 ||
          !LevelChecked(Brotherhood) ||
          HasStatusEffect(Buffs.Brotherhood));
 
