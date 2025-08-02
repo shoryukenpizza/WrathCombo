@@ -333,7 +333,7 @@ internal static class SimpleTarget
         Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange())
-            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .OrderBy(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
 
     public static IGameObject? LowestHPPEnemyIfNotInvuln =>
@@ -341,7 +341,7 @@ internal static class SimpleTarget
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange() && x.IsNotInvincible())
-            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .OrderBy(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
 
     public static IGameObject? InterruptableEnemy =>
@@ -384,14 +384,14 @@ internal static class SimpleTarget
         return Svc.Objects
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(dotAction) &&
-                        x.CurrentHp * 100u / x.MaxHp > minHPPercent &&
+                        (float)(x.CurrentHp / x.MaxHp) * 100f > minHPPercent &&
                         !CustomComboFunctions.JustUsedOn(dotAction, x) &&
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff) &&
                         x.IsWithinRange(action.Range))
             .OrderBy(x => CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff, x))
-            .ThenByDescending(x => x.CurrentHp / x.MaxHp * 100)
+            .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
     }
 
