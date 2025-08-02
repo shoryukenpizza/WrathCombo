@@ -587,7 +587,6 @@ internal partial class WHM : Healer
                     ? Cure.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal)
                     : Cure;
 
-            //Svc.Log.Debug($"{SimpleTarget.Stack.AllyToHeal.Name}");
             return IsEnabled(Preset.WHM_Re_Cure)
                 ? Cure2.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal)
                 : Cure2;
