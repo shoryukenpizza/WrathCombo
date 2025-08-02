@@ -450,7 +450,7 @@ internal static class SimpleTarget
             .GetPartyMembers()
             .Select(x => x.BattleChara)
             .Where(x => x is not null && x.IsDead() == false)
-            .OrderBy(x => x.CurrentHp / x.MaxHp * 100)
+            .OrderBy(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
 
     public static IGameObject? LowestHPPAllyIfMissingHP =>

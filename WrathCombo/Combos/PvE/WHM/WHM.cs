@@ -8,6 +8,7 @@ using WrathCombo.Extensions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
+using ECommons.DalamudServices;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable UnusedType.Global
@@ -578,7 +579,7 @@ internal partial class WHM : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Cure)
+            if (actionID is not Cure2)
                 return actionID;
 
             if (!LevelChecked(Cure2))
@@ -586,8 +587,9 @@ internal partial class WHM : Healer
                     ? Cure.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal)
                     : Cure;
 
+            //Svc.Log.Debug($"{SimpleTarget.Stack.AllyToHeal.Name}");
             return IsEnabled(Preset.WHM_Re_Cure)
-                ? Cure2.Retarget(SimpleTarget.Stack.AllyToHeal)
+                ? Cure2.Retarget(Cure2, SimpleTarget.Stack.AllyToHeal)
                 : Cure2;
         }
     }
