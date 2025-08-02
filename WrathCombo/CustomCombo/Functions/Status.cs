@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -25,7 +24,7 @@ namespace WrathCombo.CustomComboNS.Functions
             target ??= LocalPlayer;
 
             // Use LocalPlayer's GameObjectId if playerOwned, null otherwise
-            ulong? sourceId = !anyOwner ? LocalPlayer.GameObjectId : null; 
+            ulong? sourceId = !anyOwner ? LocalPlayer.GameObjectId : null;
 
             return Service.ComboCache.GetStatus(statusId, target, sourceId);
         }
@@ -78,7 +77,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="target">Optional Target</param>
         /// <param name="anyOwner">Check if the Player owns/created the status, true means anyone owns</param>
         /// <returns>Float representing remaining status effect time</returns>
-        public unsafe static float GetStatusEffectRemainingTime(ushort effectId, IGameObject? target = null, bool anyOwner = false) => 
+        public unsafe static float GetStatusEffectRemainingTime(ushort effectId, IGameObject? target = null, bool anyOwner = false) =>
             GetStatusEffectRemainingTime(GetStatusEffect(effectId, target, anyOwner));
 
         /// <summary>
@@ -232,6 +231,10 @@ namespace WrathCombo.CustomComboNS.Functions
                     if (targetID is (13298 or 13299) && Svc.Objects.Any(y => y.DataId is 13297 && !y.IsDead))
                         return true;
 
+                    return false;
+                case 821: //Dohn Mheg Final Boss Lyre
+                    if (targetID is 3939 && !HasStatusEffect(386))
+                        return true; //Unfooled means you can attack the Lyre
                     return false;
             }
 
