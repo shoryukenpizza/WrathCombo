@@ -513,8 +513,8 @@ internal partial class MNK : Melee
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Retarget_Thunderclap;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Thunderclap 
-                ? Thunderclap.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true) 
+            actionID is Thunderclap
+                ? Thunderclap.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true)
                 : actionID;
     }
 
