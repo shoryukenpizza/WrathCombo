@@ -3905,14 +3905,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Perfect Balance Feature", "Perfect Balance becomes Masterful Blitz while you have 3 Beast Chakra.", MNK.JobID)]
     MNK_PerfectBalance = 9023,
 
-    [ReplaceSkill(MNK.RiddleOfFire)]
-    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Riddle of Fire with Brotherhood when Riddle of Fire is on cooldown.", MNK.JobID)]
-    MNK_Riddle_Brotherhood = 9024,
-
-    [ReplaceSkill(MNK.RiddleOfFire)]
-    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Brotherhood with Riddle of Fire when Brotherhood is on cooldown.", MNK.JobID)]
-    MNK_Brotherhood_Riddle = 9041,
-
+    [ReplaceSkill(MNK.RiddleOfFire, MNK.Brotherhood)]
+    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Riddle of Fire or Brotherhood when the other is on cooldown.", MNK.JobID)]
+    MNK_Brotherhood_Riddle = 9024,
+    
     [ReplaceSkill(MNK.PerfectBalance)]
     [ConflictingCombos(MNK_PerfectBalance)]
     [CustomComboInfo("Perfect Balance Protection", "Replaces Perfect Balance with Savage Blade when you already have Perfect Balance active.", MNK.JobID)]

@@ -530,26 +530,17 @@ internal partial class MNK : Melee
                 : actionID;
     }
 
-    internal class MNK_Riddle_Brotherhood : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Riddle_Brotherhood;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is RiddleOfFire &&
-            ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire)
-                ? Brotherhood
-                : actionID;
-    }
-
     internal class MNK_Brotherhood_Riddle : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Brotherhood_Riddle;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Brotherhood &&
-            ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood)
-                ? RiddleOfFire
-                : actionID;
+            actionID switch
+            {
+                Brotherhood when MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood) => RiddleOfFire,
+                RiddleOfFire when MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire) => Brotherhood,
+                var _ => actionID
+            };
     }
 
     internal class MNK_PerfectBalanceProtection : CustomCombo
