@@ -24,12 +24,20 @@ internal partial class RDM
             RDM_AoE_Corpsacorps_Distance = new("RDM_AoE_Corpsacorps_Distance", 25),
             RDM_AoE_Corpsacorps_Time = new("RDM_AoE_Corpsacorps_Time", 0),
             RDM_Opener_Selection = new("RDM_Opener_Selection", 0),
+            RDM_Riposte_Weaves_Options_EngagementCharges = new ("RDM_Riposte_Weaves_Options_EngagementCharges", 0),
+            RDM_Riposte_Weaves_Options_CorpsCharges = new ("RDM_Riposte_Weaves_Options_CorpsCharges", 0),
+            RDM_Riposte_Weaves_Options_Corpsacorps_Distance = new ("RDM_Riposte_Weaves_Options_Corpsacorps_Distance", 25),
+            RDM_Moulinet_Weaves_Options_EngagementCharges = new("RDM_Moulinet_Weaves_Options_EngagementCharges", 0),
+            RDM_Moulinet_Weaves_Options_CorpsCharges = new("RDM_Moulinet_Weaves_Options_CorpsCharges", 0),
+            RDM_Moulinet_Weaves_Options_Corpsacorps_Distance = new("RDM_Moulinet_Weaves_Options_Corpsacorps_Distance", 25),
             RDM_OGCDs_Options_CorpsCharges = new("RDM_OGCDs_Options_CorpsCharges", 0),
             RDM_OGCDs_Options_EngagementCharges = new("RDM_OGCDs_Options_EngagementCharges", 0),
             RDM_OGCDs_Options_Corpsacorps_Distance = new("RDM_OGCDs_Options_Corpsacorps_Distance", 25);
         
         internal static UserBoolArray
-            RDM_OGCDs_Options = new("RDM_OGCDs_Options");
+            RDM_OGCDs_Options = new("RDM_OGCDs_Options"),
+            RDM_Riposte_Weaves_Options = new("RDM_Riposte_Weaves_Options"),
+            RDM_Moulinet_Weaves_Options = new("RDM_Moulinet_Weaves_Options");
         
         #endregion
 
@@ -97,6 +105,46 @@ internal partial class RDM
                 #endregion
                 
                 #region Standalones
+                case Preset.RDM_Riposte_Weaves:
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Fleche", "Adds to the OGCD button", 6, 0);
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Contre Sixte", "Adds to the OGCD button", 6, 1);
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Vice Of Thorns", "Adds to the OGCD button", 6, 2);
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Prefulgence", "Adds to the OGCD button", 6, 3);
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Engagement", "Adds to the OGCD button", 6, 4);
+                    DrawHorizontalMultiChoice(RDM_Riposte_Weaves_Options,"Corps-a-corps", "Adds to the OGCD button", 6, 5);
+
+                    if (RDM_Riposte_Weaves_Options[4])
+                    {
+                        DrawSliderInt(0, 1, RDM_Riposte_Weaves_Options_EngagementCharges, "How many charges of Engagement to keep for manual use");
+                    }
+                    
+                    if (RDM_Riposte_Weaves_Options[5])
+                    {
+                        DrawSliderInt(0, 1, RDM_Riposte_Weaves_Options_CorpsCharges, "How many charges of Corps to keep for manual use");
+                        DrawSliderInt(0, 25, RDM_Riposte_Weaves_Options_Corpsacorps_Distance, "Use Corps when distance is less than or equal to:");
+                    }
+                    break;
+                
+                case Preset.RDM_Moulinet_Weaves:
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Fleche", "Adds to the OGCD button", 6, 0);
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Contre Sixte", "Adds to the OGCD button", 6, 1);
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Vice Of Thorns", "Adds to the OGCD button", 6, 2);
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Prefulgence", "Adds to the OGCD button", 6, 3);
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Engagement", "Adds to the OGCD button", 6, 4);
+                    DrawHorizontalMultiChoice(RDM_Moulinet_Weaves_Options,"Corps-a-corps", "Adds to the OGCD button", 6, 5);
+
+                    if (RDM_Moulinet_Weaves_Options[4])
+                    {
+                        DrawSliderInt(0, 1, RDM_Moulinet_Weaves_Options_EngagementCharges, "How many charges of Engagement to keep for manual use");
+                    }
+                    
+                    if (RDM_Moulinet_Weaves_Options[5])
+                    {
+                        DrawSliderInt(0, 1, RDM_Moulinet_Weaves_Options_CorpsCharges, "How many charges of Corps to keep for manual use");
+                        DrawSliderInt(0, 25, RDM_Moulinet_Weaves_Options_Corpsacorps_Distance, "Use Corps when distance is less than or equal to:");
+                    }
+                    break;
+                    
                 case Preset.RDM_OGCDs:
                     DrawHorizontalMultiChoice(RDM_OGCDs_Options,"Contre Sixte", "Adds to the OGCD button", 5, 0);
                     DrawHorizontalMultiChoice(RDM_OGCDs_Options,"Vice Of Thorns", "Adds to the OGCD button", 5, 1);

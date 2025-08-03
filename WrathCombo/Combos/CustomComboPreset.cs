@@ -5464,6 +5464,10 @@ public enum CustomComboPreset
     RDM_Riposte = 13403,
     
     [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Riposte OGCD Weave Options", "Weave the following OGCDS in the melee combo", RDM.JobID)]
+    RDM_Riposte_Weaves = 134230,
+    
+    [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
         "Use Corp-a-corps when out of melee range and you have enough mana or Magicked Swordplay to start the melee combo", RDM.JobID)]
     RDM_Riposte_GapCloser = 13424,
@@ -5479,6 +5483,10 @@ public enum CustomComboPreset
     [ReplaceSkill(RDM.Moulinet)]
     [CustomComboInfo("Moulinet Melee Combo", "Replaces Moulinet with the basic melee aoe combo.", RDM.JobID)]
     RDM_Moulinet= 13425,
+    
+    [ParentCombo(RDM_Moulinet)]
+    [CustomComboInfo("Moulinet OGCD Weave Options", "Weave the following OGCDS in the melee combo", RDM.JobID)]
+    RDM_Moulinet_Weaves = 13431,
     
     [ParentCombo(RDM_Moulinet)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
@@ -5557,7 +5565,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13423
+    //Last Used 13431
     #endregion
 
     #endregion

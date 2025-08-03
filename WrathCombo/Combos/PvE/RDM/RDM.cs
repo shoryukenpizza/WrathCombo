@@ -556,6 +556,25 @@ internal partial class RDM : Caster
                 (HasEnoughManaToStartStandalone || CanMagickedSwordplay) && !InMeleeRange()) 
                 return Corpsacorps;
             
+            if (IsEnabled(Preset.RDM_Riposte_Weaves) && CanWeave())
+            {
+                if (RDM_Riposte_Weaves_Options[0] && ActionReady(Fleche))
+                    return Fleche;
+                if (RDM_Riposte_Weaves_Options[1] && ActionReady(ContreSixte))
+                    return ContreSixte;
+                if (RDM_Riposte_Weaves_Options[2] && HasStatusEffect(Buffs.ThornedFlourish))
+                    return ViceOfThorns;
+                if (RDM_Riposte_Weaves_Options[3] && CanPrefulgence)
+                    return Prefulgence;
+                if (RDM_Riposte_Weaves_Options[4] && InMeleeRange() &&
+                    GetRemainingCharges(Engagement) > RDM_Riposte_Weaves_Options_EngagementCharges)
+                    return Engagement;
+                if (RDM_Riposte_Weaves_Options[5] &&
+                    GetRemainingCharges(Corpsacorps) > RDM_Riposte_Weaves_Options_CorpsCharges && 
+                    (InMeleeRange() || GetTargetDistance() <= RDM_Riposte_Weaves_Options_Corpsacorps_Distance))
+                    return Corpsacorps;
+            }
+            
             if (IsEnabled(Preset.RDM_Riposte_Finisher))
             {
                 if (ComboAction is Scorch && LevelChecked(Resolution) || ComboAction is Verholy or Verflare && LevelChecked(Scorch)) 
@@ -593,6 +612,25 @@ internal partial class RDM : Caster
             if (IsEnabled(Preset.RDM_Moulinet_GapCloser) && ActionReady(Corpsacorps) && 
                 (HasEnoughManaToStartStandalone || CanMagickedSwordplay) && !InMeleeRange()) 
                 return Corpsacorps;
+            
+            if (IsEnabled(Preset.RDM_Moulinet_Weaves) && CanWeave())
+            {
+                if (RDM_Moulinet_Weaves_Options[0] && ActionReady(Fleche))
+                    return Fleche;
+                if (RDM_Moulinet_Weaves_Options[1] && ActionReady(ContreSixte))
+                    return ContreSixte;
+                if (RDM_Moulinet_Weaves_Options[2] && HasStatusEffect(Buffs.ThornedFlourish))
+                    return ViceOfThorns;
+                if (RDM_Moulinet_Weaves_Options[3] && CanPrefulgence)
+                    return Prefulgence;
+                if (RDM_Moulinet_Weaves_Options[4] && InMeleeRange() &&
+                    GetRemainingCharges(Engagement) > RDM_Moulinet_Weaves_Options_EngagementCharges)
+                    return Engagement;
+                if (RDM_Moulinet_Weaves_Options[5] &&
+                    GetRemainingCharges(Corpsacorps) > RDM_Moulinet_Weaves_Options_CorpsCharges && 
+                    (InMeleeRange() || GetTargetDistance() <= RDM_Moulinet_Weaves_Options_Corpsacorps_Distance))
+                    return Corpsacorps;
+            }
             
             if (IsEnabled(Preset.RDM_Moulinet_Finisher))
             {
