@@ -3740,6 +3740,14 @@ public enum CustomComboPreset
     MNK_AOE_SimpleMode = 9003,
 
     #endregion
+    
+    #region Movement
+
+    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI/Field Mouseover", MNK.JobID)]
+    [Retargeted(MNK.Thunderclap)]
+    MNK_Retarget_Thunderclap = 9043,
+    
+    #endregion
 
     #region Monk Advanced ST
 
@@ -3807,7 +3815,7 @@ public enum CustomComboPreset
     MNK_ST_ComboHeals = 9018,
 
     #endregion
-
+    
     #region Monk Advanced AOE
 
     [AutoAction(true, false)]
@@ -3889,20 +3897,6 @@ public enum CustomComboPreset
     MNK_BC_COEURL = 9022,
 
     #endregion
-
-    #region Variant
-
-    [Variant]
-    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", MNK.JobID)]
-    MNK_Variant_Rampart = 9025,
-
-    [Variant]
-    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", MNK.JobID)]
-    MNK_Variant_Cure = 9026,
-
-    #endregion
     
     #region Misc
 
@@ -3926,6 +3920,20 @@ public enum CustomComboPreset
     
     #endregion
 
+    #region Variant
+
+    [Variant]
+    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
+    [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", MNK.JobID)]
+    MNK_Variant_Rampart = 9025,
+
+    [Variant]
+    [VariantParent(MNK_ST_SimpleMode, MNK_ST_AdvancedMode, MNK_AOE_SimpleMode, MNK_AOE_AdvancedMode)]
+    [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", MNK.JobID)]
+    MNK_Variant_Cure = 9026,
+
+    #endregion
+
     #region Hidden Features
 
     [Hidden]
@@ -3939,7 +3947,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 9042
+    // Last value = 9043
 
     #endregion
 

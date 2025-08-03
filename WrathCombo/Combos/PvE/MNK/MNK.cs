@@ -1,3 +1,4 @@
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.MNK.Config;
 namespace WrathCombo.Combos.PvE;
@@ -505,6 +506,16 @@ internal partial class MNK : Melee
 
             return actionID;
         }
+    }
+
+    internal class MNK_Retarget_Thunderclap : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Retarget_Thunderclap;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is Thunderclap 
+                ? Thunderclap.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true) 
+                : actionID;
     }
 
     internal class MNK_PerfectBalance : CustomCombo
