@@ -52,7 +52,7 @@ internal partial class BLM
             : Blizzard;
 
     internal static bool HasMaxUmbralHeartStacks =>
-        !TraitLevelChecked(Traits.UmbralHeart) || UmbralHearts is 3; //Returns true before you can have Umbral Hearts out of design
+        UmbralHearts is 3;
 
     internal static bool HasPolyglotStacks() =>
         PolyglotStacks > 0;

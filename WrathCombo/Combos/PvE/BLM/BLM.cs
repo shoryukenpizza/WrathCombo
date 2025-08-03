@@ -591,6 +591,7 @@ internal partial class BLM : Caster
                         ActionReady(Transpose))
                         return Transpose;
                 }
+
                 if (LevelChecked(Freeze))
                     return IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) &&
                            LevelChecked(Blizzard4) && HasBattleTarget() &&
