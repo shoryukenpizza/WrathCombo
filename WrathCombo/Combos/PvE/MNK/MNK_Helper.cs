@@ -104,22 +104,26 @@ internal partial class MNK
 
     internal static bool UsePerfectBalanceST()
     {
-        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) && !HasStatusEffect(Buffs.FormlessFist))
+        if (ActionReady(PerfectBalance) && !HasStatusEffect(Buffs.PerfectBalance) &&
+            !HasStatusEffect(Buffs.FormlessFist) && IsOriginal(MasterfulBlitz))
         {
             // Odd window
-            if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
-                !JustUsed(PerfectBalance, 20) &&
-                HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
+            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                !JustUsed(PerfectBalance, 20) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.Brotherhood))
                 return true;
 
-            // Even window
-            if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
-                (GetCooldownRemainingTime(Brotherhood) <= GCD * 2 || HasStatusEffect(Buffs.Brotherhood)) &&
-                (GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2 || HasStatusEffect(Buffs.RiddleOfFire)))
+            // Even window first use
+            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                GetCooldownRemainingTime(Brotherhood) <= GCD * 2 && GetCooldownRemainingTime(RiddleOfFire) <= GCD * 2)
+                return true;
+
+            // Even window second use
+            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
+                HasStatusEffect(Buffs.Brotherhood) && HasStatusEffect(Buffs.RiddleOfFire) && !HasStatusEffect(Buffs.FiresRumination))
                 return true;
 
             // Low level
-            if ((JustUsed(OriginalHook(Bootshine)) || JustUsed(DragonKick)) &&
+            if ((JustUsed(OriginalHook(Bootshine), GCD) || JustUsed(DragonKick, GCD)) &&
                 (HasStatusEffect(Buffs.RiddleOfFire) && !LevelChecked(Brotherhood) ||
                  !LevelChecked(RiddleOfFire)))
                 return true;

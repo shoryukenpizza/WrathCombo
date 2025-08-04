@@ -27,7 +27,7 @@ internal partial class MNK
             MNK_BH_RoF = new("MNK_BH_RoF", 0);
 
         #endregion
-        
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
