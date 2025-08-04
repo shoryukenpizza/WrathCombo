@@ -1422,7 +1422,7 @@ public enum CustomComboPreset
 
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("oGcd Option",
-        "Weave Sidewinder, Empyreal arrow, Rain of death, and Pitch perfect when available.", BRD.JobID)]
+        "Weave Sidewinder, Empyreal arrow, Bloodletter, and Pitch perfect when available.", BRD.JobID)]
     BRD_ST_Adv_oGCD = 3038,
 
     [ParentCombo(BRD_ST_AdvMode)]
