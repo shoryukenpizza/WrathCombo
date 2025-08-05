@@ -232,7 +232,7 @@ public enum AutoRotationConfigOption
 
     [ConfigValueType(typeof(bool))] AutoRezOutOfParty = 15,
     
-    [ConfigValueType(typeof(int))] SingleTargetExcogHPP = 16,
+    [ConfigValueType(typeof(int))] SingleTargetExcogHPP = 17,
 }
 
 #region Type Attribute
