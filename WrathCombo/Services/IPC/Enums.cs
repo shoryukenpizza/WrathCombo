@@ -232,6 +232,9 @@ public enum AutoRotationConfigOption
 
     /// <seealso cref="HealerSettings.AutoRezOutOfParty" />
     [ConfigValueType(typeof(bool))] AutoRezOutOfParty = 15,
+
+    /// <seealso cref="DPSSettings.DPSAoETargets" />
+    [ConfigValueType(typeof(int?))] DPSAoETargets = 16,
 }
 
 #region Type Attribute

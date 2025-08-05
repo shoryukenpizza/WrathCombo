@@ -69,6 +69,7 @@ public partial class Provider
                 arcOption.OnlyAttackInCombat => arcD.OnlyAttackInCombat,
                 arcOption.OrbwalkerIntegration => arc.OrbwalkerIntegration,
                 arcOption.AutoRezOutOfParty => arcH.AutoRezOutOfParty,
+                arcOption.DPSAoETargets => arcD.DPSAoETargets,
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(passedOption), passedOption, null),
             };

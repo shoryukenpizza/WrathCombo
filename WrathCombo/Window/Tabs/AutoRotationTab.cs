@@ -92,6 +92,8 @@ namespace WrathCombo.Window.Tabs
                     ImGuiComponents.HelpMarker("For all other targeting modes, AoE will target based on highest number of targets hit. In manual mode, it will only do this if you tick this box.");
                 }
 
+                
+                P.UIHelper.ShowIPCControlledIndicatorIfNeeded("DPSAoETargets");
                 var input = ImGuiEx.InputInt(100f.Scale(), "Targets Required for AoE Damage Features", ref cfg.DPSSettings.DPSAoETargets);
                 if (input)
                 {

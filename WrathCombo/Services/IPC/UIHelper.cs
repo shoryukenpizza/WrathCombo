@@ -595,6 +595,12 @@ public class UIHelper(Leasing leasing)
         return false;
     }
 
+    private bool ShowIPCControlledNumberInput
+        (string label, ref int? backupVar)
+    {
+        
+    }
+
     /// <summary>
     ///     Button click method for Indicator to cancel plugin control.
     /// </summary>
