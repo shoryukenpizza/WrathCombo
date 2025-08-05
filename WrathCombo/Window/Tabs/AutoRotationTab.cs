@@ -94,7 +94,8 @@ namespace WrathCombo.Window.Tabs
 
                 
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded("DPSAoETargets");
-                var input = ImGuiEx.InputInt(100f.Scale(), "Targets Required for AoE Damage Features", ref cfg.DPSSettings.DPSAoETargets);
+                var input = P.UIHelper.ShowIPCControlledNumberInputIfNeeded(
+                    "Targets Required for AoE Damage Features", ref cfg.DPSSettings.DPSAoETargets, "DPSAoETargets");
                 if (input)
                 {
                     changed |= input;
