@@ -129,7 +129,7 @@ namespace WrathCombo.Data
 
             var invincibles = StatusSheet.Where(row => row.Value.Icon == targetIcon).Select(row => row.Key).ToHashSet();
             //Add Random Invulnerabilities not yet assigned to TerritoryType
-            invincibles.UnionWith([151, 198, 385, 469, 592, 1240, 1302, 1303, 1567, 1936, 2413, 2654, 3012, 3039, 3052, 3054, 4175]);
+            invincibles.UnionWith([151, 198, 469, 592, 1240, 1302, 1303, 1567, 1936, 2413, 2654, 3012, 3039, 3052, 3054, 4175]);
             return invincibles;
         }
 
