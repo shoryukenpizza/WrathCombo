@@ -71,11 +71,11 @@ internal partial class RPR
                 if (InBossEncounter())
                 {
                     //1st part double enshroud
-                    if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
-                        GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
-                        return true;
+                    //   if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
+                    //     GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
+                    //   return true;
 
-                    //2nd part double enshroud
+                    //Double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         (GetCooldownRemainingTime(ArcaneCircle) <= GCD || IsOffCooldown(ArcaneCircle)) &&
                         (JustUsed(VoidReaping) || JustUsed(CrossReaping)))
@@ -105,11 +105,11 @@ internal partial class RPR
                     IsNotEnabled(CustomComboPreset.RPR_ST_ArcaneCircle))
                 {
                     //1st part double enshroud
-                    if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
-                        GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
-                        return true;
+                    // if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
+                    //    GetCooldownRemainingTime(ArcaneCircle) <= GCD * 2 + 1.5 && JustUsed(Enshroud))
+                    //   return true;
 
-                    //2nd part double enshroud
+                    //Double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasStatusEffect(Buffs.Enshrouded) &&
                         (GetCooldownRemainingTime(ArcaneCircle) <= GCD || IsOffCooldown(ArcaneCircle)) &&
                         (JustUsed(VoidReaping) || JustUsed(CrossReaping)))

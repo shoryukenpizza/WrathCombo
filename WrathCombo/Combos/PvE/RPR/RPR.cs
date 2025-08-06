@@ -127,7 +127,7 @@ internal partial class RPR : Melee
                 return ShadowOfDeath;
 
             //Perfectio
-            if (HasStatusEffect(Buffs.PerfectioParata) && !IsComboExpiring(1))
+            if (HasStatusEffect(Buffs.PerfectioParata))
                 return OriginalHook(Communio);
 
             //Gibbet/Gallows
@@ -321,7 +321,7 @@ internal partial class RPR : Melee
 
             //Perfectio
             if (IsEnabled(CustomComboPreset.RPR_ST_Perfectio) &&
-                HasStatusEffect(Buffs.PerfectioParata) && !IsComboExpiring(1))
+                HasStatusEffect(Buffs.PerfectioParata))
                 return OriginalHook(Communio);
 
             //Gibbet/Gallows
