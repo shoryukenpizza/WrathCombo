@@ -626,16 +626,14 @@ public class UIHelper(Leasing leasing)
 
         ImGui.BeginGroup();
         ImGui.PushStyleColor(ImGuiCol.FrameBg, _backgroundColor);
-        ImGui.PushStyleColor(ImGuiCol.Text, _textColor);
         ImGui.PushStyleColor(ImGuiCol.TextDisabled, _textColor);
-        ImGui.PushStyleColor(ImGuiCol.SliderGrab, _backgroundColor);
 
         var _ = controlled?.state;
         ImGui.BeginDisabled();
         ImGuiEx.InputInt(100f.Scale(), label, ref _);
         ImGui.EndDisabled();
 
-        ImGui.PopStyleColor(4);
+        ImGui.PopStyleColor(2);
         ImGui.EndGroup();
 
         if (ImGui.IsItemHovered())
