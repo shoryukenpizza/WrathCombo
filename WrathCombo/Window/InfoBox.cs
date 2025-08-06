@@ -1,8 +1,8 @@
 ﻿using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using ImGuiNET;
 using System;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 
 namespace WrathCombo.Window
 {
@@ -18,7 +18,7 @@ namespace WrathCombo.Window
         public float BorderThickness { get; set; } = 2.0f;
         public int SegmentResolution { get; set; } = 10;
         public Vector2 Offset { get; set; } = Vector2.Zero;
-        public string Label { get; set; } = "";
+        public string Label { get; set; } = " "; // Can't be a completely empty string, as it causes CTDs on API13. AIP-ing it, but leaving it in place if someone wants to build it out later
         public bool AutoResize { get; set; } = true;
         private static ImDrawListPtr DrawList => ImGui.GetWindowDrawList();
         private uint ColorU32 => ImGui.GetColorU32(Color);
@@ -129,7 +129,8 @@ namespace WrathCombo.Window
             DrawList.AddLine(new Vector2(StartPosition.X + Size.X - 0.5f, StartPosition.Y + CurveRadius - 0.5f), new Vector2(StartPosition.X + Size.X - 0.5f, StartPosition.Y + Size.Y - CurveRadius + 0.5f), color, BorderThickness);
             DrawList.AddLine(new Vector2(StartPosition.X + CurveRadius - 0.5f, StartPosition.Y + Size.Y - 0.5f), new Vector2(StartPosition.X + Size.X - CurveRadius + 0.5f, StartPosition.Y + Size.Y - 0.5f), color, BorderThickness);
 
-            Vector2 textSize = ImGui.CalcTextSize(Label);
+            //Vector2 textSize = ImGui.CalcTextSize(Label); // Label was never set up with anything, and a completely empty string is causing CTDs on API13 - will AIP, in case someone wants to actually use it later
+            Vector2 textSize = Vector2.Zero;
             float textStartPadding;
             float textEndPadding;
             float textVerticalOffset;
