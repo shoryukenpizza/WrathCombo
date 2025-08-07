@@ -236,6 +236,24 @@ namespace WrathCombo.CustomComboNS.Functions
                     if (targetID is 3939 && !HasStatusEffect(386))
                         return true; //Unfooled means you can attack the Lyre
                     return false;
+                
+                case 1292: //Meso Terminal 
+                    // Bloody Headsman = 18576 a
+                    // Pale Headsman = 18577 b
+                    // Ravenous Headsman = 18578 y
+                    // Pestilent Headsman = 18579 d
+                    // Alpha = 4542 Player / 4546 Boss
+                    // Beta = 4543 Player / 4547 Boss
+                    // Gamma = 4544 Player / 4548 Boss
+                    // Delta = 4545 Player / 4549 Boss
+                    if (targetID is 18576 or 18577 or 18578 or 18579)
+                    {
+                        if (HasStatusEffect(4542)) return targetID != 18576; // Alpha
+                        if (HasStatusEffect(4543)) return targetID != 18577; // Beta
+                        if (HasStatusEffect(4544)) return targetID != 18578; // Gamma
+                        if (HasStatusEffect(4545)) return targetID != 18579; // Delta
+                    }
+                    return false;
             }
 
             // General invincibility check
