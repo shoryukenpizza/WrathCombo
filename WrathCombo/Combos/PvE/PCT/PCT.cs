@@ -28,9 +28,9 @@ internal partial class PCT : Caster
             }
             #endregion
 
-            #region Burst Window lvl 100 only
-            if (BurstPhaseReady)
-                return BurstWindow(actionID);
+            #region Burst Window
+            if (HasStatusEffect(Buffs.StarryMuse))
+                return BurstWindowStandard(actionID);
             #endregion
             
             #region Special Content
@@ -47,34 +47,33 @@ internal partial class PCT : Caster
             #endregion
 
             #region OGCD
-            // General Weaves
-            if (InCombat() && CanWeave())
+            
+            if (InCombat())
             {
-                // ScenicMuse pre-100
-                if (ScenicMuseReady && !LevelChecked(StarPrism))
+                // SubtractivePalette
+                if (PaletteReady && CanWeave())
+                    return SubtractivePalette;
+                
+                if (ScenicMuseReady && CanDelayedWeave())
                     return OriginalHook(ScenicMuse);
 
                 // LivingMuse
-                if (LivingMuseReady &&
+                if (LivingMuseReady  && CanWeave() &&
                     (!PortraitReady || GetRemainingCharges(LivingMuse) == GetMaxCharges(LivingMuse)) &&
                     (!LevelChecked(ScenicMuse) || ScenicCD > GetCooldownChargeRemainingTime(LivingMuse)))
                     return OriginalHook(LivingMuse);
 
                 // SteelMuse
-                if (SteelMuseReady &&
+                if (SteelMuseReady && CanWeave() &&
                     (SteelCD < ScenicCD || GetRemainingCharges(SteelMuse) == GetMaxCharges(SteelMuse) ||
                     !LevelChecked(ScenicMuse)))
                     return OriginalHook(SteelMuse);
 
                 // Portrait Mog or Madeen
-                if (PortraitReady &&
+                if (PortraitReady && CanWeave() &&
                     IsOffCooldown(OriginalHook(MogoftheAges)) &&
                     (ScenicCD >= 60 || !LevelChecked(ScenicMuse)))
                     return OriginalHook(MogoftheAges);
-
-                // SubtractivePalette
-                if (PaletteReady)
-                    return SubtractivePalette;
 
                 //LucidDreaming
                 if (Role.CanLucidDream(PCT_ST_AdvancedMode_LucidOption))
@@ -144,7 +143,7 @@ internal partial class PCT : Caster
                 return RainbowDrip;
 
             //Comet in Black
-            if (CometinBlack.LevelChecked() && HasStatusEffect(Buffs.MonochromeTones) && HasPaint)
+            if (CometinBlack.LevelChecked() && HasStatusEffect(Buffs.MonochromeTones) && HasPaint && ScenicCD > 10)
                 return OriginalHook(CometinBlack);
 
             //Hammer Stamp Combo
@@ -230,8 +229,8 @@ internal partial class PCT : Caster
             #endregion
 
             #region Burst Window
-            if (burstPhaseEnabled && BurstPhaseReady)
-                return BurstWindow(actionID);
+            if (burstPhaseEnabled && HasStatusEffect(Buffs.StarryMuse))
+                return BurstWindowStandard(actionID);
             #endregion
             
             #region Special Content
@@ -249,33 +248,33 @@ internal partial class PCT : Caster
 
             #region OGCD
             // General Weaves
-            if (InCombat() && CanWeave())
+            if (InCombat())
             {
+                // SubtractivePalette
+                if (paletteEnabled && CanWeave() && PaletteReady)
+                    return SubtractivePalette;
+                
                 // ScenicMuse
-                if (scenicMuseEnabled && ScenicMuseReady && (!burstPhaseEnabled || !LevelChecked(StarPrism)))
+                if (scenicMuseEnabled && ScenicMuseReady && CanDelayedWeave())
                     return OriginalHook(ScenicMuse);
                     
                 // LivingMuse
-                if (livingMuseEnabled && LivingMuseReady && 
+                if (livingMuseEnabled && LivingMuseReady && CanWeave() &&
                     (!PortraitReady || GetRemainingCharges(LivingMuse) == GetMaxCharges(LivingMuse)) &&
                     (!LevelChecked(ScenicMuse) || ScenicCD > GetCooldownChargeRemainingTime(LivingMuse)))
                     return OriginalHook(LivingMuse);
                         
                 // SteelMuse
-                if (steelMuseEnabled && SteelMuseReady &&
+                if (steelMuseEnabled && SteelMuseReady && CanWeave() &&
                     (SteelCD < ScenicCD || GetRemainingCharges(SteelMuse) == GetMaxCharges(SteelMuse) ||
                     !LevelChecked(ScenicMuse)))
                     return OriginalHook(SteelMuse);
                     
                 // Portrait Mog or Madeen
-                if (portraitEnabled && PortraitReady && 
+                if (portraitEnabled && PortraitReady && CanWeave() &&
                     IsOffCooldown(OriginalHook(MogoftheAges)) && 
                     (ScenicCD >= 60 || !LevelChecked(ScenicMuse)))
                     return OriginalHook(MogoftheAges);
-                    
-                // SubtractivePalette
-                if (paletteEnabled && PaletteReady)
-                    return SubtractivePalette;
                         
                 //LucidDreaming
                 if (lucidDreamingEnabled && Role.CanLucidDream(PCT_ST_AdvancedMode_LucidOption))
@@ -345,7 +344,7 @@ internal partial class PCT : Caster
                 return RainbowDrip;
 
             //Comet in Black
-            if (cometEnabled && CometinBlack.LevelChecked() && HasStatusEffect(Buffs.MonochromeTones) && HasPaint)
+            if (cometEnabled && CometinBlack.LevelChecked() && HasStatusEffect(Buffs.MonochromeTones) && HasPaint && ScenicCD > 10)
                 return OriginalHook(CometinBlack);
 
             //Hammer Stamp Combo

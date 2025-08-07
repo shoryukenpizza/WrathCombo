@@ -4295,7 +4295,7 @@ public enum CustomComboPreset
     PCT_ST_Advanced_Openers = 20006,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
-    [CustomComboInfo("Optimal Burst Window Feature", "Uses an optimized rotation for burst window for Level 100", PCT.JobID)]
+    [CustomComboInfo("Optimal Burst Window Feature", "Uses an optimized rotation for standard burst window", PCT.JobID)]
     PCT_ST_AdvancedMode_Burst_Phase = 20010,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
