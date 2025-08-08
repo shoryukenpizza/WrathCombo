@@ -875,7 +875,7 @@ namespace WrathCombo.AutoRotation
                             !x.BattleChara.IsDead &&
                             x.BattleChara.IsTargetable &&
                             (outAct == 0
-                                ? GetTargetDistance(x.BattleChara) <= 15f
+                                ? GetTargetDistance(x.BattleChara) <= 20f
                                 : InActionRange(outAct, x.BattleChara)) &&
                             GetTargetHPPercent(x.BattleChara) <= cfg.HealerSettings.AoETargetHPP);
                     memberCount = members.Count();
