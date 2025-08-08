@@ -394,6 +394,39 @@ internal static class SimpleTarget
             .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
     }
+    
+    public static IGameObject? IJRefreshableEnemy
+    (uint refreshAction,
+        ushort dotDebuff1,
+        ushort dotDebuff2,
+        int minHPPercent = 10,
+        float reapplyThreshold = 1,
+        int maxNumberOfEnemiesInRange = 3)
+    {
+        var action = ActionSheet[refreshAction];
+        var numberOfEnemiesInRange = Svc.Objects
+            .OfType<IBattleChara>()
+            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(15f));
+
+        if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
+            return null;
+
+        return Svc.Objects
+            .OfType<IBattleChara>()
+            .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(refreshAction) &&
+                        (float)(x.CurrentHp / x.MaxHp) * 100f > minHPPercent &&
+                        !CustomComboFunctions.JustUsedOn(refreshAction, x) &&
+                        CustomComboFunctions.HasStatusEffect(dotDebuff1, x) &&
+                        CustomComboFunctions.HasStatusEffect(dotDebuff2, x) &&
+                        (CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff1, x) <= reapplyThreshold || 
+                         CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff2, x) <= reapplyThreshold) &&
+                        CustomComboFunctions.CanApplyStatus(x, dotDebuff1) &&
+                        CustomComboFunctions.CanApplyStatus(x, dotDebuff2) &&
+                        x.IsWithinRange(action.Range))
+            .OrderBy(x => CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff1, x))
+            .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
+            .FirstOrDefault();
+    }
 
     #endregion
 

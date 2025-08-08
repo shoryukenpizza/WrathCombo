@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
+using ECommons.Logging;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -29,7 +30,7 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Songs
-            // Limit optimisation to when you are high enough level to benefit from it.
+            // Limit optimization to when you are high enough level to benefit from it.
             if (InCombat() && (CanBardWeave || !BardHasTarget))
             {
                 if (SongChangePitchPerfect())
@@ -164,7 +165,7 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Songs
-            // Limit optimisation to when you are high enough level to benefit from it.
+            // Limit optimization to when you are high enough level to benefit from it.
             if (InCombat() && (CanBardWeave || !BardHasTarget))
             {
                 if (SongChangePitchPerfect())
@@ -252,17 +253,40 @@ internal partial class BRD : PhysicalRanged
             #endregion
 
             #region Dot Management
-            if (UseIronJaws())
-                return IronJaws;
+            
+            //if (UseIronJaws())
+            ////return IronJaws;
+            //if (ApplyBlueDot())
+            //return OriginalHook(Windbite);
+            // if (ApplyPurpleDot())
+            //return OriginalHook(VenomousBite);
+            
+            var blueDotAction = OriginalHook(Windbite);
+            var purpleDotAction = OriginalHook(VenomousBite);
+            BlueList.TryGetValue(blueDotAction, out var blueDotDebuffID);
+            PurpleList.TryGetValue(purpleDotAction, out var purpleDotDebuffID);
+           
+            //var ironTarget = SimpleTarget.IJRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 0, 5, 99);
+            //PluginLog.Debug($"Iron Target: {ironTarget}");
+           // if (ironTarget is not null && LevelChecked(IronJaws))
+                //return IronJaws.Retarget([HeavyShot, BurstShot], ironTarget);    
+          
+            var blueTarget = SimpleTarget.DottableEnemy(blueDotDebuffID, 30, 0, 99);
+            PluginLog.Debug($"Blue action: {blueDotAction} | Blue Debuff: {blueDotDebuffID} | Blue Target: {blueTarget}");
+            if (blueTarget is not null && LevelChecked(Windbite))
+                return blueDotAction.Retarget([HeavyShot, BurstShot], blueTarget);
+           
+            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotDebuffID, 30, 0, 99);
+            PluginLog.Debug($"Purple action: {purpleDotAction} | Purple Debuff: {purpleDotDebuffID} | Purple Target: {purpleTarget}");
+            if (purpleTarget is not null && LevelChecked(VenomousBite))
+                return purpleDotAction.Retarget([HeavyShot, BurstShot], purpleTarget);
+            
+            
+            
+            
 
-            if (ApplyBlueDot())
-                return OriginalHook(Windbite);
-
-            if (ApplyPurpleDot())
-                return OriginalHook(VenomousBite);
-
-            if (RagingJawsRefresh() && RagingStrikesDuration < 6)
-                return IronJaws;
+            //if (RagingJawsRefresh() && RagingStrikesDuration < 6)
+                //return IronJaws;
             #endregion
 
             #region GCDS
