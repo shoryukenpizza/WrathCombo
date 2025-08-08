@@ -271,12 +271,12 @@ internal partial class BRD : PhysicalRanged
            // if (ironTarget is not null && LevelChecked(IronJaws))
                 //return IronJaws.Retarget([HeavyShot, BurstShot], ironTarget);    
           
-            var blueTarget = SimpleTarget.DottableEnemy(blueDotDebuffID, 30, 0, 99);
+            var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, 30, 0, 99);
             PluginLog.Debug($"Blue action: {blueDotAction} | Blue Debuff: {blueDotDebuffID} | Blue Target: {blueTarget}");
             if (blueTarget is not null && LevelChecked(Windbite))
                 return blueDotAction.Retarget([HeavyShot, BurstShot], blueTarget);
            
-            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotDebuffID, 30, 0, 99);
+            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, 30, 0, 99);
             PluginLog.Debug($"Purple action: {purpleDotAction} | Purple Debuff: {purpleDotDebuffID} | Purple Target: {purpleTarget}");
             if (purpleTarget is not null && LevelChecked(VenomousBite))
                 return purpleDotAction.Retarget([HeavyShot, BurstShot], purpleTarget);
