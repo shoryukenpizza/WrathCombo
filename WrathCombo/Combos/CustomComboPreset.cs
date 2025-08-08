@@ -1482,7 +1482,7 @@ public enum CustomComboPreset
 
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("oGcd Option",
-        "Weave Sidewinder, Empyreal arrow, Rain of death, and Pitch perfect when available.", BRD.JobID)]
+        "Weave Sidewinder, Empyreal arrow, Bloodletter, and Pitch perfect when available.", BRD.JobID)]
     BRD_ST_Adv_oGCD = 3038,
 
     [ParentCombo(BRD_ST_AdvMode)]
@@ -4355,7 +4355,7 @@ public enum CustomComboPreset
     PCT_ST_Advanced_Openers = 20006,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
-    [CustomComboInfo("Optimal Burst Window Feature", "Uses an optimized rotation for burst window for Level 100", PCT.JobID)]
+    [CustomComboInfo("Optimal Burst Window Feature", "Uses an optimized rotation for standard burst window", PCT.JobID)]
     PCT_ST_AdvancedMode_Burst_Phase = 20010,
 
     [ParentCombo(PCT_ST_AdvancedMode)]
@@ -5524,6 +5524,10 @@ public enum CustomComboPreset
     RDM_Riposte = 13403,
     
     [ParentCombo(RDM_Riposte)]
+    [CustomComboInfo("Riposte OGCD Weave Options", "Weave the following OGCDS in the melee combo", RDM.JobID)]
+    RDM_Riposte_Weaves = 134230,
+    
+    [ParentCombo(RDM_Riposte)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
         "Use Corp-a-corps when out of melee range and you have enough mana or Magicked Swordplay to start the melee combo", RDM.JobID)]
     RDM_Riposte_GapCloser = 13424,
@@ -5539,6 +5543,10 @@ public enum CustomComboPreset
     [ReplaceSkill(RDM.Moulinet)]
     [CustomComboInfo("Moulinet Melee Combo", "Replaces Moulinet with the basic melee aoe combo.", RDM.JobID)]
     RDM_Moulinet= 13425,
+    
+    [ParentCombo(RDM_Moulinet)]
+    [CustomComboInfo("Moulinet OGCD Weave Options", "Weave the following OGCDS in the melee combo", RDM.JobID)]
+    RDM_Moulinet_Weaves = 13431,
     
     [ParentCombo(RDM_Moulinet)]
     [CustomComboInfo("Gap-Close with Corps-a-corps Option",
@@ -5596,16 +5604,6 @@ public enum CustomComboPreset
     [CustomComboInfo("OGCDs One Button Feature",
         "Replaces Fleche with Contre Sixte, Vice of Thorns, Prefulgence, Engagement, and 1 charge of Corps-a-corps.", RDM.JobID)]
     RDM_OGCDs = 13420,
-    
-    [ParentCombo(RDM_OGCDs)]
-    [CustomComboInfo("Engagement Pooling Option",
-        "Will not spend both Engagement Charges unless you have Embolden.", RDM.JobID)]
-    RDM_OGCDs_EngagementPool = 13421,
-    
-    [ParentCombo(RDM_OGCDs)]
-    [CustomComboInfo("Corps-a-corps Melee only Option",
-        "Needs to be in melee range to use Corps-a-corps.", RDM.JobID)]
-    RDM_OGCDs_CorpsMelee = 13422,
 
     [Variant]
     [VariantParent(RDM_ST_DPS, RDM_ST_SimpleMode, RDM_AoE_DPS, RDM_AoE_SimpleMode)]
@@ -5627,7 +5625,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure on Vercure Option", "Replaces Vercure with Variant Cure.", RDM.JobID)]
     RDM_Variant_Cure2 = 13417,
     
-    //Last Used 13423
+    //Last Used 13431
     #endregion
 
     #endregion
