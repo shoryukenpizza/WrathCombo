@@ -1,7 +1,6 @@
 #region
 
 using System.Linq;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;

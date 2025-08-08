@@ -9,7 +9,6 @@ using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.SMN.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SMN

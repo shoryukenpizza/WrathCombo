@@ -3,7 +3,6 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD : Tank

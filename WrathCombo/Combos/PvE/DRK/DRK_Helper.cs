@@ -9,10 +9,8 @@ using System.Linq;
 using WrathCombo.AutoRotation;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 using TS = System.TimeSpan;
 
 // ReSharper disable ReturnTypeCanBeNotNullable

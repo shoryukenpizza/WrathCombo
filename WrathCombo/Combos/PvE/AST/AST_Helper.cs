@@ -16,7 +16,6 @@ using static WrathCombo.Combos.PvE.AST.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
 using Status = Dalamud.Game.ClientState.Statuses.Status;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class AST
