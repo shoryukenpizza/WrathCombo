@@ -376,18 +376,18 @@ internal static class SimpleTarget
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
-        var range = ActionManager.GetActionRange(dotAction);
-        var numberOfEnemiesInRange = Svc.Objects
+        var range = dotAction.ActionRange();
+        var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range));
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .ToArray();
 
-        if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
+        if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
             return null;
 
-        return Svc.Objects
-            .OfType<IBattleChara>()
+        return nearbyEnemies
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(dotAction) &&
-                        (float)(x.CurrentHp / x.MaxHp) * 100f > minHPPercent &&
+                        (float)x.CurrentHp / x.MaxHp * 100f > minHPPercent &&
                         !CustomComboFunctions.JustUsedOn(dotAction, x) &&
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
@@ -398,7 +398,7 @@ internal static class SimpleTarget
             .FirstOrDefault();
     }
     
-    public static IGameObject? IJRefreshableEnemy
+    public static IGameObject? BardRefreshableEnemy
     (uint refreshAction,
         ushort dotDebuff1,
         ushort dotDebuff2,
@@ -406,18 +406,18 @@ internal static class SimpleTarget
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
-        var range = ActionManager.GetActionRange(refreshAction);
-        var numberOfEnemiesInRange = Svc.Objects
+        var range = refreshAction.ActionRange();
+        var nearbyEnemies = Svc.Objects
             .OfType<IBattleChara>()
-            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range));
+            .Where(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range))
+            .ToArray();
 
-        if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
+        if (nearbyEnemies.Length > maxNumberOfEnemiesInRange)
             return null;
 
-        return Svc.Objects
-            .OfType<IBattleChara>()
+        return nearbyEnemies
             .Where(x => x.IsHostile() && x.IsTargetable && x.CanUseOn(refreshAction) &&
-                        (float)(x.CurrentHp / x.MaxHp) * 100f > minHPPercent &&
+                        (float)x.CurrentHp / x.MaxHp * 100f > minHPPercent &&
                         !CustomComboFunctions.JustUsedOn(refreshAction, x) &&
                         CustomComboFunctions.HasStatusEffect(dotDebuff1, x) &&
                         CustomComboFunctions.HasStatusEffect(dotDebuff2, x) &&

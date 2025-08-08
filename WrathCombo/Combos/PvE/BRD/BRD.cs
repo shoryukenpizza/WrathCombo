@@ -266,7 +266,7 @@ internal partial class BRD : PhysicalRanged
             BlueList.TryGetValue(blueDotAction, out var blueDotDebuffID);
             PurpleList.TryGetValue(purpleDotAction, out var purpleDotDebuffID);
            
-            var ironTarget = SimpleTarget.IJRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 0, 5, 99);
+            var ironTarget = SimpleTarget.BardRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 0, 5, 99);
             PluginLog.Debug($"Iron Target: {ironTarget}");
             if (ironTarget is not null && LevelChecked(IronJaws))
                 return IronJaws.Retarget([HeavyShot, BurstShot], ironTarget);    
