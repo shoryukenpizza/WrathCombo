@@ -1,12 +1,12 @@
 #region
 
+using System;
+using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Logging;
-using System;
-using System.Linq;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -14,6 +14,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+// ReSharper disable once RedundantUsingDirective
 using static WrathCombo.Data.ActionWatching;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -76,8 +77,8 @@ internal static class SimpleTarget
         ///     A very common stack to pick a heal target, whether the user is
         ///     using the Default or Custom Heal Stack.
         /// </summary>
-        /// <seealso cref="DefaultHealStack"/>
-        /// <seealso cref="CustomHealStack"/>
+        /// <seealso cref="DefaultHealStack" />
+        /// <seealso cref="CustomHealStack" />
         public static IGameObject? AllyToHeal => GetStack();
 
         /// <summary>
@@ -93,8 +94,8 @@ internal static class SimpleTarget
         /// <summary>
         ///     The Custom Heal Stack, fully user-made.
         /// </summary>
-        /// <seealso cref="PluginConfiguration.CustomHealStack"/>
-        /// <seealso cref="GetStack"/>
+        /// <seealso cref="PluginConfiguration.CustomHealStack" />
+        /// <seealso cref="GetStack" />
         internal static IGameObject? CustomHealStack =>
             GetStack(StackOption.CustomHealStack);
 
@@ -104,7 +105,7 @@ internal static class SimpleTarget
         /// </summary>
         public static IGameObject? AllyToEsuna =>
             GetStack(logicForEachEntryInStack:
-                (target) => target.IfHasCleansable());
+                target => target.IfHasCleansable());
 
         /// <summary>
         ///     The Customizable Raise Stack.
@@ -125,16 +126,17 @@ internal static class SimpleTarget
         /// <param name="logicForEachEntryInStack">
         ///     A short method, probably of <see cref="GameObjectExtensions" />,
         ///     to apply to each entry in the stack.<br />
-        ///     <see cref="AllyToEsuna"/> for an example.
+        ///     <see cref="AllyToEsuna" /> for an example.
         /// </param>
         /// <returns>
         ///     The first matching target in the stack, or <see langword="null" />.
         /// </returns>
         private static IGameObject? GetStack
-            (StackOption stack = StackOption.UserChosenHealStack,
-                Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
+        (StackOption stack = StackOption.UserChosenHealStack,
+            Func<IGameObject?, IGameObject?>? logicForEachEntryInStack = null)
         {
             #region Default Heal Stack
+
             if (stack is StackOption.DefaultHealStack ||
                 (stack is StackOption.UserChosenHealStack &&
                  !cfg.UseCustomHealStack))
@@ -154,9 +156,11 @@ internal static class SimpleTarget
                         ? CustomLogic(LowestHPPAlly.IfWithinRange().IfMissingHP())
                         : null) ??
                     Self;
+
             #endregion
 
             #region Custom Heal Stack
+
             if (stack is StackOption.CustomHealStack ||
                 (stack is StackOption.UserChosenHealStack &&
                  cfg.UseCustomHealStack))
@@ -167,7 +171,8 @@ internal static class SimpleTarget
                 {
                     var resolved = GetSimpleTargetValueFromName(name);
                     var target =
-                        CustomLogic(resolved.IfFriendly().IfTargetable().IfWithinRange());
+                        CustomLogic(resolved.IfFriendly().IfTargetable()
+                            .IfWithinRange());
 
                     // Only include Missing-HP options if they are missing HP
                     if (name.Contains("Missing"))
@@ -189,9 +194,11 @@ internal static class SimpleTarget
                 if (Service.Configuration.CustomHealStack.Length <= 3)
                     return Self;
             }
+
             #endregion
 
             #region Raise Stack
+
             if (stack is StackOption.RaiseStack)
             {
                 var logging = EZ.Throttle("raiseStackLog", TS.FromSeconds(10));
@@ -217,8 +224,10 @@ internal static class SimpleTarget
 
                 // Fall back to Hard Target, if the stack is small and returned nothing
                 if (Service.Configuration.RaiseStack.Length <= 4)
-                    return HardTarget.IfCanUseOn(WHM.Raise).IfDead() ?? AnyDeadPartyMember;
+                    return HardTarget.IfCanUseOn(WHM.Raise).IfDead() ??
+                           AnyDeadPartyMember;
             }
+
             #endregion
 
             return null;
@@ -243,8 +252,9 @@ internal static class SimpleTarget
             }
             catch (Exception e)
             {
-                PluginLog.Warning($"Error getting target value from name: '{name}'. " +
-                                  $"Edited value?\n{e}");
+                PluginLog.Warning(
+                    $"Error getting target value from name: '{name}'. " +
+                    $"Edited value?\n{e}");
                 return null;
             }
         }
@@ -349,7 +359,8 @@ internal static class SimpleTarget
             .OfType<IBattleChara>()
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         x.IsWithinRange(3) && x.IsCastInterruptible)
-            .OrderByDescending(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
+            .OrderByDescending(x =>
+                Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
     public static IGameObject? StunnableEnemy(int reStunCheck = 3) =>
@@ -358,12 +369,14 @@ internal static class SimpleTarget
             .Where(x => x.IsHostile() && x.IsTargetable &&
                         !x.IsBoss() && x.IsWithinRange(3) &&
                         !HasStatusEffect(All.Debuffs.Stun, x) &&
-                        (ICDTracker.StatusIsExpired(All.Debuffs.Stun, x.GameObjectId) ||
+                        (ICDTracker.StatusIsExpired(All.Debuffs.Stun,
+                             x.GameObjectId) ||
                          ICDTracker.Trackers.FirstOrDefault(y =>
-                             y.StatusID == All.Debuffs.Stun &&
-                             x.GameObjectId == y.GameObjectId)?
+                                 y.StatusID == All.Debuffs.Stun &&
+                                 x.GameObjectId == y.GameObjectId)?
                              .TimesApplied < reStunCheck))
-            .OrderByDescending(x => Svc.Targets.Target?.GameObjectId == x.GameObjectId)
+            .OrderByDescending(x =>
+                Svc.Targets.Target?.GameObjectId == x.GameObjectId)
             .FirstOrDefault();
 
     public static IGameObject? DottableEnemy
@@ -393,7 +406,7 @@ internal static class SimpleTarget
             .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
     }
-    
+
     public static IGameObject? BardRefreshableEnemy
     (uint refreshAction,
         ushort dotDebuff1,
@@ -417,7 +430,7 @@ internal static class SimpleTarget
                         !JustUsedOn(refreshAction, x) &&
                         HasStatusEffect(dotDebuff1, x) &&
                         HasStatusEffect(dotDebuff2, x) &&
-                        (GetStatusEffectRemainingTime(dotDebuff1, x) <= minTime || 
+                        (GetStatusEffectRemainingTime(dotDebuff1, x) <= minTime ||
                          GetStatusEffectRemainingTime(dotDebuff2, x) <= minTime) &&
                         CanApplyStatus(x, dotDebuff1) &&
                         CanApplyStatus(x, dotDebuff2))
@@ -572,13 +585,15 @@ internal static class SimpleTarget
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
             .FirstOrDefault(x => x.GetRole() is CombatRole.Healer ||
-                x.RealJob?.RowId is SMN.JobID or RDM.JobID)?.BattleChara;
+                                 x.RealJob?.RowId is SMN.JobID or RDM.JobID)
+            ?.BattleChara;
 
     /// Gets any Raiser DPS that is not the player.
     public static IGameObject? AnyRaiserDPS =>
         GetPartyMembers()
             .Where(x => x.BattleChara.IsNotThePlayer())
-            .FirstOrDefault(x => x.RealJob?.RowId is SMN.JobID or RDM.JobID)?.BattleChara;
+            .FirstOrDefault(x => x.RealJob?.RowId is SMN.JobID or RDM.JobID)
+            ?.BattleChara;
 
     /// Gets any Melee DPS that is not the player.
     public static IGameObject? AnyMeleeDPS =>
@@ -618,7 +633,8 @@ internal static class SimpleTarget
         get
         {
             var tanks = GetPartyMembers()
-                .Where(x => x.BattleChara.IsNotThePlayer() && x.GetRole() is CombatRole.Tank)
+                .Where(x =>
+                    x.BattleChara.IsNotThePlayer() && x.GetRole() is CombatRole.Tank)
                 .ToArray();
             var deadTanks =
                 tanks.Where(x => x.BattleChara.IsDead()).ToArray();
@@ -638,7 +654,9 @@ internal static class SimpleTarget
         get
         {
             var healers = GetPartyMembers()
-                .Where(x => x.BattleChara.IsNotThePlayer() && x.GetRole() is CombatRole.Healer)
+                .Where(x =>
+                    x.BattleChara.IsNotThePlayer() &&
+                    x.GetRole() is CombatRole.Healer)
                 .ToArray();
             var deadHealers =
                 healers.Where(x => x.BattleChara.IsDead()).ToArray();
