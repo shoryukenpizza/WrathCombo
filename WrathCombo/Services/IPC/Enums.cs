@@ -235,6 +235,8 @@ public enum AutoRotationConfigOption
 
     /// <seealso cref="DPSSettings.DPSAoETargets" />
     [ConfigValueType(typeof(int))] DPSAoETargets = 16,
+
+    [ConfigValueType(typeof(int))] SingleTargetExcogHPP = 17,
 }
 
 #region Type Attribute
