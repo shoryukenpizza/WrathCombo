@@ -65,12 +65,14 @@ public partial class Provider
                 arcOption.ManageKardia => arcH.ManageKardia,
                 arcOption.AutoRez => arcH.AutoRez,
                 arcOption.AutoRezDPSJobs => arcH.AutoRezDPSJobs,
-                arcOption.AutoRezOutOfParty => arcH.AutoRezOutOfParty,
                 arcOption.AutoCleanse => arcH.AutoCleanse,
                 arcOption.IncludeNPCs => arcH.IncludeNPCs,
                 arcOption.OnlyAttackInCombat => arcD.OnlyAttackInCombat,
+                arcOption.OrbwalkerIntegration => arc.OrbwalkerIntegration,
+                arcOption.AutoRezOutOfParty => arcH.AutoRezOutOfParty,
+                arcOption.DPSAoETargets => arcD.DPSAoETargets,
                 _ => throw new ArgumentOutOfRangeException(
-                    nameof(passedOption), passedOption, null)
+                    nameof(passedOption), passedOption, null),
             };
         }
         catch (Exception)
