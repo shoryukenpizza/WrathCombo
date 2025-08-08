@@ -7,6 +7,8 @@ using ECommons.GameHelpers;
 using ECommons.Logging;
 using System;
 using System.Linq;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.Sheets;
 using WrathCombo.Attributes;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -16,6 +18,7 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static WrathCombo.Data.ActionWatching;
 using EZ = ECommons.Throttlers.EzThrottler;
+using InstanceContent = FFXIVClientStructs.FFXIV.Client.Game.UI.InstanceContent;
 using TS = System.TimeSpan;
 
 // ReSharper disable CheckNamespace
@@ -373,10 +376,10 @@ internal static class SimpleTarget
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
-        var action = ActionSheet[dotAction];
+        var range = ActionManager.GetActionRange(dotAction);
         var numberOfEnemiesInRange = Svc.Objects
             .OfType<IBattleChara>()
-            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(15f));
+            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range));
 
         if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
             return null;
@@ -389,7 +392,7 @@ internal static class SimpleTarget
                         CustomComboFunctions.GetStatusEffectRemainingTime
                             (dotDebuff, x) <= reapplyThreshold &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff) &&
-                        x.IsWithinRange(action.Range))
+                        x.IsWithinRange(range))
             .OrderBy(x => CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff, x))
             .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();
@@ -403,10 +406,10 @@ internal static class SimpleTarget
         float reapplyThreshold = 1,
         int maxNumberOfEnemiesInRange = 3)
     {
-        var action = ActionSheet[refreshAction];
+        var range = ActionManager.GetActionRange(refreshAction);
         var numberOfEnemiesInRange = Svc.Objects
             .OfType<IBattleChara>()
-            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(15f));
+            .Count(x => x.IsHostile() && x.IsTargetable && x.IsWithinRange(range));
 
         if (numberOfEnemiesInRange > maxNumberOfEnemiesInRange)
             return null;
@@ -422,7 +425,7 @@ internal static class SimpleTarget
                          CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff2, x) <= reapplyThreshold) &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff1) &&
                         CustomComboFunctions.CanApplyStatus(x, dotDebuff2) &&
-                        x.IsWithinRange(action.Range))
+                        x.IsWithinRange(range))
             .OrderBy(x => CustomComboFunctions.GetStatusEffectRemainingTime(dotDebuff1, x))
             .ThenByDescending(x => (float)x.CurrentHp / x.MaxHp)
             .FirstOrDefault();

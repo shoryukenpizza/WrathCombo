@@ -266,18 +266,18 @@ internal partial class BRD : PhysicalRanged
             BlueList.TryGetValue(blueDotAction, out var blueDotDebuffID);
             PurpleList.TryGetValue(purpleDotAction, out var purpleDotDebuffID);
            
-            //var ironTarget = SimpleTarget.IJRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 0, 5, 99);
-            //PluginLog.Debug($"Iron Target: {ironTarget}");
-           // if (ironTarget is not null && LevelChecked(IronJaws))
-                //return IronJaws.Retarget([HeavyShot, BurstShot], ironTarget);    
+            var ironTarget = SimpleTarget.IJRefreshableEnemy(IronJaws, blueDotDebuffID, purpleDotDebuffID, 0, 5, 99);
+            PluginLog.Debug($"Iron Target: {ironTarget}");
+            if (ironTarget is not null && LevelChecked(IronJaws))
+                return IronJaws.Retarget([HeavyShot, BurstShot], ironTarget);    
           
-            var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, 30, 0, 99);
-            PluginLog.Debug($"Blue action: {blueDotAction} | Blue Debuff: {blueDotDebuffID} | Blue Target: {blueTarget}");
+            var blueTarget = SimpleTarget.DottableEnemy(blueDotAction, blueDotDebuffID, 30, 1, 99);
+            PluginLog.Debug($"Blue action: {blueDotAction} | Blue Debuff: {blueDotDebuffID} | Blue Target: {blueTarget?.Name ?? "Null"}");
             if (blueTarget is not null && LevelChecked(Windbite))
                 return blueDotAction.Retarget([HeavyShot, BurstShot], blueTarget);
            
-            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, 30, 0, 99);
-            PluginLog.Debug($"Purple action: {purpleDotAction} | Purple Debuff: {purpleDotDebuffID} | Purple Target: {purpleTarget}");
+            var purpleTarget = SimpleTarget.DottableEnemy(purpleDotAction, purpleDotDebuffID, 30, 1, 99);
+            PluginLog.Debug($"Purple action: {purpleDotAction} | Purple Debuff: {purpleDotDebuffID} | Purple Target: {purpleTarget?.Name ?? "Null"}");
             if (purpleTarget is not null && LevelChecked(VenomousBite))
                 return purpleDotAction.Retarget([HeavyShot, BurstShot], purpleTarget);
             
