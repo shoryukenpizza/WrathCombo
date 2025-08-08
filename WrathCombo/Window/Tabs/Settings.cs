@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
-using Dalamud.Bindings.ImGui;
-using System.Numerics;
-using Dalamud.Interface.Colors;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using System;
+using System.Linq;
+using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;

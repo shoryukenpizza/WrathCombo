@@ -1,9 +1,9 @@
 #region
 
-using ECommons.ImGuiMethods;
 using Dalamud.Bindings.ImGui;
-using System.Numerics;
 using Dalamud.Interface.Colors;
+using ECommons.ImGuiMethods;
+using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;

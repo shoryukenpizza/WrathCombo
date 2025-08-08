@@ -1,5 +1,6 @@
 using Dalamud.Configuration;
 using ECommons.DalamudServices;
+using ECommons.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using ECommons.Logging;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
 using WrathCombo.Extensions;

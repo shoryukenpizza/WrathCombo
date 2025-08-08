@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
+using System.Collections.Generic;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;

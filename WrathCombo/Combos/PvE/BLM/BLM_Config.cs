@@ -1,5 +1,5 @@
-using Dalamud.Interface.Colors;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Colors;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using Lumina.Excel.Sheets;
+using System.Linq;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Data.ActionWatching;

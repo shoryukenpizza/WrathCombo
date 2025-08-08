@@ -1,6 +1,6 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
-using Dalamud.Bindings.ImGui;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 namespace WrathCombo.Combos.PvE;

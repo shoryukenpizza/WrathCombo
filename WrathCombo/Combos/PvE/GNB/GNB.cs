@@ -1,6 +1,6 @@
 #region Dependencies
-using System.Linq;
 using ECommons.Logging;
+using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;

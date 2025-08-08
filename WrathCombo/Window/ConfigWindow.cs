@@ -1,3 +1,4 @@
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.ManagedFontAtlas;
@@ -7,7 +8,6 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using ECommons.Throttlers;
-using Dalamud.Bindings.ImGui;
 using PunishLib;
 using PunishLib.ImGuiMethods;
 using System;
@@ -19,8 +19,8 @@ using WrathCombo.Attributes;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
-using WrathCombo.Services;
 using WrathCombo.Data.Conflicts;
+using WrathCombo.Services;
 using WrathCombo.Window.Tabs;
 
 namespace WrathCombo.Window
