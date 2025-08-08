@@ -1162,7 +1162,7 @@ public enum CustomComboPreset
     BLM_Fire1to3 = 2054,
 
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeBlizzard2)]
+    [ConflictingCombos(BLM_FreezeBlizzard2, BLM_Blizzard4toDespair)]
     [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I or Blizzard III.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_Blizzard1to3 = 2052,
 
@@ -1176,8 +1176,9 @@ public enum CustomComboPreset
     [CustomComboInfo("Fire to Despair", "Replaces Fire  with Despair when in Astral Fire and below 2400 MP.", BLM.JobID)]
     BLM_Fire1Despair = 2065,
 
-    [ReplaceSkill(BLM.Blizzard4)]
-    [CustomComboInfo("Blizzard 4 to Despair", "Replaces Blizzard 4 with Despair when in Astral Fire.", BLM.JobID)]
+    [ReplaceSkill(BLM.Blizzard4, BLM.Blizzard3)]
+    [ConflictingCombos(BLM_Blizzard1to3, BLM_FreezeBlizzard2)]
+    [CustomComboInfo("Blizzard 3/4 to Despair", "Replaces Blizzard 3/4 with Despair when in Astral Fire.", BLM.JobID)]
     BLM_Blizzard4toDespair = 2060,
     
     [ReplaceSkill(BLM.Fire4, BLM.Flare)]
@@ -1186,7 +1187,7 @@ public enum CustomComboPreset
     BLM_FireandIce = 2057,
 
     [ReplaceSkill(BLM.Blizzard, BLM.Blizzard3)]
-    [ConflictingCombos(BLM_FreezeParadox, BLM_Blizzard1to3)]
+    [ConflictingCombos(BLM_FreezeParadox, BLM_Blizzard1to3, BLM_Blizzard4toDespair)]
     [CustomComboInfo("Freeze to Blizzard II", "nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_FreezeBlizzard2 = 2064,
 
@@ -3799,6 +3800,14 @@ public enum CustomComboPreset
     MNK_AOE_SimpleMode = 9003,
 
     #endregion
+    
+    #region Movement
+
+    [CustomComboInfo("Thunderclap Movement Option", "Retargets Thunderclap to UI/Field Mouseover", MNK.JobID)]
+    [Retargeted(MNK.Thunderclap)]
+    MNK_Retarget_Thunderclap = 9043,
+    
+    #endregion
 
     #region Monk Advanced ST
 
@@ -3810,11 +3819,11 @@ public enum CustomComboPreset
     MNK_ST_AdvancedMode = 9005,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo("Meditation Option", "Adds Meditation to the rotation", MNK.JobID)]
+    [CustomComboInfo("Steeled / Forbidden Meditation Option", "Adds Steeled / Forbidden Meditation to the rotation", MNK.JobID)]
     MNK_STUseMeditation = 9007,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
-    [CustomComboInfo("The Forbidden Chakra Option", "Adds The Forbidden Chakra to the rotation", MNK.JobID)]
+    [CustomComboInfo("Steeled Peak / The Forbidden Chakra Option", "Adds Steeled Peak / The Forbidden Chakra to the rotation", MNK.JobID)]
     MNK_STUseTheForbiddenChakra = 9012,
 
     [ParentCombo(MNK_ST_AdvancedMode)]
@@ -3866,7 +3875,7 @@ public enum CustomComboPreset
     MNK_ST_ComboHeals = 9018,
 
     #endregion
-
+    
     #region Monk Advanced AOE
 
     [AutoAction(true, false)]
@@ -3877,11 +3886,11 @@ public enum CustomComboPreset
     MNK_AOE_AdvancedMode = 9027,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Meditation Option", "Adds Meditation to the rotation", MNK.JobID)]
+    [CustomComboInfo("Inspirited / Enlightened Meditation Option", "Adds Inspirited / Enlightened Meditation to the rotation", MNK.JobID)]
     MNK_AoEUseMeditation = 9028,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
-    [CustomComboInfo("Howling Fist Option", "Adds Howling Fist to the rotation", MNK.JobID)]
+    [CustomComboInfo("Howling Fist / Enlightenment Option", "Adds Howling Fist / Enlightenment to the rotation", MNK.JobID)]
     MNK_AoEUseHowlingFist = 9033,
 
     [ParentCombo(MNK_AOE_AdvancedMode)]
@@ -3948,6 +3957,24 @@ public enum CustomComboPreset
     MNK_BC_COEURL = 9022,
 
     #endregion
+    
+    #region Misc
+
+    [ReplaceSkill(MNK.PerfectBalance)]
+    [ConflictingCombos(MNK_PerfectBalanceProtection)]
+    [CustomComboInfo("Perfect Balance Feature", "Perfect Balance becomes Masterful Blitz while you have 3 Beast Chakra.", MNK.JobID)]
+    MNK_PerfectBalance = 9023,
+
+    [ReplaceSkill(MNK.RiddleOfFire, MNK.Brotherhood)]
+    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Riddle of Fire or Brotherhood when the other is on cooldown.", MNK.JobID)]
+    MNK_Brotherhood_Riddle = 9024,
+    
+    [ReplaceSkill(MNK.PerfectBalance)]
+    [ConflictingCombos(MNK_PerfectBalance)]
+    [CustomComboInfo("Perfect Balance Protection", "Replaces Perfect Balance with Savage Blade when you already have Perfect Balance active.", MNK.JobID)]
+    MNK_PerfectBalanceProtection = 9042,
+    
+    #endregion
 
     #region Variant
 
@@ -3961,28 +3988,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", MNK.JobID)]
     MNK_Variant_Cure = 9026,
 
-    #endregion
-    
-    #region Misc
-
-    [ReplaceSkill(MNK.PerfectBalance)]
-    [ConflictingCombos(MNK_PerfectBalanceProtection)]
-    [CustomComboInfo("Perfect Balance Feature", "Perfect Balance becomes Masterful Blitz while you have 3 Beast Chakra.", MNK.JobID)]
-    MNK_PerfectBalance = 9023,
-
-    [ReplaceSkill(MNK.RiddleOfFire)]
-    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Riddle of Fire with Brotherhood when Riddle of Fire is on cooldown.", MNK.JobID)]
-    MNK_Riddle_Brotherhood = 9024,
-
-    [ReplaceSkill(MNK.RiddleOfFire)]
-    [CustomComboInfo("Riddle of Fire/Brotherhood Feature", "Replaces Brotherhood with Riddle of Fire when Brotherhood is on cooldown.", MNK.JobID)]
-    MNK_Brotherhood_Riddle = 9041,
-
-    [ReplaceSkill(MNK.PerfectBalance)]
-    [ConflictingCombos(MNK_PerfectBalance)]
-    [CustomComboInfo("Perfect Balance Protection", "Replaces Perfect Balance with Savage Blade when you already have Perfect Balance active.", MNK.JobID)]
-    MNK_PerfectBalanceProtection = 9042,
-    
     #endregion
 
     #region Hidden Features
@@ -3998,7 +4003,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 9042
+    // Last value = 9043
 
     #endregion
 
