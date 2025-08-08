@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-
 namespace WrathCombo.Extensions;
 
 public static class GameObjectExtensions

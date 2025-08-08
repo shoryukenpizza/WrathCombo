@@ -1,6 +1,5 @@
 ﻿#region
 
-using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;

@@ -1,5 +1,4 @@
-﻿using Dalamud.Bindings.ImGui;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Utility;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -9,7 +8,6 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Services;
-
 namespace WrathCombo.Window;
 
 internal class TargetHelper : Dalamud.Interface.Windowing.Window
