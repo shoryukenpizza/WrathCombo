@@ -516,6 +516,11 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Movement) &&
+                    IsMoving() && InCombat() && HasBattleTarget() &&
+                    ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast))
+                    return Triplecast;
+
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     ActionReady(Manafont) &&
                     EndOfFirePhase)

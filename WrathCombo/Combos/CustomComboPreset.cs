@@ -1132,6 +1132,10 @@ public enum CustomComboPreset
     BLM_AoE_Thunder = 2209,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Movement Option", "Add Triplecast while moving.", BLM.JobID)]
+    BLM_AoE_Movement = 2213,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
 
@@ -1238,7 +1242,7 @@ public enum CustomComboPreset
     #endregion
 
     // Last value ST = 2117
-    //Last Value AoE = 2212
+    //Last Value AoE = 2213
     //Last Value misc = 2066
 
     #endregion
