@@ -123,7 +123,7 @@ internal partial class BLM
                     DrawHorizontalRadioButton(BLM_ST_ThunderBossOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawSliderInt(0, 5, BLM_ST_ThunderUptimeOption,
+                    DrawSliderInt(0, 5, BLM_ST_ThunderResfresh,
                         "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.");
 
                     ImGui.Unindent();
@@ -216,7 +216,7 @@ internal partial class BLM
             BLM_ST_ThunderHPOption = new("BLM_ST_ThunderOption", 10),
             BLM_ST_ThunderBossOption = new("BLM_ST_Thunder_SubOption", 0),
             BLM_ST_Triplecast_SubOption = new("BLM_ST_Triplecast_SubOption", 1),
-            BLM_ST_ThunderUptimeOption = new("BLM_ST_ThunderUptime_Threshold", 5),
+            BLM_ST_ThunderResfresh = new("BLM_ST_ThunderUptime_Threshold", 5),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_ST_Polyglot_Save = new("BLM_ST_Polyglot_Save", 0),

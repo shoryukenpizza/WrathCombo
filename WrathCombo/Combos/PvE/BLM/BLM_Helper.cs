@@ -60,7 +60,7 @@ internal partial class BLM
         !InBossEncounter() ? BLM_ST_LeyLinesHPOption : 0;
 
     internal static float RefreshTimerThunder =>
-        BLM_ST_ThunderUptimeOption;
+        BLM_ST_ThunderResfresh;
 
     internal static int HPThresholdThunder =>
         BLM_ST_ThunderBossOption == 1 ||

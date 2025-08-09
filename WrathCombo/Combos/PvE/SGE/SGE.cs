@@ -303,7 +303,7 @@ internal partial class SGE : Healer
                     CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
                 {
                     float refreshTimer = SGE_ST_DPS_EDosisRefresh;
-                    int hpThreshold = SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? SGE_ST_DPS_EDosisOption : 0;
+                    int hpThreshold = SGE_ST_DPS_EDosisBossOption == 1 || !InBossEncounter() ? SGE_ST_DPS_EDosisHPOption : 0;
 
                     if (GetTargetHPPercent() > hpThreshold &&
                         ((DosisDebuff is null && DyskrasiaDebuff is null) ||
