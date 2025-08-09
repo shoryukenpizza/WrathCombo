@@ -7,7 +7,6 @@ using ECommons.ImGuiMethods;
 using ECommons.Logging;
 using ECommons.Throttlers;
 using PunishLib;
-using PunishLib.ImGuiMethods;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +19,7 @@ using WrathCombo.Core;
 using WrathCombo.Data.Conflicts;
 using WrathCombo.Services;
 using WrathCombo.Window.Tabs;
+using PunishGui = PunishLib.ImGuiMethods;
 namespace WrathCombo.Window;
 
 /// <summary> Plugin configuration window. </summary>
@@ -42,7 +42,6 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
             .ThenByDescending(tpl => tpl.Info.Role == 3)
             .ThenByDescending(tpl => tpl.Info.JobID == 0)
             .ThenByDescending(tpl => tpl.Info.JobID == DOL.JobID)
-            .ThenByDescending(tpl => tpl.Info.JobID == DOH.JobID)
             .ThenBy(tpl => tpl.Info.ClassJobCategory)
             .ThenBy(tpl => tpl.Info.JobName)
             .ThenBy(tpl => tpl.Info.Order)
@@ -230,7 +229,7 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
                 Settings.Draw();
                 break;
             case OpenWindow.About:
-                AboutTab.Draw(P.Name);
+                PunishGui.AboutTab.Draw(P.Name);
                 break;
             case OpenWindow.Debug:
                 Debug.Draw();
@@ -242,7 +241,7 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
         ;
     }
 
-    private void DrawCollapseButton()
+    private static void DrawCollapseButton()
     {
         var collapsed = Service.Configuration.UILeftColumnCollapsed;
 

@@ -2,8 +2,8 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
-using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
-using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
+using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
+using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB

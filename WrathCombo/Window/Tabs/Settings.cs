@@ -308,7 +308,7 @@ internal class Settings : ConfigWindow
                 Service.Configuration.Save();
             }
             ImGui.SameLine();
-            ImGui.Text($"%% of cast");
+            ImGui.Text($"% of cast");
             ImGui.SameLine( pos);
             ImGui.Text($"   -   Interrupt Delay");
 

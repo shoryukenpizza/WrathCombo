@@ -235,7 +235,7 @@ internal static class RDMPvP
                 }
 
                 // Grand Impact / Jolt III
-                return hasGrandImpact || !isMoving ? OriginalHook(actionID) : All.SavageBlade;
+                return hasGrandImpact || !isMoving ? OriginalHook(actionID) : ALL.SavageBlade;
             }
 
             return actionID;

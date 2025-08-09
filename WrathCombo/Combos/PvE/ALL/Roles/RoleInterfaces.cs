@@ -65,7 +65,7 @@ internal static partial class RoleActions
         uint ArmsLength { get; }
         bool CanArmsLength();
         bool CanArmsLength(int enemyCount, UserInt? avoidanceSetting = null);
-        bool CanArmsLength(int enemyCount, All.Enums.BossAvoidance avoidanceSetting);
+        bool CanArmsLength(int enemyCount, ALL.Enums.BossAvoidance avoidanceSetting);
     }
 
     internal interface ILegGraze

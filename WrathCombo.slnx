@@ -21,6 +21,10 @@
     <File Path="docs/CODEOWNERS" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="ECommons/ECommons/ECommons.csproj" />
-  <Project Path="WrathCombo/WrathCombo.csproj" />
+  <Project Path="ECommons/ECommons/ECommons.csproj">
+  	<Platform Project="x64" />
+  </Project>
+  <Project Path="WrathCombo/WrathCombo.csproj">
+  	<Platform Project="x64" />
+  </Project>
 </Solution>
