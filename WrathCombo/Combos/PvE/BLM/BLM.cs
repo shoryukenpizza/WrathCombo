@@ -724,8 +724,8 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID switch
             {
-                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) => Despair,
-                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) => Despair,
+                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
+                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) && CurMp >= 800 => Despair,
                 var _ => actionID
             };
     }
@@ -774,6 +774,24 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID is Amplifier && HasMaxPolyglotStacks
                 ? Xenoglossy
+                : actionID;
+    }
+
+    internal class BLM_XenoThunder : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_XenoThunder;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Xenoglossy && ThunderDebuffST.RemainingTime <= 3
+                ? OriginalHook(Thunder)
+                : actionID;
+    }
+
+    internal class BLM_FoulThunder : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FoulThunder;
+        protected override uint Invoke(uint actionID) =>
+            actionID is Foul && ThunderDebuffAoE.RemainingTime <= 3
+                ? OriginalHook(Thunder2)
                 : actionID;
     }
 

@@ -1221,6 +1221,14 @@ public enum CustomComboPreset
     [ReplaceSkill(BLM.Amplifier)]
     [CustomComboInfo("Amplifier to Xenoglossy", "Replaces Amplifier with Xenoglossy when at max Polyglot stacks.", BLM.JobID)]
     BLM_AmplifierXeno = 2061,
+
+    [ReplaceSkill(BLM.Xenoglossy)]
+    [CustomComboInfo("Xenoglossy to Thunder", "Replaces Xenoglossy with Thunder when Thunder is 3 secs or lower.", BLM.JobID)]
+    BLM_XenoThunder = 2067,
+
+    [ReplaceSkill(BLM.Foul)]
+    [CustomComboInfo("Foul to Thunder II", "Replaces Foul with Thunder II when Thunder is 3 secs or lower.", BLM.JobID)]
+    BLM_FoulThunder = 2068,
     
     [ReplaceSkill(BLM.Transpose)]
     [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID)]
@@ -1243,7 +1251,7 @@ public enum CustomComboPreset
 
     // Last value ST = 2117
     //Last Value AoE = 2213
-    //Last Value misc = 2066
+    //Last Value misc = 2068
 
     #endregion
 
