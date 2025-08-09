@@ -721,51 +721,68 @@ internal partial class MCH : PhysicalRanged
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_Overdrive;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is RookAutoturret or AutomatonQueen && RobotActive
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (AutomatonQueen or RookAutoturret))
+                return actionID;
+
+            return RobotActive
                 ? OriginalHook(QueenOverdrive)
                 : actionID;
+        }
     }
 
     internal class MCH_HotShotDrillChainsawExcavator : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_HotShotDrillChainsawExcavator;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is not (Drill or HotShot or AirAnchor or Chainsaw)
-                ? actionID
-                : LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady)
-                    ? CalcBestAction(actionID, Excavator, Chainsaw, AirAnchor, Drill)
-                    : LevelChecked(Chainsaw)
-                        ? CalcBestAction(actionID, Chainsaw, AirAnchor, Drill)
-                        : LevelChecked(AirAnchor)
-                            ? CalcBestAction(actionID, AirAnchor, Drill)
-                            : LevelChecked(Drill)
-                                ? CalcBestAction(actionID, Drill, HotShot)
-                                : !LevelChecked(Drill)
-                                    ? HotShot
-                                    : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Drill or HotShot or AirAnchor or Chainsaw))
+                return actionID;
+
+            return LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady)
+                ? CalcBestAction(actionID, Excavator, Chainsaw, AirAnchor, Drill)
+                : LevelChecked(Chainsaw)
+                    ? CalcBestAction(actionID, Chainsaw, AirAnchor, Drill)
+                    : LevelChecked(AirAnchor)
+                        ? CalcBestAction(actionID, AirAnchor, Drill)
+                        : LevelChecked(Drill)
+                            ? CalcBestAction(actionID, Drill, HotShot)
+                            : !LevelChecked(Drill)
+                                ? HotShot
+                                : actionID;
+        }
     }
 
     internal class MCH_DismantleTactician : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_DismantleTactician;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Dismantle &&
-            (IsOnCooldown(Dismantle) || !LevelChecked(Dismantle) || !HasBattleTarget()) &&
-            ActionReady(Tactician) && !HasStatusEffect(Buffs.Tactician)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Dismantle)
+                return actionID;
+
+            return (IsOnCooldown(Dismantle) || !LevelChecked(Dismantle) || !HasBattleTarget()) &&
+                   ActionReady(Tactician) && !HasStatusEffect(Buffs.Tactician)
                 ? Tactician
                 : actionID;
+        }
     }
 
     internal class MCH_DismantleProtection : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MCH_DismantleProtection;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Dismantle && HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) && IsOffCooldown(Dismantle)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Dismantle)
+                return actionID;
+
+            return HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) && IsOffCooldown(Dismantle)
                 ? All.SavageBlade
                 : actionID;
+        }
     }
 }
