@@ -197,7 +197,7 @@ internal partial class BLM
                         $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Despair.ActionName()} when in Astral Fire.", 1);
                     break;
 
-                case CustomComboPreset.BLM_Aetherial_Manipulation:
+                case CustomComboPreset.BLM_Retargetting_Aetherial_Manipulation:
                     DrawAdditionalBoolChoice(BLM_AM_FieldMouseover,
                         "Add Field MouseOver", "Adds Field mouseOver targetting");
                     break;
@@ -229,12 +229,14 @@ internal partial class BLM
             BLM_VariantCure = new("BLM_VariantCure", 50),
             BLM_B1to3 = new("BLM_B1to3", 0),
             BLM_B4toDespair = new("BLM_B4toDespair", 0),
-            BLM_F1to3 = new("BLM_F1to3", 0),
-            BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover");
+            BLM_F1to3 = new("BLM_F1to3", 0);
 
         public static UserFloat
             BLM_ST_LeyLinesTimeStill = new("BLM_ST_LeyLinesTimeStill", 2.5f),
             BLM_AoE_LeyLinesTimeStill = new("BLM_AoE_LeyLinesTimeStill", 2.5f);
+
+        public static UserBool
+            BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover");
 
         public static UserBoolArray
             BLM_ST_MovementOption = new("BLM_ST_MovementOption");
