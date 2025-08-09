@@ -76,13 +76,10 @@ internal abstract partial class CustomCombo : CustomComboFunctions
 
         uint classJobID = LocalPlayer!.ClassJob.RowId;
 
-        if (classJobID is >= 8 and <= 15)
-            classJobID = DOH.JobID;
-
         if (classJobID is >= 16 and <= 18)
             classJobID = DOL.JobID;
 
-        if (JobID != ADV.JobID && ClassID != ADV.ClassID &&
+        if (JobID != ALL.JobID && ClassID != ALL.ClassID &&
             JobID != classJobID && ClassID != classJobID)
             return false;
 
@@ -101,7 +98,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
         {
             // todo: tauren: remember why this condition was in the if below:
             //      `&& WrathOpener.CurrentOpener?.OpenerStep <= 1`
-            if (resultingActionID != All.SavageBlade)
+            if (resultingActionID != ALL.SavageBlade)
                 return false;
         }
         newActionID = resultingActionID;

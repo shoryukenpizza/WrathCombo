@@ -39,7 +39,6 @@ public static class UserConfig
             Service.Configuration.Save();
         }
 
-        sliderDescription = sliderDescription.Replace("%", "%%");
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
 
@@ -159,7 +158,6 @@ public static class UserConfig
             Service.Configuration.Save();
         }
 
-        sliderDescription = sliderDescription.Replace("%", "%%");
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
         string format = $"%.{decimals}f";
@@ -254,7 +252,6 @@ public static class UserConfig
             Service.Configuration.Save();
         }
 
-        sliderDescription = sliderDescription.Replace("%", "%%");
         float contentRegionMin = ImGui.GetItemRectMax().Y - ImGui.GetItemRectMin().Y;
         float wrapPos = ImGui.GetContentRegionMax().X - 35f;
 

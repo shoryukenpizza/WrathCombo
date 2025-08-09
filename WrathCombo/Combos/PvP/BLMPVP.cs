@@ -107,7 +107,7 @@ internal static class BLMPvP
                 // Burst
                 case CustomComboPreset.BLMPvP_Burst:
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Burst_SubOption, "Defensive Burst",
-                        "Also uses Burst when under 50%% HP.\n- Will not use outside combat.");
+                        "Also uses Burst when under 50% HP.\n- Will not use outside combat.");
 
                     break;
 
@@ -125,7 +125,7 @@ internal static class BLMPvP
                     UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Lethargy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Lethargy_SubOption, "Defensive Lethargy",
-                        "Also uses Lethargy when under 50%% HP.\n- Uses only when targeted by enemy.");
+                        "Also uses Lethargy when under 50% HP.\n- Uses only when targeted by enemy.");
 
                     break;
 
@@ -134,7 +134,7 @@ internal static class BLMPvP
                     UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Xenoglossy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Xenoglossy_SubOption, "Defensive Xenoglossy",
-                        "Also uses Xenoglossy when under 50%% HP.");
+                        "Also uses Xenoglossy when under 50% HP.");
 
                     break;
 

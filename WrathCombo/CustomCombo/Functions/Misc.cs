@@ -60,7 +60,6 @@ internal abstract partial class CustomComboFunctions
             // Override DoH/DoL
             jobId = jobId switch
             {
-                DOH.JobID   => 8, // Carpenter
                 DOL.JobID   => 16, // Miner
                 _           => jobId
             };
@@ -139,7 +138,6 @@ internal abstract partial class CustomComboFunctions
         {
             return jobId switch
             {
-                ADV.JobID => ADV.ClassID,
                 BLM.JobID => BLM.ClassID,
                 BRD.JobID => BRD.ClassID,
                 DRG.JobID => DRG.ClassID,
@@ -158,7 +156,6 @@ internal abstract partial class CustomComboFunctions
         {
             return classId switch
             {
-                ADV.ClassID => ADV.JobID,
                 BLM.ClassID => BLM.JobID,
                 BRD.ClassID => BRD.JobID,
                 DRG.ClassID => DRG.JobID,

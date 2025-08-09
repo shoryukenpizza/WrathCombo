@@ -127,7 +127,7 @@ public abstract class WrathOpener
         get;
         set
         {
-            if (value != All.SavageBlade)
+            if (value != ALL.SavageBlade)
                 field = value;
         }
     }
@@ -200,7 +200,7 @@ public abstract class WrathOpener
                 float startValue = (VeryDelayedWeaveSteps.Any(x => x == OpenerStep)) ? 1f : 1.25f;
                 if ((DelayedWeaveSteps.Any(x => x == OpenerStep) || VeryDelayedWeaveSteps.Any(x => x == OpenerStep)) && !CanDelayedWeave(startValue))
                 {
-                    actionID = All.SavageBlade;
+                    actionID = ALL.SavageBlade;
                     return true;
                 }
 
@@ -226,7 +226,7 @@ public abstract class WrathOpener
                     if ((DateTime.Now - DelayedAt).TotalSeconds < HoldDelay() && !PartyInCombat())
                     {
                         ActionWatching.TimeLastActionUsed = DateTime.Now; //Hacky workaround for TN jobs
-                        actionID = All.SavageBlade;
+                        actionID = ALL.SavageBlade;
                         return true;
                     }
                 }

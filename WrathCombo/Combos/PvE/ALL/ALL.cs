@@ -5,9 +5,11 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class All
+internal partial class ALL
 {
-    public const byte JobID = 0;
+    public const byte 
+        JobID = 0,
+        ClassID = 0;
 
     /// Used to block user input.
     public const uint SavageBlade = 11;
