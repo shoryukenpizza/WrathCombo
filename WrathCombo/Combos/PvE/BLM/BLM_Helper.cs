@@ -57,7 +57,7 @@ internal partial class BLM
 
     internal static int HPThresholdLeylines =>
         BLM_ST_LeyLinesSubOption == 1 ||
-        !InBossEncounter() ? BLM_ST_LeyLinesSubOption : 0;
+        !InBossEncounter() ? BLM_ST_LeyLinesOption : 0;
 
     internal static float RefreshTimerThunder =>
         BLM_ST_ThunderUptime_Threshold;
