@@ -45,14 +45,14 @@ internal partial class BLM
                     DrawSliderInt(0, 2, BLM_ST_LeyLinesCharges,
                         " How many charges to keep ready?\n (0 = Use All)");
 
-                    DrawSliderInt(0, 50, BLM_ST_LeyLinesOption,
+                    DrawSliderInt(0, 50, BLM_ST_LeyLinesHPOption,
                         "Stop using at Enemy HP %. Set to Zero to disable this check.");
                     ImGui.Indent();
 
-                    DrawHorizontalRadioButton(BLM_ST_LeyLinesSubOption,
+                    DrawHorizontalRadioButton(BLM_ST_LeyLinesBossOption,
                         "Non-Bosses", "Only applies the HP check above to non-bosses.", 0);
 
-                    DrawHorizontalRadioButton(BLM_ST_LeyLinesSubOption,
+                    DrawHorizontalRadioButton(BLM_ST_LeyLinesBossOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
                     break;
 
@@ -109,7 +109,7 @@ internal partial class BLM
 
                 case CustomComboPreset.BLM_ST_Thunder:
 
-                    DrawSliderInt(0, 50, BLM_ST_ThunderOption,
+                    DrawSliderInt(0, 50, BLM_ST_ThunderHPOption,
                         "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
@@ -117,13 +117,13 @@ internal partial class BLM
                     ImGui.TextColored(ImGuiColors.DalamudYellow,
                         "Select what kind of enemies the HP check should be applied to:");
 
-                    DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
+                    DrawHorizontalRadioButton(BLM_ST_ThunderBossOption,
                         "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
 
-                    DrawHorizontalRadioButton(BLM_ST_Thunder_SubOption,
+                    DrawHorizontalRadioButton(BLM_ST_ThunderBossOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawSliderInt(0, 5, BLM_ST_ThunderUptime_Threshold,
+                    DrawSliderInt(0, 5, BLM_ST_ThunderUptimeOption,
                         "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.");
 
                     ImGui.Unindent();
@@ -196,6 +196,11 @@ internal partial class BLM
                     DrawRadioButton(BLM_B4toDespair,
                         $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Despair.ActionName()} when in Astral Fire.", 1);
                     break;
+
+                case CustomComboPreset.BLM_Aetherial_Manipulation:
+                    DrawAdditionalBoolChoice(BLM_AM_FieldMouseover,
+                        "Add Field MouseOver", "Adds Field mouseOver targetting");
+                    break;
             }
         }
 
@@ -206,12 +211,12 @@ internal partial class BLM
             BLM_Balance_Content = new("BLM_Balance_Content", 1),
             BLM_ST_LeyLinesCharges = new("BLM_ST_LeyLinesCharges", 1),
             BLM_ST_LeyLinesMovement = new("BLM_ST_LeyLinesMovement", 0),
-            BLM_ST_LeyLinesOption = new("BLM_ST_LeyLinesOption", 25),
-            BLM_ST_LeyLinesSubOption = new("BLM_ST_LeyLinesSubOption", 0),
-            BLM_ST_ThunderOption = new("BLM_ST_ThunderOption", 10),
-            BLM_ST_Thunder_SubOption = new("BLM_ST_Thunder_SubOption", 0),
+            BLM_ST_LeyLinesHPOption = new("BLM_ST_LeyLinesOption", 25),
+            BLM_ST_LeyLinesBossOption = new("BLM_ST_LeyLinesSubOption", 0),
+            BLM_ST_ThunderHPOption = new("BLM_ST_ThunderOption", 10),
+            BLM_ST_ThunderBossOption = new("BLM_ST_Thunder_SubOption", 0),
             BLM_ST_Triplecast_SubOption = new("BLM_ST_Triplecast_SubOption", 1),
-            BLM_ST_ThunderUptime_Threshold = new("BLM_ST_ThunderUptime_Threshold", 5),
+            BLM_ST_ThunderUptimeOption = new("BLM_ST_ThunderUptime_Threshold", 5),
             BLM_ST_Triplecast_Movement = new("BLM_ST_Triplecast_Movement", 1),
             BLM_ST_Polyglot_Movement = new("BLM_ST_Polyglot_Movement", 1),
             BLM_ST_Polyglot_Save = new("BLM_ST_Polyglot_Save", 0),
@@ -224,7 +229,8 @@ internal partial class BLM
             BLM_VariantCure = new("BLM_VariantCure", 50),
             BLM_B1to3 = new("BLM_B1to3", 0),
             BLM_B4toDespair = new("BLM_B4toDespair", 0),
-            BLM_F1to3 = new("BLM_F1to3", 0);
+            BLM_F1to3 = new("BLM_F1to3", 0),
+            BLM_AM_FieldMouseover = new("BLM_AM_FieldMouseover");
 
         public static UserFloat
             BLM_ST_LeyLinesTimeStill = new("BLM_ST_LeyLinesTimeStill", 2.5f),

@@ -634,10 +634,16 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Retargetting_Aetherial_Manipulation;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is AetherialManipulation
-                ? AetherialManipulation.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true)
-                : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            return actionID is AetherialManipulation
+            
+                
+                    ? AetherialManipulation.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ??  SimpleTarget.HardTarget, true)
+                    : actionID;
+            
+               
+        }
     }
 
     internal class BLM_ScatheXeno : CustomCombo

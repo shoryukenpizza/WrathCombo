@@ -56,15 +56,15 @@ internal partial class BLM
         UmbralHearts is 3;
 
     internal static int HPThresholdLeylines =>
-        BLM_ST_LeyLinesSubOption == 1 ||
-        !InBossEncounter() ? BLM_ST_LeyLinesOption : 0;
+        BLM_ST_LeyLinesBossOption == 1 ||
+        !InBossEncounter() ? BLM_ST_LeyLinesHPOption : 0;
 
     internal static float RefreshTimerThunder =>
-        BLM_ST_ThunderUptime_Threshold;
+        BLM_ST_ThunderUptimeOption;
 
     internal static int HPThresholdThunder =>
-        BLM_ST_Thunder_SubOption == 1 ||
-        !InBossEncounter() ? BLM_ST_ThunderOption : 0;
+        BLM_ST_ThunderBossOption == 1 ||
+        !InBossEncounter() ? BLM_ST_ThunderHPOption : 0;
 
     internal static bool HasPolyglotStacks() =>
         PolyglotStacks > 0;
