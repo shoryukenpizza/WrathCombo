@@ -31,7 +31,7 @@ internal partial class BLM : Caster
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges &&
+                    GetRemainingCharges(LeyLines) > 1 &&
                     !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f))
                     return LeyLines;
 
@@ -79,14 +79,12 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead))
-            {
-                if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                    (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                     ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
-                     ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder))
-                    return OriginalHook(Thunder);
-            }
+            if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
+                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder))
+                return OriginalHook(Thunder);
 
             if (LevelChecked(Amplifier) &&
                 GetCooldownRemainingTime(Amplifier) < 5 &&
@@ -297,15 +295,13 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
-                LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead))
-            {
-                if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                    (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                     ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
-                     ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder) &&
-                    GetTargetHPPercent() > HPThresholdThunder)
-                    return OriginalHook(Thunder);
-            }
+                LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
+                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder) &&
+                GetTargetHPPercent() > HPThresholdThunder)
+                return OriginalHook(Thunder);
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                 IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -425,8 +421,7 @@ internal partial class BLM : Caster
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-
-
+            
             if (CanWeave())
             {
                 if (IsMoving() && InCombat() && HasBattleTarget() &&
@@ -445,7 +440,6 @@ internal partial class BLM : Caster
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges &&
                     !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_AoE_LeyLinesTimeStill) &&
                     GetTargetHPPercent() > 40)
                     return LeyLines;
@@ -522,8 +516,7 @@ internal partial class BLM : Caster
 
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-
-
+            
             if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Movement) &&
