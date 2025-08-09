@@ -95,7 +95,7 @@ internal partial class MNK
 
                 case CustomComboPreset.MNK_Retarget_Thunderclap:
                     DrawAdditionalBoolChoice(MNK_Thunderclap_FieldMouseover,
-                        "Add Field MouseOver", "Adds Field mouseOver targetting");
+                        "Add Field Mouseover", "Adds Field mouseover targetting");
                     break;
             }
         }

@@ -526,7 +526,7 @@ internal partial class MNK : Melee
         {
             if (actionID is not PerfectBalance)
                 return actionID;
-            
+
             return OriginalHook(MasterfulBlitz) != MasterfulBlitz &&
                    LevelChecked(MasterfulBlitz)
                 ? OriginalHook(MasterfulBlitz)
@@ -545,10 +545,10 @@ internal partial class MNK : Melee
 
             if (MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood))
                 return RiddleOfFire;
-            
+
             if (MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire))
                 return Brotherhood;
-            
+
             return actionID;
         }
     }
@@ -561,7 +561,7 @@ internal partial class MNK : Melee
         {
             if (actionID is not PerfectBalance)
                 return actionID;
-            
+
             return HasStatusEffect(Buffs.PerfectBalance) &&
                    LevelChecked(PerfectBalance)
                 ? All.SavageBlade

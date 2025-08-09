@@ -7145,6 +7145,14 @@ public enum CustomComboPreset
     VPR_AoE_SimpleMode = 30100,
 
     #endregion
+    
+    #region Movement
+    
+    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI/Field Mouseover", VPR.JobID)]
+    [Retargeted(VPR.Slither)]
+    VPR_Retarget_Slither = 30211,
+    
+    #endregion
 
     #region Advanced ST Viper
 
@@ -7336,7 +7344,7 @@ public enum CustomComboPreset
     #endregion
     //ST 30016
     //AoE 30115
-    //Misc 30210
+    //Misc 30211
 
     #endregion
 

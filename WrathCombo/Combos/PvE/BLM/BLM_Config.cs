@@ -199,7 +199,7 @@ internal partial class BLM
 
                 case CustomComboPreset.BLM_Retargetting_Aetherial_Manipulation:
                     DrawAdditionalBoolChoice(BLM_AM_FieldMouseover,
-                        "Add Field MouseOver", "Adds Field mouseOver targetting");
+                        "Add Field Mouseover", "Adds Field mouseover targetting");
                     break;
             }
         }
