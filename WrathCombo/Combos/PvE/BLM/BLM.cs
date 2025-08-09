@@ -217,9 +217,12 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges &&
+                    (BLM_ST_LeyLinesMovement == 1 ||
+                     BLM_ST_LeyLinesMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_ST_LeyLinesTimeStill)) &&
+                    GetTargetHPPercent() > HPThresholdLeylines)
                     return LeyLines;
-                
+
                 if (EndOfFirePhase)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
@@ -288,14 +291,11 @@ internal partial class BLM : Caster
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
                 LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead))
             {
-                float refreshTimer = BLM_ST_ThunderUptime_Threshold;
-                int hpThreshold = BLM_ST_Thunder_SubOption == 1 || !InBossEncounter() ? BLM_ST_ThunderOption : 0;
-
                 if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
                     (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                     ThunderDebuffST?.RemainingTime <= refreshTimer ||
-                     ThunderDebuffAoE?.RemainingTime <= refreshTimer) &&
-                    GetTargetHPPercent() > hpThreshold)
+                     ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
+                     ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder) &&
+                    GetTargetHPPercent() > HPThresholdThunder)
                     return OriginalHook(Thunder);
             }
 
@@ -532,7 +532,10 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges &&
+                    (BLM_AoE_LeyLinesMovement == 1 ||
+                     BLM_AoE_LeyLinesMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_AoE_LeyLinesTimeStill)) &&
+                    GetTargetHPPercent() > BLM_AoE_LeyLinesOption)
                     return LeyLines;
             }
 
