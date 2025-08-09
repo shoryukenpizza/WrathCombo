@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.BLM.Config;
 namespace WrathCombo.Combos.PvE;
@@ -217,7 +219,7 @@ internal partial class BLM : Caster
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
                     GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges)
                     return LeyLines;
-
+                
                 if (EndOfFirePhase)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
@@ -614,6 +616,16 @@ internal partial class BLM : Caster
         protected override uint Invoke(uint actionID) =>
             actionID == Role.Swiftcast && Variant.CanRaise(CustomComboPreset.BLM_Variant_Raise)
                 ? Variant.Raise
+                : actionID;
+    }
+
+    internal class BLM_Retargetting_Aetherial_Manipulation : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Retargetting_Aetherial_Manipulation;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is AetherialManipulation
+                ? AetherialManipulation.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true)
                 : actionID;
     }
 

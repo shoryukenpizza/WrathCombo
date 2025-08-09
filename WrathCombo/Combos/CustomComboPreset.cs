@@ -1018,6 +1018,15 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Movement
+    
+    [ConflictingCombos(BLM_Aetherial_Manipulation)]
+    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", BLM.JobID)]
+    [Retargeted(BLM.AetherialManipulation)]
+    BLM_Retargetting_Aetherial_Manipulation = 2066,
+
+    #endregion
+
     #region Single Target - Advanced
 
     [AutoAction(false, false)]
@@ -1155,7 +1164,7 @@ public enum CustomComboPreset
     [ReplaceSkill(BLM.Triplecast)]
     [CustomComboInfo("Triplecast Protection", "Replaces Triplecast with Savage Blade when you already have triplecast active.", BLM.JobID)]
     BLM_TriplecastProtection = 2056,
-
+    
     [ReplaceSkill(BLM.Fire, BLM.Fire3)]
     [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1Despair)]
     [CustomComboInfo("Fire I/III Feature", "Replaces Fire I or Fire III.", BLM.JobID)]
@@ -1222,6 +1231,7 @@ public enum CustomComboPreset
     BLM_Between_The_LeyLines = 2051,
 
     [ReplaceSkill(BLM.AetherialManipulation)]
+    [ConflictingCombos(BLM_Retargetting_Aetherial_Manipulation)]
     [CustomComboInfo("Aetherial Manipulation Feature", "Replaces Aetherial Manipulation with Between the Lines when you are out of active Ley Lines and standing still.", BLM.JobID)]
     BLM_Aetherial_Manipulation = 2055,
     
@@ -1229,7 +1239,7 @@ public enum CustomComboPreset
 
     // Last value ST = 2117
     //Last Value AoE = 2212
-    //Last Value misc = 2065
+    //Last Value misc = 2066
 
     #endregion
 
