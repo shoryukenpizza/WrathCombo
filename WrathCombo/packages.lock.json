@@ -14,12 +14,6 @@
         "resolved": "2.0.18",
         "contentHash": "sR5Aj3JLDbA8JwESfWYfigSz5k1oNSHPN434W1LX8sboWJYEOSQP/KkvZGmJKPgajzSUKkl2jDar3LPZiMFU4Q=="
       },
-      "PunishLib": {
-        "type": "Direct",
-        "requested": "[1.0.1.2, )",
-        "resolved": "1.0.1.2",
-        "contentHash": "DFI01CIl7kkqtNapvd+5HLHuNg0AjE+vAs3paaGuzi44p2Mzi1peHhl6tdTxufyst2810RVBktfIpyBbMP39zA=="
-      },
       "ecommons": {
         "type": "Project"
       }
