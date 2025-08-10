@@ -798,20 +798,20 @@ internal partial class SAM : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is Shinten)
-            {
-                if (IsEnabled(CustomComboPreset.SAM_Shinten_Senei) &&
-                    ActionReady(Senei))
-                    return Senei;
+            if (actionID is not Shinten)
+                return actionID;
 
-                if (IsEnabled(CustomComboPreset.SAM_Shinten_Zanshin) &&
-                    HasStatusEffect(Buffs.ZanshinReady))
-                    return Zanshin;
+            if (IsEnabled(CustomComboPreset.SAM_Shinten_Senei) &&
+                ActionReady(Senei))
+                return Senei;
 
-                if (IsEnabled(CustomComboPreset.SAM_Shinten_Shoha) &&
-                    ActionReady(Shoha) && MeditationStacks is 3)
-                    return Shoha;
-            }
+            if (IsEnabled(CustomComboPreset.SAM_Shinten_Zanshin) &&
+                HasStatusEffect(Buffs.ZanshinReady))
+                return Zanshin;
+
+            if (IsEnabled(CustomComboPreset.SAM_Shinten_Shoha) &&
+                ActionReady(Shoha) && MeditationStacks is 3)
+                return Shoha;
 
             return actionID;
         }
@@ -823,20 +823,21 @@ internal partial class SAM : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is Kyuten)
-            {
-                if (IsEnabled(CustomComboPreset.SAM_Kyuten_Guren) &&
-                    ActionReady(Guren))
-                    return Guren;
+            if (actionID is not Kyuten)
+                return actionID;
 
-                if (IsEnabled(CustomComboPreset.SAM_Kyuten_Zanshin) &&
-                    HasStatusEffect(Buffs.ZanshinReady))
-                    return Zanshin;
+            if (IsEnabled(CustomComboPreset.SAM_Kyuten_Guren) &&
+                ActionReady(Guren))
+                return Guren;
 
-                if (IsEnabled(CustomComboPreset.SAM_Kyuten_Shoha) &&
-                    ActionReady(Shoha) && MeditationStacks is 3)
-                    return Shoha;
-            }
+            if (IsEnabled(CustomComboPreset.SAM_Kyuten_Zanshin) &&
+                HasStatusEffect(Buffs.ZanshinReady))
+                return Zanshin;
+
+            if (IsEnabled(CustomComboPreset.SAM_Kyuten_Shoha) &&
+                ActionReady(Shoha) && MeditationStacks is 3)
+                return Shoha;
+
             return actionID;
         }
     }
@@ -870,7 +871,10 @@ internal partial class SAM : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is Gyoten && Kenki >= 10)
+            if (actionID is not Gyoten)
+                return actionID;
+
+            if (Kenki >= 10)
             {
                 if (InMeleeRange())
                     return Yaten;
@@ -887,21 +891,30 @@ internal partial class SAM : Melee
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.SAM_MeikyoShisuiProtection;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is MeikyoShisui &&
-            HasStatusEffect(Buffs.MeikyoShisui) &&
-            ActionReady(MeikyoShisui)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not MeikyoShisui)
+                return actionID;
+
+            return HasStatusEffect(Buffs.MeikyoShisui) &&
+                   ActionReady(MeikyoShisui)
                 ? All.SavageBlade
                 : actionID;
+        }
     }
 
     internal class SAM_SeneiGuren : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.SAM_SeneiGuren;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Senei && !LevelChecked(Senei)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Senei)
+                return actionID;
+
+            return !LevelChecked(Senei)
                 ? Guren
                 : actionID;
+        }
     }
 }

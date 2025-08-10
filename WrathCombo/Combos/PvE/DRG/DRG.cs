@@ -711,9 +711,14 @@ internal partial class DRG : Melee
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.DRG_BurstCDFeature;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is LanceCharge && IsOnCooldown(LanceCharge) && ActionReady(BattleLitany)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not LanceCharge)
+                return actionID;
+
+            return IsOnCooldown(LanceCharge) && ActionReady(BattleLitany)
                 ? BattleLitany
                 : actionID;
+        }
     }
 }

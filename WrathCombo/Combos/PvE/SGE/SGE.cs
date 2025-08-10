@@ -134,7 +134,7 @@ internal partial class SGE : Healer
             //Occult skills
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
-         
+
             if (ActionReady(Kerachole) && HasAddersgall() &&
                 CanWeave() && RaidWideCasting())
                 return Kerachole;
@@ -147,7 +147,7 @@ internal partial class SGE : Healer
                 return HasStatusEffect(Buffs.Eukrasia)
                     ? OriginalHook(Prognosis)
                     : Eukrasia;
-            
+
             if (CanWeave())
             {
                 // Variant Spirit Dart
@@ -209,7 +209,7 @@ internal partial class SGE : Healer
             return actionID;
         }
     }
-    
+
     #endregion
     
     #region Advanced ST
@@ -590,7 +590,7 @@ internal partial class SGE : Healer
     }
 
     #endregion
-
+    
     #region Standalones
 
     internal class SGE_OverProtect : CustomCombo
@@ -624,34 +624,49 @@ internal partial class SGE : Healer
     {
         protected internal override Preset Preset => Preset.SGE_Raise;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != Role.Swiftcast)
+                return actionID;
+
+            return IsOnCooldown(Role.Swiftcast)
                 ? IsEnabled(Preset.SGE_Raise_Retarget)
                     ? Egeiro.Retarget(Role.Swiftcast,
                         SimpleTarget.Stack.AllyToRaise)
                     : Egeiro
                 : actionID;
+        }
     }
 
     internal class SGE_ZoePneuma : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_ZoePneuma;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Pneuma && ActionReady(Pneuma) && IsOffCooldown(Zoe)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Pneuma)
+                return actionID;
+
+            return ActionReady(Pneuma) && IsOffCooldown(Zoe)
                 ? Zoe
                 : actionID;
+        }
     }
 
     internal class SGE_Rhizo : CustomCombo
     {
         protected internal override Preset Preset => Preset.SGE_Rhizo;
 
-        protected override uint Invoke(uint actionID) =>
-            AddersgallList.Contains(actionID) &&
-            ActionReady(Rhizomata) && !HasAddersgall() && IsOffCooldown(actionID)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Kerachole or Taurochole or Druochole or Ixochole))
+                return actionID;
+
+            return AddersgallList.Contains(actionID) &&
+                   ActionReady(Rhizomata) && !HasAddersgall() && IsOffCooldown(actionID)
                 ? Rhizomata
                 : actionID;
+        }
     }
 
     internal class SGE_Eukrasia : CustomCombo

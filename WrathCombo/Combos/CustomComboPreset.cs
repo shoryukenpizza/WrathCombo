@@ -3690,10 +3690,12 @@ public enum CustomComboPreset
     #endregion
 
     [ReplaceSkill(MCH.Dismantle)]
+    [ConflictingCombos(MCH_DismantleTactician)]
     [CustomComboInfo("Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", MCH.JobID)]
     MCH_DismantleProtection = 8042,
 
     [ReplaceSkill(MCH.Dismantle)]
+    [ConflictingCombos(MCH_DismantleProtection)]
     [CustomComboInfo("Dismantle - Tactician", "Swap dismantle with tactician when dismantle is on cooldown.", MCH.JobID)]
     MCH_DismantleTactician = 8058,
 
