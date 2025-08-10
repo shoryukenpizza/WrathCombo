@@ -961,7 +961,7 @@ internal partial class PLD : Tank
             if (tar is not null)
                 return ShieldBash.Retarget(actionID, tar);
             else if (PLD_RetargetStunLockout)
-                return ALL.SavageBlade;
+                return All.SavageBlade;
 
             return actionID;
         }

@@ -87,7 +87,7 @@ internal static class SMNPvP
                     #endregion
 
                 if (PvPCommon.TargetImmuneToDamage() && HasStatusEffect(Buffs.FurtherRuin)) // Block for ruin 4 because it is on action ID
-                    return ALL.SavageBlade;
+                    return All.SavageBlade;
                     
                 if (!PvPCommon.TargetImmuneToDamage())
                 {

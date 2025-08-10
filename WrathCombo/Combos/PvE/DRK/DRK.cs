@@ -411,7 +411,7 @@ internal partial class DRK : Tank
                 (HasStatusEffect(Buffs.Oblation, checkTarget, anyOwner: true) ||
                  JustUsedOn(Oblation, checkTarget)) &&
                 CanApplyStatus(checkTarget, Buffs.Oblation))
-                return ALL.SavageBlade;
+                return All.SavageBlade;
 
             if (target is not null &&
                 CanApplyStatus(target, Buffs.Oblation))

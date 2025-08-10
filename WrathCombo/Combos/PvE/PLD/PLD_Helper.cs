@@ -5,7 +5,7 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.PLD.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class PLD

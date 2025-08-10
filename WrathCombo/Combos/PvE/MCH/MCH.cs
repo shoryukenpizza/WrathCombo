@@ -349,7 +349,7 @@ internal partial class MCH : PhysicalRanged
                 return actionID;
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
-                return ALL.SavageBlade;
+                return All.SavageBlade;
 
             // Interrupt
             if (Role.CanHeadGraze(Preset.MCH_AoE_SimpleMode, WeaveTypes.DelayWeave))
@@ -482,7 +482,7 @@ internal partial class MCH : PhysicalRanged
                 !IsEnabled(Preset.MCH_AoE_Adv_Reassemble);
 
             if (HasStatusEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
-                return ALL.SavageBlade;
+                return All.SavageBlade;
 
             // Interrupt
             if (Role.CanHeadGraze(Preset.MCH_AoE_Adv_Interrupt, WeaveTypes.DelayWeave))
@@ -765,7 +765,7 @@ internal partial class MCH : PhysicalRanged
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle && HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) && IsOffCooldown(Dismantle)
-                ? ALL.SavageBlade
+                ? All.SavageBlade
                 : actionID;
     }
 }

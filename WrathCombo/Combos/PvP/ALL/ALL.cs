@@ -142,7 +142,7 @@ internal static class PvPCommon
                 if (actionID is Guard)
                     return Guard;
 
-                return ALL.SavageBlade;
+                return All.SavageBlade;
             }
 
             if (Execute() && InPvP() &&
@@ -190,7 +190,7 @@ internal static class PvPCommon
                     return Guard;
                 }
 
-                return ALL.SavageBlade;
+                return All.SavageBlade;
             }
 
             if (Execute() && InPvP() &&
@@ -245,7 +245,7 @@ internal static class PvPCommon
                 if (actionID is Guard)
                     return Guard;
 
-                return ALL.SavageBlade;
+                return All.SavageBlade;
             }
 
             if (Execute() && InPvP() &&

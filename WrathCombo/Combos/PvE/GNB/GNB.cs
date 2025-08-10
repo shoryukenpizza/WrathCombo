@@ -657,12 +657,12 @@ internal partial class GNB : Tank
             {
                 return !HasStatusEffect(Buffs.Aurora, target, true)
                     ? actionID.Retarget(target)
-                    : ALL.SavageBlade;
+                    : All.SavageBlade;
             }
 
             return !HasStatusEffect(Buffs.Aurora, SimpleTarget.Self, true)
                 ? actionID
-                : ALL.SavageBlade;
+                : All.SavageBlade;
         }
     }
     #endregion

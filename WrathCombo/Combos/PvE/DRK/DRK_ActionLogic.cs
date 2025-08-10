@@ -4,8 +4,8 @@ using System;
 using WrathCombo.Data;
 using static WrathCombo.Combos.PvE.DRK.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
-using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
+using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable InconsistentNaming

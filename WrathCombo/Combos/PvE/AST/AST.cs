@@ -656,7 +656,7 @@ internal partial class AST : Healer
         protected internal override Preset Preset => Preset.AST_Lightspeed_Protection; 
         protected override uint Invoke(uint actionID) =>
             actionID is Lightspeed && HasStatusEffect(Buffs.Lightspeed)
-                ? ALL.SavageBlade
+                ? All.SavageBlade
                 : actionID;
     }
     internal class AST_Raise_Alternative : CustomCombo

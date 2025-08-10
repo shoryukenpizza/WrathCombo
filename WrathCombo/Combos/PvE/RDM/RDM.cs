@@ -592,7 +592,7 @@ internal partial class RDM : Caster
             }
             
             if (IsEnabled(Preset.RDM_Riposte_NoWaste) && !HasEnoughManaToStartStandalone && !CanMagickedSwordplay)
-                return ALL.SavageBlade;
+                return All.SavageBlade;
 
             return actionID;
         }
@@ -641,7 +641,7 @@ internal partial class RDM : Caster
             
             if (IsEnabled(Preset.RDM_Moulinet_NoWaste) && 
                 ComboAction is not (Moulinet or EnchantedMoulinet or EnchantedMoulinetDeux) && !HasEnoughManaToStartStandalone && !CanMagickedSwordplay)
-                return ALL.SavageBlade;
+                return All.SavageBlade;
             
             return actionID;
         }
@@ -676,7 +676,7 @@ internal partial class RDM : Caster
 
             return ActionReady(Embolden) &&
                    HasStatusEffect(Buffs.EmboldenOthers, anyOwner: true)
-                ? ALL.SavageBlade
+                ? All.SavageBlade
                 : actionID;
         }
     }
@@ -694,11 +694,11 @@ internal partial class RDM : Caster
             {
                 if (Role.CanAddle() && CanNotMagickBarrier || 
                     GetCooldownRemainingTime(Role.Addle) < GetCooldownRemainingTime(MagickBarrier))
-                    return HasStatusEffect(Debuffs.Addle, CurrentTarget, anyOwner: true) ? ALL.SavageBlade : Role.Addle;
+                    return HasStatusEffect(Debuffs.Addle, CurrentTarget, anyOwner: true) ? All.SavageBlade : Role.Addle;
             }
             
             if (ActionReady(MagickBarrier) && HasStatusEffect(Buffs.MagickBarrier, anyOwner: true))
-                return ALL.SavageBlade;
+                return All.SavageBlade;
             
             if (IsEnabled(Preset.RDM_MagickBarrierAddle) && GetCooldownRemainingTime(Role.Addle) < GetCooldownRemainingTime(MagickBarrier))
                 return Role.Addle;

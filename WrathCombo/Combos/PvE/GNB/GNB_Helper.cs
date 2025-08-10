@@ -8,7 +8,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.GNB.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 #endregion
 
 namespace WrathCombo.Combos.PvE;

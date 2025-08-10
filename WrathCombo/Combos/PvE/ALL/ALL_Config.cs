@@ -4,7 +4,7 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class ALL
+internal partial class All
 {
     internal static class Config
     {

@@ -5,7 +5,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class ALL
+internal partial class All
 {
     public const byte 
         JobID = 0,

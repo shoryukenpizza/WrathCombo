@@ -17,8 +17,8 @@ internal static class Icons
     {
         switch (jobId)
         {
-            case ALL.JobID: jobId = 62146; break; //Adventurer / General
-            case > ALL.JobID and <= 42: jobId += 62100; break; //Classes
+            case All.JobID: jobId = 62146; break; //Adventurer / General
+            case > All.JobID and <= 42: jobId += 62100; break; //Classes
             case DOL.JobID: jobId = 82096; break;
             case OccultCrescent.JobID: return GetOccultIcon();
             default: return null; //Unknown, return null
