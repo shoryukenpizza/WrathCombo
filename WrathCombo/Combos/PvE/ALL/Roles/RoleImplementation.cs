@@ -145,12 +145,12 @@ internal static partial class RoleActions
                 public bool CanSecondWind(int healthpercent) =>
                     RoleActions.Physical.CanSecondWind(healthpercent);
 
-                public bool CanArmsLength() => CanArmsLength(3, ALL.Enums.BossAvoidance.On);
+                public bool CanArmsLength() => CanArmsLength(3, All.Enums.BossAvoidance.On);
 
                 public bool CanArmsLength(int enemyCount, UserInt? avoidanceSetting = null) =>
-                    RoleActions.Physical.CanArmsLength(enemyCount, (ALL.Enums.BossAvoidance)(avoidanceSetting ?? (int)ALL.Enums.BossAvoidance.Off));
+                    RoleActions.Physical.CanArmsLength(enemyCount, (All.Enums.BossAvoidance)(avoidanceSetting ?? (int)All.Enums.BossAvoidance.Off));
 
-                public bool CanArmsLength(int enemyCount, ALL.Enums.BossAvoidance avoidanceSetting) =>
+                public bool CanArmsLength(int enemyCount, All.Enums.BossAvoidance avoidanceSetting) =>
                     RoleActions.Physical.CanArmsLength(enemyCount, avoidanceSetting);
 
                 public bool CanLegGraze() =>
@@ -189,12 +189,12 @@ internal static partial class RoleActions
                 public bool CanSecondWind(int healthpercent) =>
                     RoleActions.Physical.CanSecondWind(healthpercent);
 
-                public bool CanArmsLength() => CanArmsLength(3, ALL.Enums.BossAvoidance.On);
+                public bool CanArmsLength() => CanArmsLength(3, All.Enums.BossAvoidance.On);
 
                 public bool CanArmsLength(int enemyCount, UserInt? avoidanceSetting = null) =>
-                    RoleActions.Physical.CanArmsLength(enemyCount, (ALL.Enums.BossAvoidance)(avoidanceSetting ?? (int)ALL.Enums.BossAvoidance.Off));
+                    RoleActions.Physical.CanArmsLength(enemyCount, (All.Enums.BossAvoidance)(avoidanceSetting ?? (int)All.Enums.BossAvoidance.Off));
 
-                public bool CanArmsLength(int enemyCount, ALL.Enums.BossAvoidance avoidanceSetting) =>
+                public bool CanArmsLength(int enemyCount, All.Enums.BossAvoidance avoidanceSetting) =>
                     RoleActions.Physical.CanArmsLength(enemyCount, avoidanceSetting);
 
                 public bool CanLegSweep() =>
@@ -232,12 +232,12 @@ internal static partial class RoleActions
                 public bool CanSecondWind(int healthpercent) =>
                     RoleActions.Physical.CanSecondWind(healthpercent);
 
-                public bool CanArmsLength() => CanArmsLength(3, ALL.Enums.BossAvoidance.On);
+                public bool CanArmsLength() => CanArmsLength(3, All.Enums.BossAvoidance.On);
 
                 public bool CanArmsLength(int enemyCount, UserInt? avoidanceSetting = null) =>
-                    RoleActions.Physical.CanArmsLength(enemyCount, (ALL.Enums.BossAvoidance)(avoidanceSetting ?? (int)ALL.Enums.BossAvoidance.Off));
+                    RoleActions.Physical.CanArmsLength(enemyCount, (All.Enums.BossAvoidance)(avoidanceSetting ?? (int)All.Enums.BossAvoidance.Off));
 
-                public bool CanArmsLength(int enemyCount, ALL.Enums.BossAvoidance avoidanceSetting) =>
+                public bool CanArmsLength(int enemyCount, All.Enums.BossAvoidance avoidanceSetting) =>
                     RoleActions.Physical.CanArmsLength(enemyCount, avoidanceSetting);
 
                 public bool CanRampart(int healthPercent) =>

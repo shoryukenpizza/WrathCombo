@@ -394,10 +394,10 @@ public enum CustomComboPreset
     #region GLOBAL FEATURES
 
     [Role(JobRole.All)]
-    [ReplaceSkill(ALL.Sprint)]
+    [ReplaceSkill(All.Sprint)]
     [CustomComboInfo("Island Sanctuary Sprint Feature",
         "Replaces Sprint with Isle Sprint.\nOnly works at the Island Sanctuary. Icon does not change.\nDo not use with SimpleTweaks' Island Sanctuary Sprint fix.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_IslandSanctuary_Sprint = 100093,
 
     #region Global Tank Features
@@ -405,7 +405,7 @@ public enum CustomComboPreset
     [Role(JobRole.Tank)]
     [CustomComboInfo("Global Tank Features",
         "Features and options involving shared role actions for Tanks.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Tank_Menu = 100099,
 
     [Role(JobRole.Tank)]
@@ -414,40 +414,40 @@ public enum CustomComboPreset
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Interrupt Feature",
         "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Tank_Interrupt = 100000,
 
     [ParentCombo(ALL_Tank_Interrupt)]
     [Retargeted(RoleActions.Tank.Interject, RoleActions.Tank.LowBlow)]
-    [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", ALL.JobID)]
+    [CustomComboInfo("Retarget Interrupts", "Will retarget the interrupt if the caster is not your current target.", All.JobID)]
     ALL_Tank_Interrupt_Retarget = 100005,
 
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.Reprisal)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Double Reprisal Protection",
-        "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", ALL.JobID)]
+        "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", All.JobID)]
     ALL_Tank_Reprisal = 100001,
 
     [Role(JobRole.Tank)]
     [ReplaceSkill(RoleActions.Tank.Shirk)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Shirk Retargeting",
-        "Retargets Shirk to the other tank if there is one.", ALL.JobID)]
+        "Retargets Shirk to the other tank if there is one.", All.JobID)]
     [Retargeted(RoleActions.Tank.Shirk)]
     ALL_Tank_ShirkRetargeting = 100002,
 
     [Role(JobRole.Tank)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Use Healers instead",
-        "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", ALL.JobID)]
+        "Will Retarget Shirk to healers, instead of the other tank.\nOnly recommended during some specific enrages.", All.JobID)]
     [Retargeted]
     ALL_Tank_ShirkRetargeting_Healer = 100003,
 
     [Role(JobRole.Tank)]
     [ParentCombo(ALL_Tank_ShirkRetargeting)]
     [CustomComboInfo("Fallback to Any Support",
-        "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", ALL.JobID)]
+        "Will Retarget Shirk to tanks or healers, per your setting above, but will include a fallback to any tank OR healer if none of your setting is found.\nUseful to help your Shirk always go to *someone* even if your chosen players are not alive.", All.JobID)]
     [Retargeted]
     ALL_Tank_ShirkRetargeting_Fallback = 100004,
 
@@ -458,18 +458,18 @@ public enum CustomComboPreset
     [Role(JobRole.Healer)]
     [CustomComboInfo("Global Healer Features",
         "Features and options involving shared role actions for Healers.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Healer_Menu = 100098,
 
     [Role(JobRole.Healer)]
     [ReplaceSkill(AST.Ascend, WHM.Raise, SCH.Resurrection, SGE.Egeiro)]
     [ConflictingCombos(AST_Raise_Alternative, SCH_Raise, SGE_Raise, WHM_Raise)]
     [ParentCombo(ALL_Healer_Menu)]
-    [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", ALL.JobID)]
+    [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", All.JobID)]
     ALL_Healer_Raise = 100010,
 
     [ParentCombo(ALL_Healer_Raise)]
-    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", ALL.JobID)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", All.JobID)]
     [Retargeted(WHM.Raise, AST.Ascend, SGE.Egeiro, SCH.Resurrection)]
     ALL_Healer_Raise_Retarget = 100011,
 
@@ -477,14 +477,14 @@ public enum CustomComboPreset
     [ReplaceSkill(RoleActions.Healer.Esuna)]
     [ParentCombo(ALL_Healer_Menu)]
     [CustomComboInfo("Healer: Esuna Retargeting",
-        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", ALL.JobID)]
+        "Retargets Esuna (outside of combo usage) to your Heal Stack, checking if each potential target in the stack has a cleansable debuff.", All.JobID)]
     [Retargeted(RoleActions.Healer.Esuna)]
     ALL_Healer_EsunaRetargeting = 100012,
     
     [Role(JobRole.Healer)]
     [ReplaceSkill(RoleActions.Healer.Rescue)]
     [ParentCombo(ALL_Healer_Menu)]
-    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", ALL.JobID)]
+    [CustomComboInfo("Healer: Rescue Retargeting", "Retargets Rescue (outside of combo usage) to UI Mouseover and additional options.", All.JobID)]
     [Retargeted(RoleActions.Healer.Rescue)]
     ALL_Healer_RescueRetargeting = 100013,
     #endregion
@@ -494,14 +494,14 @@ public enum CustomComboPreset
     [Role(JobRole.MagicalDPS)]
     [CustomComboInfo("Global Magical Ranged Features",
         "Features and options involving shared role actions for Magical Ranged DPS.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Caster_Menu = 100097,
 
     [Role(JobRole.MagicalDPS)]
     [ReplaceSkill(RoleActions.Caster.Addle)]
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Double Addle Protection",
-        "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", ALL.JobID)]
+        "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", All.JobID)]
     ALL_Caster_Addle = 100020,
 
     [Role(JobRole.MagicalDPS)]
@@ -510,11 +510,11 @@ public enum CustomComboPreset
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Raise Feature",
         "Changes the class' Raise Ability into Swiftcast. Red Mage will also show VerCure if Swiftcast is on cooldown.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Caster_Raise = 100021,
 
     [ParentCombo(ALL_Caster_Raise)]
-    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", ALL.JobID)]
+    [CustomComboInfo("Retarget Raises", "Will Retarget the Raises affected here to your Heal Stack.", All.JobID)]
     [Retargeted(BLU.AngelWhisper, RDM.Verraise, SMN.Resurrection)]
     ALL_Caster_Raise_Retarget = 100022,
 
@@ -525,21 +525,21 @@ public enum CustomComboPreset
     [Role(JobRole.MeleeDPS)]
     [CustomComboInfo("Global Melee DPS Features",
         "Features and options involving shared role actions for Melee DPS.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Melee_Menu = 100096,
 
     [Role(JobRole.MeleeDPS)]
     [ReplaceSkill(RoleActions.Melee.Feint)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: Double Feint Protection",
-        "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", ALL.JobID)]
+        "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", All.JobID)]
     ALL_Melee_Feint = 100030,
 
     [Role(JobRole.MeleeDPS)]
     [ReplaceSkill(RoleActions.Melee.TrueNorth)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: True North Protection",
-        "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", ALL.JobID)]
+        "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", All.JobID)]
     ALL_Melee_TrueNorth = 100031,
 
     #endregion
@@ -549,7 +549,7 @@ public enum CustomComboPreset
     [Role(JobRole.RangedDPS)]
     [CustomComboInfo("Global Physical Ranged Features",
         "Features and options involving shared role actions for Physical Ranged DPS.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Ranged_Menu = 100095,
 
     [Role(JobRole.RangedDPS)]
@@ -557,14 +557,14 @@ public enum CustomComboPreset
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Double Mitigation Protection",
         "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing them with Savage Blade.",
-        ALL.JobID)]
+        All.JobID)]
     ALL_Ranged_Mitigation = 100040,
 
     [Role(JobRole.RangedDPS)]
     [ReplaceSkill(RoleActions.PhysRanged.FootGraze)]
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Ranged Interrupt Feature",
-        "Replaces Foot Graze with Head Graze when target can be interrupted.", ALL.JobID)]
+        "Replaces Foot Graze with Head Graze when target can be interrupted.", All.JobID)]
     ALL_Ranged_Interrupt = 100041,
 
     #endregion
@@ -8396,30 +8396,30 @@ public enum CustomComboPreset
     [Role(JobRole.All)]
     [PvPCustomCombo]
     [CustomComboInfo("Emergency Heals Feature",
-        "Uses Recuperate when your HP is under the set threshold and you have sufficient MP.", ALL.JobID)]
+        "Uses Recuperate when your HP is under the set threshold and you have sufficient MP.", All.JobID)]
     PvP_EmergencyHeals = 1100000,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
-    [CustomComboInfo("Emergency Guard Feature", "Uses Guard when your HP is under the set threshold.", ALL.JobID)]
+    [CustomComboInfo("Emergency Guard Feature", "Uses Guard when your HP is under the set threshold.", All.JobID)]
     PvP_EmergencyGuard = 1100010,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
-    [CustomComboInfo("Quick Purify Feature", "Uses Purify when afflicted with any selected debuff.", ALL.JobID)]
+    [CustomComboInfo("Quick Purify Feature", "Uses Purify when afflicted with any selected debuff.", All.JobID)]
     PvP_QuickPurify = 1100020,
 
     [Role(JobRole.All)]
     [PvPCustomCombo]
     [CustomComboInfo("Prevent Mash Cancelling Feature",
-        "Stops you cancelling your guard if you're pressing buttons quickly by replacing your buttons with Savage Blade.", ALL.JobID)]
+        "Stops you cancelling your guard if you're pressing buttons quickly by replacing your buttons with Savage Blade.", All.JobID)]
     PvP_MashCancel = 1100030,
 
     [Role(JobRole.All)]
     [ParentCombo(PvP_MashCancel)]
     [CustomComboInfo("Recuperate Option",
         "Allows you to cancel your guard with Recuperate on the Guard button if health is low enough to not waste it.",
-        ALL.JobID)]
+        All.JobID)]
     PvP_MashCancelRecup = 1100031,
 
     // Last value = 1100030

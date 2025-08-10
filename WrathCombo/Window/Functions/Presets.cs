@@ -359,7 +359,7 @@ internal class Presets : ConfigWindow
             {
                 switch (info.JobID)
                 {
-                    case ALL.JobID: ALL.Config.Draw(preset); break;
+                    case All.JobID: All.Config.Draw(preset); break;
                     case AST.JobID: AST.Config.Draw(preset); break;
                     case BLM.JobID: BLM.Config.Draw(preset); break;
                     case BLU.JobID: BLU.Config.Draw(preset); break;
@@ -392,7 +392,7 @@ internal class Presets : ConfigWindow
             {
                 switch (info.JobID)
                 {
-                    case ALL.JobID: PvPCommon.Config.Draw(preset); break;
+                    case All.JobID: PvPCommon.Config.Draw(preset); break;
                     case AST.JobID: ASTPvP.Config.Draw(preset); break;
                     case BLM.JobID: BLMPvP.Config.Draw(preset); break;
                     //case BLU.JobID: BLU.Config.Draw(preset); break;

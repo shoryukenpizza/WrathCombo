@@ -251,7 +251,7 @@ internal unsafe static class AutoRotationController
                 continue;
 
             var outAct = OriginalHook(AutoRotationHelper.InvokeCombo(entry.Preset, attributes, ref _));
-            if (!CanQueue(outAct) && outAct is not ALL.SavageBlade)
+            if (!CanQueue(outAct) && outAct is not All.SavageBlade)
                 continue;
 
             if (action.IsHeal)
@@ -571,7 +571,7 @@ internal unsafe static class AutoRotationController
                 }
 
                 uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct));
-                if (outAct is ALL.SavageBlade) return true;
+                if (outAct is All.SavageBlade) return true;
                 if (!CanQueue(outAct)) return false;
                 if (!ActionReady(outAct, true, true))
                     return false;

@@ -79,7 +79,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
         if (classJobID is >= 16 and <= 18)
             classJobID = DOL.JobID;
 
-        if (JobID != ALL.JobID && ClassID != ALL.ClassID &&
+        if (JobID != All.JobID && ClassID != All.ClassID &&
             JobID != classJobID && ClassID != classJobID)
             return false;
 
@@ -98,7 +98,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
         {
             // todo: tauren: remember why this condition was in the if below:
             //      `&& WrathOpener.CurrentOpener?.OpenerStep <= 1`
-            if (resultingActionID != ALL.SavageBlade)
+            if (resultingActionID != All.SavageBlade)
                 return false;
         }
         newActionID = resultingActionID;

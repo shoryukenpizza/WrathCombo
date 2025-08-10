@@ -794,7 +794,7 @@ internal partial class BLM : Caster
 
         protected override uint Invoke(uint actionID) =>
             actionID is Triplecast && HasStatusEffect(Buffs.Triplecast) && LevelChecked(Triplecast)
-                ? ALL.SavageBlade
+                ? All.SavageBlade
                 : actionID;
     }
 }
