@@ -218,10 +218,10 @@ public class Search(Leasing leasing)
     private DateTime _lastCacheUpdateForPresetStates = DateTime.MinValue;
 
     /// <summary>
-    ///     Recursively finds the root parent of a given CustomComboPreset.
+    ///     Recursively finds the root parent of a given Preset.
     /// </summary>
-    /// <param name="preset">The CustomComboPreset to find the root parent for.</param>
-    /// <returns>The root parent CustomComboPreset.</returns>
+    /// <param name="preset">The Preset to find the root parent for.</param>
+    /// <returns>The root parent Preset.</returns>
     public Preset GetRootParent(Preset preset)
     {
         if (!Attribute.IsDefined(
@@ -240,7 +240,7 @@ public class Search(Leasing leasing)
     }
 
     /// <summary>
-    ///     Cached list of <see cref="CustomComboPreset">Presets</see>, and most of
+    ///     Cached list of <see cref="Preset">Presets</see>, and most of
     ///     their attribute-based information.
     /// </summary>
     [field: AllowNull, MaybeNull]
@@ -277,7 +277,7 @@ public class Search(Leasing leasing)
     }
 
     /// <summary>
-    ///     Cached list of <see cref="CustomComboPreset">Presets</see>, and the
+    ///     Cached list of <see cref="Preset">Presets</see>, and the
     ///     state and Auto-Mode state of each.
     /// </summary>
     /// <remarks>

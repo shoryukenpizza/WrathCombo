@@ -4,7 +4,7 @@ using WrathCombo.Attributes;
 using WrathCombo.Combos;
 namespace WrathCombo.Extensions;
 
-internal static class PresetExtensions
+internal static partial class PresetExtensions
 {
     internal static Dictionary<Preset, ReplaceSkillAttribute> replaceSkillCache = [];
     internal static Dictionary<Preset, CustomComboInfoAttribute> comboInfoCache = [];

@@ -16,7 +16,7 @@ using static WrathCombo.Attributes.PossiblyRetargetedAttribute;
 namespace WrathCombo.Combos;
 
 /// <summary> Combo presets. </summary>
-public enum CustomComboPreset
+public enum Preset
 {
     #region PvE Combos
 
@@ -1018,6 +1018,15 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Movement
+    
+    [ConflictingCombos(BLM_Aetherial_Manipulation)]
+    [CustomComboInfo("Aetherial Manipulation Movement option", "Retargets Aetherial Manipulation to UI/Field Mouseover", BLM.JobID)]
+    [Retargeted(BLM.AetherialManipulation)]
+    BLM_Retargetting_Aetherial_Manipulation = 2066,
+
+    #endregion
+
     #region Single Target - Advanced
 
     [AutoAction(false, false)]
@@ -1123,6 +1132,10 @@ public enum CustomComboPreset
     BLM_AoE_Thunder = 2209,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Movement Option", "Add Triplecast while moving.", BLM.JobID)]
+    BLM_AoE_Movement = 2213,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
 
@@ -1155,7 +1168,7 @@ public enum CustomComboPreset
     [ReplaceSkill(BLM.Triplecast)]
     [CustomComboInfo("Triplecast Protection", "Replaces Triplecast with Savage Blade when you already have triplecast active.", BLM.JobID)]
     BLM_TriplecastProtection = 2056,
-
+    
     [ReplaceSkill(BLM.Fire, BLM.Fire3)]
     [ConflictingCombos(BLM_ST_AdvancedMode, BLM_ST_SimpleMode, BLM_Fire1Despair)]
     [CustomComboInfo("Fire I/III Feature", "Replaces Fire I or Fire III.", BLM.JobID)]
@@ -1208,6 +1221,14 @@ public enum CustomComboPreset
     [ReplaceSkill(BLM.Amplifier)]
     [CustomComboInfo("Amplifier to Xenoglossy", "Replaces Amplifier with Xenoglossy when at max Polyglot stacks.", BLM.JobID)]
     BLM_AmplifierXeno = 2061,
+
+    [ReplaceSkill(BLM.Xenoglossy)]
+    [CustomComboInfo("Xenoglossy to Thunder", "Replaces Xenoglossy with Thunder when Thunder is 3 secs or lower.", BLM.JobID)]
+    BLM_XenoThunder = 2067,
+
+    [ReplaceSkill(BLM.Foul)]
+    [CustomComboInfo("Foul to Thunder II", "Replaces Foul with Thunder II when Thunder is 3 secs or lower.", BLM.JobID)]
+    BLM_FoulThunder = 2068,
     
     [ReplaceSkill(BLM.Transpose)]
     [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID)]
@@ -1222,14 +1243,15 @@ public enum CustomComboPreset
     BLM_Between_The_LeyLines = 2051,
 
     [ReplaceSkill(BLM.AetherialManipulation)]
+    [ConflictingCombos(BLM_Retargetting_Aetherial_Manipulation)]
     [CustomComboInfo("Aetherial Manipulation Feature", "Replaces Aetherial Manipulation with Between the Lines when you are out of active Ley Lines and standing still.", BLM.JobID)]
     BLM_Aetherial_Manipulation = 2055,
     
     #endregion
 
     // Last value ST = 2117
-    //Last Value AoE = 2212
-    //Last Value misc = 2065
+    //Last Value AoE = 2213
+    //Last Value misc = 2068
 
     #endregion
 
@@ -1435,39 +1457,9 @@ public enum CustomComboPreset
        BRD.JobID)]
     BRD_Adv_DoT = 3010,
 
-    [ParentCombo(BRD_Adv_DoT)]
-    [CustomComboInfo("Iron Jaws Option", "Enable the refreshing of dots with Ironjaws", BRD.JobID)]
-    BRD_Adv_IronJaws = 3060,
-
-    [ParentCombo(BRD_Adv_DoT)]
-    [CustomComboInfo("Dot Application Option",
-        "Enable the application of dots outside of the opener", BRD.JobID)]
-    BRD_Adv_ApplyDots = 3059,
-
-    [ParentCombo(BRD_Adv_DoT)]
-    [CustomComboInfo("Raging Jaws Option",
-        "Enable the snapshotting of DoTs, within the remaining time of Raging Strikes below:", BRD.JobID)]
-    BRD_Adv_RagingJaws = 3025,
-
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("Buffs Option", "Adds buffs onto the Advanced Bard feature. \nEnable all to follow balance buff windows \nDisabling any buff will follow simple priority", BRD.JobID)]
     BRD_Adv_Buffs = 3017,
-
-    [ParentCombo(BRD_Adv_Buffs)]
-    [CustomComboInfo("Raging Strikes Option", "Adds Raging Strikes", BRD.JobID)]
-    BRD_Adv_Buffs_Raging = 3049,
-
-    [ParentCombo(BRD_Adv_Buffs)]
-    [CustomComboInfo("Battlevoice Option", "Adds Battle Voice", BRD.JobID)]
-    BRD_Adv_Buffs_Battlevoice = 3050,
-
-    [ParentCombo(BRD_Adv_Buffs)]
-    [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
-    BRD_Adv_Buffs_RadiantFinale = 3051,
-
-    [ParentCombo(BRD_Adv_Buffs)]
-    [CustomComboInfo("Barrage Option", "Adds Barrage", BRD.JobID)]
-    BRD_Adv_Buffs_Barrage = 3052,
 
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("Resonant Option", "Adds Resonant Arrow to the Rotation after Barrage.", BRD.JobID)]
@@ -1506,11 +1498,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", BRD.JobID)]
     BRD_ST_Wardens = 3047,
 
-    [ParentCombo(BRD_ST_Wardens)]
-    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function following party list", BRD.JobID)]
-    [Retargeted(BRD.TheWardensPaeon)]
-    BRD_ST_WardensAuto = 3064,
-
     [AutoAction(true, false)]
     [ConflictingCombos(BRD_AoE_Combo, BRD_AoE_SimpleMode)]
     [ReplaceSkill(BRD.QuickNock, BRD.Ladonsbite)]
@@ -1519,6 +1506,10 @@ public enum CustomComboPreset
         BRD.JobID)]
     [AdvancedCombo]
     BRD_AoE_AdvMode = 3015,
+    
+    [ParentCombo(BRD_AoE_AdvMode)]
+    [CustomComboInfo("Bard Dot Option", "Will maintain dots on up to 3 targets.", BRD.JobID)]
+    BRD_AoE_Adv_Multidot = 3065,
 
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Bard Song Option", "Weave Songs on the Advanced AoE.", BRD.JobID)]
@@ -1527,22 +1518,6 @@ public enum CustomComboPreset
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("AoE Buffs Option", "Adds buffs onto the Advance AoE Bard feature.\nEnable all to follow balance buff windows \nDisabling any buff will follow simple priority", BRD.JobID)]
     BRD_AoE_Adv_Buffs = 3032,
-
-    [ParentCombo(BRD_AoE_Adv_Buffs)]
-    [CustomComboInfo("Raging Strikes Option", "Adds Raging Strikes", BRD.JobID)]
-    BRD_AoE_Adv_Buffs_Raging = 3053,
-
-    [ParentCombo(BRD_AoE_Adv_Buffs)]
-    [CustomComboInfo("Battlevoice Option", "Adds Battle Voice", BRD.JobID)]
-    BRD_AoE_Adv_Buffs_Battlevoice = 3054,
-
-    [ParentCombo(BRD_AoE_Adv_Buffs)]
-    [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
-    BRD_AoE_Adv_Buffs_RadiantFinale = 3055,
-
-    [ParentCombo(BRD_AoE_Adv_Buffs)]
-    [CustomComboInfo("Barrage Option", "Adds Barrage", BRD.JobID)]
-    BRD_AoE_Adv_Buffs_Barrage = 3056,
 
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("oGcd Option",
@@ -1580,11 +1555,6 @@ public enum CustomComboPreset
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Self Cleanse Option", "Uses Wardens Paeon when you have a cleansable debuff.", BRD.JobID)]
     BRD_AoE_Wardens = 3046,
-
-    [ParentCombo(BRD_AoE_Wardens)]
-    [CustomComboInfo("Party Cleanse Option", "Uses Wardens Paeon when someone in the party has a cleansable debuff using the Retargeting Function following party list.", BRD.JobID)]
-    [Retargeted(BRD.TheWardensPaeon)]
-    BRD_AoE_WardensAuto = 3063,
 
     #endregion
 
@@ -1679,7 +1649,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 3063
+    // Last value = 3066
 
     #endregion
 
@@ -3720,10 +3690,12 @@ public enum CustomComboPreset
     #endregion
 
     [ReplaceSkill(MCH.Dismantle)]
+    [ConflictingCombos(MCH_DismantleTactician)]
     [CustomComboInfo("Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", MCH.JobID)]
     MCH_DismantleProtection = 8042,
 
     [ReplaceSkill(MCH.Dismantle)]
+    [ConflictingCombos(MCH_DismantleProtection)]
     [CustomComboInfo("Dismantle - Tactician", "Swap dismantle with tactician when dismantle is on cooldown.", MCH.JobID)]
     MCH_DismantleTactician = 8058,
 
@@ -7123,6 +7095,14 @@ public enum CustomComboPreset
     VPR_AoE_SimpleMode = 30100,
 
     #endregion
+    
+    #region Movement
+    
+    [CustomComboInfo("Slither Movement option", "Retargets Slither to UI/Field Mouseover", VPR.JobID)]
+    [Retargeted(VPR.Slither)]
+    VPR_Retarget_Slither = 30211,
+    
+    #endregion
 
     #region Advanced ST Viper
 
@@ -7314,7 +7294,7 @@ public enum CustomComboPreset
     #endregion
     //ST 30016
     //AoE 30115
-    //Misc 30210
+    //Misc 30211
 
     #endregion
 

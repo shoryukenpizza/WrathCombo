@@ -1,3 +1,4 @@
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.VPR.Config;
 namespace WrathCombo.Combos.PvE;
@@ -430,8 +431,7 @@ internal partial class VPR : Melee
             {
                 // Death Rattle / Legacy Weaves
                 if (LevelChecked(SerpentsTail) &&
-                    OriginalHook(SerpentsTail) is not SerpentsTail &&
-                    InActionRange(OriginalHook(SerpentsTail)))
+                    OriginalHook(SerpentsTail) is not SerpentsTail)
                     return OriginalHook(SerpentsTail);
 
                 // Uncoiled combo
@@ -577,8 +577,7 @@ internal partial class VPR : Melee
                 // Death Rattle / Legacy Weaves
                 if (IsEnabled(Preset.VPR_AoE_SerpentsTail) &&
                     LevelChecked(SerpentsTail) &&
-                    OriginalHook(SerpentsTail) is not SerpentsTail &&
-                    InActionRange(OriginalHook(SerpentsTail)))
+                    OriginalHook(SerpentsTail) is not SerpentsTail)
                     return OriginalHook(SerpentsTail);
 
                 // Uncoiled combo
@@ -724,33 +723,28 @@ internal partial class VPR : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            switch (actionID)
+            if (actionID is not Vicewinder)
+                return actionID;
+
+            if (IsEnabled(Preset.VPR_VicewinderCoils_oGCDs))
             {
-                case Vicewinder:
-                {
-                    if (IsEnabled(Preset.VPR_VicewinderCoils_oGCDs))
-                    {
-                        if (HasStatusEffect(Buffs.HuntersVenom))
-                            return OriginalHook(Twinfang);
+                if (HasStatusEffect(Buffs.HuntersVenom))
+                    return OriginalHook(Twinfang);
 
-                        if (HasStatusEffect(Buffs.SwiftskinsVenom))
-                            return OriginalHook(Twinblood);
-                    }
+                if (HasStatusEffect(Buffs.SwiftskinsVenom))
+                    return OriginalHook(Twinblood);
+            }
 
-                    // Vicewinder Combo
-                    if (LevelChecked(Vicewinder))
-                    {
-                        // Swiftskin's Coil
-                        if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
-                            return SwiftskinsCoil;
+            // Vicewinder Combo
+            if (LevelChecked(Vicewinder))
+            {
+                // Swiftskin's Coil
+                if (VicewinderReady && (!OnTargetsFlank() || !TargetNeedsPositionals()) || HuntersCoilReady)
+                    return SwiftskinsCoil;
 
-                        // Hunter's Coil
-                        if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
-                            return HuntersCoil;
-                    }
-
-                    break;
-                }
+                // Hunter's Coil
+                if (VicewinderReady && (!OnTargetsRear() || !TargetNeedsPositionals()) || SwiftskinsCoilReady)
+                    return HuntersCoil;
             }
 
             return actionID;
@@ -763,28 +757,23 @@ internal partial class VPR : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            switch (actionID)
+            if (actionID is not Vicepit)
+                return actionID;
+
+            if (IsEnabled(Preset.VPR_VicepitDens_oGCDs))
             {
-                case Vicepit:
-                {
-                    if (IsEnabled(Preset.VPR_VicepitDens_oGCDs))
-                    {
-                        if (HasStatusEffect(Buffs.FellhuntersVenom))
-                            return OriginalHook(Twinfang);
+                if (HasStatusEffect(Buffs.FellhuntersVenom))
+                    return OriginalHook(Twinfang);
 
-                        if (HasStatusEffect(Buffs.FellskinsVenom))
-                            return OriginalHook(Twinblood);
-                    }
-
-                    if (SwiftskinsDenReady)
-                        return HuntersDen;
-
-                    if (VicepitReady)
-                        return SwiftskinsDen;
-
-                    break;
-                }
+                if (HasStatusEffect(Buffs.FellskinsVenom))
+                    return OriginalHook(Twinblood);
             }
+
+            if (SwiftskinsDenReady)
+                return HuntersDen;
+
+            if (VicepitReady)
+                return SwiftskinsDen;
 
             return actionID;
         }
@@ -794,13 +783,19 @@ internal partial class VPR : Melee
     {
         protected internal override Preset Preset => Preset.VPR_UncoiledTwins;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                UncoiledFury when HasStatusEffect(Buffs.PoisedForTwinfang) => OriginalHook(Twinfang),
-                UncoiledFury when HasStatusEffect(Buffs.PoisedForTwinblood) => OriginalHook(Twinblood),
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not UncoiledFury)
+                return actionID;
+
+            if (HasStatusEffect(Buffs.PoisedForTwinfang))
+                return OriginalHook(Twinfang);
+
+            if (HasStatusEffect(Buffs.PoisedForTwinblood))
+                return OriginalHook(Twinblood);
+
+            return actionID;
+        }
     }
 
     internal class VPR_ReawakenLegacy : CustomCombo
@@ -809,24 +804,20 @@ internal partial class VPR : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            int buttonChoice = VPR_ReawakenLegacyButton;
+            if (actionID is not (Reawaken or ReavingFangs))
+                return actionID;
 
-            switch (buttonChoice)
+            if (VPR_ReawakenLegacyButton == 0 && HasStatusEffect(Buffs.Reawakened) ||
+                VPR_ReawakenLegacyButton == 1 && HasStatusEffect(Buffs.Reawakened))
             {
-                case 0 when actionID is Reawaken && HasStatusEffect(Buffs.Reawakened):
-                case 1 when actionID is ReavingFangs && HasStatusEffect(Buffs.Reawakened):
-                {
-                    // Legacy Weaves
-                    if (IsEnabled(Preset.VPR_ReawakenLegacyWeaves) &&
-                        TraitLevelChecked(Traits.SerpentsLegacy) && HasStatusEffect(Buffs.Reawakened)
-                        && OriginalHook(SerpentsTail) is not SerpentsTail)
-                        return OriginalHook(SerpentsTail);
+                // Legacy Weaves
+                if (IsEnabled(Preset.VPR_ReawakenLegacyWeaves) &&
+                    TraitLevelChecked(Traits.SerpentsLegacy) && HasStatusEffect(Buffs.Reawakened)
+                    && OriginalHook(SerpentsTail) is not SerpentsTail)
+                    return OriginalHook(SerpentsTail);
 
-                    if (ReawakenComboST(ref actionID))
-                        return actionID;
-
-                    break;
-                }
+                if (ReawakenComboST(ref actionID))
+                    return actionID;
             }
 
             return actionID;
@@ -837,15 +828,26 @@ internal partial class VPR : Melee
     {
         protected internal override Preset Preset => Preset.VPR_TwinTails;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                // Death Rattle / Legacy Weaves
-                SerpentsTail when LevelChecked(SerpentsTail) && OriginalHook(SerpentsTail) is not SerpentsTail => OriginalHook(SerpentsTail),
-                SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinfang) || HasStatusEffect(Buffs.HuntersVenom) || HasStatusEffect(Buffs.FellhuntersVenom) => OriginalHook(Twinfang),
-                SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinblood) || HasStatusEffect(Buffs.SwiftskinsVenom) || HasStatusEffect(Buffs.FellskinsVenom) => OriginalHook(Twinblood),
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not SerpentsTail)
+                return actionID;
+
+            if (LevelChecked(SerpentsTail) && OriginalHook(SerpentsTail) is not SerpentsTail)
+                return OriginalHook(SerpentsTail);
+
+            if (HasStatusEffect(Buffs.PoisedForTwinfang) ||
+                HasStatusEffect(Buffs.HuntersVenom) ||
+                HasStatusEffect(Buffs.FellhuntersVenom))
+                return OriginalHook(Twinfang);
+
+            if (HasStatusEffect(Buffs.PoisedForTwinblood) ||
+                HasStatusEffect(Buffs.SwiftskinsVenom) ||
+                HasStatusEffect(Buffs.FellskinsVenom))
+                return OriginalHook(Twinblood);
+
+            return actionID;
+        }
     }
 
     internal class VPR_Legacies : CustomCombo
@@ -854,18 +856,17 @@ internal partial class VPR : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (!HasStatusEffect(Buffs.Reawakened))
+            if (actionID is not (SteelFangs or ReavingFangs or HuntersCoil or SwiftskinsCoil) || !HasStatusEffect(Buffs.Reawakened))
                 return actionID;
 
             //Reawaken combo
-            return actionID switch
-            {
-                SteelFangs when JustUsed(OriginalHook(SteelFangs)) && AnguineTribute is 4 => OriginalHook(SerpentsTail),
-                ReavingFangs when JustUsed(OriginalHook(ReavingFangs)) && AnguineTribute is 3 => OriginalHook(SerpentsTail),
-                HuntersCoil when JustUsed(OriginalHook(HuntersCoil)) && AnguineTribute is 2 => OriginalHook(SerpentsTail),
-                SwiftskinsCoil when JustUsed(OriginalHook(SwiftskinsCoil)) && AnguineTribute is 1 => OriginalHook(SerpentsTail),
-                var _ => actionID
-            };
+            if (JustUsed(OriginalHook(SteelFangs)) && AnguineTribute is 4 ||
+                JustUsed(OriginalHook(ReavingFangs)) && AnguineTribute is 3 ||
+                JustUsed(OriginalHook(HuntersCoil)) && AnguineTribute is 2 ||
+                JustUsed(OriginalHook(SwiftskinsCoil)) && AnguineTribute is 1)
+                return OriginalHook(SerpentsTail);
+
+            return actionID;
         }
     }
 
@@ -873,12 +874,34 @@ internal partial class VPR : Melee
     {
         protected internal override Preset Preset => Preset.VPR_SerpentsTail;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                SteelFangs or ReavingFangs when OriginalHook(SerpentsTail) is DeathRattle && (JustUsed(FlankstingStrike) || JustUsed(FlanksbaneFang) || JustUsed(HindstingStrike) || JustUsed(HindsbaneFang)) => OriginalHook(SerpentsTail),
-                SteelMaw or ReavingMaw when OriginalHook(SerpentsTail) is LastLash && (JustUsed(JaggedMaw) || JustUsed(BloodiedMaw)) => OriginalHook(SerpentsTail),
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (SteelFangs or ReavingFangs or SteelMaw or ReavingMaw))
+                return actionID;
+
+            if (OriginalHook(SerpentsTail) is DeathRattle && (JustUsed(FlankstingStrike) ||
+                                                              JustUsed(FlanksbaneFang) ||
+                                                              JustUsed(HindstingStrike) ||
+                                                              JustUsed(HindsbaneFang)) ||
+                OriginalHook(SerpentsTail) is LastLash && (JustUsed(JaggedMaw) || JustUsed(BloodiedMaw)))
+                return OriginalHook(SerpentsTail);
+
+            return actionID;
+        }
+    }
+
+    internal class VPR_Retarget_Slither : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.VPR_Retarget_Slither;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Slither)
+                return actionID;
+
+            return VPR_Slither_FieldMouseover
+                ? Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ?? SimpleTarget.HardTarget, true)
+                : Slither.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget, true);
+        }
     }
 }

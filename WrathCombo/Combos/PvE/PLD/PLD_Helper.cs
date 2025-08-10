@@ -18,7 +18,7 @@ internal partial class PLD
     /// <summary>
     ///     The list of Mitigations to use in the One-Button Mitigation combo.<br />
     ///     The order of the list needs to match the order in
-    ///     <see cref="CustomComboPreset" />.
+    ///     <see cref="Preset" />.
     /// </summary>
     /// <value>
     ///     <c>Action</c> is the action to use.<br />
@@ -27,7 +27,7 @@ internal partial class PLD
     /// </value>
     /// <remarks>
     ///     Each logic check is already combined with checking if the preset
-    ///     <see cref="IsEnabled(CustomComboPreset)">is enabled</see>
+    ///     <see cref="IsEnabled(Preset)">is enabled</see>
     ///     and if the action is <see cref="ActionReady(uint)">ready</see> and
     ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
@@ -78,7 +78,7 @@ internal partial class PLD
     /// </summary>
     /// <param name="index">
     ///     The index of the mitigation in <see cref="PrioritizedMitigation" />,
-    ///     which is the order of the mitigation in <see cref="CustomComboPreset" />.
+    ///     which is the order of the mitigation in <see cref="Preset" />.
     /// </param>
     /// <param name="action">
     ///     The variable to set to the action to, if the mitigation is set to be

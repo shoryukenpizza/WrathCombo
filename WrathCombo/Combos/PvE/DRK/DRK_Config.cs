@@ -573,7 +573,7 @@ internal partial class DRK
         ///     <b>Options</b>: <see cref="SimpleMitigation.Off" /> or
         ///     <see cref="SimpleMitigation.On" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Simple" />
+        /// <seealso cref="Preset.DRK_ST_Simple" />
         public static readonly UserInt DRK_ST_SimpleMitigation =
             new("DRK_ST_SimpleMitigation", (int)SimpleMitigation.On);
 
@@ -585,7 +585,7 @@ internal partial class DRK
         ///     <b>Options</b>: <see cref="SimpleMitigation.Off" /> or
         ///     <see cref="SimpleMitigation.On" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Simple" />
+        /// <seealso cref="Preset.DRK_AoE_Simple" />
         public static readonly UserInt DRK_AoE_SimpleMitigation =
             new("DRK_AoE_SimpleMitigation", (int)SimpleMitigation.On);
 
@@ -601,7 +601,7 @@ internal partial class DRK
         ///     <b>Options</b>: All Content or
         ///     <see cref="ContentCheck.IsInBossOnlyContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_BalanceOpener" />
+        /// <seealso cref="Preset.DRK_ST_BalanceOpener" />
         public static readonly UserBoolArray DRK_ST_OpenerDifficulty =
             new("DRK_ST_OpenerDifficulty", [false, true]);
 
@@ -612,7 +612,7 @@ internal partial class DRK
         ///     <b>Default</b>: <see cref="PullAction.Unmend" /> <br />
         ///     <b>Options</b>: <see cref="PullAction">PullAction Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_BalanceOpener" />
+        /// <seealso cref="Preset.DRK_ST_BalanceOpener" />
         public static readonly UserInt DRK_ST_OpenerAction =
             new("DRK_ST_OpenerAction", (int)PullAction.Unmend);
 
@@ -623,7 +623,7 @@ internal partial class DRK
         ///     <b>Default</b>: <see cref="BossRequirement.Off" /> <br />
         ///     <b>Options</b>: <see cref="BossRequirement">BossRequirement Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_CDs" />
+        /// <seealso cref="Preset.DRK_ST_CDs" />
         public static readonly UserInt DRK_ST_CDsBossRequirement =
             new("DRK_ST_CDsBossRequirement", (int) BossRequirement.Off);
 
@@ -635,7 +635,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 25 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_CD_Delirium" />
+        /// <seealso cref="Preset.DRK_ST_CD_Delirium" />
         public static readonly UserInt DRK_ST_DeliriumThreshold =
             new("DRK_ST_DeliriumThreshold", 0);
 
@@ -668,7 +668,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 30 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_CD_Shadow" />
+        /// <seealso cref="Preset.DRK_ST_CD_Shadow" />
         public static readonly UserInt DRK_ST_LivingShadowThreshold =
             new("DRK_ST_LivingShadowThreshold", 5);
 
@@ -700,7 +700,7 @@ internal partial class DRK
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_BloodOvercap" />
+        /// <seealso cref="Preset.DRK_ST_Sp_BloodOvercap" />
         public static readonly UserInt DRK_ST_BloodOvercapThreshold =
             new("DRK_ST_BloodOvercapThreshold", 90);
 
@@ -712,7 +712,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 3000 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Thousands" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_Edge" />
+        /// <seealso cref="Preset.DRK_ST_Sp_Edge" />
         public static readonly UserInt DRK_ST_ManaSpenderPooling =
             new("DRK_ST_ManaSpenderPooling", 3000);
 
@@ -725,7 +725,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 45 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_ManaOvercap" />
+        /// <seealso cref="Preset.DRK_ST_Sp_ManaOvercap" />
         public static readonly UserInt DRK_ST_BurstSoonThreshold =
             new("DRK_ST_BurstSoonThreshold", 18);
 
@@ -760,7 +760,7 @@ internal partial class DRK
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mitigation" />
+        /// <seealso cref="Preset.DRK_ST_Mitigation" />
         public static readonly UserBoolArray DRK_ST_MitDifficulty =
             new("DRK_ST_MitDifficulty", [true, false]);
 
@@ -781,7 +781,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_TBN" />
+        /// <seealso cref="Preset.DRK_ST_Mit_TBN" />
         public static readonly UserInt DRK_ST_TBNThreshold =
             new("DRK_ST_TBNThreshold", 35);
 
@@ -792,7 +792,7 @@ internal partial class DRK
         ///     <b>Default</b>: <see cref="BossAvoidance.Off" /> <br />
         ///     <b>Options</b>: <see cref="BossAvoidance">BossAvoidance Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_TBN" />
+        /// <seealso cref="Preset.DRK_ST_Mit_TBN" />
         public static readonly UserInt DRK_ST_TBNBossRestriction =
             new("DRK_ST_TBNBossRestriction", (int) BossAvoidance.Off);
 
@@ -804,7 +804,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_Oblation" />
+        /// <seealso cref="Preset.DRK_ST_Mit_Oblation" />
         public static readonly UserInt DRK_ST_OblationCharges =
             new("DRK_ST_OblationCharges", 0);
 
@@ -816,7 +816,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_Oblation" />
+        /// <seealso cref="Preset.DRK_ST_Mit_Oblation" />
         public static readonly UserInt DRK_ST_Mit_OblationThreshold =
             new("DRK_ST_Mit_OblationThreshold", 85);
 
@@ -828,7 +828,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_Missionary" />
+        /// <seealso cref="Preset.DRK_ST_Mit_Missionary" />
         public static readonly UserInt DRK_ST_Mit_MissionaryThreshold =
             new("DRK_ST_Mit_MissionaryThreshold", 100);
 
@@ -840,7 +840,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_Vigil" />
+        /// <seealso cref="Preset.DRK_ST_Mit_Vigil" />
         public static readonly UserInt DRK_ST_ShadowedVigilThreshold =
             new("DRK_ST_ShadowedVigilThreshold", 50);
 
@@ -852,7 +852,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_LivingDead" />
+        /// <seealso cref="Preset.DRK_ST_Mit_LivingDead" />
         public static readonly UserInt DRK_ST_LivingDeadSelfThreshold =
             new("DRK_ST_LivingDeadSelfThreshold", 15);
 
@@ -864,7 +864,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 10 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_LivingDead" />
+        /// <seealso cref="Preset.DRK_ST_Mit_LivingDead" />
         public static readonly UserInt DRK_ST_LivingDeadTargetThreshold =
             new("DRK_ST_LivingDeadTargetThreshold", 1);
 
@@ -875,7 +875,7 @@ internal partial class DRK
         ///     <b>Default</b>: <see cref="BossAvoidance.On" /> <br />
         ///     <b>Options</b>: <see cref="BossAvoidance">BossAvoidance Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Mit_LivingDead" />
+        /// <seealso cref="Preset.DRK_ST_Mit_LivingDead" />
         public static readonly UserInt DRK_ST_LivingDeadBossRestriction =
             new("DRK_ST_LivingDeadBossRestriction", (int) BossAvoidance.On);
 
@@ -893,7 +893,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 60 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Delirium" />
+        /// <seealso cref="Preset.DRK_AoE_CD_Delirium" />
         public static readonly UserInt DRK_AoE_DeliriumThreshold =
             new("DRK_AoE_DeliriumThreshold", 25);
 
@@ -926,7 +926,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 60 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Shadow" />
+        /// <seealso cref="Preset.DRK_AoE_CD_Shadow" />
         public static readonly UserInt DRK_AoE_LivingShadowThreshold =
             new("DRK_AoE_LivingShadowThreshold", 40);
 
@@ -960,7 +960,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 60 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Salt" />
+        /// <seealso cref="Preset.DRK_AoE_CD_Salt" />
         public static readonly UserInt DRK_AoE_SaltThreshold =
             new("DRK_AoE_SaltThreshold", 30);
 
@@ -972,7 +972,7 @@ internal partial class DRK
         ///     <b>Range</b>: 20 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Drain" />
+        /// <seealso cref="Preset.DRK_AoE_CD_Drain" />
         public static readonly UserInt DRK_AoE_DrainThreshold =
             new("DRK_AoE_DrainThreshold", 60);
 
@@ -984,7 +984,7 @@ internal partial class DRK
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Sp_BloodOvercap" />
+        /// <seealso cref="Preset.DRK_AoE_Sp_BloodOvercap" />
         public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
             new("DRK_AoE_BloodOvercapThreshold", 90);
 
@@ -996,7 +996,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 3000 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Thousands" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Sp_Flood" />
+        /// <seealso cref="Preset.DRK_AoE_Sp_Flood" />
         public static readonly UserInt DRK_AoE_ManaSpenderPooling =
             new("DRK_AoE_ManaSpenderPooling", 0);
 
@@ -1008,7 +1008,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Oblation" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Oblation" />
         public static readonly UserInt DRK_AoE_OblationCharges =
             new("DRK_AoE_OblationCharges", 0);
 
@@ -1020,7 +1020,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Oblation" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Oblation" />
         public static readonly UserInt DRK_AoE_Mit_OblationThreshold =
             new("DRK_AoE_Mit_OblationThreshold", 85);
 
@@ -1032,7 +1032,7 @@ internal partial class DRK
         ///     <b>Range</b>: 1 - 10 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Reprisal" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Reprisal" />
         public static readonly UserInt DRK_AoE_ReprisalEnemyCount =
             new("DRK_AoE_ReprisalEnemyCount", 3);
 
@@ -1044,7 +1044,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_DarkMind" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_DarkMind" />
         public static readonly UserInt DRK_AoE_Mit_DarkMindThreshold =
             new("DRK_AoE_Mit_DarkMindThreshold", 75);
 
@@ -1056,7 +1056,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Rampart" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Rampart" />
         public static readonly UserInt DRK_AoE_Mit_RampartThreshold =
             new("DRK_AoE_Mit_RampartThreshold", 50);
 
@@ -1068,7 +1068,7 @@ internal partial class DRK
         ///     <b>Range</b>: 20 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Reprisal" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Reprisal" />
         public static readonly UserInt DRK_AoE_Mit_ReprisalThreshold =
             new("DRK_AoE_Mit_ReprisalThreshold", 80);
 
@@ -1080,7 +1080,7 @@ internal partial class DRK
         ///     <b>Range</b>: 1 - 10 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_ArmsLength" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_ArmsLength" />
         public static readonly UserInt DRK_AoE_ArmsLengthEnemyCount =
             new("DRK_AoE_ArmsLengthEnemyCount", 3);
 
@@ -1092,7 +1092,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Vigil" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_Vigil" />
         public static readonly UserInt DRK_AoE_ShadowedVigilThreshold =
             new("DRK_AoE_ShadowedVigilThreshold", 50);
 
@@ -1104,7 +1104,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_LivingDead" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_LivingDead" />
         public static readonly UserInt DRK_AoE_LivingDeadSelfThreshold =
             new("DRK_AoE_LivingDeadSelfThreshold", 20);
 
@@ -1116,7 +1116,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 40 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Tens" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_LivingDead" />
+        /// <seealso cref="Preset.DRK_AoE_Mit_LivingDead" />
         public static readonly UserInt DRK_AoE_LivingDeadTargetThreshold =
             new("DRK_AoE_LivingDeadTargetThreshold", 15);
 
@@ -1130,7 +1130,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 70 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Var_Cure" />
+        /// <seealso cref="Preset.DRK_Var_Cure" />
         public static readonly UserInt DRK_VariantCure =
             new("DRKVariantCure", 30);
 
@@ -1144,7 +1144,7 @@ internal partial class DRK
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_LivingDead_Max" />
+        /// <seealso cref="Preset.DRK_Mit_LivingDead_Max" />
         public static readonly UserBoolArray
             DRK_Mit_EmergencyLivingDead_Difficulty =
                 new("DRK_Mit_EmergencyLivingDead_Difficulty", [true, false]);
@@ -1153,7 +1153,7 @@ internal partial class DRK
         ///     What Difficulty List Set
         ///     <see cref="DRK_Mit_EmergencyLivingDead_Difficulty" /> is set to.
         /// </summary>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_LivingDead_Max" />
+        /// <seealso cref="Preset.DRK_Mit_LivingDead_Max" />
         public static readonly ContentCheck.ListSet
             DRK_Mit_EmergencyLivingDead_DifficultyListSet =
                 ContentCheck.ListSet.Halved;
@@ -1166,7 +1166,7 @@ internal partial class DRK
         ///     <b>Range</b>: 5 - 30 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_LivingDead_Max" />
+        /// <seealso cref="Preset.DRK_Mit_LivingDead_Max" />
         public static UserInt DRK_Mit_LivingDead_Health =
             new("DRK_Mit_LivingDead_Health", 20);
 
@@ -1185,7 +1185,7 @@ internal partial class DRK
         ///     <b>Range</b>: 10 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Tens" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_TheBlackestNight" />
+        /// <seealso cref="Preset.DRK_Mit_TheBlackestNight" />
         public static UserInt DRK_Mit_TBN_Health =
             new("DRK_Mit_TBN_Health", 60);
 
@@ -1209,7 +1209,7 @@ internal partial class DRK
         ///     <b>Range</b>: 40 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_Rampart" />
+        /// <seealso cref="Preset.DRK_Mit_Rampart" />
         public static UserInt DRK_Mit_Rampart_Health =
             new("DRK_Mit_Rampart_Health", 65);
 
@@ -1220,7 +1220,7 @@ internal partial class DRK
         ///     <b>Default</b>: <see cref="BossAvoidance.On" /> <br />
         ///     <b>Options</b>: <see cref="BossAvoidance">BossAvoidance Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_ArmsLength" />
+        /// <seealso cref="Preset.DRK_Mit_ArmsLength" />
         public static readonly UserInt DRK_Mit_ArmsLength_Boss =
             new("DRK_Mit_ArmsLength_Boss", (int) BossAvoidance.On);
 
@@ -1232,7 +1232,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 3 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_ArmsLength" />
+        /// <seealso cref="Preset.DRK_Mit_ArmsLength" />
         public static UserInt DRK_Mit_ArmsLength_EnemyCount =
             new("DRK_Mit_ArmsLength_EnemyCount", 0);
 
@@ -1244,7 +1244,7 @@ internal partial class DRK
         ///     <b>Range</b>: 30 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_ShadowWall" />
+        /// <seealso cref="Preset.DRK_Mit_ShadowWall" />
         public static UserInt DRK_Mit_ShadowWall_Health =
             new("DRK_Mit_ShadowWall_Health", 45);
 
@@ -1256,7 +1256,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_Mit_Oblation" />
+        /// <seealso cref="Preset.DRK_Mit_Oblation" />
         public static UserInt DRK_Mit_Oblation_Charges =
             new("DRK_Mit_Oblation_Charges", 0);
 

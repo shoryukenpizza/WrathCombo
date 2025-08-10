@@ -517,7 +517,7 @@ internal partial class DNC
         ///     <b>Options</b>: All Content or
         ///     <see cref="ContentCheck.IsInBossOnlyContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_BalanceOpener" />
+        /// <seealso cref="Preset.DNC_ST_BalanceOpener" />
         public static readonly UserBoolArray DNC_ST_OpenerDifficulty =
             new("DNC_ST_OpenerDifficulty", [false, true]);
 
@@ -528,7 +528,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="Openers.FifteenSecond" /> <br />
         ///     <b>Options</b>: <see cref="Openers">Openers Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_BalanceOpener" />
+        /// <seealso cref="Preset.DNC_ST_BalanceOpener" />
         public static readonly UserInt DNC_ST_OpenerSelection =
             new("DNC_ST_OpenerSelection", (int) Openers.FifteenSecond);
 
@@ -539,7 +539,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see langword="true"/><br />
         ///     <b>Options</b>: <see langword="true"/> or <see langword="false"/>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_BalanceOpener" />
+        /// <seealso cref="Preset.DNC_ST_BalanceOpener" />
         public static readonly UserBool DNC_ST_OpenerOption_Peloton =
             new("DNC_ST_OpenerOption_Peloton", true);
 
@@ -551,7 +551,7 @@ internal partial class DNC
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_EspritOvercap" />
+        /// <seealso cref="Preset.DNC_ST_EspritOvercap" />
         public static readonly UserInt DNCEspritThreshold_ST =
             new("DNCEspritThreshold_ST", 50);
 
@@ -563,7 +563,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 15 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_SS" />
+        /// <seealso cref="Preset.DNC_ST_Adv_SS" />
         public static readonly UserInt DNC_ST_Adv_SSBurstPercent =
             new("DNC_ST_Adv_SSBurstPercent", 0);
 
@@ -574,7 +574,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="IncludeStep.Yes" /> <br />
         ///     <b>Options</b>: <see cref="IncludeStep">IncludeStep Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_SS" />
+        /// <seealso cref="Preset.DNC_ST_Adv_SS" />
         public static readonly UserInt DNC_ST_ADV_SS_IncludeSS =
             new("DNC_ST_ADV_SS_IncludeSS", (int) IncludeStep.Yes);
 
@@ -585,7 +585,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="AntiDrift.TripleWeave" /> <br />
         ///     <b>Options</b>: <see cref="AntiDrift">AntiDrift Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_SS" />
+        /// <seealso cref="Preset.DNC_ST_Adv_SS" />
         public static readonly UserInt DNC_ST_ADV_AntiDrift =
             new("DNC_ST_ADV_AntiDrift", (int) AntiDrift.TripleWeave);
 
@@ -596,7 +596,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="IncludeStep.Yes" /> <br />
         ///     <b>Options</b>: <see cref="IncludeStep">IncludeStep Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_TS" />
+        /// <seealso cref="Preset.DNC_ST_Adv_TS" />
         public static readonly UserInt DNC_ST_ADV_TS_IncludeTS =
             new("DNC_ST_ADV_TS_IncludeTS", (int) IncludeStep.Yes);
 
@@ -608,7 +608,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 15 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_TS" />
+        /// <seealso cref="Preset.DNC_ST_Adv_TS" />
         public static readonly UserInt DNC_ST_Adv_TSBurstPercent =
             new("DNC_ST_Adv_TSBurstPercent", 0);
 
@@ -620,7 +620,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 5 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_Feathers" />
+        /// <seealso cref="Preset.DNC_ST_Adv_Feathers" />
         public static readonly UserInt DNC_ST_Adv_FeatherBurstPercent =
             new("DNC_ST_Adv_FeatherBurstPercent", 0);
 
@@ -631,7 +631,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="TillanaDriftProtection.None" /> <br />
         ///     <b>Options</b>: <see cref="TillanaDriftProtection" /> Enum.
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_Tillana" />
+        /// <seealso cref="Preset.DNC_ST_Adv_Tillana" />
         public static readonly UserInt DNC_ST_ADV_TillanaUse =
             new("DNC_ST_ADV_TillanaUse", (int) TillanaDriftProtection.None);
 
@@ -643,7 +643,7 @@ internal partial class DNC
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_SaberDance" />
+        /// <seealso cref="Preset.DNC_ST_Adv_SaberDance" />
         public static readonly UserInt DNC_ST_Adv_SaberThreshold =
             new("DNC_ST_Adv_SaberThreshold", 50);
 
@@ -655,7 +655,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 80 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_PanicHeals" />
+        /// <seealso cref="Preset.DNC_ST_Adv_PanicHeals" />
         public static readonly UserInt DNC_ST_Adv_PanicHealWaltzPercent =
             new("DNC_ST_Adv_PanicHealWaltzPercent", 30);
 
@@ -667,7 +667,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 80 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_ST_Adv_PanicHeals" />
+        /// <seealso cref="Preset.DNC_ST_Adv_PanicHeals" />
         public static readonly UserInt DNC_ST_Adv_PanicHealWindPercent =
             new("DNC_ST_Adv_PanicHealWindPercent", 20);
 
@@ -683,7 +683,7 @@ internal partial class DNC
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_EspritOvercap" />
+        /// <seealso cref="Preset.DNC_AoE_EspritOvercap" />
         public static readonly UserInt DNCEspritThreshold_AoE =
             new("DNCEspritThreshold_AoE", 50);
 
@@ -695,7 +695,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 60 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_SS" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_SS" />
         public static readonly UserInt DNC_AoE_Adv_SSBurstPercent =
             new("DNC_AoE_Adv_SSBurstPercent", 40);
 
@@ -706,7 +706,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="IncludeStep.Yes" /> <br />
         ///     <b>Options</b>: <see cref="IncludeStep">IncludeStep Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_SS" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_SS" />
         public static readonly UserInt DNC_AoE_Adv_SS_IncludeSS =
             new("DNC_AoE_Adv_SS_IncludeSS", (int) IncludeStep.Yes);
 
@@ -718,7 +718,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 60 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_TS" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_TS" />
         public static readonly UserInt DNC_AoE_Adv_TSBurstPercent =
             new("DNC_AoE_Adv_TSBurstPercent", 40);
 
@@ -729,7 +729,7 @@ internal partial class DNC
         ///     <b>Default</b>: <see cref="IncludeStep.Yes" /> <br />
         ///     <b>Options</b>: <see cref="IncludeStep">IncludeStep Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_TS" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_TS" />
         public static readonly UserInt DNC_AoE_Adv_TS_IncludeTS =
             new("DNC_AoE_Adv_TS_IncludeTS", (int) IncludeStep.Yes);
 
@@ -741,7 +741,7 @@ internal partial class DNC
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_SaberDance" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_SaberDance" />
         public static readonly UserInt DNC_AoE_Adv_SaberThreshold =
             new("DNC_AoE_Adv_SaberThreshold", 50);
 
@@ -753,7 +753,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 80 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_PanicHeals" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_PanicHeals" />
         public static readonly UserInt DNC_AoE_Adv_PanicHealWaltzPercent =
             new("DNC_AoE_Adv_PanicHealWaltzPercent", 30);
 
@@ -765,7 +765,7 @@ internal partial class DNC
         ///     <b>Range</b>: 0 - 80 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_AoE_Adv_PanicHeals" />
+        /// <seealso cref="Preset.DNC_AoE_Adv_PanicHeals" />
         public static readonly UserInt DNC_AoE_Adv_PanicHealWindPercent =
             new("DNC_AoE_Adv_PanicHealWindPercent", 20);
 
@@ -780,7 +780,7 @@ internal partial class DNC
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_DesirablePartner" />
+        /// <seealso cref="Preset.DNC_DesirablePartner" />
         public static readonly UserBool DNC_Partner_FocusOverride =
             new("DNC_Partner_FocusOverride", false);
 
@@ -811,7 +811,7 @@ internal partial class DNC
         ///     <b>Default</b>: 1 <br />
         ///     <b>Range</b>: 1 - 80
         /// </value>
-        /// <seealso cref="CustomComboPreset.DNC_Variant_Cure" />
+        /// <seealso cref="Preset.DNC_Variant_Cure" />
         public static readonly UserInt DNCVariantCurePercent =
             new("DNCVariantCurePercent", 20);
 

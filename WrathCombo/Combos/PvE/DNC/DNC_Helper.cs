@@ -15,7 +15,7 @@ using WrathCombo.Services;
 using static WrathCombo.Combos.PvE.DNC.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
-using Options = WrathCombo.Combos.CustomComboPreset;
+using Options = WrathCombo.Combos.Preset;
 using TS = System.TimeSpan;
 
 // ReSharper disable ReturnTypeCanBeNotNullable
@@ -132,7 +132,7 @@ internal partial class DNC
     /// </param>
     /// <returns>
     ///     The Finisher to use, or if
-    ///     <see cref="CustomComboPreset.DNC_ST_BlockFinishes" /> is enabled and
+    ///     <see cref="Preset.DNC_ST_BlockFinishes" /> is enabled and
     ///     there is no enemy in range: <see cref="All.SavageBlade" />.
     /// </returns>
     private static uint FinishOrHold(uint desiredFinish)

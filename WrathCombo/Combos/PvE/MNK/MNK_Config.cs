@@ -7,26 +7,6 @@ internal partial class MNK
 {
     internal static class Config
     {
-        #region Variables
-
-        public static UserInt
-            MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
-            MNK_Balance_Content = new("MNK_Balance_Content", 1),
-            MNK_ST_Brotherhood_SubOption = new("MNK_ST_Brotherhood_SubOption", 1),
-            MNK_ST_RiddleOfFire_SubOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
-            MNK_ST_RiddleOfWind_SubOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
-            MNK_ST_SecondWind_Threshold = new("MNK_ST_SecondWindThreshold", 40),
-            MNK_ST_Bloodbath_Threshold = new("MNK_ST_BloodbathThreshold", 30),
-            MNK_AoE_Brotherhood_HP = new("MNK_AoE_Brotherhood_HP", 20),
-            MNK_AoE_RiddleOfWind_HP = new("MNK_AoE_RiddleOfWind_HP", 20),
-            MNK_AoE_RiddleOfFire_HP = new("MNK_AoE_RiddleOfFire_HP", 20),
-            MNK_AoE_SecondWind_Threshold = new("MNK_AoE_SecondWindThreshold", 40),
-            MNK_AoE_Bloodbath_Threshold = new("MNK_AoE_BloodbathThreshold", 30),
-            MNK_VariantCure = new("MNK_Variant_Cure", 50),
-            MNK_BH_RoF = new("MNK_BH_RoF", 0);
-
-        #endregion
-
         internal static void Draw(Preset preset)
         {
             switch (preset)
@@ -111,7 +91,34 @@ internal partial class MNK
                     DrawRadioButton(MNK_BH_RoF,
                         $"Replaces {RiddleOfFire.ActionName()}", $"Replaces {RiddleOfFire.ActionName()} with {Brotherhood.ActionName()}when {RiddleOfFire.ActionName()} is on cooldown.", 1);
                     break;
+
+                case Preset.MNK_Retarget_Thunderclap:
+                    DrawAdditionalBoolChoice(MNK_Thunderclap_FieldMouseover,
+                        "Add Field Mouseover", "Adds Field mouseover targetting");
+                    break;
             }
         }
+        #region Variables
+
+        public static UserInt
+            MNK_SelectedOpener = new("MNK_SelectedOpener", 0),
+            MNK_Balance_Content = new("MNK_Balance_Content", 1),
+            MNK_ST_Brotherhood_SubOption = new("MNK_ST_Brotherhood_SubOption", 1),
+            MNK_ST_RiddleOfFire_SubOption = new("MNK_ST_RiddleOfFire_SubOption", 1),
+            MNK_ST_RiddleOfWind_SubOption = new("MNK_ST_RiddleOfWind_SubOption", 1),
+            MNK_ST_SecondWind_Threshold = new("MNK_ST_SecondWindThreshold", 40),
+            MNK_ST_Bloodbath_Threshold = new("MNK_ST_BloodbathThreshold", 30),
+            MNK_AoE_Brotherhood_HP = new("MNK_AoE_Brotherhood_HP", 20),
+            MNK_AoE_RiddleOfWind_HP = new("MNK_AoE_RiddleOfWind_HP", 20),
+            MNK_AoE_RiddleOfFire_HP = new("MNK_AoE_RiddleOfFire_HP", 20),
+            MNK_AoE_SecondWind_Threshold = new("MNK_AoE_SecondWindThreshold", 40),
+            MNK_AoE_Bloodbath_Threshold = new("MNK_AoE_BloodbathThreshold", 30),
+            MNK_VariantCure = new("MNK_Variant_Cure", 50),
+            MNK_BH_RoF = new("MNK_BH_RoF", 0);
+
+        public static UserBool
+            MNK_Thunderclap_FieldMouseover = new("MNK_Thunderclap_FieldMouseover");
+
+        #endregion
     }
 }

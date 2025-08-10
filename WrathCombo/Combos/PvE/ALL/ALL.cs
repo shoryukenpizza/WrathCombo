@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
@@ -163,9 +164,12 @@ internal partial class All
             if (actionID is not RoleActions.Healer.Esuna)
                 return actionID;
 
-            RoleActions.Healer.Esuna.Retarget(SimpleTarget.Stack.AllyToEsuna, dontCull: true);
+            var target = SimpleTarget.UIMouseOverTarget.IfHasCleansable() ??
+                         SimpleTarget.ModelMouseOverTarget.IfHasCleansable() ??
+                         SimpleTarget.HardTarget.IfHasCleansable() ??
+                         GetPartyMembers().FirstOrDefault(x => x.BattleChara.IfHasCleansable() != null)?.BattleChara;
 
-            return actionID;
+            return target is null ? SavageBlade : RoleActions.Healer.Esuna.Retarget(target, dontCull: true);
         }
     }
     

@@ -589,7 +589,7 @@ public partial class Provider : IDisposable
     /// </summary>
     /// <param name="comboInternalName">
     ///     The internal name of the combo you want to check.<br />
-    ///     See <see cref="CustomComboPreset" /> or
+    ///     See <see cref="Preset" /> or
     ///     <see cref="GetComboNamesForJob" />.<br />
     ///     Does also accept the ID of presets.
     /// </param>
@@ -631,7 +631,7 @@ public partial class Provider : IDisposable
     /// </param>
     /// <param name="comboInternalName">
     ///     The internal name of the combo you want to set.<br />
-    ///     See <see cref="CustomComboPreset" /> or
+    ///     See <see cref="Preset" /> or
     ///     <see cref="GetComboNamesForJob" />.<br />
     ///     Does also accept the ID of presets.
     /// </param>

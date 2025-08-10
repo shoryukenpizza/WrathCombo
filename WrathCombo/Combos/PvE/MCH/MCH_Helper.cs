@@ -264,7 +264,7 @@ internal partial class MCH
         public override int MinOpenerLevel => 100;
 
         public override int MaxOpenerLevel => 109;
-        
+
         public override List<uint> OpenerActions { get; set; } =
         [
             Reassemble,
@@ -325,7 +325,7 @@ internal partial class MCH
         public override int MinOpenerLevel => 90;
 
         public override int MaxOpenerLevel => 99;
-        
+
         public override List<uint> OpenerActions { get; set; } =
         [
             Reassemble,

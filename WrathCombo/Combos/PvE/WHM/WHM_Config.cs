@@ -457,7 +457,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo" />
         internal static UserInt WHM_ST_MainCombo_Actions =
             new("WHM_ST_MainCombo_Actions");
 
@@ -469,7 +469,7 @@ internal partial class WHM
         ///     <b>Options</b>: All Content or
         ///     <see cref="ContentCheck.IsInBossOnlyContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_Opener" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_Opener" />
         internal static UserInt WHM_Balance_Content =
             new("WHM_Balance_Content", 0);
 
@@ -481,7 +481,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionBoss =
             new("WHM_ST_DPS_AeroOptionBoss");
 
@@ -493,7 +493,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionNonBoss =
             new("WHM_ST_DPS_AeroOptionNonBoss", 50);
 
@@ -505,7 +505,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 4 <br />
         ///     <b>Step</b>: 0.1
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         internal static UserFloat WHM_ST_MainCombo_DoT_Threshold =
             new("WHM_ST_MainCombo_DoT_Threshold", 0);
 
@@ -516,7 +516,7 @@ internal partial class WHM
         ///     <b>Default</b>: <see cref="EnemyRestriction.AllEnemies" /> <br />
         ///     <b>Options</b>: <see cref="EnemyRestriction">EnemyRestriction Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionSubOption =
             new("WHM_ST_DPS_AeroOptionSubOption", (int)EnemyRestriction.AllEnemies);
 
@@ -528,7 +528,7 @@ internal partial class WHM
         ///     <b>Range</b>: 4000 - 9500 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Hundreds" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_Lucid" />
+        /// <seealso cref="Preset.WHM_ST_MainCombo_Lucid" />
         internal static UserInt WHM_STDPS_Lucid =
             new("WHMLucidDreamingFeature", 6500);
 
@@ -544,7 +544,7 @@ internal partial class WHM
         ///     <b>Range</b>: 4000 - 9500 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Hundreds" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoE_DPS_Lucid" />
+        /// <seealso cref="Preset.WHM_AoE_DPS_Lucid" />
         internal static UserInt WHM_AoEDPS_Lucid =
             new("WHM_AoE_Lucid", 6500);
         
@@ -556,7 +556,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 5<br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_AoE_MainCombo_DoT" />
         internal static UserFloat WHM_AoE_MainCombo_DoT_Reapply =
             new("WHM_AoE_MainCombo_DoT_Reapply", 0);
         
@@ -568,7 +568,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100<br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_AoE_MainCombo_DoT" />
         internal static UserInt WHM_AoE_MainCombo_DoT_HPThreshold = 
             new("WHM_AoE_MainCombo_DoT_HPThreshold", 50);
         
@@ -580,7 +580,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 10<br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoE_MainCombo_DoT" />
+        /// <seealso cref="Preset.WHM_AoE_MainCombo_DoT" />
         internal static UserInt WHM_AoE_MainCombo_DoT_MaxTargets = 
             new("WHM_AoE_MainCombo_DoT_MaxTargets", 4);
 
@@ -594,7 +594,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals" />
+        /// <seealso cref="Preset.WHM_STHeals" />
         internal static UserBool WHM_STHeals_IncludeShields =
             new("WHM_STHeals_IncludeShields", false);
 
@@ -612,7 +612,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 6 <br />
         ///     <b>Step</b>: 0.1
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Regen" />
+        /// <seealso cref="Preset.WHM_STHeals_Regen" />
         internal static UserFloat WHM_STHeals_RegenTimer =
             new("WHM_STHeals_RegenTimer", 0);
 
@@ -624,7 +624,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Regen" />
+        /// <seealso cref="Preset.WHM_STHeals_Regen" />
         internal static UserInt WHM_STHeals_RegenHPLower =
             new("WHM_STHeals_RegenHPLower", 30);
 
@@ -636,7 +636,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Regen" />
+        /// <seealso cref="Preset.WHM_STHeals_Regen" />
         internal static UserInt WHM_STHeals_RegenHPUpper =
             new("WHM_STHeals_RegenHPUpper", 100);
 
@@ -646,7 +646,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benediction" />
+        /// <seealso cref="Preset.WHM_STHeals_Benediction" />
         internal static UserBool WHM_STHeals_BenedictionWeave =
             new("WHM_STHeals_BenedictionWeave", false);
 
@@ -658,7 +658,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benediction" />
+        /// <seealso cref="Preset.WHM_STHeals_Benediction" />
         internal static UserInt WHM_STHeals_BenedictionHP =
             new("WHM_STHeals_BenedictionHP", 40);
         
@@ -670,7 +670,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Solace" />
+        /// <seealso cref="Preset.WHM_STHeals_Solace" />
         
         internal static UserInt WHM_STHeals_SolaceHP = 
             new("WHM_STHeals_SolaceHP", 80);
@@ -683,7 +683,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_ThinAir" />
+        /// <seealso cref="Preset.WHM_STHeals_ThinAir" />
         internal static UserInt WHM_STHeals_ThinAir =
             new("WHM_STHeals_ThinAir", 0);
 
@@ -693,7 +693,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Tetragrammaton" />
+        /// <seealso cref="Preset.WHM_STHeals_Tetragrammaton" />
         internal static UserBool WHM_STHeals_TetraWeave =
             new("WHM_STHeals_TetraWeave", false);
 
@@ -705,7 +705,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Tetragrammaton" />
+        /// <seealso cref="Preset.WHM_STHeals_Tetragrammaton" />
         internal static UserInt WHM_STHeals_TetraHP =
             new("WHM_STHeals_TetraHP", 50);
 
@@ -715,7 +715,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benison" />
+        /// <seealso cref="Preset.WHM_STHeals_Benison" />
         internal static UserBool WHM_STHeals_BenisonWeave =
             new("WHM_STHeals_BenisonWeave", false);
         
@@ -727,7 +727,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benison" />
+        /// <seealso cref="Preset.WHM_STHeals_Benison" />
         internal static UserInt WHM_STHeals_BenisonCharges =
             new("WHM_STHeals_BenisonCharges", 0);
 
@@ -739,7 +739,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Benison" />
+        /// <seealso cref="Preset.WHM_STHeals_Benison" />
         internal static UserInt WHM_STHeals_BenisonHP =
             new("WHM_STHeals_BenisonHP", 99);
 
@@ -751,7 +751,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Aquaveil" />
+        /// <seealso cref="Preset.WHM_STHeals_Aquaveil" />
         internal static UserInt WHM_STHeals_AquaveilHP =
             new("WHM_STHeals_AquaveilHP", 90);
 
@@ -761,7 +761,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Aquaveil" />
+        /// <seealso cref="Preset.WHM_STHeals_Aquaveil" />
         internal static UserBoolArray WHM_STHeals_AquaveilOptions =
             new("WHM_STHeals_AquaveilOptions");
 
@@ -773,7 +773,7 @@ internal partial class WHM
         ///     <b>Range</b>: 4000 - 9500 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Hundreds" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Lucid" />
+        /// <seealso cref="Preset.WHM_STHeals_Lucid" />
         internal static UserInt WHM_STHeals_Lucid =
             new("WHM_STHeals_Lucid", 6500);
 
@@ -783,7 +783,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_STHeals_Temperance" />
         internal static UserBoolArray WHM_STHeals_TemperanceOptions =
             new("WHM_STHeals_TemperanceOptions");
 
@@ -795,7 +795,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_STHeals_Temperance" />
         internal static UserInt WHM_STHeals_TemperanceHP =
             new("WHM_STHeals_TemperanceHP", 75);
 
@@ -805,7 +805,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_STHeals_Asylum" />
         internal static UserBoolArray WHM_STHeals_AsylumOptions =
             new("WHM_STHeals_AsylumOptions");
 
@@ -817,7 +817,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_STHeals_Asylum" />
         internal static UserInt WHM_STHeals_AsylumHP =
             new("WHM_STHeals_AsylumHP", 75);
         
@@ -827,7 +827,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_STHeals_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_STHeals_LiturgyOfTheBellOptions =
             new("WHM_STHeals_LiturgyOfTheBellOptions");
 
@@ -839,7 +839,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_STHeals_LiturgyOfTheBell" />
         internal static UserInt WHM_STHeals_LiturgyOfTheBellHP =
             new("WHM_STHeals_LiturgyOfTheBellHP", 75);
 
@@ -851,7 +851,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_STHeals_Esuna" />
+        /// <seealso cref="Preset.WHM_STHeals_Esuna" />
         internal static UserInt WHM_STHeals_Esuna =
             new("WHM_Cure2_Esuna", 40);
 
@@ -873,7 +873,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 1 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_ThinAir" />
+        /// <seealso cref="Preset.WHM_AoEHeals_ThinAir" />
         internal static UserInt WHM_AoEHeals_ThinAir =
             new("WHM_AoE_ThinAir");
         
@@ -885,7 +885,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Cure3" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Cure3" />
         
         internal static UserInt WHM_AoEHeals_Cure3HP = 
             new("WHM_AoEHeals_Cure3HP", 100);
@@ -898,7 +898,7 @@ internal partial class WHM
         ///     <b>Range</b>: 2 - 8 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Cure3" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Cure3" />
         
         internal static UserInt WHM_AoEHeals_Cure3Allies = 
             new("WHM_AoEHeals_Cure3Allies", 2);
@@ -911,7 +911,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1500 - 8500 <br />
         ///     <b>Step</b>: 500
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Cure3" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Cure3" />
         internal static UserInt WHM_AoEHeals_Cure3MP =
             new("WHM_AoE_Cure3MP");
 
@@ -923,7 +923,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Assize" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Assize" />
         internal static UserInt WHM_AoEHeals_AssizeHP = 
             new("WHM_AoEHeals_AssizeHP", 100);
         
@@ -933,7 +933,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Assize" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Assize" />
         internal static UserBool WHM_AoEHeals_AssizeWeave =
             new("WHM_AoEHeals_AssizeWeave");
         
@@ -945,7 +945,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Plenary" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Plenary" />
         
         internal static UserInt WHM_AoEHeals_PlenaryHP = 
             new("WHM_AoEHeals_PlenaryHP", 100);
@@ -956,7 +956,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Plenary" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Plenary" />
         internal static UserBool WHM_AoEHeals_PlenaryWeave =
             new("WHM_AoEHeals_PlenaryWeave");
 
@@ -966,7 +966,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Temperance" />
         internal static UserBool WHM_AoEHeals_TemperanceWeave =
             new("WHM_AoEHeals_TemperanceWeave");
 
@@ -978,7 +978,7 @@ internal partial class WHM
         ///     <b>Range</b>: 4000 - 9500 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Hundreds" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Lucid" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Lucid" />
         internal static UserInt WHM_AoEHeals_Lucid =
             new("WHM_AoEHeals_Lucid", 6500);
 
@@ -990,7 +990,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 6 <br />
         ///     <b>Step</b>: 0.1
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Medica2" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Medica2" />
         internal static UserFloat WHM_AoEHeals_MedicaTime =
             new("WHM_AoEHeals_MedicaTime");
         
@@ -1002,7 +1002,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Medica2" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Medica2" />
         
         internal static UserInt WHM_AoEHeals_Medica2HP = 
             new("WHM_AoEHeals_Medica2HP", 100);
@@ -1015,7 +1015,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Rapture" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Rapture" />
         
         internal static UserInt WHM_AoEHeals_RaptureHP = 
             new("WHM_AoEHeals_RaptureHP", 100);
@@ -1028,7 +1028,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_DivineCaress" />
+        /// <seealso cref="Preset.WHM_AoEHeals_DivineCaress" />
         
         internal static UserInt WHM_AoEHeals_DivineCaressHP = 
             new("WHM_AoEHeals_DivineCaressHP", 100);
@@ -1039,7 +1039,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_DivineCaress" />
+        /// <seealso cref="Preset.WHM_AoEHeals_DivineCaress" />
         internal static UserBool WHM_AoEHeals_DivineCaressWeave =
             new("WHM_AoEHeals_DivineCaressWeave");
         
@@ -1051,7 +1051,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static UserInt WHM_AoEHeals_LiturgyHP =
             new("WHM_AoEHeals_LiturgyHP", 30);
         
@@ -1061,7 +1061,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static UserBool WHM_AoEHeals_LiturgyWeave =
             new("WHM_AoEHeals_LiturgyWeave");
 
@@ -1073,7 +1073,7 @@ internal partial class WHM
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_AoEHeals_LiturgyDifficulty =
             new("WHM_AoEHeals_LiturgyDifficulty", [true, false]);
 
@@ -1081,7 +1081,7 @@ internal partial class WHM
         ///     Content difficulty list set for Liturgy of the Bell, set by
         ///     <see cref="WHM_AoEHeals_LiturgyDifficulty" />.
         /// </summary>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_AoEHeals_LiturgyOfTheBell" />
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_LiturgyDifficultyListSet =
                 ContentCheck.ListSet.Halved;
@@ -1094,7 +1094,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Temperance" />
         internal static UserInt WHM_AoEHeals_TemperanceHP =
             new("WHM_AoEHeals_TemperanceHP", 30);
 
@@ -1107,7 +1107,7 @@ internal partial class WHM
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Temperance" />
         internal static UserBoolArray WHM_AoEHeals_TemperanceDifficulty =
             new("WHM_AoEHeals_TemperanceDifficulty", [true, true]);
 
@@ -1115,7 +1115,7 @@ internal partial class WHM
         ///     Content difficulty list set for Temperance, set by
         ///     <see cref="WHM_AoEHeals_TemperanceDifficulty" />.
         /// </summary>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Temperance" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Temperance" />
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_TemperanceDifficultyListSet =
                 ContentCheck.ListSet.Halved;
@@ -1128,7 +1128,7 @@ internal partial class WHM
         ///     <b>Range</b>: 1 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Asylum" />
         internal static UserInt WHM_AoEHeals_AsylumHP =
             new("WHM_AoEHeals_AsylumHP", 30);
         
@@ -1138,7 +1138,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: false
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Asylum" />
         internal static UserBool WHM_AoEHeals_AsylumWeave =
             new("WHM_AoEHeals_AsylumWeave");
 
@@ -1151,7 +1151,7 @@ internal partial class WHM
         ///     <b>Options</b>: <see cref="ContentCheck.BottomHalfContent" />
         ///     and/or <see cref="ContentCheck.TopHalfContent" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Asylum" />
         internal static UserBoolArray WHM_AoEHeals_AsylumDifficulty =
             new("WHM_AoEHeals_AsylumDifficulty", [true, true]);
 
@@ -1159,7 +1159,7 @@ internal partial class WHM
         ///     Content difficulty list set for Asylum, set by
         ///     <see cref="WHM_AoEHeals_AsylumDifficulty" />.
         /// </summary>
-        /// <seealso cref="CustomComboPreset.WHM_AoEHeals_Asylum" />
+        /// <seealso cref="Preset.WHM_AoEHeals_Asylum" />
         internal static readonly ContentCheck.ListSet
             WHM_AoEHeals_AsylumDifficultyListSet =
                 ContentCheck.ListSet.Halved;
@@ -1174,7 +1174,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Re_Asylum" />
+        /// <seealso cref="Preset.WHM_Re_Asylum" />
         internal static UserBoolArray WHM_AsylumOptions = 
             new("WHM_AsylumOptions", [true, true]);
         
@@ -1185,7 +1185,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Re_LiturgyOfTheBell" />
+        /// <seealso cref="Preset.WHM_Re_LiturgyOfTheBell" />
         internal static UserBoolArray WHM_LiturgyOfTheBellOptions = 
             new ("WHM_LiturgyOfTheBellOptions", [true, true]);
         
@@ -1195,7 +1195,7 @@ internal partial class WHM
         /// <value>
         ///     <b>Default</b>: True True
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Mit_ST" />
+        /// <seealso cref="Preset.WHM_Mit_ST" />
         internal static UserBoolArray WHM_AquaveilOptions = 
             new ("WHM_AquaveilOptions", [true, true]);
         
@@ -1207,7 +1207,7 @@ internal partial class WHM
         ///     <b>Range</b>: 0 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.WHM_Mit_ST" />
+        /// <seealso cref="Preset.WHM_Mit_ST" />
         internal static UserInt WHM_Aquaveil_TetraThreshold 
             = new("WHM_Aquaveil_TetraThreshold", 100);
         

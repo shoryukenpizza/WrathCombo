@@ -520,7 +520,7 @@ internal partial class GNB : Tank
     ///<summary>
     ///   The list of Mitigations to use in the One-Button Mitigation combo.<br />
     ///   The order of the list needs to match the order in
-    ///   <see cref="CustomComboPreset" />.
+    ///   <see cref="Preset" />.
     ///</summary>
     ///<value>
     ///   <c>Action</c> is the action to use.<br />
@@ -575,7 +575,7 @@ internal partial class GNB : Tank
     ///</summary>
     ///<param name="index">
     ///   The index of the mitigation in <see cref="PrioritizedMitigation" />,
-    ///   which is the order of the mitigation in <see cref="CustomComboPreset" />.
+    ///   which is the order of the mitigation in <see cref="Preset" />.
     ///</param>
     ///<param name="action">
     ///   The variable to set to the action to, if the mitigation is set to be

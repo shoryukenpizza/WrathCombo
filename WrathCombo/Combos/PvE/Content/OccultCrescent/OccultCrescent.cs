@@ -83,7 +83,7 @@ internal partial class OccultCrescent
                 if (IsEnabledAndUsable(Preset.Phantom_Cannoneer_SilverCannon, SilverCannon))
                     return SilverCannon; //debuff
 
-                //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
+                //if (IsEnabledAndUsable(Preset.Phantom_Cannoneer_HolyCannon, HolyCannon) && TargetIsUndead())
                 //    return HolyCannon; //better on Undead targets____ they dont share a cooldown you fire all the cannons so doesnt really matter if undead. 
 
                 foreach((Preset preset, uint action) in new[]
@@ -294,7 +294,7 @@ internal partial class OccultCrescent
                     return PhantomAim; //damage buff
             }
 
-            //if (IsEnabledAndUsable(CustomComboPreset.Phantom_Ranger_OccultFalcon, OccultFalcon) &&
+            //if (IsEnabledAndUsable(Preset.Phantom_Ranger_OccultFalcon, OccultFalcon) &&
             //    !HasStatusEffect(Buffs.OccultUnicorn) && !canWeave) //TODO: add something for ground targeting? atm needs something like Reaction to work correctly
             //    return OccultFalcon; //stun + ground targeting
         }

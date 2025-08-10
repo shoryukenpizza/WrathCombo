@@ -1114,7 +1114,7 @@ internal partial class DRK
     /// </summary>
     /// <param name="index">
     ///     The index of the mitigation in <see cref="PrioritizedMitigation" />,
-    ///     which is the order of the mitigation in <see cref="CustomComboPreset" />.
+    ///     which is the order of the mitigation in <see cref="Preset" />.
     /// </param>
     /// <param name="action">
     ///     The variable to set to the action to, if the mitigation is set to be

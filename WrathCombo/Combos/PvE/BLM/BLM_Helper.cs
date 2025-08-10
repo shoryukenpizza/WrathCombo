@@ -55,6 +55,17 @@ internal partial class BLM
     internal static bool HasMaxUmbralHeartStacks =>
         UmbralHearts is 3;
 
+    internal static int HPThresholdLeylines =>
+        BLM_ST_LeyLinesBossOption == 1 ||
+        !InBossEncounter() ? BLM_ST_LeyLinesHPOption : 0;
+
+    internal static float RefreshTimerThunder =>
+        BLM_ST_ThunderResfresh;
+
+    internal static int HPThresholdThunder =>
+        BLM_ST_ThunderBossOption == 1 ||
+        !InBossEncounter() ? BLM_ST_ThunderHPOption : 0;
+
     internal static bool HasPolyglotStacks() =>
         PolyglotStacks > 0;
 
