@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.DRKPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -78,9 +79,9 @@ internal class DRKPvP
             if (actionID is HardSlash or SyphonStrike or Souleater)
             {
                 bool canWeave = CanWeave();
-                int shadowBringerThreshold = Config.ShadowbringerThreshold;
+                int shadowBringerThreshold = ShadowbringerThreshold;
 
-                if (IsEnabled(Preset.DRKPvP_Rampart) && PvPTank.CanRampart(Config.DRKPvP_RampartThreshold))
+                if (IsEnabled(Preset.DRKPvP_Rampart) && PvPTank.CanRampart(DRKPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (!PvPCommon.TargetImmuneToDamage())

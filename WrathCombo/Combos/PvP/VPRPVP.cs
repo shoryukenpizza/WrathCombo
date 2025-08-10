@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.VPRPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -74,44 +75,44 @@ internal static class VPRPvP
             {
                 // Bloodcoil
                 case Preset.VPRPvP_Bloodcoil:
-                    UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_Bloodcoil_TargetHP, "Target HP%", 210);
-                    UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_Bloodcoil_PlayerHP, "Player HP%", 210);
+                    UserConfig.DrawSliderInt(10, 100, VPRPvP_Bloodcoil_TargetHP, "Target HP%", 210);
+                    UserConfig.DrawSliderInt(10, 100, VPRPvP_Bloodcoil_PlayerHP, "Player HP%", 210);
 
                     break;
 
                 // Uncoiled Fury
                 case Preset.VPRPvP_UncoiledFury:
-                    UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_UncoiledFury_TargetHP, "Target HP%", 210);
+                    UserConfig.DrawSliderInt(10, 100, VPRPvP_UncoiledFury_TargetHP, "Target HP%", 210);
 
                     break;
 
                 // Backlash
                 case Preset.VPRPvP_Backlash:
-                    UserConfig.DrawAdditionalBoolChoice(VPRPvP.Config.VPRPvP_Backlash_SubOption, "Empowered Only",
+                    UserConfig.DrawAdditionalBoolChoice(VPRPvP_Backlash_SubOption, "Empowered Only",
                         "Also requires Snake's Bane to be present.");
 
                     break;
 
                 // Rattling Coil
                 case Preset.VPRPvP_RattlingCoil:
-                    UserConfig.DrawHorizontalMultiChoice(VPRPvP.Config.VPRPvP_RattlingCoil_SubOptions, "No Uncoiled Fury",
+                    UserConfig.DrawHorizontalMultiChoice(VPRPvP_RattlingCoil_SubOptions, "No Uncoiled Fury",
                         "Must not have charges of Uncoiled Fury.", 2, 0);
 
-                    UserConfig.DrawHorizontalMultiChoice(VPRPvP.Config.VPRPvP_RattlingCoil_SubOptions, "No Snake Scales",
+                    UserConfig.DrawHorizontalMultiChoice(VPRPvP_RattlingCoil_SubOptions, "No Snake Scales",
                         "Snake Scales must be on cooldown.", 2, 1);
 
                     break;
 
                 // Slither
                 case Preset.VPRPvP_Slither:
-                    UserConfig.DrawSliderInt(0, 1, VPRPvP.Config.VPRPvP_Slither_Charges, "Charges to Keep", 178);
-                    UserConfig.DrawSliderInt(6, 10, VPRPvP.Config.VPRPvP_Slither_Range, "Maximum Range", 173);
+                    UserConfig.DrawSliderInt(0, 1, VPRPvP_Slither_Charges, "Charges to Keep", 178);
+                    UserConfig.DrawSliderInt(6, 10, VPRPvP_Slither_Range, "Maximum Range", 173);
 
                     break;
 
                 // Smite
                 case Preset.VPRPvP_Smite:
-                    UserConfig.DrawSliderInt(0, 100, VPRPvP.Config.VPRPvP_SmiteThreshold,
+                    UserConfig.DrawSliderInt(0, 100, VPRPvP_SmiteThreshold,
                         "Target HP% to smite, Max damage below 25%");
 
                     break;
@@ -134,7 +135,7 @@ internal static class VPRPvP
                 float playerCurrentPercentHp = PlayerHealthPercentageHp();
                 uint chargesSlither = HasCharges(Slither) ? GetCooldown(Slither).RemainingCharges : 0;
                 uint chargesUncoiledFury = HasCharges(UncoiledFury) ? GetCooldown(UncoiledFury).RemainingCharges : 0;
-                bool[] optionsRattlingCoil = Config.VPRPvP_RattlingCoil_SubOptions;
+                bool[] optionsRattlingCoil = VPRPvP_RattlingCoil_SubOptions;
                 bool hasTarget = HasTarget();
                 bool inMeleeRange = targetDistance <= 5;
                 bool hasSlither = HasStatusEffect(Buffs.Slither);
@@ -152,18 +153,18 @@ internal static class VPRPvP
                 bool hasLegacyWeave = OriginalHook(SerpentsTail) is FirstLegacy or SecondLegacy or ThirdLegacy or FourthLegacy;
                 bool isBloodcoilPrimed = IsOffCooldown(Bloodcoil) && hasTarget && !targetHasImmunity && !hasOuroboros && !hasSanguineFeast;
                 bool inGenerationsCombo = OriginalHook(actionID) is FirstGeneration or SecondGeneration or ThirdGeneration or FourthGeneration;
-                bool isUncoiledFuryPrimed = chargesUncoiledFury > 0 && hasTarget && !targetHasImmunity && targetCurrentPercentHp < Config.VPRPvP_UncoiledFury_TargetHP;
+                bool isUncoiledFuryPrimed = chargesUncoiledFury > 0 && hasTarget && !targetHasImmunity && targetCurrentPercentHp < VPRPvP_UncoiledFury_TargetHP;
                 bool isUncoiledFuryDependant = !isUncoiledFuryEnabled || !(isUncoiledFuryEnabled && isUncoiledFuryPrimed);
                 bool isSlitherPrimed = hasTarget && !inMeleeRange && isUncoiledFuryDependant && !hasSlither && !hasBind;
                     #endregion
                 // Smite
                 if (IsEnabled(Preset.VPRPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && GetTargetDistance() <= 10 && HasTarget() &&
-                    GetTargetHPPercent() <= Config.VPRPvP_SmiteThreshold)
+                    GetTargetHPPercent() <= VPRPvP_SmiteThreshold)
                     return PvPMelee.Smite;
 
                 // Backlash
-                if (IsEnabled(Preset.VPRPvP_Backlash) && ((!Config.VPRPvP_Backlash_SubOption && hasBacklash) ||
-                                                          (Config.VPRPvP_Backlash_SubOption && hasSnakesBane)))
+                if (IsEnabled(Preset.VPRPvP_Backlash) && ((!VPRPvP_Backlash_SubOption && hasBacklash) ||
+                                                          (VPRPvP_Backlash_SubOption && hasSnakesBane)))
                     return OriginalHook(SnakeScales);
 
                 // Rattling Coil
@@ -172,8 +173,8 @@ internal static class VPRPvP
                     return OriginalHook(RattlingCoil);
 
                 // Slither
-                if (IsEnabled(Preset.VPRPvP_Slither) && chargesSlither > Config.VPRPvP_Slither_Charges &&
-                    isSlitherPrimed && targetDistance <= Config.VPRPvP_Slither_Range)
+                if (IsEnabled(Preset.VPRPvP_Slither) && chargesSlither > VPRPvP_Slither_Charges &&
+                    isSlitherPrimed && targetDistance <= VPRPvP_Slither_Range)
                     return OriginalHook(Slither);
 
                 // Serpent's Tail
@@ -188,7 +189,7 @@ internal static class VPRPvP
 
                     // Ouroboros / Sanguine Feast / Bloodcoil
                     if (hasOuroboros || hasSanguineFeast || (IsEnabled(Preset.VPRPvP_Bloodcoil) && isBloodcoilPrimed &&
-                                                             (targetCurrentPercentHp < Config.VPRPvP_Bloodcoil_TargetHP || playerCurrentPercentHp < Config.VPRPvP_Bloodcoil_PlayerHP)))
+                                                             (targetCurrentPercentHp < VPRPvP_Bloodcoil_TargetHP || playerCurrentPercentHp < VPRPvP_Bloodcoil_PlayerHP)))
                         return OriginalHook(Bloodcoil);
                 }
 

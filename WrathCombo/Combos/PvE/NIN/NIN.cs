@@ -4,6 +4,8 @@ using Dalamud.Game.ClientState.Statuses;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
+using static WrathCombo.Combos.PvE.NIN.Config;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class NIN : Melee
@@ -45,25 +47,25 @@ internal partial class NIN : Melee
             NINGauge gauge = GetJobGauge<NINGauge>();
             bool canWeave = CanWeave();
             bool canDelayedWeave = CanDelayedWeave();
-            bool inTrickBurstSaveWindow = IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack_Cooldowns) && IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && GetCooldownRemainingTime(TrickAttack) <= Config.Advanced_Trick_Cooldown;
+            bool inTrickBurstSaveWindow = IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack_Cooldowns) && IsEnabled(Preset.NIN_ST_AdvancedMode_TrickAttack) && GetCooldownRemainingTime(TrickAttack) <= Advanced_Trick_Cooldown;
             bool useBhakaBeforeTrickWindow = GetCooldownRemainingTime(TrickAttack) >= 3;
-            bool setupSuitonWindow = GetCooldownRemainingTime(OriginalHook(TrickAttack)) <= Config.Trick_CooldownRemaining && !HasStatusEffect(Buffs.ShadowWalker);
+            bool setupSuitonWindow = GetCooldownRemainingTime(OriginalHook(TrickAttack)) <= Trick_CooldownRemaining && !HasStatusEffect(Buffs.ShadowWalker);
             bool setupKassatsuWindow = GetCooldownRemainingTime(TrickAttack) <= 10 && HasStatusEffect(Buffs.ShadowWalker);
             bool chargeCheck = IsNotEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus_ChargeHold) || IsEnabled(Preset.NIN_ST_AdvancedMode_Ninjitsus_ChargeHold) && (InMudra || GetRemainingCharges(Ten) == 2 || GetRemainingCharges(Ten) == 1 && GetCooldownChargeRemainingTime(Ten) < 3);
-            bool poolCharges = !(bool)Config.Advanced_ChargePool || GetRemainingCharges(Ten) == 1 && GetCooldownChargeRemainingTime(Ten) < 2 || TrickDebuff || InMudra;
+            bool poolCharges = !(bool)Advanced_ChargePool || GetRemainingCharges(Ten) == 1 && GetCooldownChargeRemainingTime(Ten) < 2 || TrickDebuff || InMudra;
             bool raitonUptime = IsEnabled(Preset.NIN_ST_AdvancedMode_Raiton_Uptime);
             bool suitonUptime = IsEnabled(Preset.NIN_ST_AdvancedMode_Suiton_Uptime);
-            int bhavaPool = Config.Ninki_BhavaPooling;
-            int bunshinPool = Config.Ninki_BunshinPoolingST;
-            int burnKazematoi = Config.BurnKazematoi;
-            int secondWindThreshold = Config.SecondWindThresholdST;
-            int shadeShiftThreshold = Config.ShadeShiftThresholdST;
-            int bloodbathThreshold = Config.BloodbathThresholdST;
+            int bhavaPool = Ninki_BhavaPooling;
+            int bunshinPool = Ninki_BunshinPoolingST;
+            int burnKazematoi = BurnKazematoi;
+            int secondWindThreshold = SecondWindThresholdST;
+            int shadeShiftThreshold = ShadeShiftThresholdST;
+            int bloodbathThreshold = BloodbathThresholdST;
             double playerHP = PlayerHealthPercentageHp();
             bool phantomUptime = IsEnabled(Preset.NIN_ST_AdvancedMode_Phantom_Uptime);
             bool trueNorthArmor = IsEnabled(Preset.NIN_ST_AdvancedMode_TrueNorth) && Role.CanTrueNorth() && !OnTargetsFlank();
             bool trueNorthEdge = IsEnabled(Preset.NIN_ST_AdvancedMode_TrueNorth) && Role.CanTrueNorth() && !OnTargetsRear();
-            bool dynamic = Config.Advanced_TrueNorth == 0;
+            bool dynamic = Advanced_TrueNorth == 0;
 
             if (IsEnabled(Preset.NIN_ST_AdvancedMode_BalanceOpener) && 
                 Opener().FullOpener(ref actionID))
@@ -114,7 +116,7 @@ internal partial class NIN : Melee
                 MudraState.CastHyoshoRanryu(ref actionID))
                 return actionID;
 
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, Config.NIN_VariantCure))
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -360,14 +362,14 @@ internal partial class NIN : Melee
             bool canWeave = CanWeave();
             bool chargeCheck = IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold) || IsEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus_ChargeHold) && GetRemainingCharges(Ten) == 2;
             bool inMudraState = InMudra;
-            int hellfrogPool = Config.Ninki_HellfrogPooling;
-            int dotonTimer = Config.Advanced_DotonTimer;
-            int dotonThreshold = Config.Advanced_DotonHP;
-            int tcjPath = Config.Advanced_TCJEnderAoE;
-            int bunshingPool = Config.Ninki_BunshinPoolingAoE;
-            int secondWindThreshold = Config.SecondWindThresholdAoE;
-            int shadeShiftThreshold = Config.ShadeShiftThresholdAoE;
-            int bloodbathThreshold = Config.BloodbathThresholdAoE;
+            int hellfrogPool = Ninki_HellfrogPooling;
+            int dotonTimer = Advanced_DotonTimer;
+            int dotonThreshold = Advanced_DotonHP;
+            int tcjPath = Advanced_TCJEnderAoE;
+            int bunshingPool = Ninki_BunshinPoolingAoE;
+            int secondWindThreshold = SecondWindThresholdAoE;
+            int shadeShiftThreshold = ShadeShiftThresholdAoE;
+            int bloodbathThreshold = BloodbathThresholdAoE;
             double playerHP = PlayerHealthPercentageHp();
 
             if (IsNotEnabled(Preset.NIN_AoE_AdvancedMode_Ninjitsus) || ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat())
@@ -407,7 +409,7 @@ internal partial class NIN : Melee
             if (IsEnabled(Preset.NIN_AoE_AdvancedMode_GokaMekkyaku) && HasStatusEffect(Buffs.Kassatsu))
                 MudraState.CurrentMudra = MudraCasting.MudraState.CastingGokaMekkyaku;
 
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, Config.NIN_VariantCure))
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -601,7 +603,7 @@ internal partial class NIN : Melee
                     return OriginalHook(Jin);
             }
 
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, Config.NIN_VariantCure))
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -829,7 +831,7 @@ internal partial class NIN : Melee
                 }
             }
 
-            if (Variant.CanCure(Preset.NIN_Variant_Cure, Config.NIN_VariantCure))
+            if (Variant.CanCure(Preset.NIN_Variant_Cure, NIN_VariantCure))
                 return Variant.Cure;
 
             if (OccultCrescent.ShouldUsePhantomActions())
@@ -1012,7 +1014,7 @@ internal partial class NIN : Melee
             if (actionID is not (Ten or Chi or Jin) || !HasStatusEffect(Buffs.Mudra))
                 return actionID;
 
-            int mudrapath = Config.NIN_SimpleMudra_Choice;
+            int mudrapath = NIN_SimpleMudra_Choice;
 
             if (mudrapath == 1)
             {

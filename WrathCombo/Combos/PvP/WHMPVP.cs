@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.WHMPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -71,7 +72,7 @@ internal static class WHMPvP
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
                     //Limit break, with health slider
-                    if (IsEnabled(Preset.WHMPvP_AfflatusPurgation) && IsLB1Ready && GetTargetHPPercent() <= Config.WHMPvP_PurgationThreshold)
+                    if (IsEnabled(Preset.WHMPvP_AfflatusPurgation) && IsLB1Ready && GetTargetHPPercent() <= WHMPvP_PurgationThreshold)
                         return AfflatusPurgation;
 
                     // Seraph Strike if enabled and off cooldown
@@ -83,7 +84,7 @@ internal static class WHMPvP
                     {
                         //Role Action Diabrosis Role action
                         if (IsEnabled(Preset.WHMPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                            GetTargetHPPercent() <= Config.WHMPvP_DiabrosisThreshold)
+                            GetTargetHPPercent() <= WHMPvP_DiabrosisThreshold)
                             return PvPHealer.Diabrosis;
 
                         // Miracle of Nature if enabled and off cooldown and inrange 

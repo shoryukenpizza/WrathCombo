@@ -2,6 +2,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.WARPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -73,7 +74,7 @@ internal static class WARPvP
         {
             if (actionID is HeavySwing or Maim or StormsPath)
             {
-                if (IsEnabled(Preset.WARPvP_Rampart) && PvPTank.CanRampart(Config.WARPvP_RampartThreshold))
+                if (IsEnabled(Preset.WARPvP_Rampart) && PvPTank.CanRampart(WARPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (!PvPCommon.TargetImmuneToDamage())
@@ -97,9 +98,9 @@ internal static class WARPvP
                         // Blota with specific conditions and burst mode enabled
                         if (IsOffCooldown(Blota) && !HasStatusEffect(PvPCommon.Debuffs.Stun, CurrentTarget, true) && IsEnabled(Preset.WARPvP_BurstMode_Blota))
                         {
-                            if (Config.WARPVP_BlotaTiming == 0 && IsOffCooldown(PrimalRend))
+                            if (WARPVP_BlotaTiming == 0 && IsOffCooldown(PrimalRend))
                                 return OriginalHook(Blota);
-                            if (Config.WARPVP_BlotaTiming == 1 && IsOnCooldown(PrimalRend))
+                            if (WARPVP_BlotaTiming == 1 && IsOnCooldown(PrimalRend))
                                 return OriginalHook(Blota);
                         }
 
@@ -140,9 +141,9 @@ internal static class WARPvP
                         // Blota with specific conditions and burst mode enabled in meleerange
                         if (IsOffCooldown(Blota) && !HasStatusEffect(PvPCommon.Debuffs.Stun, CurrentTarget, true) && IsEnabled(Preset.WARPvP_BurstMode_Blota))
                         {
-                            if (Config.WARPVP_BlotaTiming == 0 && IsOffCooldown(PrimalRend))
+                            if (WARPVP_BlotaTiming == 0 && IsOffCooldown(PrimalRend))
                                 return OriginalHook(Blota);
-                            if (Config.WARPVP_BlotaTiming == 1 && IsOnCooldown(PrimalRend))
+                            if (WARPVP_BlotaTiming == 1 && IsOnCooldown(PrimalRend))
                                 return OriginalHook(Blota);
                         }
                     }

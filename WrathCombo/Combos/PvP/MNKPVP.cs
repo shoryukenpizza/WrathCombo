@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.MNKPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -80,7 +81,7 @@ internal static class MNKPvP
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
                     if (IsEnabled(Preset.MNKPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
-                        GetTargetHPPercent() <= Config.MNKPvP_SmiteThreshold)
+                        GetTargetHPPercent() <= MNKPvP_SmiteThreshold)
                         return PvPMelee.Smite;
 
                     if (IsEnabled(Preset.MNKPvP_Burst_RisingPhoenix))

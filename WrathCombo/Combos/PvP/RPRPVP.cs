@@ -2,6 +2,7 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.RPRPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -99,19 +100,19 @@ internal static class RPRPvP
                 bool enshrouded = HasStatusEffect(Buffs.Enshrouded);
                 float enshroudStacks = GetStatusEffectStacks(Buffs.Enshrouded);
                 float immortalStacks = GetStatusEffectStacks(Buffs.ImmortalSacrifice);
-                int immortalThreshold = Config.RPRPvP_ImmortalStackThreshold;
+                int immortalThreshold = RPRPvP_ImmortalStackThreshold;
                     #endregion
 
                 // Arcane Cirle Option
                 if (IsEnabled(Preset.RPRPvP_Burst_ArcaneCircle)
-                    && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= Config.RPRPvP_ArcaneCircleThreshold)
+                    && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= RPRPvP_ArcaneCircleThreshold)
                     return ArcaneCrest;
 
                 if (!PvPCommon.TargetImmuneToDamage()) // Guard check on target
                 {
                     //Smite
                     if (IsEnabled(Preset.RPRPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
-                        GetTargetHPPercent() <= Config.RPRPvP_SmiteThreshold)
+                        GetTargetHPPercent() <= RPRPvP_SmiteThreshold)
                         return PvPMelee.Smite;
 
                     // Harvest Moon Ranged Option

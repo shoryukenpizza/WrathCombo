@@ -9,6 +9,7 @@ using System.Linq;
 using WrathCombo.AutoRotation;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.DRK.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using EZ = ECommons.Throttlers.EzThrottler;
 using TS = System.TimeSpan;
@@ -248,10 +249,10 @@ internal partial class DRK
         [
             // Pull with Shadowstride as selected
             ([1], Shadowstride, () =>
-                Config.DRK_ST_OpenerAction == (int)Config.PullAction.Shadowstride),
+                DRK_ST_OpenerAction == (int)PullAction.Shadowstride),
             // Pull with HardSlash as selected (requires skipping the now-duplicate HardSlash)
             ([1], HardSlash, () =>
-                Config.DRK_ST_OpenerAction == (int)Config.PullAction.HardSlash),
+                DRK_ST_OpenerAction == (int)PullAction.HardSlash),
         ];
 
         public override List<(int[] Steps, Func<bool> Condition)> SkipSteps
@@ -262,17 +263,17 @@ internal partial class DRK
         [
             // Skip the duplicate HardSlash, if pulling with HardSlash
             ([2], () =>
-                Config.DRK_ST_OpenerAction == (int)Config.PullAction.HardSlash),
+                DRK_ST_OpenerAction == (int)PullAction.HardSlash),
             // Skip the early LivingShadow, if non-standard
             ([4], () =>
-                Config.DRK_ST_OpenerAction != (int)Config.PullAction.Unmend),
+                DRK_ST_OpenerAction != (int)PullAction.Unmend),
             // Skip the late LivingShadow and aligning HardSlash, if Standard
             ([6, 9], () => HasOtherJobsBuffs ||
-                Config.DRK_ST_OpenerAction == (int)Config.PullAction.Unmend),
+                DRK_ST_OpenerAction == (int)PullAction.Unmend),
         ];
 
         internal override UserData? ContentCheckConfig =>
-            Config.DRK_ST_OpenerDifficulty;
+            DRK_ST_OpenerDifficulty;
 
         public override bool HasCooldowns() =>
             LocalPlayer.CurrentMp > 7000 && IsOffCooldown(LivingShadow) &&

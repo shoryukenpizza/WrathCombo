@@ -3,6 +3,7 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.RDMPvP.Config;
 using static WrathCombo.Window.Functions.UserConfig;
 
 namespace WrathCombo.Combos.PvP;
@@ -114,7 +115,7 @@ internal static class RDMPvP
 
                 // Phantom Dart
                 case Preset.RDMPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, RDMPvP.Config.RDMPvP_PhantomDartThreshold,
+                    UserConfig.DrawSliderInt(1, 100, RDMPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
                     break;
@@ -153,27 +154,27 @@ internal static class RDMPvP
                 bool hasEmbolden = IsOffCooldown(Embolden) && OriginalHook(Embolden) is Embolden;
                 bool isEmboldenDelayDependant = !JustUsed(Embolden, 5f) || IsOnCooldown(EnchantedRiposte);
                 bool hasMeleeCombo = OriginalHook(EnchantedRiposte) is EnchantedZwerchhau or EnchantedRedoublement;
-                bool isEnabledViceOfThorns = IsEnabled(Preset.RDMPvP_Forte) && Config.RDMPvP_Forte_SubOption;
-                bool isEnabledPrefulgence = IsEnabled(Preset.RDMPvP_Embolden) && Config.RDMPvP_Embolden_SubOption;
+                bool isEnabledViceOfThorns = IsEnabled(Preset.RDMPvP_Forte) && RDMPvP_Forte_SubOption;
+                bool isEnabledPrefulgence = IsEnabled(Preset.RDMPvP_Embolden) && RDMPvP_Embolden_SubOption;
                 bool hasEnchantedRiposte = IsOffCooldown(EnchantedRiposte) && OriginalHook(EnchantedRiposte) is EnchantedRiposte;
                 bool isViceOfThornsExpiring = HasStatusEffect(Buffs.ThornedFlourish) && GetStatusEffectRemainingTime(Buffs.ThornedFlourish) <= 3;
                 bool isPrefulgenceExpiring = HasStatusEffect(Buffs.PrefulgenceReady) && GetStatusEffectRemainingTime(Buffs.PrefulgenceReady) <= 3;
-                bool isMovementDependant = !Config.RDMPvP_Displacement_SubOption || (Config.RDMPvP_Displacement_SubOption && !isMoving);
+                bool isMovementDependant = !RDMPvP_Displacement_SubOption || (RDMPvP_Displacement_SubOption && !isMoving);
                 bool targetHasImmunity = HasStatusEffect(PLDPvP.Buffs.HallowedGround, CurrentTarget, true) || HasStatusEffect(DRKPvP.Buffs.UndeadRedemption, CurrentTarget, true);
                 bool isDisplacementPrimed = !hasBind && !JustUsed(Displacement, 8f) && !HasStatusEffect(Buffs.Displacement) && hasScorch && inMeleeRange;
-                bool isCorpsPrimed = !hasBind && !JustUsed(CorpsACorps, 8f) && chargesCorps > Config.RDMPvP_Corps_Charges && targetDistance <= Config.RDMPvP_Corps_Range;
+                bool isCorpsPrimed = !hasBind && !JustUsed(CorpsACorps, 8f) && chargesCorps > RDMPvP_Corps_Charges && targetDistance <= RDMPvP_Corps_Range;
                     #endregion
 
                 // Forte
                 if (IsEnabled(Preset.RDMPvP_Forte) && hasForte && inCombat &&
-                    playerCurrentPercentHp < Config.RDMPvP_Forte_PlayerHP)
+                    playerCurrentPercentHp < RDMPvP_Forte_PlayerHP)
                     return OriginalHook(Forte);
 
                 if (hasTarget && !targetHasImmunity)
                 {
                     if (!targetHasGuard)
                     {
-                        if (IsEnabled(Preset.RDMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (Config.RDMPvP_PhantomDartThreshold))
+                        if (IsEnabled(Preset.RDMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (RDMPvP_PhantomDartThreshold))
                             return Role.PhantomDart;
 
                         // Vice of Thorns
@@ -182,7 +183,7 @@ internal static class RDMPvP
 
                         // Displacement
                         if (IsEnabled(Preset.RDMPvP_Displacement) && isDisplacementPrimed &&
-                            isMovementDependant && chargesDisplacement > Config.RDMPvP_Displacement_Charges)
+                            isMovementDependant && chargesDisplacement > RDMPvP_Displacement_Charges)
                             return OriginalHook(Displacement);
                     }
 
@@ -229,7 +230,7 @@ internal static class RDMPvP
 
                         // Resolution
                         if (IsEnabled(Preset.RDMPvP_Resolution) && IsOffCooldown(Resolution) &&
-                            !isTargetNPC && targetCurrentPercentHp < Config.RDMPvP_Resolution_TargetHP)
+                            !isTargetNPC && targetCurrentPercentHp < RDMPvP_Resolution_TargetHP)
                             return OriginalHook(Resolution);
                     }
                 }

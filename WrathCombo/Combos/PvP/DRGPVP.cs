@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.DRGPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -91,7 +92,7 @@ internal static class DRGPvP
                 if (!HasStatusEffect(PvPCommon.Buffs.Guard, CurrentTarget, true))
                 {
                     if (IsEnabled(Preset.DRGPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
-                        GetTargetHPPercent() <= Config.DRGPvP_SmiteThreshold)
+                        GetTargetHPPercent() <= DRGPvP_SmiteThreshold)
                         return PvPMelee.Smite;
 
                     if (CanWeave())
@@ -101,8 +102,8 @@ internal static class DRGPvP
 
                         if (IsEnabled(Preset.DRGPvP_Nastrond)) // Nastrond Finisher logic
                         {
-                            if (HasStatusEffect(Buffs.LifeOfTheDragon) && PlayerHealthPercentageHp() < Config.DRGPvP_LOTD_HPValue
-                                || HasStatusEffect(Buffs.LifeOfTheDragon) && GetStatusEffectRemainingTime(Buffs.LifeOfTheDragon) < Config.DRGPvP_LOTD_Duration)
+                            if (HasStatusEffect(Buffs.LifeOfTheDragon) && PlayerHealthPercentageHp() < DRGPvP_LOTD_HPValue
+                                || HasStatusEffect(Buffs.LifeOfTheDragon) && GetStatusEffectRemainingTime(Buffs.LifeOfTheDragon) < DRGPvP_LOTD_Duration)
                                 return Nastrond;
                         }
 
@@ -118,7 +119,7 @@ internal static class DRGPvP
                             return Geirskogul;
                     }                       
                                                    
-                    if (IsEnabled(Preset.DRGPvP_WyrmwindThrust) && HasStatusEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= Config.DRGPvP_Distance_Threshold)
+                    if (IsEnabled(Preset.DRGPvP_WyrmwindThrust) && HasStatusEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= DRGPvP_Distance_Threshold)
                         return WyrmwindThrust;
 
                     if (IsEnabled(Preset.DRGPvP_Geirskogul) && HasStatusEffect(Buffs.StarCrossReady))
@@ -127,7 +128,7 @@ internal static class DRGPvP
                 }
                 if (IsOffCooldown(ChaoticSpring) && InMeleeRange())
                 {
-                    if (IsEnabled(Preset.DRGPvP_ChaoticSpringSustain) && PlayerHealthPercentageHp() < Config.DRGPvP_CS_HP_Threshold) // Chaotic Spring as a self heal option, it does not break combos of other skills
+                    if (IsEnabled(Preset.DRGPvP_ChaoticSpringSustain) && PlayerHealthPercentageHp() < DRGPvP_CS_HP_Threshold) // Chaotic Spring as a self heal option, it does not break combos of other skills
                         return ChaoticSpring;
                     if (IsEnabled(Preset.DRGPvP_ChaoticSpringExecute) && GetTargetCurrentHP() <= 8000) // Chaotic Spring Execute
                         return ChaoticSpring;

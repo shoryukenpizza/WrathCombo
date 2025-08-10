@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.SCHPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -80,7 +81,7 @@ internal static class SCHPvP
                 if (IsEnabled(Preset.SCHPvP_Expedient) && IsOffCooldown(Expedient) && GetCooldownRemainingTime(Biolysis) < 3)
                     return Expedient;
 
-                // Uses Biolysis on cooldown or with Recitation when Expedient is enabled with safetey for too long of an expedient cooldown. 
+                // Uses Biolysis on cooldown or with Recitation when Expedient is enabled with safety for too long of an expedient cooldown. 
                 if (IsEnabled(Preset.SCHPvP_Biolysis) && IsOffCooldown(Biolysis))
                 {
                     if (IsEnabled(Preset.SCHPvP_Expedient))
@@ -93,7 +94,7 @@ internal static class SCHPvP
 
                 //Uses Diabrosis when below set health
                 if (IsEnabled(Preset.SCHPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() && 
-                    GetTargetHPPercent() <= Config.SCHPvP_DiabrosisThreshold)
+                    GetTargetHPPercent() <= SCHPvP_DiabrosisThreshold)
                     return PvPHealer.Diabrosis;
 
                 // Uses Deployment Tactics when available
@@ -101,7 +102,7 @@ internal static class SCHPvP
                     return DeploymentTactics;
 
                 // Adds Adloquium when at or below threshold, will not Overwrite the 10% damage reduction buff to prevent waste
-                if (IsEnabled(Preset.SCHPvP_Selfcare) && !HasStatusEffect(Buffs.Catalyze) && PlayerHealthPercentageHp() <= Config.SCHPvP_AdloThreshold)
+                if (IsEnabled(Preset.SCHPvP_Selfcare) && !HasStatusEffect(Buffs.Catalyze) && PlayerHealthPercentageHp() <= SCHPvP_AdloThreshold)
                     return Adloquilum;
             }
 

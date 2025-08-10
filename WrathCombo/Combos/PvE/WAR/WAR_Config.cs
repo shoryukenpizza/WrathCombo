@@ -4,6 +4,7 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Window.Functions.UserConfig;
 using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 namespace WrathCombo.Combos.PvE;
@@ -123,361 +124,361 @@ internal partial class WAR
             {
                 #region Single-Target
                 case Preset.WAR_ST_BalanceOpener:
-                    UserConfig.DrawBossOnlyChoice(WAR_BalanceOpener_Content);
+                    DrawBossOnlyChoice(WAR_BalanceOpener_Content);
                     break;
 
                 case Preset.WAR_ST_StormsEye:
-                    UserConfig.DrawSliderInt(0, 30, WAR_SurgingRefreshRange,
+                    DrawSliderInt(0, 30, WAR_SurgingRefreshRange,
                         $" Seconds remaining before refreshing {Buffs.SurgingTempest.StatusName()} buff:");
                     break;
 
                 case Preset.WAR_ST_InnerRelease:
-                    UserConfig.DrawSliderInt(0, 75, WAR_ST_IRStop,
+                    DrawSliderInt(0, 75, WAR_ST_IRStop,
                         " Stop usage if Target HP% is below set value.\n To disable this, set value to 0");
                     break;
 
                 case Preset.WAR_ST_Onslaught:
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_ST_Onslaught_Movement,
                             "Stationary Only", "Uses Onslaught only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_ST_Onslaught_Movement,
                             "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_ST_Onslaught_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_ST_Onslaught_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_ST_Onslaught_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderInt(0, 2, WAR_ST_Onslaught_Charges,
+                    DrawSliderInt(0, 2, WAR_ST_Onslaught_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_ST_Onslaught_Distance,
+                    DrawSliderFloat(1, 20, WAR_ST_Onslaught_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
 
                 case Preset.WAR_ST_Infuriate:
-                    UserConfig.DrawSliderInt(0, 2, WAR_ST_Infuriate_Charges,
+                    DrawSliderInt(0, 2, WAR_ST_Infuriate_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    UserConfig.DrawSliderInt(0, 50, WAR_ST_Infuriate_Gauge,
+                    DrawSliderInt(0, 50, WAR_ST_Infuriate_Gauge,
                         " Use when Beast Gauge is less than or equal to:");
                     break;
 
                 case Preset.WAR_ST_FellCleave:
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_FellCleave_BurstPooling,
+                    DrawHorizontalRadioButton(WAR_ST_FellCleave_BurstPooling,
                         "Burst Pooling", "Allow Fell Cleave for extra use during burst windows\nNOTE: This ignores the gauge slider below when ready for or already in burst", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_FellCleave_BurstPooling,
+                    DrawHorizontalRadioButton(WAR_ST_FellCleave_BurstPooling,
                         "No Burst Pooling", "Forbid Fell Cleave for extra use during burst windows\nNOTE: This fully honors the value set on the gauge slider below", 1);
                     ImGui.Spacing();
-                    UserConfig.DrawSliderInt(50, 100, WAR_ST_FellCleave_Gauge,
+                    DrawSliderInt(50, 100, WAR_ST_FellCleave_Gauge,
                         " Minimum Beast Gauge required to spend:");
                     break;
 
                 case Preset.WAR_ST_PrimalRend:
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_ST_PrimalRend_EarlyLate,
                         "Early", "Uses Primal Rend ASAP", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_ST_PrimalRend_EarlyLate,
                         "Late", "Uses Primal Rend after consumption of all Inner Release stacks", 1);
                     ImGui.NewLine();
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_ST_PrimalRend_Movement,
                         "Stationary Only", "Uses Primal Rend only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_ST_PrimalRend_Movement,
                         "Any Movement", "Uses Primal Rend regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_ST_PrimalRend_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_ST_PrimalRend_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_ST_PrimalRend_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_ST_PrimalRend_Distance,
+                    DrawSliderFloat(1, 20, WAR_ST_PrimalRend_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
                 #endregion
 
                 #region AoE
                 case Preset.WAR_AoE_Decimate:
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
+                    DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
                         "Burst Pooling", "Allow Decimate for extra use during burst windows\nNOTE: This ignores the gauge slider below when ready for or already in burst", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
+                    DrawHorizontalRadioButton(WAR_AoE_Decimate_BurstPooling,
                         "No Burst Pooling", "Forbid Decimate for extra use during burst windows\nNOTE: This fully honors the value set on the gauge slider below", 1);
                     ImGui.Spacing();
-                    UserConfig.DrawSliderInt(50, 100, WAR_AoE_Decimate_Gauge,
+                    DrawSliderInt(50, 100, WAR_AoE_Decimate_Gauge,
                         "Minimum gauge required to spend:");
                     break;
 
                 case Preset.WAR_AoE_InnerRelease:
-                    UserConfig.DrawSliderInt(0, 75, WAR_AoE_IRStop,
+                    DrawSliderInt(0, 75, WAR_AoE_IRStop,
                         " Stop usage if Target HP% is below set value.\n To disable this, set value to 0");
                     break;
 
 
                 case Preset.WAR_AoE_Infuriate:
-                    UserConfig.DrawSliderInt(0, 2, WAR_AoE_Infuriate_Charges,
+                    DrawSliderInt(0, 2, WAR_AoE_Infuriate_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    UserConfig.DrawSliderInt(0, 50, WAR_AoE_Infuriate_Gauge,
+                    DrawSliderInt(0, 50, WAR_AoE_Infuriate_Gauge,
                         "Use when gauge is under or equal to");
                     break;
 
                 case Preset.WAR_AoE_Onslaught:
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_AoE_Onslaught_Movement,
                             "Stationary Only", "Uses Onslaught only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_AoE_Onslaught_Movement,
                             "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_AoE_Onslaught_Movement == 0) 
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_AoE_Onslaught_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_AoE_Onslaught_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
-                    UserConfig.DrawSliderInt(0, 2, WAR_AoE_Onslaught_Charges,
+                    DrawSliderInt(0, 2, WAR_AoE_Onslaught_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_AoE_Onslaught_Distance,
+                    DrawSliderFloat(1, 20, WAR_AoE_Onslaught_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
 
                 case Preset.WAR_AoE_PrimalRend:
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_AoE_PrimalRend_EarlyLate,
                         "Early", "Uses Primal Rend ASAP", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_AoE_PrimalRend_EarlyLate,
                         "Late", "Uses Primal Rend after consumption of all Inner Release stacks", 1);
                     ImGui.NewLine();
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_AoE_PrimalRend_Movement,
                         "Stationary Only", "Uses Primal Rend only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_AoE_PrimalRend_Movement,
                         "Any Movement", "Uses Primal Rend regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_AoE_PrimalRend_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_AoE_PrimalRend_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_AoE_PrimalRend_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_AoE_PrimalRend_Distance,
+                    DrawSliderFloat(1, 20, WAR_AoE_PrimalRend_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
 
                 case Preset.WAR_AoE_Orogeny:
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_OrogenyUpheaval,
+                    DrawHorizontalRadioButton(WAR_AoE_OrogenyUpheaval,
                         "Include Upheaval", "Enables the use of Upheaval in AoE rotation if Orogeny is unavailable", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_OrogenyUpheaval,
+                    DrawHorizontalRadioButton(WAR_AoE_OrogenyUpheaval,
                         "Exclude Upheaval", "Disables the use of Upheaval in AoE rotation", 1);
                     break;
                 #endregion
 
                 #region Mitigations
                 case Preset.WAR_ST_Bloodwhetting:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Bloodwhetting_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Bloodwhetting_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Bloodwhetting_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Bloodwhetting_SubOption,
                         "All Enemies", $"Uses {Bloodwhetting.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Bloodwhetting_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Bloodwhetting_SubOption,
                         "Bosses Only", $"Only uses {Bloodwhetting.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Bloodwhetting:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Bloodwhetting_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Bloodwhetting_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Bloodwhetting_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Bloodwhetting_SubOption,
                         "All Enemies", $"Uses {Bloodwhetting.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Bloodwhetting_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Bloodwhetting_SubOption,
                         "Bosses Only", $"Only uses {Bloodwhetting.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Equilibrium:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Equilibrium_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Equilibrium_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Equilibrium_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Equilibrium_SubOption,
                         "All Enemies", $"Uses {Equilibrium.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Equilibrium_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Equilibrium_SubOption,
                         "Bosses Only", $"Only uses {Equilibrium.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Equilibrium:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Equilibrium_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Equilibrium_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Equilibrium_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Equilibrium_SubOption,
                         "All Enemies", $"Uses {Equilibrium.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Equilibrium_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Equilibrium_SubOption,
                         "Bosses Only", $"Only uses {Equilibrium.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Rampart_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Rampart_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Rampart_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Rampart_SubOption,
                         "All Enemies", $"Uses {Role.Rampart.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Rampart_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Rampart_SubOption,
                         "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Rampart_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Rampart_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Rampart_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Rampart_SubOption,
                         "All Enemies", $"Uses {Role.Rampart.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Rampart_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Rampart_SubOption,
                         "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Thrill:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Thrill_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Thrill_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Thrill_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Thrill_SubOption,
                         "All Enemies", $"Uses {ThrillOfBattle.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Thrill_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Thrill_SubOption,
                         "Bosses Only", $"Only uses {ThrillOfBattle.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Thrill:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Thrill_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Thrill_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Thrill_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Thrill_SubOption,
                         "All Enemies", $"Uses {ThrillOfBattle.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Thrill_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Thrill_SubOption,
                         "Bosses Only", $"Only uses {ThrillOfBattle.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Vengeance:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Vengeance_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Vengeance_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Vengeance_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Vengeance_SubOption,
                         "All Enemies", $"Uses {Vengeance.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Vengeance_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Vengeance_SubOption,
                         "Bosses Only", $"Only uses {Vengeance.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Vengeance:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Vengeance_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Vengeance_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Vengeance_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Vengeance_SubOption,
                         "All Enemies", $"Uses {Vengeance.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Vengeance_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Vengeance_SubOption,
                         "Bosses Only", $"Only uses {Vengeance.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Holmgang:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Holmgang_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Holmgang_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Holmgang_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Holmgang_SubOption,
                         "All Enemies", $"Uses {Holmgang.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Holmgang_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Holmgang_SubOption,
                         "Bosses Only", $"Only uses {Holmgang.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Holmgang:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Holmgang_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Holmgang_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Holmgang_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Holmgang_SubOption,
                         "All Enemies", $"Uses {Holmgang.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Holmgang_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Holmgang_SubOption,
                         "Bosses Only", $"Only uses {Holmgang.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_ST_Reprisal:
-                    UserConfig.DrawSliderInt(1, 100, WAR_ST_Reprisal_Health,
+                    DrawSliderInt(1, 100, WAR_ST_Reprisal_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Reprisal_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Reprisal_SubOption,
                         "All Enemies", $"Uses {Role.Reprisal.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_Reprisal_SubOption,
+                    DrawHorizontalRadioButton(WAR_ST_Reprisal_SubOption,
                         "Bosses Only", $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 case Preset.WAR_AoE_Reprisal:
-                    UserConfig.DrawSliderInt(1, 100, WAR_AoE_Reprisal_Health,
+                    DrawSliderInt(1, 100, WAR_AoE_Reprisal_Health,
                         "Player HP% to be \nless than or equal to:", 200);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Reprisal_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Reprisal_SubOption,
                         "All Enemies", $"Uses {Role.Reprisal.ActionName()} regardless of targeted enemy type", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_Reprisal_SubOption,
+                    DrawHorizontalRadioButton(WAR_AoE_Reprisal_SubOption,
                         "Bosses Only", $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss", 1);
                     break;
 
                 #region One-Button Mitigation
 
                 case Preset.WAR_Mit_Holmgang_Max:
-                    UserConfig.DrawDifficultyMultiChoice(WAR_Mit_Holmgang_Difficulty, WAR_Mit_Holmgang_DifficultyListSet,
+                    DrawDifficultyMultiChoice(WAR_Mit_Holmgang_Difficulty, WAR_Mit_Holmgang_DifficultyListSet,
                         "Select what difficulties Holmgang should be used in:");
 
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_Holmgang_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_Holmgang_Health,
                         "Player HP% to be \nless than or equal to:", 200, SliderIncrements.Fives);
                     break;
 
                 case Preset.WAR_Mit_Bloodwhetting:
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_Bloodwhetting_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_Bloodwhetting_Health,
                         "HP% to use at or below", sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 0,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 0,
                         "Bloodwhetting Priority:");
                     break;
 
                 case Preset.WAR_Mit_Equilibrium:
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_Equilibrium_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_Equilibrium_Health,
                         "HP% to use at or below", sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 1,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 1,
                         "Equilibrium Priority:");
                     break;
 
                 case Preset.WAR_Mit_Reprisal:
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 2,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 2,
                         "Reprisal Priority:");
                     break;
 
                 case Preset.WAR_Mit_ThrillOfBattle:
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_ThrillOfBattle_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_ThrillOfBattle_Health,
                         "HP% to use at or below (100 = Disable check)", sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 3,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 3,
                         "Thrill Of Battle Priority:");
                     break;
 
                 case Preset.WAR_Mit_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_Rampart_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_Rampart_Health,
                         "HP% to use at or below (100 = Disable check)", sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 4,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 4,
                         "Rampart Priority:");
                     break;
 
                 case Preset.WAR_Mit_ShakeItOff:
                     ImGui.Indent();
-                    UserConfig.DrawHorizontalRadioButton(WAR_Mit_ShakeItOff_PartyRequirement,
+                    DrawHorizontalRadioButton(WAR_Mit_ShakeItOff_PartyRequirement,
                         "Require party", "Will not use Shake It Off unless there are 2 or more party members.",
                         outputValue: (int)PartyRequirement.Yes);
-                    UserConfig.DrawHorizontalRadioButton(WAR_Mit_ShakeItOff_PartyRequirement,
+                    DrawHorizontalRadioButton(WAR_Mit_ShakeItOff_PartyRequirement,
                         "Use Always", "Will not require a party for Shake It Off.",
                         outputValue: (int)PartyRequirement.No);
                     ImGui.Unindent();
 
                     ImGui.NewLine();
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 5,
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 5,
                         "Shake It Off Priority:");
                     break;
 
                 case Preset.WAR_Mit_ArmsLength:
                     ImGui.Indent();
-                    UserConfig.DrawHorizontalRadioButton(WAR_Mit_ArmsLength_Boss,
+                    DrawHorizontalRadioButton(WAR_Mit_ArmsLength_Boss,
                         "All Enemies", "Will use Arm's Length regardless of the type of enemy.",
                         outputValue: (int)BossAvoidance.Off, itemWidth: 125f);
-                    UserConfig.DrawHorizontalRadioButton(WAR_Mit_ArmsLength_Boss,
+                    DrawHorizontalRadioButton(WAR_Mit_ArmsLength_Boss,
                         "Avoid Bosses", "Will try not to use Arm's Length when in a boss fight.",
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
                     ImGui.NewLine();
-                    UserConfig.DrawSliderInt(0, 3, WAR_Mit_ArmsLength_EnemyCount,
+                    DrawSliderInt(0, 3, WAR_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 6, "Arm's Length Priority:");
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 6, "Arm's Length Priority:");
                     break;
 
                 case Preset.WAR_Mit_Vengeance:
-                    UserConfig.DrawSliderInt(1, 100, WAR_Mit_Vengeance_Health,
+                    DrawSliderInt(1, 100, WAR_Mit_Vengeance_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
-                    UserConfig.DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 7, "Vengeance Priority:");
+                    DrawPriorityInput(WAR_Mit_Priorities, NumMitigationOptions, 7, "Vengeance Priority:");
                     break;
                 #endregion
 
@@ -485,86 +486,86 @@ internal partial class WAR
 
                 #region Other
                 case Preset.WAR_FC_InnerRelease:
-                    UserConfig.DrawSliderInt(0, 75, WAR_FC_IRStop,
+                    DrawSliderInt(0, 75, WAR_FC_IRStop,
                         " Stop usage if Target HP% is below set value.\n To disable this, set value to 0");
                     break;
 
                 case Preset.WAR_FC_Onslaught:
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
                         "Stationary Only", "Uses Onslaught only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
+                    DrawHorizontalRadioButton(WAR_FC_Onslaught_Movement,
                         "Any Movement", "Uses Onslaught regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_FC_Onslaught_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_FC_Onslaught_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_FC_Onslaught_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
-                    UserConfig.DrawSliderInt(0, 2, WAR_FC_Onslaught_Charges,
+                    DrawSliderInt(0, 2, WAR_FC_Onslaught_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_FC_Onslaught_Distance,
+                    DrawSliderFloat(1, 20, WAR_FC_Onslaught_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
 
                 case Preset.WAR_FC_Infuriate:
-                    UserConfig.DrawSliderInt(0, 2, WAR_FC_Infuriate_Charges,
+                    DrawSliderInt(0, 2, WAR_FC_Infuriate_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    UserConfig.DrawSliderInt(0, 50, WAR_FC_Infuriate_Gauge,
+                    DrawSliderInt(0, 50, WAR_FC_Infuriate_Gauge,
                         " Use when Beast Gauge is less than or equal to:");
                     break;
 
                 case Preset.WAR_FC_PrimalRend:
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_FC_PrimalRend_EarlyLate,
                         "Early", "Uses Primal Rend ASAP", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_PrimalRend_EarlyLate,
+                    DrawHorizontalRadioButton(WAR_FC_PrimalRend_EarlyLate,
                         "Late", "Uses Primal Rend after consumption of all Inner Release stacks", 1);
                     ImGui.NewLine();
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_FC_PrimalRend_Movement,
                         "Stationary Only", "Uses Primal Rend only while stationary", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_FC_PrimalRend_Movement,
+                    DrawHorizontalRadioButton(WAR_FC_PrimalRend_Movement,
                         "Any Movement", "Uses Primal Rend regardless of any movement conditions.\nNOTE: This could possibly get you killed", 1);
                     ImGui.Spacing();
                     if (WAR_FC_PrimalRend_Movement == 0)
                     {
                         ImGui.SetCursorPosX(48);
-                        UserConfig.DrawSliderFloat(0, 3, WAR_FC_PrimalRend_TimeStill,
+                        DrawSliderFloat(0, 3, WAR_FC_PrimalRend_TimeStill,
                             " Stationary Delay Check (in seconds):", decimals: 1);
                     }
                     ImGui.SetCursorPosX(48);
-                    UserConfig.DrawSliderFloat(1, 20, WAR_FC_PrimalRend_Distance,
+                    DrawSliderFloat(1, 20, WAR_FC_PrimalRend_Distance,
                         " Use when Distance from target is less than or equal to:", decimals: 1);
                     break;
 
                 case Preset.WAR_ST_Simple:
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_MitsOptions,
+                    DrawHorizontalRadioButton(WAR_ST_MitsOptions,
                         "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_ST_MitsOptions,
+                    DrawHorizontalRadioButton(WAR_ST_MitsOptions,
                         "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
                 case Preset.WAR_AoE_Simple:
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
+                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
                         "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
-                    UserConfig.DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
+                    DrawHorizontalRadioButton(WAR_AoE_MitsOptions,
                         "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
                 case Preset.WAR_InfuriateFellCleave:
-                    UserConfig.DrawSliderInt(0, 2, WAR_Infuriate_Charges,
+                    DrawSliderInt(0, 2, WAR_Infuriate_Charges,
                         " How many charges to keep ready?\n (0 = Use All)");
-                    UserConfig.DrawSliderInt(0, 50, WAR_Infuriate_Range,
+                    DrawSliderInt(0, 50, WAR_Infuriate_Range,
                         " Use when Beast Gauge is\n less than or equal to:");
                     break;
 
                 case Preset.WAR_EyePath:
-                    UserConfig.DrawSliderInt(0, 30, WAR_EyePath_Refresh,
+                    DrawSliderInt(0, 30, WAR_EyePath_Refresh,
                         $" Seconds remaining before refreshing {Buffs.SurgingTempest.StatusName()} buff:");
                     break;
 
                 case Preset.WAR_Variant_Cure:
-                    UserConfig.DrawSliderInt(1, 100, WAR_VariantCure,
+                    DrawSliderInt(1, 100, WAR_VariantCure,
                         " Player HP% to be less than or equal to:", 200);
                     break;
 

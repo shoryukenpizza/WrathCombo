@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.SGEPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -80,7 +81,7 @@ internal static class SGEPvP
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
                     if (IsEnabled(Preset.SGEPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                        GetTargetHPPercent() <= Config.SGEPvP_DiabrosisThreshold)
+                        GetTargetHPPercent() <= SGEPvP_DiabrosisThreshold)
                         return PvPHealer.Diabrosis;
 
                     // Psyche after Phlegma

@@ -3,6 +3,7 @@ using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Window.Functions.UserConfig;
 using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 namespace WrathCombo.Combos.PvE;
@@ -83,206 +84,206 @@ internal partial class PLD
             switch (preset)
             {
                 case Preset.PLD_ST_AdvancedMode_BalanceOpener:
-                    UserConfig.DrawBossOnlyChoice(PLD_Balance_Content);
+                    DrawBossOnlyChoice(PLD_Balance_Content);
                     break;
 
                 // Fight or Flight
                 case Preset.PLD_ST_AdvancedMode_FoF:
-                    UserConfig.DrawSliderInt(0, 50, PLD_ST_FoF_Trigger, "Target HP%", 200);
+                    DrawSliderInt(0, 50, PLD_ST_FoF_Trigger, "Target HP%", 200);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_FoF:
-                    UserConfig.DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
+                    DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
 
                     break;
 
                 // Sheltron
                 case Preset.PLD_ST_AdvancedMode_Sheltron:
-                    UserConfig.DrawSliderInt(50, 100, PLD_ST_SheltronOption, "Oath Gauge", 200, 5);
+                    DrawSliderInt(50, 100, PLD_ST_SheltronOption, "Oath Gauge", 200, 5);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "All Enemies",
                         "Uses Sheltron regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "Bosses Only",
                         "Only uses Sheltron when the targeted enemy is a boss.", 2);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_Sheltron:
-                    UserConfig.DrawSliderInt(50, 100, PLD_AoE_SheltronOption, "Oath Gauge", 200, 5);
+                    DrawSliderInt(50, 100, PLD_AoE_SheltronOption, "Oath Gauge", 200, 5);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "All Enemies",
                         "Uses Sheltron regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "Bosses Only",
                         "Only uses Sheltron when the targeted enemy is a boss.", 2);
 
                     break;
 
                 // Rampart
                 case Preset.PLD_ST_AdvancedMode_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, PLD_ST_Rampart_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_ST_Rampart_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "All Enemies",
                         "Uses Rampart regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "Bosses Only",
                         "Only uses Rampart when the targeted enemy is a boss.", 2);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, PLD_AoE_Rampart_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_AoE_Rampart_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "All Enemies",
                         "Uses Rampart regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "Bosses Only",
                         "Only uses Rampart when the targeted enemy is a boss.", 2);
 
                     break;
 
                 // Sentinel / Guardian
                 case Preset.PLD_ST_AdvancedMode_Sentinel:
-                    UserConfig.DrawSliderInt(1, 100, PLD_ST_Sentinel_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_ST_Sentinel_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "All Enemies",
                         "Uses Sentinel regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "Bosses Only",
                         "Only uses Sentinel when the targeted enemy is a boss.", 2);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_Sentinel:
-                    UserConfig.DrawSliderInt(1, 100, PLD_AoE_Sentinel_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_AoE_Sentinel_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "All Enemies",
                         "Uses Sentinel regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "Bosses Only",
                         "Only uses Sentinel when the targeted enemy is a boss.", 2);
 
                     break;
 
                 // Hallowed Ground
                 case Preset.PLD_ST_AdvancedMode_HallowedGround:
-                    UserConfig.DrawSliderInt(1, 100, PLD_ST_HallowedGround_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_ST_HallowedGround_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "All Enemies",
                         "Uses Hallowed Ground regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "Bosses Only",
                         "Only uses Hallowed Ground when the targeted enemy is a boss.", 2);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_HallowedGround:
-                    UserConfig.DrawSliderInt(1, 100, PLD_AoE_HallowedGround_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_AoE_HallowedGround_Health, "Player HP%", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "All Enemies",
+                    DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "All Enemies",
                         "Uses Hallowed Ground regardless of targeted enemy type.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "Bosses Only",
+                    DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "Bosses Only",
                         "Only uses Hallowed Ground when the targeted enemy is a boss.", 2);
 
                     break;
 
                 // Intervene
                 case Preset.PLD_ST_AdvancedMode_Intervene:
-                    UserConfig.DrawSliderInt(0, 1, PLD_Intervene_HoldCharges, "Charges", 200);
+                    DrawSliderInt(0, 1, PLD_Intervene_HoldCharges, "Charges", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "Melee Range",
+                    DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "Melee Range",
                         "Uses Intervene while within melee range.\n- May result in minor movement.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "No Movement",
+                    DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "No Movement",
                         "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 2);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_Intervene:
-                    UserConfig.DrawSliderInt(0, 1, PLD_AoE_Intervene_HoldCharges, "Charges", 200);
+                    DrawSliderInt(0, 1, PLD_AoE_Intervene_HoldCharges, "Charges", 200);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "Melee Range",
+                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "Melee Range",
                         "Uses Intervene while within melee range.\n- May result in minor movement.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "No Movement",
+                    DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "No Movement",
                         "Only uses Intervene when it would not result in movement.\n- Requires target to be within zero distance.", 2);
 
                     break;
 
                 // Shield Lob
                 case Preset.PLD_ST_AdvancedMode_ShieldLob:
-                    UserConfig.DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Shield Lob Only",
+                    DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Shield Lob Only",
                         "", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Add Holy Spirit",
+                    DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Add Holy Spirit",
                         "Attempts to hardcast Holy Spirit when not moving.\n- Requires sufficient MP to cast.", 2);
 
                     break;
 
                 // MP Reservation
                 case Preset.PLD_ST_AdvancedMode_MP_Reserve:
-                    UserConfig.DrawSliderInt(1000, 5000, PLD_ST_MP_Reserve, "Minimum MP", sliderIncrement: 100);
+                    DrawSliderInt(1000, 5000, PLD_ST_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
                     break;
 
                 case Preset.PLD_AoE_AdvancedMode_MP_Reserve:
-                    UserConfig.DrawSliderInt(1000, 5000, PLD_AoE_MP_Reserve, "Minimum MP", sliderIncrement: 100);
+                    DrawSliderInt(1000, 5000, PLD_AoE_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
                     break;
 
                 // Requiescat Spender Feature
                 case Preset.PLD_Requiescat_Options:
-                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
+                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
                         "", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Add Fight or Flight",
+                    DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Add Fight or Flight",
                         "Adds Fight or Flight to the normal logic.\n- Requires Resquiescat to be ready.", 2);
 
                     break;
 
                 // Spirits Within / Circle of Scorn Feature
                 case Preset.PLD_SpiritsWithin:
-                    UserConfig.DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Normal Behavior",
+                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Normal Behavior",
                         "", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Add Drift Prevention",
+                    DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Add Drift Prevention",
                         "Prevents Spirits Within and Circle of Scorn from drifting.\n- Actions must be used within 5 seconds of each other.", 2);
 
                     break;
 
                 // Retarget Clemency Feature
                 case Preset.PLD_RetargetClemency_LowHP:
-                    UserConfig.DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
 
                     break;
 
                 // Variant Cure Feature
                 case Preset.PLD_Variant_Cure:
-                    UserConfig.DrawSliderInt(1, 100, PLD_VariantCure, "Player HP%", 200);
+                    DrawSliderInt(1, 100, PLD_VariantCure, "Player HP%", 200);
 
                     break;
 
                 // Simple ST Mitigations Option
                 case Preset.PLD_ST_SimpleMode:
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_MitsOptions,
+                    DrawHorizontalRadioButton(PLD_ST_MitsOptions,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.", 0);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_ST_MitsOptions,
+                    DrawHorizontalRadioButton(PLD_ST_MitsOptions,
                         "Exclude Mitigations",
                         "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
                 // Simple AoE Mitigations Option
                 case Preset.PLD_AoE_SimpleMode:
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
+                    DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.", 0);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
+                    DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
                         "Exclude Mitigations",
                         "Disables the use of mitigations in Simple Mode.", 1);
                     break;
@@ -297,45 +298,45 @@ internal partial class PLD
                     ImGui.Unindent();
                     break;
                 case Preset.PLD_RetargetShieldBash:
-                    UserConfig.DrawAdditionalBoolChoice(Config.PLD_RetargetStunLockout, "Lockout Action", "If no stunnable targets are found, lock the action with Savage Blade");
-                    if (Config.PLD_RetargetStunLockout)
-                        UserConfig.DrawSliderInt(1, 3, Config.PLD_RetargetShieldBash_Strength, "Lockout when stun has been applied this many times");
+                    DrawAdditionalBoolChoice(PLD_RetargetStunLockout, "Lockout Action", "If no stunnable targets are found, lock the action with Savage Blade");
+                    if (PLD_RetargetStunLockout)
+                        DrawSliderInt(1, 3, PLD_RetargetShieldBash_Strength, "Lockout when stun has been applied this many times");
                     break;
 
                 #region One-Button Mitigation
 
                 case Preset.PLD_Mit_HallowedGround_Max:
-                    UserConfig.DrawDifficultyMultiChoice(
+                    DrawDifficultyMultiChoice(
                         PLD_Mit_HallowedGround_Max_Difficulty,
                         PLD_Mit_HallowedGround_Max_DifficultyListSet,
                         "Select what difficulties Hallowed Ground should be used in:"
                     );
 
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_HallowedGround_Max_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_HallowedGround_Max_Health,
                         "Player HP% to be \nless than or equal to:",
                         200, SliderIncrements.Fives);
                     break;
 
                 case Preset.PLD_Mit_Sheltron:
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 0,
                         "Sheltron Priority:");
                     break;
 
                 case Preset.PLD_Mit_Reprisal:
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 1,
                         "Reprisal Priority:");
                     break;
 
                 case Preset.PLD_Mit_DivineVeil:
                     ImGui.Indent();
-                    UserConfig.DrawHorizontalRadioButton(
+                    DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Require party",
                         "Will not use Divine Veil unless there are 2 or more party members.",
                         outputValue: (int)PartyRequirement.Yes);
-                    UserConfig.DrawHorizontalRadioButton(
+                    DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Use Always",
                         "Will not require a party for Divine Veil.",
@@ -343,84 +344,84 @@ internal partial class PLD
                     ImGui.Unindent();
 
                     ImGui.NewLine();
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 2,
                         "Divine Veil Priority:");
                     break;
 
                 case Preset.PLD_Mit_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_Rampart_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_Rampart_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 3,
                         "Rampart Priority:");
                     break;
 
                 case Preset.PLD_Mit_Sentinel:
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_Sentinel_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_Sentinel_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 4,
                         "Sentinel Priority:");
                     break;
 
                 case Preset.PLD_Mit_ArmsLength:
                     ImGui.Indent();
-                    UserConfig.DrawHorizontalRadioButton(
+                    DrawHorizontalRadioButton(
                         PLD_Mit_ArmsLength_Boss, "All Enemies",
                         "Will use Arm's Length regardless of the type of enemy.",
                         outputValue: (int)BossAvoidance.Off, itemWidth: 125f);
-                    UserConfig.DrawHorizontalRadioButton(
+                    DrawHorizontalRadioButton(
                         PLD_Mit_ArmsLength_Boss, "Avoid Bosses",
                         "Will try not to use Arm's Length when in a boss fight.",
                         outputValue: (int)BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
 
                     ImGui.NewLine();
-                    UserConfig.DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
+                    DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 5,
                         "Arm's Length Priority:");
                     break;
 
                 case Preset.PLD_Mit_Bulwark:
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_Bulwark_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_Bulwark_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 6,
                         "Bulwark Priority:");
                     break;
 
                 case Preset.PLD_Mit_HallowedGround:
-                    UserConfig.DrawDifficultyMultiChoice(
+                    DrawDifficultyMultiChoice(
                         PLD_Mit_HallowedGround_Difficulty,
                         PLD_Mit_HallowedGround_DifficultyListSet,
                         "Select what difficulties Hallowed Ground should be used in:"
                     );
 
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_HallowedGround_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_HallowedGround_Health,
                         "HP% to use at or below",
                         sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 7,
                         "Hallowed Ground Priority:");
                     break;
 
                 case Preset.PLD_Mit_Clemency:
-                    UserConfig.DrawSliderInt(1, 100, PLD_Mit_Clemency_Health,
+                    DrawSliderInt(1, 100, PLD_Mit_Clemency_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
 
-                    UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
+                    DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 8,
                         "Clemency Priority:");
                     break;

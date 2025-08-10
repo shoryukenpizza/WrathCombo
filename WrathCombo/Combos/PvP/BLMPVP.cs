@@ -2,6 +2,7 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.BLMPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -87,13 +88,13 @@ internal static class BLMPvP
             {
                 // Movement Threshold
                 case Preset.BLMPvP_BurstMode:
-                    UserConfig.DrawHorizontalRadioButton(BLMPvP.Config.BLMPVP_BurstButtonOption, "One Button Mode", "Combines Fire & Blizzard onto one button", 0);
-                    UserConfig.DrawHorizontalRadioButton(BLMPvP.Config.BLMPVP_BurstButtonOption, "Dual Button Mode", "Puts the combo onto separate Fire & Blizzard buttons, which will only use that element.", 1);
+                    UserConfig.DrawHorizontalRadioButton(BLMPVP_BurstButtonOption, "One Button Mode", "Combines Fire & Blizzard onto one button", 0);
+                    UserConfig.DrawHorizontalRadioButton(BLMPVP_BurstButtonOption, "Dual Button Mode", "Puts the combo onto separate Fire & Blizzard buttons, which will only use that element.", 1);
 
-                    if (BLMPvP.Config.BLMPVP_BurstButtonOption == 0)
+                    if (BLMPVP_BurstButtonOption == 0)
                     {
                         ImGui.Indent();
-                        UserConfig.DrawRoundedSliderFloat(0.1f, 3, BLMPvP.Config.BLMPvP_Movement_Threshold, "Movement Threshold", 137);
+                        UserConfig.DrawRoundedSliderFloat(0.1f, 3, BLMPvP_Movement_Threshold, "Movement Threshold", 137);
                         ImGui.Unindent();
                         if (ImGui.IsItemHovered())
                         {
@@ -106,41 +107,41 @@ internal static class BLMPvP
 
                 // Burst
                 case Preset.BLMPvP_Burst:
-                    UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Burst_SubOption, "Defensive Burst",
+                    UserConfig.DrawAdditionalBoolChoice(BLMPvP_Burst_SubOption, "Defensive Burst",
                         "Also uses Burst when under 50% HP.\n- Will not use outside combat.");
 
                     break;
 
                 // Elemental Weave
                 case Preset.BLMPvP_ElementalWeave:
-                    UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_ElementalWeave_PlayerHP, "Player HP%", 180);
+                    UserConfig.DrawSliderInt(10, 100, BLMPvP_ElementalWeave_PlayerHP, "Player HP%", 180);
                     ImGui.Spacing();
-                    UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_ElementalWeave_SubOption, "Defensive Elemental Weave",
+                    UserConfig.DrawAdditionalBoolChoice(BLMPvP_ElementalWeave_SubOption, "Defensive Elemental Weave",
                         "When under, uses Wreath of Ice instead.\n- Will not use outside combat.");
 
                     break;
 
                 // Lethargy
                 case Preset.BLMPvP_Lethargy:
-                    UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Lethargy_TargetHP, "Target HP%", 180);
+                    UserConfig.DrawSliderInt(10, 100, BLMPvP_Lethargy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
-                    UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Lethargy_SubOption, "Defensive Lethargy",
+                    UserConfig.DrawAdditionalBoolChoice(BLMPvP_Lethargy_SubOption, "Defensive Lethargy",
                         "Also uses Lethargy when under 50% HP.\n- Uses only when targeted by enemy.");
 
                     break;
 
                 // Xenoglossy
                 case Preset.BLMPvP_Xenoglossy:
-                    UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Xenoglossy_TargetHP, "Target HP%", 180);
+                    UserConfig.DrawSliderInt(10, 100, BLMPvP_Xenoglossy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
-                    UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Xenoglossy_SubOption, "Defensive Xenoglossy",
+                    UserConfig.DrawAdditionalBoolChoice(BLMPvP_Xenoglossy_SubOption, "Defensive Xenoglossy",
                         "Also uses Xenoglossy when under 50% HP.");
 
                     break;
 
                 // Phantom Dart
                 case Preset.BLMPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, BLMPvP.Config.BLMPvP_PhantomDartThreshold,
+                    UserConfig.DrawSliderInt(1, 100, BLMPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
                     break;
@@ -158,7 +159,7 @@ internal static class BLMPvP
             bool actionIsFire = actionID is Fire or Fire3 or Fire4 or HighFire2 or Flare;
             bool actionIsIce = actionID is Blizzard or Blizzard3 or Blizzard4 or HighBlizzard2 or Freeze;
 
-            if (actionIsFire || (actionIsIce && Config.BLMPVP_BurstButtonOption == 1))
+            if (actionIsFire || (actionIsIce && BLMPVP_BurstButtonOption == 1))
             {
                     #region Variables
                 float targetDistance = GetTargetDistance();
@@ -178,7 +179,7 @@ internal static class BLMPvP
                 bool targetHasHeavy = HasStatusEffect(PvPCommon.Debuffs.Heavy, CurrentTarget, true);
                 bool isPlayerTargeted = CurrentTarget?.TargetObjectId == LocalPlayer.GameObjectId;
                 bool isParadoxPrimed = HasStatusEffect(Buffs.UmbralIce1) || HasStatusEffect(Buffs.AstralFire1);
-                bool isMovingAdjusted = TimeMoving.TotalMilliseconds / 1000f >= Config.BLMPvP_Movement_Threshold;
+                bool isMovingAdjusted = TimeMoving.TotalMilliseconds / 1000f >= BLMPvP_Movement_Threshold;
                 bool isResonanceExpiring = HasStatusEffect(Buffs.SoulResonance) && GetStatusEffectRemainingTime(Buffs.SoulResonance) <= 10;
                 bool hasUmbralIce = HasStatusEffect(Buffs.UmbralIce1) || HasStatusEffect(Buffs.UmbralIce2) || HasStatusEffect(Buffs.UmbralIce3);
                 bool isElementalStarDelayed = HasStatusEffect(Buffs.ElementalStar) && GetStatusEffectRemainingTime(Buffs.ElementalStar) <= 20;
@@ -189,12 +190,12 @@ internal static class BLMPvP
                 if (inCombat)
                 {
                     // Burst (Defensive)
-                    if (IsEnabled(Preset.BLMPvP_Burst) && Config.BLMPvP_Burst_SubOption && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
+                    if (IsEnabled(Preset.BLMPvP_Burst) && BLMPvP_Burst_SubOption && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
                         return OriginalHook(Burst);
 
                     // Elemental Weave (Defensive)
-                    if (IsEnabled(Preset.BLMPvP_ElementalWeave) && Config.BLMPvP_ElementalWeave_SubOption &&
-                        IsOffCooldown(ElementalWeave) && hasUmbralIce && playerCurrentPercentHp < Config.BLMPvP_ElementalWeave_PlayerHP)
+                    if (IsEnabled(Preset.BLMPvP_ElementalWeave) && BLMPvP_ElementalWeave_SubOption &&
+                        IsOffCooldown(ElementalWeave) && hasUmbralIce && playerCurrentPercentHp < BLMPvP_ElementalWeave_PlayerHP)
                         return OriginalHook(ElementalWeave);
                 }
 
@@ -202,7 +203,7 @@ internal static class BLMPvP
                 {
                     // Elemental Weave (Offensive)
                     if (IsEnabled(Preset.BLMPvP_ElementalWeave) && IsOffCooldown(ElementalWeave) && hasAstralFire &&
-                        targetDistance <= 25 && playerCurrentPercentHp >= Config.BLMPvP_ElementalWeave_PlayerHP)
+                        targetDistance <= 25 && playerCurrentPercentHp >= BLMPvP_ElementalWeave_PlayerHP)
                         return OriginalHook(ElementalWeave);
 
                     if (!targetHasGuard)
@@ -211,15 +212,15 @@ internal static class BLMPvP
                         if (IsEnabled(Preset.BLMPvP_Lethargy) && IsOffCooldown(Lethargy) && !isTargetNPC)
                         {
                             // Offensive
-                            if (targetCurrentPercentHp < Config.BLMPvP_Lethargy_TargetHP && !targetHasHeavy)
+                            if (targetCurrentPercentHp < BLMPvP_Lethargy_TargetHP && !targetHasHeavy)
                                 return OriginalHook(Lethargy);
 
                             // Defensive
-                            if (Config.BLMPvP_Lethargy_SubOption && playerCurrentPercentHp < 50 && isPlayerTargeted)
+                            if (BLMPvP_Lethargy_SubOption && playerCurrentPercentHp < 50 && isPlayerTargeted)
                                 return OriginalHook(Lethargy);
                         }
 
-                        if (IsEnabled(Preset.BLMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= Config.BLMPvP_PhantomDartThreshold)
+                        if (IsEnabled(Preset.BLMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= BLMPvP_PhantomDartThreshold)
                             return Role.PhantomDart;
 
                         // Burst (Offensive)
@@ -234,11 +235,11 @@ internal static class BLMPvP
                         if (IsEnabled(Preset.BLMPvP_Xenoglossy) && chargesXenoglossy > 0)
                         {
                             // Defensive
-                            if (Config.BLMPvP_Xenoglossy_SubOption && playerCurrentPercentHp < 50)
+                            if (BLMPvP_Xenoglossy_SubOption && playerCurrentPercentHp < 50)
                                 return OriginalHook(Xenoglossy);
 
                             // Offensive
-                            if (!isResonanceExpiring && (isTargetNPC ? chargesXenoglossy > 1 && hasWreathOfFire : targetCurrentPercentHp < Config.BLMPvP_Xenoglossy_TargetHP))
+                            if (!isResonanceExpiring && (isTargetNPC ? chargesXenoglossy > 1 && hasWreathOfFire : targetCurrentPercentHp < BLMPvP_Xenoglossy_TargetHP))
                                 return OriginalHook(Xenoglossy);
                         }
                     }
@@ -250,7 +251,7 @@ internal static class BLMPvP
 
 
                 // Basic Spells
-                return isMovingAdjusted && Config.BLMPVP_BurstButtonOption == 0
+                return isMovingAdjusted && BLMPVP_BurstButtonOption == 0
                     ? OriginalHook(Blizzard)
                     : OriginalHook(actionID);
 

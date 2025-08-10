@@ -3,6 +3,7 @@ using Lumina.Excel.Sheets;
 using System;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using static WrathCombo.Combos.PvE.OccultCrescent.Config;
 using ContentHelper = ECommons.GameHelpers;
 using IntendedUse = ECommons.ExcelServices.TerritoryIntendedUseEnum;
 namespace WrathCombo.Combos.PvE;
@@ -47,7 +48,7 @@ internal partial class OccultCrescent
                     return RomeosBallad; //interrupt
 
                 if (IsEnabledAndUsable(Preset.Phantom_Bard_MightyMarch, MightyMarch) &&
-                    !HasStatusEffect(Buffs.MightyMarch) && playerHP <= Config.Phantom_Bard_MightyMarch_Health)
+                    !HasStatusEffect(Buffs.MightyMarch) && playerHP <= Phantom_Bard_MightyMarch_Health)
                     return MightyMarch; //aoe heal
             }
         }
@@ -113,16 +114,16 @@ internal partial class OccultCrescent
                     return Revive;
 
                 if (IsEnabledAndUsable(Preset.Phantom_Chemist_OccultPotion, OccultPotion) &&
-                    playerHP <= Config.Phantom_Chemist_OccultPotion_Health)
+                    playerHP <= Phantom_Chemist_OccultPotion_Health)
                     return OccultPotion;
 
                 if (IsEnabledAndUsable(Preset.Phantom_Chemist_OccultEther, OccultEther) &&
-                    playerMP <= Config.Phantom_Chemist_OccultEther_MP)
+                    playerMP <= Phantom_Chemist_OccultEther_MP)
                     return OccultEther;
 
                 if (IsEnabledAndUsable(Preset.Phantom_Chemist_OccultElixir, OccultElixir) &&
-                    GetPartyAvgHPPercent() <= Config.Phantom_Chemist_OccultElixir_HP && inCombat &&
-                    (!Config.Phantom_Chemist_OccultElixir_RequireParty || IsInParty()))
+                    GetPartyAvgHPPercent() <= Phantom_Chemist_OccultElixir_HP && inCombat &&
+                    (!Phantom_Chemist_OccultElixir_RequireParty || IsInParty()))
                     return OccultElixir;
             }
         }
@@ -134,7 +135,7 @@ internal partial class OccultCrescent
         if (IsEnabled(Preset.Phantom_Freelancer))
         {
             if (IsEnabledAndUsable(Preset.Phantom_Freelancer_OccultResuscitation, OccultResuscitation) &&
-                playerHP <= Config.Phantom_Freelancer_Resuscitation_Health && !canWeave)
+                playerHP <= Phantom_Freelancer_Resuscitation_Health && !canWeave)
                 return OccultResuscitation; //self heal
         }
 
@@ -164,7 +165,7 @@ internal partial class OccultCrescent
             if (IsEnabled(Preset.Phantom_Geomancer_Weather) && !canWeave)
             {
                 if (IsEnabledAndUsable(Preset.Phantom_Geomancer_Sunbath, Sunbath) &&
-                    playerHP <= Config.Phantom_Geomancer_Sunbath_Health)
+                    playerHP <= Phantom_Geomancer_Sunbath_Health)
                     return Sunbath; //heal
 
                 if (IsEnabledAndUsable(Preset.Phantom_Geomancer_AetherialGain, AetherialGain) &&
@@ -199,20 +200,20 @@ internal partial class OccultCrescent
             if (canWeave)
             {
                 if (IsEnabledAndUsable(Preset.Phantom_Knight_PhantomGuard, PhantomGuard) &&
-                    playerHP <= Config.Phantom_Knight_PhantomGuard_Health)
+                    playerHP <= Phantom_Knight_PhantomGuard_Health)
                     return PhantomGuard; //mit
 
                 if (IsEnabledAndUsable(Preset.Phantom_Knight_OccultHeal, OccultHeal) &&
-                    playerHP <= Config.Phantom_Knight_OccultHeal_Health && playerMP >= 5000)
+                    playerHP <= Phantom_Knight_OccultHeal_Health && playerMP >= 5000)
                     return OccultHeal; //heal
 
                 if (IsEnabledAndUsable(Preset.Phantom_Knight_Pledge, Pledge) &&
-                    playerHP <= Config.Phantom_Knight_Pledge_Health)
+                    playerHP <= Phantom_Knight_Pledge_Health)
                     return Pledge; //inv
             }
 
             if (IsEnabledAndUsable(Preset.Phantom_Knight_Pray, Pray) &&
-                playerHP <= Config.Phantom_Knight_Pray_Health && !HasStatusEffect(Buffs.Pray) && !canWeave)
+                playerHP <= Phantom_Knight_Pray_Health && !HasStatusEffect(Buffs.Pray) && !canWeave)
                 return Pray; //regen
         }
 
@@ -226,7 +227,7 @@ internal partial class OccultCrescent
             if (canWeave)
             {
                 if (IsEnabledAndUsable(Preset.Phantom_Monk_OccultChakra, OccultChakra) &&
-                    playerHP <= Config.Phantom_Monk_OccultChakra_Health)
+                    playerHP <= Phantom_Monk_OccultChakra_Health)
                     return OccultChakra; //heal
 
                 if (IsEnabledAndUsable(Preset.Phantom_Monk_PhantomKick, PhantomKick) &&
@@ -258,7 +259,7 @@ internal partial class OccultCrescent
             if (canWeave)
             {
                 if (IsEnabledAndUsable(Preset.Phantom_Oracle_Blessing, Blessing) &&
-                    HasStatusEffect(Buffs.PredictionOfBlessing) && playerHP <= Config.Phantom_Oracle_Blessing_Health)
+                    HasStatusEffect(Buffs.PredictionOfBlessing) && playerHP <= Phantom_Oracle_Blessing_Health)
                     return Blessing; //heal
 
                 if (IsEnabledAndUsable(Preset.Phantom_Oracle_PhantomJudgment, PhantomJudgment) &&
@@ -270,7 +271,7 @@ internal partial class OccultCrescent
                     return Cleansing; //damage plus interrupt
 
                 if (IsEnabledAndUsable(Preset.Phantom_Oracle_Starfall, Starfall) &&
-                    HasStatusEffect(Buffs.PredictionOfStarfall) && playerHP >= Config.Phantom_Oracle_Starfall_Health)
+                    HasStatusEffect(Buffs.PredictionOfStarfall) && playerHP >= Phantom_Oracle_Starfall_Health)
                     return Starfall; //damage to targets + 90% total HP damage to self
             }
         }
@@ -285,11 +286,11 @@ internal partial class OccultCrescent
             if (canWeave)
             {
                 if (IsEnabledAndUsable(Preset.Phantom_Ranger_OccultUnicorn, OccultUnicorn) &&
-                    !HasStatusEffect(Buffs.OccultUnicorn, anyOwner: true) && playerHP <= Config.Phantom_Ranger_OccultUnicorn_Health)
+                    !HasStatusEffect(Buffs.OccultUnicorn, anyOwner: true) && playerHP <= Phantom_Ranger_OccultUnicorn_Health)
                     return OccultUnicorn; //heal
 
                 if (IsEnabledAndUsable(Preset.Phantom_Ranger_PhantomAim, PhantomAim) &&
-                    targetHP >= Config.Phantom_Ranger_PhantomAim_Stop)
+                    targetHP >= Phantom_Ranger_PhantomAim_Stop)
                     return PhantomAim; //damage buff
             }
 
@@ -345,7 +346,7 @@ internal partial class OccultCrescent
                 if (hasTarget && targetDistance <= 5f)
                 {
                     if (IsEnabledAndUsable(Preset.Phantom_Thief_Steal, Steal) &&
-                        targetHP <= Config.Phantom_Thief_Steal_Health)
+                        targetHP <= Phantom_Thief_Steal_Health)
                         return Steal; //drops items if used before death
 
                     if (IsEnabledAndUsable(Preset.Phantom_Thief_PilferWeapon, PilferWeapon) &&
@@ -379,8 +380,8 @@ internal partial class OccultCrescent
                 if (IsEnabledAndUsable(Preset.Phantom_TimeMage_OccultComet, OccultComet))
                 {
                     // Make comet fast
-                    if (Config.Phantom_TimeMage_Comet_RequireSpeed &&
-                        Config.Phantom_TimeMage_Comet_UseSpeed &&
+                    if (Phantom_TimeMage_Comet_RequireSpeed &&
+                        Phantom_TimeMage_Comet_UseSpeed &&
                         !HasStatusEffect(Buffs.OccultQuick) && !JustUsed(OccultQuick) &&
                         !HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) && !JustUsed(RoleActions.Magic.Swiftcast) &&
                         !HasStatusEffect(BLM.Buffs.Triplecast) && !JustUsed(BLM.Triplecast) &&
@@ -394,7 +395,7 @@ internal partial class OccultCrescent
                             return RoleActions.Magic.Swiftcast;
                     }
 
-                    if (!Config.Phantom_TimeMage_Comet_RequireSpeed ||
+                    if (!Phantom_TimeMage_Comet_RequireSpeed ||
                         HasStatusEffect(Buffs.OccultQuick) ||
                         HasStatusEffect(RoleActions.Magic.Buffs.Swiftcast) ||
                         HasStatusEffect(BLM.Buffs.Triplecast) ||

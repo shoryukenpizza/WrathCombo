@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using static WrathCombo.Combos.PvE.PLD.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 namespace WrathCombo.Combos.PvE;
@@ -42,33 +43,33 @@ internal partial class PLD
             () => Role.CanReprisal(checkTargetForDebuff: false)),
         //Divine Veil
         (DivineVeil, Preset.PLD_Mit_DivineVeil,
-            () => Config.PLD_Mit_DivineVeil_PartyRequirement ==
+            () => PLD_Mit_DivineVeil_PartyRequirement ==
                   (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
         (Role.Rampart, Preset.PLD_Mit_Rampart,
-            () => Role.CanRampart(Config.PLD_Mit_Rampart_Health)),
+            () => Role.CanRampart(PLD_Mit_Rampart_Health)),
         //Sentinel
         (OriginalHook(Sentinel), Preset.PLD_Mit_Sentinel,
-            () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Sentinel_Health),
+            () => PlayerHealthPercentageHp() <= PLD_Mit_Sentinel_Health),
         //Arm's Length
         (Role.ArmsLength, Preset.PLD_Mit_ArmsLength,
-            () => Role.CanArmsLength(Config.PLD_Mit_ArmsLength_EnemyCount,
-                Config.PLD_Mit_ArmsLength_Boss)),
+            () => Role.CanArmsLength(PLD_Mit_ArmsLength_EnemyCount,
+                PLD_Mit_ArmsLength_Boss)),
         //Bulwark
         (Bulwark, Preset.PLD_Mit_Bulwark,
-            () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Bulwark_Health),
+            () => PlayerHealthPercentageHp() <= PLD_Mit_Bulwark_Health),
         //Hallowed Ground
         (HallowedGround, Preset.PLD_Mit_HallowedGround,
-            () => PlayerHealthPercentageHp() <= Config.PLD_Mit_HallowedGround_Health &&
+            () => PlayerHealthPercentageHp() <= PLD_Mit_HallowedGround_Health &&
                   ContentCheck.IsInConfiguredContent(
-                      Config.PLD_Mit_HallowedGround_Difficulty,
-                      Config.PLD_Mit_HallowedGround_DifficultyListSet
+                      PLD_Mit_HallowedGround_Difficulty,
+                      PLD_Mit_HallowedGround_DifficultyListSet
                   )),
         //Clemency
         (Clemency, Preset.PLD_Mit_Clemency,
             () => LocalPlayer.CurrentMp >= 2000 &&
-                  PlayerHealthPercentageHp() <= Config.PLD_Mit_Clemency_Health)
+                  PlayerHealthPercentageHp() <= PLD_Mit_Clemency_Health)
     ];
 
     /// <summary>
@@ -137,7 +138,7 @@ internal partial class PLD
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData ContentCheckConfig => Config.PLD_Balance_Content;
+        internal override UserData ContentCheckConfig => PLD_Balance_Content;
 
         public override bool HasCooldowns() =>
             IsOffCooldown(FightOrFlight) &&

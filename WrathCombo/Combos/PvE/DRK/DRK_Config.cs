@@ -6,6 +6,7 @@ using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Window.Functions.UserConfig;
 using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 
@@ -344,7 +345,7 @@ internal partial class DRK
                 #endregion
 
                 case Preset.DRK_Var_Cure:
-                    UserConfig.DrawSliderInt(5, 70, DRK_VariantCure,
+                    DrawSliderInt(5, 70, DRK_VariantCure,
                         startUsingAtDescription,
                         itemWidth: biggest, sliderIncrement: SliderIncrements.Fives);
 

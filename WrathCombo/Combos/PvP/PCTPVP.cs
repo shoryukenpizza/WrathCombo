@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.PCTPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -56,18 +57,18 @@ internal static class PCTPvP
             {
                 // Phantom Dart
                 case Preset.PCTPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_PhantomDartThreshold,
+                    UserConfig.DrawSliderInt(1, 100, PCTPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
                     break;
 
                 case Preset.PCTPvP_BurstControl:
-                    UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_BurstHP, "Target HP%", 200);
+                    UserConfig.DrawSliderInt(1, 100, PCTPvP_BurstHP, "Target HP%", 200);
 
                     break;
 
                 case Preset.PCTPvP_TemperaCoat:
-                    UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_TemperaHP, "Player HP%", 200);
+                    UserConfig.DrawSliderInt(1, 100, PCTPvP_TemperaHP, "Player HP%", 200);
 
                     break;
             }
@@ -90,7 +91,7 @@ internal static class PCTPvP
             bool isStarPrismExpiring = HasStatusEffect(Buffs.Starstruck) && GetStatusEffectRemainingTime(Buffs.Starstruck) <= 3;
             bool isTemperaCoatExpiring = HasStatusEffect(Buffs.TemperaCoat) && GetStatusEffectRemainingTime(Buffs.TemperaCoat) <= 3;
             bool hasMotifDrawn = HasStatusEffect(Buffs.PomMotif) || HasStatusEffect(Buffs.WingMotif) || HasStatusEffect(Buffs.ClawMotif) || HasStatusEffect(Buffs.MawMotif);
-            bool isBurstControlled = IsNotEnabled(Preset.PCTPvP_BurstControl) || (IsEnabled(Preset.PCTPvP_BurstControl) && GetTargetHPPercent() < Config.PCTPvP_BurstHP);
+            bool isBurstControlled = IsNotEnabled(Preset.PCTPvP_BurstControl) || (IsEnabled(Preset.PCTPvP_BurstControl) && GetTargetHPPercent() < PCTPvP_BurstHP);
                 #endregion
 
             if (actionID is FireInRed or AeroInGreen or WaterInBlue)
@@ -99,7 +100,7 @@ internal static class PCTPvP
                 if (IsEnabled(Preset.PCTPvP_TemperaCoat))
                 {
                     if ((IsOffCooldown(TemperaCoat) &&
-                         InCombat() && PlayerHealthPercentageHp() < Config.PCTPvP_TemperaHP) || isTemperaCoatExpiring)
+                         InCombat() && PlayerHealthPercentageHp() < PCTPvP_TemperaHP) || isTemperaCoatExpiring)
                         return OriginalHook(TemperaCoat);
                 }
 
@@ -112,7 +113,7 @@ internal static class PCTPvP
                             return StarPrism;
                     }
 
-                    if (IsEnabled(Preset.PCTPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (Config.PCTPvP_PhantomDartThreshold))
+                    if (IsEnabled(Preset.PCTPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (PCTPvP_PhantomDartThreshold))
                         return Role.PhantomDart;
 
                     // Moogle / Madeen Portrait

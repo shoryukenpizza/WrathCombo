@@ -2,6 +2,7 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.DNCPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -109,7 +110,7 @@ internal static class DNCPvP
                 if (IsEnabled(Preset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !HasStatusEffect(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
                     return ClosedPosition;
 
-                if (IsEnabled(Preset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.DNCPvP_EagleThreshold))
+                if (IsEnabled(Preset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= DNCPvP_EagleThreshold))
                     return PvPPhysRanged.EagleEyeShot;
 
                 if (IsEnabled(Preset.DNCPvP_BurstMode_HoningDance) && honingDanceReady && HasTarget() && distance <= 5 && !enemyGuarded)
@@ -123,14 +124,14 @@ internal static class DNCPvP
                 if (canWeave)
                 {
                     // Curing Waltz Option
-                    if (IsEnabled(Preset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= Config.DNCPvP_WaltzThreshold)
+                    if (IsEnabled(Preset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= DNCPvP_WaltzThreshold)
                         return OriginalHook(CuringWaltz);
 
                     // Fan Dance weave
                     if (IsOffCooldown(FanDance) && distance < 13 && !enemyGuarded) // 2y below max to avoid waste
                         return OriginalHook(FanDance);
 
-                    if (IsEnabled(Preset.DNCPvP_BurstMode_Dash) && !HasStatusEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > Config.DNCPvP_EnAvantCharges)
+                    if (IsEnabled(Preset.DNCPvP_BurstMode_Dash) && !HasStatusEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > DNCPvP_EnAvantCharges)
                         return EnAvant;
                 }
 

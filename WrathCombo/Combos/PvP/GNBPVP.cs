@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.GNBPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -103,13 +104,13 @@ internal static class GNBPvP
         {
             if (actionID is KeenEdge or BrutalShell or SolidBarrel or BurstStrike)
             {
-                int corundumThreshold = Config.GNBPvP_CorundumThreshold;
-                int blastingZoneThreshold = Config.GNBPvP_BlastingZoneThreshold; 
+                int corundumThreshold = GNBPvP_CorundumThreshold;
+                int blastingZoneThreshold = GNBPvP_BlastingZoneThreshold; 
 
                 if (CanWeave() && IsEnabled(Preset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
                     return HeartOfCorundum;
 
-                if (IsEnabled(Preset.GNBPvP_Rampart) && PvPTank.CanRampart(Config.GNBPvP_RampartThreshold))
+                if (IsEnabled(Preset.GNBPvP_Rampart) && PvPTank.CanRampart(GNBPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (!PvPCommon.TargetImmuneToDamage())

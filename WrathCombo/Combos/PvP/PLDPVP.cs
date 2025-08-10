@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.PLDPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -75,7 +76,7 @@ internal static class PLDPvP
         {
             if (actionID is FastBlade or RiotBlade or RoyalAuthority)
             {
-                if (IsEnabled(Preset.PLDPvP_Rampart) && PvPTank.CanRampart(Config.PLDPvP_RampartThreshold))
+                if (IsEnabled(Preset.PLDPvP_Rampart) && PvPTank.CanRampart(PLDPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (IsEnabled(Preset.PLDPvP_Intervene) && !InMeleeRange() && IsOffCooldown(Intervene) || IsEnabled(Preset.PLDPvP_Intervene_Melee) && InMeleeRange() && IsOffCooldown(Intervene))

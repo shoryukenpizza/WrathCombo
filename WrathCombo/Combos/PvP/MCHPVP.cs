@@ -1,6 +1,7 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.MCHPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -103,13 +104,13 @@ internal static class MCHPvP
 
                     #endregion
 
-                if (IsEnabled(Preset.MCHPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.MCHPvP_EagleThreshold))
+                if (IsEnabled(Preset.MCHPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= MCHPvP_EagleThreshold))
                     return PvPPhysRanged.EagleEyeShot;
 
                 if (!PvPCommon.TargetImmuneToDamage() && HasBattleTarget())
                 {
                     // MarksmanSpite execute condition - todo add config
-                    if (IsEnabled(Preset.MCHPvP_BurstMode_MarksmanSpite) && HasBattleTarget() && GetTargetCurrentHP() < Config.MCHPvP_MarksmanSpite && IsLB1Ready)
+                    if (IsEnabled(Preset.MCHPvP_BurstMode_MarksmanSpite) && HasBattleTarget() && GetTargetCurrentHP() < MCHPvP_MarksmanSpite && IsLB1Ready)
                         return MarksmanSpite;
 
                     if (IsEnabled(Preset.MCHPvP_BurstMode_Wildfire) && canWeave && overheated && IsOffCooldown(Wildfire))
@@ -118,12 +119,12 @@ internal static class MCHPvP
                     // FullMetalField condition when not overheated or if overheated and FullMetalField is off cooldown
                     if (IsEnabled(Preset.MCHPvP_BurstMode_FullMetalField) && IsOffCooldown(FullMetalField))
                     {
-                        if (Config.MCHPvP_FMFOption == 1)
+                        if (MCHPvP_FMFOption == 1)
                         {
                             if (!overheated && IsOffCooldown(Wildfire))
                                 return FullMetalField;
                         }
-                        if (Config.MCHPvP_FMFOption == 2)
+                        if (MCHPvP_FMFOption == 2)
                         {
                             if (overheated)
                                 return FullMetalField;

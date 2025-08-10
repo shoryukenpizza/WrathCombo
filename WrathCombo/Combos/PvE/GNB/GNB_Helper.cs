@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.GNB.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 #endregion
@@ -38,8 +39,8 @@ internal partial class GNB : Tank
     internal static bool SlowGNB => GCDLength >= 2.4800f;
     internal static bool MidGNB => GCDLength is <= 2.4799f and >= 2.4500f;
     internal static bool FastGNB => GCDLength is <= 2.4499f;
-    internal static int STStopNM => Config.GNB_ST_NoMercyStop;
-    internal static int AoEStopNM => Config.GNB_AoE_NoMercyStop;
+    internal static int STStopNM => GNB_ST_NoMercyStop;
+    internal static int AoEStopNM => GNB_AoE_NoMercyStop;
     #endregion
 
     #region Openers
@@ -52,7 +53,7 @@ internal partial class GNB : Tank
     public static Lv90SlowEarlyNM GNBLv90SlowEarlyNM = new();
     public static Lv100SlowEarlyNM GNBLv100SlowEarlyNM = new();
 
-    public static WrathOpener Opener() => (!IsEnabled(Preset.GNB_ST_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
+    public static WrathOpener Opener() => (!IsEnabled(Preset.GNB_ST_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(GNB_Opener_NM == 0);
     private static WrathOpener GetOpener(bool isNormal)
     {
         if (FastGNB || MidGNB)
@@ -73,10 +74,10 @@ internal partial class GNB : Tank
     {
         public override int MinOpenerLevel => 90;
         public override int MaxOpenerLevel => 99;
-        internal override UserData ContentCheckConfig => Config.GNB_ST_Balance_Content;
+        internal override UserData ContentCheckConfig => GNB_ST_Balance_Content;
         public override bool HasCooldowns() => IsOffCooldown(NoMercy) && IsOffCooldown(GnashingFang) && IsOffCooldown(BowShock) && IsOffCooldown(Bloodfest) && IsOffCooldown(DoubleDown) && Ammo == 0;
 
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => GNB_Opener_StartChoice == 1)];
     }
     internal class Lv90FastNormalNM : GNBOpenerLv90Base
     {
@@ -185,10 +186,10 @@ internal partial class GNB : Tank
     {
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-        internal override UserData ContentCheckConfig => Config.GNB_ST_Balance_Content;
+        internal override UserData ContentCheckConfig => GNB_ST_Balance_Content;
         public override bool HasCooldowns() => IsOffCooldown(Bloodfest) && IsOffCooldown(NoMercy) && IsOffCooldown(GnashingFang) && IsOffCooldown(DoubleDown) && IsOffCooldown(BowShock) && Ammo == 0;
 
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => GNB_Opener_StartChoice == 1)];
     }
     internal class Lv100FastNormalNM : GNBOpenerLv100Base
     {
@@ -299,7 +300,7 @@ internal partial class GNB : Tank
     internal static int MaxCartridges() => TraitLevelChecked(Traits.CartridgeChargeII) ? 3 : TraitLevelChecked(Traits.CartridgeCharge) ? 2 : 0;
     internal static uint GetVariantAction()
     {
-        if (Variant.CanCure(Preset.GNB_Variant_Cure, Config.GNB_VariantCure))
+        if (Variant.CanCure(Preset.GNB_Variant_Cure, GNB_VariantCure))
             return Variant.Cure;
         if (Variant.CanSpiritDart(Preset.GNB_Variant_SpiritDart) && CanWeave())
             return Variant.SpiritDart;
@@ -343,9 +344,9 @@ internal partial class GNB : Tank
 
         foreach (var (preset, action, condition) in new[]
         { (Preset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
-        (Preset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
+        (Preset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= GNB_Bozja_LostCure_Health),
         (Preset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
-        (Preset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
+        (Preset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= GNB_Bozja_LostReraise_Health),
         (Preset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
         (Preset.GNB_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
         (Preset.GNB_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
@@ -403,8 +404,8 @@ internal partial class GNB : Tank
     internal static bool ShouldUseBurstStrike => (CanBS && HasNM && IsOnCooldown(GnashingFang) && (IsOnCooldown(DoubleDown) || (!LevelChecked(DoubleDown) && Ammo > 0)) && !HasReign && GunStep == 0);
     internal static uint STCombo 
         => ComboTimer > 0 ? ComboAction == KeenEdge && LevelChecked(BrutalShell) ? BrutalShell : ComboAction == BrutalShell && LevelChecked(SolidBarrel)
-        ? (Config.GNB_ST_Overcap_Choice == 0 && LevelChecked(BurstStrike) && Ammo == MaxCartridges() ? BurstStrike : SolidBarrel) : KeenEdge : KeenEdge;
-    internal static uint AOECombo => (ComboTimer > 0 && ComboAction == DemonSlice && LevelChecked(DemonSlaughter) && (Ammo != MaxCartridges() || Config.GNB_AoE_Overcap_Choice == 1)) ? DemonSlaughter : DemonSlice;
+        ? (GNB_ST_Overcap_Choice == 0 && LevelChecked(BurstStrike) && Ammo == MaxCartridges() ? BurstStrike : SolidBarrel) : KeenEdge : KeenEdge;
+    internal static uint AOECombo => (ComboTimer > 0 && ComboAction == DemonSlice && LevelChecked(DemonSlaughter) && (Ammo != MaxCartridges() || GNB_AoE_Overcap_Choice == 1)) ? DemonSlaughter : DemonSlice;
     internal static bool ShouldUseLightningShot => LevelChecked(LightningShot) && !InMeleeRange() && HasBattleTarget();
     #endregion
 
@@ -539,13 +540,13 @@ internal partial class GNB : Tank
         (OriginalHook(HeartOfStone), Preset.GNB_Mit_Corundum,
             () => !HasStatusEffect(Buffs.HeartOfCorundum) &&
                   !HasStatusEffect(Buffs.HeartOfStone) &&
-                  PlayerHealthPercentageHp() <= Config.GNB_Mit_Corundum_Health),
+                  PlayerHealthPercentageHp() <= GNB_Mit_Corundum_Health),
         //Aurora
         (Aurora, Preset.GNB_Mit_Aurora,
             () => !(TargetIsFriendly() && HasStatusEffect(Buffs.Aurora, CurrentTarget, true) ||
                     !TargetIsFriendly() && HasStatusEffect(Buffs.Aurora, anyOwner: true)) &&
-                  GetRemainingCharges(Aurora) > Config.GNB_Mit_Aurora_Charges &&
-                  PlayerHealthPercentageHp() <= Config.GNB_Mit_Aurora_Health),
+                  GetRemainingCharges(Aurora) > GNB_Mit_Aurora_Charges &&
+                  PlayerHealthPercentageHp() <= GNB_Mit_Aurora_Health),
         //Camouflage
         (Camouflage, Preset.GNB_Mit_Camouflage, () => true),
         //Reprisal
@@ -553,19 +554,19 @@ internal partial class GNB : Tank
             () => Role.CanReprisal(checkTargetForDebuff:false)),
         //Heart of Light
         (HeartOfLight, Preset.GNB_Mit_HeartOfLight,
-            () => Config.GNB_Mit_HeartOfLight_PartyRequirement ==
+            () => GNB_Mit_HeartOfLight_PartyRequirement ==
                   (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
         (Role.Rampart, Preset.GNB_Mit_Rampart,
-            () => Role.CanRampart(Config.GNB_Mit_Rampart_Health)),
+            () => Role.CanRampart(GNB_Mit_Rampart_Health)),
         //Arm's Length
         (Role.ArmsLength, Preset.GNB_Mit_ArmsLength,
-            () => Role.CanArmsLength(Config.GNB_Mit_ArmsLength_EnemyCount,
-                Config.GNB_Mit_ArmsLength_Boss)),
+            () => Role.CanArmsLength(GNB_Mit_ArmsLength_EnemyCount,
+                GNB_Mit_ArmsLength_Boss)),
         //Nebula
         (OriginalHook(Nebula), Preset.GNB_Mit_Nebula,
-            () => PlayerHealthPercentageHp() <= Config.GNB_Mit_Nebula_Health)
+            () => PlayerHealthPercentageHp() <= GNB_Mit_Nebula_Health)
     ];
 
     ///<summary>

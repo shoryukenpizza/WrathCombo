@@ -3,6 +3,7 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.SMNPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -56,12 +57,12 @@ internal static class SMNPvP
             {
                 // Phantom Dart
                 case Preset.SMNPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, SMNPvP.Config.SMNPvP_PhantomDartThreshold,
+                    UserConfig.DrawSliderInt(1, 100, SMNPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
                     break;
 
                 case Preset.SMNPvP_BurstMode_RadiantAegis:
-                    UserConfig.DrawSliderInt(0, 90, SMNPvP.Config.SMNPvP_RadiantAegisThreshold,
+                    UserConfig.DrawSliderInt(0, 90, SMNPvP_RadiantAegisThreshold,
                         "Caps at 90 to prevent waste.");
                     break;
             }
@@ -82,7 +83,7 @@ internal static class SMNPvP
                 bool bahamutBurst = OriginalHook(Ruin3) is AstralImpulse;
                 bool phoenixBurst = OriginalHook(Ruin3) is FountainOfFire;
                 double playerHP = PlayerHealthPercentageHp();
-                int radiantThreshold = PluginConfiguration.GetCustomIntValue(Config.SMNPvP_RadiantAegisThreshold);
+                int radiantThreshold = PluginConfiguration.GetCustomIntValue(SMNPvP_RadiantAegisThreshold);
                     #endregion
 
                 if (PvPCommon.TargetImmuneToDamage() && HasStatusEffect(Buffs.FurtherRuin)) // Block for ruin 4 because it is on action ID
@@ -97,7 +98,7 @@ internal static class SMNPvP
                             IsOffCooldown(RadiantAegis) && playerHP <= radiantThreshold)
                             return RadiantAegis;
 
-                        if (IsEnabled(Preset.SMNPvP_PhantomDart) && Role.CanPhantomDart() && GetTargetHPPercent() <= Config.SMNPvP_PhantomDartThreshold)
+                        if (IsEnabled(Preset.SMNPvP_PhantomDart) && Role.CanPhantomDart() && GetTargetHPPercent() <= SMNPvP_PhantomDartThreshold)
                             return Role.PhantomDart;
                     }
                     // Phoenix & Bahamut bursts

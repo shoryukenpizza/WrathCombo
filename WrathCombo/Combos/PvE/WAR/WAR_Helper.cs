@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.Combos.PvE.WAR.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 #endregion
@@ -21,8 +22,8 @@ internal partial class WAR : Tank
     internal static bool CanPRend(float distance = 20, bool movement = true) => LevelChecked(PrimalRend) && HasStatusEffect(Buffs.PrimalRendReady) && GetTargetDistance() <= distance && movement;
     internal static bool CanSpendBeastGauge(int gauge = 50, bool pooling = false) => LevelChecked(OriginalHook(InnerBeast)) && (HasIR.Stacks || (BeastGauge >= gauge || pooling));
     internal static bool BurstPoolMinimum => BeastGauge >= 50 && IR.Cooldown is < 1 or > 40;
-    internal static bool STBurstPooling => BurstPoolMinimum && (IsEnabled(Preset.WAR_ST_Simple) || (IsEnabled(Preset.WAR_ST_Advanced) && Config.WAR_ST_FellCleave_BurstPooling == 0));
-    internal static bool AoEBurstPooling => BurstPoolMinimum && (IsEnabled(Preset.WAR_AoE_Simple) || (IsEnabled(Preset.WAR_AoE_Advanced) && Config.WAR_AoE_Decimate_BurstPooling == 0));
+    internal static bool STBurstPooling => BurstPoolMinimum && (IsEnabled(Preset.WAR_ST_Simple) || (IsEnabled(Preset.WAR_ST_Advanced) && WAR_ST_FellCleave_BurstPooling == 0));
+    internal static bool AoEBurstPooling => BurstPoolMinimum && (IsEnabled(Preset.WAR_AoE_Simple) || (IsEnabled(Preset.WAR_AoE_Advanced) && WAR_AoE_Decimate_BurstPooling == 0));
     internal static (float Cooldown, float Status, int Stacks) IR => (GetCooldownRemainingTime(OriginalHook(Berserk)), GetStatusEffectRemainingTime(Buffs.InnerReleaseBuff), GetStatusEffectStacks(Buffs.InnerReleaseStacks));
     internal static (float Status, int Stacks) BF => (GetStatusEffectRemainingTime(Buffs.BurgeoningFury), GetStatusEffectStacks(Buffs.BurgeoningFury));
     internal static (bool Status, bool Stacks) HasIR => (IR.Status > 0, IR.Stacks > 0 || HasStatusEffect(Buffs.InnerReleaseStacks));
@@ -77,7 +78,7 @@ internal partial class WAR : Tank
         ];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
-        internal override UserData ContentCheckConfig => Config.WAR_BalanceOpener_Content;
+        internal override UserData ContentCheckConfig => WAR_BalanceOpener_Content;
         public override bool HasCooldowns() => IsOffCooldown(InnerRelease) && IsOffCooldown(Upheaval) && GetRemainingCharges(Infuriate) >= 2 && GetRemainingCharges(Onslaught) >= 3;
     }
 
@@ -86,7 +87,7 @@ internal partial class WAR : Tank
     #region Helpers
     internal static uint GetVariantAction()
     {
-        if (Variant.CanCure(Preset.WAR_Variant_Cure, Config.WAR_VariantCure))
+        if (Variant.CanCure(Preset.WAR_Variant_Cure, WAR_VariantCure))
             return Variant.Cure;
         if (Variant.CanSpiritDart(Preset.WAR_Variant_SpiritDart) && CanWeave())
             return Variant.SpiritDart;
@@ -136,9 +137,9 @@ internal partial class WAR : Tank
         foreach (var (preset, action, condition) in new[]
         {
         (Preset.WAR_Bozja_LostDeath, Bozja.LostDeath, true),
-        (Preset.WAR_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.WAR_Bozja_LostCure_Health),
+        (Preset.WAR_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= WAR_Bozja_LostCure_Health),
         (Preset.WAR_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
-        (Preset.WAR_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.WAR_Bozja_LostReraise_Health),
+        (Preset.WAR_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= WAR_Bozja_LostReraise_Health),
         (Preset.WAR_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
         (Preset.WAR_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
         (Preset.WAR_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
@@ -187,7 +188,7 @@ internal partial class WAR : Tank
     internal static uint STCombo 
         => ComboTimer > 0 ? LevelChecked(Maim) && ComboAction == HeavySwing ? Maim
         : LevelChecked(StormsPath) && ComboAction == Maim
-        ? (LevelChecked(StormsEye) && ((IsEnabled(Preset.WAR_ST_Simple) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29) || (IsEnabled(Preset.WAR_ST_Advanced) && IsEnabled(Preset.WAR_ST_StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= Config.WAR_SurgingRefreshRange))
+        ? (LevelChecked(StormsEye) && ((IsEnabled(Preset.WAR_ST_Simple) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= 29) || (IsEnabled(Preset.WAR_ST_Advanced) && IsEnabled(Preset.WAR_ST_StormsEye) && GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= WAR_SurgingRefreshRange))
         ? StormsEye : StormsPath) : HeavySwing : HeavySwing;
     internal static uint AOECombo => (ComboTimer > 0 && LevelChecked(MythrilTempest) && ComboAction == Overpower) ? MythrilTempest : Overpower;
     #endregion
@@ -214,28 +215,28 @@ internal partial class WAR : Tank
         [
             //Bloodwhetting
             (OriginalHook(RawIntuition), Preset.WAR_Mit_Bloodwhetting,
-            () => !HasStatusEffect(Buffs.RawIntuition) && !HasStatusEffect(Buffs.BloodwhettingDefenseLong) && PlayerHealthPercentageHp() <= Config.WAR_Mit_Bloodwhetting_Health),
+            () => !HasStatusEffect(Buffs.RawIntuition) && !HasStatusEffect(Buffs.BloodwhettingDefenseLong) && PlayerHealthPercentageHp() <= WAR_Mit_Bloodwhetting_Health),
             //Equilibrium
             (Equilibrium, Preset.WAR_Mit_Equilibrium,
-            () => PlayerHealthPercentageHp() <= Config.WAR_Mit_Equilibrium_Health),
+            () => PlayerHealthPercentageHp() <= WAR_Mit_Equilibrium_Health),
             // Reprisal
             (Role.Reprisal, Preset.WAR_Mit_Reprisal,
             () => Role.CanReprisal(checkTargetForDebuff: false)),
             //Thrill of Battle
             (ThrillOfBattle, Preset.WAR_Mit_ThrillOfBattle,
-            () => PlayerHealthPercentageHp() <= Config.WAR_Mit_ThrillOfBattle_Health),
+            () => PlayerHealthPercentageHp() <= WAR_Mit_ThrillOfBattle_Health),
             //Rampart
             (Role.Rampart, Preset.WAR_Mit_Rampart,
-            () => Role.CanRampart(Config.WAR_Mit_Rampart_Health)),
+            () => Role.CanRampart(WAR_Mit_Rampart_Health)),
             //Shake it Off
             (ShakeItOff, Preset.WAR_Mit_ShakeItOff,
-            () => !HasStatusEffect(Buffs.ShakeItOff) && (Config.WAR_Mit_ShakeItOff_PartyRequirement == (int)PartyRequirement.No || IsInParty())),
+            () => !HasStatusEffect(Buffs.ShakeItOff) && (WAR_Mit_ShakeItOff_PartyRequirement == (int)PartyRequirement.No || IsInParty())),
             //Arm's Length
             (Role.ArmsLength, Preset.WAR_Mit_ArmsLength,
-            () => Role.CanArmsLength(Config.WAR_Mit_ArmsLength_EnemyCount, Config.WAR_Mit_ArmsLength_Boss)),
+            () => Role.CanArmsLength(WAR_Mit_ArmsLength_EnemyCount, WAR_Mit_ArmsLength_Boss)),
             //Vengeance
             (OriginalHook(Vengeance), Preset.WAR_Mit_Vengeance,
-            () => PlayerHealthPercentageHp() <= Config.WAR_Mit_Vengeance_Health)
+            () => PlayerHealthPercentageHp() <= WAR_Mit_Vengeance_Health)
         ];
 
     /// <summary>
