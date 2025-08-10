@@ -11,6 +11,207 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SGE : Healer
 {
+    #region Simple Mode
+
+    internal class SGE_ST_Simple_DPS : CustomCombo
+    {
+        private static uint[] DosisActions => [.. DosisList.Keys];
+
+        protected internal override Preset Preset => Preset.SGE_ST_DPS;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (!DosisActions.Contains(actionID))
+                return actionID;
+
+            // Kardia Reminder
+            if (LevelChecked(Kardia) &&
+                !HasStatusEffect(Buffs.Kardia) &&
+                Target is not null)
+                return Kardia
+                    .Retarget(actionID, Target);
+
+            // Variant
+            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+                return Variant.Rampart;
+
+            //Occult skills
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
+            {
+                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
+                    return Variant.SpiritDart;
+
+                // Lucid Dreaming
+                if (Role.CanLucidDream(7500))
+                    return Role.LucidDreaming;
+
+                // Addersgall Protection
+                if (ActionReady(Druochole) && Addersgall >= 3)
+                    return Druochole.RetargetIfEnabled(null, DosisActions);
+
+                // Psyche
+                if (ActionReady(Psyche) && InCombat())
+                    return Psyche;
+
+                // Rhizomata
+                if (ActionReady(Rhizomata) && Addersgall < 1)
+                    return Rhizomata;
+
+                //Soteria
+                if (ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
+                    return Soteria;
+            }
+
+            if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
+            {
+                if (LevelChecked(Eukrasia) && InCombat() &&
+                    !JustUsedOn(DosisList[OriginalHook(Dosis)].Eukrasian, CurrentTarget) &&
+                    CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
+                {
+                    const float refreshTimer = 5;
+                    const int hpThreshold = 1;
+
+                    if (GetTargetHPPercent() > hpThreshold &&
+                        ((DosisDebuff is null && DyskrasiaDebuff is null) ||
+                         DosisDebuff?.RemainingTime <= refreshTimer ||
+                         DyskrasiaDebuff?.RemainingTime <= refreshTimer))
+                        return Eukrasia;
+                }
+
+                // Phlegma
+                if (InCombat() && InActionRange(OriginalHook(Phlegma)) &&
+                    ActionReady(Phlegma))
+                {
+                    //If not enabled or not high enough level, follow slider
+                    if ((!LevelChecked(Psyche)) &&
+                        GetRemainingCharges(OriginalHook(Phlegma)) > 1)
+                        return OriginalHook(Phlegma);
+
+                    //If enabled and high enough level, burst
+                    if (((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
+                         IsOffCooldown(Psyche) ||
+                         JustUsed(Psyche, 5f)))
+                        return OriginalHook(Phlegma);
+                }
+
+                // Movement Options
+                if (InCombat() && IsMoving() && HasBattleTarget())
+                {
+                    //Toxikon
+                    if (ActionReady(Toxikon) && HasAddersting())
+                        return OriginalHook(Toxikon);
+
+                    // Dyskrasia
+                    if (ActionReady(Dyskrasia) && InActionRange(Dyskrasia))
+                        return OriginalHook(Dyskrasia);
+                    //Eukrasia
+                    if (ActionReady(Eukrasia) && !HasStatusEffect(Buffs.Eukrasia))
+                        return Eukrasia;
+                }
+            }
+
+            return actionID;
+        }
+    }
+
+    internal class SGE_AoE_Simple_DPS : CustomCombo
+    {
+        protected internal override Preset Preset => Preset.SGE_AoE_Simple_DPS;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (!DyskrasiaList.Contains(actionID) ||
+                HasStatusEffect(Buffs.Eukrasia))
+                return actionID;
+
+            // Variant Rampart
+            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
+                return Variant.Rampart;
+
+            //Occult skills
+            if (OccultCrescent.ShouldUsePhantomActions())
+                return OccultCrescent.BestPhantomAction();
+
+            if (ActionReady(Kerachole) && HasAddersgall() &&
+                CanWeave() && RaidWideCasting())
+                return Kerachole;
+
+            if (ActionReady(Holos) && CanWeave() && RaidWideCasting() &&
+                GetPartyAvgHPPercent() <= 70)
+                return Holos;
+
+            if (RaidwideEprognosis())
+                return HasStatusEffect(Buffs.Eukrasia)
+                    ? OriginalHook(Prognosis)
+                    : Eukrasia;
+
+            if (CanWeave())
+            {
+                // Variant Spirit Dart
+                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
+                    return Variant.SpiritDart;
+
+                // Lucid Dreaming
+                if (Role.CanLucidDream(7500))
+                    return Role.LucidDreaming;
+
+                // Addersgall Protection
+                if (ActionReady(Druochole) && Addersgall >= 3)
+                    return Druochole
+                        .RetargetIfEnabled(null, OriginalHook(Dyskrasia));
+
+                // Psyche
+                if (ActionReady(Psyche) && HasBattleTarget() &&
+                    InActionRange(Psyche))
+                    return Psyche;
+
+                // Rhizomata
+                if (ActionReady(Rhizomata) && Addersgall < 1)
+                    return Rhizomata;
+
+                //Soteria
+                if (ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
+                    return Soteria;
+            }
+
+            //Eukrasia for DoT
+            if (IsOffCooldown(Eukrasia) &&
+                !JustUsedOn(EukrasianDyskrasia, CurrentTarget) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
+                TraitLevelChecked(Traits.OffensiveMagicMasteryII) &&
+                HasBattleTarget() && InActionRange(Dyskrasia) &&
+                CanApplyStatus(CurrentTarget, Debuffs.EukrasianDyskrasia) &&
+                GetTargetHPPercent() > 25 &&
+                ((DyskrasiaDebuff is null && DosisDebuff is null) ||
+                 DyskrasiaDebuff?.RemainingTime <= 4 ||
+                 DosisDebuff?.RemainingTime <= 4))
+                return Eukrasia;
+
+            //Phlegma
+            if (ActionReady(Phlegma) &&
+                HasBattleTarget() &&
+                InActionRange(OriginalHook(Phlegma)))
+                return OriginalHook(Phlegma);
+
+            //Toxikon
+            if (ActionReady(Toxikon) &&
+                HasBattleTarget() && HasAddersting() &&
+                InActionRange(OriginalHook(Toxikon)))
+                return OriginalHook(Toxikon);
+
+            //Pneuma
+            if (ActionReady(Pneuma) && HasBattleTarget() &&
+                InActionRange(Pneuma))
+                return Pneuma;
+
+            return actionID;
+        }
+    }
+
+    #endregion
+    
     #region Advanced ST
 
     internal class SGE_ST_DPS_AdvancedMode : CustomCombo
@@ -389,207 +590,7 @@ internal partial class SGE : Healer
     }
 
     #endregion
-    #region Simple Mode
-
-    internal class SGE_ST_Simple_DPS : CustomCombo
-    {
-        private static uint[] DosisActions => [.. DosisList.Keys];
-
-        protected internal override Preset Preset => Preset.SGE_ST_DPS;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (!DosisActions.Contains(actionID))
-                return actionID;
-
-            // Kardia Reminder
-            if (LevelChecked(Kardia) &&
-                !HasStatusEffect(Buffs.Kardia) &&
-                Target is not null)
-                return Kardia
-                    .Retarget(actionID, Target);
-
-            // Variant
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
-                return Variant.Rampart;
-
-            //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
-
-            if (CanWeave() && !HasStatusEffect(Buffs.Eukrasia))
-            {
-                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
-
-                // Lucid Dreaming
-                if (Role.CanLucidDream(7500))
-                    return Role.LucidDreaming;
-
-                // Addersgall Protection
-                if (ActionReady(Druochole) && Addersgall >= 3)
-                    return Druochole.RetargetIfEnabled(null, DosisActions);
-
-                // Psyche
-                if (ActionReady(Psyche) && InCombat())
-                    return Psyche;
-
-                // Rhizomata
-                if (ActionReady(Rhizomata) && Addersgall < 1)
-                    return Rhizomata;
-
-                //Soteria
-                if (ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
-                    return Soteria;
-            }
-
-            if (HasBattleTarget() && !HasStatusEffect(Buffs.Eukrasia))
-            {
-                if (LevelChecked(Eukrasia) && InCombat() &&
-                    !JustUsedOn(DosisList[OriginalHook(Dosis)].Eukrasian, CurrentTarget) &&
-                    CanApplyStatus(CurrentTarget, DosisList[OriginalHook(Dosis)].Debuff))
-                {
-                    const float refreshTimer = 5;
-                    const int hpThreshold = 1;
-
-                    if (GetTargetHPPercent() > hpThreshold &&
-                        ((DosisDebuff is null && DyskrasiaDebuff is null) ||
-                         DosisDebuff?.RemainingTime <= refreshTimer ||
-                         DyskrasiaDebuff?.RemainingTime <= refreshTimer))
-                        return Eukrasia;
-                }
-
-                // Phlegma
-                if (InCombat() && InActionRange(OriginalHook(Phlegma)) &&
-                    ActionReady(Phlegma))
-                {
-                    //If not enabled or not high enough level, follow slider
-                    if ((!LevelChecked(Psyche)) &&
-                        GetRemainingCharges(OriginalHook(Phlegma)) > 1)
-                        return OriginalHook(Phlegma);
-
-                    //If enabled and high enough level, burst
-                    if (((GetCooldownRemainingTime(Psyche) > 40 && MaxPhlegma) ||
-                         IsOffCooldown(Psyche) ||
-                         JustUsed(Psyche, 5f)))
-                        return OriginalHook(Phlegma);
-                }
-
-                // Movement Options
-                if (InCombat() && IsMoving() && HasBattleTarget())
-                {
-                    //Toxikon
-                    if (ActionReady(Toxikon) && HasAddersting())
-                        return OriginalHook(Toxikon);
-
-                    // Dyskrasia
-                    if (ActionReady(Dyskrasia) && InActionRange(Dyskrasia))
-                        return OriginalHook(Dyskrasia);
-                    //Eukrasia
-                    if (ActionReady(Eukrasia) && !HasStatusEffect(Buffs.Eukrasia))
-                        return Eukrasia;
-                }
-            }
-
-            return actionID;
-        }
-    }
-
-    internal class SGE_AoE_Simple_DPS : CustomCombo
-    {
-        protected internal override Preset Preset => Preset.SGE_AoE_Simple_DPS;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (!DyskrasiaList.Contains(actionID) ||
-                HasStatusEffect(Buffs.Eukrasia))
-                return actionID;
-
-            // Variant Rampart
-            if (Variant.CanRampart(Preset.SGE_DPS_Variant_Rampart))
-                return Variant.Rampart;
-
-            //Occult skills
-            if (OccultCrescent.ShouldUsePhantomActions())
-                return OccultCrescent.BestPhantomAction();
-
-            if (ActionReady(Kerachole) && HasAddersgall() &&
-                CanWeave() && RaidWideCasting())
-                return Kerachole;
-
-            if (ActionReady(Holos) && CanWeave() && RaidWideCasting() &&
-                GetPartyAvgHPPercent() <= 70)
-                return Holos;
-
-            if (RaidwideEprognosis())
-                return HasStatusEffect(Buffs.Eukrasia)
-                    ? OriginalHook(Prognosis)
-                    : Eukrasia;
-
-            if (CanWeave())
-            {
-                // Variant Spirit Dart
-                if (Variant.CanSpiritDart(Preset.SGE_DPS_Variant_SpiritDart))
-                    return Variant.SpiritDart;
-
-                // Lucid Dreaming
-                if (Role.CanLucidDream(7500))
-                    return Role.LucidDreaming;
-
-                // Addersgall Protection
-                if (ActionReady(Druochole) && Addersgall >= 3)
-                    return Druochole
-                        .RetargetIfEnabled(null, OriginalHook(Dyskrasia));
-
-                // Psyche
-                if (ActionReady(Psyche) && HasBattleTarget() &&
-                    InActionRange(Psyche))
-                    return Psyche;
-
-                // Rhizomata
-                if (ActionReady(Rhizomata) && Addersgall < 1)
-                    return Rhizomata;
-
-                //Soteria
-                if (ActionReady(Soteria) && HasStatusEffect(Buffs.Kardia))
-                    return Soteria;
-            }
-
-            //Eukrasia for DoT
-            if (IsOffCooldown(Eukrasia) &&
-                !JustUsedOn(EukrasianDyskrasia, CurrentTarget) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
-                TraitLevelChecked(Traits.OffensiveMagicMasteryII) &&
-                HasBattleTarget() && InActionRange(Dyskrasia) &&
-                CanApplyStatus(CurrentTarget, Debuffs.EukrasianDyskrasia) &&
-                GetTargetHPPercent() > 25 &&
-                ((DyskrasiaDebuff is null && DosisDebuff is null) ||
-                 DyskrasiaDebuff?.RemainingTime <= 4 ||
-                 DosisDebuff?.RemainingTime <= 4))
-                return Eukrasia;
-
-            //Phlegma
-            if (ActionReady(Phlegma) &&
-                HasBattleTarget() &&
-                InActionRange(OriginalHook(Phlegma)))
-                return OriginalHook(Phlegma);
-
-            //Toxikon
-            if (ActionReady(Toxikon) &&
-                HasBattleTarget() && HasAddersting() &&
-                InActionRange(OriginalHook(Toxikon)))
-                return OriginalHook(Toxikon);
-
-            //Pneuma
-            if (ActionReady(Pneuma) && HasBattleTarget() &&
-                InActionRange(Pneuma))
-                return Pneuma;
-
-            return actionID;
-        }
-    }
-
-    #endregion
-
+    
     #region Standalones
 
     internal class SGE_OverProtect : CustomCombo
