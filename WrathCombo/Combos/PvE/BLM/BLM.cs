@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using static WrathCombo.Combos.PvE.BLM.Config;
 namespace WrathCombo.Combos.PvE;
@@ -28,7 +30,9 @@ internal partial class BLM : Caster
                 if (ActionReady(Amplifier) && !HasMaxPolyglotStacks)
                     return Amplifier;
 
-                if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines))
+                if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
+                    GetRemainingCharges(LeyLines) > 1 &&
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(2.5f))
                     return LeyLines;
 
                 if (EndOfFirePhase)
@@ -40,8 +44,12 @@ internal partial class BLM : Caster
                         !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
+                    if (ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                        !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast) &&
+                        !HasStatusEffect(Buffs.LeyLines) && JustUsed(Despair) && !ActionReady(Manafont))
+                        return Triplecast;
+
                     if (ActionReady(Transpose) &&
-                        LevelChecked(Fire3) &&
                         (HasStatusEffect(Role.Buffs.Swiftcast) ||
                          HasStatusEffect(Buffs.Triplecast)))
                         return Transpose;
@@ -49,8 +57,7 @@ internal partial class BLM : Caster
 
                 if (IcePhase)
                 {
-                    if (CurMp is MP.MaxMP &&
-                        JustUsed(Paradox) &&
+                    if (CurMp is MP.MaxMP && JustUsed(Paradox) &&
                         ActionReady(Transpose))
                         return Transpose;
 
@@ -66,6 +73,7 @@ internal partial class BLM : Caster
             if (IsMoving() && !LevelChecked(Triplecast))
                 return Scathe;
 
+            //Overcap protection
             if (HasMaxPolyglotStacks && PolyglotTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
@@ -74,9 +82,8 @@ internal partial class BLM : Caster
             if (LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
                 CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
                 (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                 ThunderDebuffST?.RemainingTime <= 3 ||
-                 ThunderDebuffAoE?.RemainingTime <= 3) &&
-                GetTargetHPPercent() > 0)
+                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
+                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder))
                 return OriginalHook(Thunder);
 
             if (LevelChecked(Amplifier) &&
@@ -113,7 +120,7 @@ internal partial class BLM : Caster
             if (FirePhase)
             {
                 // TODO: Revisit when Raid Buff checks are in place
-                if (PolyglotStacks > 1)
+                if (HasPolyglotStacks())
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -161,7 +168,8 @@ internal partial class BLM : Caster
                     if (LevelChecked(Fire3))
                         return Fire3;
 
-                    if (ActionReady(Transpose) && !LevelChecked(Blizzard3))
+                    if (ActionReady(Transpose) &&
+                        !LevelChecked(Blizzard3))
                         return Transpose;
                 }
 
@@ -215,7 +223,10 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_ST_LeyLinesCharges &&
+                    (BLM_ST_LeyLinesMovement == 1 ||
+                     BLM_ST_LeyLinesMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_ST_LeyLinesTimeStill)) &&
+                    GetTargetHPPercent() > HPThresholdLeylines)
                     return LeyLines;
 
                 if (EndOfFirePhase)
@@ -284,18 +295,13 @@ internal partial class BLM : Caster
                     : Foul;
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Thunder) &&
-                LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead))
-            {
-                float refreshTimer = BLM_ST_ThunderUptime_Threshold;
-                int hpThreshold = BLM_ST_Thunder_SubOption == 1 || !InBossEncounter() ? BLM_ST_ThunderOption : 0;
-
-                if (CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
-                    (ThunderDebuffST is null && ThunderDebuffAoE is null ||
-                     ThunderDebuffST?.RemainingTime <= refreshTimer ||
-                     ThunderDebuffAoE?.RemainingTime <= refreshTimer) &&
-                    GetTargetHPPercent() > hpThreshold)
-                    return OriginalHook(Thunder);
-            }
+                LevelChecked(Thunder) && HasStatusEffect(Buffs.Thunderhead) &&
+                CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder)]) &&
+                (ThunderDebuffST is null && ThunderDebuffAoE is null ||
+                 ThunderDebuffST?.RemainingTime <= RefreshTimerThunder ||
+                 ThunderDebuffAoE?.RemainingTime <= RefreshTimerThunder) &&
+                GetTargetHPPercent() > HPThresholdThunder)
+                return OriginalHook(Thunder);
 
             if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                 IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -418,20 +424,24 @@ internal partial class BLM : Caster
 
             if (CanWeave())
             {
+                if (IsMoving() && InCombat() && HasBattleTarget() &&
+                    ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast))
+                    return Triplecast;
+
                 if (ActionReady(Manafont) &&
                     EndOfFirePhase)
                     return Manafont;
 
                 if (ActionReady(Transpose) &&
-                    (EndOfFirePhase ||
-                     EndOfIcePhaseAoEMaxLevel))
+                    (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
                 if (ActionReady(Amplifier) && PolyglotTimer >= 20000)
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > 1)
+                    !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_AoE_LeyLinesTimeStill) &&
+                    GetTargetHPPercent() > 40)
                     return LeyLines;
             }
 
@@ -440,7 +450,6 @@ internal partial class BLM : Caster
                 return Foul;
 
             if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                GetTargetHPPercent() > 1 &&
                 CanApplyStatus(CurrentTarget, ThunderList[OriginalHook(Thunder2)]) &&
                 (ThunderDebuffAoE is null && ThunderDebuffST is null ||
                  ThunderDebuffAoE?.RemainingTime <= 3 ||
@@ -456,26 +465,23 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (LevelChecked(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
+                if (ActionReady(Fire2) && !TraitLevelChecked(Traits.UmbralHeart))
                     return OriginalHook(Fire2);
 
                 if (!HasStatusEffect(Buffs.Triplecast) && ActionReady(Triplecast) &&
-                    GetRemainingCharges(Triplecast) > 1 && HasMaxUmbralHeartStacks &&
-                    !ActionReady(Manafont))
+                    HasMaxUmbralHeartStacks && !ActionReady(Manafont))
                     return Triplecast;
 
                 if (ActionReady(Flare))
                     return Flare;
 
-                if (ActionReady(Transpose) &&
-                    !LevelChecked(Fire3) &&
-                    CurMp < MP.FireAoE)
+                if (ActionReady(Transpose) && CurMp < MP.FireAoE)
                     return Transpose;
             }
 
             if (IcePhase)
             {
-                if ((CurMp is MP.MaxMP || HasMaxUmbralHeartStacks) &&
+                if ((HasMaxUmbralHeartStacks || CurMp is MP.MaxMP) &&
                     ActionReady(Transpose))
                     return Transpose;
 
@@ -511,9 +517,13 @@ internal partial class BLM : Caster
             if (OccultCrescent.ShouldUsePhantomActions())
                 return OccultCrescent.BestPhantomAction();
 
-
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Movement) &&
+                    IsMoving() && InCombat() && HasBattleTarget() &&
+                    ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast))
+                    return Triplecast;
+
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     ActionReady(Manafont) &&
                     EndOfFirePhase)
@@ -530,7 +540,10 @@ internal partial class BLM : Caster
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_LeyLines) &&
                     ActionReady(LeyLines) && !HasStatusEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges)
+                    GetRemainingCharges(LeyLines) > BLM_AoE_LeyLinesCharges &&
+                    (BLM_AoE_LeyLinesMovement == 1 ||
+                     BLM_AoE_LeyLinesMovement == 0 && !IsMoving() && TimeStoodStill > TimeSpan.FromSeconds(BLM_AoE_LeyLinesTimeStill)) &&
+                    GetTargetHPPercent() > BLM_AoE_LeyLinesOption)
                     return LeyLines;
             }
 
@@ -611,190 +624,321 @@ internal partial class BLM : Caster
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Variant_Raise;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID == Role.Swiftcast && Variant.CanRaise(CustomComboPreset.BLM_Variant_Raise)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != Role.Swiftcast)
+                return actionID;
+
+            return actionID == Role.Swiftcast && Variant.CanRaise(CustomComboPreset.BLM_Variant_Raise)
                 ? Variant.Raise
                 : actionID;
+        }
+    }
+
+    internal class BLM_Retargetting_Aetherial_Manipulation : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Retargetting_Aetherial_Manipulation;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not AetherialManipulation)
+                return actionID;
+
+            return BLM_AM_FieldMouseover
+                ? AetherialManipulation.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ?? SimpleTarget.HardTarget, true)
+                : AetherialManipulation.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget, true);
+        }
     }
 
     internal class BLM_ScatheXeno : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_ScatheXeno;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Scathe && LevelChecked(Xenoglossy) && HasPolyglotStacks()
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Scathe)
+                return actionID;
+
+            return LevelChecked(Xenoglossy) && HasPolyglotStacks()
                 ? Xenoglossy
                 : actionID;
+        }
     }
 
     internal class BLM_Blizzard1to3 : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Blizzard1to3;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                Blizzard when BLM_B1to3 == 0 && LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 || UmbralIceStacks is 2) => Blizzard3,
-                Blizzard3 when BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3 => OriginalHook(Blizzard),
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Blizzard or Blizzard3))
+                return actionID;
+
+            if (BLM_B1to3 == 0 && LevelChecked(Blizzard3) && (FirePhase || UmbralIceStacks is 1 || UmbralIceStacks is 2))
+                return Blizzard3;
+
+            if (BLM_B1to3 == 1 && LevelChecked(Blizzard3) && IcePhase && UmbralIceStacks is 3)
+                return OriginalHook(Blizzard);
+
+            return actionID;
+        }
     }
 
     internal class BLM_Fire1to3 : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Fire1to3;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                Fire when BLM_F1to3 == 0 && LevelChecked(Fire3) &&
-                          (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
-                           LevelChecked(Paradox) && !ActiveParadox ||
-                           !InCombat() && LevelChecked(Fire4) ||
-                           IcePhase && !ActiveParadox ||
-                           !LevelChecked(Fire4) && HasStatusEffect(Buffs.Firestarter)) &&
-                          !JustUsed(Fire3) => Fire3,
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Fire or Fire3))
+                return actionID;
 
-                Fire3 when BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
-                           (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
-                            !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) &&
-                           !JustUsed(OriginalHook(Fire)) => OriginalHook(Fire),
-                var _ => actionID
-            };
+            if (BLM_F1to3 == 0 && LevelChecked(Fire3) &&
+                (AstralFireStacks is 1 or 2 && HasStatusEffect(Buffs.Firestarter) ||
+                 LevelChecked(Paradox) && !ActiveParadox ||
+                 !InCombat() && LevelChecked(Fire4) ||
+                 IcePhase && !ActiveParadox ||
+                 !LevelChecked(Fire4) && HasStatusEffect(Buffs.Firestarter)) && !JustUsed(Fire3))
+                return Fire3;
+
+            if (BLM_F1to3 == 1 && LevelChecked(Fire3) && FirePhase &&
+                (LevelChecked(Paradox) && ActiveParadox && AstralFireStacks is 3 ||
+                 !LevelChecked(Fire4) && !HasStatusEffect(Buffs.Firestarter)) && !JustUsed(OriginalHook(Fire)))
+                return OriginalHook(Fire);
+
+            return actionID;
+        }
     }
 
     internal class BLM_Fire4to3 : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Fire4to3;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Fire4 && LevelChecked(Fire4) && (IcePhase || AstralFireStacks is 1 || AstralFireStacks is 2 || !InCombat())
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Fire4)
+                return actionID;
+
+            return LevelChecked(Fire4) &&
+                   (IcePhase ||
+                    AstralFireStacks is 1 ||
+                    AstralFireStacks is 2 ||
+                    !InCombat())
                 ? Fire3
                 : actionID;
+        }
     }
 
     internal class BLM_FireandIce : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FireandIce;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                Fire4 when FirePhase && LevelChecked(Fire4) => Fire4,
-                Fire4 when IcePhase && LevelChecked(Blizzard4) => Blizzard4,
-                Flare when FirePhase && LevelChecked(Flare) => Flare,
-                Flare when IcePhase && LevelChecked(Freeze) => Freeze,
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Fire4 or Flare))
+                return actionID;
+
+            if (FirePhase && LevelChecked(Fire4))
+                return Fire4;
+
+            if (IcePhase && LevelChecked(Blizzard4))
+                return Blizzard4;
+
+            if (FirePhase && LevelChecked(Flare))
+                return Flare;
+
+            if (IcePhase && LevelChecked(Freeze))
+                return Freeze;
+
+            return actionID;
+        }
     }
 
     internal class BLM_FireFlarestar : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FireFlarestar;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Fire4 && FirePhase && FlarestarReady && LevelChecked(FlareStar) ||
-            actionID is Flare && FirePhase && FlarestarReady && LevelChecked(FlareStar)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Fire4 or Flare))
+                return actionID;
+
+            return FirePhase && FlarestarReady && LevelChecked(FlareStar)
                 ? FlareStar
                 : actionID;
+        }
     }
 
     internal class BLM_Blizzard4toDespair : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Blizzard4toDespair;
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                Blizzard4 when BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) => Despair,
-                Blizzard3 when BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) => Despair,
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Blizzard3 or Blizzard4))
+                return actionID;
+
+            return BLM_B4toDespair == 0 && FirePhase && LevelChecked(Despair) && CurMp >= 800 ||
+                   BLM_B4toDespair == 1 && FirePhase && LevelChecked(Despair) && CurMp >= 800
+                ? Despair
+                : actionID;
+        }
     }
 
     internal class BLM_Fire1Despair : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Fire1Despair;
-        protected override uint Invoke(uint actionID) =>
-            actionID is not Fire
-                ? actionID
-                : FirePhase && CurMp < 2400
-                    ? Despair
-                    : OriginalHook(Fire);
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Fire)
+                return actionID;
+
+            return FirePhase && CurMp < 2400
+                ? Despair
+                : OriginalHook(Fire);
+        }
     }
 
     internal class BLM_FreezeParadox : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FreezeParadox;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Freeze && HasMaxUmbralHeartStacks && LevelChecked(Paradox) && ActiveParadox && IcePhase
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Freeze)
+                return actionID;
+
+            return HasMaxUmbralHeartStacks && LevelChecked(Paradox) && ActiveParadox && IcePhase
                 ? OriginalHook(Blizzard)
                 : actionID;
+        }
     }
 
     internal class BLM_FlareParadox : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FlareParadox;
-        protected override uint Invoke(uint actionID) =>
-            actionID is FlareStar && FirePhase && LevelChecked(FlareStar) && ActiveParadox && AstralSoulStacks < 6
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not FlareStar)
+                return actionID;
+
+            return FirePhase && LevelChecked(FlareStar) && ActiveParadox && AstralSoulStacks < 6
                 ? OriginalHook(Fire)
                 : actionID;
+        }
     }
 
     internal class BLM_FreezeBlizzard2 : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FreezeBlizzard2;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Freeze && !LevelChecked(Freeze)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Freeze)
+                return actionID;
+
+            return !LevelChecked(Freeze)
                 ? Blizzard2
                 : actionID;
+        }
     }
 
     internal class BLM_AmplifierXeno : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_AmplifierXeno;
-        protected override uint Invoke(uint actionID) =>
-            actionID is Amplifier && HasMaxPolyglotStacks
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Amplifier)
+                return actionID;
+
+            return HasMaxPolyglotStacks
                 ? Xenoglossy
                 : actionID;
+        }
+    }
+
+    internal class BLM_XenoThunder : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_XenoThunder;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Xenoglossy)
+                return actionID;
+
+            return ThunderDebuffST.RemainingTime <= 3
+                ? OriginalHook(Thunder)
+                : actionID;
+        }
+    }
+
+    internal class BLM_FoulThunder : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_FoulThunder;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Foul)
+                return actionID;
+
+            return ThunderDebuffAoE.RemainingTime <= 3
+                ? OriginalHook(Thunder2)
+                : actionID;
+        }
     }
 
     internal class BLM_Between_The_LeyLines : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Between_The_LeyLines;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is LeyLines && HasStatusEffect(Buffs.LeyLines) && LevelChecked(BetweenTheLines)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not LeyLines)
+                return actionID;
+
+            return HasStatusEffect(Buffs.LeyLines) && LevelChecked(BetweenTheLines)
                 ? BetweenTheLines
                 : actionID;
+        }
     }
 
     internal class BLM_Aetherial_Manipulation : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_Aetherial_Manipulation;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is AetherialManipulation && ActionReady(BetweenTheLines) &&
-            HasStatusEffect(Buffs.LeyLines) && !HasStatusEffect(Buffs.CircleOfPower) && !IsMoving()
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not AetherialManipulation)
+                return actionID;
+
+            return ActionReady(BetweenTheLines) &&
+                   HasStatusEffect(Buffs.LeyLines) && !HasStatusEffect(Buffs.CircleOfPower) && !IsMoving()
                 ? BetweenTheLines
                 : actionID;
+        }
     }
 
     internal class BLM_UmbralSoul : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_UmbralSoul;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Transpose && IcePhase && LevelChecked(UmbralSoul)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Transpose)
+                return actionID;
+
+            return IcePhase && LevelChecked(UmbralSoul)
                 ? UmbralSoul
                 : actionID;
+        }
     }
 
     internal class BLM_TriplecastProtection : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.BLM_TriplecastProtection;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Triplecast && HasStatusEffect(Buffs.Triplecast) && LevelChecked(Triplecast)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Triplecast)
+                return actionID;
+
+            return HasStatusEffect(Buffs.Triplecast) && LevelChecked(Triplecast)
                 ? All.SavageBlade
                 : actionID;
+        }
     }
 }

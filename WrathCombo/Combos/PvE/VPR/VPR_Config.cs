@@ -118,6 +118,11 @@ internal partial class VPR
                     DrawSliderInt(1, 100, VPR_VariantCure,
                         "HP% to be at or under", 200);
                     break;
+
+                case CustomComboPreset.VPR_Retarget_Slither:
+                    DrawAdditionalBoolChoice(VPR_Slither_FieldMouseover,
+                        "Add Field Mouseover", "Adds Field mouseover targetting");
+                    break;
             }
         }
 
@@ -146,7 +151,8 @@ internal partial class VPR
         public static UserBool
             VPR_Opener_ExcludeUF = new("VPR_Opener_ExcludeUF"),
             VPR_ST_RangedUptimeUncoiledFury = new("VPR_ST_RangedUptimeUncoiledFury"),
-            VPR_TrueNortVicewinder = new("VPR_TrueNortVicewinder");
+            VPR_TrueNortVicewinder = new("VPR_TrueNortVicewinder"),
+            VPR_Slither_FieldMouseover = new("VPR_Slither_FieldMouseover");
 
         #endregion
     }

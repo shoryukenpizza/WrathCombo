@@ -481,20 +481,20 @@ internal partial class MNK : Melee
 
         protected override uint Invoke(uint actionID)
         {
-            if (IsEnabled(CustomComboPreset.MNK_BC_OPOOPO) &&
-                actionID is Bootshine or LeapingOpo)
+            if (actionID is not (Bootshine or LeapingOpo or TrueStrike or RisingRaptor or SnapPunch or PouncingCoeurl))
+                return actionID;
+
+            if (IsEnabled(CustomComboPreset.MNK_BC_OPOOPO))
                 return OpoOpo is 0 && LevelChecked(DragonKick)
                     ? DragonKick
                     : OriginalHook(Bootshine);
 
-            if (IsEnabled(CustomComboPreset.MNK_BC_RAPTOR) &&
-                actionID is TrueStrike or RisingRaptor)
+            if (IsEnabled(CustomComboPreset.MNK_BC_RAPTOR))
                 return Raptor is 0 && LevelChecked(TwinSnakes)
                     ? TwinSnakes
                     : OriginalHook(TrueStrike);
 
-            if (IsEnabled(CustomComboPreset.MNK_BC_COEURL) &&
-                actionID is SnapPunch or PouncingCoeurl)
+            if (IsEnabled(CustomComboPreset.MNK_BC_COEURL))
                 return Coeurl is 0 && LevelChecked(Demolish)
                     ? Demolish
                     : OriginalHook(SnapPunch);
@@ -507,46 +507,65 @@ internal partial class MNK : Melee
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Retarget_Thunderclap;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is Thunderclap
-                ? Thunderclap.Retarget(SimpleTarget.Stack.MouseOver ?? SimpleTarget.HardTarget, true)
-                : actionID;
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Thunderclap)
+                return actionID;
+
+            return MNK_Thunderclap_FieldMouseover
+                ? Thunderclap.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.ModelMouseOverTarget ?? SimpleTarget.HardTarget, true)
+                : Thunderclap.Retarget(SimpleTarget.UIMouseOverTarget ?? SimpleTarget.HardTarget, true);
+        }
     }
 
     internal class MNK_PerfectBalance : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_PerfectBalance;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is PerfectBalance &&
-            OriginalHook(MasterfulBlitz) != MasterfulBlitz &&
-            LevelChecked(MasterfulBlitz)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not PerfectBalance)
+                return actionID;
+
+            return OriginalHook(MasterfulBlitz) != MasterfulBlitz &&
+                   LevelChecked(MasterfulBlitz)
                 ? OriginalHook(MasterfulBlitz)
                 : actionID;
+        }
     }
 
     internal class MNK_Brotherhood_Riddle : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_Brotherhood_Riddle;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID switch
-            {
-                Brotherhood when MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood) => RiddleOfFire,
-                RiddleOfFire when MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire) => Brotherhood,
-                var _ => actionID
-            };
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Brotherhood or RiddleOfFire))
+                return actionID;
+
+            if (MNK_BH_RoF == 0 && ActionReady(RiddleOfFire) && IsOnCooldown(Brotherhood))
+                return RiddleOfFire;
+
+            if (MNK_BH_RoF == 1 && ActionReady(Brotherhood) && IsOnCooldown(RiddleOfFire))
+                return Brotherhood;
+
+            return actionID;
+        }
     }
 
     internal class MNK_PerfectBalanceProtection : CustomCombo
     {
         protected internal override CustomComboPreset Preset => CustomComboPreset.MNK_PerfectBalanceProtection;
 
-        protected override uint Invoke(uint actionID) =>
-            actionID is PerfectBalance &&
-            HasStatusEffect(Buffs.PerfectBalance) &&
-            LevelChecked(PerfectBalance)
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not PerfectBalance)
+                return actionID;
+
+            return HasStatusEffect(Buffs.PerfectBalance) &&
+                   LevelChecked(PerfectBalance)
                 ? All.SavageBlade
                 : actionID;
+        }
     }
 }
