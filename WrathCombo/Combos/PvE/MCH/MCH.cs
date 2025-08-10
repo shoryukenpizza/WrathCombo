@@ -741,17 +741,22 @@ internal partial class MCH : PhysicalRanged
             if (actionID is not (Drill or HotShot or AirAnchor or Chainsaw))
                 return actionID;
 
-            return LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady)
-                ? CalcBestAction(actionID, Excavator, Chainsaw, AirAnchor, Drill)
-                : LevelChecked(Chainsaw)
-                    ? CalcBestAction(actionID, Chainsaw, AirAnchor, Drill)
-                    : LevelChecked(AirAnchor)
-                        ? CalcBestAction(actionID, AirAnchor, Drill)
-                        : LevelChecked(Drill)
-                            ? CalcBestAction(actionID, Drill, HotShot)
-                            : !LevelChecked(Drill)
-                                ? HotShot
-                                : actionID;
+            if (LevelChecked(Excavator) && HasStatusEffect(Buffs.ExcavatorReady))
+                return CalcBestAction(actionID, Excavator, Chainsaw, AirAnchor, Drill);
+
+            if (LevelChecked(Chainsaw))
+                return CalcBestAction(actionID, Chainsaw, AirAnchor, Drill);
+            
+            if (LevelChecked(AirAnchor))
+                return CalcBestAction(actionID, AirAnchor, Drill);
+            
+            if (LevelChecked(Drill))
+                return CalcBestAction(actionID, Drill, HotShot);
+            
+            if (!LevelChecked(Drill))
+                return HotShot;
+            
+            return actionID;
         }
     }
 
