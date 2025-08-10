@@ -69,22 +69,22 @@ internal static class NINPvP
             NINPVP_SeitonTenchuAoE = new("NINPVP_SeitonTenchuAoE"),
             NINPvP_SmiteThreshold = new("NINPvP_SmiteThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.NINPvP_ST_SeitonTenchu:
+                case Preset.NINPvP_ST_SeitonTenchu:
                     UserConfig.DrawSliderInt(1, 50, NINPVP_SeitonTenchu, "Target's HP% to be at or under", 200);
                     break;
-                case CustomComboPreset.NINPvP_AoE_SeitonTenchu:
+                case Preset.NINPvP_AoE_SeitonTenchu:
                     UserConfig.DrawSliderInt(1, 50, NINPVP_SeitonTenchuAoE, "Target's HP% to be at or under", 200);
                     break;
-                case CustomComboPreset.NINPvP_Smite:
+                case Preset.NINPvP_Smite:
                     UserConfig.DrawSliderInt(0, 100, NINPvP_SmiteThreshold,
                         "Target HP% to smite, Max damage below 25%");
                     break;
 
-                case CustomComboPreset.NINPvP_ST_Meisui:
+                case Preset.NINPvP_ST_Meisui:
                     string descriptionST = "Set the HP percentage to be at or under for the feature to kick in.\n100% is considered to start at 8,000 less than your max HP to prevent wastage.";
 
                     if (Player.Object != null)
@@ -102,7 +102,7 @@ internal static class NINPvP
                     break;
 
 
-                case CustomComboPreset.NINPvP_AoE_Meisui:
+                case Preset.NINPvP_AoE_Meisui:
                     string descriptionAoE = "Set the HP percentage to be at or under for the feature to kick in.\n100% is considered to start at 8,000 less than your max HP to prevent wastage.";
 
                     if (Player.Object != null)
@@ -125,7 +125,7 @@ internal static class NINPvP
        
     internal class NINPvP_ST_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINPvP_ST_BurstMode;
+        protected internal override Preset Preset { get; } = Preset.NINPvP_ST_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -152,12 +152,12 @@ internal static class NINPvP
                 {
 
                     // Seiton Tenchu priority for targets below 50% HP
-                    if (IsEnabled(CustomComboPreset.NINPvP_ST_SeitonTenchu) && GetTargetHPPercent() < (Config.NINPVP_SeitonTenchu) &&
+                    if (IsEnabled(Preset.NINPvP_ST_SeitonTenchu) && GetTargetHPPercent() < (Config.NINPVP_SeitonTenchu) &&
                         (IsLB1Ready || HasStatusEffect(Buffs.SeitonUnsealed)))  // Limit Break or Unsealed buff
                         return OriginalHook(SeitonTenchu);
 
                     //Smite
-                    if (IsEnabled(CustomComboPreset.NINPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                    if (IsEnabled(Preset.NINPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
                         GetTargetHPPercent() <= (Config.NINPvP_SmiteThreshold))
                         return PvPMelee.Smite;
 
@@ -168,17 +168,17 @@ internal static class NINPvP
                     if (canWeave)
                     {
                         // Melee range actions
-                        if (IsEnabled(CustomComboPreset.NINPvP_ST_Dokumori) && inMeleeRange && !GetCooldown(Dokumori).IsCooldown)
+                        if (IsEnabled(Preset.NINPvP_ST_Dokumori) && inMeleeRange && !GetCooldown(Dokumori).IsCooldown)
                             return OriginalHook(Dokumori);
 
                         // Bunshin
-                        if (IsEnabled(CustomComboPreset.NINPvP_ST_Bunshin) && !GetCooldown(Bunshin).IsCooldown)
+                        if (IsEnabled(Preset.NINPvP_ST_Bunshin) && !GetCooldown(Bunshin).IsCooldown)
                             return OriginalHook(Bunshin);
 
                         // Three Mudra
-                        if (IsEnabled(CustomComboPreset.NINPvP_ST_ThreeMudra) && threeMudrasCD.RemainingCharges > 0 && !mudraMode)
+                        if (IsEnabled(Preset.NINPvP_ST_ThreeMudra) && threeMudrasCD.RemainingCharges > 0 && !mudraMode)
                         {
-                            if (!IsEnabled(CustomComboPreset.NINPvP_ST_ThreeMudraPool) || HasStatusEffect(Buffs.Bunshin))
+                            if (!IsEnabled(Preset.NINPvP_ST_ThreeMudraPool) || HasStatusEffect(Buffs.Bunshin))
                                 return OriginalHook(ThreeMudra);
                         }  
 
@@ -187,10 +187,10 @@ internal static class NINPvP
                     // Mudra mode actions
                     if (mudraMode)
                     {
-                        if (IsEnabled(CustomComboPreset.NINPvP_ST_Meisui) && inMeisuiRange && !HasStatusEffect(Debuffs.SealedMeisui))
+                        if (IsEnabled(Preset.NINPvP_ST_Meisui) && inMeisuiRange && !HasStatusEffect(Debuffs.SealedMeisui))
                             return OriginalHook(Meisui);
 
-                        if (IsEnabled(CustomComboPreset.NINPvP_ST_MudraMode))
+                        if (IsEnabled(Preset.NINPvP_ST_MudraMode))
                         {
                             if (!HasStatusEffect(Debuffs.SealedHyoshoRanryu))
                                 return OriginalHook(HyoshoRanryu);
@@ -206,7 +206,7 @@ internal static class NINPvP
 
 
                     // Fuma Shuriken
-                    if (IsEnabled(CustomComboPreset.NINPvP_ST_FumaShuriken) && fumaCD.RemainingCharges > 0 && !HasStatusEffect(Buffs.FleetingRaijuReady))
+                    if (IsEnabled(Preset.NINPvP_ST_FumaShuriken) && fumaCD.RemainingCharges > 0 && !HasStatusEffect(Buffs.FleetingRaijuReady))
                         return OriginalHook(FumaShuriken);
                 }
 
@@ -219,7 +219,7 @@ internal static class NINPvP
 
     internal class NINPvP_AoE_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINPvP_AoE_BurstMode;
+        protected internal override Preset Preset { get; } = Preset.NINPvP_AoE_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -244,30 +244,30 @@ internal static class NINPvP
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
                     // Seiton Tenchu priority for targets below 50% HP
-                    if (IsEnabled(CustomComboPreset.NINPvP_AoE_SeitonTenchu) && GetTargetHPPercent() < (Config.NINPVP_SeitonTenchu) && IsLB1Ready)
+                    if (IsEnabled(Preset.NINPvP_AoE_SeitonTenchu) && GetTargetHPPercent() < (Config.NINPVP_SeitonTenchu) && IsLB1Ready)
                         return OriginalHook(SeitonTenchu);
 
                     if (canWeave)
                     {
-                        if (IsEnabled(CustomComboPreset.NINPvP_AoE_Dokumori) && InMeleeRange() && !GetCooldown(Dokumori).IsCooldown)
+                        if (IsEnabled(Preset.NINPvP_AoE_Dokumori) && InMeleeRange() && !GetCooldown(Dokumori).IsCooldown)
                             return OriginalHook(Dokumori);
 
-                        if (IsEnabled(CustomComboPreset.NINPvP_AoE_Bunshin) && !GetCooldown(Bunshin).IsCooldown)
+                        if (IsEnabled(Preset.NINPvP_AoE_Bunshin) && !GetCooldown(Bunshin).IsCooldown)
                             return OriginalHook(Bunshin);
 
                         // Three Mudra
-                        if (IsEnabled(CustomComboPreset.NINPvP_AoE_ThreeMudra) && threeMudrasCD.RemainingCharges > 0 && !mudraMode)
+                        if (IsEnabled(Preset.NINPvP_AoE_ThreeMudra) && threeMudrasCD.RemainingCharges > 0 && !mudraMode)
                         {
-                            if (!IsEnabled(CustomComboPreset.NINPvP_AoE_ThreeMudraPool) || HasStatusEffect(Buffs.Bunshin))
+                            if (!IsEnabled(Preset.NINPvP_AoE_ThreeMudraPool) || HasStatusEffect(Buffs.Bunshin))
                                 return OriginalHook(ThreeMudra);
                         }
                     }
 
                     if (mudraMode)
                     {
-                        if (IsEnabled(CustomComboPreset.NINPvP_AoE_MudraMode))
+                        if (IsEnabled(Preset.NINPvP_AoE_MudraMode))
                         {
-                            if (IsEnabled(CustomComboPreset.NINPvP_AoE_Meisui) && inMeisuiRange && !meisuiLocked)
+                            if (IsEnabled(Preset.NINPvP_AoE_Meisui) && inMeisuiRange && !meisuiLocked)
                                 return OriginalHook(Meisui);
 
                             if (!dotonLocked)
@@ -279,7 +279,7 @@ internal static class NINPvP
                         else return actionID;  // if automatic is not enabled and in mudra mode, ensures fuma shuriken is the option so mudras can be properly chosen
                     }
 
-                    if (IsEnabled(CustomComboPreset.NINPvP_AoE_FumaShuriken) && fumaCD.RemainingCharges > 0)
+                    if (IsEnabled(Preset.NINPvP_AoE_FumaShuriken) && fumaCD.RemainingCharges > 0)
                         return OriginalHook(FumaShuriken);
 
                     if (InMeleeRange()) // Melee Combo

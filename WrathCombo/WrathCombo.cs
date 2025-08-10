@@ -234,7 +234,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
                     if (a.Key == "$type")
                         continue;
 
-                    if (Enum.TryParse(typeof(CustomComboPreset), a.Key, out _))
+                    if (Enum.TryParse(typeof(Preset), a.Key, out _))
                         continue;
 
                     Svc.Log.Debug($"Couldn't find {a.Key}");

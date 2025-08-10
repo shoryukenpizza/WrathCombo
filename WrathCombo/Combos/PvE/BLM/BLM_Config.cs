@@ -8,11 +8,11 @@ internal partial class BLM
 {
     internal static class Config
     {
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.BLM_ST_Opener:
+                case Preset.BLM_ST_Opener:
                     DrawHorizontalRadioButton(BLM_SelectedOpener,
                         "Standard opener", "Uses Standard opener",
                         0);
@@ -24,12 +24,12 @@ internal partial class BLM
                     DrawBossOnlyChoice(BLM_Balance_Content);
                     break;
 
-                case CustomComboPreset.BLM_ST_LeyLines:
+                case Preset.BLM_ST_LeyLines:
                     DrawSliderInt(0, 1, BLM_ST_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready?");
                     break;
 
-                case CustomComboPreset.BLM_ST_Movement:
+                case Preset.BLM_ST_Movement:
                     DrawHorizontalMultiChoice(BLM_ST_MovementOption,
                         $"Use {Triplecast.ActionName()}", "", 4, 0);
 
@@ -55,7 +55,7 @@ internal partial class BLM
                         4, 3, $"{Xenoglossy.ActionName()} Priority: ");
                     break;
 
-                case CustomComboPreset.BLM_ST_UsePolyglot:
+                case Preset.BLM_ST_UsePolyglot:
                     if (DrawSliderInt(0, 3, BLM_ST_Polyglot_Save,
                         "How many charges to save for manual use?"))
                         if (BLM_ST_Polyglot_Movement > 3 - BLM_ST_Polyglot_Save)
@@ -67,7 +67,7 @@ internal partial class BLM
                             BLM_ST_Polyglot_Save.Value = 3 - BLM_ST_Polyglot_Movement;
                     break;
 
-                case CustomComboPreset.BLM_ST_Triplecast:
+                case Preset.BLM_ST_Triplecast:
                     DrawHorizontalRadioButton(BLM_ST_Triplecast_SubOption,
                         "Always", "Use always.", 0);
 
@@ -80,7 +80,7 @@ internal partial class BLM
                     break;
 
 
-                case CustomComboPreset.BLM_ST_Thunder:
+                case Preset.BLM_ST_Thunder:
 
                     DrawSliderInt(0, 50, BLM_ST_ThunderOption,
                         "Stop using at Enemy HP %. Set to Zero to disable this check.");
@@ -102,32 +102,32 @@ internal partial class BLM
                     ImGui.Unindent();
                     break;
 
-                case CustomComboPreset.BLM_ST_Manaward:
+                case Preset.BLM_ST_Manaward:
                     DrawSliderInt(0, 100, BLM_ST_Manaward_Threshold,
                         $"{Manaward.ActionName()} HP percentage threshold");
                     break;
 
-                case CustomComboPreset.BLM_AoE_LeyLines:
+                case Preset.BLM_AoE_LeyLines:
                     DrawSliderInt(0, 1, BLM_AoE_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
                     break;
 
-                case CustomComboPreset.BLM_AoE_Triplecast:
+                case Preset.BLM_AoE_Triplecast:
                     DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges,
                         $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
                     break;
 
-                case CustomComboPreset.BLM_AoE_Thunder:
+                case Preset.BLM_AoE_Thunder:
                     DrawSliderInt(0, 50, BLM_AoE_ThunderHP,
                         $"Stop Using {Thunder2.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
                     break;
 
-                case CustomComboPreset.BLM_Variant_Cure:
+                case Preset.BLM_Variant_Cure:
                     DrawSliderInt(1, 100, BLM_VariantCure,
                         "HP% to be at or under", 200);
                     break;
 
-                case CustomComboPreset.BLM_Blizzard1to3:
+                case Preset.BLM_Blizzard1to3:
                     DrawRadioButton(BLM_B1to3,
                         $"Replaces {Blizzard.ActionName()}", $"Replaces {Blizzard.ActionName()} with {Blizzard3.ActionName()} when out of Umbral Ice III.", 0);
 
@@ -135,7 +135,7 @@ internal partial class BLM
                         $"Replaces {Blizzard3.ActionName()}", $"Replaces {Blizzard3.ActionName()} with {Blizzard.ActionName()} when in Umbral Ice III.", 1);
                     break;
 
-                case CustomComboPreset.BLM_Fire1to3:
+                case Preset.BLM_Fire1to3:
                     DrawRadioButton(BLM_F1to3,
                         $"Replaces {Fire.ActionName()}", $"Replaces {Fire.ActionName()} with {Fire3.ActionName()} when out of Astral Fire III or not in combat.", 0);
 
@@ -143,7 +143,7 @@ internal partial class BLM
                         $"Replaces {Fire3.ActionName()}", $"Replaces {Fire3.ActionName()} with {Fire.ActionName()} when in Astral Fire III.", 1);
                     break;
 
-                case CustomComboPreset.BLM_Blizzard4toDespair:
+                case Preset.BLM_Blizzard4toDespair:
                     DrawRadioButton(BLM_B4toDespair,
                         $"Replaces {Blizzard4.ActionName()}", $"Replaces {Blizzard4.ActionName()} with {Despair.ActionName()} when in Astral Fire.", 0);
 

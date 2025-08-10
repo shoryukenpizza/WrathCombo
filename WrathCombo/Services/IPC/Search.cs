@@ -128,7 +128,7 @@ public class Search(Leasing leasing)
     ///     Include both combos and options, but also jobs' options.
     /// </summary>
     [field: AllowNull, MaybeNull]
-    internal Dictionary<CustomComboPreset,
+    internal Dictionary<Preset,
             Dictionary<string, (bool enabled, bool autoMode)>>
         AllPresetsControlled
     {
@@ -222,17 +222,17 @@ public class Search(Leasing leasing)
     /// </summary>
     /// <param name="preset">The CustomComboPreset to find the root parent for.</param>
     /// <returns>The root parent CustomComboPreset.</returns>
-    public CustomComboPreset GetRootParent(CustomComboPreset preset)
+    public Preset GetRootParent(Preset preset)
     {
         if (!Attribute.IsDefined(
-                typeof(CustomComboPreset).GetField(preset.ToString())!,
+                typeof(Preset).GetField(preset.ToString())!,
                 typeof(ParentComboAttribute)))
         {
             return preset;
         }
 
         var parentAttribute = (ParentComboAttribute)Attribute.GetCustomAttribute(
-            typeof(CustomComboPreset).GetField(preset.ToString())!,
+            typeof(Preset).GetField(preset.ToString())!,
             typeof(ParentComboAttribute)
         )!;
 
@@ -245,7 +245,7 @@ public class Search(Leasing leasing)
     /// </summary>
     [field: AllowNull, MaybeNull]
     // ReSharper disable once MemberCanBePrivate.Global
-    internal Dictionary<string, (Job Job, CustomComboPreset ID,
+    internal Dictionary<string, (Job Job, Preset ID,
         CustomComboInfoAttribute Info, bool HasParentCombo, bool IsVariant, string
         ParentComboName, ComboType ComboType)> Presets
     {
@@ -542,13 +542,13 @@ public class Search(Leasing leasing)
     ///     A wrapper for <see cref="Core.PluginConfiguration.AutoActions" /> with
     ///     IPC settings on top.
     /// </summary>
-    internal Dictionary<CustomComboPreset, bool> AutoActions =>
+    internal Dictionary<Preset, bool> AutoActions =>
         PresetStates
             .Where(x =>
-                Enum.Parse<CustomComboPreset>(x.Key).Attributes()
+                Enum.Parse<Preset>(x.Key).Attributes()
                     .AutoAction is not null)
             .ToDictionary(
-                preset => Enum.Parse<CustomComboPreset>(preset.Key),
+                preset => Enum.Parse<Preset>(preset.Key),
                 preset => preset.Value[ComboStateKeys.AutoMode]
             );
 
@@ -556,10 +556,10 @@ public class Search(Leasing leasing)
     ///     A wrapper for <see cref="Core.PluginConfiguration.EnabledActions" /> with
     ///     IPC settings on top.
     /// </summary>
-    internal HashSet<CustomComboPreset> EnabledActions =>
+    internal HashSet<Preset> EnabledActions =>
         PresetStates
             .Where(preset => preset.Value[ComboStateKeys.Enabled])
-            .Select(preset => Enum.Parse<CustomComboPreset>(preset.Key))
+            .Select(preset => Enum.Parse<Preset>(preset.Key))
             .ToHashSet();
 
     #endregion

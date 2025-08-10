@@ -10,7 +10,7 @@ namespace WrathCombo.CustomComboNS.Functions;
 internal abstract partial class CustomComboFunctions
 {
     /// <summary> Checks if the given preset is enabled. </summary>
-    public static bool IsEnabled(CustomComboPreset preset)
+    public static bool IsEnabled(Preset preset)
     {
         if ((int)preset < 100)
             return true;
@@ -33,7 +33,7 @@ internal abstract partial class CustomComboFunctions
     }
 
     /// <summary> Checks if the given preset is not enabled. </summary>
-    public static bool IsNotEnabled(CustomComboPreset preset) => !IsEnabled(preset);
+    public static bool IsNotEnabled(Preset preset) => !IsEnabled(preset);
 
     public class JobIDs
     {

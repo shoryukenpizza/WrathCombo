@@ -53,11 +53,11 @@ internal static class PLDPvP
         public static UserInt
             PLDPvP_RampartThreshold = new("PLDPvP_RampartThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.PLDPvP_Rampart:
+                case Preset.PLDPvP_Rampart:
                     UserConfig.DrawSliderInt(1, 100, PLDPvP_RampartThreshold,
                         "Use Rampart below set threshold for self");
                     break;
@@ -69,42 +69,42 @@ internal static class PLDPvP
 
     internal class PLDPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PLDPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.PLDPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
             if (actionID is FastBlade or RiotBlade or RoyalAuthority)
             {
-                if (IsEnabled(CustomComboPreset.PLDPvP_Rampart) && PvPTank.CanRampart(Config.PLDPvP_RampartThreshold))
+                if (IsEnabled(Preset.PLDPvP_Rampart) && PvPTank.CanRampart(Config.PLDPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
-                if (IsEnabled(CustomComboPreset.PLDPvP_Intervene) && !InMeleeRange() && IsOffCooldown(Intervene) || IsEnabled(CustomComboPreset.PLDPvP_Intervene_Melee) && InMeleeRange() && IsOffCooldown(Intervene))
+                if (IsEnabled(Preset.PLDPvP_Intervene) && !InMeleeRange() && IsOffCooldown(Intervene) || IsEnabled(Preset.PLDPvP_Intervene_Melee) && InMeleeRange() && IsOffCooldown(Intervene))
                     return Intervene;
 
                 // Check conditions for Holy Sheltron
-                if (IsEnabled(CustomComboPreset.PLDPvP_Sheltron) && IsOffCooldown(HolySheltron) && InCombat() && InMeleeRange())
+                if (IsEnabled(Preset.PLDPvP_Sheltron) && IsOffCooldown(HolySheltron) && InCombat() && InMeleeRange())
                     return HolySheltron;
 
                 // Check conditions for ShieldSmite
-                if (IsEnabled(CustomComboPreset.PLDPvP_ShieldSmite) && IsOffCooldown(ShieldSmite) && InCombat() && InMeleeRange())
+                if (IsEnabled(Preset.PLDPvP_ShieldSmite) && IsOffCooldown(ShieldSmite) && InCombat() && InMeleeRange())
                     return ShieldSmite;
 
                 // Prioritize Imperator
-                if (IsEnabled(CustomComboPreset.PLDPvP_Imperator) && IsOffCooldown(Imperator) && InMeleeRange() && CanWeave())
+                if (IsEnabled(Preset.PLDPvP_Imperator) && IsOffCooldown(Imperator) && InMeleeRange() && CanWeave())
                     return Imperator;
 
-                if (IsEnabled(CustomComboPreset.PLDPvP_PhalanxCombo))
+                if (IsEnabled(Preset.PLDPvP_PhalanxCombo))
                 {
                     if (HasStatusEffect(Buffs.BladeOfFaithReady) || WasLastSpell(BladeOfTruth) || WasLastSpell(BladeOfFaith))
                         return OriginalHook(Phalanx);
                 }
 
                 // Check if the custom combo preset is enabled and ConfiteorReady is active
-                if (IsEnabled(CustomComboPreset.PLDPvP_Confiteor) && HasStatusEffect(Buffs.ConfiteorReady))
+                if (IsEnabled(Preset.PLDPvP_Confiteor) && HasStatusEffect(Buffs.ConfiteorReady))
                     return OriginalHook(Imperator);
 
 
-                if (IsEnabled(CustomComboPreset.PLDPvP_HolySpirit))
+                if (IsEnabled(Preset.PLDPvP_HolySpirit))
                 {
                     if (IsOffCooldown(HolySpirit) && !InMeleeRange() || IsOffCooldown(HolySpirit) && (!HasStatusEffect(Buffs.AttonementReady) && !HasStatusEffect(Buffs.SupplicationReady) && !HasStatusEffect(Buffs.SepulchreReady)))
                         return HolySpirit;

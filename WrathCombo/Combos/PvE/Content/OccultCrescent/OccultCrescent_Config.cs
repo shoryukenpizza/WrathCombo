@@ -31,82 +31,82 @@ internal partial class OccultCrescent
             Phantom_TimeMage_Comet_RequireSpeed = new("Phantom_TimeMage_Comet_RequireSpeed", true),
             Phantom_TimeMage_Comet_UseSpeed = new("Phantom_TimeMage_Comet_UseSpeed", true);
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.Phantom_Freelancer_OccultResuscitation:
+                case Preset.Phantom_Freelancer_OccultResuscitation:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Freelancer_Resuscitation_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Geomancer_Sunbath:
+                case Preset.Phantom_Geomancer_Sunbath:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Geomancer_Sunbath_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Knight_PhantomGuard:
+                case Preset.Phantom_Knight_PhantomGuard:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Knight_PhantomGuard_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
-                case CustomComboPreset.Phantom_Knight_Pray:
+                case Preset.Phantom_Knight_Pray:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Knight_Pray_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
-                case CustomComboPreset.Phantom_Knight_OccultHeal:
+                case Preset.Phantom_Knight_OccultHeal:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Knight_OccultHeal_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
-                case CustomComboPreset.Phantom_Knight_Pledge:
+                case Preset.Phantom_Knight_Pledge:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Knight_Pledge_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
-                case CustomComboPreset.Phantom_Bard_MightyMarch:
+                case Preset.Phantom_Bard_MightyMarch:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Bard_MightyMarch_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Monk_OccultChakra:
+                case Preset.Phantom_Monk_OccultChakra:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Monk_OccultChakra_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Oracle_Blessing:
+                case Preset.Phantom_Oracle_Blessing:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Oracle_Blessing_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Oracle_Starfall:
+                case Preset.Phantom_Oracle_Starfall:
                     UserConfig.DrawSliderInt(91, 100, Phantom_Oracle_Starfall_Health,
                         "Player HP% to be \ngreater than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Ranger_OccultUnicorn:
+                case Preset.Phantom_Ranger_OccultUnicorn:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Ranger_OccultUnicorn_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Ranger_PhantomAim:
+                case Preset.Phantom_Ranger_PhantomAim:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Ranger_PhantomAim_Stop,
                         "Target HP% to be \ngreater than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Thief_Steal:
+                case Preset.Phantom_Thief_Steal:
                     UserConfig.DrawSliderInt(1, 50, Phantom_Thief_Steal_Health,
                         "Target HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Chemist_OccultPotion:
+                case Preset.Phantom_Chemist_OccultPotion:
                     UserConfig.DrawSliderInt(1, 100, Phantom_Chemist_OccultPotion_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.Phantom_Chemist_OccultEther:
+                case Preset.Phantom_Chemist_OccultEther:
                     UserConfig.DrawSliderInt(1, 10000, Phantom_Chemist_OccultEther_MP,
                         "Player MP to be \nless than or equal to:", sliderIncrement: SliderIncrements.Hundreds);
                     break;
 
-                case CustomComboPreset.Phantom_Chemist_OccultElixir:
+                case Preset.Phantom_Chemist_OccultElixir:
                     ImGui.Indent();
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudRed, "This is a VERY costly Feature!");
                     ImGui.Unindent();
@@ -120,7 +120,7 @@ internal partial class OccultCrescent
                     ImGui.Unindent();
                     break;
 
-                case CustomComboPreset.Phantom_TimeMage_OccultComet:
+                case Preset.Phantom_TimeMage_OccultComet:
                     UserConfig.DrawAdditionalBoolChoice(Phantom_TimeMage_Comet_RequireSpeed,
                         "Require Swiftcast or Occult Quick to use Comet", "");
                     if (Phantom_TimeMage_Comet_RequireSpeed)

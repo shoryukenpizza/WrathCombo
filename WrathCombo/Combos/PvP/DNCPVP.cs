@@ -52,25 +52,25 @@ internal static class DNCPvP
             DNCPvP_EnAvantCharges = new("DNCPvP_EnAvantCharges");
         
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.DNCPvP_BurstMode_CuringWaltz:
+                case Preset.DNCPvP_BurstMode_CuringWaltz:
                     UserConfig.DrawSliderInt(0, 90,
                         DNCPvP_WaltzThreshold,
                         "Curing Waltz HP% - caps at 90 to prevent waste.");
 
                     break;
 
-                case CustomComboPreset.DNCPvP_BurstMode_Dash:
+                case Preset.DNCPvP_BurstMode_Dash:
                     UserConfig.DrawSliderInt(0, 3,
                         DNCPvP_EnAvantCharges,
                         "How many to save for manual");
 
                     break;
 
-                case CustomComboPreset.DNCPvP_Eagle:
+                case Preset.DNCPvP_Eagle:
                     UserConfig.DrawSliderInt(0, 100,
                         DNCPvP_EagleThreshold,
                         "Target HP percent threshold to use Eagle Eye Shot Below.");
@@ -84,7 +84,7 @@ internal static class DNCPvP
 
     internal class DNCPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DNCPvP_BurstMode;
+        protected internal override Preset Preset { get; } = Preset.DNCPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -106,13 +106,13 @@ internal static class DNCPvP
 
                 // Honing Dance Option
 
-                if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !HasStatusEffect(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
+                if (IsEnabled(Preset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !HasStatusEffect(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
                     return ClosedPosition;
 
-                if (IsEnabled(CustomComboPreset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.DNCPvP_EagleThreshold))
+                if (IsEnabled(Preset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.DNCPvP_EagleThreshold))
                     return PvPPhysRanged.EagleEyeShot;
 
-                if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_HoningDance) && honingDanceReady && HasTarget() && distance <= 5 && !enemyGuarded)
+                if (IsEnabled(Preset.DNCPvP_BurstMode_HoningDance) && honingDanceReady && HasTarget() && distance <= 5 && !enemyGuarded)
                 {
                     if (HasStatusEffect(Buffs.Acclaim) && acclaimStacks < 4)
                         return WHM.Assize;
@@ -123,14 +123,14 @@ internal static class DNCPvP
                 if (canWeave)
                 {
                     // Curing Waltz Option
-                    if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= Config.DNCPvP_WaltzThreshold)
+                    if (IsEnabled(Preset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= Config.DNCPvP_WaltzThreshold)
                         return OriginalHook(CuringWaltz);
 
                     // Fan Dance weave
                     if (IsOffCooldown(FanDance) && distance < 13 && !enemyGuarded) // 2y below max to avoid waste
                         return OriginalHook(FanDance);
 
-                    if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_Dash) && !HasStatusEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > Config.DNCPvP_EnAvantCharges)
+                    if (IsEnabled(Preset.DNCPvP_BurstMode_Dash) && !HasStatusEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > Config.DNCPvP_EnAvantCharges)
                         return EnAvant;
                 }
 

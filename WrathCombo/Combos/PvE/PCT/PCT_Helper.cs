@@ -7,7 +7,6 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.PCT.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 #endregion
 
 namespace WrathCombo.Combos.PvE;

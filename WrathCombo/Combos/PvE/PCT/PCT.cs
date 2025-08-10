@@ -2,7 +2,6 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.PCT.Config;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class PCT : Caster

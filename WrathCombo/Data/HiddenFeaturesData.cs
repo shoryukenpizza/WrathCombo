@@ -58,7 +58,7 @@ internal static class HiddenFeaturesData
     ///     and if the condition is met, and the logic is true.
     /// </returns>
     public static bool NonBlockingIsEnabledWith
-        (CustomComboPreset preset, Func<bool> condition, Func<bool> logic) =>
+        (Preset preset, Func<bool> condition, Func<bool> logic) =>
         (!FeaturesEnabled || !IsEnabled(preset) || !condition()) ||
         (FeaturesEnabled && IsEnabled(preset) && condition() && logic());
 
@@ -77,7 +77,7 @@ internal static class HiddenFeaturesData
     ///     and the logic is true.
     /// </returns>
     public static bool IsEnabledWith
-        (CustomComboPreset preset, Func<bool> logic) =>
+        (Preset preset, Func<bool> logic) =>
         FeaturesEnabled && IsEnabled(preset) && logic();
 
     internal static class Targeting

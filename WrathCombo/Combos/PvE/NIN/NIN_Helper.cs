@@ -125,7 +125,7 @@ internal partial class NIN
 
     internal static WrathOpener Opener()
     {
-        if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode))
+        if (IsEnabled(Preset.NIN_ST_AdvancedMode))
         {
             if (Config.NIN_Adv_Opener_Selection == 0 && Opener1.LevelChecked)
                 return Opener1;

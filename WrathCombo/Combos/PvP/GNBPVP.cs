@@ -64,16 +64,16 @@ internal static class GNBPvP
             GNBPvP_BlastingZoneThreshold = new("GNBPvP_BlastingZoneThreshold"),
             GNBPvP_RampartThreshold = new("GNBPvP_RampartThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.GNBPvP_Rampart:
+                case Preset.GNBPvP_Rampart:
                     UserConfig.DrawSliderInt(1, 100, GNBPvP_RampartThreshold,
                         "Use Rampart below set threshold for self");
                     break;
 
-                case CustomComboPreset.GNBPvP_Corundum:
+                case Preset.GNBPvP_Corundum:
                     UserConfig.DrawSliderInt(1, 100,
                         GNBPvP_CorundumThreshold,
                         "HP% to be at or Below to use " +
@@ -81,7 +81,7 @@ internal static class GNBPvP
                         itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.GNBPvP_BlastingZone:
+                case Preset.GNBPvP_BlastingZone:
 
                     UserConfig.DrawSliderInt(1, 100,
                         GNBPvP_BlastingZoneThreshold,
@@ -97,7 +97,7 @@ internal static class GNBPvP
             
     internal class GNBPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNBPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.GNBPvP_Burst;
             
         protected override uint Invoke(uint actionID)
         {
@@ -106,10 +106,10 @@ internal static class GNBPvP
                 int corundumThreshold = Config.GNBPvP_CorundumThreshold;
                 int blastingZoneThreshold = Config.GNBPvP_BlastingZoneThreshold; 
 
-                if (CanWeave() && IsEnabled(CustomComboPreset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
+                if (CanWeave() && IsEnabled(Preset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
                     return HeartOfCorundum;
 
-                if (IsEnabled(CustomComboPreset.GNBPvP_Rampart) && PvPTank.CanRampart(Config.GNBPvP_RampartThreshold))
+                if (IsEnabled(Preset.GNBPvP_Rampart) && PvPTank.CanRampart(Config.GNBPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (!PvPCommon.TargetImmuneToDamage())
@@ -117,15 +117,15 @@ internal static class GNBPvP
                     if (CanWeave()) //Weave section
                     {
                         //Continuation
-                        if (IsEnabled(CustomComboPreset.GNBPvP_ST_Continuation) && OriginalHook(Continuation) != Continuation) // Weaving followup button, whenever it changes to something useable, it will fire
+                        if (IsEnabled(Preset.GNBPvP_ST_Continuation) && OriginalHook(Continuation) != Continuation) // Weaving followup button, whenever it changes to something useable, it will fire
                             return OriginalHook(Continuation);
 
-                        if (IsEnabled(CustomComboPreset.GNBPvP_BlastingZone) && IsOffCooldown(BlastingZone) && GetTargetHPPercent() < blastingZoneThreshold)  // Removed nomercy requirement bc of hp threshold.
+                        if (IsEnabled(Preset.GNBPvP_BlastingZone) && IsOffCooldown(BlastingZone) && GetTargetHPPercent() < blastingZoneThreshold)  // Removed nomercy requirement bc of hp threshold.
                             return BlastingZone;
                     }
 
                     //RoughDivide overcap protection
-                    if (IsEnabled(CustomComboPreset.GNBPvP_RoughDivide))
+                    if (IsEnabled(Preset.GNBPvP_RoughDivide))
                     {
                         if (HasCharges(RoughDivide) && !HasStatusEffect(Buffs.NoMercy) && !JustUsed(RoughDivide, 3f) &&
                             (ActionReady(FatedCircle)|| ActionReady(GnashingFang) || GetRemainingCharges(RoughDivide) == 2)) // Will RD for for no mercy when at 2 charges, or before the fated circle or gnashing fang combo
@@ -133,14 +133,14 @@ internal static class GNBPvP
                     }
 
                     //Fated Circle and Followup
-                    if (IsEnabled(CustomComboPreset.GNBPvP_FatedCircle))
+                    if (IsEnabled(Preset.GNBPvP_FatedCircle))
                     {
                         if (ActionReady(FatedCircle) && HasStatusEffect(Buffs.NoMercy) && OriginalHook(Continuation) == Continuation)
                             return FatedCircle;
                     }
 
                     //GnashingFang
-                    if (IsEnabled(CustomComboPreset.GNBPvP_ST_GnashingFang) && (ActionReady(GnashingFang) || OriginalHook(GnashingFang) != GnashingFang))
+                    if (IsEnabled(Preset.GNBPvP_ST_GnashingFang) && (ActionReady(GnashingFang) || OriginalHook(GnashingFang) != GnashingFang))
                         return OriginalHook(GnashingFang);
 
                 }
@@ -152,7 +152,7 @@ internal static class GNBPvP
 
     internal class GNBPvP_GnashingFang : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNBPvP_GnashingFang;
+        protected internal override Preset Preset { get; } = Preset.GNBPvP_GnashingFang;
 
         protected override uint Invoke(uint actionID) =>
             actionID is GnashingFang &&

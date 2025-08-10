@@ -43,17 +43,17 @@ internal static class BRDPvP
             BRDPvP_HarmonicArrowCharges = new("BRDPvP_HarmonicArrowCharges"),
             BRDPvP_EagleThreshold = new("BRDPvP_EagleThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
 
-                case CustomComboPreset.BRDPvP_HarmonicArrow:
+                case Preset.BRDPvP_HarmonicArrow:
                     UserConfig.DrawSliderInt(1, 4, BRDPvP_HarmonicArrowCharges, "How many Charges to use it at \n 1 charge 8000 damage \n 2 charge 12000 damage \n 3 charge 15000 damage \n 4 charge 17000 damage");
 
                     break;
 
-                case CustomComboPreset.BRDPvP_Eagle:
+                case Preset.BRDPvP_Eagle:
                     UserConfig.DrawSliderInt(0, 100, BRDPvP_EagleThreshold,
                         "Target HP percent threshold to use Eagle Eye Shot Below.");
 
@@ -66,7 +66,7 @@ internal static class BRDPvP
 
     internal class BRDPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BRDPvP_BurstMode;
+        protected internal override Preset Preset { get; } = Preset.BRDPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
 
@@ -77,38 +77,38 @@ internal static class BRDPvP
                 var canWeave = CanWeave(0.5f);
                 uint harmonicCharges = GetRemainingCharges(HarmonicArrow);
 
-                if (IsEnabled(CustomComboPreset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.BRDPvP_EagleThreshold))
+                if (IsEnabled(Preset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.BRDPvP_EagleThreshold))
                     return PvPPhysRanged.EagleEyeShot;
 
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
-                    if (IsEnabled(CustomComboPreset.BRDPvP_Wardens) && InPvP() &&  //Autowardens set up only for soft ccs, it cant be used while cced like purify
+                    if (IsEnabled(Preset.BRDPvP_Wardens) && InPvP() &&  //Autowardens set up only for soft ccs, it cant be used while cced like purify
                         (HasStatusEffect(PvPCommon.Debuffs.Bind, anyOwner: true) || HasStatusEffect(PvPCommon.Debuffs.Heavy, anyOwner: true) || HasStatusEffect(PvPCommon.Debuffs.HalfAsleep, anyOwner: true)))
                         return OriginalHook(WardensPaean);
 
                     if (canWeave)
                     {
                         // Silence shot that gives PP, set up to not happen right after apex to tighten burst and silence after the bigger damage. Apex > Harmonic> Silent > Burst > PP or Apex > Burst > Silent >  PP
-                        if (IsEnabled(CustomComboPreset.BRDPvP_SilentNocturne) && !GetCooldown(SilentNocturne).IsCooldown && !WasLastAction(ApexArrow) && !HasStatusEffect(Buffs.Repertoire)) 
+                        if (IsEnabled(Preset.BRDPvP_SilentNocturne) && !GetCooldown(SilentNocturne).IsCooldown && !WasLastAction(ApexArrow) && !HasStatusEffect(Buffs.Repertoire)) 
                             return OriginalHook(SilentNocturne);
 
-                        if (IsEnabled(CustomComboPreset.BRDPvP_EncoreOfLight) && HasStatusEffect(Buffs.EncoreofLightReady)) // LB finisher shot
+                        if (IsEnabled(Preset.BRDPvP_EncoreOfLight) && HasStatusEffect(Buffs.EncoreofLightReady)) // LB finisher shot
                             return OriginalHook(FinalFantasia);
                     }
 
-                    if (IsEnabled(CustomComboPreset.BRDPvP_ApexArrow) && ActionReady(ApexArrow)) // Use on cd to keep up buff
+                    if (IsEnabled(Preset.BRDPvP_ApexArrow) && ActionReady(ApexArrow)) // Use on cd to keep up buff
                         return OriginalHook(ApexArrow);
 
                     if (HasStatusEffect(Buffs.FrontlineMarch))
                     {
-                        if (IsEnabled(CustomComboPreset.BRDPvP_HarmonicArrow) &&    //Harmonic Logic. Slider plus execute ranges
+                        if (IsEnabled(Preset.BRDPvP_HarmonicArrow) &&    //Harmonic Logic. Slider plus execute ranges
                             (harmonicCharges >= Config.BRDPvP_HarmonicArrowCharges ||
                              harmonicCharges == 1 && GetTargetCurrentHP() <= 8000 ||
                              harmonicCharges == 2 && GetTargetCurrentHP() <= 12000 ||
                              harmonicCharges == 3 && GetTargetCurrentHP() <= 15000))
                             return OriginalHook(HarmonicArrow);
 
-                        if (IsEnabled(CustomComboPreset.BRDPvP_BlastArrow) && HasStatusEffect(Buffs.BlastArrowReady)) // Blast arrow when ready
+                        if (IsEnabled(Preset.BRDPvP_BlastArrow) && HasStatusEffect(Buffs.BlastArrowReady)) // Blast arrow when ready
                             return OriginalHook(BlastArrow);
                     }
 

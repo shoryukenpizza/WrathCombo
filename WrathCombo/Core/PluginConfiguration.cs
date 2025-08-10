@@ -32,7 +32,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     /// <summary> Gets or sets the collection of enabled combos. </summary>
     [JsonProperty("EnabledActionsV6")]
-    public HashSet<CustomComboPreset> EnabledActions { get; set; } = [];
+    public HashSet<Preset> EnabledActions { get; set; } = [];
 
         #endregion
 
@@ -134,7 +134,7 @@ public class PluginConfiguration : IPluginConfiguration
         #endregion
 
         #region AutoAction Settings
-    public Dictionary<CustomComboPreset, bool> AutoActions { get; set; } = [];
+    public Dictionary<Preset, bool> AutoActions { get; set; } = [];
 
     public AutoRotationConfig RotationConfig { get; set; } = new();
 
@@ -285,14 +285,14 @@ public class PluginConfiguration : IPluginConfiguration
         {
             bool needToResetMessagePrinted = false;
 
-            var presets = Enum.GetValues<CustomComboPreset>().Cast<int>();
+            var presets = Enum.GetValues<Preset>().Cast<int>();
 
             foreach (int value in values)
             {
                 Svc.Log.Debug(value.ToString());
                 if (presets.Contains(value))
                 {
-                    var preset = Enum.GetValues<CustomComboPreset>()
+                    var preset = Enum.GetValues<Preset>()
                         .Where(preset => (int)preset == value)
                         .First();
 

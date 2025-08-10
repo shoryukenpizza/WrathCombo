@@ -78,27 +78,27 @@ internal partial class PLD
             PLD_Mit_HallowedGround_Max_DifficultyListSet = ContentCheck.ListSet.Halved,
             PLD_Mit_HallowedGround_DifficultyListSet = ContentCheck.ListSet.Halved;
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.PLD_ST_AdvancedMode_BalanceOpener:
+                case Preset.PLD_ST_AdvancedMode_BalanceOpener:
                     UserConfig.DrawBossOnlyChoice(PLD_Balance_Content);
                     break;
 
                 // Fight or Flight
-                case CustomComboPreset.PLD_ST_AdvancedMode_FoF:
+                case Preset.PLD_ST_AdvancedMode_FoF:
                     UserConfig.DrawSliderInt(0, 50, PLD_ST_FoF_Trigger, "Target HP%", 200);
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_FoF:
+                case Preset.PLD_AoE_AdvancedMode_FoF:
                     UserConfig.DrawSliderInt(0, 50, PLD_AoE_FoF_Trigger, "Target HP%", 200);
 
                     break;
 
                 // Sheltron
-                case CustomComboPreset.PLD_ST_AdvancedMode_Sheltron:
+                case Preset.PLD_ST_AdvancedMode_Sheltron:
                     UserConfig.DrawSliderInt(50, 100, PLD_ST_SheltronOption, "Oath Gauge", 200, 5);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_ST_Sheltron_SubOption, "All Enemies",
@@ -109,7 +109,7 @@ internal partial class PLD
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_Sheltron:
+                case Preset.PLD_AoE_AdvancedMode_Sheltron:
                     UserConfig.DrawSliderInt(50, 100, PLD_AoE_SheltronOption, "Oath Gauge", 200, 5);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sheltron_SubOption, "All Enemies",
@@ -121,7 +121,7 @@ internal partial class PLD
                     break;
 
                 // Rampart
-                case CustomComboPreset.PLD_ST_AdvancedMode_Rampart:
+                case Preset.PLD_ST_AdvancedMode_Rampart:
                     UserConfig.DrawSliderInt(1, 100, PLD_ST_Rampart_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_ST_Rampart_SubOption, "All Enemies",
@@ -132,7 +132,7 @@ internal partial class PLD
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_Rampart:
+                case Preset.PLD_AoE_AdvancedMode_Rampart:
                     UserConfig.DrawSliderInt(1, 100, PLD_AoE_Rampart_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_Rampart_SubOption, "All Enemies",
@@ -144,7 +144,7 @@ internal partial class PLD
                     break;
 
                 // Sentinel / Guardian
-                case CustomComboPreset.PLD_ST_AdvancedMode_Sentinel:
+                case Preset.PLD_ST_AdvancedMode_Sentinel:
                     UserConfig.DrawSliderInt(1, 100, PLD_ST_Sentinel_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_ST_Sentinel_SubOption, "All Enemies",
@@ -155,7 +155,7 @@ internal partial class PLD
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_Sentinel:
+                case Preset.PLD_AoE_AdvancedMode_Sentinel:
                     UserConfig.DrawSliderInt(1, 100, PLD_AoE_Sentinel_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_Sentinel_SubOption, "All Enemies",
@@ -167,7 +167,7 @@ internal partial class PLD
                     break;
 
                 // Hallowed Ground
-                case CustomComboPreset.PLD_ST_AdvancedMode_HallowedGround:
+                case Preset.PLD_ST_AdvancedMode_HallowedGround:
                     UserConfig.DrawSliderInt(1, 100, PLD_ST_HallowedGround_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_ST_HallowedGround_SubOption, "All Enemies",
@@ -178,7 +178,7 @@ internal partial class PLD
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_HallowedGround:
+                case Preset.PLD_AoE_AdvancedMode_HallowedGround:
                     UserConfig.DrawSliderInt(1, 100, PLD_AoE_HallowedGround_Health, "Player HP%", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_HallowedGround_SubOption, "All Enemies",
@@ -190,7 +190,7 @@ internal partial class PLD
                     break;
 
                 // Intervene
-                case CustomComboPreset.PLD_ST_AdvancedMode_Intervene:
+                case Preset.PLD_ST_AdvancedMode_Intervene:
                     UserConfig.DrawSliderInt(0, 1, PLD_Intervene_HoldCharges, "Charges", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_Intervene_MeleeOnly, "Melee Range",
@@ -201,7 +201,7 @@ internal partial class PLD
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_Intervene:
+                case Preset.PLD_AoE_AdvancedMode_Intervene:
                     UserConfig.DrawSliderInt(0, 1, PLD_AoE_Intervene_HoldCharges, "Charges", 200);
 
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_Intervene_MeleeOnly, "Melee Range",
@@ -213,7 +213,7 @@ internal partial class PLD
                     break;
 
                 // Shield Lob
-                case CustomComboPreset.PLD_ST_AdvancedMode_ShieldLob:
+                case Preset.PLD_ST_AdvancedMode_ShieldLob:
                     UserConfig.DrawHorizontalRadioButton(PLD_ShieldLob_SubOption, "Shield Lob Only",
                         "", 1);
 
@@ -223,18 +223,18 @@ internal partial class PLD
                     break;
 
                 // MP Reservation
-                case CustomComboPreset.PLD_ST_AdvancedMode_MP_Reserve:
+                case Preset.PLD_ST_AdvancedMode_MP_Reserve:
                     UserConfig.DrawSliderInt(1000, 5000, PLD_ST_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
                     break;
 
-                case CustomComboPreset.PLD_AoE_AdvancedMode_MP_Reserve:
+                case Preset.PLD_AoE_AdvancedMode_MP_Reserve:
                     UserConfig.DrawSliderInt(1000, 5000, PLD_AoE_MP_Reserve, "Minimum MP", sliderIncrement: 100);
 
                     break;
 
                 // Requiescat Spender Feature
-                case CustomComboPreset.PLD_Requiescat_Options:
+                case Preset.PLD_Requiescat_Options:
                     UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
                         "", 1);
 
@@ -244,7 +244,7 @@ internal partial class PLD
                     break;
 
                 // Spirits Within / Circle of Scorn Feature
-                case CustomComboPreset.PLD_SpiritsWithin:
+                case Preset.PLD_SpiritsWithin:
                     UserConfig.DrawHorizontalRadioButton(PLD_SpiritsWithin_SubOption, "Normal Behavior",
                         "", 1);
 
@@ -254,19 +254,19 @@ internal partial class PLD
                     break;
 
                 // Retarget Clemency Feature
-                case CustomComboPreset.PLD_RetargetClemency_LowHP:
+                case Preset.PLD_RetargetClemency_LowHP:
                     UserConfig.DrawSliderInt(1, 100, PLD_RetargetClemency_Health, "Player HP%", 200);
 
                     break;
 
                 // Variant Cure Feature
-                case CustomComboPreset.PLD_Variant_Cure:
+                case Preset.PLD_Variant_Cure:
                     UserConfig.DrawSliderInt(1, 100, PLD_VariantCure, "Player HP%", 200);
 
                     break;
 
                 // Simple ST Mitigations Option
-                case CustomComboPreset.PLD_ST_SimpleMode:
+                case Preset.PLD_ST_SimpleMode:
                     UserConfig.DrawHorizontalRadioButton(PLD_ST_MitsOptions,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.", 0);
@@ -277,7 +277,7 @@ internal partial class PLD
                     break;
 
                 // Simple AoE Mitigations Option
-                case CustomComboPreset.PLD_AoE_SimpleMode:
+                case Preset.PLD_AoE_SimpleMode:
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.", 0);
@@ -287,7 +287,7 @@ internal partial class PLD
                         "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
-                case CustomComboPreset.PLD_RetargetSheltron_TT:
+                case Preset.PLD_RetargetSheltron_TT:
                     ImGui.Indent();
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
                         "Note: If you are Off-Tanking, and want to use Sheltron on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +
@@ -296,7 +296,7 @@ internal partial class PLD
                         "If you don't use those Features for your personal mitigation, you may not want to enable this.");
                     ImGui.Unindent();
                     break;
-                case CustomComboPreset.PLD_RetargetShieldBash:
+                case Preset.PLD_RetargetShieldBash:
                     UserConfig.DrawAdditionalBoolChoice(Config.PLD_RetargetStunLockout, "Lockout Action", "If no stunnable targets are found, lock the action with Savage Blade");
                     if (Config.PLD_RetargetStunLockout)
                         UserConfig.DrawSliderInt(1, 3, Config.PLD_RetargetShieldBash_Strength, "Lockout when stun has been applied this many times");
@@ -304,7 +304,7 @@ internal partial class PLD
 
                 #region One-Button Mitigation
 
-                case CustomComboPreset.PLD_Mit_HallowedGround_Max:
+                case Preset.PLD_Mit_HallowedGround_Max:
                     UserConfig.DrawDifficultyMultiChoice(
                         PLD_Mit_HallowedGround_Max_Difficulty,
                         PLD_Mit_HallowedGround_Max_DifficultyListSet,
@@ -316,19 +316,19 @@ internal partial class PLD
                         200, SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.PLD_Mit_Sheltron:
+                case Preset.PLD_Mit_Sheltron:
                     UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 0,
                         "Sheltron Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_Reprisal:
+                case Preset.PLD_Mit_Reprisal:
                     UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 1,
                         "Reprisal Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_DivineVeil:
+                case Preset.PLD_Mit_DivineVeil:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
@@ -348,7 +348,7 @@ internal partial class PLD
                         "Divine Veil Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_Rampart:
+                case Preset.PLD_Mit_Rampart:
                     UserConfig.DrawSliderInt(1, 100, PLD_Mit_Rampart_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -358,7 +358,7 @@ internal partial class PLD
                         "Rampart Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_Sentinel:
+                case Preset.PLD_Mit_Sentinel:
                     UserConfig.DrawSliderInt(1, 100, PLD_Mit_Sentinel_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -368,7 +368,7 @@ internal partial class PLD
                         "Sentinel Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_ArmsLength:
+                case Preset.PLD_Mit_ArmsLength:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         PLD_Mit_ArmsLength_Boss, "All Enemies",
@@ -389,7 +389,7 @@ internal partial class PLD
                         "Arm's Length Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_Bulwark:
+                case Preset.PLD_Mit_Bulwark:
                     UserConfig.DrawSliderInt(1, 100, PLD_Mit_Bulwark_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -399,7 +399,7 @@ internal partial class PLD
                         "Bulwark Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_HallowedGround:
+                case Preset.PLD_Mit_HallowedGround:
                     UserConfig.DrawDifficultyMultiChoice(
                         PLD_Mit_HallowedGround_Difficulty,
                         PLD_Mit_HallowedGround_DifficultyListSet,
@@ -415,7 +415,7 @@ internal partial class PLD
                         "Hallowed Ground Priority:");
                     break;
 
-                case CustomComboPreset.PLD_Mit_Clemency:
+                case Preset.PLD_Mit_Clemency:
                     UserConfig.DrawSliderInt(1, 100, PLD_Mit_Clemency_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);

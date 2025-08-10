@@ -81,12 +81,12 @@ internal static class BLMPvP
         public static UserFloat
             BLMPvP_Movement_Threshold = new("BLMPvP_Movement_Threshold", 0.1f);
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 // Movement Threshold
-                case CustomComboPreset.BLMPvP_BurstMode:
+                case Preset.BLMPvP_BurstMode:
                     UserConfig.DrawHorizontalRadioButton(BLMPvP.Config.BLMPVP_BurstButtonOption, "One Button Mode", "Combines Fire & Blizzard onto one button", 0);
                     UserConfig.DrawHorizontalRadioButton(BLMPvP.Config.BLMPVP_BurstButtonOption, "Dual Button Mode", "Puts the combo onto separate Fire & Blizzard buttons, which will only use that element.", 1);
 
@@ -105,14 +105,14 @@ internal static class BLMPvP
                     break;
 
                 // Burst
-                case CustomComboPreset.BLMPvP_Burst:
+                case Preset.BLMPvP_Burst:
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Burst_SubOption, "Defensive Burst",
                         "Also uses Burst when under 50% HP.\n- Will not use outside combat.");
 
                     break;
 
                 // Elemental Weave
-                case CustomComboPreset.BLMPvP_ElementalWeave:
+                case Preset.BLMPvP_ElementalWeave:
                     UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_ElementalWeave_PlayerHP, "Player HP%", 180);
                     ImGui.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_ElementalWeave_SubOption, "Defensive Elemental Weave",
@@ -121,7 +121,7 @@ internal static class BLMPvP
                     break;
 
                 // Lethargy
-                case CustomComboPreset.BLMPvP_Lethargy:
+                case Preset.BLMPvP_Lethargy:
                     UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Lethargy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Lethargy_SubOption, "Defensive Lethargy",
@@ -130,7 +130,7 @@ internal static class BLMPvP
                     break;
 
                 // Xenoglossy
-                case CustomComboPreset.BLMPvP_Xenoglossy:
+                case Preset.BLMPvP_Xenoglossy:
                     UserConfig.DrawSliderInt(10, 100, BLMPvP.Config.BLMPvP_Xenoglossy_TargetHP, "Target HP%", 180);
                     ImGui.Spacing();
                     UserConfig.DrawAdditionalBoolChoice(BLMPvP.Config.BLMPvP_Xenoglossy_SubOption, "Defensive Xenoglossy",
@@ -139,7 +139,7 @@ internal static class BLMPvP
                     break;
 
                 // Phantom Dart
-                case CustomComboPreset.BLMPvP_PhantomDart:
+                case Preset.BLMPvP_PhantomDart:
                     UserConfig.DrawSliderInt(1, 100, BLMPvP.Config.BLMPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
@@ -151,7 +151,7 @@ internal static class BLMPvP
 
     internal class BLMPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLMPvP_BurstMode;
+        protected internal override Preset Preset { get; } = Preset.BLMPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -189,11 +189,11 @@ internal static class BLMPvP
                 if (inCombat)
                 {
                     // Burst (Defensive)
-                    if (IsEnabled(CustomComboPreset.BLMPvP_Burst) && Config.BLMPvP_Burst_SubOption && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
+                    if (IsEnabled(Preset.BLMPvP_Burst) && Config.BLMPvP_Burst_SubOption && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
                         return OriginalHook(Burst);
 
                     // Elemental Weave (Defensive)
-                    if (IsEnabled(CustomComboPreset.BLMPvP_ElementalWeave) && Config.BLMPvP_ElementalWeave_SubOption &&
+                    if (IsEnabled(Preset.BLMPvP_ElementalWeave) && Config.BLMPvP_ElementalWeave_SubOption &&
                         IsOffCooldown(ElementalWeave) && hasUmbralIce && playerCurrentPercentHp < Config.BLMPvP_ElementalWeave_PlayerHP)
                         return OriginalHook(ElementalWeave);
                 }
@@ -201,14 +201,14 @@ internal static class BLMPvP
                 if (hasTarget && !targetHasImmunity)
                 {
                     // Elemental Weave (Offensive)
-                    if (IsEnabled(CustomComboPreset.BLMPvP_ElementalWeave) && IsOffCooldown(ElementalWeave) && hasAstralFire &&
+                    if (IsEnabled(Preset.BLMPvP_ElementalWeave) && IsOffCooldown(ElementalWeave) && hasAstralFire &&
                         targetDistance <= 25 && playerCurrentPercentHp >= Config.BLMPvP_ElementalWeave_PlayerHP)
                         return OriginalHook(ElementalWeave);
 
                     if (!targetHasGuard)
                     {
                         // Lethargy
-                        if (IsEnabled(CustomComboPreset.BLMPvP_Lethargy) && IsOffCooldown(Lethargy) && !isTargetNPC)
+                        if (IsEnabled(Preset.BLMPvP_Lethargy) && IsOffCooldown(Lethargy) && !isTargetNPC)
                         {
                             // Offensive
                             if (targetCurrentPercentHp < Config.BLMPvP_Lethargy_TargetHP && !targetHasHeavy)
@@ -219,19 +219,19 @@ internal static class BLMPvP
                                 return OriginalHook(Lethargy);
                         }
 
-                        if (IsEnabled(CustomComboPreset.BLMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= Config.BLMPvP_PhantomDartThreshold)
+                        if (IsEnabled(Preset.BLMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= Config.BLMPvP_PhantomDartThreshold)
                             return Role.PhantomDart;
 
                         // Burst (Offensive)
-                        if (IsEnabled(CustomComboPreset.BLMPvP_Burst) && IsOffCooldown(Burst) && targetDistance <= 4)
+                        if (IsEnabled(Preset.BLMPvP_Burst) && IsOffCooldown(Burst) && targetDistance <= 4)
                             return OriginalHook(Burst);
 
                         // Flare Star / Frost Star
-                        if (IsEnabled(CustomComboPreset.BLMPvP_ElementalStar) && ((hasFlareStar && !isMoving) || (hasFrostStar && isElementalStarDelayed)))
+                        if (IsEnabled(Preset.BLMPvP_ElementalStar) && ((hasFlareStar && !isMoving) || (hasFrostStar && isElementalStarDelayed)))
                             return OriginalHook(SoulResonance);
 
                         // Xenoglossy
-                        if (IsEnabled(CustomComboPreset.BLMPvP_Xenoglossy) && chargesXenoglossy > 0)
+                        if (IsEnabled(Preset.BLMPvP_Xenoglossy) && chargesXenoglossy > 0)
                         {
                             // Defensive
                             if (Config.BLMPvP_Xenoglossy_SubOption && playerCurrentPercentHp < 50)
@@ -263,7 +263,7 @@ internal static class BLMPvP
 
     internal class BLMPvP_Manipulation_Feature : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLMPvP_Manipulation_Feature;
+        protected internal override Preset Preset { get; } = Preset.BLMPvP_Manipulation_Feature;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is AetherialManipulation)

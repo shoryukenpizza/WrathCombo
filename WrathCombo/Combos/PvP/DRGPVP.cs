@@ -51,25 +51,25 @@ internal static class DRGPvP
             DRGPvP_Distance_Threshold = new("DRGPvP_Distance_Threshold"),
             DRGPvP_SmiteThreshold = new("DRGPvP_SmiteThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {            
             switch (preset)
             {
-                case CustomComboPreset.DRGPvP_Nastrond:
+                case Preset.DRGPvP_Nastrond:
                     UserConfig.DrawSliderInt(0, 100, DRGPvP_LOTD_HPValue, "Ends Life of the Dragon if HP falls below the set percentage");
                     UserConfig.DrawSliderInt(2, 8, DRGPvP_LOTD_Duration, "Seconds remaining of Life of the Dragon buff before using Nastrond if you are still above the set HP percentage.");
                     break;
 
-                case CustomComboPreset.DRGPvP_ChaoticSpringSustain:
+                case Preset.DRGPvP_ChaoticSpringSustain:
                     UserConfig.DrawSliderInt(0, 101, DRGPvP_CS_HP_Threshold, "Chaotic Spring HP percentage threshold. Set to 100 to use on cd");
                     break;
                         
 
-                case CustomComboPreset.DRGPvP_WyrmwindThrust:
+                case Preset.DRGPvP_WyrmwindThrust:
                     UserConfig.DrawSliderInt(0, 20, DRGPvP_Distance_Threshold, "Minimum Distance to use Wyrmwind Thrust. Maximum damage at 15 or more");                        
                     break;
 
-                case CustomComboPreset.DRGPvP_Smite:
+                case Preset.DRGPvP_Smite:
                     UserConfig.DrawSliderInt(0, 100, DRGPvP_SmiteThreshold,
                         "Target HP% to smite, Max damage below 25%");                       
                     break;
@@ -82,7 +82,7 @@ internal static class DRGPvP
 
     internal class DRGPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRGPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.DRGPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -90,46 +90,46 @@ internal static class DRGPvP
             {
                 if (!HasStatusEffect(PvPCommon.Buffs.Guard, CurrentTarget, true))
                 {
-                    if (IsEnabled(CustomComboPreset.DRGPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                    if (IsEnabled(Preset.DRGPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
                         GetTargetHPPercent() <= Config.DRGPvP_SmiteThreshold)
                         return PvPMelee.Smite;
 
                     if (CanWeave())
                     {
-                        if (IsEnabled(CustomComboPreset.DRGPvP_HighJump) && IsOffCooldown(HighJump) && !HasStatusEffect(Buffs.StarCrossReady) && (HasStatusEffect(Buffs.LifeOfTheDragon) || GetCooldownRemainingTime(Geirskogul) > 5)) // Will high jump after Gierskogul OR if Geir will be on cd for 2 more gcds.
+                        if (IsEnabled(Preset.DRGPvP_HighJump) && IsOffCooldown(HighJump) && !HasStatusEffect(Buffs.StarCrossReady) && (HasStatusEffect(Buffs.LifeOfTheDragon) || GetCooldownRemainingTime(Geirskogul) > 5)) // Will high jump after Gierskogul OR if Geir will be on cd for 2 more gcds.
                             return HighJump;
 
-                        if (IsEnabled(CustomComboPreset.DRGPvP_Nastrond)) // Nastrond Finisher logic
+                        if (IsEnabled(Preset.DRGPvP_Nastrond)) // Nastrond Finisher logic
                         {
                             if (HasStatusEffect(Buffs.LifeOfTheDragon) && PlayerHealthPercentageHp() < Config.DRGPvP_LOTD_HPValue
                                 || HasStatusEffect(Buffs.LifeOfTheDragon) && GetStatusEffectRemainingTime(Buffs.LifeOfTheDragon) < Config.DRGPvP_LOTD_Duration)
                                 return Nastrond;
                         }
 
-                        if (IsEnabled(CustomComboPreset.DRGPvP_HorridRoar) && IsOffCooldown(HorridRoar) && GetTargetDistance() <= 10) // HorridRoar Roar on cd
+                        if (IsEnabled(Preset.DRGPvP_HorridRoar) && IsOffCooldown(HorridRoar) && GetTargetDistance() <= 10) // HorridRoar Roar on cd
                             return HorridRoar;
                     }
                        
-                    if (IsEnabled(CustomComboPreset.DRGPvP_Geirskogul) && IsOffCooldown(Geirskogul)) 
+                    if (IsEnabled(Preset.DRGPvP_Geirskogul) && IsOffCooldown(Geirskogul)) 
                     {
-                        if (IsEnabled(CustomComboPreset.DRGPvP_BurstProtection) && WasLastAbility(ElusiveJump) && HasStatusEffect(Buffs.FirstmindsFocus))  // With evasive burst mode
+                        if (IsEnabled(Preset.DRGPvP_BurstProtection) && WasLastAbility(ElusiveJump) && HasStatusEffect(Buffs.FirstmindsFocus))  // With evasive burst mode
                             return Geirskogul;
-                        if (!IsEnabled(CustomComboPreset.DRGPvP_BurstProtection))                                                                    // Without evasive burst mode so you can still use Gier, which will let you still use high jump
+                        if (!IsEnabled(Preset.DRGPvP_BurstProtection))                                                                    // Without evasive burst mode so you can still use Gier, which will let you still use high jump
                             return Geirskogul;
                     }                       
                                                    
-                    if (IsEnabled(CustomComboPreset.DRGPvP_WyrmwindThrust) && HasStatusEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= Config.DRGPvP_Distance_Threshold)
+                    if (IsEnabled(Preset.DRGPvP_WyrmwindThrust) && HasStatusEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= Config.DRGPvP_Distance_Threshold)
                         return WyrmwindThrust;
 
-                    if (IsEnabled(CustomComboPreset.DRGPvP_Geirskogul) && HasStatusEffect(Buffs.StarCrossReady))
+                    if (IsEnabled(Preset.DRGPvP_Geirskogul) && HasStatusEffect(Buffs.StarCrossReady))
                         return Starcross;
                        
                 }
                 if (IsOffCooldown(ChaoticSpring) && InMeleeRange())
                 {
-                    if (IsEnabled(CustomComboPreset.DRGPvP_ChaoticSpringSustain) && PlayerHealthPercentageHp() < Config.DRGPvP_CS_HP_Threshold) // Chaotic Spring as a self heal option, it does not break combos of other skills
+                    if (IsEnabled(Preset.DRGPvP_ChaoticSpringSustain) && PlayerHealthPercentageHp() < Config.DRGPvP_CS_HP_Threshold) // Chaotic Spring as a self heal option, it does not break combos of other skills
                         return ChaoticSpring;
-                    if (IsEnabled(CustomComboPreset.DRGPvP_ChaoticSpringExecute) && GetTargetCurrentHP() <= 8000) // Chaotic Spring Execute
+                    if (IsEnabled(Preset.DRGPvP_ChaoticSpringExecute) && GetTargetCurrentHP() <= 8000) // Chaotic Spring Execute
                         return ChaoticSpring;
                 }
                   
@@ -139,7 +139,7 @@ internal static class DRGPvP
     }
     internal class DRGPvP_BurstProtection : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRGPvP_BurstProtection;
+        protected internal override Preset Preset { get; } = Preset.DRGPvP_BurstProtection;
 
         protected override uint Invoke(uint actionID)
         {

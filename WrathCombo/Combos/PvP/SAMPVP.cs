@@ -62,18 +62,18 @@ internal static class SAMPvP
             SAMPvP_Soten_SubOption = new("SAMPvP_Soten_SubOption"),
             SAMPvP_Mineuchi_SubOption = new("SAMPvP_Mineuchi_SubOption");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 // Chiten
-                case CustomComboPreset.SAMPvP_Chiten:
+                case Preset.SAMPvP_Chiten:
                     UserConfig.DrawSliderInt(10, 100, SAMPvP.Config.SAMPvP_Chiten_PlayerHP, "Player HP%", 210);
 
                     break;
 
                 // Mineuchi
-                case CustomComboPreset.SAMPvP_Mineuchi:
+                case Preset.SAMPvP_Mineuchi:
                     UserConfig.DrawSliderInt(10, 100, SAMPvP.Config.SAMPvP_Mineuchi_TargetHP, "Target HP%", 210);
 
                     UserConfig.DrawAdditionalBoolChoice(SAMPvP.Config.SAMPvP_Mineuchi_SubOption, "Burst Preparation",
@@ -82,7 +82,7 @@ internal static class SAMPvP
                     break;
 
                 // Soten
-                case CustomComboPreset.SAMPvP_Soten:
+                case Preset.SAMPvP_Soten:
                     UserConfig.DrawSliderInt(0, 2, SAMPvP.Config.SAMPvP_Soten_Charges, "Charges to Keep", 178);
                     UserConfig.DrawSliderInt(1, 10, SAMPvP.Config.SAMPvP_Soten_Range, "Maximum Range", 173);
 
@@ -92,7 +92,7 @@ internal static class SAMPvP
                     break;
 
                 // Smite
-                case CustomComboPreset.SAMPvP_Smite:
+                case Preset.SAMPvP_Smite:
                     UserConfig.DrawSliderInt(0, 100, SAMPvP.Config.SAMPvP_SmiteThreshold,
                         "Target HP% to smite, Max damage below 25%");
 
@@ -105,7 +105,7 @@ internal static class SAMPvP
        
     internal class SAMPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAMPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.SAMPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -138,16 +138,16 @@ internal static class SAMPvP
                     #endregion
 
                 // Zantetsuken
-                if (IsEnabled(CustomComboPreset.SAMPvP_Zantetsuken) && isZantetsukenPrimed && !isTargetInvincible)
+                if (IsEnabled(Preset.SAMPvP_Zantetsuken) && isZantetsukenPrimed && !isTargetInvincible)
                     return OriginalHook(Zantetsuken);
 
                 //Smite
-                if (IsEnabled(CustomComboPreset.SAMPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && GetTargetDistance() <= 10 && HasTarget() &&
+                if (IsEnabled(Preset.SAMPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && GetTargetDistance() <= 10 && HasTarget() &&
                     GetTargetHPPercent() <= Config.SAMPvP_SmiteThreshold)
                     return PvPMelee.Smite;
 
                 // Chiten
-                if (IsEnabled(CustomComboPreset.SAMPvP_Chiten) && IsOffCooldown(Chiten) && inCombat && playerCurrentPercentHp < Config.SAMPvP_Chiten_PlayerHP)
+                if (IsEnabled(Preset.SAMPvP_Chiten) && IsOffCooldown(Chiten) && inCombat && playerCurrentPercentHp < Config.SAMPvP_Chiten_PlayerHP)
                     return OriginalHook(Chiten);
 
                 if (isTargetPrimed)
@@ -157,18 +157,18 @@ internal static class SAMPvP
                         return OriginalHook(Chiten);
 
                     // Soten
-                    if (IsEnabled(CustomComboPreset.SAMPvP_Soten) && isSotenPrimed && targetDistance <= Config.SAMPvP_Soten_Range &&
+                    if (IsEnabled(Preset.SAMPvP_Soten) && isSotenPrimed && targetDistance <= Config.SAMPvP_Soten_Range &&
                         (!Config.SAMPvP_Soten_SubOption || (Config.SAMPvP_Soten_SubOption && isYukikazePrimed)))
                         return OriginalHook(Soten);
 
                     if (inMeleeRange)
                     {
                         // Meikyo Shisui
-                        if (IsEnabled(CustomComboPreset.SAMPvP_Meikyo) && IsOffCooldown(MeikyoShisui) && isMeikyoPrimed)
+                        if (IsEnabled(Preset.SAMPvP_Meikyo) && IsOffCooldown(MeikyoShisui) && isMeikyoPrimed)
                             return OriginalHook(MeikyoShisui);
 
                         // Mineuchi
-                        if (IsEnabled(CustomComboPreset.SAMPvP_Mineuchi) && IsOffCooldown(Mineuchi) && !HasBattleTarget() &&
+                        if (IsEnabled(Preset.SAMPvP_Mineuchi) && IsOffCooldown(Mineuchi) && !HasBattleTarget() &&
                             (targetCurrentPercentHp < Config.SAMPvP_Mineuchi_TargetHP || (Config.SAMPvP_Mineuchi_SubOption && hasTendo && !hasKaiten)))
                             return OriginalHook(Mineuchi);
                     }

@@ -26,7 +26,7 @@ internal abstract partial class CustomCombo : CustomComboFunctions
     protected IGameObject? OptionalTarget;
 
     /// <summary> Gets the preset associated with this combo. </summary>
-    protected internal abstract CustomComboPreset Preset { get; }
+    protected internal abstract Preset Preset { get; }
 
     /// <summary> Gets the class ID associated with this combo. </summary>
     protected byte ClassID { get; }
@@ -53,10 +53,10 @@ internal abstract partial class CustomCombo : CustomComboFunctions
     ///     Without the action also being checked, the preset would block all
     ///     other presets.
     /// </remarks>
-    private readonly Dictionary<CustomComboPreset, uint>
+    private readonly Dictionary<Preset, uint>
         _presetsAllowedToReturnUnchanged = new()
         {
-            { CustomComboPreset.DNC_DesirablePartner, DNC.ClosedPosition },
+            { Preset.DNC_DesirablePartner, DNC.ClosedPosition },
         };
 
     /// <summary> Performs various checks then attempts to invoke the combo. </summary>

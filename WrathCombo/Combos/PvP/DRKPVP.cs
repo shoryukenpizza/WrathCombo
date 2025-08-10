@@ -46,11 +46,11 @@ internal class DRKPvP
             DRKPvP_RampartThreshold = new("DRKPvP_RampartThreshold");
 
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.DRKPvP_Shadowbringer:
+                case Preset.DRKPvP_Shadowbringer:
                     UserConfig.DrawSliderInt(20, 100,
                         ShadowbringerThreshold,
                         "HP% to be at or Above to use ",
@@ -58,7 +58,7 @@ internal class DRKPvP
 
                     break;
 
-                case CustomComboPreset.DRKPvP_Rampart:
+                case Preset.DRKPvP_Rampart:
                     UserConfig.DrawSliderInt(1, 100, DRKPvP_RampartThreshold,
                         "Use Rampart below set threshold for self");
                     break;
@@ -71,7 +71,7 @@ internal class DRKPvP
 
     internal class DRKPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRKPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.DRKPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -80,38 +80,38 @@ internal class DRKPvP
                 bool canWeave = CanWeave();
                 int shadowBringerThreshold = Config.ShadowbringerThreshold;
 
-                if (IsEnabled(CustomComboPreset.DRKPvP_Rampart) && PvPTank.CanRampart(Config.DRKPvP_RampartThreshold))
+                if (IsEnabled(Preset.DRKPvP_Rampart) && PvPTank.CanRampart(Config.DRKPvP_RampartThreshold))
                     return PvPTank.Rampart;
 
                 if (!PvPCommon.TargetImmuneToDamage())
                 {
-                    if (IsEnabled(CustomComboPreset.DRKPvP_Plunge) && ActionReady(Plunge))
+                    if (IsEnabled(Preset.DRKPvP_Plunge) && ActionReady(Plunge))
                     {
-                        if (HasTarget() && (!InMeleeRange()) || (InMeleeRange() && IsEnabled(CustomComboPreset.DRKPvP_PlungeMelee)))
+                        if (HasTarget() && (!InMeleeRange()) || (InMeleeRange() && IsEnabled(Preset.DRKPvP_PlungeMelee)))
                             return OriginalHook(Plunge);
                     }
 
-                    if (IsEnabled(CustomComboPreset.DRKPvP_Scorn) && HasStatusEffect(Buffs.Scorn))
+                    if (IsEnabled(Preset.DRKPvP_Scorn) && HasStatusEffect(Buffs.Scorn))
                         return OriginalHook(Eventide);
 
                     if (canWeave)
                     {
-                        if (IsEnabled(CustomComboPreset.DRKPvP_BlackestNight) && ActionReady(BlackestNight) && !HasStatusEffect(Buffs.BlackestNight) && !WasLastAbility(BlackestNight))
+                        if (IsEnabled(Preset.DRKPvP_BlackestNight) && ActionReady(BlackestNight) && !HasStatusEffect(Buffs.BlackestNight) && !WasLastAbility(BlackestNight))
                             return OriginalHook(BlackestNight);
 
-                        if (IsEnabled(CustomComboPreset.DRKPvP_SaltedEarth) && ActionReady(SaltedEarth) && IsEnabled(CustomComboPreset.DRKPvP_SaltedEarth))
+                        if (IsEnabled(Preset.DRKPvP_SaltedEarth) && ActionReady(SaltedEarth) && IsEnabled(Preset.DRKPvP_SaltedEarth))
                             return OriginalHook(SaltedEarth);
 
-                        if (IsEnabled(CustomComboPreset.DRKPvP_SaltAndDarkness) && HasStatusEffect(Buffs.SaltedEarthDMG) && ActionReady(SaltAndDarkness))
+                        if (IsEnabled(Preset.DRKPvP_SaltAndDarkness) && HasStatusEffect(Buffs.SaltedEarthDMG) && ActionReady(SaltAndDarkness))
                             return OriginalHook(SaltAndDarkness);
 
-                        if (IsEnabled(CustomComboPreset.DRKPvP_Shadowbringer) && !HasStatusEffect(Buffs.Blackblood) && (HasStatusEffect(Buffs.DarkArts) || PlayerHealthPercentageHp() >= shadowBringerThreshold))
+                        if (IsEnabled(Preset.DRKPvP_Shadowbringer) && !HasStatusEffect(Buffs.Blackblood) && (HasStatusEffect(Buffs.DarkArts) || PlayerHealthPercentageHp() >= shadowBringerThreshold))
                             return OriginalHook(Shadowbringer);
                     }
 
                     if (InMeleeRange())
                     {
-                        if (IsEnabled(CustomComboPreset.DRKPvP_Impalement) && ActionReady(Impalement))
+                        if (IsEnabled(Preset.DRKPvP_Impalement) && ActionReady(Impalement))
                             return OriginalHook(Impalement);
 
                         if (ComboTimer > 1f)

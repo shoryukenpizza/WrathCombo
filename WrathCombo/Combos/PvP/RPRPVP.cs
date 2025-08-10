@@ -56,23 +56,23 @@ internal static class RPRPvP
             RPRPvP_ArcaneCircleThreshold = new("RPRPvPArcaneCircleOption"),            
             RPRPvP_SmiteThreshold = new("RPRPvP_SmiteThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.RPRPvP_Burst_ImmortalPooling:
+                case Preset.RPRPvP_Burst_ImmortalPooling:
                     UserConfig.DrawSliderInt(0, 8, RPRPvP_ImmortalStackThreshold,
                         "Set a value of Immortal Sacrifice Stacks to hold for burst.");
 
                     break;
 
-                case CustomComboPreset.RPRPvP_Burst_ArcaneCircle:
+                case Preset.RPRPvP_Burst_ArcaneCircle:
                     UserConfig.DrawSliderInt(5, 90, RPRPvP_ArcaneCircleThreshold,
                         "Set a HP percentage value. Caps at 90 to prevent waste.");
 
                     break;
 
-                case CustomComboPreset.RPRPvP_Smite:
+                case Preset.RPRPvP_Smite:
                     UserConfig.DrawSliderInt(0, 100, RPRPvP_SmiteThreshold,
                         "Target HP% to smite, Max damage below 25%");
 
@@ -84,7 +84,7 @@ internal static class RPRPvP
     
     internal class RPRPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RPRPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.RPRPvP_Burst;
         protected override uint Invoke(uint actionID)
         {
             if (actionID is Slice or WaxingSlice or InfernalSlice)
@@ -102,28 +102,28 @@ internal static class RPRPvP
                     #endregion
 
                 // Arcane Cirle Option
-                if (IsEnabled(CustomComboPreset.RPRPvP_Burst_ArcaneCircle)
+                if (IsEnabled(Preset.RPRPvP_Burst_ArcaneCircle)
                     && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= Config.RPRPvP_ArcaneCircleThreshold)
                     return ArcaneCrest;
 
                 if (!PvPCommon.TargetImmuneToDamage()) // Guard check on target
                 {
                     //Smite
-                    if (IsEnabled(CustomComboPreset.RPRPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                    if (IsEnabled(Preset.RPRPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
                         GetTargetHPPercent() <= Config.RPRPvP_SmiteThreshold)
                         return PvPMelee.Smite;
 
                     // Harvest Moon Ranged Option
-                    if (IsEnabled(CustomComboPreset.RPRPvP_Burst_RangedHarvest) && distance > 5)
+                    if (IsEnabled(Preset.RPRPvP_Burst_RangedHarvest) && distance > 5)
                         return HarvestMoon;
 
                     // Enshroud
-                    if (IsEnabled(CustomComboPreset.RPRPvP_Burst_Enshrouded) && enshrouded)
+                    if (IsEnabled(Preset.RPRPvP_Burst_Enshrouded) && enshrouded)
                     {
                         if (canWeave)
                         {
                             // Enshrouded Death Warrant Option
-                            if (IsEnabled(CustomComboPreset.RPRPvP_Burst_Enshrouded_DeathWarrant) &&
+                            if (IsEnabled(Preset.RPRPvP_Burst_Enshrouded_DeathWarrant) &&
                                 deathWarrantReady && enshroudStacks >= 3 && distance <= 25 || HasStatusEffect(Buffs.DeathWarrant) && GetStatusEffectRemainingTime(Buffs.DeathWarrant) <= 3)
                                 return OriginalHook(DeathWarrant);
 
@@ -133,7 +133,7 @@ internal static class RPRPvP
                         }
 
                         // Communio Option
-                        if (IsEnabled(CustomComboPreset.RPRPvP_Burst_Enshrouded_Communio) &&
+                        if (IsEnabled(Preset.RPRPvP_Burst_Enshrouded_Communio) &&
                             enshroudStacks == 1 && distance <= 25)
                         {
                             // Holds Communio when moving & Enshrouded Time Remaining > 2s
@@ -154,9 +154,9 @@ internal static class RPRPvP
                             return OriginalHook(TenebraeLemurum);
 
                         // Pooling Plentiful with Death warrant
-                        if (IsEnabled(CustomComboPreset.RPRPvP_Burst_ImmortalPooling))
+                        if (IsEnabled(Preset.RPRPvP_Burst_ImmortalPooling))
                         {
-                            if (IsEnabled(CustomComboPreset.RPRPvP_Burst_DeathWarrant) && deathWarrantReady && distance <= 25 &&
+                            if (IsEnabled(Preset.RPRPvP_Burst_DeathWarrant) && deathWarrantReady && distance <= 25 &&
                                 (GetCooldownRemainingTime(PlentifulHarvest) > 20 ||     //if plentiful will be back for the next death warrant
                                  (plentifulReady && immortalStacks >= immortalThreshold) || // if plentiful is ready for this death warrant and you have the charges you want
                                  (plentifulReady && immortalStacks <= immortalThreshold - 2))) // if plentiful is ready, but 2 grim swathes away from having the immortal threshold. Early fight. 
@@ -171,15 +171,15 @@ internal static class RPRPvP
                         if (canWeave)
                         {                               
                             // Death Warrant without pooling
-                            if (!IsEnabled(CustomComboPreset.RPRPvP_Burst_ImmortalPooling) && IsEnabled(CustomComboPreset.RPRPvP_Burst_DeathWarrant) && deathWarrantReady && distance <= 25)
+                            if (!IsEnabled(Preset.RPRPvP_Burst_ImmortalPooling) && IsEnabled(Preset.RPRPvP_Burst_DeathWarrant) && deathWarrantReady && distance <= 25)
                                 return OriginalHook(DeathWarrant);
 
                             // Grim Swathe Option
-                            if (IsEnabled(CustomComboPreset.RPRPvP_Burst_GrimSwathe) && ActionReady(GrimSwathe) && distance <= 8)
+                            if (IsEnabled(Preset.RPRPvP_Burst_GrimSwathe) && ActionReady(GrimSwathe) && distance <= 8)
                                 return GrimSwathe;
                         }
                         // Harvest Moon Execute 
-                        if (IsEnabled(CustomComboPreset.RPRPvP_Burst_RangedHarvest) && GetRemainingCharges(HarvestMoon) > 0 &&
+                        if (IsEnabled(Preset.RPRPvP_Burst_RangedHarvest) && GetRemainingCharges(HarvestMoon) > 0 &&
                             GetTargetCurrentHP() < 12000)
                             return HarvestMoon;
                     }

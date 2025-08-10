@@ -31,42 +31,42 @@ internal partial class PLD
     ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
-    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
         PrioritizedMitigation =>
     [
         //Sheltron
-        (OriginalHook(Sheltron), CustomComboPreset.PLD_Mit_Sheltron,
+        (OriginalHook(Sheltron), Preset.PLD_Mit_Sheltron,
             () => Gauge.OathGauge >= 50),
         // Reprisal
-        (Role.Reprisal, CustomComboPreset.PLD_Mit_Reprisal,
+        (Role.Reprisal, Preset.PLD_Mit_Reprisal,
             () => Role.CanReprisal(checkTargetForDebuff: false)),
         //Divine Veil
-        (DivineVeil, CustomComboPreset.PLD_Mit_DivineVeil,
+        (DivineVeil, Preset.PLD_Mit_DivineVeil,
             () => Config.PLD_Mit_DivineVeil_PartyRequirement ==
                   (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
-        (Role.Rampart, CustomComboPreset.PLD_Mit_Rampart,
+        (Role.Rampart, Preset.PLD_Mit_Rampart,
             () => Role.CanRampart(Config.PLD_Mit_Rampart_Health)),
         //Sentinel
-        (OriginalHook(Sentinel), CustomComboPreset.PLD_Mit_Sentinel,
+        (OriginalHook(Sentinel), Preset.PLD_Mit_Sentinel,
             () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Sentinel_Health),
         //Arm's Length
-        (Role.ArmsLength, CustomComboPreset.PLD_Mit_ArmsLength,
+        (Role.ArmsLength, Preset.PLD_Mit_ArmsLength,
             () => Role.CanArmsLength(Config.PLD_Mit_ArmsLength_EnemyCount,
                 Config.PLD_Mit_ArmsLength_Boss)),
         //Bulwark
-        (Bulwark, CustomComboPreset.PLD_Mit_Bulwark,
+        (Bulwark, Preset.PLD_Mit_Bulwark,
             () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Bulwark_Health),
         //Hallowed Ground
-        (HallowedGround, CustomComboPreset.PLD_Mit_HallowedGround,
+        (HallowedGround, Preset.PLD_Mit_HallowedGround,
             () => PlayerHealthPercentageHp() <= Config.PLD_Mit_HallowedGround_Health &&
                   ContentCheck.IsInConfiguredContent(
                       Config.PLD_Mit_HallowedGround_Difficulty,
                       Config.PLD_Mit_HallowedGround_DifficultyListSet
                   )),
         //Clemency
-        (Clemency, CustomComboPreset.PLD_Mit_Clemency,
+        (Clemency, Preset.PLD_Mit_Clemency,
             () => LocalPlayer.CurrentMp >= 2000 &&
                   PlayerHealthPercentageHp() <= Config.PLD_Mit_Clemency_Health)
     ];

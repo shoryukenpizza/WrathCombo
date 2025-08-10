@@ -52,7 +52,7 @@ internal partial class GNB : Tank
     public static Lv90SlowEarlyNM GNBLv90SlowEarlyNM = new();
     public static Lv100SlowEarlyNM GNBLv100SlowEarlyNM = new();
 
-    public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
+    public static WrathOpener Opener() => (!IsEnabled(Preset.GNB_ST_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
     private static WrathOpener GetOpener(bool isNormal)
     {
         if (FastGNB || MidGNB)
@@ -299,11 +299,11 @@ internal partial class GNB : Tank
     internal static int MaxCartridges() => TraitLevelChecked(Traits.CartridgeChargeII) ? 3 : TraitLevelChecked(Traits.CartridgeCharge) ? 2 : 0;
     internal static uint GetVariantAction()
     {
-        if (Variant.CanCure(CustomComboPreset.GNB_Variant_Cure, Config.GNB_VariantCure))
+        if (Variant.CanCure(Preset.GNB_Variant_Cure, Config.GNB_VariantCure))
             return Variant.Cure;
-        if (Variant.CanSpiritDart(CustomComboPreset.GNB_Variant_SpiritDart) && CanWeave())
+        if (Variant.CanSpiritDart(Preset.GNB_Variant_SpiritDart) && CanWeave())
             return Variant.SpiritDart;
-        if (Variant.CanUltimatum(CustomComboPreset.GNB_Variant_Ultimatum) && CanWeave())
+        if (Variant.CanUltimatum(Preset.GNB_Variant_Ultimatum) && CanWeave())
             return Variant.Ultimatum;
 
         return 0; //No conditions met
@@ -314,51 +314,51 @@ internal partial class GNB : Tank
             return 0;
 
         bool CanUse(uint action) => HasActionEquipped(action) && IsOffCooldown(action);
-        bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && CanUse(action);
+        bool IsEnabledAndUsable(Preset preset, uint action) => IsEnabled(preset) && CanUse(action);
 
-        if (!InCombat() && IsEnabledAndUsable(CustomComboPreset.GNB_Bozja_LostStealth, Bozja.LostStealth))
+        if (!InCombat() && IsEnabledAndUsable(Preset.GNB_Bozja_LostStealth, Bozja.LostStealth))
             return Bozja.LostStealth;
 
         if (CanWeave())
         {
             foreach (var (preset, action) in new[]
-            { (CustomComboPreset.GNB_Bozja_LostFocus, Bozja.LostFocus),
-            (CustomComboPreset.GNB_Bozja_LostFontOfPower, Bozja.LostFontOfPower),
-            (CustomComboPreset.GNB_Bozja_LostSlash, Bozja.LostSlash),
-            (CustomComboPreset.GNB_Bozja_LostFairTrade, Bozja.LostFairTrade),
-            (CustomComboPreset.GNB_Bozja_LostAssassination, Bozja.LostAssassination), })
+            { (Preset.GNB_Bozja_LostFocus, Bozja.LostFocus),
+            (Preset.GNB_Bozja_LostFontOfPower, Bozja.LostFontOfPower),
+            (Preset.GNB_Bozja_LostSlash, Bozja.LostSlash),
+            (Preset.GNB_Bozja_LostFairTrade, Bozja.LostFairTrade),
+            (Preset.GNB_Bozja_LostAssassination, Bozja.LostAssassination), })
             if (IsEnabledAndUsable(preset, action))
                 return action;
 
             foreach (var (preset, action, powerPreset) in new[]
-            { (CustomComboPreset.GNB_Bozja_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, CustomComboPreset.GNB_Bozja_PowerEnds),
-            (CustomComboPreset.GNB_Bozja_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, CustomComboPreset.GNB_Bozja_PowerSacrifice) })
+            { (Preset.GNB_Bozja_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, Preset.GNB_Bozja_PowerEnds),
+            (Preset.GNB_Bozja_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, Preset.GNB_Bozja_PowerSacrifice) })
             if (IsEnabledAndUsable(preset, action) && (!IsEnabled(powerPreset) || JustUsed(Bozja.LostFontOfPower, 5f)))
                 return action;
 
-            if (IsEnabledAndUsable(CustomComboPreset.GNB_Bozja_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
+            if (IsEnabledAndUsable(Preset.GNB_Bozja_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
                 !HasStatusEffect(Bozja.Buffs.BannerOfTranscendentFinesse))
                 return Bozja.BannerOfHonedAcuity;
         }
 
         foreach (var (preset, action, condition) in new[]
-        { (CustomComboPreset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
-        (CustomComboPreset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
-        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
-        (CustomComboPreset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
-        (CustomComboPreset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
-        (CustomComboPreset.GNB_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
-        (CustomComboPreset.GNB_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
-        (CustomComboPreset.GNB_Bozja_LostBubble, Bozja.LostBubble, !HasStatusEffect(Bozja.Buffs.LostBubble)),
-        (CustomComboPreset.GNB_Bozja_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f)) })
+        { (Preset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
+        (Preset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
+        (Preset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
+        (Preset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
+        (Preset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
+        (Preset.GNB_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
+        (Preset.GNB_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
+        (Preset.GNB_Bozja_LostBubble, Bozja.LostBubble, !HasStatusEffect(Bozja.Buffs.LostBubble)),
+        (Preset.GNB_Bozja_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f)) })
         if (IsEnabledAndUsable(preset, action) && condition)
             return action;
 
-        if (IsEnabled(CustomComboPreset.GNB_Bozja_LostSpellforge) &&
+        if (IsEnabled(Preset.GNB_Bozja_LostSpellforge) &&
             CanUse(Bozja.LostSpellforge) &&
             (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
             return Bozja.LostSpellforge;
-        if (IsEnabled(CustomComboPreset.GNB_Bozja_LostSteelsting) &&
+        if (IsEnabled(Preset.GNB_Bozja_LostSteelsting) &&
             CanUse(Bozja.LostSteelsting) &&
             (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
             return Bozja.LostSteelsting;
@@ -532,39 +532,39 @@ internal partial class GNB : Tank
     ///    and <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///   Do not add any of these checks to <c>Logic</c>.
     ///</remarks>
-    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
         PrioritizedMitigation =>
     [
         //Heart of Corundum
-        (OriginalHook(HeartOfStone), CustomComboPreset.GNB_Mit_Corundum,
+        (OriginalHook(HeartOfStone), Preset.GNB_Mit_Corundum,
             () => !HasStatusEffect(Buffs.HeartOfCorundum) &&
                   !HasStatusEffect(Buffs.HeartOfStone) &&
                   PlayerHealthPercentageHp() <= Config.GNB_Mit_Corundum_Health),
         //Aurora
-        (Aurora, CustomComboPreset.GNB_Mit_Aurora,
+        (Aurora, Preset.GNB_Mit_Aurora,
             () => !(TargetIsFriendly() && HasStatusEffect(Buffs.Aurora, CurrentTarget, true) ||
                     !TargetIsFriendly() && HasStatusEffect(Buffs.Aurora, anyOwner: true)) &&
                   GetRemainingCharges(Aurora) > Config.GNB_Mit_Aurora_Charges &&
                   PlayerHealthPercentageHp() <= Config.GNB_Mit_Aurora_Health),
         //Camouflage
-        (Camouflage, CustomComboPreset.GNB_Mit_Camouflage, () => true),
+        (Camouflage, Preset.GNB_Mit_Camouflage, () => true),
         //Reprisal
-        (Role.Reprisal, CustomComboPreset.GNB_Mit_Reprisal,
+        (Role.Reprisal, Preset.GNB_Mit_Reprisal,
             () => Role.CanReprisal(checkTargetForDebuff:false)),
         //Heart of Light
-        (HeartOfLight, CustomComboPreset.GNB_Mit_HeartOfLight,
+        (HeartOfLight, Preset.GNB_Mit_HeartOfLight,
             () => Config.GNB_Mit_HeartOfLight_PartyRequirement ==
                   (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
-        (Role.Rampart, CustomComboPreset.GNB_Mit_Rampart,
+        (Role.Rampart, Preset.GNB_Mit_Rampart,
             () => Role.CanRampart(Config.GNB_Mit_Rampart_Health)),
         //Arm's Length
-        (Role.ArmsLength, CustomComboPreset.GNB_Mit_ArmsLength,
+        (Role.ArmsLength, Preset.GNB_Mit_ArmsLength,
             () => Role.CanArmsLength(Config.GNB_Mit_ArmsLength_EnemyCount,
                 Config.GNB_Mit_ArmsLength_Boss)),
         //Nebula
-        (OriginalHook(Nebula), CustomComboPreset.GNB_Mit_Nebula,
+        (OriginalHook(Nebula), Preset.GNB_Mit_Nebula,
             () => PlayerHealthPercentageHp() <= Config.GNB_Mit_Nebula_Health)
     ];
 

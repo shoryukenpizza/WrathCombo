@@ -4,7 +4,7 @@ namespace WrathCombo.Extensions;
 
 internal static class CustomComboPresetExtensions
 {
-    public static Presets.PresetAttributes? Attributes(this CustomComboPreset preset)
+    public static Presets.PresetAttributes? Attributes(this Preset preset)
     {
         if (Presets.Attributes.TryGetValue(preset, out var atts))
             return atts;

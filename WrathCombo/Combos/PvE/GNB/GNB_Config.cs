@@ -84,12 +84,12 @@ internal partial class GNB
 
         private const int NumMitigationOptions = 8;
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 #region Single-Target
-                case CustomComboPreset.GNB_ST_Opener:
+                case Preset.GNB_ST_Opener:
                     UserConfig.DrawHorizontalRadioButton(GNB_Opener_NM,
                         $"Normal {NoMercy.ActionName()}", $"Uses {NoMercy.ActionName()} normally in all openers", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_Opener_NM,
@@ -107,7 +107,7 @@ internal partial class GNB
                     UserConfig.DrawBossOnlyChoice(GNB_ST_Balance_Content);
                     break;
 
-                case CustomComboPreset.GNB_ST_NoMercy:
+                case Preset.GNB_ST_NoMercy:
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_NoMercy_SubOption,
                         "All content", $"Uses {CustomComboFunctions.GetActionName(NoMercy)} regardless of content", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_NoMercy_SubOption,
@@ -117,7 +117,7 @@ internal partial class GNB
                         " Stop usage if Target HP% is below set value.\n  To disable this, set value to 0");
                     break;
 
-                case CustomComboPreset.GNB_ST_BurstStrike:
+                case Preset.GNB_ST_BurstStrike:
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Overcap_Choice,
                         "Include Overcap Protection", $"Includes {BurstStrike.ActionName()} to prevent overcapping on cartridges", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Overcap_Choice,
@@ -126,12 +126,12 @@ internal partial class GNB
                 #endregion
 
                 #region AoE
-                case CustomComboPreset.GNB_AoE_NoMercy:
+                case Preset.GNB_AoE_NoMercy:
                     UserConfig.DrawSliderInt(0, 75, GNB_AoE_NoMercyStop,
                         " Stop usage if Target HP% is below set value.\n To disable this, set value to 0");
                     break;
 
-                case CustomComboPreset.GNB_AoE_FatedCircle:
+                case Preset.GNB_AoE_FatedCircle:
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Overcap_Choice,
                         "Include Overcap Protection", $"Includes {FatedCircle.ActionName()} to prevent overcapping on cartridges", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Overcap_Choice,
@@ -145,7 +145,7 @@ internal partial class GNB
                 #endregion
 
                 #region Mitigations
-                case CustomComboPreset.GNB_ST_Corundum:
+                case Preset.GNB_ST_Corundum:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Corundum_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Corundum_SubOption,
@@ -154,7 +154,7 @@ internal partial class GNB
                         "Bosses Only", $"Only ses {HeartOfCorundum.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Corundum:
+                case Preset.GNB_AoE_Corundum:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Corundum_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Corundum_SubOption,
@@ -163,7 +163,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {HeartOfCorundum.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Aurora:
+                case Preset.GNB_ST_Aurora:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Aurora_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawSliderInt(0, 1, GNB_ST_Aurora_Charges,
@@ -174,7 +174,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Aurora.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Aurora:
+                case Preset.GNB_AoE_Aurora:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Aurora_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawSliderInt(0, 1, GNB_AoE_Aurora_Charges,
@@ -185,7 +185,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Aurora.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Rampart:
+                case Preset.GNB_ST_Rampart:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Rampart_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Rampart_SubOption,
@@ -194,7 +194,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Rampart:
+                case Preset.GNB_AoE_Rampart:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Rampart_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Rampart_SubOption,
@@ -203,7 +203,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Role.Rampart.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Camouflage:
+                case Preset.GNB_ST_Camouflage:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Camouflage_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Camouflage_SubOption,
@@ -212,7 +212,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Camouflage.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Camouflage:
+                case Preset.GNB_AoE_Camouflage:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Camouflage_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Camouflage_SubOption,
@@ -221,7 +221,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Camouflage.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Nebula:
+                case Preset.GNB_ST_Nebula:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Nebula_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Nebula_SubOption,
@@ -230,7 +230,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Nebula.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Nebula:
+                case Preset.GNB_AoE_Nebula:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Nebula_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Nebula_SubOption,
@@ -239,7 +239,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Nebula.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Superbolide:
+                case Preset.GNB_ST_Superbolide:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Superbolide_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Superbolide_SubOption,
@@ -248,7 +248,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Superbolide.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Superbolide:
+                case Preset.GNB_AoE_Superbolide:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Superbolide_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Superbolide_SubOption,
@@ -257,7 +257,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Superbolide.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Reprisal:
+                case Preset.GNB_ST_Reprisal:
                     UserConfig.DrawSliderInt(1, 100, GNB_ST_Reprisal_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_Reprisal_SubOption,
@@ -266,7 +266,7 @@ internal partial class GNB
                         "Bosses Only", $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Reprisal:
+                case Preset.GNB_AoE_Reprisal:
                     UserConfig.DrawSliderInt(1, 100, GNB_AoE_Reprisal_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_Reprisal_SubOption,
@@ -277,13 +277,13 @@ internal partial class GNB
 
                 #region One-Button Mitigation
 
-                case CustomComboPreset.GNB_Mit_Superbolide_Max:
+                case Preset.GNB_Mit_Superbolide_Max:
                     UserConfig.DrawDifficultyMultiChoice(GNB_Mit_Superbolide_Difficulty, GNB_Mit_Superbolide_DifficultyListSet,
                         "Select what difficulties Superbolide should be used in:");
                     UserConfig.DrawSliderInt(1, 100, GNB_Mit_Superbolide_Health, "Player HP% to be \nless than or equal to:", 200, SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.GNB_Mit_Corundum:
+                case Preset.GNB_Mit_Corundum:
                     UserConfig.DrawSliderInt(1, 100, GNB_Mit_Corundum_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -291,7 +291,7 @@ internal partial class GNB
                         "Heart of Corundum Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_Aurora:
+                case Preset.GNB_Mit_Aurora:
                     UserConfig.DrawSliderInt(0, 1, GNB_Mit_Aurora_Charges,
                         "How many charges to keep ready?\n (0 = Use All)");
                     UserConfig.DrawSliderInt(1, 100, GNB_Mit_Aurora_Health,
@@ -301,17 +301,17 @@ internal partial class GNB
                         "Aurora Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_Camouflage:
+                case Preset.GNB_Mit_Camouflage:
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities, NumMitigationOptions, 2,
                         "Camouflage Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_Reprisal:
+                case Preset.GNB_Mit_Reprisal:
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities, NumMitigationOptions, 3,
                         "Reprisal Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_HeartOfLight:
+                case Preset.GNB_Mit_HeartOfLight:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(GNB_Mit_HeartOfLight_PartyRequirement,
                         "Require party", "Will not use Heart of Light unless there are 2 or more party members.",
@@ -325,7 +325,7 @@ internal partial class GNB
                         "Heart of Light Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_Rampart:
+                case Preset.GNB_Mit_Rampart:
                     UserConfig.DrawSliderInt(1, 100, GNB_Mit_Rampart_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -333,7 +333,7 @@ internal partial class GNB
                         "Rampart Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_ArmsLength:
+                case Preset.GNB_Mit_ArmsLength:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(GNB_Mit_ArmsLength_Boss, 
                         "All Enemies", "Will use Arm's Length regardless of the type of enemy.",
@@ -350,7 +350,7 @@ internal partial class GNB
                         "Arm's Length Priority:");
                     break;
 
-                case CustomComboPreset.GNB_Mit_Nebula:
+                case Preset.GNB_Mit_Nebula:
                     UserConfig.DrawSliderInt(1, 100, GNB_Mit_Nebula_Health,
                         "HP% to use at or below (100 = Disable check)",
                         sliderIncrement: SliderIncrements.Ones);
@@ -362,72 +362,72 @@ internal partial class GNB
                 #endregion
 
                 #region Other
-                case CustomComboPreset.GNB_NM_Features:
+                case Preset.GNB_NM_Features:
                     UserConfig.DrawHorizontalRadioButton(GNB_NM_Features_Weave,
                         "Weave-Only", "Uses cooldowns only when inside a weave window (excludes No Mercy)", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_NM_Features_Weave,
                         "On Cooldown", "Uses cooldowns as soon as possible", 1);
                     break;
 
-                case CustomComboPreset.GNB_GF_Features:
+                case Preset.GNB_GF_Features:
                     UserConfig.DrawHorizontalRadioButton(GNB_GF_Features_Choice,
                         "Replace Gnashing Fang", $"Use this feature as intended on {GnashingFang.ActionName()}", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_GF_Features_Choice,
                         "Replace No Mercy", $"Use this feature instead on {NoMercy.ActionName()}\nWARNING: This WILL conflict with 'No Mercy Features'!", 1);
                     break;
 
-                case CustomComboPreset.GNB_GF_BurstStrike:
+                case Preset.GNB_GF_BurstStrike:
                     UserConfig.DrawHorizontalRadioButton(GNB_GF_Overcap_Choice,
                         "Include Overcap Protection", $"Includes {BurstStrike.ActionName()} to prevent overcapping on cartridges", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_GF_Overcap_Choice,
                         "Exclude Overcap Protection", $"Excludes {BurstStrike.ActionName()}, regardless of cartridge count", 1);
                     break;
 
-                case CustomComboPreset.GNB_ST_Simple:
+                case Preset.GNB_ST_Simple:
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_MitsOptions,
                         "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_ST_MitsOptions,
                         "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
-                case CustomComboPreset.GNB_AoE_Simple:
+                case Preset.GNB_AoE_Simple:
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
                         "Include Mitigations", "Enables the use of mitigations in Simple Mode.", 0);
                     UserConfig.DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
                         "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostCure:
+                case Preset.GNB_Bozja_LostCure:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostCure_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostCure2:
+                case Preset.GNB_Bozja_LostCure2:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostCure2_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostCure3:
+                case Preset.GNB_Bozja_LostCure3:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostCure3_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostCure4:
+                case Preset.GNB_Bozja_LostCure4:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostCure4_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostAethershield:
+                case Preset.GNB_Bozja_LostAethershield:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostAethershield_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Bozja_LostReraise:
+                case Preset.GNB_Bozja_LostReraise:
                     UserConfig.DrawSliderInt(1, 100, GNB_Bozja_LostReraise_Health,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;
 
-                case CustomComboPreset.GNB_Variant_Cure:
+                case Preset.GNB_Variant_Cure:
                     UserConfig.DrawSliderInt(1, 100, GNB_VariantCure,
                         "Player HP% to be \nless than or equal to:", 200);
                     break;

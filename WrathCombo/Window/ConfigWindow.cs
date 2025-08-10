@@ -25,14 +25,14 @@ namespace WrathCombo.Window;
 /// <summary> Plugin configuration window. </summary>
 internal class ConfigWindow : Dalamud.Interface.Windowing.Window
 {
-    internal static readonly Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
-    internal static readonly Dictionary<CustomComboPreset, (CustomComboPreset Preset, CustomComboInfoAttribute Info)[]> presetChildren = GetPresetChildren();
+    internal static readonly Dictionary<string, List<(Preset Preset, CustomComboInfoAttribute Info)>> groupedPresets = GetGroupedPresets();
+    internal static readonly Dictionary<Preset, (Preset Preset, CustomComboInfoAttribute Info)[]> presetChildren = GetPresetChildren();
     internal static int currentPreset = 1;
     internal static float lastLeftColumnWidth;
-    internal static Dictionary<string, List<(CustomComboPreset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
+    internal static Dictionary<string, List<(Preset Preset, CustomComboInfoAttribute Info)>> GetGroupedPresets()
     {
         return Enum
-            .GetValues<CustomComboPreset>()
+            .GetValues<Preset>()
             .Where(preset => (int)preset > 100)
             .Select(preset => (Preset: preset, Info: preset.GetAttribute<CustomComboInfoAttribute>()))
             .Where(tpl => tpl.Info != null && PresetStorage.GetParent(tpl.Preset) == null)
@@ -51,13 +51,13 @@ internal class ConfigWindow : Dalamud.Interface.Windowing.Window
                 tpl => tpl.ToList())!;
     }
 
-    internal static Dictionary<CustomComboPreset, (CustomComboPreset Preset, CustomComboInfoAttribute Info)[]> GetPresetChildren()
+    internal static Dictionary<Preset, (Preset Preset, CustomComboInfoAttribute Info)[]> GetPresetChildren()
     {
-        var childCombos = Enum.GetValues<CustomComboPreset>().ToDictionary(
+        var childCombos = Enum.GetValues<Preset>().ToDictionary(
             tpl => tpl,
-            tpl => new List<CustomComboPreset>());
+            tpl => new List<Preset>());
 
-        foreach (var preset in Enum.GetValues<CustomComboPreset>())
+        foreach (var preset in Enum.GetValues<Preset>())
         {
             var parent = preset.GetAttribute<ParentComboAttribute>()?.ParentPreset;
             if (parent != null)

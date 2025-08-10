@@ -29,14 +29,14 @@ namespace WrathCombo.Window.Functions;
 
 internal class Presets : ConfigWindow
 {
-    internal static Dictionary<CustomComboPreset, PresetAttributes> Attributes = new();
+    internal static Dictionary<Preset, PresetAttributes> Attributes = new();
     private static bool _animFrame = false;
     internal class PresetAttributes
     {
-        private CustomComboPreset Preset;
+        private Preset Preset;
         public bool IsPvP;
-        public CustomComboPreset[] Conflicts;
-        public CustomComboPreset? Parent;
+        public Preset[] Conflicts;
+        public Preset? Parent;
         public BlueInactiveAttribute? BlueInactive;
         public VariantAttribute? Variant;
         public VariantParentAttribute? VariantParent;
@@ -55,7 +55,7 @@ internal class Presets : ConfigWindow
         public HiddenAttribute? Hidden;
         public ComboType ComboType;
 
-        public PresetAttributes(CustomComboPreset preset)
+        public PresetAttributes(Preset preset)
         {
             Preset = preset;
             IsPvP = PresetStorage.IsPvP(preset);
@@ -80,10 +80,10 @@ internal class Presets : ConfigWindow
     }
         
     private static uint[] GetRetargetedActions
-    (CustomComboPreset preset,
+    (Preset preset,
         RetargetedAttribute? retargetedAttribute,
         PossiblyRetargetedAttribute? possiblyRetargeted,
-        CustomComboPreset? parent)
+        Preset? parent)
     {
         // Pick whichever Retargeted attribute is available
         RetargetedAttributeBase? retargetAttribute = null;
@@ -103,7 +103,7 @@ internal class Presets : ConfigWindow
             // ReSharper disable once DuplicatedSequentialIfBodies
             if (parent != null &&
                 !Service.Configuration.EnabledActions
-                    .Contains((CustomComboPreset)parent))
+                    .Contains((Preset)parent))
                 return [];
             if (parent?.Attributes()?.Parent is { } grandParent &&
                 !Service.Configuration.EnabledActions
@@ -125,10 +125,10 @@ internal class Presets : ConfigWindow
         return retargetAttribute.RetargetedActions;
     }
 
-    internal static Dictionary<CustomComboPreset, bool> GetJobAutorots => P
+    internal static Dictionary<Preset, bool> GetJobAutorots => P
         .IPCSearch.AutoActions.Where(x => x.Key.Attributes().IsPvP == CustomComboFunctions.InPvP() && (Player.JobId == x.Key.Attributes().CustomComboInfo.JobID || CustomComboFunctions.JobIDs.ClassToJob((byte)Player.Job) == x.Key.Attributes().CustomComboInfo.JobID) && x.Value && CustomComboFunctions.IsEnabled(x.Key) && x.Key.Attributes().Parent == null).ToDictionary();
 
-    internal static void DrawPreset(CustomComboPreset preset, CustomComboInfoAttribute info)
+    internal static void DrawPreset(Preset preset, CustomComboInfoAttribute info)
     {
         if (!Attributes.ContainsKey(preset))
         {
@@ -495,7 +495,7 @@ internal class Presets : ConfigWindow
         }
     }
 
-    private static void DrawReplaceAttribute(CustomComboPreset preset)
+    private static void DrawReplaceAttribute(Preset preset)
     {
         var att = Attributes[preset].ReplaceSkill;
         if (att != null)
@@ -526,7 +526,7 @@ internal class Presets : ConfigWindow
                        "affecting the same actions will Conflict and may cause issues.");
 
     private static void DrawRetargetedAttribute
-    (CustomComboPreset? preset = null,
+    (Preset? preset = null,
         string? firstLine = null,
         string? secondLine = null,
         string? thirdLine = null)
@@ -614,7 +614,7 @@ internal class Presets : ConfigWindow
         }
     }
 
-    private static bool DrawOccultJobIcon(CustomComboPreset preset)
+    private static bool DrawOccultJobIcon(Preset preset)
     {
         if (preset.Attributes().OccultCrescentJob == null) return false;
         var jobID = preset.Attributes().OccultCrescentJob.JobId;
@@ -650,7 +650,7 @@ internal class Presets : ConfigWindow
         return true;
     }
 
-    internal static int AllChildren((CustomComboPreset Preset, CustomComboInfoAttribute Info)[] children)
+    internal static int AllChildren((Preset Preset, CustomComboInfoAttribute Info)[] children)
     {
         var output = 0;
 

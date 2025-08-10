@@ -50,23 +50,23 @@ internal static class PCTPvP
             PCTPvP_TemperaHP = new("PCTPvP_TemperaHP", 50),
             PCTPvP_PhantomDartThreshold = new("PCTPvP_PhantomDartThreshold", 50);
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 // Phantom Dart
-                case CustomComboPreset.PCTPvP_PhantomDart:
+                case Preset.PCTPvP_PhantomDart:
                     UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
                     break;
 
-                case CustomComboPreset.PCTPvP_BurstControl:
+                case Preset.PCTPvP_BurstControl:
                     UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_BurstHP, "Target HP%", 200);
 
                     break;
 
-                case CustomComboPreset.PCTPvP_TemperaCoat:
+                case Preset.PCTPvP_TemperaCoat:
                     UserConfig.DrawSliderInt(1, 100, PCTPvP.Config.PCTPvP_TemperaHP, "Player HP%", 200);
 
                     break;
@@ -77,7 +77,7 @@ internal static class PCTPvP
 
     internal class PCTPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PCTPvP_Burst;
+        protected internal override Preset Preset { get; } = Preset.PCTPvP_Burst;
         protected override uint Invoke(uint actionID)
         {
                 #region Variables
@@ -89,13 +89,13 @@ internal static class PCTPvP
             bool isStarPrismExpiring = HasStatusEffect(Buffs.Starstruck) && GetStatusEffectRemainingTime(Buffs.Starstruck) <= 3;
             bool isTemperaCoatExpiring = HasStatusEffect(Buffs.TemperaCoat) && GetStatusEffectRemainingTime(Buffs.TemperaCoat) <= 3;
             bool hasMotifDrawn = HasStatusEffect(Buffs.PomMotif) || HasStatusEffect(Buffs.WingMotif) || HasStatusEffect(Buffs.ClawMotif) || HasStatusEffect(Buffs.MawMotif);
-            bool isBurstControlled = IsNotEnabled(CustomComboPreset.PCTPvP_BurstControl) || (IsEnabled(CustomComboPreset.PCTPvP_BurstControl) && GetTargetHPPercent() < Config.PCTPvP_BurstHP);
+            bool isBurstControlled = IsNotEnabled(Preset.PCTPvP_BurstControl) || (IsEnabled(Preset.PCTPvP_BurstControl) && GetTargetHPPercent() < Config.PCTPvP_BurstHP);
                 #endregion
 
             if (actionID is FireInRed or AeroInGreen or WaterInBlue)
             {
                 // Tempera Coat / Tempera Grassa
-                if (IsEnabled(CustomComboPreset.PCTPvP_TemperaCoat))
+                if (IsEnabled(Preset.PCTPvP_TemperaCoat))
                 {
                     if ((IsOffCooldown(TemperaCoat) &&
                          InCombat() && PlayerHealthPercentageHp() < Config.PCTPvP_TemperaHP) || isTemperaCoatExpiring)
@@ -105,34 +105,34 @@ internal static class PCTPvP
                 if (hasTarget && !PvPCommon.TargetImmuneToDamage())
                 {
                     // Star Prism
-                    if (IsEnabled(CustomComboPreset.PCTPvP_StarPrism))
+                    if (IsEnabled(Preset.PCTPvP_StarPrism))
                     {
                         if (hasStarPrism && (isBurstControlled || isStarPrismExpiring))
                             return StarPrism;
                     }
 
-                    if (IsEnabled(CustomComboPreset.PCTPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (Config.PCTPvP_PhantomDartThreshold))
+                    if (IsEnabled(Preset.PCTPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (Config.PCTPvP_PhantomDartThreshold))
                         return Role.PhantomDart;
 
                     // Moogle / Madeen Portrait
-                    if (IsEnabled(CustomComboPreset.PCTPvP_MogOfTheAges) && hasPortrait && isBurstControlled)
+                    if (IsEnabled(Preset.PCTPvP_MogOfTheAges) && hasPortrait && isBurstControlled)
                         return OriginalHook(MogOfTheAges);
 
                     // Living Muse
-                    if (IsEnabled(CustomComboPreset.PCTPvP_LivingMuse) && hasMotifDrawn && HasCharges(OriginalHook(LivingMuse)) && isBurstControlled)
+                    if (IsEnabled(Preset.PCTPvP_LivingMuse) && hasMotifDrawn && HasCharges(OriginalHook(LivingMuse)) && isBurstControlled)
                         return OriginalHook(LivingMuse);
 
                     // Holy in White / Comet in Black
-                    if (IsEnabled(CustomComboPreset.PCTPvP_HolyInWhite) && HasCharges(OriginalHook(HolyInWhite)) && isBurstControlled)
+                    if (IsEnabled(Preset.PCTPvP_HolyInWhite) && HasCharges(OriginalHook(HolyInWhite)) && isBurstControlled)
                         return OriginalHook(HolyInWhite);
                 }
 
                 // Creature Motif
-                if (IsEnabled(CustomComboPreset.PCTPvP_CreatureMotif) && !hasMotifDrawn && !isMoving)
+                if (IsEnabled(Preset.PCTPvP_CreatureMotif) && !hasMotifDrawn && !isMoving)
                     return OriginalHook(CreatureMotif);
 
                 // Subtractive Palette
-                if (IsEnabled(CustomComboPreset.PCTPvP_SubtractivePalette))
+                if (IsEnabled(Preset.PCTPvP_SubtractivePalette))
                 {
                     if (IsOffCooldown(OriginalHook(SubtractivePalette)) &&
                         hasTarget && ((isMoving && hasSubtractivePalette) || (!isMoving && !hasSubtractivePalette)))
