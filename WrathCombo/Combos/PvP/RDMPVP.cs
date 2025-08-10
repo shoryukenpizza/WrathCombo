@@ -3,6 +3,7 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.RDMPvP.Config;
 using static WrathCombo.Window.Functions.UserConfig;
 
 namespace WrathCombo.Combos.PvP;
@@ -70,32 +71,32 @@ internal static class RDMPvP
             RDMPvP_Embolden_SubOption = new("RDMPvP_Embolden_SubOption"),
             RDMPvP_Displacement_SubOption = new("RDMPvP_Displacement_SubOption");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 // Resolution
-                case CustomComboPreset.RDMPvP_Resolution:
+                case Preset.RDMPvP_Resolution:
                     DrawSliderInt(10, 100, RDMPvP_Resolution_TargetHP, "Target HP%", 210);
 
                     break;
 
                 // Embolden / Prefulgence
-                case CustomComboPreset.RDMPvP_Embolden:
+                case Preset.RDMPvP_Embolden:
                     DrawAdditionalBoolChoice(RDMPvP_Embolden_SubOption, "Prefulgence Option",
                         "Uses Prefulgence when available.");
 
                     break;
 
                 // Corps-a-Corps
-                case CustomComboPreset.RDMPvP_Corps:
+                case Preset.RDMPvP_Corps:
                     DrawSliderInt(0, 1, RDMPvP_Corps_Charges, "Charges to Keep", 178);
                     DrawSliderInt(5, 10, RDMPvP_Corps_Range, "Maximum Range", 173);
 
                     break;
 
                 // Displacement
-                case CustomComboPreset.RDMPvP_Displacement:
+                case Preset.RDMPvP_Displacement:
                     DrawSliderInt(0, 1, RDMPvP_Displacement_Charges, "Charges to Keep", 178);
                     ImGui.Spacing();
                     DrawAdditionalBoolChoice(RDMPvP_Displacement_SubOption, "No Movement Option",
@@ -104,7 +105,7 @@ internal static class RDMPvP
                     break;
 
                 // Forte / Vice of Thorns
-                case CustomComboPreset.RDMPvP_Forte:
+                case Preset.RDMPvP_Forte:
                     DrawSliderInt(10, 100, RDMPvP_Forte_PlayerHP, "Player HP%", 210);
                     ImGui.Spacing();
                     DrawAdditionalBoolChoice(RDMPvP_Forte_SubOption, "Vice of Thorns Option",
@@ -113,8 +114,8 @@ internal static class RDMPvP
                     break;
 
                 // Phantom Dart
-                case CustomComboPreset.RDMPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, RDMPvP.Config.RDMPvP_PhantomDartThreshold,
+                case Preset.RDMPvP_PhantomDart:
+                    UserConfig.DrawSliderInt(1, 100, RDMPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
 
                     break;
@@ -125,7 +126,7 @@ internal static class RDMPvP
 
     internal class RDMPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDMPvP_BurstMode;
+        protected internal override Preset Preset => Preset.RDMPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -153,27 +154,27 @@ internal static class RDMPvP
                 bool hasEmbolden = IsOffCooldown(Embolden) && OriginalHook(Embolden) is Embolden;
                 bool isEmboldenDelayDependant = !JustUsed(Embolden, 5f) || IsOnCooldown(EnchantedRiposte);
                 bool hasMeleeCombo = OriginalHook(EnchantedRiposte) is EnchantedZwerchhau or EnchantedRedoublement;
-                bool isEnabledViceOfThorns = IsEnabled(CustomComboPreset.RDMPvP_Forte) && Config.RDMPvP_Forte_SubOption;
-                bool isEnabledPrefulgence = IsEnabled(CustomComboPreset.RDMPvP_Embolden) && Config.RDMPvP_Embolden_SubOption;
+                bool isEnabledViceOfThorns = IsEnabled(Preset.RDMPvP_Forte) && RDMPvP_Forte_SubOption;
+                bool isEnabledPrefulgence = IsEnabled(Preset.RDMPvP_Embolden) && RDMPvP_Embolden_SubOption;
                 bool hasEnchantedRiposte = IsOffCooldown(EnchantedRiposte) && OriginalHook(EnchantedRiposte) is EnchantedRiposte;
                 bool isViceOfThornsExpiring = HasStatusEffect(Buffs.ThornedFlourish) && GetStatusEffectRemainingTime(Buffs.ThornedFlourish) <= 3;
                 bool isPrefulgenceExpiring = HasStatusEffect(Buffs.PrefulgenceReady) && GetStatusEffectRemainingTime(Buffs.PrefulgenceReady) <= 3;
-                bool isMovementDependant = !Config.RDMPvP_Displacement_SubOption || (Config.RDMPvP_Displacement_SubOption && !isMoving);
+                bool isMovementDependant = !RDMPvP_Displacement_SubOption || (RDMPvP_Displacement_SubOption && !isMoving);
                 bool targetHasImmunity = HasStatusEffect(PLDPvP.Buffs.HallowedGround, CurrentTarget, true) || HasStatusEffect(DRKPvP.Buffs.UndeadRedemption, CurrentTarget, true);
                 bool isDisplacementPrimed = !hasBind && !JustUsed(Displacement, 8f) && !HasStatusEffect(Buffs.Displacement) && hasScorch && inMeleeRange;
-                bool isCorpsPrimed = !hasBind && !JustUsed(CorpsACorps, 8f) && chargesCorps > Config.RDMPvP_Corps_Charges && targetDistance <= Config.RDMPvP_Corps_Range;
+                bool isCorpsPrimed = !hasBind && !JustUsed(CorpsACorps, 8f) && chargesCorps > RDMPvP_Corps_Charges && targetDistance <= RDMPvP_Corps_Range;
                     #endregion
 
                 // Forte
-                if (IsEnabled(CustomComboPreset.RDMPvP_Forte) && hasForte && inCombat &&
-                    playerCurrentPercentHp < Config.RDMPvP_Forte_PlayerHP)
+                if (IsEnabled(Preset.RDMPvP_Forte) && hasForte && inCombat &&
+                    playerCurrentPercentHp < RDMPvP_Forte_PlayerHP)
                     return OriginalHook(Forte);
 
                 if (hasTarget && !targetHasImmunity)
                 {
                     if (!targetHasGuard)
                     {
-                        if (IsEnabled(CustomComboPreset.RDMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (Config.RDMPvP_PhantomDartThreshold))
+                        if (IsEnabled(Preset.RDMPvP_PhantomDart) && Role.CanPhantomDart() && CanWeave() && GetTargetHPPercent() <= (RDMPvP_PhantomDartThreshold))
                             return Role.PhantomDart;
 
                         // Vice of Thorns
@@ -181,32 +182,32 @@ internal static class RDMPvP
                             return OriginalHook(Forte);
 
                         // Displacement
-                        if (IsEnabled(CustomComboPreset.RDMPvP_Displacement) && isDisplacementPrimed &&
-                            isMovementDependant && chargesDisplacement > Config.RDMPvP_Displacement_Charges)
+                        if (IsEnabled(Preset.RDMPvP_Displacement) && isDisplacementPrimed &&
+                            isMovementDependant && chargesDisplacement > RDMPvP_Displacement_Charges)
                             return OriginalHook(Displacement);
                     }
 
                     if (hasEnchantedRiposte)
                     {
                         // Embolden
-                        if (IsEnabled(CustomComboPreset.RDMPvP_Embolden) && hasEmbolden)
+                        if (IsEnabled(Preset.RDMPvP_Embolden) && hasEmbolden)
                         {
                             // Combo Setting
-                            if (IsEnabled(CustomComboPreset.RDMPvP_Corps) && (isCorpsPrimed || (!isCorpsPrimed && inMeleeRange)))
+                            if (IsEnabled(Preset.RDMPvP_Corps) && (isCorpsPrimed || (!isCorpsPrimed && inMeleeRange)))
                                 return OriginalHook(Embolden);
 
                             // Solo Setting
-                            if (IsNotEnabled(CustomComboPreset.RDMPvP_Corps) && (inMeleeRange || (inCombat && isCorpsAvailable)))
+                            if (IsNotEnabled(Preset.RDMPvP_Corps) && (inMeleeRange || (inCombat && isCorpsAvailable)))
                                 return OriginalHook(Embolden);
                         }
 
                         // Corps-a-Corps
-                        if (IsEnabled(CustomComboPreset.RDMPvP_Corps) && isCorpsPrimed)
+                        if (IsEnabled(Preset.RDMPvP_Corps) && isCorpsPrimed)
                             return OriginalHook(CorpsACorps);
                     }
 
                     // Riposte Combo
-                    if (IsEnabled(CustomComboPreset.RDMPvP_Riposte) && inMeleeRange && (hasEnchantedRiposte || hasMeleeCombo))
+                    if (IsEnabled(Preset.RDMPvP_Riposte) && inMeleeRange && (hasEnchantedRiposte || hasMeleeCombo))
                         return OriginalHook(EnchantedRiposte);
 
                     // Prefulgence
@@ -224,12 +225,12 @@ internal static class RDMPvP
                     if (!targetHasGuard)
                     {
                         // Scorch
-                        if (IsEnabled(CustomComboPreset.RDMPvP_Riposte) && hasScorch)
+                        if (IsEnabled(Preset.RDMPvP_Riposte) && hasScorch)
                             return OriginalHook(EnchantedRiposte);
 
                         // Resolution
-                        if (IsEnabled(CustomComboPreset.RDMPvP_Resolution) && IsOffCooldown(Resolution) &&
-                            !isTargetNPC && targetCurrentPercentHp < Config.RDMPvP_Resolution_TargetHP)
+                        if (IsEnabled(Preset.RDMPvP_Resolution) && IsOffCooldown(Resolution) &&
+                            !isTargetNPC && targetCurrentPercentHp < RDMPvP_Resolution_TargetHP)
                             return OriginalHook(Resolution);
                     }
                 }
@@ -244,7 +245,8 @@ internal static class RDMPvP
 
     internal class RDMPvP_Dash_Feature : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDMPvP_Dash_Feature;
+        protected internal override Preset Preset => Preset.RDMPvP_Dash_Feature;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is CorpsACorps)

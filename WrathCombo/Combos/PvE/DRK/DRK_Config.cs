@@ -6,6 +6,7 @@ using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Window.Functions.UserConfig;
 using BossAvoidance = WrathCombo.Combos.PvE.ALL.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.ALL.Enums.PartyRequirement;
 
@@ -28,13 +29,13 @@ internal partial class DRK
     /// </summary>
     internal static class Config
     {
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 #region Simple
 
-                case CustomComboPreset.DRK_ST_Simple:
+                case Preset.DRK_ST_Simple:
                     UserConfig.DrawHorizontalRadioButton(DRK_ST_SimpleMitigation,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.",
@@ -46,7 +47,7 @@ internal partial class DRK
                         (int)SimpleMitigation.Off);
                     break;
 
-                case CustomComboPreset.DRK_AoE_Simple:
+                case Preset.DRK_AoE_Simple:
                     UserConfig.DrawHorizontalRadioButton(DRK_AoE_SimpleMitigation,
                         "Include Mitigations",
                         "Enables the use of mitigations in Simple Mode.",
@@ -62,7 +63,7 @@ internal partial class DRK
 
                 #region Adv Single Target
 
-                case CustomComboPreset.DRK_ST_BalanceOpener:
+                case Preset.DRK_ST_BalanceOpener:
                     ImGui.Indent();
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
                     ImGui.Unindent();
@@ -94,7 +95,7 @@ internal partial class DRK
                         descriptionAsTooltip: true);
                     break;
 
-                case CustomComboPreset.DRK_ST_CDs:
+                case Preset.DRK_ST_CDs:
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_ST_CDsBossRequirement, "All Enemies",
                         "Will use Cooldowns regardless of the type of enemy.",
@@ -107,7 +108,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_CD_Delirium:
+                case Preset.DRK_ST_CD_Delirium:
                     UserConfig.DrawSliderInt(0, 25, DRK_ST_DeliriumThreshold,
                         stopUsingAtDescription,
                         itemWidth: little, sliderIncrement: SliderIncrements.Fives);
@@ -118,7 +119,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_CD_Shadow:
+                case Preset.DRK_ST_CD_Shadow:
                     UserConfig.DrawSliderInt(0, 30, DRK_ST_LivingShadowThreshold,
                         stopUsingAtDescription,
                         itemWidth: little, sliderIncrement: SliderIncrements.Fives);
@@ -129,13 +130,13 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Sp_BloodOvercap:
+                case Preset.DRK_ST_Sp_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_ST_BloodOvercapThreshold,
                         startUsingAboveDescription,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.DRK_ST_Sp_Edge:
+                case Preset.DRK_ST_Sp_Edge:
                     UserConfig.DrawSliderInt(0, 3000, DRK_ST_ManaSpenderPooling,
                         "Mana to always save for TBN (0 = Use All)",
                         itemWidth: biggest,
@@ -147,14 +148,14 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Sp_ManaOvercap:
+                case Preset.DRK_ST_Sp_ManaOvercap:
                     UserConfig.DrawSliderInt(0, 30, DRK_ST_BurstSoonThreshold,
                         "Seconds before Burst to save (allowing capping)",
                         itemWidth: little, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Mitigation:
+                case Preset.DRK_ST_Mitigation:
                     UserConfig.DrawDifficultyMultiChoice(
                         DRK_ST_MitDifficulty,
                         DRK_ST_MitDifficultyListSet,
@@ -164,7 +165,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Mit_TBN:
+                case Preset.DRK_ST_Mit_TBN:
                     UserConfig.DrawSliderInt(5, 100, DRK_ST_TBNThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -183,7 +184,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Mit_Oblation:
+                case Preset.DRK_ST_Mit_Oblation:
                     UserConfig.DrawSliderInt(10, 100, DRK_ST_Mit_OblationThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -193,20 +194,20 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Mit_Missionary:
+                case Preset.DRK_ST_Mit_Missionary:
                     UserConfig.DrawSliderInt(10, 100, DRK_ST_Mit_MissionaryThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.DRK_ST_Mit_Vigil:
+                case Preset.DRK_ST_Mit_Vigil:
                     UserConfig.DrawSliderInt(5, 100, DRK_ST_ShadowedVigilThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_ST_Mit_LivingDead:
+                case Preset.DRK_ST_Mit_LivingDead:
                     UserConfig.DrawSliderInt(5, 100, DRK_ST_LivingDeadSelfThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -232,7 +233,7 @@ internal partial class DRK
 
                 #region Adv AoE
 
-                case CustomComboPreset.DRK_AoE_CD_Delirium:
+                case Preset.DRK_AoE_CD_Delirium:
                     UserConfig.DrawSliderInt(0, 60, DRK_AoE_DeliriumThreshold,
                         stopUsingAtDescription,
                         itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
@@ -243,7 +244,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_CD_Shadow:
+                case Preset.DRK_AoE_CD_Shadow:
                     UserConfig.DrawSliderInt(0, 60, DRK_AoE_LivingShadowThreshold,
                         stopUsingAtDescription,
                         itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
@@ -254,28 +255,28 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_CD_Salt:
+                case Preset.DRK_AoE_CD_Salt:
                     UserConfig.DrawSliderInt(0, 60, DRK_AoE_SaltThreshold,
                         stopUsingAtDescription,
                         itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_CD_Drain:
+                case Preset.DRK_AoE_CD_Drain:
                     UserConfig.DrawSliderInt(20, 100, DRK_AoE_DrainThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Sp_BloodOvercap:
+                case Preset.DRK_AoE_Sp_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
                         startUsingAboveDescription,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Sp_Flood:
+                case Preset.DRK_AoE_Sp_Flood:
                     UserConfig.DrawSliderInt(0, 3000, DRK_AoE_ManaSpenderPooling,
                         "Mana to save for TBN (0 = Use All)",
                         itemWidth: biggest,
@@ -283,7 +284,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_Oblation:
+                case Preset.DRK_AoE_Mit_Oblation:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_OblationThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -293,7 +294,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_Reprisal:
+                case Preset.DRK_AoE_Mit_Reprisal:
                     UserConfig.DrawSliderInt(20, 100, DRK_AoE_Mit_ReprisalThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -303,34 +304,34 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_DarkMind:
+                case Preset.DRK_AoE_Mit_DarkMind:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_DarkMindThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_Rampart:
+                case Preset.DRK_AoE_Mit_Rampart:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_RampartThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_ArmsLength:
+                case Preset.DRK_AoE_Mit_ArmsLength:
                     UserConfig.DrawSliderInt(1, 10, DRK_AoE_ArmsLengthEnemyCount,
                         "# enemies in range",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_Vigil:
+                case Preset.DRK_AoE_Mit_Vigil:
                     UserConfig.DrawSliderInt(5, 100, DRK_AoE_ShadowedVigilThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
 
                     break;
 
-                case CustomComboPreset.DRK_AoE_Mit_LivingDead:
+                case Preset.DRK_AoE_Mit_LivingDead:
                     UserConfig.DrawSliderInt(5, 100, DRK_AoE_LivingDeadSelfThreshold,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -343,8 +344,8 @@ internal partial class DRK
 
                 #endregion
 
-                case CustomComboPreset.DRK_Var_Cure:
-                    UserConfig.DrawSliderInt(5, 70, DRK_VariantCure,
+                case Preset.DRK_Var_Cure:
+                    DrawSliderInt(5, 70, DRK_VariantCure,
                         startUsingAtDescription,
                         itemWidth: biggest, sliderIncrement: SliderIncrements.Fives);
 
@@ -352,7 +353,7 @@ internal partial class DRK
 
                 #region One-Button Mitigation
 
-                case CustomComboPreset.DRK_Mit_LivingDead_Max:
+                case Preset.DRK_Mit_LivingDead_Max:
                     UserConfig.DrawDifficultyMultiChoice(
                         DRK_Mit_EmergencyLivingDead_Difficulty,
                         DRK_Mit_EmergencyLivingDead_DifficultyListSet,
@@ -365,7 +366,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_TheBlackestNight:
+                case Preset.DRK_Mit_TheBlackestNight:
                     UserConfig.DrawSliderInt(1, 100, DRK_Mit_TBN_Health,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Tens);
@@ -376,7 +377,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_Oblation:
+                case Preset.DRK_Mit_Oblation:
                     UserConfig.DrawSliderInt(0, 1, DRK_Mit_Oblation_Charges,
                         "How many charges to keep ready? (0 = Use All)",
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
@@ -387,14 +388,14 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_Reprisal:
+                case Preset.DRK_Mit_Reprisal:
                     UserConfig.DrawPriorityInput(DRK_Mit_Priorities,
                         numberMitigationOptions, 2,
                         "Reprisal Priority:");
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_DarkMissionary:
+                case Preset.DRK_Mit_DarkMissionary:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_Mit_DarkMissionary_PartyRequirement,
@@ -415,7 +416,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_Rampart:
+                case Preset.DRK_Mit_Rampart:
                     UserConfig.DrawSliderInt(1, 100, DRK_Mit_Rampart_Health,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Ones);
@@ -426,14 +427,14 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_DarkMind:
+                case Preset.DRK_Mit_DarkMind:
                     UserConfig.DrawPriorityInput(DRK_Mit_Priorities,
                         numberMitigationOptions, 5,
                         "Dark Mind Priority:");
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_ArmsLength:
+                case Preset.DRK_Mit_ArmsLength:
                     ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_Mit_ArmsLength_Boss, "All Enemies",
@@ -456,7 +457,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_Mit_ShadowWall:
+                case Preset.DRK_Mit_ShadowWall:
                     UserConfig.DrawSliderInt(1, 100, DRK_Mit_ShadowWall_Health,
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Ones);
@@ -471,7 +472,7 @@ internal partial class DRK
 
                 #region Standalones
 
-                case CustomComboPreset.DRK_Retarget_TBN_TT:
+                case Preset.DRK_Retarget_TBN_TT:
                     ImGui.Indent(34f.Scale());
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
                         "Note: If you are Off-Tanking, and want to use this ability on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +
@@ -480,7 +481,7 @@ internal partial class DRK
                     ImGui.Unindent(34f.Scale());
                     break;
 
-                case CustomComboPreset.DRK_Retarget_Oblation_TT:
+                case Preset.DRK_Retarget_Oblation_TT:
                     ImGui.Indent(34f.Scale());
                     ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey,
                         "Note: If you are Off-Tanking, and want to use this ability on yourself, the expectation would be that you do so via the One-Button Mitigation Feature or the Mitigation options in your rotation.\n" +

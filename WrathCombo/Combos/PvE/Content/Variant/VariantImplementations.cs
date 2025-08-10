@@ -17,10 +17,10 @@ internal static partial class Variant
                 public uint Raise => Variant.VariantRaise;
                 public uint SpiritDart => Variant.VariantSpiritDart;
 
-                public bool CanCure(CustomComboPreset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
-                public bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
-                public bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-                public bool CanSpiritDart(CustomComboPreset preset) => Variant.CanSpiritDart(preset);
+                public bool CanCure(Preset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
+                public bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
+                public bool CanRaise(Preset preset) => Variant.CanRaise(preset);
+                public bool CanSpiritDart(Preset preset) => Variant.CanSpiritDart(preset);
             }
         }
 
@@ -35,9 +35,9 @@ internal static partial class Variant
                 public uint SpiritDart => Variant.VariantSpiritDart;
                 public uint Rampart => Variant.VariantRampart;
 
-                public bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
-                public bool CanSpiritDart(CustomComboPreset preset) => Variant.CanSpiritDart(preset);
-                public bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
+                public bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
+                public bool CanSpiritDart(Preset preset) => Variant.CanSpiritDart(preset);
+                public bool CanRampart(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
             }
         }
 
@@ -53,10 +53,10 @@ internal static partial class Variant
                 public uint Raise => Variant.VariantRaise;
                 public uint Rampart => Variant.VariantRampart;
 
-                public bool CanCure(CustomComboPreset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
-                public bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
-                public bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-                public bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
+                public bool CanCure(Preset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
+                public bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
+                public bool CanRaise(Preset preset) => Variant.CanRaise(preset);
+                public bool CanRampart(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
             }
         }
 
@@ -72,10 +72,10 @@ internal static partial class Variant
                 public uint Raise => Variant.VariantRaise;
                 public uint Rampart => Variant.VariantRampart;
 
-                public bool CanCure(CustomComboPreset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
-                public bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
-                public bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-                public bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
+                public bool CanCure(Preset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
+                public bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
+                public bool CanRaise(Preset preset) => Variant.CanRaise(preset);
+                public bool CanRampart(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
             }
         }
 
@@ -91,10 +91,10 @@ internal static partial class Variant
                 public uint Raise => Variant.VariantRaise;
                 public uint Rampart => Variant.VariantRampart;
 
-                public bool CanCure(CustomComboPreset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
-                public bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
-                public bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-                public bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
+                public bool CanCure(Preset preset, int healthpercent) => Variant.CanCure(preset, healthpercent);
+                public bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanUltimatum(preset, weave);
+                public bool CanRaise(Preset preset) => Variant.CanRaise(preset);
+                public bool CanRampart(Preset preset, WeaveTypes weave = WeaveTypes.None) => Variant.CanRampart(preset, weave);
             }
         }
     }

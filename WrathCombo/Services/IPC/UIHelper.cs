@@ -124,7 +124,7 @@ public class UIHelper(Leasing leasing)
         PresetsControlled { get; } = new();
 
     internal (string controllers, bool enabled, bool autoMode)?
-        PresetControlled(CustomComboPreset preset)
+        PresetControlled(Preset preset)
     {
         var presetName = preset.ToString();
 
@@ -281,7 +281,7 @@ public class UIHelper(Leasing leasing)
     private bool ShowIPCControlledIndicator
     (bool? forAutoRotation = null,
         uint? forJob = null,
-        CustomComboPreset? forPreset = null,
+        Preset? forPreset = null,
         string? forAutoRotationConfig = null,
         bool showX = true,
         bool shortDisplay = false)
@@ -307,7 +307,7 @@ public class UIHelper(Leasing leasing)
 
         if (forPreset is not null)
         {
-            var check = PresetControlled((CustomComboPreset)forPreset);
+            var check = PresetControlled((Preset)forPreset);
             if (check is null)
                 return false;
             controlled = (check.Value.controllers, check.Value.enabled);
@@ -385,7 +385,7 @@ public class UIHelper(Leasing leasing)
     (string label, ref bool backupVar,
         bool? forAutoRotation = null,
         uint? forJob = null,
-        CustomComboPreset? forPreset = null,
+        Preset? forPreset = null,
         bool presetShowState = true,
         string? forAutoRotationConfig = null)
     {
@@ -407,7 +407,7 @@ public class UIHelper(Leasing leasing)
             if (forPreset is not null)
             {
                 var check =
-                    PresetControlled((CustomComboPreset)forPreset);
+                    PresetControlled((Preset)forPreset);
                 if (check is null)
                     controlled = null;
                 else
@@ -669,7 +669,7 @@ public class UIHelper(Leasing leasing)
         ShowIPCControlledIndicator
             (forJob: job, showX: showX, shortDisplay: shortDisplay);
 
-    public bool ShowIPCControlledIndicatorIfNeeded(CustomComboPreset preset) =>
+    public bool ShowIPCControlledIndicatorIfNeeded(Preset preset) =>
         ShowIPCControlledIndicator(forPreset: preset);
 
     public bool ShowIPCControlledIndicatorIfNeeded(string configName) =>
@@ -688,7 +688,7 @@ public class UIHelper(Leasing leasing)
         ShowIPCControlledCheckbox(label, ref backupVar, forJob: job);
 
     public bool ShowIPCControlledCheckboxIfNeeded
-    (string label, ref bool backupVar, CustomComboPreset preset,
+    (string label, ref bool backupVar, Preset preset,
         bool showState) =>
         ShowIPCControlledCheckbox
             (label, ref backupVar, forPreset: preset, presetShowState: showState);

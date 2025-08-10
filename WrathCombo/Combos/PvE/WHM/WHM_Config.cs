@@ -1,13 +1,10 @@
 ﻿#region
-
-using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.UserConfig;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable GrammarMistakeInComment

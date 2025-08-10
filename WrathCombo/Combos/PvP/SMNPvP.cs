@@ -3,6 +3,7 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.SMNPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -50,18 +51,18 @@ internal static class SMNPvP
             SMNPvP_RadiantAegisThreshold = new("SMNPvP_RadiantAegisThreshold"),
             SMNPvP_PhantomDartThreshold = new("SMNPvP_PhantomDartThreshold", 50);
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
                 // Phantom Dart
-                case CustomComboPreset.SMNPvP_PhantomDart:
-                    UserConfig.DrawSliderInt(1, 100, SMNPvP.Config.SMNPvP_PhantomDartThreshold,
+                case Preset.SMNPvP_PhantomDart:
+                    UserConfig.DrawSliderInt(1, 100, SMNPvP_PhantomDartThreshold,
                         "Target HP% to use Phantom Dart at or below");
                     break;
 
-                case CustomComboPreset.SMNPvP_BurstMode_RadiantAegis:
-                    UserConfig.DrawSliderInt(0, 90, SMNPvP.Config.SMNPvP_RadiantAegisThreshold,
+                case Preset.SMNPvP_BurstMode_RadiantAegis:
+                    UserConfig.DrawSliderInt(0, 90, SMNPvP_RadiantAegisThreshold,
                         "Caps at 90 to prevent waste.");
                     break;
             }
@@ -71,7 +72,7 @@ internal static class SMNPvP
 
     internal class SMNPvP_BurstMode : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMNPvP_BurstMode;
+        protected internal override Preset Preset => Preset.SMNPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -82,7 +83,7 @@ internal static class SMNPvP
                 bool bahamutBurst = OriginalHook(Ruin3) is AstralImpulse;
                 bool phoenixBurst = OriginalHook(Ruin3) is FountainOfFire;
                 double playerHP = PlayerHealthPercentageHp();
-                int radiantThreshold = PluginConfiguration.GetCustomIntValue(Config.SMNPvP_RadiantAegisThreshold);
+                int radiantThreshold = PluginConfiguration.GetCustomIntValue(SMNPvP_RadiantAegisThreshold);
                     #endregion
 
                 if (PvPCommon.TargetImmuneToDamage() && HasStatusEffect(Buffs.FurtherRuin)) // Block for ruin 4 because it is on action ID
@@ -93,39 +94,39 @@ internal static class SMNPvP
                     if (canWeave)
                     {
                         // Radiant Aegis
-                        if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_RadiantAegis) &&
+                        if (IsEnabled(Preset.SMNPvP_BurstMode_RadiantAegis) &&
                             IsOffCooldown(RadiantAegis) && playerHP <= radiantThreshold)
                             return RadiantAegis;
 
-                        if (IsEnabled(CustomComboPreset.SMNPvP_PhantomDart) && Role.CanPhantomDart() && GetTargetHPPercent() <= Config.SMNPvP_PhantomDartThreshold)
+                        if (IsEnabled(Preset.SMNPvP_PhantomDart) && Role.CanPhantomDart() && GetTargetHPPercent() <= SMNPvP_PhantomDartThreshold)
                             return Role.PhantomDart;
                     }
                     // Phoenix & Bahamut bursts
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_BrandofPurgatory) && phoenixBurst && IsOffCooldown(BrandofPurgatory))
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_BrandofPurgatory) && phoenixBurst && IsOffCooldown(BrandofPurgatory))
                         return BrandofPurgatory;
 
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_DeathFlare) && bahamutBurst && IsOffCooldown(DeathFlare))
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_DeathFlare) && bahamutBurst && IsOffCooldown(DeathFlare))
                         return DeathFlare;
 
                     if (HasStatusEffect(Buffs.FurtherRuin))
                         return actionID;
 
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_Necrotize) && GetRemainingCharges(Necrotize) > 0 && !HasStatusEffect(Buffs.FurtherRuin))
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_Necrotize) && GetRemainingCharges(Necrotize) > 0 && !HasStatusEffect(Buffs.FurtherRuin))
                         return Necrotize;
                         
                     // Ifrit (check CrimsonCyclone conditions)
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_CrimsonStrike) && OriginalHook(CrimsonCyclone) is CrimsonStrike)
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_CrimsonStrike) && OriginalHook(CrimsonCyclone) is CrimsonStrike)
                         return CrimsonStrike;
 
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_CrimsonCyclone) && IsOffCooldown(CrimsonCyclone))
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_CrimsonCyclone) && IsOffCooldown(CrimsonCyclone))
                         return CrimsonCyclone;
 
                     // Titan
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_MountainBuster) && IsOffCooldown(MountainBuster) && InActionRange(MountainBuster))
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_MountainBuster) && IsOffCooldown(MountainBuster) && InActionRange(MountainBuster))
                         return MountainBuster;
 
                     // Garuda (check Slipstream cooldown)
-                    if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_Slipstream) && IsOffCooldown(Slipstream) && !IsMoving())
+                    if (IsEnabled(Preset.SMNPvP_BurstMode_Slipstream) && IsOffCooldown(Slipstream) && !IsMoving())
                         return Slipstream;
                 }
             }

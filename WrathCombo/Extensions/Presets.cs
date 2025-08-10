@@ -6,12 +6,12 @@ namespace WrathCombo.Extensions;
 
 internal static class PresetExtensions
 {
-    internal static Dictionary<CustomComboPreset, ReplaceSkillAttribute> replaceSkillCache = [];
-    internal static Dictionary<CustomComboPreset, CustomComboInfoAttribute> comboInfoCache = [];
-    internal static Dictionary<CustomComboPreset, HoverInfoAttribute> hoverInfoCache = [];
+    internal static Dictionary<Preset, ReplaceSkillAttribute> replaceSkillCache = [];
+    internal static Dictionary<Preset, CustomComboInfoAttribute> comboInfoCache = [];
+    internal static Dictionary<Preset, HoverInfoAttribute> hoverInfoCache = [];
 
     ///<summary> Retrieves the <see cref="ReplaceSkillAttribute"/> for the preset if it exists.</summary>
-    internal static ReplaceSkillAttribute? GetReplaceAttribute(this CustomComboPreset preset)
+    internal static ReplaceSkillAttribute? GetReplaceAttribute(this Preset preset)
     {
         if (replaceSkillCache.TryGetValue(preset, out var replaceSkillAttribute))
         {
@@ -23,7 +23,7 @@ internal static class PresetExtensions
     }
 
     ///<summary> Retrieves the <see cref="CustomComboInfoAttribute"/> for the preset if it exists.</summary>
-    internal static CustomComboInfoAttribute? GetComboAttribute(this CustomComboPreset preset)
+    internal static CustomComboInfoAttribute? GetComboAttribute(this Preset preset)
     {
         if (comboInfoCache.TryGetValue(preset, out var customComboInfoAttribute))
         {
@@ -36,7 +36,7 @@ internal static class PresetExtensions
     }
 
     ///<summary> Retrieves the <see cref="HoverInfoAttribute"/> for the preset if it exists.</summary>
-    internal static HoverInfoAttribute? GetHoverAttribute(this CustomComboPreset preset)
+    internal static HoverInfoAttribute? GetHoverAttribute(this Preset preset)
     {
         if (hoverInfoCache.TryGetValue(preset, out var hoverInfoAttribute))
         {

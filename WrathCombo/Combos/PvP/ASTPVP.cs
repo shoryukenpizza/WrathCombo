@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
+using static WrathCombo.Combos.PvP.ASTPvP.Config;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -43,11 +44,11 @@ internal static class ASTPvP
             ASTPvP_Burst_PlayCardOption = new("ASTPvP_Burst_PlayCardOption"),
             ASTPvP_DiabrosisThreshold = new("ASTPvP_DiabrosisThreshold");
 
-        internal static void Draw(CustomComboPreset preset)
+        internal static void Draw(Preset preset)
         {
             switch (preset)
             {
-                case CustomComboPreset.ASTPvP_Burst_PlayCard:
+                case Preset.ASTPvP_Burst_PlayCard:
                     UserConfig.DrawHorizontalRadioButton(ASTPvP_Burst_PlayCardOption, "Lord and Lady card play",
                         "Uses Lord and Lady of Crowns when available.", 1);
 
@@ -59,7 +60,7 @@ internal static class ASTPvP
 
                     break;
 
-                case CustomComboPreset.ASTPvP_Diabrosis:
+                case Preset.ASTPvP_Diabrosis:
                     UserConfig.DrawSliderInt(0, 100, ASTPvP_DiabrosisThreshold,
                         "Target HP% to use Diabrosis");
 
@@ -72,19 +73,19 @@ internal static class ASTPvP
 
     internal class ASTPvP_Burst : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ASTPvP_Burst;
+        protected internal override Preset Preset => Preset.ASTPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
             if (actionID is Malefic)
             {
                 // Card Draw
-                if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DrawCard) && IsOffCooldown(MinorArcana) && (!HasStatusEffect(Buffs.LadyOfCrowns) && !HasStatusEffect(Buffs.LordOfCrowns)))
+                if (IsEnabled(Preset.ASTPvP_Burst_DrawCard) && IsOffCooldown(MinorArcana) && (!HasStatusEffect(Buffs.LadyOfCrowns) && !HasStatusEffect(Buffs.LordOfCrowns)))
                     return MinorArcana;                                      
                    
-                int cardPlayOption = Config.ASTPvP_Burst_PlayCardOption;
+                int cardPlayOption = ASTPvP_Burst_PlayCardOption;
 
-                if (IsEnabled(CustomComboPreset.ASTPvP_Burst_PlayCard))
+                if (IsEnabled(Preset.ASTPvP_Burst_PlayCard))
                 {
                     bool hasLadyOfCrowns = HasStatusEffect(Buffs.LadyOfCrowns);
                     bool hasLordOfCrowns = HasStatusEffect(Buffs.LordOfCrowns);
@@ -100,25 +101,25 @@ internal static class ASTPvP
                         
                 if (!PvPCommon.TargetImmuneToDamage())
                 { 
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                        GetTargetHPPercent() <= Config.ASTPvP_DiabrosisThreshold)
+                    if (IsEnabled(Preset.ASTPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
+                        GetTargetHPPercent() <= ASTPvP_DiabrosisThreshold)
                         return PvPHealer.Diabrosis;
 
                     // Macrocosmos only with double gravity or on coodlown when double gravity is disabled
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_Macrocosmos) && IsOffCooldown(Macrocosmos) &&
-                        (ComboAction == DoubleGravity || !IsEnabled(CustomComboPreset.ASTPvP_Burst_DoubleGravity)))
+                    if (IsEnabled(Preset.ASTPvP_Burst_Macrocosmos) && IsOffCooldown(Macrocosmos) &&
+                        (ComboAction == DoubleGravity || !IsEnabled(Preset.ASTPvP_Burst_DoubleGravity)))
                         return Macrocosmos;
 
                     // Double Gravity
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DoubleGravity) && ComboAction == Gravity && HasCharges(DoubleCast))
+                    if (IsEnabled(Preset.ASTPvP_Burst_DoubleGravity) && ComboAction == Gravity && HasCharges(DoubleCast))
                         return DoubleGravity;
 
                     // Gravity on cd
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_Gravity) && IsOffCooldown(Gravity))
+                    if (IsEnabled(Preset.ASTPvP_Burst_Gravity) && IsOffCooldown(Gravity))
                         return Gravity;
 
                     // Double Malefic logic to not leave gravity without a charge
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DoubleMalefic))
+                    if (IsEnabled(Preset.ASTPvP_Burst_DoubleMalefic))
                     {
                         if (ComboAction == Malefic && (GetRemainingCharges(DoubleCast) > 1 ||
                                                        GetCooldownRemainingTime(Gravity) > 7.5f) && CanWeave())
@@ -134,7 +135,7 @@ internal static class ASTPvP
 
         internal class ASTPvP_Epicycle : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ASTPvP_Epicycle;
+            protected internal override Preset Preset => Preset.ASTPvP_Epicycle;
 
             protected override uint Invoke(uint actionID)
             {
@@ -158,7 +159,7 @@ internal static class ASTPvP
 
         internal class ASTPvP_Heal : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ASTPvP_Heal;
+            protected internal override Preset Preset => Preset.ASTPvP_Heal;
 
             protected override uint Invoke(uint actionID)
             {

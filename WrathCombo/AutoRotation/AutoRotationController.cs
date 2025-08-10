@@ -190,7 +190,7 @@ internal unsafe static class AutoRotationController
             return;
 
         // Healer cleanse/rez logic
-        if (isHealer || (Player.Job is Job.SMN or Job.RDM && cfg.HealerSettings.AutoRezDPSJobs) || OccultCrescent.IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, OccultCrescent.Revive))
+        if (isHealer || (Player.Job is Job.SMN or Job.RDM && cfg.HealerSettings.AutoRezDPSJobs) || OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive))
         {
             if (!needsHeal)
             {
@@ -221,7 +221,7 @@ internal unsafe static class AutoRotationController
         ProcessAutoActions(autoActions, ref _, canHeal, false);
     }
 
-    private static bool ProcessAutoActions(Dictionary<CustomComboPreset, bool> autoActions, ref uint _, bool canHeal, bool stOnly)
+    private static bool ProcessAutoActions(Dictionary<Preset, bool> autoActions, ref uint _, bool canHeal, bool stOnly)
     {
         // Pre-filter and cache attributes to avoid repeated lookups
         var filteredActions = autoActions
@@ -323,7 +323,7 @@ internal unsafe static class AutoRotationController
     {
         if (HasStatusEffect(418)) return;
         uint resSpell = 
-            OccultCrescent.IsEnabledAndUsable(CustomComboPreset.Phantom_Chemist_Revive, OccultCrescent.Revive) 
+            OccultCrescent.IsEnabledAndUsable(Preset.Phantom_Chemist_Revive, OccultCrescent.Revive) 
                 ? OccultCrescent.Revive 
                 : Player.Job switch
                 {
@@ -425,7 +425,7 @@ internal unsafe static class AutoRotationController
 
     }
 
-    private static bool AutomateDPS(CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
+    private static bool AutomateDPS(Preset preset, Presets.PresetAttributes attributes, uint gameAct)
     {
         var mode = cfg.DPSRotationMode;
         if (attributes.AutoAction!.IsAoE)
@@ -438,7 +438,7 @@ internal unsafe static class AutoRotationController
         }
     }
 
-    private static bool AutomateTanking(CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
+    private static bool AutomateTanking(Preset preset, Presets.PresetAttributes attributes, uint gameAct)
     {
         var mode = cfg.DPSRotationMode;
         if (attributes.AutoAction!.IsAoE)
@@ -451,7 +451,7 @@ internal unsafe static class AutoRotationController
         }
     }
 
-    private static bool AutomateHealing(CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
+    private static bool AutomateHealing(Preset preset, Presets.PresetAttributes attributes, uint gameAct)
     {
         var mode = cfg.HealerRotationMode;
         if (Player.Object.IsCasting()) return false;
@@ -524,7 +524,7 @@ internal unsafe static class AutoRotationController
             return null;
         }
 
-        public static bool ExecuteAoE(Enum mode, CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
+        public static bool ExecuteAoE(Enum mode, Preset preset, Presets.PresetAttributes attributes, uint gameAct)
         {
             if (attributes.AutoAction!.IsHeal)
             {
@@ -617,7 +617,7 @@ internal unsafe static class AutoRotationController
             return false;
         }
 
-        public static bool ExecuteST(Enum mode, CustomComboPreset preset, Presets.PresetAttributes attributes, uint gameAct)
+        public static bool ExecuteST(Enum mode, Preset preset, Presets.PresetAttributes attributes, uint gameAct)
         {
             if (_ninjaLockedAoE) return false;
             var target = GetSingleTarget(mode);
@@ -691,7 +691,7 @@ internal unsafe static class AutoRotationController
             return false;
         }
 
-        public static uint InvokeCombo(CustomComboPreset preset, Presets.PresetAttributes attributes, ref uint originalAct, IGameObject? optionalTarget = null)
+        public static uint InvokeCombo(Preset preset, Presets.PresetAttributes attributes, ref uint originalAct, IGameObject? optionalTarget = null)
         {
             if (attributes.ReplaceSkill is null) return originalAct;
             var outAct = attributes.ReplaceSkill.ActionIDs.FirstOrDefault();

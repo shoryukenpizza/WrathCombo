@@ -16,21 +16,21 @@ namespace WrathCombo.Core;
 
 internal static class PresetStorage
 {
-    private static HashSet<CustomComboPreset>? PvPCombos;
-    private static HashSet<CustomComboPreset>? VariantCombos;
-    private static HashSet<CustomComboPreset>? BozjaCombos;
-    private static HashSet<CustomComboPreset>? OccultCrescentCombos;
-    private static HashSet<CustomComboPreset>? EurekaCombos;
-    private static Dictionary<CustomComboPreset, CustomComboPreset[]>? ConflictingCombos;
-    private static Dictionary<CustomComboPreset, CustomComboPreset?>? ParentCombos;  // child: parent
+    private static HashSet<Preset>? PvPCombos;
+    private static HashSet<Preset>? VariantCombos;
+    private static HashSet<Preset>? BozjaCombos;
+    private static HashSet<Preset>? OccultCrescentCombos;
+    private static HashSet<Preset>? EurekaCombos;
+    private static Dictionary<Preset, Preset[]>? ConflictingCombos;
+    private static Dictionary<Preset, Preset?>? ParentCombos;  // child: parent
         
-    public static HashSet<CustomComboPreset>? AllPresets;
+    public static HashSet<Preset>? AllPresets;
         
     public static HashSet<uint> AllRetargetedActions {
         get {
             if (!EZ.Throttle("allRetargetedActions", TS.FromSeconds(3)))
                 return field;
-            var result = Enum.GetValues<CustomComboPreset>()
+            var result = Enum.GetValues<Preset>()
                 .SelectMany(preset => preset.Attributes()?.RetargetedActions ?? [])
                 .ToHashSet();
             PluginLog.Verbose($"Retrieved {result.Count} retargeted actions");
@@ -41,39 +41,39 @@ internal static class PresetStorage
 
     public static void Init()
     {
-        PvPCombos = Enum.GetValues<CustomComboPreset>()
+        PvPCombos = Enum.GetValues<Preset>()
             .Where(preset => preset.GetAttribute<PvPCustomComboAttribute>() != null)
             .ToHashSet();
 
-        VariantCombos = Enum.GetValues<CustomComboPreset>()
+        VariantCombos = Enum.GetValues<Preset>()
             .Where(preset => preset.GetAttribute<VariantAttribute>() != null)
             .ToHashSet();
 
-        BozjaCombos = Enum.GetValues<CustomComboPreset>()
+        BozjaCombos = Enum.GetValues<Preset>()
             .Where(preset => preset.GetAttribute<BozjaAttribute>() != null)
             .ToHashSet();
 
-        OccultCrescentCombos = Enum.GetValues<CustomComboPreset>()
+        OccultCrescentCombos = Enum.GetValues<Preset>()
             .Where(preset => preset.GetAttribute<OccultCrescentAttribute>() != null)
             .ToHashSet();
 
-        EurekaCombos = Enum.GetValues<CustomComboPreset>()
+        EurekaCombos = Enum.GetValues<Preset>()
             .Where(preset => preset.GetAttribute<EurekaAttribute>() != null)
             .ToHashSet();
 
-        ConflictingCombos = Enum.GetValues<CustomComboPreset>()
+        ConflictingCombos = Enum.GetValues<Preset>()
             .ToDictionary(
                 preset => preset,
                 preset => preset.GetAttribute<ConflictingCombosAttribute>()?.ConflictingPresets ?? []);
 
-        ParentCombos = Enum.GetValues<CustomComboPreset>()
+        ParentCombos = Enum.GetValues<Preset>()
             .ToDictionary(
                 preset => preset,
                 preset => preset.GetAttribute<ParentComboAttribute>()?.ParentPreset);
 
-        AllPresets = Enum.GetValues<CustomComboPreset>().ToHashSet();
+        AllPresets = Enum.GetValues<Preset>().ToHashSet();
 
-        foreach (var preset in Enum.GetValues<CustomComboPreset>())
+        foreach (var preset in Enum.GetValues<Preset>())
         {
             Presets.Attributes.Add(preset, new Presets.PresetAttributes(preset));
         }
@@ -84,26 +84,26 @@ internal static class PresetStorage
     /// <summary> Gets a value indicating whether a preset is enabled. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsEnabled(CustomComboPreset preset) => Service.Configuration.EnabledActions.Contains(preset) && !ShouldBeHidden(preset);
+    public static bool IsEnabled(Preset preset) => Service.Configuration.EnabledActions.Contains(preset) && !ShouldBeHidden(preset);
 
     /// <summary>
     /// Gets a value indicating whether a preset is marked as hidden.
     /// </summary>
     /// <param name="preset"></param>
     /// <returns></returns>
-    public static bool ShouldBeHidden(CustomComboPreset preset) =>
+    public static bool ShouldBeHidden(Preset preset) =>
         preset.Attributes().Hidden != null &&
         !Service.Configuration.ShowHiddenFeatures;
 
     /// <summary> Gets a value indicating whether a preset is secret. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsPvP(CustomComboPreset preset) => PvPCombos.Contains(preset);
+    public static bool IsPvP(Preset preset) => PvPCombos.Contains(preset);
 
     /// <summary> Gets a value indicating whether a preset is secret. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsVariant(CustomComboPreset preset) => VariantCombos.Contains(preset);
+    public static bool IsVariant(Preset preset) => VariantCombos.Contains(preset);
 
     /// <summary>
     ///     Gets a value indicating whether a preset can be retargeted under some
@@ -111,7 +111,7 @@ internal static class PresetStorage
     /// </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsPossiblyRetargeted(CustomComboPreset preset) =>
+    public static bool IsPossiblyRetargeted(Preset preset) =>
         preset.GetAttribute<RetargetedAttribute>() != null;
 
     /// <summary>
@@ -120,52 +120,52 @@ internal static class PresetStorage
     /// </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsRetargeted(CustomComboPreset preset) =>
+    public static bool IsRetargeted(Preset preset) =>
         preset.GetAttribute<RetargetedAttribute>() != null;
 
     /// <summary> Gets a value indicating whether a preset is secret. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsBozja(CustomComboPreset preset) => BozjaCombos.Contains(preset);
+    public static bool IsBozja(Preset preset) => BozjaCombos.Contains(preset);
 
     /// <summary> Gets a value indicating whether a preset is secret. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsOccultCrescent(CustomComboPreset preset) => OccultCrescentCombos.Contains(preset);
+    public static bool IsOccultCrescent(Preset preset) => OccultCrescentCombos.Contains(preset);
 
     /// <summary> Gets a value indicating whether a preset is secret. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The boolean representation. </returns>
-    public static bool IsEureka(CustomComboPreset preset) => EurekaCombos.Contains(preset);
+    public static bool IsEureka(Preset preset) => EurekaCombos.Contains(preset);
 
     /// <summary> Gets the parent combo preset if it exists, or null. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The parent preset. </returns>
-    public static CustomComboPreset? GetParent(CustomComboPreset preset) => ParentCombos[preset];
+    public static Preset? GetParent(Preset preset) => ParentCombos[preset];
 
     /// <summary> Gets an array of conflicting combo presets. </summary>
     /// <param name="preset"> Preset to check. </param>
     /// <returns> The conflicting presets. </returns>
-    public static CustomComboPreset[] GetConflicts(CustomComboPreset preset) => ConflictingCombos[preset];
+    public static Preset[] GetConflicts(Preset preset) => ConflictingCombos[preset];
 
     /// <summary> Gets the full list of conflicted combos. </summary>
-    public static List<CustomComboPreset> GetAllConflicts() => ConflictingCombos.Keys.ToList();
+    public static List<Preset> GetAllConflicts() => ConflictingCombos.Keys.ToList();
 
     /// <summary> Get all the info from conflicted combos. </summary>
-    public static List<CustomComboPreset[]> GetAllConflictOriginals() => ConflictingCombos.Values.ToList();
+    public static List<Preset[]> GetAllConflictOriginals() => ConflictingCombos.Values.ToList();
 
-    public static CustomComboPreset? GetPresetByString(string value)
+    public static Preset? GetPresetByString(string value)
     {
-        if (Enum.GetValues<CustomComboPreset>().TryGetFirst(x => x.ToString().ToLower() == value.ToLower(), out var pre))
+        if (Enum.GetValues<Preset>().TryGetFirst(x => x.ToString().ToLower() == value.ToLower(), out var pre))
         {
             return pre;
         }
         return null;
     }
 
-    public static CustomComboPreset? GetPresetByInt(int value)
+    public static Preset? GetPresetByInt(int value)
     {
-        if (Enum.GetValues<CustomComboPreset>().TryGetFirst(x => (int)x == value, out var pre))
+        if (Enum.GetValues<Preset>().TryGetFirst(x => (int)x == value, out var pre))
         {
             return pre;
         }
@@ -174,7 +174,7 @@ internal static class PresetStorage
 
     /// <summary> Iterates up a preset's parent tree, enabling each of them. </summary>
     /// <param name="preset"> Combo preset to enabled. </param>
-    public static void EnableParentPresets(CustomComboPreset preset)
+    public static void EnableParentPresets(Preset preset)
     {
         var parentMaybe = GetParent(preset);
 
@@ -185,7 +185,7 @@ internal static class PresetStorage
         }
     }
 
-    public static void DisableAllConflicts(CustomComboPreset preset)
+    public static void DisableAllConflicts(Preset preset)
     {
         var conflicts = GetConflicts(preset);
         foreach (var conflict in conflicts)
@@ -214,7 +214,7 @@ internal static class PresetStorage
         return false;
     }
 
-    public static bool EnablePreset(CustomComboPreset preset, bool outputLog = false)
+    public static bool EnablePreset(Preset preset, bool outputLog = false)
     {
         var ctrlText = GetControlledText(preset);
         EnableParentPresets(preset);
@@ -247,7 +247,7 @@ internal static class PresetStorage
         return false;
     }
 
-    public static bool DisablePreset(CustomComboPreset preset, bool outputLog = false)
+    public static bool DisablePreset(Preset preset, bool outputLog = false)
     {
         if (Service.Configuration.EnabledActions.Remove(preset))
         {
@@ -262,7 +262,7 @@ internal static class PresetStorage
         return false;
     }
 
-    private static object GetControlledText(CustomComboPreset preset)
+    private static object GetControlledText(Preset preset)
     {
         var controlled = P.UIHelper.PresetControlled(preset) is not null;
         var ctrlText = controlled ? " " + OptionControlledByIPC : "";
@@ -270,7 +270,7 @@ internal static class PresetStorage
         return ctrlText;
     }
 
-    public static bool TogglePreset(CustomComboPreset preset, bool outputLog = false)
+    public static bool TogglePreset(Preset preset, bool outputLog = false)
     {
         var ctrlText = GetControlledText(preset);
         if (!Service.Configuration.EnabledActions.Remove(preset))
@@ -306,7 +306,7 @@ internal static class PresetStorage
         return false;
     }
         
-    internal static ComboType GetComboType(CustomComboPreset preset)
+    internal static ComboType GetComboType(Preset preset)
     {
         var simple = preset.GetAttribute<SimpleCombo>();
         var advanced = preset.GetAttribute<AdvancedCombo>();

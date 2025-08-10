@@ -8,31 +8,31 @@ internal static partial class Variant
     internal interface IVariantCure
     {
         uint Cure { get; }
-        bool CanCure(CustomComboPreset preset, int healthpercent);
+        bool CanCure(Preset preset, int healthpercent);
     }
 
     internal interface IVariantUltimatum
     {
         uint Ultimatum { get; }
-        bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None);
+        bool CanUltimatum(Preset preset, WeaveTypes weave = WeaveTypes.None);
     }
 
     internal interface IVariantRaise
     {
         uint Raise { get; }
-        bool CanRaise(CustomComboPreset preset);
+        bool CanRaise(Preset preset);
     }
 
     internal interface IVariantSpiritDart
     {
         uint SpiritDart { get; }
-        bool CanSpiritDart(CustomComboPreset preset);
+        bool CanSpiritDart(Preset preset);
     }
 
     internal interface IVariantRampart
     {
         uint Rampart { get; }
-        bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None);
+        bool CanRampart(Preset preset, WeaveTypes weave = WeaveTypes.None);
     }
         #endregion
 

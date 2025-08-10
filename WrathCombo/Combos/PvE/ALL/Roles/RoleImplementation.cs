@@ -162,7 +162,7 @@ internal static partial class RoleActions
                 public bool CanPeloton() =>
                     RoleActions.PhysRanged.CanPeloton();
 
-                public bool CanHeadGraze(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) =>
+                public bool CanHeadGraze(Preset preset, WeaveTypes weave = WeaveTypes.None) =>
                     RoleActions.PhysRanged.CanHeadGraze(preset, weave);
 
                 public bool CanHeadGraze(bool simpleMode, WeaveTypes weave = WeaveTypes.None) =>

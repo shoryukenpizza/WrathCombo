@@ -4,7 +4,6 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 using static WrathCombo.Combos.PvE.SMN.Config;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class SMN : Caster

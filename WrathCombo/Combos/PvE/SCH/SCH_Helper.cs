@@ -10,7 +10,6 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Combos.PvE.SCH.Config;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Preset = WrathCombo.Combos.CustomComboPreset;
 
 #endregion
 
