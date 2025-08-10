@@ -14,7 +14,7 @@ internal partial class BRD
         public static UserBool
             BRD_AoE_Wardens_Auto = new("BRD_AoE_Wardens_Auto"),
             BRD_ST_Wardens_Auto = new("BRD_ST_Wardens_Auto");
-        
+
         public static UserInt
             BRD_RagingJawsRenewTime = new("ragingJawsRenewTime", 5),
             BRD_STSecondWindThreshold = new("BRD_STSecondWindThreshold", 40),
@@ -28,14 +28,7 @@ internal partial class BRD
             BRD_Adv_Buffs_SubOption = new("BRD_Adv_Buffs_SubOption", 0),
             BRD_AoE_Adv_Buffs_Threshold = new("BRD_AoE_Adv_Buffs_Threshold", 30),
             BRD_AoE_Adv_Buffs_SubOption = new("BRD_AoE_Adv_Buffs_SubOption", 0),
-            BRD_AoE_Adv_Multidot_HPThreshold = new("BRD_AoE_Adv_Multidot_HPThreshold", 40),
-            BRD_AoE_Adv_Multidot_MaxTargets = new("BRD_AoE_Adv_Multidot_MaxTargets", 3),
-            BRD_ST_Adv_Multidot_HPThreshold = new("BRD_ST_Adv_Multidot_HPThreshold", 40),
-            BRD_ST_Adv_Multidot_MaxTargets = new("BRD_ST_Adv_Multidot_MaxTargets", 3);
-        
-        public static UserFloat
-            BRD_AoE_Adv_Multidot_Reapply = new("BRD_AoE_Adv_Multidot_Reapply", 8),
-            BRD_ST_Adv_Multidot_Reapply = new("BRD_ST_Adv_Multidot_Reapply", 8);
+            BRD_AoE_Adv_Multidot_HPThreshold = new("BRD_AoE_Adv_Multidot_HPThreshold", 40);
         
         public static UserBoolArray
             BRD_AoE_Adv_Buffs_Options = new("BRD_AoE_Adv_Buffs_Options"),
