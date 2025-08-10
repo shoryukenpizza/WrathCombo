@@ -71,11 +71,11 @@ internal partial class BLM
 
     #region Movement Prio
 
-    private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
+    private static (uint Action, Preset Preset, System.Func<bool> Logic)[]
         PrioritizedMovement =>
     [
         //Triplecast
-        (Triplecast, CustomComboPreset.BLM_ST_Movement,
+        (Triplecast, Preset.BLM_ST_Movement,
             () => BLM_ST_MovementOption[0] &&
                   ActionReady(Triplecast) &&
                   !HasStatusEffect(Buffs.Triplecast) &&
@@ -83,7 +83,7 @@ internal partial class BLM
                   !HasStatusEffect(Buffs.LeyLines)),
 
         // Paradox
-        (OriginalHook(Paradox), CustomComboPreset.BLM_ST_Movement,
+        (OriginalHook(Paradox), Preset.BLM_ST_Movement,
             () => BLM_ST_MovementOption[1] &&
                   ActionReady(Paradox) &&
                   FirePhase && ActiveParadox &&
@@ -92,13 +92,13 @@ internal partial class BLM
                   !HasStatusEffect(Role.Buffs.Swiftcast)),
 
         //Swiftcast
-        (Role.Swiftcast, CustomComboPreset.BLM_ST_Movement,
+        (Role.Swiftcast, Preset.BLM_ST_Movement,
             () => BLM_ST_MovementOption[2] &&
                   ActionReady(Role.Swiftcast) &&
                   !HasStatusEffect(Buffs.Triplecast)),
 
         //Xeno
-        (Xenoglossy, CustomComboPreset.BLM_ST_Movement,
+        (Xenoglossy, Preset.BLM_ST_Movement,
             () => BLM_ST_MovementOption[3] &&
                   HasPolyglotStacks() &&
                   !HasStatusEffect(Buffs.Triplecast) &&
