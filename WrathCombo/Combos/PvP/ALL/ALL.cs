@@ -133,7 +133,7 @@ internal static class PvPCommon
 
     internal class GlobalEmergencyHeals : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PvP_EmergencyHeals;
+        protected internal override Preset Preset => Preset.PvP_EmergencyHeals;
 
         protected override uint Invoke(uint actionID)
         {
@@ -173,7 +173,7 @@ internal static class PvPCommon
 
     internal class GlobalEmergencyGuard : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PvP_EmergencyGuard;
+        protected internal override Preset Preset => Preset.PvP_EmergencyGuard;
 
         protected override uint Invoke(uint actionID)
         {
@@ -224,7 +224,7 @@ internal static class PvPCommon
 
     internal class QuickPurify : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PvP_QuickPurify;
+        protected internal override Preset Preset => Preset.PvP_QuickPurify;
 
         public static (ushort debuff, string label)[] Statuses =
         [

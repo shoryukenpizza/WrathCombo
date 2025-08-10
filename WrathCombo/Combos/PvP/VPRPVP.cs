@@ -122,7 +122,8 @@ internal static class VPRPvP
 
     internal class VPRPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.VPRPvP_Burst;
+        protected internal override Preset Preset => Preset.VPRPvP_Burst;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is SteelFangs or HuntersSting or BarbarousSlice or PiercingFangs or SwiftskinsSting or RavenousBite)
@@ -202,7 +203,8 @@ internal static class VPRPvP
 
     internal class VPRPvP_SnakeScales_Feature : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.VPRPvP_SnakeScales_Feature;
+        protected internal override Preset Preset => Preset.VPRPvP_SnakeScales_Feature;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is SnakeScales)

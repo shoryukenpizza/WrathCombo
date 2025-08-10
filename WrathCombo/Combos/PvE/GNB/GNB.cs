@@ -15,7 +15,8 @@ internal partial class GNB : Tank
     #region Simple Mode - Single Target
     internal class GNB_ST_Simple : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_ST_Simple;
+        protected internal override Preset Preset => Preset.GNB_ST_Simple;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != KeenEdge)
@@ -134,7 +135,8 @@ internal partial class GNB : Tank
     #region Advanced Mode - Single Target
     internal class GNB_ST_Advanced : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_ST_Advanced;
+        protected internal override Preset Preset => Preset.GNB_ST_Advanced;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != KeenEdge)
@@ -267,7 +269,8 @@ internal partial class GNB : Tank
     #region Simple Mode - AoE
     internal class GNB_AoE_Simple : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_AoE_Simple;
+        protected internal override Preset Preset => Preset.GNB_AoE_Simple;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != DemonSlice)
@@ -345,7 +348,8 @@ internal partial class GNB : Tank
     #region Advanced Mode - AoE
     internal class GNB_AoE_Advanced : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_AoE_Advanced;
+        protected internal override Preset Preset => Preset.GNB_AoE_Advanced;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != DemonSlice)
@@ -440,7 +444,8 @@ internal partial class GNB : Tank
     #region Gnashing Fang Features
     internal class GNB_GF_Features : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_GF_Features;
+        protected internal override Preset Preset => Preset.GNB_GF_Features;
+
         protected override uint Invoke(uint actionID)
         {
             bool GFchoice = Config.GNB_GF_Features_Choice == 0; //Gnashing Fang as button
@@ -505,7 +510,8 @@ internal partial class GNB : Tank
     #region Burst Strike Features
     internal class GNB_BS_Features : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_BS_Features;
+        protected internal override Preset Preset => Preset.GNB_BS_Features;
+
         protected override uint Invoke(uint actionID)
         {
             var useDD = IsEnabled(Preset.GNB_BS_DoubleDown) && CanDD;
@@ -536,7 +542,8 @@ internal partial class GNB : Tank
     #region Fated Circle Features
     internal class GNB_FC_Features : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_FC_Features;
+        protected internal override Preset Preset => Preset.GNB_FC_Features;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != FatedCircle)
@@ -561,7 +568,8 @@ internal partial class GNB : Tank
     #region No Mercy Features
     internal class GNB_NM_Features : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_NM_Features;
+        protected internal override Preset Preset => Preset.GNB_NM_Features;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != NoMercy)
@@ -591,7 +599,8 @@ internal partial class GNB : Tank
     #region One-Button Mitigation
     internal class GNB_Mit_OneButton : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_Mit_OneButton;
+        protected internal override Preset Preset => Preset.GNB_Mit_OneButton;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != Camouflage)
@@ -614,7 +623,7 @@ internal partial class GNB : Tank
     #region Reprisal -> Heart of Light
     internal class GNB_Mit_Party : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_Mit_Party;
+        protected internal override Preset Preset => Preset.GNB_Mit_Party;
         protected override uint Invoke(uint action) => action != HeartOfLight ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
     }
     #endregion
@@ -622,7 +631,8 @@ internal partial class GNB : Tank
     #region Aurora Protection and Retargetting
     internal class GNB_AuroraProtection : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_AuroraProtection;
+        protected internal override Preset Preset => Preset.GNB_AuroraProtection;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID != Aurora)
@@ -686,7 +696,8 @@ internal partial class GNB : Tank
     #region Basic Combo
     internal class GNB_ST_BasicCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNB_ST_BasicCombo;
+        protected internal override Preset Preset => Preset.GNB_ST_BasicCombo;
+
         protected override uint Invoke(uint actionID) => actionID != SolidBarrel ? actionID :
             ComboTimer > 0 && ComboAction is KeenEdge && LevelChecked(BrutalShell) ? BrutalShell :
             ComboTimer > 0 && ComboAction is BrutalShell && LevelChecked(SolidBarrel) ? SolidBarrel : KeenEdge;

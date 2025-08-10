@@ -71,7 +71,7 @@ internal static class SMNPvP
 
     internal class SMNPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.SMNPvP_BurstMode;
+        protected internal override Preset Preset => Preset.SMNPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {

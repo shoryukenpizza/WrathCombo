@@ -84,7 +84,7 @@ internal static class DNCPvP
 
     internal class DNCPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DNCPvP_BurstMode;
+        protected internal override Preset Preset => Preset.DNCPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {

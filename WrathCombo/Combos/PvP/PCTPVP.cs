@@ -77,7 +77,8 @@ internal static class PCTPvP
 
     internal class PCTPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PCTPvP_Burst;
+        protected internal override Preset Preset => Preset.PCTPvP_Burst;
+
         protected override uint Invoke(uint actionID)
         {
                 #region Variables

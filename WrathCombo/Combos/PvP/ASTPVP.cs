@@ -72,7 +72,7 @@ internal static class ASTPvP
 
     internal class ASTPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.ASTPvP_Burst;
+        protected internal override Preset Preset => Preset.ASTPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -134,7 +134,7 @@ internal static class ASTPvP
 
         internal class ASTPvP_Epicycle : CustomCombo
         {
-            protected internal override Preset Preset { get; } = Preset.ASTPvP_Epicycle;
+            protected internal override Preset Preset => Preset.ASTPvP_Epicycle;
 
             protected override uint Invoke(uint actionID)
             {
@@ -158,7 +158,7 @@ internal static class ASTPvP
 
         internal class ASTPvP_Heal : CustomCombo
         {
-            protected internal override Preset Preset { get; } = Preset.ASTPvP_Heal;
+            protected internal override Preset Preset => Preset.ASTPvP_Heal;
 
             protected override uint Invoke(uint actionID)
             {

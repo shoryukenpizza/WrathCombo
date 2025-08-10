@@ -11,7 +11,8 @@ internal partial class WAR : Tank
     #region Simple Mode - Single Target
     internal class WAR_ST_Simple : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_ST_Simple;
+        protected internal override Preset Preset => Preset.WAR_ST_Simple;
+
         protected override uint Invoke(uint action)
         {
             if (action != HeavySwing)
@@ -82,7 +83,8 @@ internal partial class WAR : Tank
     #region Advanced Mode - Single Target
     internal class WAR_ST_Advanced : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_ST_Advanced;
+        protected internal override Preset Preset => Preset.WAR_ST_Advanced;
+
         protected override uint Invoke(uint action)
         {
             if (action != HeavySwing)
@@ -183,7 +185,8 @@ internal partial class WAR : Tank
     #region Simple Mode - AoE
     internal class WAR_AoE_Simple : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_AoE_Simple;
+        protected internal override Preset Preset => Preset.WAR_AoE_Simple;
+
         protected override uint Invoke(uint action)
         {
             if (action != Overpower)
@@ -250,7 +253,8 @@ internal partial class WAR : Tank
     #region Advanced Mode - AoE
     internal class WAR_AoE_Advanced : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_AoE_Advanced;
+        protected internal override Preset Preset => Preset.WAR_AoE_Advanced;
+
         protected override uint Invoke(uint action)
         {
             if (action != Overpower)
@@ -345,7 +349,8 @@ internal partial class WAR : Tank
     #region One-Button Mitigation
     internal class WAR_Mit_OneButton : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_Mit_OneButton;
+        protected internal override Preset Preset => Preset.WAR_Mit_OneButton;
+
         protected override uint Invoke(uint action)
         {
             if (action != ThrillOfBattle)
@@ -368,7 +373,8 @@ internal partial class WAR : Tank
     #region Fell Cleave Features
     internal class WAR_FC_Features : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_FC_Features;
+        protected internal override Preset Preset => Preset.WAR_FC_Features;
+
         protected override uint Invoke(uint action)
         {
             if (action is not (InnerBeast or FellCleave))
@@ -398,7 +404,7 @@ internal partial class WAR : Tank
     #region Storm's Eye -> Storm's Path
     internal class WAR_EyePath : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_EyePath;
+        protected internal override Preset Preset => Preset.WAR_EyePath;
         protected override uint Invoke(uint action) => action != StormsPath ? action : GetStatusEffectRemainingTime(Buffs.SurgingTempest) <= Config.WAR_EyePath_Refresh ? StormsEye : action;
     }
     #endregion
@@ -406,7 +412,8 @@ internal partial class WAR : Tank
     #region Primal Combo -> Inner Release
     internal class WAR_PrimalCombo_InnerRelease : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_PrimalCombo_InnerRelease;
+        protected internal override Preset Preset => Preset.WAR_PrimalCombo_InnerRelease;
+
         protected override uint Invoke(uint action) => action is not (Berserk or InnerRelease) ? OriginalHook(action) :
             LevelChecked(PrimalRend) && HasStatusEffect(Buffs.PrimalRendReady) ? PrimalRend :
             LevelChecked(PrimalRuination) && HasStatusEffect(Buffs.PrimalRuinationReady) ? PrimalRuination : OriginalHook(action);
@@ -416,7 +423,8 @@ internal partial class WAR : Tank
     #region Infuriate -> Fell Cleave / Decimate
     internal class WAR_InfuriateFellCleave : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_InfuriateFellCleave;
+        protected internal override Preset Preset => Preset.WAR_InfuriateFellCleave;
+
         protected override uint Invoke(uint action) => action is not (InnerBeast or FellCleave or SteelCyclone or Decimate) ? action :
             (InCombat() && BeastGauge <= Config.WAR_Infuriate_Range && GetRemainingCharges(Infuriate) > Config.WAR_Infuriate_Charges && ActionReady(Infuriate) &&
             !HasNC && (!HasIR.Stacks || IsNotEnabled(Preset.WAR_InfuriateFellCleave_IRFirst))) ? OriginalHook(Infuriate) : action;
@@ -426,7 +434,7 @@ internal partial class WAR : Tank
     #region Nascent Flash -> Raw Intuition
     internal class WAR_NascentFlash : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_NascentFlash;
+        protected internal override Preset Preset => Preset.WAR_NascentFlash;
         protected override uint Invoke(uint actionID) => actionID != NascentFlash ? actionID : LevelChecked(NascentFlash) ? NascentFlash : RawIntuition;
     }
     #endregion
@@ -434,7 +442,7 @@ internal partial class WAR : Tank
     #region Raw Intuition -> Nascent Flash
     internal class WAR_RawIntuition_Targeting : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_RawIntuition_Targeting;
+        protected internal override Preset Preset => Preset.WAR_RawIntuition_Targeting;
 
         protected override uint Invoke(uint action)
         {
@@ -467,7 +475,7 @@ internal partial class WAR : Tank
     #region Thrill of Battle -> Equilibrium
     internal class WAR_ThrillEquilibrium : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_ThrillEquilibrium;
+        protected internal override Preset Preset => Preset.WAR_ThrillEquilibrium;
         protected override uint Invoke(uint action) => action != Equilibrium ? action : ActionReady(ThrillOfBattle) ? ThrillOfBattle : action;
     }
     #endregion
@@ -475,7 +483,7 @@ internal partial class WAR : Tank
     #region Reprisal -> Shake It Off
     internal class WAR_Mit_Party : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_Mit_Party;
+        protected internal override Preset Preset => Preset.WAR_Mit_Party;
         protected override uint Invoke(uint action) => action != ShakeItOff ? action : ActionReady(Role.Reprisal) ? Role.Reprisal : action;
     }
     #endregion
@@ -483,7 +491,7 @@ internal partial class WAR : Tank
     #region MyRegion
     internal class WAR_RetargetHolmgang : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_RetargetHolmgang;
+        protected internal override Preset Preset => Preset.WAR_RetargetHolmgang;
 
         protected override uint Invoke(uint actionID) => actionID != Holmgang ? actionID : actionID.Retarget(SimpleTarget.Self, dontCull: true);
     }
@@ -492,7 +500,8 @@ internal partial class WAR : Tank
     #region Basic Combos
     internal class WAR_ST_StormsPathCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_ST_StormsPathCombo;
+        protected internal override Preset Preset => Preset.WAR_ST_StormsPathCombo;
+
         protected override uint Invoke(uint id) => (id != StormsPath) ? id :
             (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
             (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsPath)) ? StormsPath :
@@ -500,7 +509,8 @@ internal partial class WAR : Tank
     }
     internal class WAR_ST_StormsEyeCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WAR_ST_StormsEyeCombo;
+        protected internal override Preset Preset => Preset.WAR_ST_StormsEyeCombo;
+
         protected override uint Invoke(uint id) => (id != StormsEye) ? id :
             (ComboTimer > 0 && ComboAction == HeavySwing && LevelChecked(Maim)) ? Maim :
             (ComboTimer > 0 && ComboAction == Maim && LevelChecked(StormsEye)) ? StormsEye :

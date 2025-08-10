@@ -62,7 +62,7 @@ internal static class WHMPvP
 
     internal class WHMPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WHMPvP_Burst;
+        protected internal override Preset Preset => Preset.WHMPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -106,7 +106,7 @@ internal static class WHMPvP
       
     internal class WHMPvP_Aquaveil : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WHMPvP_Heals;
+        protected internal override Preset Preset => Preset.WHMPvP_Heals;
 
         protected override uint Invoke(uint actionID)
         {

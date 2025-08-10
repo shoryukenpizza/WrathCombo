@@ -151,7 +151,7 @@ internal static class BLMPvP
 
     internal class BLMPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.BLMPvP_BurstMode;
+        protected internal override Preset Preset => Preset.BLMPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -263,7 +263,8 @@ internal static class BLMPvP
 
     internal class BLMPvP_Manipulation_Feature : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.BLMPvP_Manipulation_Feature;
+        protected internal override Preset Preset => Preset.BLMPvP_Manipulation_Feature;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is AetherialManipulation)

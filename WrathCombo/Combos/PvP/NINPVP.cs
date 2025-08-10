@@ -125,7 +125,7 @@ internal static class NINPvP
        
     internal class NINPvP_ST_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NINPvP_ST_BurstMode;
+        protected internal override Preset Preset => Preset.NINPvP_ST_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -219,7 +219,7 @@ internal static class NINPvP
 
     internal class NINPvP_AoE_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NINPvP_AoE_BurstMode;
+        protected internal override Preset Preset => Preset.NINPvP_AoE_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {

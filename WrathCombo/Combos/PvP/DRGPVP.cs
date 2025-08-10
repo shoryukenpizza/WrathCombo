@@ -82,7 +82,7 @@ internal static class DRGPvP
 
     internal class DRGPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DRGPvP_Burst;
+        protected internal override Preset Preset => Preset.DRGPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {
@@ -139,7 +139,7 @@ internal static class DRGPvP
     }
     internal class DRGPvP_BurstProtection : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DRGPvP_BurstProtection;
+        protected internal override Preset Preset => Preset.DRGPvP_BurstProtection;
 
         protected override uint Invoke(uint actionID)
         {

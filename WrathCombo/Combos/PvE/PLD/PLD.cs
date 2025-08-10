@@ -9,7 +9,7 @@ internal partial class PLD : Tank
 {
     internal class PLD_ST_BasicCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_ST_BasicCombo;
+        protected internal override Preset Preset => Preset.PLD_ST_BasicCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -31,7 +31,7 @@ internal partial class PLD : Tank
 
     internal class PLD_ST_SimpleMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_ST_SimpleMode;
+        protected internal override Preset Preset => Preset.PLD_ST_SimpleMode;
         internal static int RoyalAuthorityCount => ActionWatching.CombatActions.Count(x => x == OriginalHook(RageOfHalone));
 
         protected override uint Invoke(uint actionID)
@@ -245,7 +245,7 @@ internal partial class PLD : Tank
 
     internal class PLD_AoE_SimpleMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_AoE_SimpleMode;
+        protected internal override Preset Preset => Preset.PLD_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -390,7 +390,7 @@ internal partial class PLD : Tank
 
     internal class PLD_ST_AdvancedMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_ST_AdvancedMode;
+        protected internal override Preset Preset => Preset.PLD_ST_AdvancedMode;
         internal static int RoyalAuthorityCount => ActionWatching.CombatActions.Count(x => x == OriginalHook(RageOfHalone));
 
         protected override uint Invoke(uint actionID)
@@ -615,7 +615,7 @@ internal partial class PLD : Tank
 
     internal class PLD_AoE_AdvancedMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_AoE_AdvancedMode;
+        protected internal override Preset Preset => Preset.PLD_AoE_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -761,7 +761,7 @@ internal partial class PLD : Tank
 
     internal class PLD_Requiescat_Confiteor : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_Requiescat_Options;
+        protected internal override Preset Preset => Preset.PLD_Requiescat_Options;
 
         protected override uint Invoke(uint actionID)
         {
@@ -794,7 +794,7 @@ internal partial class PLD : Tank
 
     internal class PLD_CircleOfScorn : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_SpiritsWithin;
+        protected internal override Preset Preset => Preset.PLD_SpiritsWithin;
 
         protected override uint Invoke(uint actionID)
         {
@@ -813,7 +813,7 @@ internal partial class PLD : Tank
 
     internal class PLD_ShieldLob_HolySpirit : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_ShieldLob_Feature;
+        protected internal override Preset Preset => Preset.PLD_ShieldLob_Feature;
 
         protected override uint Invoke(uint actionID)
         {
@@ -829,7 +829,7 @@ internal partial class PLD : Tank
 
     internal class PLD_RetargetClemency : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_RetargetClemency;
+        protected internal override Preset Preset => Preset.PLD_RetargetClemency;
 
         protected override uint Invoke(uint actionID)
         {
@@ -860,7 +860,7 @@ internal partial class PLD : Tank
     }
     internal class PLD_RetargetSheltron : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_RetargetSheltron;
+        protected internal override Preset Preset => Preset.PLD_RetargetSheltron;
 
         protected override uint Invoke(uint action)
         {
@@ -895,7 +895,7 @@ internal partial class PLD : Tank
 
     internal class PLD_Mit_OneButton : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_Mit_OneButton;
+        protected internal override Preset Preset => Preset.PLD_Mit_OneButton;
 
         protected override uint Invoke(uint actionID)
         {
@@ -924,8 +924,7 @@ internal partial class PLD : Tank
 
     internal class PLD_Mit_OneButton_Party : CustomCombo
     {
-        protected internal override Preset Preset { get; } =
-            Preset.PLD_Mit_Party;
+        protected internal override Preset Preset => Preset.PLD_Mit_Party;
 
         protected override uint Invoke(uint action)
         {
@@ -948,7 +947,7 @@ internal partial class PLD : Tank
 
     internal class PLD_RetargetShieldBash : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLD_RetargetShieldBash;
+        protected internal override Preset Preset => Preset.PLD_RetargetShieldBash;
 
         protected override uint Invoke(uint actionID)
         {

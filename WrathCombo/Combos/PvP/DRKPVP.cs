@@ -71,7 +71,7 @@ internal class DRKPvP
 
     internal class DRKPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DRKPvP_Burst;
+        protected internal override Preset Preset => Preset.DRKPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {

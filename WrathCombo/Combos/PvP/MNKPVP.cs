@@ -67,7 +67,7 @@ internal static class MNKPvP
        
     internal class MNKPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.MNKPvP_Burst;
+        protected internal override Preset Preset => Preset.MNKPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {

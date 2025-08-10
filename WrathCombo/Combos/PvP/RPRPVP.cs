@@ -84,7 +84,8 @@ internal static class RPRPvP
     
     internal class RPRPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.RPRPvP_Burst;
+        protected internal override Preset Preset => Preset.RPRPvP_Burst;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is Slice or WaxingSlice or InfernalSlice)

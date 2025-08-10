@@ -97,8 +97,8 @@ internal static class GNBPvP
             
     internal class GNBPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNBPvP_Burst;
-            
+        protected internal override Preset Preset => Preset.GNBPvP_Burst;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is KeenEdge or BrutalShell or SolidBarrel or BurstStrike)
@@ -152,7 +152,7 @@ internal static class GNBPvP
 
     internal class GNBPvP_GnashingFang : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.GNBPvP_GnashingFang;
+        protected internal override Preset Preset => Preset.GNBPvP_GnashingFang;
 
         protected override uint Invoke(uint actionID) =>
             actionID is GnashingFang &&

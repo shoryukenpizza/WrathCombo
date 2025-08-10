@@ -105,7 +105,7 @@ internal static class SAMPvP
        
     internal class SAMPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.SAMPvP_Burst;
+        protected internal override Preset Preset => Preset.SAMPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {

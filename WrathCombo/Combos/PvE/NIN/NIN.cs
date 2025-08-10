@@ -10,7 +10,7 @@ internal partial class NIN : Melee
 {
     internal class NIN_ST_AeolianEdgeCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_ST_AeolianEdgeCombo;
+        protected internal override Preset Preset => Preset.NIN_ST_AeolianEdgeCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -35,7 +35,7 @@ internal partial class NIN : Melee
         protected internal static NINOpenerMaxLevel4thGCDKunai NINOpener = new();
 
         protected internal MudraCasting MudraState = new();
-        protected internal override Preset Preset { get; } = Preset.NIN_ST_AdvancedMode;
+        protected internal override Preset Preset => Preset.NIN_ST_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -348,7 +348,7 @@ internal partial class NIN : Melee
     internal class NIN_AoE_AdvancedMode : CustomCombo
     {
         protected internal MudraCasting MudraState = new();
-        protected internal override Preset Preset { get; } = Preset.NIN_AoE_AdvancedMode;
+        protected internal override Preset Preset => Preset.NIN_AoE_AdvancedMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -522,7 +522,7 @@ internal partial class NIN : Melee
         protected internal static NINOpenerMaxLevel4thGCDKunai NINOpener = new();
 
         protected internal MudraCasting MudraState = new();
-        protected internal override Preset Preset { get; } = Preset.NIN_ST_SimpleMode;
+        protected internal override Preset Preset => Preset.NIN_ST_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -781,7 +781,7 @@ internal partial class NIN : Melee
     internal class NIN_AoE_SimpleMode : CustomCombo
     {
         private readonly MudraCasting _mudraState = new();
-        protected internal override Preset Preset { get; } = Preset.NIN_AoE_SimpleMode;
+        protected internal override Preset Preset => Preset.NIN_AoE_SimpleMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -899,7 +899,7 @@ internal partial class NIN : Melee
 
     internal class NIN_ArmorCrushCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_ArmorCrushCombo;
+        protected internal override Preset Preset => Preset.NIN_ArmorCrushCombo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -923,7 +923,7 @@ internal partial class NIN : Melee
 
     internal class NIN_HideMug : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_HideMug;
+        protected internal override Preset Preset => Preset.NIN_HideMug;
 
         protected override uint Invoke(uint actionID)
         {
@@ -946,7 +946,7 @@ internal partial class NIN : Melee
 
     internal class NIN_KassatsuChiJin : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_KassatsuChiJin;
+        protected internal override Preset Preset => Preset.NIN_KassatsuChiJin;
 
         protected override uint Invoke(uint actionID)
         {
@@ -960,7 +960,7 @@ internal partial class NIN : Melee
 
     internal class NIN_KassatsuTrick : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_KassatsuTrick;
+        protected internal override Preset Preset => Preset.NIN_KassatsuTrick;
 
         protected override uint Invoke(uint actionID)
         {
@@ -1005,7 +1005,7 @@ internal partial class NIN : Melee
 
     internal class NIN_Simple_Mudras : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.NIN_Simple_Mudras;
+        protected internal override Preset Preset => Preset.NIN_Simple_Mudras;
 
         protected override uint Invoke(uint actionID)
         {

@@ -69,7 +69,7 @@ internal static class PLDPvP
 
     internal class PLDPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.PLDPvP_Burst;
+        protected internal override Preset Preset => Preset.PLDPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {

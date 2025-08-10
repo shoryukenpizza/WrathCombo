@@ -66,7 +66,7 @@ internal static class SCHPvP
           
     internal class SCHPvP_Burst : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.SCHPvP_Burst;
+        protected internal override Preset Preset => Preset.SCHPvP_Burst;
 
         protected override uint Invoke(uint actionID)
         {

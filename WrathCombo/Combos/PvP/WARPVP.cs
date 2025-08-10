@@ -67,7 +67,7 @@ internal static class WARPvP
        
     internal class WARPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.WARPvP_BurstMode;
+        protected internal override Preset Preset => Preset.WARPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {

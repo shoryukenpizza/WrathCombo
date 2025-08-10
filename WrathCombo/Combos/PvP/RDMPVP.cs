@@ -125,7 +125,7 @@ internal static class RDMPvP
 
     internal class RDMPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.RDMPvP_BurstMode;
+        protected internal override Preset Preset => Preset.RDMPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {
@@ -244,7 +244,8 @@ internal static class RDMPvP
 
     internal class RDMPvP_Dash_Feature : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.RDMPvP_Dash_Feature;
+        protected internal override Preset Preset => Preset.RDMPvP_Dash_Feature;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is CorpsACorps)

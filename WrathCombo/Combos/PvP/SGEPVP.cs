@@ -68,7 +68,7 @@ internal static class SGEPvP
 
     internal class SGEPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.SGEPvP_BurstMode;
+        protected internal override Preset Preset => Preset.SGEPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
         {

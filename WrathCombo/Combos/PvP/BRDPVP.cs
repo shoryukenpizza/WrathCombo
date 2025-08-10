@@ -66,7 +66,7 @@ internal static class BRDPvP
 
     internal class BRDPvP_BurstMode : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.BRDPvP_BurstMode;
+        protected internal override Preset Preset => Preset.BRDPvP_BurstMode;
 
         protected override uint Invoke(uint actionID)
 

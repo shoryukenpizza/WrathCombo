@@ -61,7 +61,8 @@ internal partial class DOL
 
     internal class DOL_Eureka : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DOL_Eureka;
+        protected internal override Preset Preset => Preset.DOL_Eureka;
+
         protected override uint Invoke(uint actionID)
         {
             if (actionID is SolidReason && HasStatusEffect(Buffs.EurekaMoment))
@@ -74,7 +75,8 @@ internal partial class DOL
 
     internal class DOL_NodeSearchingBuffs : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DOL_NodeSearchingBuffs;
+        protected internal override Preset Preset => Preset.DOL_NodeSearchingBuffs;
+
         protected override uint Invoke(uint actionID)
         {
             //MIN
@@ -93,14 +95,16 @@ internal partial class DOL
 
     internal class FSH_CastHook : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.FSH_CastHook;
+        protected internal override Preset Preset => Preset.FSH_CastHook;
+
         protected override uint Invoke(uint actionID)
             => actionID is Cast && HasCondition(ConditionFlag.Fishing) ? Hook : actionID;
     }
 
     internal class FSH_Swim : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.FSH_Swim;
+        protected internal override Preset Preset => Preset.FSH_Swim;
+
         protected override uint Invoke(uint actionID)
         {
             if (!HasCondition(ConditionFlag.Diving))

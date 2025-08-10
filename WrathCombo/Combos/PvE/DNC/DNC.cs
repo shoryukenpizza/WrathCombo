@@ -1222,7 +1222,7 @@ internal partial class DNC : PhysicalRanged
 
     internal class DNC_ST_BasicCombo : CustomCombo
     {
-        protected internal override Preset Preset { get; } = Preset.DNC_ST_BasicCombo;
+        protected internal override Preset Preset => Preset.DNC_ST_BasicCombo;
 
         protected override uint Invoke(uint actionID)
         {
